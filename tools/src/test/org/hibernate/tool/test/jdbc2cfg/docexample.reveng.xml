@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+<type-mapping>
+ <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
+ <sql-type jdbc-type="NUMERIC" not-null="true" hibernate-type="long" />
+ <sql-type jdbc-type="NUMERIC" not-null="false" hibernate-type="java.lang.Long" />
+ <sql-type jdbc-type="VARCHAR" length="1" not-null="true" hibernate-type="java.lang.Character"/>
+ <sql-type jdbc-type="VARCHAR" hibernate-type="your.package.TrimStringUserType"/>
+ <sql-type jdbc-type="VARCHAR" length="1" hibernate-type="char"/>
+</type-mapping>
+</hibernate-reverse-engineering>

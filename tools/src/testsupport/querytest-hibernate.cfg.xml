@@ -1,0 +1,12 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>	    	    
+		<property name="show_sql">true</property>
+		<!-- Drop and re-create the database schema on startup -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
+		<mapping resource="querytest.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

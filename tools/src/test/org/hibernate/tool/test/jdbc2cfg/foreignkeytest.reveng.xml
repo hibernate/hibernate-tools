@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+<hibernate-reverse-engineering>
+
+<!-- This one assumes set and many-to-one is exclude=false -->
+
+
+    <table name="EMPLOYEE">
+		<foreign-key constraint-name="EMPLOYEE_MANAGER"> 
+			<many-to-one property="manager" cascade="all" update="false" insert="false" fetch="join"/>
+			<set exclude="true"/>
+		</foreign-key>
+	</table> 
+	
+	<table name="PROJECT">
+	    <foreign-key constraint-name="PROJECT_MANAGER">
+	    	<many-to-one exclude="true"/>
+	    	<set property="managedProjects" cascade="delete, update"/>
+	    </foreign-key>
+	</table>	
+	
+	<table name="ADDRESS_PERSON">
+	    <foreign-key constraint-name="ADDRESS_PERSON">
+	    	<one-to-one exclude="true"/>
+	    	<inverse-one-to-one exclude="true"/>
+	    </foreign-key>
+	</table>
+	
+	<table name="ADDRESS_MULTI_PERSON">
+	    <foreign-key constraint-name="ADDRESS_MULTI_PERSON">
+	    	<one-to-one property="renamedOne" exclude="false" cascade="delete"/>
+	    	<inverse-one-to-one property="renamedInversedOne" exclude="false" cascade="update" fetch="join"/>
+	    </foreign-key>
+	</table>
+	
+</hibernate-reverse-engineering>

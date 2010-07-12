@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- to test non EJB3 generator in EJB3 -->
+<hibernate-mapping package="org.hibernate.tool.hbm2x">
+
+    <class name="Bungalow">
+
+    	<id name="id" type="integer">
+            <generator class="org.hibernate.id.MultipleHiLoPerTableGenerator"/>
+        </id>
+
+        <property name="name" type="string" not-null="true" length="100"/>
+        
+        <!-- test for various dates -->
+        <property name="lastModified" type="timestamp"/>
+        <property name="dayFree" type="date"/>
+        <property name="timeFree" type="time"/>
+        
+        <many-to-one name="mascot" not-null="true" class="Bungalow"/>
+
+	</class>
+
+</hibernate-mapping>

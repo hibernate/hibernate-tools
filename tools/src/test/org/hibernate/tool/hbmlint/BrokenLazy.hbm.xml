@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.hibernate.tool.hbmlint">
+
+    <!--  category has caching for collection but its target is not cached -->
+    <class name="BrokenLazy" lazy="true">
+    
+    	<id name="id" type="long">
+    		<generator class="native"/>
+    	</id>
+		
+	</class>
+	
+	<class name="BrokenNonLazy" lazy="false">
+	<id name="id" type="long">
+		<generator class="native" />
+	</id>
+
+	</class>
+	
+	<class name="FakeNonLazy" lazy="false">
+	<id name="id" type="long">
+		<generator class="native" />
+	</id>
+
+	</class>
+	
+
+</hibernate-mapping>

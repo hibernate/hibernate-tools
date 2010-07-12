@@ -1,0 +1,48 @@
+<project name="anttest">
+ <property name="hibernate-core.jar" location="../../../../hibernate-3.1/hibernate3.jar"/>
+ <property name="hibernate-core.home" location="../../../../hibernate3"/>
+ <property name="hibernate-core.lib.dir" location="${hibernate-core.home}/lib"/>
+ <property name="build.dir" location="../../build/seamtest"/>
+ <property file="../../etc/hibernate.properties"/>
+
+<!-- <delete dir="${build.dir}"/> -->
+    
+ <property name="destdir"  location="${build.dir}/crud"/>
+    
+<target name="generate-crud" depends="sql">
+  
+ <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask"/>
+ <hibernatetool destdir="${destdir}">
+  <!-- <classpath>
+     <path location="../../build/testsupport"/>
+   </classpath> -->
+   
+   <jdbcconfiguration configurationfile="seamtest.cfg.xml" packagename="org.jboss.seam.example.crud"/>   
+  
+   <!-- setup global properties -->  
+   <property key="seam_appname" value="Registration"/>
+   <property key="seam_shortname" value="crud"/>
+    
+   <hbmtemplate exporterclass="org.hibernate.tool.hbm2x.seam.SeamExporter" filepattern="."/>
+        
+ </hibernatetool>
+    
+</target>
+ 
+<target name="sql">
+  <sql classpath="${hibernate-core.home}/jdbc/hsqldb.jar" 
+       driver="org.hsqldb.jdbcDriver" 
+       url="jdbc:hsqldb:seamtest"
+       userid="sa" 
+       password="" 
+     >
+    drop table comment if exists; 
+    drop table ISSUE if exists;
+    create table ISSUE ( ID int not null, DATETIME timestamp, TEXT varchar(200), USER varchar(30), primary key (ID) );    
+    CREATE TABLE comment ( id int not null, issue_id int not null, datetime timestamp, text varchar(200), user varchar(30), primary key (id), constraint issue_comments foreign key (issue_id) references ISSUE );    
+
+    SHUTDOWN;
+ </sql>   
+</target>   
+    
+</project>

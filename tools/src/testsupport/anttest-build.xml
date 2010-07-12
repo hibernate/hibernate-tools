@@ -1,0 +1,572 @@
+<project name="anttest">
+	<property name="build.dir" location="../../build/anttest" />
+	<property file="../../etc/hibernate.properties" />
+    <property name="jdbc.driver" location="../../lib/jdbc/hsqldb.jar"/>
+
+
+	<path id="tasks.classpath">
+		<pathelement path="../../build/eclipse" />
+		<pathelement path="../../build/classes" />
+
+		<fileset dir="${build.dir}/../../lib/testlibs">
+			<include name="**/*.jar" />
+		</fileset>
+
+		<pathelement path="../../lib/freemarker.jar" />
+		<pathelement path="${jdbc.driver}" />
+	</path>
+
+
+	<target name="cleanup" description="task used for ensuring cleanup to be done even in the case of test failure" depends="afterCfg2hbm">
+		<delete dir="${build.dir}"/>
+		</target>
+
+	<target name="testScriptCreation">
+
+		
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
+		<hibernatetool destdir="${build.dir}/topdown">
+		
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java />
+			<!-- this one is executed, security clean up-->
+			<hbm2ddl drop="true" create="false" export="true" outputfilename="onlydrop.sql" format="true" />
+			
+			<!-- allow to test creation of script file + delimiter + non execution (test will fail if executed because of crappy delimiter) -->
+			<hbm2ddl drop="false" create="true" export="false" outputfilename="onlycreate.sql" format="true" delimiter="---"/>
+			<hbm2ddl drop="true" create="false" export="false" outputfilename="onlydrop.sql" format="true" />
+			<hbm2ddl drop="true" create="true" export="false" outputfilename="dropandcreate.sql" format="true" delimiter="---"/>
+			<hbm2ddl export="false" update="true" outputfilename="update.sql" format="true" delimiter="---"/>
+			
+			<!-- this one is executed, security clean up, could be easily removed-->
+			<hbm2ddl drop="true" create="false" export="true" outputfilename="onlydrop.sql" format="true" />
+			<hbm2doc />
+		</hibernatetool>
+
+	</target>
+	
+	<target name="testantcfgUpdateExecuted">
+
+		
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
+		<hibernatetool destdir="${build.dir}/topdown">
+		
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java />
+			<hbm2ddl drop="true" create="false" export="true" outputfilename="onlydrop.sql" format="true" />
+			<hbm2ddl export="true" update="true" outputfilename="update1.sql" format="true" />
+			<hbm2ddl export="false" update="true" outputfilename="update2.sql" format="true" />
+			<hbm2ddl drop="true" create="false" export="true" />
+			<hbm2doc />
+		</hibernatetool>
+
+	</target>
+	
+	<target name="testantcfgExportExecuted">
+
+		
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
+		<hibernatetool destdir="${build.dir}/topdown">
+		
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java />
+			<hbm2ddl drop="true" create="false" export="true" outputfilename="onlydrop.sql" format="true" />
+			<hbm2ddl export="true" update="false" outputfilename="export.sql" format="true" />
+			<hbm2ddl export="false" update="true" outputfilename="update.sql" format="true" />
+			<hbm2ddl drop="true" create="false" export="true" />
+			<hbm2doc />
+		</hibernatetool>
+
+	</target>
+
+	<target name="testantjdbccfg">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<property file="../etc/hibernate.properties" prefix="tools" />
+		<!--  
+<sql onerror="continue" driver="${tools.hibernate.connection.driver_class}" password="${tools.hibernate.connection.password}" url="${tools.hibernate.connection.url}" userid="${tools.hibernate.connection.username}" classpath="C:\work\products\hsqldb-1.7.2.6\lib\hsqldb.jar">
+create table BottomUp (
+   id bigint not null,
+   name varchar(255),
+   primary key (id)
+)
+   </sql>    -->
+		<hibernatetool destdir="${build.dir}/bottomup">
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" detectManyToMany="true" detectoptimisticlock="true"/>
+
+			<hbm2java />
+			<hbm2java templatepath="templates" />
+			<hbm2cfgxml/>
+		</hibernatetool>
+	</target>
+
+	<target name="testantjdbccfgoverrides">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<property file="../etc/hibernate.properties" prefix="tools" />
+		<!--       <sql onerror="continue" driver="${tools.hibernate.connection.driver_class}" password="${tools.hibernate.connection.password}" url="${tools.hibernate.connection.url}" userid="${tools.hibernate.connection.username}" classpath="C:\work\products\hsqldb-1.7.2.6\lib\hsqldb.jar">
+    create table BottomUp (
+       id bigint not null,
+       name varchar(255),
+       primary key (id)
+    )
+       </sql>    -->
+		<hibernatetool destdir="${build.dir}/bottomupoverride">
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" packagename="test" revengfile="hibernate.reveng.xml" />
+
+			<hbm2java />
+		</hibernatetool>
+	</target>
+
+	<target name="testanthbm2java">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool destdir="${build.dir}/bottomup">
+			<configuration propertyfile="../../etc/hibernate.properties">
+				<fileset dir=".">
+					<include name="SomeClasses.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java jdk5="true" />
+		</hibernatetool>
+	</target>
+
+	<property name="hbm2java.ejb3" value="weird" />
+	<property name="hbm2java.anothervalue" value="weirdo" />
+
+	<target name="testproperties">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<property name="org.hibernate.tool.hbm2x.weirdAl" value="weirdAl" />
+
+		<hibernatetool destdir="${build.dir}/bottomup">
+			<configuration propertyfile="../../etc/hibernate.properties">
+				<fileset dir=".">
+					<include name="SomeClasses.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java jdk5="true">
+				<propertyset>
+					<propertyref builtin="all" />
+					<propertyref name="hbm2java.ejb3" />
+					<propertyref prefix="hbm2java" />
+				</propertyset>
+				<property key="mykey" file="c" />
+				<property key="mykey" value="c" />
+			</hbm2java>
+		</hibernatetool>
+	</target>
+
+	<target name="testgeneric">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool destdir="${build.dir}/generic" templatepath="generictemplates">
+			<configuration propertyfile="../../etc/hibernate.properties">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbmtemplate templateprefix="pojo/" template="pojo/Pojo.ftl" filepattern="X{package-name}/{class-name}.java" foreach="entity">
+				<property key="jdk5" value="false" />
+				<property key="ejb3" value="false" />
+			</hbmtemplate>
+			<hbm2java />
+
+			<hbmtemplate template="pojo/generic-class.ftl" filepattern="{package-name}/{class-name}.quote" />
+			<hbmtemplate exporterclass="org.hibernate.tool.hbm2x.POJOExporter" filepattern="{package-name}/{class-name}.quote" />
+		</hibernatetool>
+	</target>
+
+	<target name="testexceptions">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool destdir="${build.dir}/generic" templatepath="generictemplates">
+			<configuration propertyfile="../../etc/hibernate.properties">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbmtemplate template="generic-exception.ftl" filepattern="{package-name}/{class-name}.error" />
+		</hibernatetool>
+	</target>
+
+	<target name="testantannotationcfg">
+		<path id="annlib">
+			<path location="${build.dir}/../../lib/testlibs/hibernate3.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-annotations.jar" />
+			<path location="${build.dir}/../../lib/testlibs/ejb3-persistence.jar" />
+			<path location="${build.dir}/../classes" />
+			<path location="${build.dir}/../../etc" />
+			<path location="${jdbc.driver}" />
+			<!-- <fileset dir="${hibernate-core.lib.dir}">
+				<include name="*.jar" />
+			</fileset> -->
+		</path>
+		<taskdef name="hibernatetoolx" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
+		<hibernatetoolx destdir="${build.dir}/bottomup">
+			<annotationconfiguration configurationfile="test-hibernate.cfg.xml" />
+			<hbm2ddl console="true" export="false" />
+		</hibernatetoolx>
+	</target>
+
+	<target name="testantejb3cfg">
+		<path id="annlib">
+			<path location="${build.dir}/../../lib/freemarker.jar" />
+
+			<path location="${build.dir}/../../lib/testlibs/hibernate3.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-annotations.jar" />
+			<path location="${build.dir}/../../lib/testlibs/ejb3-persistence.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-entitymanager.jar" />
+			<path location="${build.dir}/../../lib/testlibs/jboss-archive-browsing.jar" />
+			<path location="${build.dir}/../../lib/testlibs/javaassist.jar" /> 
+			<path location="${build.dir}/../classes" />
+			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
+			<!--	            <fileset dir="${hibernate-core.lib.dir}">
+	               
+	            </fileset>-->
+		</path>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
+
+		<delete dir="${build.dir}/ejb3" />
+		<mkdir dir="${build.dir}/ejb3" />
+
+		<antcall target="prepareCfg2hbm" />
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
+		</hibernatetool>
+
+		<mkdir dir="${build.dir}/ejb3/classes" />
+		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
+
+		<copy file="ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+
+		<hibernatetool destdir="${build.dir}">
+			<ejb3configuration/>
+			<classpath>
+				<path location="${build.dir}/ejb3/classes" />
+			</classpath>
+			<hbm2ddl export="false" outputfilename="ejb3.sql" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="jpa-boguspunit">
+		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
+		
+		<path id="annlib">
+			<path location="${build.dir}/../../lib/freemarker.jar" />
+
+			<path location="${build.dir}/../../lib/testlibs/hibernate3.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-annotations.jar" />
+			<path location="${build.dir}/../../lib/testlibs/ejb3-persistence.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-entitymanager.jar" />
+			<path location="${build.dir}/../../lib/testlibs/jboss-archive-browsing.jar" />
+			<path location="${build.dir}/../../lib/testlibs/javaassist.jar" /> 
+			<path location="${build.dir}/../classes" />
+			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
+		</path>
+<!--		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" /> -->
+
+		<delete dir="${build.dir}/ejb3" />
+		<mkdir dir="${build.dir}/ejb3" />
+
+		<antcall target="prepareCfg2hbm" />
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
+		</hibernatetool>
+
+		<mkdir dir="${build.dir}/ejb3/classes" />
+		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
+
+		<copy file="ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+
+		<hibernatetool destdir="${build.dir}">
+			<jpaconfiguration persistenceunit="shouldnotbethere"/>
+			<classpath>
+				<path location="${build.dir}/ejb3/classes" />
+			</classpath>
+			<hbm2ddl export="false" outputfilename="ejb3.sql" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="jpa-punit">
+		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
+		<property name="testlibs" location="${build.dir}/../../lib/testlibs"/>
+		<path id="annlib">
+			<path location="${build.dir}/../classes" />
+			<path location="${testlibs}/hibernate3.jar"/>
+			<path location="${testlibs}/${h3.commons-logging.lib}"/>
+			<path location="${testlibs}/${h3.dom4j.lib}"/>			
+			<path location="${testlibs}/${h3.cglib.lib}"/>	
+			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" /> 
+			<path location="${testlibs}/${h3.ehcache.lib}"/> 
+			<path location="${testlibs}/${h3.commons-collections.lib}"/> 
+			<path location="${build.dir}/../../lib/freemarker.jar" />
+			<path location="${testlibs}/ejb3-persistence.jar" />
+			<path location="${testlibs}/hibernate-entitymanager.jar" />
+			<path location="${testlibs}/jboss-archive-browsing.jar" />
+			<path location="${testlibs}/hibernate-annotations.jar" />
+			<path location="${testlibs}/javassist.jar" />
+			 <!--
+
+
+
+			<path location="${build.dir}/../../lib/testlibs/hibernate-annotations.jar" />
+			<path location="${build.dir}/../../lib/testlibs/ejb3-persistence.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-entitymanager.jar" />
+			<path location="${build.dir}/../../lib/testlibs/jboss-archive-browsing.jar" />
+			<path location="${build.dir}/../../lib/testlibs/javaassist.jar" /> 
+
+			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" /> -->
+			<!--	            <fileset dir="${hibernate-core.lib.dir}">
+	               
+	            </fileset>-->
+		</path>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
+
+		<delete dir="${build.dir}/ejb3" />
+		<mkdir dir="${build.dir}/ejb3" />
+
+		<antcall target="prepareCfg2hbm" />
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
+		</hibernatetool>
+
+		<mkdir dir="${build.dir}/ejb3/classes" />
+		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
+
+		<copy file="ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+
+		<hibernatetool destdir="${build.dir}">
+			<jpaconfiguration persistenceunit="ejb3test"/>
+			<classpath>
+				<path location="${build.dir}/ejb3/classes" />
+			</classpath>
+			<hbm2ddl export="false" outputfilename="ejb3.sql" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="jpa-overrides">
+		<path id="annlib">
+			<path location="${build.dir}/../../lib/freemarker.jar" />
+
+			<path location="${build.dir}/../../lib/testlibs/hibernate3.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-annotations.jar" />
+			<path location="${build.dir}/../../lib/testlibs/ejb3-persistence.jar" />
+			<path location="${build.dir}/../../lib/testlibs/hibernate-entitymanager.jar" />
+			<path location="${build.dir}/../../lib/testlibs/jboss-archive-browsing.jar" />
+			<path location="${build.dir}/../../lib/testlibs/javaassist.jar" /> 
+			<path location="${build.dir}/../classes" />
+			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
+		</path>
+
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
+
+		<delete dir="${build.dir}/ejb3" />
+		<mkdir dir="${build.dir}/ejb3" />
+
+		<antcall target="prepareCfg2hbm" />
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
+		</hibernatetool>
+
+		<mkdir dir="${build.dir}/ejb3/classes" />
+		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
+
+		<copy file="ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+
+		<hibernatetool destdir="${build.dir}">
+			<jpaconfiguration persistenceunit="ejb3test" entityresolver="DummyEntityResolver" propertyfile="jpaoverrides.properties"/>
+			<classpath>
+				<path location="${build.dir}/ejb3/classes" />
+			</classpath>
+			<hbm2ddl export="false" outputfilename="ejb3.sql" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+	
+	<target name="testantejb3hbm2java">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool destdir="${build.dir}/bottomup">
+			<configuration propertyfile="../../etc/hibernate.properties">
+				<fileset dir="../test/org/hibernate/tool/hbm2x">
+					<include name="*.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<hbm2java ejb3="true" />
+		</hibernatetool>
+
+	</target>
+
+	<target name="prepareCfg2hbm" description="prepare for cfg2hbm tasks">
+		<sql onerror="continue" driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}" classpath="${hibernate-core.home}\jdbc\hsqldb.jar">
+ create table VeriSimplyTable ( id bigint not null, name varchar(255), primary key (id) );
+ insert table VeriSimplyTable ( 1, "A Row");
+ insert table VeriSimplyTable ( 2, "Another Row");
+ </sql>
+
+		<delete dir="${build.dir}/cfg2hbm" failonerror="false" />
+		<mkdir dir="${build.dir}/cfg2hbm" />
+	</target>
+
+	<target name="afterCfg2hbm" description="prepare for cfg2hbm tasks">
+		<sql onerror="continue" driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}" classpath="${hibernate-core.home}\jdbc\hsqldb.jar">
+	 delete from VeriSimplyTable where id > 0;
+     drop table VeriSimplyTable;
+	 drop table column; 
+     </sql>
+
+	</target>
+
+	<target name="testantcfg2hbm1" depends="prepareCfg2hbm" description="simple CFG2HBM">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="testantcfg2hbm2" depends="prepareCfg2hbm" description="valid custom ReverseEngineeringStrategy">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" />
+
+			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="testantcfg2hbm3" depends="prepareCfg2hbm" description="invalid ReverseEngineeringStrategy classname">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" reversestrategy="invalid.classname" />
+			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+
+	</target>
+
+	<target name="testantcfg2hbm4" depends="prepareCfg2hbm" description="CFG2HBM with packageName">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" packageName="org.h3.test" />
+			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="testantcfg2hbm5" depends="prepareCfg2hbm" description="CFG2HBM with packageName and ReverseEngineeringStrategy">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
+			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
+		</hibernatetool>
+
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="noconinfoexport" description="hbm2ddl without connection info">
+		<mkdir dir="${build.dir}/noconinfo" />
+
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+
+		<hibernatetool destdir="${build.dir}/noconinfo">
+			<configuration configurationfile="noconnectioninfo-hibernate.cfg.xml">
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
+				</fileset>
+			</configuration>
+			<hbm2ddl haltonerror="true" export="false" outputfilename="noconinfo.sql" />
+		</hibernatetool>
+	</target>
+
+	<target name="testnoexporters" description="tool without anyexporters - should fail">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="../../etc/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
+		</hibernatetool>
+	</target>
+	
+	<target name="testquery" depends="prepareCfg2hbm" description="test the query tasks">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool destdir="${build.dir}/querytest">
+			<configuration propertyfile="../../etc/hibernate.properties" configurationfile="querytest-hibernate.cfg.xml" />
+			<classpath location="."/>
+			<query>
+				<hql>from java.lang.Object</hql>
+  			    <hql>from java.io.Serializable</hql>
+			</query>
+		    <query destfile="queryresult.txt">from java.io.Serializable</query>			
+		</hibernatetool>		
+		
+		<antcall target="afterCfg2hbm" />
+	</target>
+	
+	<target name="testhbmlint" depends="prepareCfg2hbm" description="test the query tasks">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		
+		<hibernatetool destdir="${build.dir}/linttest">
+			<configuration propertyfile="../../etc/hibernate.properties" configurationfile="querytest-hibernate.cfg.xml">
+				<fileset dir="../test">
+					<include name="**/SchemaIssues.hbm.xml"/>
+				</fileset>
+			</configuration>
+			<hbmlint/>
+		</hibernatetool>		
+		
+		<antcall target="afterCfg2hbm" />
+	</target>
+
+	<target name="noconfig-shoulderror">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
+		<hibernatetool destdir="${basedir}/target"> 
+		 <classpath refid="full.path"/> 
+		 <!--configuration configurationfile="${basedir}/src/main/webapp/WEB-INF/classes/hibernate.cfg.xml"> 
+		 <fileset dir="${basedir}/src/main/webapp/WEB-INF/classes" includes="**/*hbm.xml" excludes="**/Application.hbm.xml"/> 
+		 </configuration--> 
+
+		 <hbm2ddl drop="true" create="true" export="true" outputfilename="generated-schema.sql" delimiter=";" format="true" /> 
+		 <hbm2doc />
+		</hibernatetool>
+	</target>
+</project>

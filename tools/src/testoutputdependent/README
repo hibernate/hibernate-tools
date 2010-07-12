@@ -1,0 +1,8 @@
+This directory can and should have compile errors! 
+
+This directory contains source that cannot compile without
+the output from the test output.
+
+It is intended to only be used when the unittests does its
+own test compilation of its generated output.
+
