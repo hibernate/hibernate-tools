@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering> <!-- case-match="exact|upper|lower" -->
+
+   <!-- .* is valid, will be translated into % -->
+   <schema-selection match-catalog="PUBLIC.*" match-schema="OVRTEST" match-table=".*"/> 
+    
+    <type-mapping>
+		<sql-type jdbc-type="VARCHAR" length='20'> <!--  should have a native-type -->
+	<!--   <hibernate-type name="SomeUserType"><param></param></hibernate-type> -->
+		</sql-type>
+	</type-mapping>
+
+   <!--  <entity package="org.werd"/> -->
+	<table-filter match-schema=".*" match-name="TBL_.*"/>	  
+	
+	
+	<table-filter match-name="DEFUNCT_TABLE" exclude="true" />
+	<table-filter match-name="DoNotWantIt" exclude="true" />
+	<table-filter match-name="WantedTable" />
+	<table-filter match-catalog="BAD" match-schema="SCHEMA"
+		match-name=".*" exclude="true" />
+
+	<table-filter match-catalog=".*" match-schema=".*"
+		match-name="BIN$.*" exclude="true" />
+		
+	<table-filter match-name=".*" exclude="false"/>
+	<!-- 
+		<table name="CUSTOMER" package="org.funk" class-name="MyCustomer">
+		<column name="order" property-name="orderName" />
+		</table> 
+		
+		<table name="CUSTOMER">
+		<column name="ORDER" />
+		</table>
+		
+		<table catalog="CUSTOMER" schema="WHATEVER" name="ORDER">
+		<column name="name" exclude="true">
+		<meta attribute="property-name">Name</meta>
+		</column>
+		</table>
+	-->
+
+<!-- hack for disable many-to-many 
+    <table name="CategoryItem">
+		<foreign-key constraint-name="CAT_FK" foreign-table="CATEGORY" >
+			 <column-ref local-column="catid" foreign-column="id" />
+			 <many-to-one name="dfdf"/>
+		</foreign-key>
+    </table>
+-->    
+	<!-- 
+		alter table Customer add constraint 'max' foreign key (addressid, x) references address (dfdf)
+		
+		default_schema PUBLIC
+	-->
+	<table name="ORDERS" class="Order">
+		<primary-key property="id" id-class="OrderId">
+			<generator class="sequence">
+				<param name="table">seq_table</param>
+			</generator>
+			<key-column name="CUSTID1" property="val1" type="string"/> <!--  no exclude -->
+			<key-column name="CUSTID2" />			
+			<key-column name="CUSTID3" />			
+		</primary-key>
+
+	    <column name="generated" exclude="true" property="price"/>
+<!-- 
+	    <for-columns exclude="false" property="price" type="MonetaryAmount">
+  		 <column name="PRICE"/>
+   		 <column name="CURRENCY"/>
+	    </for-columns>
+	  -->   
+        <!-- if constraint-name exist in db, use it! ignore foreign-x -->
+		<foreign-key constraint-name="SYS_CP20" foreign-table="PARENT" >
+			 <column-ref local-column="parentid" foreign-column="id" />
+			 <column-ref local-column="extraparentid" foreign-column="extraid" />
+		     <many-to-one property="order"/>
+		     <set property="orders"/>
+		</foreign-key>
+
+
+		<foreign-key constraint-name="SYS_CP20" foreign-table="PARENT" >
+			 <column-ref local-column="parentid" foreign-column="id" />
+			 <column-ref local-column="extraparentid" foreign-column="extraid" />
+		    <many-to-one property="order"/>
+		   <!-- <map name="orders">
+		      <map-key column="xxx"/>
+		    </map> -->
+		</foreign-key>
+		
+		<foreign-key foreign-table="PARENT">
+			<column-ref local-column="parentid" foreign-column="id" />
+			<column-ref local-column="extraparentid" foreign-column="extraid" />
+		</foreign-key>
+		
+		
+		
+								
+		
+		
+	</table>
+
+
+	<table name="CHILDREN">
+		<foreign-key foreign-table="PARENT">
+			<column-ref local-column="parentid" foreign-column="id" />
+			<column-ref local-column="extraparentid"
+				foreign-column="extraid" />
+		</foreign-key>
+	</table>
+
+    <table name="EXCOLUMNS">
+    	<column name="EXCOLUMN" exclude="true"/>
+    </table>
+    
+   <table name="TblTest" class="org.test.Test"/>
+   		
+
+</hibernate-reverse-engineering>

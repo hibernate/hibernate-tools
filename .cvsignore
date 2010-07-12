@@ -1,0 +1,17 @@
+build
+target
+hbm2xoutput
+eclipsebuild
+cfg2hbmoutput
+reverseoutput
+test_output
+.settings
+.classpath
+.project
+test.lck
+test.log
+test.properties
+test.script
+cloverout
+clover_coverage.db*
+toolstestoutput

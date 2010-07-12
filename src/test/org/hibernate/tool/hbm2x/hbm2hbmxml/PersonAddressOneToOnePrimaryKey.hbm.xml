@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping 
+	package="org.hibernate.tool.hbm2x.hbm2hbmxml">
+<class name="Person">
+    <id name="id" column="personId">
+        <generator class="native"/>
+    </id>
+    <one-to-one name="address"/>
+</class>
+
+<class name="Address">
+    <id name="id" column="personId">
+        <generator class="foreign">
+            <param name="property">person</param>
+        </generator>
+    </id>
+    <one-to-one name="person" 
+        constrained="true" access="field"/>
+</class>
+</hibernate-mapping>

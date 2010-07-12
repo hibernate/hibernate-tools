@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<type-mapping>
+		<sql-type jdbc-type="VARCHAR" length='20' hibernate-type="SomeUserType" />
+		<sql-type jdbc-type="VARCHAR" length='1' hibernate-type="yes_no" />
+	</type-mapping>
+
+	<table-filter match-name="VERISIMPLYTABLE" exclude="true" />
+
+</hibernate-reverse-engineering>

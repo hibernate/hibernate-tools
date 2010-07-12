@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- to test non EJB3 generator in EJB3 -->
+<hibernate-mapping package="org.hibernate.tool.hbm2x">
+
+    <class name="Puppet">
+
+    	<id name="id" type="integer">
+            <generator class="increment">
+            	<param name="testkey">avalue</param>
+            	     	<param name="testkey">avalue</param>
+            	     	<param name="testkey2">avalue2</param>
+            </generator>
+        </id>
+
+        <property name="name" type="string" not-null="true" length="100"/>
+	</class>
+
+</hibernate-mapping>

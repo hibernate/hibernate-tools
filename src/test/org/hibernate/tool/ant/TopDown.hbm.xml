@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="org.hibernate.tool.hbm2x.ant.TopDown">
+		<id type="long">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="name" type="AnyKindOfUserType"></property>
+	</class>
+
+</hibernate-mapping>

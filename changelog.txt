@@ -1,0 +1,82 @@
+Hibernate Tools Changelog
+=========================
+
+Changes in version 3.2beta9
+---------------------------
+
+Changes in version 3.2alpha7
+----------------------------
+
+Changes in version 3.1alpha6
+----------------------------
+
+Changes in version 3.1alpha5
+----------------------------
+
+* [HBX-365] - basic toString-Method
+* [HBX-315] - Wrong java type chosen for CHAR(n) columns
+
+Changes in version 3.0alpha4
+----------------------------
+
+* fixed bug in cfg.xml exporter
+* fixed bug in rev.eng DTD
+
+Changes in version 3.0alpha3
+----------------------------
+
+* DocExporter which generates html based doc of database schema 
+* table name completion if project has Hibernate 3 enabled (Under project properties)
+* .reveng.xml can now be used to control which tables will be included in reverse engineering
+* lots of bug fixes
+
+Changes in version 3.0alpha2
+---------------------------
+
+* added new ant tasks
+* improved ejb3 in pojo generation (Thanks Marshall)
+* xml postprocessed with jtidy to make clean output
+* fixed bugs
+
+Changes in version 3.0alpha1
+---------------------------
+
+* hbm2java reworked to use hibernate core engine and being template based.
+  - most features are available. 
+
+Changes in version 2.1.3
+------------------------
+
+* added support for generating empty concrete class for a Base class.
+* added support for <parent> in <composite-element>
+* added meta class-code, extra-import attributes
+* hbm2java no longer generates automatically an equals()/hashcode() set unless the class has a composite id or the class is a composite.
+  - use meta implement-equals attribute to enable generating equals()/hashcode() + mark relevant properties with meta use-in-equals attribute.
+* added meta use-in-equals attribute.
+
+Changes in version 2.1.2
+------------------------
+
+* hbm2java now validates the hbm.xml files
+* hbm2java now have an Velocity based renderer
+* Renderer's can now be configured with <param> tags
+* Refactored the "source model" hbm2java uses. 
+  + now all elements have access to their corresponding XML data. Can be used to access all the information that are not otherwise directly available.
+
+Changes in version 2.0.1
+------------------------
+
+* hbm2java now supports the defining subclass and joined-subclass externally from it's superclass (e.g. in another hbm.xml file)
+* Fixed bug in deciding if POJO needed a minimalconstructor ;)
+* Added support for CompositeUserType
+* bounded and constraint changeevents is now correctly sending old and new values. (Shane Day, HB-275)
+* now uses "finder-method" instead of just "finder" for finder generation.
+* bag's are now generated as java.util.List instead of more generic Collections.
+ If you want the old behavior back then set system property "hbm2java.bag.interface" to
+ java.util.Collection (or whatever other class/interface you want for bag ;)
+* hbm2java only generate isX() for primitive boolean types.
+
+Changes in version 2.0 (03.6.2003)
+----------------------------------
+
+* initial checkin
