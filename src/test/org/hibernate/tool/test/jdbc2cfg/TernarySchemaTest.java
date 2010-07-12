@@ -71,6 +71,20 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 		};
 	}
 
+	protected void setUp() throws Exception {
+		try {
+			super.setUp();
+		} catch (SQLException e) {
+			//since it currently requires HSQLDB 2.0
+			executeDDL(getDropSQL(), true);
+			throw e;
+		}
+	}
+	
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
 	public void testTernaryModel() throws SQLException {
 
 		assertMultiSchema(getConfiguration());

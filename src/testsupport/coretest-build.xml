@@ -1,18 +1,12 @@
 <project name="coreanttest">
-	<property name="hibernate-core.home" location="../../../../hibernate3" />
-	<property name="core.jar" location="${build.dir}/../../lib/testlibs/hibernate3.jar" />
-	<property name="core.libs" location="${build.dir}/../../lib/testlibs" />
-	<property name="hibernate-core.lib.dir" location="${hibernate-core.home}/lib" />
-	<property name="build.dir" location="../../build/anttest" />
-	<property name="jdbc.driver" location="../../lib/jdbc/hsqldb.jar"/>
+	<property name="core.jar" location="${build.dir}/./lib/testlibs/hibernate3.jar" />
+	<property name="core.libs" location="${build.dir}/./lib/testlibs" />
+	<property name="build.dir" location="./target/anttest" />
+	<property name="jdbc.driver" location="./lib/jdbc/hsqldb.jar"/>
 	
-	<property file="../../etc/hibernate.properties" />
+	<property file="./target/test-classes/hibernate.properties" />
 
 	<path id="tasks.classpath">
-		<!--<fileset dir="${hibernate-core.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>-->
-
 		<pathelement location="${hibernate-core.jar}" />
 		<pathelement path="${jdbc.driver}" />
 	</path>
@@ -22,8 +16,8 @@
 	<target name="test-schemaexportwarning">
 		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="tasks.classpath" />
 
-		 <schemaexport drop="true" quiet="false" text="false" output="schemaexport.sql">
-			<fileset dir="../test" id="id">
+		 <schemaexport drop="true" quiet="false" text="false" output="${build.dir}/schemaexport.sql">
+			<fileset dir="./src/test" id="id">
 				<include name="**/*TopDown.hbm.xml" />
 			</fileset>
  		</schemaexport>
@@ -33,7 +27,7 @@
 		<taskdef name="schemaupdate" classname="org.hibernate.tool.hbm2ddl.SchemaUpdateTask" classpathref="tasks.classpath"/>
 
 		 <schemaupdate quiet="false" text="false" >
-			<fileset dir="../test" id="id">
+			<fileset dir="./src/test" id="id">
 				<include name="**/*TopDown.hbm.xml" />
 			</fileset>
  		</schemaupdate>

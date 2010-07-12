@@ -1,24 +1,24 @@
 <project name="javaformattest">
-	<property name="hibernate-libs" location="../../lib/testlibs" />
-	<property name="build.dir" location="../../build/javaformattest" />
-	<property file="../../etc/hibernate.properties" />
+	<property name="hibernate-libs" location="./lib/testlibs" />
+	<property name="build.dir" location="./target/javaformattest" />
+	<property file="./target/test-classes/hibernate.properties" />
 
 
 
 	<path id="tasks.classpath">
-		<pathelement path="../../build/eclipse" />
-		<pathelement path="../../build/classes" />
+		<pathelement path="./target/test-classes" />
+		<pathelement path="./target/classes" />
 
 		<fileset dir="${hibernate-libs}">
 			<include name="**/*.jar" />
 		</fileset>
 
-		<pathelement path="../../lib/freemarker.jar" />
+		<pathelement path="./lib/freemarker.jar" />
 		
-		<fileset dir="../../lib">
+		<fileset dir="./lib">
 			<include name="**/*eclipse*.jar" />
 		</fileset>
-		<pathelement path="../../../lib/hsqldb.jar" />
+		<pathelement path="./lib/jdbc/hsqldb.jar" />
 	</path>
 	
 	<target name="cleanup">
@@ -27,7 +27,7 @@
 	
 	<target name="prepare">
 		<copy todir="${build.dir}">
-		  <fileset dir="." includes="formatting/**/*"/>
+		  <fileset dir="./target/test-classes" includes="formatting/**/*"/>
 		</copy>
 	</target>
 	
@@ -44,7 +44,7 @@
 	<target name="configtest">		
 		<taskdef name="javaformatter" classname="org.hibernate.tool.ant.JavaFormatterTask" classpathref="tasks.classpath"/>
 				
-		<javaformatter configurationfile="emptyconfig.properties"> 
+		<javaformatter configurationfile="./target/test-classes/emptyconfig.properties"> 
 		   <fileset dir="${build.dir}">
 		   	   <include name="formatting/**/*"/>
 		   	</fileset>

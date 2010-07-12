@@ -25,15 +25,16 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
-import persistentclasses.Item;
-import persistentclasses.Orders;
-
 
 /**
  * @author max
  *
  */
 public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
+
+	private static final String PACKAGE_NAME = "org.hibernate.tool.test.jdbc2cfg";
+
+
 
 	protected String[] getCreateSQL() {
 		
@@ -47,7 +48,7 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 
     protected void configure(JDBCMetaDataConfiguration cfgToConfigure) {        
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
-        c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName("persistentclasses"));
+        c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName(PACKAGE_NAME));
         cfgToConfigure.setReverseEngineeringStrategy(c);
     }
 	protected String[] getDropSQL() {
@@ -162,7 +163,7 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
         assertFalse(Hibernate.isInitialized(order) );
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
-        order = (Orders) session.createQuery("from persistentclasses.Orders").uniqueResult();
+        order = (Orders) session.createQuery("from " + PACKAGE_NAME + ".Orders").uniqueResult();
         
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
 		t.commit();

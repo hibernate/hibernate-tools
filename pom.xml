@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-tools</artifactId>
+	<version>3.4.0.M1</version>
+	<packaging>jar</packaging>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://opensource.atlassian.com/projects/hibernate/browse/HBX
+		</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:http://anonsvn.jboss.org/repos/hibernate/branches/Branch_3_2/HibernateExt/tools</connection>
+		<developerConnection>scm:svn:https://svn.jboss.org/repos/hibernate/branches/Branch_3_2/HibernateExt/tools</developerConnection>
+		<url>http://fisheye.jboss.com/browse/Hibernate/branches/Branch_3_2/HibernateExt/tools</url>
+	</scm>
+
+	<organization>
+		<name>Hibernate</name>
+		<url>http://www.hibernate.org</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>max</id>
+			<name>Max Andersen</name>
+			<email>max@hibernate.org</email>
+			<url>http://in.relation.to/Bloggers/Max</url>
+		</developer>
+	</developers>
+
+	<name>Hibernate Tools Core</name>
+	<description>The core functionality of Hibernate Tools</description>
+
+	<properties>
+		<hibernateVersion>3.3.2.GA</hibernateVersion>
+		<hibernateAnnotationsVersion>3.3.0.ga</hibernateAnnotationsVersion>
+		<hibernateEntitymanagerVersion>3.3.1.ga</hibernateEntitymanagerVersion>
+		<hibernateCommonsAnnotationVersion>3.3.0.ga</hibernateCommonsAnnotationVersion>
+		<hsqldbVersion>1.8.0.2</hsqldbVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!--
+		Graphviz should be installed for junit tests and it's bin dir should
+		be in classpath
+	-->
+	<!-- TODO: is it possible to automate this with maven? -->
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernateVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>${hibernateCommonsAnnotationVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernateAnnotationsVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateEntitymanagerVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.6.5</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ant</groupId>
+			<artifactId>ant-launcher</artifactId>
+			<version>1.6.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.8</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>jtidy</artifactId>
+			<version>r8-20060801</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.2.0-v_671</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>text</artifactId>
+			<version>3.2.0-v20060605-1400</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+			<version>3.2.0-v20060603</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>common</artifactId>
+			<version>3.2.0-v20060603</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!--  <dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.5.0_12</version>
+			<scope>system</scope>
+		  	<systemPath>${java.home}/../lib/tools.jar</systemPath>
+		</dependency> -->
+	</dependencies>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<sourceDirectory>./src/java</sourceDirectory>
+		<testSourceDirectory>./src/test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/templates</directory>
+			</resource>
+			<resource>
+				<directory>src/java</directory>
+				<includes>
+					<include>org/hibernate/*.dtd</include>
+					<include>org/hibernate/**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<!--testResources>
+			<testResource>
+				<filtering>true</filtering>
+				<directory>etc</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</testResource>
+		</testResources-->
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<id>auto-clean</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>testdb</directory>
+						</fileset>
+						<fileset>
+							<directory>test_output</directory>
+						</fileset>
+						<fileset>
+							<directory>toolstestoutput</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>write-active-profile-properties</goal>
+						</goals>
+						<configuration>
+							<outputFile>
+								${project.build.directory}/test-classes/hibernate.properties
+              				</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<echo></echo>
+								<copy file="${project.build.directory}/test-classes/hibernate.properties" tofile="${project.build.directory}/test-classes/log4j.properties" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>./src/testsupport</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-resource</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>./src/test</directory>
+									<includes>
+										<include>**/*.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>./src/testoutputdependent</directory>
+								</resource>
+								<resource>
+									<directory>./src/testsupport</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+					<source>1.4</source>
+					<target>1.4</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Vendor>hibernate.org</Implementation-Vendor>
+							<Implementation-Vendor-Id>hibernate.org
+							</Implementation-Vendor-Id>
+							<Implementation-URL>http://www.hibernate.org/subprojects/tools.html
+							</Implementation-URL>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<stylesheetfile>${basedir}/src/javadoc/jdstyle.css</stylesheetfile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>./src/assembly/dist.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<!--
+			To build Hibernate Tools Core you have to add the JBoss Maven
+			repository to your settings.xml See also
+			http://community.jboss.org/wiki/ContributingtoHibernateSearch
+		-->
+	</repositories>
+
+
+	<profiles>
+		<profile>
+			<id>log4j.properties</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!--### direct log messages to stdout ###-->
+				<log4j.appender.stdout>org.apache.log4j.ConsoleAppender</log4j.appender.stdout>
+				<log4j.appender.stdout.Target>System.err</log4j.appender.stdout.Target>
+				<log4j.appender.stdout.layout>org.apache.log4j.PatternLayout</log4j.appender.stdout.layout>
+				<log4j.appender.stdout.layout.ConversionPattern>%d{ABSOLUTE} %5p %c - %m%n</log4j.appender.stdout.layout.ConversionPattern>
+				<!--### direct messages to file hibernate.log ###-->
+				<!--
+				<log4j.appender.file>org.apache.log4j.FileAppender</log4j.appender.file>
+				<log4j.appender.file.File>hibernate.log</log4j.appender.file.File>
+				<log4j.appender.file.layout>org.apache.log4j.PatternLayout</log4j.appender.file.layout>
+				<log4j.appender.file.layout.ConversionPattern>%d{ABSOLUTE} %5p %c{1}:%L - %m%n</log4j.appender.file.layout.ConversionPattern>
+				-->
+				<!--### set log levels - for more verbose logging change 'info' to 'debug' ###-->
+				<log4j.rootLogger>info, stdout</log4j.rootLogger>
+				<log4j.logger.org.hibernate>info</log4j.logger.org.hibernate>
+				<log4j.logger.org.hibernate.cfg.SettingsFactory>warn</log4j.logger.org.hibernate.cfg.SettingsFactory>
+				<log4j.logger.org.hibernate.cfg.reveng>debug</log4j.logger.org.hibernate.cfg.reveng>
+				<log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>debug</log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>
+				<log4j.logger.org.hibernate.cfg.JDBCBinder>debug</log4j.logger.org.hibernate.cfg.JDBCBinder>
+				<!--log4j.logger.freemarker>debug</log4j.logger.freemarker-->
+				<!--### log just the SQL-->
+				<!--log4j.logger.org.hibernate.SQL>debug</log4j.logger.org.hibernate.SQL-->
+				<!--### log JDBC bind parameters ###-->
+				<!--log4j.logger.org.hibernate.type>info</log4j.logger.org.hibernate.type-->
+				<!--### log schema export/update ###-->
+				<!--log4j.logger.org.hibernate.tool.hbm2ddl>debug</log4j.logger.org.hibernate.tool.hbm2ddl-->
+				<!--### log cache activity ###-->
+				<!--log4j.logger.org.hibernate.cache>debug</log4j.logger.org.hibernate.cache-->
+				<!--### log JDBC resource acquisition-->
+				<!--log4j.logger.org.hibernate.jdbc>debug</log4j.logger.org.hibernate.jdbc-->
+				<!--### enable the following line if you want to track down connection ###-->
+				<!--### leakages when using DriverManagerConnectionProvider ###-->
+				<!--log4j.logger.org.hibernate.connection.DriverManagerConnectionProvider>trace</log4j.logger.org.hibernate.connection.DriverManagerConnectionProvider-->
+				<!--log4j.logger.org.hibernate.tool>debug</log4j.logger.org.hibernate.tool-->
+				<!--log4j.logger.org.hibernate.tool.hbm2x.TemplateHelper>info</log4j.logger.org.hibernate.tool.hbm2x.TemplateHelper-->
+				<!--log4j.logger.org.apache.velocity>off</log4j.logger.org.apache.velocity-->
+			</properties>
+		</profile>
+
+		<profile>
+			<id>hibernate.properties</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!--### Query Language ###-->
+				<!--## define query language constants / function names-->
+				<hibernate.query.substitutions>true 1, false 0, yes 'Y', no 'N'</hibernate.query.substitutions>
+				<!--### Hibernate Connection Pool ###-->
+				<hibernate.connection.pool_size>1</hibernate.connection.pool_size>
+				<!--### C3P0 Connection Pool###-->
+				<!--hibernate.c3p0.max_size>2</hibernate.c3p0.max_size-->
+				<!--hibernate.c3p0.min__size>2</hibernate.c3p0.min__size-->
+				<!--hibernate.c3p0.timeout>5000</hibernate.c3p0.timeout-->
+				<!--hibernate.c3p0.max_statements>100</hibernate.c3p0.max_statements-->
+				<!--hibernate.c3p0.idle_test_period>3000</hibernate.c3p0.idle_test_period-->
+				<!--hibernate.c3p0.acquire_increment>2</hibernate.c3p0.acquire_increment-->
+				<!--hibernate.c3p0.validate>false</hibernate.c3p0.validate-->
+				<!--### Proxool Connection Pool###-->
+				<!--## Properties for external configuration of Proxool-->
+				<hibernate.proxool.pool_alias>pool1</hibernate.proxool.pool_alias>
+				<!--## Only need one of the following-->
+				<hibernate.proxool.existing_pool>true</hibernate.proxool.existing_pool>
+				<hibernate.proxool.xml>proxool.xml</hibernate.proxool.xml>
+				<hibernate.proxool.properties>proxool.properties</hibernate.proxool.properties>
+				<!--### Plugin ConnectionProvider ###-->
+				<!--## use a custom ConnectionProvider (if not set, Hibernate will choose a built-in ConnectionProvider using hueristics)-->
+				<!--hibernate.connection.provider_class>org.hibernate.connection.DriverManagerConnectionProvider</hibernate.connection.provider_class-->
+				<!--hibernate.connection.provider_class>org.hibernate.connection.DatasourceConnectionProvider</hibernate.connection.provider_class-->
+				<!--hibernate.connection.provider_class>org.hibernate.connection.C3P0ConnectionProvider</hibernate.connection.provider_class-->
+				<!--hibernate.connection.provider_class>org.hibernate.connection.DBCPConnectionProvider</hibernate.connection.provider_class-->
+				<!--hibernate.connection.provider_class>org.hibernate.connection.ProxoolConnectionProvider</hibernate.connection.provider_class-->
+				<!--### Transaction API ###-->
+				<!--## Enable automatic flush during the JTA beforeCompletion() callback-->
+				<!--## (This setting is relevant with or without the Transaction API)-->
+				<!--hibernate.transaction.flush_before_completion></hibernate.transaction.flush_before_completion-->
+				<!--## Enable automatic session close at the end of transaction-->
+				<!--## (This setting is relevant with or without the Transaction API)-->
+				<!--hibernate.transaction.auto_close_session></hibernate.transaction.auto_close_session-->
+				<!--## the Transaction API abstracts application code from the underlying JTA or JDBC transactions-->
+				<!--hibernate.transaction.factory_class>org.hibernate.transaction.JTATransactionFactory</hibernate.transaction.factory_class-->
+				<!--hibernate.transaction.factory_class>org.hibernate.transaction.JDBCTransactionFactory</hibernate.transaction.factory_class-->
+				<!--## to use JTATransactionFactory, Hibernate must be able to locate the UserTransaction in JNDI-->
+				<!--## default is java:comp/UserTransaction-->
+				<!--## you do NOT need this setting if you specify hibernate.transaction.manager_lookup_class-->
+				<!--jta.UserTransaction>jta/usertransaction</jta.UserTransaction-->
+				<!--jta.UserTransaction>javax.transaction.UserTransaction</jta.UserTransaction-->
+				<!--jta.UserTransaction>UserTransaction</jta.UserTransaction-->
+				<!--## to use the second-level cache with JTA, Hibernate must be able to obtain the JTA TransactionManager-->
+				<!--hibernate.transaction.manager_lookup_class>org.hibernate.transaction.JBossTransactionManagerLookup</hibernate.transaction.manager_lookup_class-->
+				<!--hibernate.transaction.manager_lookup_class>org.hibernate.transaction.WeblogicTransactionManagerLookup</hibernate.transaction.manager_lookup_class-->
+				<!--hibernate.transaction.manager_lookup_class>org.hibernate.transaction.WebSphereTransactionManagerLookup</hibernate.transaction.manager_lookup_class-->
+				<!--hibernate.transaction.manager_lookup_class>org.hibernate.transaction.OrionTransactionManagerLookup</hibernate.transaction.manager_lookup_class-->
+				<!--hibernate.transaction.manager_lookup_class>org.hibernate.transaction.ResinTransactionManagerLookup</hibernate.transaction.manager_lookup_class-->
+				<!--### Miscellaneous Settings ###-->
+				<!--## print all generated SQL to the console-->
+				<!--hibernate.show_sql>true</hibernate.show_sql-->
+				<!--## add comments to the generated SQL-->
+				<!--hibernate.use_sql_comments>true</hibernate.use_sql_comments-->
+				<!--## generate statistics-->
+				<!--hibernate.generate_statistics>true</hibernate.generate_statistics-->
+				<!--## auto schema export-->
+				<!--hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto-->
+				<!--hibernate.hbm2ddl.auto>create</hibernate.hbm2ddl.auto-->
+				<!--hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto-->
+				<!--## rollback generated identifier values of deleted entities to default values-->
+				<!--hibernate.use_identifer_rollback>true</hibernate.use_identifer_rollback-->
+				<!--## specify a default schema and catalog for unqualified tablenames-->
+				<!--hibernate.default_schema>HR</hibernate.default_schema-->
+				<hibernate.default_schema>PUBLIC</hibernate.default_schema>
+				<!--## set the maximum depth of the outer join fetch tree-->
+				<hibernate.max_fetch_depth>1</hibernate.max_fetch_depth>
+				<!--## enable CGLIB reflection optimizer (enabled by default)-->
+				<!--hibernate.cglib.use_reflection_optimizer>false</hibernate.cglib.use_reflection_optimizer-->
+				<!--## use a custom stylesheet for XML generation (if not specified, hibernate-default.xslt will be used)-->
+				<!--hibernate.xml.output_stylesheet>C:/Hibernate/net/sf/hibernate/hibernate-default.xslt</hibernate.xml.output_stylesheet-->
+				<!--### JDBC Settings ###-->
+				<!--## specify a JDBC isolation level-->
+				<!--hibernate.connection.isolation>4</hibernate.connection.isolation-->
+				<!--## enable JDBC autocommit (not recommended!)-->
+				<!--hibernate.connection.autocommit>true</hibernate.connection.autocommit-->
+				<!--## set the JDBC fetch size-->
+				<!--hibernate.jdbc.fetch_size>25</hibernate.jdbc.fetch_size-->
+				<!--## set the maximum JDBC 2 batch size (a nonzero value enables batching)-->
+				<!--hibernate.jdbc.batch_size>5</hibernate.jdbc.batch_size-->
+				<!--## enable use of JDBC 2 scrollable ResultSets (specifying a Dialect will cause Hibernate to use a sensible default)-->
+				<!--hibernate.jdbc.use_scrollable_resultset>true</hibernate.jdbc.use_scrollable_resultset-->
+				<!--## enable batch updates even for versioned data-->
+				<hibernate.jdbc.batch_versioned_data>true</hibernate.jdbc.batch_versioned_data>
+				<!--## use streams when writing binary types to / from JDBC-->
+				<hibernate.jdbc.use_streams_for_binary>true</hibernate.jdbc.use_streams_for_binary>
+				<!--## use JDBC 3 PreparedStatement.getGeneratedKeys() to get the identifier of an inserted row-->
+				<!--hibernate.jdbc.use_get_generated_keys>false</hibernate.jdbc.use_get_generated_keys-->
+				<!--### Second-level Cache ###-->
+				<!--## optimize chache for minimal "puts" instead of minimal "gets" (good for clustered cache)-->
+				<!--hibernate.cache.use_minimal_puts>true</hibernate.cache.use_minimal_puts-->
+				<!--## set a prefix for cache region names-->
+				<!--hibernate.cache.region_prefix>hibernate.test</hibernate.cache.region_prefix-->
+				<!--## disable the second-level cache-->
+				<!--hibernate.cache.use_second_level_cache>false</hibernate.cache.use_second_level_cache-->
+				<!--## enable the query cache-->
+				<!--hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache-->
+				<!--## choose a cache implementation-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.EhCacheProvider</hibernate.cache.provider_class-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.EmptyCacheProvider</hibernate.cache.provider_class-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.HashtableCacheProvider</hibernate.cache.provider_class-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.TreeCacheProvider</hibernate.cache.provider_class-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.OSCacheProvider</hibernate.cache.provider_class-->
+				<!--hibernate.cache.provider_class>org.hibernate.cache.SwarmCacheProvider</hibernate.cache.provider_class-->
+				<!--### JNDI ###-->
+				<!--## specify a JNDI name for the SessionFactory-->
+				<!--hibernate.session_factory_name>hibernate/session_factory</hibernate.session_factory_name-->
+				<!--## Hibernate uses JNDI to bind a name to a SessionFactory and to look up the JTA UserTransaction;-->
+				<!--## if hibernate.jndi.* are not specified, Hibernate will use the default InitialContext() which-->
+				<!--## is the best approach in an application server-->
+				<!--#file system-->
+				<!--hibernate.jndi.class>com.sun.jndi.fscontext.RefFSContextFactory</hibernate.jndi.class-->
+				<!--hibernate.jndi.url>file:/</hibernate.jndi.url-->
+				<!--#WebSphere-->
+				<!--hibernate.jndi.class>com.ibm.websphere.naming.WsnInitialContextFactory</hibernate.jndi.class-->
+				<!--hibernate.jndi.url>iiop://localhost:900/</hibernate.jndi.url-->
+				<!--hibernatetool.metadatadialect>org.hibernate.cfg.reveng.dialect.H2MetaDataDialect</hibernatetool.metadatadialect-->
+			</properties>
+		</profile>
+		
+		<!-- =============================== -->
+		<!-- Database profiles               -->
+		<!-- =============================== -->
+		<!-- HSQLDB is the default -->
+		<profile>
+			<id>hsqldb</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>hsqldb</groupId>
+					<artifactId>hsqldb</artifactId>
+					<version>${hsqldbVersion}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<!--### Platforms ###-->
+				<!--## JNDI Datasource-->
+				<hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
+				<hibernate.connection.driver_class>org.hsqldb.jdbcDriver</hibernate.connection.driver_class>
+				<hibernate.connection.url>jdbc:hsqldb:testdb/hsqldb;shutdown=true</hibernate.connection.url>
+				<hibernate.connection.username>sa</hibernate.connection.username>
+				<hibernate.connection.password/>
+				<db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
+				<jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+				<jdbc.url>jdbc:hsqldb:.</jdbc.url>
+				<jdbc.user>sa</jdbc.user>
+				<jdbc.pass/>
+				<jdbc.isolation/>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>h2</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.H2Dialect</db.dialect>
+				<jdbc.driver>org.h2.Driver</jdbc.driver>
+				<jdbc.url>jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</jdbc.url>
+				<jdbc.user>sa</jdbc.user>
+				<jdbc.pass />
+				<jdbc.isolation />
+			</properties>
+		</profile>
+		
+		<!--
+			###################################################################
+			Profiles naming db instances in the Red Hat QA/QE lab First, those
+			with OSS drivers
+			###################################################################
+		-->
+
+		<!-- The MySQL 5 test envionment -->
+		<profile>
+			<id>mysql50</id>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.5</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</db.dialect>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql://vmg08.mw.lab.eng.bos.redhat.com/hibbrtru</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The MySQL 5.1 test envionment -->
+		<profile>
+			<id>mysql51</id>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.0.5</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</db.dialect>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql://vmg02.mw.lab.eng.bos.redhat.com/hibbrtru</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The MySQL 5.1 Cluster test envionment -->
+		<profile>
+			<id>mysql51-cluster</id>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.1.8</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.MySQL5Dialect</db.dialect>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql:loadbalance://dev61.qa.atl2.redhat.com:3306,dev62.qa.atl2.redhat.com:3306/hibbrtru
+                </jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The PostgreSQL 8.2.4 test envionment -->
+		<profile>
+			<id>postgresql82</id>
+			<dependencies>
+				<dependency>
+					<groupId>postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>8.2-504.jdbc3</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
+				<jdbc.url>jdbc:postgresql://vmg01.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The PostgreSQL 8.3.7 test envionment -->
+		<profile>
+			<id>postgresql83</id>
+			<dependencies>
+				<dependency>
+					<groupId>postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>8.2-504.jdbc3</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
+				<jdbc.url>jdbc:postgresql://vmg03.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!--
+			###################################################################
+			Then, those with commercial drivers
+			###################################################################
+		-->
+
+		<!-- The DB2 8.x test envionment (using 9x drivers)-->
+		<profile>
+			<id>db2v82</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc</artifactId>
+					<version>3.1.57</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc_license_cu</artifactId>
+					<version>3.1.57</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.DB2Dialect</db.dialect>
+				<jdbc.driver>com.ibm.db2.jcc.DB2Driver</jdbc.driver>
+				<jdbc.url>jdbc:db2://dev32.qa.atl.jboss.com:50000/jbossqa</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The DB2 9.1 test envionment (using 9x drivers)-->
+		<profile>
+			<id>db2-91</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc</artifactId>
+					<version>3.8.47</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc_license_cu</artifactId>
+					<version>3.8.47</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.DB2Dialect</db.dialect>
+				<jdbc.driver>com.ibm.db2.jcc.DB2Driver</jdbc.driver>
+				<jdbc.url>jdbc:db2://dev67.qa.atl.jboss.com:50000/jbossqa</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The DB2 9.7 test envionment (using 9x drivers)-->
+		<profile>
+			<id>db2-97</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc</artifactId>
+					<version>3.57.86</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>db2jcc_license_cu</artifactId>
+					<version>3.57.86</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.DB2Dialect</db.dialect>
+				<jdbc.driver>com.ibm.db2.jcc.DB2Driver</jdbc.driver>
+				<jdbc.url>jdbc:db2://vmg06.mw.lab.eng.bos.redhat.com:50000/jbossqa</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The Oracle9i test envionment -->
+		<profile>
+			<id>oracle9i</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc14</artifactId>
+					<!-- use the 10g drivers which are surprisingly largely bug free -->
+					<version>10.0.2.0</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.Oracle9iDialect</db.dialect>
+				<jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+				<jdbc.url>jdbc:oracle:thin:@dev20.qa.atl.jboss.com:1521:qa</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The Oracle10g test envionment -->
+		<profile>
+			<id>oracle10g</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc14</artifactId>
+					<!-- use the 10g drivers which are surprisingly largely bug free -->
+					<version>10.0.2.0</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.Oracle10gDialect</db.dialect>
+				<jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+				<jdbc.url>jdbc:oracle:thin:@vmg05.mw.lab.eng.bos.redhat.com:1521:qaora10</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The Oracle11g test envionment -->
+		<profile>
+			<id>oracle11g</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc5</artifactId>
+					<version>11.1.0.7.0</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.Oracle10gDialect</db.dialect>
+				<jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+				<jdbc.url>jdbc:oracle:thin:@dev04.qa.atl2.redhat.com:1521:qaora11</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The Oracle11gRAC test envionment -->
+		<profile>
+			<id>oracle11gRAC</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc5</artifactId>
+					<version>11.1.0.7.0</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.Oracle10gDialect</db.dialect>
+				<jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+				<jdbc.url>
+					jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(LOAD_BALANCE=ON)(ADDRESS=(PROTOCOL=TCP)(HOST=vmg24-vip.mw.lab.eng.bos.redhat.com)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=vmg25-vip.mw.lab.eng.bos.redhat.com)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=qarac.jboss)))
+                </jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The Sybase 15 test envionment -->
+		<profile>
+			<id>sybase15</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.sybase</groupId>
+					<artifactId>jconnect</artifactId>
+					<version>6.0.5</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.SybaseASE15Dialect</db.dialect>
+				<jdbc.driver>com.sybase.jdbc3.jdbc.SybDriver</jdbc.driver>
+				<jdbc.url>jdbc:sybase:Tds:vmg07.mw.lab.eng.bos.redhat.com:5000/hibbrtru</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
+			</properties>
+		</profile>
+
+		<!-- The SQLServer2005 (MS JDBC) test envionment -->
+		<profile>
+			<id>mssql2005</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.microsoft.sqlserver</groupId>
+					<artifactId>msjdbc</artifactId>
+					<version>2.0.1008.2</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.SQLServerDialect</db.dialect>
+				<jdbc.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.driver>
+				<jdbc.url>jdbc:sqlserver://dev30.qa.atl.jboss.com:3918</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation>4096</jdbc.isolation>
+			</properties>
+		</profile>
+
+		<!-- The SQLServer2005 (MS JDBC) test envionment -->
+		<profile>
+			<id>mssql2008</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.microsoft.sqlserver</groupId>
+					<artifactId>msjdbc</artifactId>
+					<version>2.0.1008.2</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<db.dialect>org.hibernate.dialect.SQLServerDialect</db.dialect>
+				<jdbc.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.driver>
+				<jdbc.url>jdbc:sqlserver://vmg04.mw.lab.eng.bos.redhat.com:1433</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation>4096</jdbc.isolation>
+			</properties>
+		</profile>
+
+	</profiles>
+
+</project>

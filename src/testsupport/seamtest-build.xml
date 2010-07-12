@@ -1,9 +1,6 @@
 <project name="anttest">
- <property name="hibernate-core.jar" location="../../../../hibernate-3.1/hibernate3.jar"/>
- <property name="hibernate-core.home" location="../../../../hibernate3"/>
- <property name="hibernate-core.lib.dir" location="${hibernate-core.home}/lib"/>
- <property name="build.dir" location="../../build/seamtest"/>
- <property file="../../etc/hibernate.properties"/>
+ <property name="build.dir" location="./target/seamtest"/>
+ <property file="./target/test-classes/hibernate.properties"/>
 
 <!-- <delete dir="${build.dir}"/> -->
     
@@ -14,10 +11,10 @@
  <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask"/>
  <hibernatetool destdir="${destdir}">
   <!-- <classpath>
-     <path location="../../build/testsupport"/>
+     <path location="./target/test-classes"/>
    </classpath> -->
    
-   <jdbcconfiguration configurationfile="seamtest.cfg.xml" packagename="org.jboss.seam.example.crud"/>   
+   <jdbcconfiguration configurationfile="./target/test-classes/seamtest.cfg.xml" packagename="org.jboss.seam.example.crud"/>   
   
    <!-- setup global properties -->  
    <property key="seam_appname" value="Registration"/>
@@ -30,7 +27,7 @@
 </target>
  
 <target name="sql">
-  <sql classpath="${hibernate-core.home}/jdbc/hsqldb.jar" 
+  <sql classpath="./lib//jdbc/hsqldb.jar" 
        driver="org.hsqldb.jdbcDriver" 
        url="jdbc:hsqldb:seamtest"
        userid="sa" 

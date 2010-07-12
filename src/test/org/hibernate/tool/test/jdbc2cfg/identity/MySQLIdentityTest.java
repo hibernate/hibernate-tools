@@ -50,9 +50,9 @@ public class MySQLIdentityTest extends AbstractIdentityTest {
 	}
 	
 	
-	public void assertNoTables() throws SQLException {
+	//public void assertNoTables() throws SQLException {
 		// can't do that on mysql
-	}
+	//}
 
 	public static Test suite() {
 		return new TestSuite(MySQLIdentityTest.class);
