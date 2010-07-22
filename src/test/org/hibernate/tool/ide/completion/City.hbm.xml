@@ -3,8 +3,12 @@
           "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.hibernate.tool.ide.completion">
     
-    <subclass name="StoreCity" extends="City" discriminator-value="sc">
-        <property name="number"/>
-    </subclass>
+    <class name="City" table="hc_city" abstract="true">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <discriminator column="hc_city_type" type="string"/>
+        <property name="name"/>
+    </class>
         
 </hibernate-mapping>

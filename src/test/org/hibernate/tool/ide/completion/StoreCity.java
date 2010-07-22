@@ -22,27 +22,14 @@ package org.hibernate.tool.ide.completion;
  */
 public class StoreCity {
 
-    private Long id;
-    
-    private String name;
-    
-    public StoreCity() {
-    }
+    private int number;
 
-    public Long getId() {
-        return id;
-    }
+	public int getNumber() {
+		return number;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setNumber(int number) {
+		this.number = number;
+	}
     
 }

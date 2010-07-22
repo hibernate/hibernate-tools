@@ -171,20 +171,25 @@ class ConfigurationCompletion {
             prefix = "";
         }
         
-        EntityPOJOClass pc = new EntityPOJOClass(cmd, new Cfg2JavaTool()); // TODO: we should extract the needed functionallity from this hbm2java class.
-        
-        Iterator allPropertiesIterator = pc.getAllPropertiesIterator();
-        while ( allPropertiesIterator.hasNext() ) {
-			Property property = (Property) allPropertiesIterator.next();
-			String candidate = property.getName();
-		    if (prefix.length() == 0 || candidate.toLowerCase().startsWith(prefix.toLowerCase())) {
-		    	HQLCompletionProposal proposal = createStartWithCompletionProposal( prefix, cursorPosition, HQLCompletionProposal.PROPERTY, candidate );
-		    	proposal.setEntityName( cmd.getEntityName() );
-		    	proposal.setProperty( property );
-		    	proposal.setPropertyName( candidate );		    	
-				hcc.accept( proposal);		    	                
+        // Add superclass's properties too
+        while (cmd != null){
+        	EntityPOJOClass pc = new EntityPOJOClass(cmd, new Cfg2JavaTool()); // TODO: we should extract the needed functionallity from this hbm2java class.
+            
+        	Iterator allPropertiesIterator = pc.getAllPropertiesIterator();
+            while ( allPropertiesIterator.hasNext() ) {
+    			Property property = (Property) allPropertiesIterator.next();
+    			String candidate = property.getName();
+    		    if (prefix.length() == 0 || candidate.toLowerCase().startsWith(prefix.toLowerCase())) {
+    		    	HQLCompletionProposal proposal = createStartWithCompletionProposal( prefix, cursorPosition, HQLCompletionProposal.PROPERTY, candidate );
+    		    	proposal.setEntityName( cmd.getEntityName() );
+    		    	proposal.setProperty( property );
+    		    	proposal.setPropertyName( candidate );		    	
+    				hcc.accept( proposal);		    	                
+                }
             }
-        }        	
+            cmd = cmd.getSuperclass();
+        }
+           	
 	}
 
 	private HQLCompletionProposal createStartWithCompletionProposal(String prefix, int cursorPosition, int kind, String candidate) {

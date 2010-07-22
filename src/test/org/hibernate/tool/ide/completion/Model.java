@@ -37,7 +37,8 @@ public class Model {
                 Model.class.getResourceAsStream("Product.hbm.xml")).
                 addInputStream(Model.class.getResourceAsStream("Store.hbm.xml")).
                 addInputStream(Model.class.getResourceAsStream("ProductOwnerAddress.hbm.xml")).
-                addInputStream(Model.class.getResourceAsStream("StoreCity.hbm.xml"));
+                addInputStream(Model.class.getResourceAsStream("City.hbm.xml")).
+        		addInputStream(Model.class.getResourceAsStream("StoreCity.hbm.xml"));
         cfg.buildMappings();
         return cfg;
     }
