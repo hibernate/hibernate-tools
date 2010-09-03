@@ -536,7 +536,7 @@ public class JDBCReader {
 				  log.debug("Ignoring " + tableName + " since it has already been processed");
 				  continue;
 			  } else {
-				  if ( ("TABLE".equals(tableType) || "VIEW".equals(tableType) /*|| "SYNONYM".equals(tableType) */) ) { //||
+				  if ( ("TABLE".equalsIgnoreCase(tableType) || "VIEW".equalsIgnoreCase(tableType) /*|| "SYNONYM".equals(tableType) */) ) { //||
 					  // ("SYNONYM".equals(tableType) && isOracle() ) ) { // only on oracle ? TODO: HBX-218
 					  // it's a regular table or a synonym
 					  
@@ -551,7 +551,7 @@ public class JDBCReader {
 					  progress.startSubTask("Found " + tableName);
 					  Table table = dbs.addTable(quote(getSchemaForModel(schemaName)), getCatalogForModel(catalogName), quote(tableName));
 					  table.setComment(comment);
-					  if(tableType.equals("TABLE")) {
+					  if(tableType.equalsIgnoreCase("TABLE")) {
 						  hasIndices.add(table);
 					  }
 					  processedTables.add( table );
