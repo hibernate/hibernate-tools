@@ -11,9 +11,9 @@ import org.hibernate.cfg.Settings;
 import org.hibernate.classic.Session;
 import org.hibernate.tool.NonReflectiveTestCase;
 
-public class StatisticsBrowserTest extends NonReflectiveTestCase {
+public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 
-	public StatisticsBrowserTest(String name) {
+	public StatisticsBrowserDemo(String name) {
 		super( name );
 	}
 	/*
@@ -55,6 +55,14 @@ public class StatisticsBrowserTest extends NonReflectiveTestCase {
 		tx.commit();
 		s.close();
 		
+		
+		
+		//Uncomment if you want to look on StatisticsBrowser
+        //Thread.sleep( 100000 ); 
+		
+	}
+
+	protected void tearDown() throws Exception {
 		Statement statement = null;
 		Connection con = null;
 		Settings settings = null;
@@ -70,12 +78,9 @@ public class StatisticsBrowserTest extends NonReflectiveTestCase {
         	if (statement!=null) statement.close();
         	settings.getConnectionProvider().closeConnection(con);
         }
-		
-		//Uncomment if you want to look on StatisticsBrowser
-        //Thread.sleep( 100000 ); 
-		
+        
+		super.tearDown();
 	}
-
 
 	protected String getBaseForMappings() {
 		return "org/hibernate/tool/stat/";
