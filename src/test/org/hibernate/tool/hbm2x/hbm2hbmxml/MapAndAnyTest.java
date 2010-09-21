@@ -36,8 +36,6 @@ import org.hibernate.tool.hbm2x.HibernateMappingExporter;
  */
 public class MapAndAnyTest extends NonReflectiveTestCase {
 
-	private String mappingFile = "Properties.hbm.xml";
-
 	private Exporter hbmexporter;
 
 	/**
@@ -50,7 +48,8 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 
 	protected String[] getMappings() {
 		return new String[] {
-				mappingFile
+				"Properties.hbm.xml",
+				"Person2.hbm.xml"
 		};
 	}
 
@@ -116,11 +115,6 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 	}
 
 	public void testMetaValueRead() throws Exception{
-		String oldMappingFile = mappingFile;
-		mappingFile = "Person2.hbm.xml";
-
-		super.setUp();//rebuld cfg
-
 		Configuration config = getCfg();
 		PersistentClass pc = config.getClassMapping("org.hibernate.tool.hbm2x.hbm2hbmxml.Person2");
 		assertNotNull(pc);
@@ -130,7 +124,7 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 		Any any = (Any) prop.getValue();
 		assertTrue("Expected to get one meta-value element", any.getMetaValues() != null);
 		assertEquals("Expected to get one meta-value element", 1, any.getMetaValues().size());
-		mappingFile = oldMappingFile;
+
 	}
 
 	public void testMapManyToAny() throws DocumentException {

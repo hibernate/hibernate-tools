@@ -1,6 +1,13 @@
 package org.hibernate.tool.stat;
 
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.Properties;
+
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.Settings;
 import org.hibernate.classic.Session;
 import org.hibernate.tool.NonReflectiveTestCase;
 
@@ -48,13 +55,40 @@ public class StatisticsBrowserTest extends NonReflectiveTestCase {
 		tx.commit();
 		s.close();
 		
-		Thread.sleep( 100000 );
+		Statement statement = null;
+		Connection con = null;
+		Settings settings = null;
+        try {
+        	settings = getConfiguration().buildSettings();
+        	con = settings.getConnectionProvider().getConnection();
+        	statement = con.createStatement();
+        	statement.execute("drop table Session_attributes");
+        	statement.execute("drop table Users");
+        	statement.execute("drop table Groups");
+        	con.commit();
+        } finally {
+        	if (statement!=null) statement.close();
+        	settings.getConnectionProvider().closeConnection(con);
+        }
+		
+		//Uncomment if you want to look on StatisticsBrowser
+        //Thread.sleep( 100000 ); 
 		
 	}
+
 
 	protected String getBaseForMappings() {
 		return "org/hibernate/tool/stat/";
 	}
+	
+	protected void addMappings(String[] files, Configuration cfg) {
+		Properties prop = new Properties();
+		prop.put(Environment.CACHE_PROVIDER,
+				"org.hibernate.cache.EhCacheProvider");
+		cfg.addProperties(prop);
+		super.addMappings(files, cfg);
+	}
+	
 	protected String[] getMappings() {
 		return new String[] { "UserGroup.hbm.xml"};
 	}
