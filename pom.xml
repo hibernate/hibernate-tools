@@ -194,15 +194,15 @@
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.4.1</version>
-				<executions>
+				<!-- <executions>
 					<execution>
 						<id>auto-clean</id>
-						<phase>initialize</phase>
+						<phase>initialize</phase>	 this forces recompilation on every run since target is also cleaned so commenting out for now. Need to see if we can have a another clean:testdata goal instead. ->
 						<goals>
 							<goal>clean</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions>-->
 				<configuration>
 					<filesets>
 						<fileset>
@@ -377,9 +377,9 @@
 				<log4j.rootLogger>info, stdout</log4j.rootLogger>
 				<log4j.logger.org.hibernate>info</log4j.logger.org.hibernate>
 				<log4j.logger.org.hibernate.cfg.SettingsFactory>warn</log4j.logger.org.hibernate.cfg.SettingsFactory>
-				<log4j.logger.org.hibernate.cfg.reveng>debug</log4j.logger.org.hibernate.cfg.reveng>
-				<log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>debug</log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>
-				<log4j.logger.org.hibernate.cfg.JDBCBinder>debug</log4j.logger.org.hibernate.cfg.JDBCBinder>
+				<log4j.logger.org.hibernate.cfg.reveng>warn</log4j.logger.org.hibernate.cfg.reveng>
+				<log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>warn</log4j.logger.org.hibernate.cfg.JDBCMetaDataConfiguration>
+				<log4j.logger.org.hibernate.cfg.JDBCBinder>warn</log4j.logger.org.hibernate.cfg.JDBCBinder>
 				<!--log4j.logger.freemarker>debug</log4j.logger.freemarker-->
 				<!--### log just the SQL-->
 				<!--log4j.logger.org.hibernate.SQL>debug</log4j.logger.org.hibernate.SQL-->

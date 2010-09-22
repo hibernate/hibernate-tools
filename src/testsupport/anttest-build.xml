@@ -1,12 +1,14 @@
 <project name="anttest">
-	<property name="build.dir" location="./target/anttest" />
-	<property file="./target/test-classes/hibernate.properties" />
+	<property name="build.dir" location="../../target/anttest" />
+	<property name="target.dir" location="../../target"/>
+	<property name="test-classes" location="${target.dir}/test-classes"/>
+	<property file="${test-classes}/hibernate.properties" />
     <property name="jdbc.driver" location="./lib/jdbc/hsqldb.jar"/>
 
-
+	
 	<path id="tasks.classpath">
-		<pathelement path="./target/test-classes" />
-		<pathelement path="./target/classes" />
+		<pathelement path="${test-classes}" />
+		<pathelement path="${target.dir}/classes" />
 
 		<fileset dir="${build.dir}/../../lib/testlibs">
 			<include name="**/*.jar" />
@@ -19,7 +21,8 @@
 
 	<target name="cleanup" description="task used for ensuring cleanup to be done even in the case of test failure" depends="afterCfg2hbm">
 		<delete dir="${build.dir}"/>
-		</target>
+		<delete dir="../../testdb" failonerror="false"/>
+	</target>
 
 	<target name="testScriptCreation">
 
@@ -28,8 +31,8 @@
 		<hibernatetool destdir="${build.dir}/topdown">
 		
 			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
-				<fileset dir="./src/test" id="id">
-					<include name="**/*" />
+				<fileset dir="../test" id="id">
+					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
 
@@ -57,7 +60,7 @@
 		<hibernatetool destdir="${build.dir}/topdown">
 		
 			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
-				<fileset dir="./src/test" id="id">
+				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -79,7 +82,7 @@
 		<hibernatetool destdir="${build.dir}/topdown">
 		
 			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
-				<fileset dir="./src/test" id="id">
+				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -96,7 +99,7 @@
 
 	<target name="testantjdbccfg">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
-		<property file="./target/test-classes/hibernate.properties" prefix="tools" />
+		<property file="${test-classes}/hibernate.properties" prefix="tools" />
 		<!--  
 <sql onerror="continue" driver="${tools.hibernate.connection.driver_class}" password="${tools.hibernate.connection.password}" url="${tools.hibernate.connection.url}" userid="${tools.hibernate.connection.username}" classpath="C:\work\products\hsqldb-1.7.2.6\lib\hsqldb.jar">
 create table BottomUp (
@@ -106,17 +109,17 @@ create table BottomUp (
 )
    </sql>    -->
 		<hibernatetool destdir="${build.dir}/bottomup">
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" detectManyToMany="true" detectoptimisticlock="true"/>
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" detectManyToMany="true" detectoptimisticlock="true"/>
 
 			<hbm2java />
-			<hbm2java templatepath="./target/test-classes/templates" />
+			<hbm2java templatepath="${test-classes}/templates" />
 			<hbm2cfgxml/>
 		</hibernatetool>
 	</target>
 
 	<target name="testantjdbccfgoverrides">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
-		<property file="./target/test-classes/hibernate.properties" prefix="tools" />
+		<property file="${test-classes}/hibernate.properties" prefix="tools" />
 		<!--       <sql onerror="continue" driver="${tools.hibernate.connection.driver_class}" password="${tools.hibernate.connection.password}" url="${tools.hibernate.connection.url}" userid="${tools.hibernate.connection.username}" classpath="C:\work\products\hsqldb-1.7.2.6\lib\hsqldb.jar">
     create table BottomUp (
        id bigint not null,
@@ -125,7 +128,7 @@ create table BottomUp (
     )
        </sql>    -->
 		<hibernatetool destdir="${build.dir}/bottomupoverride">
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" packagename="test" revengfile="./target/test-classes/hibernate.reveng.xml" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" packagename="test" revengfile="${test-classes}/hibernate.reveng.xml" />
 
 			<hbm2java />
 		</hibernatetool>
@@ -134,7 +137,7 @@ create table BottomUp (
 	<target name="testanthbm2java">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 		<hibernatetool destdir="${build.dir}/bottomup">
-			<configuration propertyfile="./target/test-classes/hibernate.properties">
+			<configuration propertyfile="${test-classes}/hibernate.properties">
 				<fileset dir=".">
 					<include name="SomeClasses.hbm.xml" />
 				</fileset>
@@ -153,7 +156,7 @@ create table BottomUp (
 		<property name="org.hibernate.tool.hbm2x.weirdAl" value="weirdAl" />
 
 		<hibernatetool destdir="${build.dir}/bottomup">
-			<configuration propertyfile="./target/test-classes/hibernate.properties">
+			<configuration propertyfile="${test-classes}/hibernate.properties">
 				<fileset dir=".">
 					<include name="SomeClasses.hbm.xml" />
 				</fileset>
@@ -173,9 +176,9 @@ create table BottomUp (
 
 	<target name="testgeneric">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
-		<hibernatetool destdir="${build.dir}/generic" templatepath="./target/test-classes/generictemplates">
-			<configuration propertyfile="./target/test-classes/hibernate.properties">
-				<fileset dir="./src/test" id="id">
+		<hibernatetool destdir="${build.dir}/generic" templatepath="generictemplates">
+			<configuration propertyfile="${test-classes}/hibernate.properties">
+				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -193,9 +196,9 @@ create table BottomUp (
 
 	<target name="testexceptions">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
-		<hibernatetool destdir="${build.dir}/generic" templatepath="./target/test-classes/generictemplates">
-			<configuration propertyfile="./target/test-classes/hibernate.properties">
-				<fileset dir="./src/test" id="id">
+		<hibernatetool destdir="${build.dir}/generic" templatepath="generictemplates">
+			<configuration propertyfile="${test-classes}/hibernate.properties">
+				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -209,8 +212,8 @@ create table BottomUp (
 			<path location="./lib/testlibs/hibernate3.jar" />
 			<path location="./lib/testlibs/hibernate-annotations.jar" />
 			<path location="./lib/testlibs/ejb3-persistence.jar" />
-			<path location="./target/test-classes" />
-			<path location="./target/classes" />
+			<path location="${test-classes}" />
+			<path location="${target.dir}/classes" />
 			<path location="./etc" />
 			<path location="${jdbc.driver}" />
 			<!-- <fileset dir="${hibernate-core.lib.dir}">
@@ -219,7 +222,7 @@ create table BottomUp (
 		</path>
 		<taskdef name="hibernatetoolx" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
 		<hibernatetoolx destdir="${build.dir}/bottomup">
-			<annotationconfiguration configurationfile="./target/test-classes/test-hibernate.cfg.xml" />
+			<annotationconfiguration configurationfile="${test-classes}/test-hibernate.cfg.xml" />
 			<hbm2ddl console="true" export="false" />
 		</hibernatetoolx>
 	</target>
@@ -233,7 +236,7 @@ create table BottomUp (
 			<path location="./lib/testlibs/hibernate-entitymanager.jar" />
 			<path location="./lib/testlibs/jboss-archive-browsing.jar" />
 			<path location="./lib/testlibs/javaassist.jar" /> 
-			<path location="./target/test-classes" />
+			<path location="${test-classes}" />
 			<path location="./target/classes" />
 			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
 			<!--	            <fileset dir="${hibernate-core.lib.dir}">
@@ -247,15 +250,15 @@ create table BottomUp (
 
 		<antcall target="prepareCfg2hbm" />
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
 		</hibernatetool>
 
 		<mkdir dir="${build.dir}/ejb3/classes" />
 		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
 
-		<copy file="./target/test-classes/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
-		<copy file="./target/test-classes/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+		<copy file="${test-classes}/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
 			<ejb3configuration/>
@@ -279,7 +282,7 @@ create table BottomUp (
 			<path location="./lib/testlibs/hibernate-entitymanager.jar" />
 			<path location="./lib/testlibs/jboss-archive-browsing.jar" />
 			<path location="./lib/testlibs/javaassist.jar" /> 
-			<path location="./target/test-classes" />
+			<path location="${test-classes}" />
 			<path location="./target/classes" />
 			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
 		</path>
@@ -290,15 +293,15 @@ create table BottomUp (
 
 		<antcall target="prepareCfg2hbm" />
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
 		</hibernatetool>
 
 		<mkdir dir="${build.dir}/ejb3/classes" />
 		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
 
-		<copy file="./target/test-classes/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
-		<copy file="./target/test-classes/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+		<copy file="${test-classes}/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
 			<jpaconfiguration persistenceunit="shouldnotbethere"/>
@@ -315,7 +318,7 @@ create table BottomUp (
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 		<property name="testlibs" location="./lib/testlibs"/>
 		<path id="annlib">
-			<path location="./target/test-classes" />
+			<path location="${test-classes}" />
 			<path location="./target/classes" />
 			<path location="${testlibs}/hibernate3.jar"/>
 			<path location="${testlibs}/${h3.commons-logging.lib}"/>
@@ -352,15 +355,15 @@ create table BottomUp (
 
 		<antcall target="prepareCfg2hbm" />
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
 		</hibernatetool>
 
 		<mkdir dir="${build.dir}/ejb3/classes" />
 		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
 
-		<copy file="./target/test-classes/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
-		<copy file="./target/test-classes/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+		<copy file="${test-classes}/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
 			<jpaconfiguration persistenceunit="ejb3test"/>
@@ -382,7 +385,7 @@ create table BottomUp (
 			<path location="./lib/testlibs/hibernate-entitymanager.jar" />
 			<path location="./lib/testlibs/jboss-archive-browsing.jar" />
 			<path location="./lib/testlibs/javaassist.jar" /> 
-			<path location="./target/test-classes" />
+			<path location="${test-classes}" />
 			<path location="./target/classes" />
 			<path location="${hibernate-core.home}\jdbc\hsqldb.jar" />
 		</path>
@@ -394,18 +397,18 @@ create table BottomUp (
 
 		<antcall target="prepareCfg2hbm" />
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 			<hbm2java ejb3="true" jdk5="true" destdir="${build.dir}/ejb3/src" />
 		</hibernatetool>
 
 		<mkdir dir="${build.dir}/ejb3/classes" />
 		<javac classpathref="annlib" srcdir="${build.dir}/ejb3/src" destdir="${build.dir}/ejb3/classes" />
 
-		<copy file="./target/test-classes/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
-		<copy file="./target/test-classes/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+		<copy file="${test-classes}/ejb3test-persistence.xml" tofile="${build.dir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
-			<jpaconfiguration persistenceunit="ejb3test" entityresolver="DummyEntityResolver" propertyfile="./target/test-classes/jpaoverrides.properties"/>
+			<jpaconfiguration persistenceunit="ejb3test" entityresolver="DummyEntityResolver" propertyfile="${test-classes}/jpaoverrides.properties"/>
 			<classpath>
 				<path location="${build.dir}/ejb3/classes" />
 			</classpath>
@@ -419,8 +422,8 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool destdir="${build.dir}/bottomup">
-			<configuration propertyfile="./target/test-classes/hibernate.properties">
-				<fileset dir="./src/test/org/hibernate/tool/hbm2x">
+			<configuration propertyfile="${test-classes}/hibernate.properties">
+				<fileset dir="../test/org/hibernate/tool/hbm2x">
 					<include name="*.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -454,7 +457,7 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
 		</hibernatetool>
 
@@ -465,7 +468,7 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" />
 
 			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
 		</hibernatetool>
@@ -477,7 +480,7 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" reversestrategy="invalid.classname" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" reversestrategy="invalid.classname" />
 			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
 		</hibernatetool>
 
@@ -489,7 +492,7 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" packageName="org.h3.test" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" packageName="org.h3.test" />
 			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
 		</hibernatetool>
 
@@ -500,7 +503,7 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
 			<hbm2hbmxml destdir="${build.dir}/cfg2hbm" />
 		</hibernatetool>
 
@@ -513,8 +516,8 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 
 		<hibernatetool destdir="${build.dir}/noconinfo">
-			<configuration configurationfile="./target/test-classes/noconnectioninfo-hibernate.cfg.xml">
-				<fileset dir="./src/test" id="id">
+			<configuration configurationfile="${test-classes}/noconnectioninfo-hibernate.cfg.xml">
+				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
 			</configuration>
@@ -525,14 +528,14 @@ create table BottomUp (
 	<target name="testnoexporters" description="tool without anyexporters - should fail">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 		<hibernatetool>
-			<jdbcconfiguration propertyfile="./target/test-classes/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
+			<jdbcconfiguration propertyfile="${test-classes}/hibernate.properties" packageName="org.h3.test" reversestrategy="org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy" />
 		</hibernatetool>
 	</target>
 	
 	<target name="testquery" depends="prepareCfg2hbm" description="test the query tasks">
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 		<hibernatetool destdir="${build.dir}/querytest">
-			<configuration propertyfile="./target/test-classes/hibernate.properties" configurationfile="./target/test-classes/querytest-hibernate.cfg.xml" />
+			<configuration propertyfile="${test-classes}/hibernate.properties" configurationfile="${test-classes}/querytest-hibernate.cfg.xml" />
 			<classpath location="."/>
 			<query>
 				<hql>from java.lang.Object</hql>
@@ -548,8 +551,8 @@ create table BottomUp (
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tasks.classpath" />
 		
 		<hibernatetool destdir="${build.dir}/linttest">
-			<configuration propertyfile="./target/test-classes/hibernate.properties" configurationfile="./target/test-classes/querytest-hibernate.cfg.xml">
-				<fileset dir="./src/test">
+			<configuration propertyfile="${test-classes}/hibernate.properties" configurationfile="${test-classes}/querytest-hibernate.cfg.xml">
+				<fileset dir="../test">
 					<include name="**/SchemaIssues.hbm.xml"/>
 				</fileset>
 			</configuration>

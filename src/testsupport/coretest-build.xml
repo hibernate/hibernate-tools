@@ -1,8 +1,10 @@
 <project name="coreanttest">
+	<property name="build.dir" location="../../target/anttest" />
 	<property name="core.jar" location="${build.dir}/./lib/testlibs/hibernate3.jar" />
 	<property name="core.libs" location="${build.dir}/./lib/testlibs" />
-	<property name="build.dir" location="./target/anttest" />
 	<property name="jdbc.driver" location="./lib/jdbc/hsqldb.jar"/>
+	
+	<mkdir dir="${build.dir}" />
 	
 	<property file="./target/test-classes/hibernate.properties" />
 
@@ -17,7 +19,7 @@
 		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="tasks.classpath" />
 
 		 <schemaexport drop="true" quiet="false" text="false" output="${build.dir}/schemaexport.sql">
-			<fileset dir="./src/test" id="id">
+			<fileset dir="../test" id="id">
 				<include name="**/*TopDown.hbm.xml" />
 			</fileset>
  		</schemaexport>
@@ -26,8 +28,8 @@
 	<target name="test-schemaupdatewarning">
 		<taskdef name="schemaupdate" classname="org.hibernate.tool.hbm2ddl.SchemaUpdateTask" classpathref="tasks.classpath"/>
 
-		 <schemaupdate quiet="false" text="false" >
-			<fileset dir="./src/test" id="id">
+		 <schemaupdate quiet="false" text="false" outputfile="notused.txt" >
+			<fileset dir="../test" id="id">
 				<include name="**/*TopDown.hbm.xml" />
 			</fileset>
  		</schemaupdate>

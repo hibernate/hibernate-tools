@@ -209,7 +209,9 @@ public abstract class BuildFileTestCase extends BaseTestCase {
         fullLogBuffer = new StringBuffer();
         project = new Project();
         project.init();
-        project.setUserProperty( "ant.file" , createBaseFile( filename).getAbsolutePath() );
+        File antfile = createBaseFile( filename);
+		    project.setUserProperty( "ant.file" , antfile.getAbsolutePath() );
+        project.setProperty("basedir", antfile.getParentFile().getAbsolutePath()); // overriding to make Maven and Ant test runs the same
         project.addBuildListener(new AntTestListener(logLevel) );        
         ProjectHelper.configureProject(project, createBaseFile(filename) );
     }
@@ -236,7 +238,7 @@ public abstract class BuildFileTestCase extends BaseTestCase {
             System.setErr(err);
             logBuffer = new StringBuffer();
             fullLogBuffer = new StringBuffer();
-            buildException = null;           
+            buildException = null;
             project.executeTarget(targetName);
         } 
         catch (BuildException be) {
