@@ -3,7 +3,6 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -16,6 +15,7 @@ import org.hibernate.engine.query.sql.NativeSQLQueryCollectionReturn;
 import org.hibernate.engine.query.sql.NativeSQLQueryJoinReturn;
 import org.hibernate.engine.query.sql.NativeSQLQueryReturn;
 import org.hibernate.engine.query.sql.NativeSQLQueryRootReturn;
+import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -79,6 +79,27 @@ public class Cfg2HbmTool {
 		}
 	}
 
+	/**
+	 * Remove any internal keys from the set, eg, any Keys that are prefixed by
+	 * 'target_', {@link PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER} and return the filtered collection.
+	 *
+	 * @param properties
+	 * @return
+	 */
+	static Properties getFilteredIdentifierGeneratorProperties(Properties properties) {
+		if (properties != null){
+			Properties fProp = new Properties();
+			Iterator itr = properties.keySet().iterator();
+			while (itr.hasNext() ) {
+				String key = (String) itr.next();
+				if (! (key.startsWith("target_") || key.equals(PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER)))
+					fProp.put(key, properties.get(key));
+			}
+			return fProp;
+		}
+		return null;
+	}
+	
 	public String getTag(PersistentClass pc) {
 		return (String) pc.accept(HBMTagForPersistentClassVisitor.INSTANCE);
 	}
@@ -138,22 +159,11 @@ public class Cfg2HbmTool {
 	}
 
 	/**
-	 * Remove any internal keys from the set, eg, any Keys that are prefixed by
-	 * 'target_' and return the filtered collection.
-	 *
 	 * @param property
 	 * @return
 	 */
 	public Set getFilteredIdentifierGeneratorKeySet(Property property) {
-		Set sval = new HashSet();
-		Properties pval = this.getIdentifierGeneratorProperties(property);
-		Iterator itr = pval.keySet().iterator();
-		while (itr.hasNext() ) {
-			String key = (String) itr.next();
-			if (! key.startsWith("target_") )
-				sval.add(key);
-		}
-		return sval;
+		return getFilteredIdentifierGeneratorProperties(this.getIdentifierGeneratorProperties(property)).keySet();
 	}
 
     public boolean isOneToMany(Property property) {

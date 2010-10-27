@@ -75,8 +75,8 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
-		jars.add("ejb3-persistence.jar");
-		jars.add("hibernate-annotations.jar");
+		jars.add("hibernate-jpa-2.0-api-1.0.0.Final.jar");
+		jars.add("hibernate3.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars));
 
 		TestHelper.deleteDir(file);

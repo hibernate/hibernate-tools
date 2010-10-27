@@ -5,7 +5,7 @@
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
-	<version>3.4.0.Beta1</version>
+	<version>3.4.0.Beta2</version>
 	<packaging>jar</packaging>
 
 	<issueManagement>
@@ -45,10 +45,8 @@
 	<description>The core functionality of Hibernate Tools</description>
 
 	<properties>
-		<hibernateVersion>3.3.2.GA</hibernateVersion>
-		<hibernateAnnotationsVersion>3.3.0.ga</hibernateAnnotationsVersion>
-		<hibernateEntitymanagerVersion>3.3.1.ga</hibernateEntitymanagerVersion>
-		<hibernateCommonsAnnotationVersion>3.3.0.ga</hibernateCommonsAnnotationVersion>
+		<hibernateVersion>3.5.6-Final</hibernateVersion>
+		<hibernateJpaVersion>1.0.0.Final</hibernateJpaVersion>
 		<hsqldbVersion>1.8.0.2</hsqldbVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -68,8 +66,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>${hibernateCommonsAnnotationVersion}</version>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernateVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
+			<scope>compile</scope>
+		</dependency>		
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>${hibernateJpaVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -79,16 +89,16 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>${hibernateAnnotationsVersion}</version>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernateEntitymanagerVersion}</version>
-			<scope>compile</scope>
+		    <groupId>cglib</groupId>
+		    <artifactId>cglib</artifactId>
+		    <version>2.2</version>
+		    <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
@@ -24,11 +24,9 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.MetaAttributable;
 import org.hibernate.mapping.MetaAttribute;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
@@ -36,8 +34,6 @@ import org.hibernate.tool.hbm2x.pojo.ImportContext;
 import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.visitor.JavaTypeFromValueVisitor;
-import org.hibernate.type.CompositeCustomType;
-import org.hibernate.type.CustomType;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
@@ -292,6 +288,15 @@ public class Cfg2JavaTool {
 		} 
 		String decl = "<" + genericDecl + ">";
 		return decl;
+	}
+	
+	/**
+	 * @param simpleValue
+	 * @return
+	 */
+	public Properties getFilteredIdentifierGeneratorProperties(SimpleValue simpleValue) {
+		Properties p = simpleValue.getIdentifierGeneratorProperties();
+		return Cfg2HbmTool.getFilteredIdentifierGeneratorProperties(p);
 	}
 
 	private String getJavaTypeName(Value value, boolean preferRawTypeNames) {

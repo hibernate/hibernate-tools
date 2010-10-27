@@ -45,8 +45,7 @@ public class JdbcHbm2JavaEjb3Test extends JDBCMetaDataBinderTestCase {
 
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
-		jars.add("ejb3-persistence.jar");
-		jars.add("hibernate-annotations.jar");
+		jars.add("hibernate-jpa-2.0-api-1.0.0.Final.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars));
 
 		TestHelper.deleteDir(file);

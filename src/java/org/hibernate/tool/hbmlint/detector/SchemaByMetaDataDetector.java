@@ -227,6 +227,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = pc.getIdentifier()
 						.createIdentifierGenerator(
+								cfg.getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,
@@ -248,6 +249,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = ( (IdentifierCollection) collection ).getIdentifier()
 						.createIdentifierGenerator(
+								getConfiguration().getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,

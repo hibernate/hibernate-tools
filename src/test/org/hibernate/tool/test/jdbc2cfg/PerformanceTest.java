@@ -14,6 +14,7 @@ import junit.framework.TestSuite;
 import org.hibernate.MappingException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.Mapping;
+import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
@@ -60,6 +61,10 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 			}
 
 			public Type getReferencedPropertyType(String className, String propertyName) throws MappingException {
+				return null;
+			}
+			
+			public IdentifierGeneratorFactory getIdentifierGeneratorFactory() {
 				return null;
 			}
 		

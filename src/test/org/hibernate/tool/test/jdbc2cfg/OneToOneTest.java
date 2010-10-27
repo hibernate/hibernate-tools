@@ -200,7 +200,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
-		addAnnotationJars(jars);
+		//addAnnotationJars(jars);
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
 				TestHelper.buildClasspath( jars )
@@ -248,7 +248,11 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(9, getOutputDir().listFiles().length);
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
-		addAnnotationJars(jars);
+		
+		
+		jars.add( "hibernate3.jar" );
+		jars.add( "hibernate-jpa-2.0-api-1.0.0.Final.jar");
+		
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
 				TestHelper.buildClasspath( jars )
@@ -285,17 +289,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
         }
 		
 	}
-	
-	private void addAnnotationJars(List jars) {
-		jars.add( "ejb3-persistence.jar" );
-		jars.add( "hibernate-annotations.jar" );
-		jars.add( "hibernate-commons-annotations.jar" );
-		jars.add( "hibernate3.jar" );
-		jars.add( "dom4j-1.6.1.jar" );
-		jars.add( "commons-logging-1.0.4.jar" );
-		
-	}
-	
+
 	private void assertPropertyNotExist(PersistentClass projectClass, String prop) {
 		try {
 			projectClass.getProperty(prop);

@@ -22,7 +22,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Selectable;
@@ -226,7 +225,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		else if ( identifier instanceof SimpleValue ) {
 			SimpleValue simpleValue = (SimpleValue) identifier;
 			strategy = simpleValue.getIdentifierGeneratorStrategy();
-			properties = simpleValue.getIdentifierGeneratorProperties();
+			properties = c2j.getFilteredIdentifierGeneratorProperties(simpleValue);
 			StringBuffer idResult = new StringBuffer();
 			AnnotationBuilder builder = AnnotationBuilder.createAnnotation( importType("javax.persistence.Id") );
 			idResult.append(builder.getResult());
