@@ -22,10 +22,11 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 				
 				log.debug("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
 				
-				sql = "show table status " + (schema==null?"":" from " + schema + " ") + (table==null?"":" like '" + table + "' ");
+				sql = "show table status " + (catalog==null?"":" from " + catalog + " ") + (table==null?"":" like '" + table + "' ");
 				PreparedStatement statement = getConnection().prepareStatement( sql );
 				
 				final String sc = schema;
+				final String cat = catalog;
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
 					Map element = new HashMap();
@@ -33,7 +34,7 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 						element.clear();
 						element.put("TABLE_NAME", tableRs.getString("NAME"));
 						element.put("TABLE_SCHEM", sc);
-						element.put("TABLE_CAT", null);
+						element.put("TABLE_CAT", cat);
 						
 						String string = tableRs.getString("AUTO_INCREMENT");
 						if(string==null) {
