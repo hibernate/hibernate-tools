@@ -17,13 +17,10 @@ public class CoreTaskTest extends BuildFileTestCase {
 		super(name);
 	}
 	
-	
 	protected void tearDown() throws Exception {
-		System.out.println(getLog() );
-//		super.tearDown();
+		executeTarget("cleanup");
+		super.tearDown();
 	}
-	
-
 	
 	protected void setUp() throws Exception {
 		configureProject("src/testsupport/coretest-build.xml");
@@ -31,6 +28,7 @@ public class CoreTaskTest extends BuildFileTestCase {
 	
 	public void testSchemaUpdateWarning() {
 		executeTarget("test-schemaupdatewarning");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		assertLogContaining( "Hibernate Core SchemaUpdate" );
 		assertLogContaining( "tools.hibernate.org" );
 	}
@@ -38,6 +36,7 @@ public class CoreTaskTest extends BuildFileTestCase {
 	/* TODO: this test is suddenly not able to get the log output from ant causing problems.
 	 * public void testSchemaExportWarning() {
 		executeTarget("test-schemaexportwarning");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		assertLogContaining( "Hibernate Core SchemaUpdate" );
 		assertLogContaining( "tools.hibernate.org" );
 	}*/

@@ -106,6 +106,13 @@ public abstract class BuildFileTestCase extends BaseTestCase {
     protected String getLog() {
         return logBuffer.toString();
     }
+    
+    /**
+     * Checks the log for Exceptions
+     */
+	protected boolean checkLogWithoutExceptions(){
+		return !(getLog().contains("Exception"));
+	}
 
     /**
      * Assert that the given message has been logged with a priority

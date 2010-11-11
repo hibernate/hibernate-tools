@@ -132,7 +132,8 @@ public class GenericExporterTest extends NonReflectiveTestCase {
 			ge.start();
 			fail();
 		} catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			//expected
 		}
 	}
 

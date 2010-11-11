@@ -2,18 +2,22 @@
 	<property name="build.dir" location="../../target/anttest" />
 	<property name="core.jar" location="${build.dir}/./lib/testlibs/hibernate3.jar" />
 	<property name="core.libs" location="${build.dir}/./lib/testlibs" />
-	<property name="jdbc.driver" location="./lib/jdbc/hsqldb.jar"/>
+	<property name="jdbc.lib" location="./lib/jdbc/hsqldb.jar"/>
 	
 	<mkdir dir="${build.dir}" />
-	
-	<property file="./target/test-classes/hibernate.properties" />
+	<property file="../../target/test-classes/hibernate.properties" />
 
 	<path id="tasks.classpath">
-		<pathelement location="${hibernate-core.jar}" />
-		<pathelement path="${jdbc.driver}" />
+		<pathelement location="${core.jar}" />
+		<pathelement path="${jdbc.lib}" />
 	</path>
 
-
+	<target name="cleanup" description="remove topdown table">
+		<sql onerror="continue" driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}"
+		userid="${hibernate.connection.username}" password="${hibernate.connection.password}" classpath="${jdbc.lib}">
+	 drop table topdown;
+     </sql>
+	</target>
 
 	<target name="test-schemaexportwarning">
 		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="tasks.classpath" />
@@ -28,7 +32,7 @@
 	<target name="test-schemaupdatewarning">
 		<taskdef name="schemaupdate" classname="org.hibernate.tool.hbm2ddl.SchemaUpdateTask" classpathref="tasks.classpath"/>
 
-		 <schemaupdate quiet="false" text="false" outputfile="notused.txt" >
+		 <schemaupdate quiet="false" text="false" outputfile="${build.dir}/notused.txt" >
 			<fileset dir="../test" id="id">
 				<include name="**/*TopDown.hbm.xml" />
 			</fileset>

@@ -10,9 +10,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.tools.ant.BuildException;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.Session;
 import org.hibernate.tool.test.TestHelper;
 
 /**
@@ -28,16 +25,30 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 	}
 	
 	protected void tearDown() throws Exception {
-		executeTarget("cleanup");
-		System.out.println(getLog());
+		cleanup();
 		super.tearDown();
 	}
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		configureProject("src/testsupport/anttest-build.xml");
-		executeTarget( "cleanup" );
 	}
 	
+	private void cleanup(){
+		executeTarget("afterCfg2hbm");
+		boolean removed = false;
+		do{
+			try {
+				executeTarget("removeDirs");
+				removed = true;
+			} catch (BuildException be){
+				//Unable to delete file ...\testdb\hsqldb.log
+				//if isn't removed calls
+				//User SA not fount for all the next tests.
+			}
+		} while (!removed);
+	}
+
 	public void testHbm2DDLLogic() {
 		cleanupOutputDir();
 		File baseDir = new File(project.getProperty("build.dir"), "topdown");
@@ -54,6 +65,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		// allow to test creation of script file + delimiter 
 		// + non execution (test will fail if executed because of crappy delimiter)
 		executeTarget("testScriptCreation");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		assertTrue(onlyCreate.exists());
 		assertTrue(onlyDrop.exists());
@@ -78,7 +90,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		onlyDrop.delete();
 		dropAndCreate.delete();
 		update.delete();
-		
 	}
 	
 	public void testHbm2DDLUpdateExecution() {
@@ -94,6 +105,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 
 		
 		executeTarget("testantcfgUpdateExecuted");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		assertTrue(update1.exists());
 		assertTrue(update2.exists());
@@ -120,6 +132,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 
 		
 		executeTarget("testantcfgExportExecuted");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		assertTrue(export.exists());
 		assertTrue(update.exists());
@@ -135,10 +148,12 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 	
 	public void testJDBCConfiguration() {
 		executeTarget("testantjdbccfg");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testAnnotationConfigurationFailureExpected() {
 		executeTarget("testantannotationcfg");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testEJB3ConfigurationFailureExpected() {
@@ -150,20 +165,20 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		assertEquals(null, TestHelper.findFirstString("drop", ejb3));
 		
 		assertTrue(getLog().indexOf("<ejb3configuration> is deprecated")>0);
-		
 	}
 	
 	public void testJPABogusPUnit() {
 		try {
-			executeTarget("jpa-bogusunit");
+			executeTarget("jpa-boguspunit");
 			fail("Bogus unit accepted");
 		} catch(BuildException be) {
-			// should happen
+			assertTrue(getLog(), getLog().contains("Persistence unit not found: 'shouldnotbethere'"));
 		}
 	}
 	
 	public void testJPAPUnit() {
-		executeTarget("jpa-punit");		
+		executeTarget("jpa-punit");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testJPAPropertyOveridesPUnit() {
@@ -178,18 +193,22 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 	
 	public void testHbm2JavaConfiguration() {
 		executeTarget("testanthbm2java");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testHbm2JavaEJB3Configuration() {
 		executeTarget("testantejb3hbm2java");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
     public void testCfg2HbmNoError() {
         executeTarget("testantcfg2hbm1");
+        assertTrue(getLog(), checkLogWithoutExceptions());
     }
     
     public void testCfg2HbmWithCustomReverseNamingStrategy() {
         executeTarget("testantcfg2hbm2");
+        assertTrue(getLog(), checkLogWithoutExceptions());
     }
     
     public void testCfg2HbmWithInvalidReverseNamingStrategy() {
@@ -200,23 +219,28 @@ public class AntHibernateToolTest extends BuildFileTestCase {
     
     public void testCfg2HbmWithPackageName() {
         executeTarget("testantcfg2hbm4");
+        assertTrue(getLog(), checkLogWithoutExceptions());
     }
     
     public void testCfg2HbmWithPackageNameAndReverseNamingStrategy() {
         executeTarget("testantcfg2hbm5");
+        assertTrue(getLog(), checkLogWithoutExceptions());
     }
     
   
 	public void testJDBCConfigWithRevEngXml() {
 		executeTarget("testantjdbccfgoverrides");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testProperties() {
-		executeTarget("testproperties");		
+		executeTarget("testproperties");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
 	public void testGenericExport() {
 		executeTarget("testgeneric");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		property = project.getProperty("build.dir");
 		assertTrue(new File(property, "generic").exists());
@@ -259,6 +283,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 
 	public void testQuery() {
 		executeTarget("testquery");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		File baseDir = new File(project.getProperty("build.dir"), "querytest");
 		
@@ -268,6 +293,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 	
 	public void testHbmLint() {
 		executeTarget("testhbmlint");
+		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		File baseDir = new File(project.getProperty("build.dir"), "linttest");
 		
@@ -283,6 +309,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		}
 		
 	}
+		
 	public static Test suite() {
 		return new TestSuite(AntHibernateToolTest.class);
 	}
