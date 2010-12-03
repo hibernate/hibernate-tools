@@ -34,17 +34,32 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		configureProject("src/testsupport/anttest-build.xml");
 	}
 	
+	/**
+	 * Maximum number of attempts to make a clean.
+	 */
+	private final short ATTEMPT_COUNT = 20;
+	
 	private void cleanup(){
 		executeTarget("afterCfg2hbm");
 		boolean removed = false;
-		do{
+		
+		short attempt = 1;
+		do {
 			try {
 				executeTarget("removeDirs");
 				removed = true;
 			} catch (BuildException be){
+				try {
+					Thread.currentThread().sleep(500);
+				} catch (InterruptedException e) {
+				}
 				//Unable to delete file ...\testdb\hsqldb.log
 				//if isn't removed calls
-				//User SA not fount for all the next tests.
+				//User SA not found for all the next tests.
+			}
+			attempt++;
+			if (attempt > ATTEMPT_COUNT && !removed){
+				fail("Could not complete cleanup. Next tests behaviour is unpredictable.");
 			}
 		} while (!removed);
 	}
