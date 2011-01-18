@@ -149,7 +149,7 @@ public abstract class BaseTestCase extends TestCase {
 		
 		JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(testSettings.getConnectionProvider(), testSettings.getSQLExceptionConverter(), new DefaultDatabaseCollector()));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(testSettings.getConnectionProvider(), testSettings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		Iterator tables = dialect.getTables( testSettings.getDefaultCatalogName(), testSettings.getDefaultSchemaName(), null );
 		
 		assertHasNext( 0, tables );

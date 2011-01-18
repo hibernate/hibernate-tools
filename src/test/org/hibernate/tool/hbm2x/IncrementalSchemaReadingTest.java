@@ -51,7 +51,7 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
-		DatabaseCollector dc = new DefaultDatabaseCollector();
+		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 		
 		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);

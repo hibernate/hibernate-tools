@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Table;
 import org.hibernate.util.StringHelper;
 
@@ -13,12 +14,12 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 
 	private Map tables;		
 	private Map qualifiers;
-	public DefaultDatabaseCollector() {
+
+	public DefaultDatabaseCollector(MetaDataDialect metaDataDialect) {
+		super(metaDataDialect);
 		tables = new HashMap();
-		qualifiers = new HashMap();		
+		qualifiers = new HashMap();
 	}
-	
-	
 	
 	public Iterator iterateTables() {
 		return tables.values().iterator();
@@ -28,7 +29,7 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 			String catalog, 
 			String name) {
 		
-        String key = Table.qualify(catalog, schema, name);
+        String key = Table.qualify(quote(catalog), quote(schema), quote(name));
 		Table table = (Table) tables.get(key);
 		
 		if (table == null) {
@@ -55,11 +56,13 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 	}
 
 	public Table getTable(String schema, String catalog, String name) {
-        String key = Table.qualify(catalog, schema, name);
+        String key = Table.qualify(quote(catalog), quote(schema), quote(name));
 		return (Table) tables.get(key);
 	}
 
 	public Iterator getQualifierEntries() {
 		return qualifiers.entrySet().iterator();
 	}
+	
+	
 }

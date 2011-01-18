@@ -549,7 +549,7 @@ public class JDBCReader {
 					  }
 					  log.debug("Adding table " + tableName + " of type " + tableType);
 					  progress.startSubTask("Found " + tableName);
-					  Table table = dbs.addTable(quote(getSchemaForModel(schemaName)), getCatalogForModel(catalogName), quote(tableName));
+					  Table table = dbs.addTable(getSchemaForModel(schemaName), getCatalogForModel(catalogName), tableName);
 					  table.setComment(comment);
 					  if(tableType.equalsIgnoreCase("TABLE")) {
 						  hasIndices.add(table);
@@ -668,7 +668,7 @@ public class JDBCReader {
 	}
 
 
-	   private String quote(String columnName) {
+	private String quote(String columnName) {
 		   if(columnName==null) return columnName;
 		   if(getMetaDataDialect().needQuote(columnName)) {
 			   if(columnName.length()>1 && columnName.charAt(0)=='`' && columnName.charAt(columnName.length()-1)=='`') {
@@ -680,7 +680,7 @@ public class JDBCReader {
 		   }		
 	}
 
-	private MetaDataDialect getMetaDataDialect() {
+	public MetaDataDialect getMetaDataDialect() {
 		return metadataDialect;
 	}
 	

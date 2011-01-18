@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
-import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.exception.SQLExceptionConverter;
 import org.hibernate.util.StringHelper;
 
@@ -145,6 +144,7 @@ abstract public class AbstractMetaDataDialect implements MetaDataDialect {
 		// TODO: use jdbc metadata to decide on this. but for now we just handle the most typical cases.		
 		if(name.indexOf('-')>0) return true;
 		if(name.indexOf(' ')>0) return true;
+		if(name.indexOf('.')>0) return true;
 		return false;
 	}
 	

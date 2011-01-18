@@ -41,7 +41,7 @@ protected String[] getCreateSQL() {
 		
 		Settings settings = cfg.buildSettings();
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector()));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier("tab_master") ); 
 		
@@ -76,7 +76,7 @@ protected String[] getCreateSQL() {
 		
 		Settings settings = cfg.buildSettings();
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector()));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getColumns( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), "test", null ); 
 		
@@ -96,7 +96,7 @@ protected String[] getCreateSQL() {
 		
 		Settings settings = cfg.buildSettings();
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector()));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier( "TAB_MASTER"));
 		

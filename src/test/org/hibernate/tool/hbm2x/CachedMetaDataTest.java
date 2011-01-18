@@ -124,7 +124,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect );
 		
-		DatabaseCollector dc = new DefaultDatabaseCollector();
+		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 
 		validate( dc );		
@@ -133,7 +133,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 		reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect );
 		
-		dc = new DefaultDatabaseCollector();
+		dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 
 		validate(dc);

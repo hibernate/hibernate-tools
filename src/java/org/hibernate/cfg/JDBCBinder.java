@@ -21,9 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.reveng.DatabaseCollector;
-import org.hibernate.cfg.reveng.ForeignKeyCollectionInfo;
 import org.hibernate.cfg.reveng.AssociationInfo;
+import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
@@ -39,9 +38,9 @@ import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -117,7 +116,7 @@ public class JDBCBinder {
 	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
 
 	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy);
-	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings);
+	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
 	}
