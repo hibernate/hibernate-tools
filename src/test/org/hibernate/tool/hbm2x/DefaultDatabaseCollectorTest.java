@@ -56,9 +56,6 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		
-		System.out.println(catchild);
-		System.out.println(catmaster);
-		
 		if(catchild.getName().equals("cat.master")) {
 			catchild = (Table) tables.get(1);
 			catmaster = (Table) tables.get(0);
@@ -88,7 +85,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	 * Because of this there are 2 opposite methods(and they are both failed as addTable uses quoted names
 	 * but getTable uses non-quoted names )
 	 */
-	public void testQuatedNamesAndDefaultDatabaseCollector() {
+	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		Settings buildSettings = cfg.buildSettings();
 				
 		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
@@ -106,27 +103,8 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
 	}
 	
-	/*public void testQuatedNamesAndDefaultDatabaseCollector2() {
-		Settings buildSettings = cfg.buildSettings();
-				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
-		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), realMetaData );
-		
-		DatabaseCollector dc = new DefaultDatabaseCollector();
-		reader.readDatabaseSchema( dc, null, SCHEMA );
-		
-		assertNotNull("The table should be found", dc.getTable(quote(SCHEMA), null, quote("cat.child")));
-		assertNotNull("The table should be found", dc.getTable(quote(SCHEMA), null, quote("cat.master")));
-		assertNull("Quoted names should return the table", dc.getTable(SCHEMA, null, "cat.child"));
-		assertNull("Quoted names should return the table", dc.getTable(SCHEMA, null, "cat.master"));
-		
-		assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
-	}*/
-	
 	private String quote(String name) {
 		   return "`" + name + "`";
-
 	}
 
 	private List getTables(JDBCMetaDataConfiguration metaDataConfiguration) {

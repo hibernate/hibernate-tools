@@ -20,11 +20,11 @@ public class MappingsDatabaseCollector extends AbstractDatabaseCollector {
 	}
 
 	public Table addTable(String schema, String catalog, String name) {
-		return mappings.addTable(quote(catalog), quote(schema), quote(name), null, false);
+		return mappings.addTable(quote(schema), quote(catalog), quote(name), null, false);
 	}
 
 	public Table getTable(String schema, String catalog, String name) {
-		return mappings.getTable(quote(catalog), quote(schema), quote(name));
+		return mappings.getTable(quote(schema), quote(catalog), quote(name));
 	}
 
 }
