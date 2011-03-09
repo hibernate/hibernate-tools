@@ -170,6 +170,7 @@ public class DocExporter extends AbstractExporter {
 
 	private boolean generateDot() {
 		String cmd = getProperties().getProperty( "dot.executable" );
+		boolean ignoreError = Boolean.parseBoolean(getProperties().getProperty("dot.ignoreerror", "false"));
 		
 		if(StringHelper.isNotEmpty( cmd )) {
 			try {
@@ -186,19 +187,27 @@ public class DocExporter extends AbstractExporter {
 				exporter.setProperties( getProperties() );
 				exporter.start();
 				
-				dotToFile( cmd, new File(getOutputDirectory(), "entities/entitygraph.dot").toString(), new File(getOutputDirectory(), "entities/entitygraph.png").toString());
-				dotToFile( cmd, new File(getOutputDirectory(), "entities/entitygraph.dot").toString(), new File(getOutputDirectory(), "entities/entitygraph.svg").toString());
-				dotToFile( cmd, new File(getOutputDirectory(), "entities/entitygraph.dot").toString(), new File(getOutputDirectory(), "entities/entitygraph.cmap").toString());
 				
-				dotToFile( cmd, new File(getOutputDirectory(), "tables/tablegraph.dot").toString(), new File(getOutputDirectory(), "tables/tablegraph.png").toString());
-				dotToFile( cmd, new File(getOutputDirectory(), "tables/tablegraph.dot").toString(), new File(getOutputDirectory(), "tables/tablegraph.svg").toString());
-				dotToFile( cmd, new File(getOutputDirectory(), "tables/tablegraph.dot").toString(), new File(getOutputDirectory(), "tables/tablegraph.cmap").toString());
+				File entityGraphDot = new File(getOutputDirectory(), "entities/entitygraph.dot");
+				dotToFile( cmd, entityGraphDot.toString(), new File(getOutputDirectory(), "entities/entitygraph.png").toString());
+				dotToFile( cmd, entityGraphDot.toString(), new File(getOutputDirectory(), "entities/entitygraph.svg").toString());
+				dotToFile( cmd, entityGraphDot.toString(), new File(getOutputDirectory(), "entities/entitygraph.cmap").toString());
+				
+				File tableGraphDot = new File(getOutputDirectory(), "tables/tablegraph.dot");
+				dotToFile( cmd, tableGraphDot.toString(), new File(getOutputDirectory(), "tables/tablegraph.png").toString());
+				dotToFile( cmd, tableGraphDot.toString(), new File(getOutputDirectory(), "tables/tablegraph.svg").toString());
+				dotToFile( cmd, tableGraphDot.toString(), new File(getOutputDirectory(), "tables/tablegraph.cmap").toString());
 			
 				return true;
 
 			}
 			catch (IOException e) {
-				throw new HibernateException("Problem while generating DOT graph for Configuration", e);
+				if(ignoreError) {
+					log.warn( "Skipping entitygraph creation since dot.executable was not found and dot.ignoreerror=false." );
+					return false;
+				} else {
+					throw new HibernateException("Problem while generating DOT graph for Configuration (set dot.ignoreerror=false to ignore)", e);
+				}
 			}
 		} else {
 			log.info( "Skipping entitygraph creation since dot.executable is empty or not-specified." );

@@ -11,6 +11,8 @@ import org.w3c.tidy.Tidy;
 
 public class DocExporterTest extends NonReflectiveTestCase {
 
+	private boolean ignoreDot;
+
 	public DocExporterTest(String name) {
 		super( name, "docoutput" );
 	}
@@ -41,6 +43,14 @@ public class DocExporterTest extends NonReflectiveTestCase {
 		} else {
 			properties.put("dot.executable", System.getProperties().getProperty("dot.executable","dot"));
 		}
+		
+		// Set to ignore dot error if dot exec not specfically set.
+		// done to avoid test failure when no dot available.
+		boolean dotSpecified = System.getProperties().containsKey("dot.executable");
+		ignoreDot =  !dotSpecified;
+		
+		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
+		
 		exporter.setProperties( properties );
 		exporter.start();
 	}
@@ -62,12 +72,14 @@ public class DocExporterTest extends NonReflectiveTestCase {
     	assertTrue(new File(getOutputDir(), "entities/org/hibernate/tool/hbm2x/UPerson.html").exists() );
     	assertFileAndExists(new File(getOutputDir(), "entities/org/hibernate/tool/hbm2x/UUser.html") );
     	
-    	assertFileAndExists(new File(getOutputDir(), "entities/entitygraph.dot"));
-    	assertFileAndExists(new File(getOutputDir(), "entities/entitygraph.png"));
-    	
-    	assertFileAndExists(new File(getOutputDir(), "tables/tablegraph.dot"));
-    	assertFileAndExists(new File(getOutputDir(), "tables/tablegraph.png"));
-    	
+		if (!ignoreDot) {
+			assertFileAndExists(new File(getOutputDir(), "entities/entitygraph.dot"));
+			assertFileAndExists(new File(getOutputDir(), "entities/entitygraph.png"));
+			assertFileAndExists(new File(getOutputDir(), "tables/tablegraph.dot"));
+	    	assertFileAndExists(new File(getOutputDir(), "tables/tablegraph.png"));
+	    	
+		}
+		
     	    	new FileVisitor() {
     			protected void process(File dir) {
     				final Tidy tidy = new Tidy();
