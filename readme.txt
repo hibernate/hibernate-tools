@@ -1,41 +1,35 @@
-Hibernate Tools - Tools for Hibernate
-=====================================
+Hibernate Tools
+===============
+Version: 3.4.0.CR1, February 2011
 
-Instructions
-------------
+What is it
+----------
 
-Unzip to installation directory.
+The tools for Hibernate provides various tools to use with Hibernate.
+The primary tools can be used for generating source artifacts such as
+mapping files, java entities, DAO and other scaffolding code.  The
+source of this generation can be JDBC database, classes or even just
+existing mappings.
 
-hibernate-tools.jar is dependent on hibernate3.jar, available seperatly.
+It uses Hibernate core metamodel to generate from and to the source
+artifacts. Allowing it to support both top-down, bottom-up and
+middle-out development.
 
-Other required jars are distributed in the lib subdirectory.
+Hibernate Tools is used in JBoss Tools Hibernate plugins to provide
+parts of the Eclipse plugins for Hibernate. 
 
-See doc/index.html for documentation of ant tasks.
-
-Contact
-------------
-
-Latest Documentation:
-
-   http://tools.hibernate.org
-
-Bug Reports:
-
-   Hibernate JIRA (preferred)
-   hibernate-devel@lists.sourceforge.net
-
-Technical Support:
-
-   http://forum.hibernate.org
-
-
-Notes
------------
-
-If you want to contribute, go to http://tools.hibernate.org/
+Licensing
+---------
 
 This software is distributed under the terms of the FSF Lesser Gnu Public
 License (see lgpl.txt). This product includes software developed by the Apache
 Software Foundation (http://www.apache.org/). 
 
+Hibernate Tools URLs
+--------------------
 
+Home Page:        http://tools.hibernate.org | http://jboss.org/tools
+Downloads:        http://jboss.org/tools/download
+Mailing lists:    http://www.hibernate.org/community/mailinglists.html
+Source Code:      https://github.com/hibernate/hibernate-tools/
+Issue Tracking:   http://opensource.atlassian.com/projects/hibernate/browse/HBX
