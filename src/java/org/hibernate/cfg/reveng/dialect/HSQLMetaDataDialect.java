@@ -47,7 +47,7 @@ public class HSQLMetaDataDialect extends JDBCMetaDataDialect {
 					Map element = new HashMap();
 					protected Object convertRow(ResultSet tableRs) throws SQLException{
 						String table = tableRs.getString("TABLE_NAME");
-						String fullTableName = Table.qualify(cat, sc, quote(table));
+						String fullTableName = Table.qualify(quote(cat), quote(sc), quote(table));
 						
 						String sql ="SELECT * FROM " + fullTableName + " WHERE 0>1"; // can't use FALSE constant since it would not work with older HSQL versions. (JBIDE-5957)
 						boolean isAutoIncrement = false;
