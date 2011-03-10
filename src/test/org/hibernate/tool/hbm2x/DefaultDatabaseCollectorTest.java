@@ -25,8 +25,6 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
@@ -37,8 +35,13 @@ import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	
 	private static final String SCHEMA = "cat.cat";
+	private static final String QSCHEMA = quote(SCHEMA);
 	
-	private static final String QSCHEMA = "\"cat.cat\"";
+	private static final String TABLE1 = "cat.child";
+	private static final String QTABLE1 = quote(TABLE1);
+	
+	private static final String TABLE2 = "cat.master";
+	private static final String QTABLE2 = quote(TABLE2);
 	
 	public void testReadOnlySpecificSchema() {
 		
@@ -56,7 +59,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		
-		if(catchild.getName().equals("cat.master")) {
+		if(catchild.getName().equals(TABLE2)) {
 			catchild = (Table) tables.get(1);
 			catmaster = (Table) tables.get(0);
 		} 
@@ -64,8 +67,8 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
 		
-		assertEquals(new TableIdentifier(null, "cat.cat", "cat.child"), childid);
-		assertEquals(new TableIdentifier(null, "cat.cat", "cat.master"), masterid);		
+		assertEquals(new TableIdentifier(null, SCHEMA, TABLE1), childid);
+		assertEquals(new TableIdentifier(null, SCHEMA, TABLE2), masterid);
 	}
 	
 	public void testNeedQuote() {
@@ -73,8 +76,8 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 				
 		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
 		assertTrue("The name must be quoted!", realMetaData.needQuote(SCHEMA));
-		assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
-		assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
+		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE1));
+		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE2));
 	}
 	
 	/**
@@ -95,16 +98,16 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, SCHEMA );
 		
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, "cat.child"));
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, "cat.master"));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, quote("cat.child")));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, quote("cat.master")));
+		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, TABLE1));
+		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, TABLE2));
+		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, QTABLE1));
+		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, QTABLE2));
 		
 		assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
 	}
 	
-	private String quote(String name) {
-		   return "`" + name + "`";
+	private static String quote(String name) {
+		return "\"" + name + "\"";
 	}
 
 	private List getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
@@ -123,17 +126,17 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 
 	protected String[] getCreateSQL() {
 		return new String[] {
-				"create schema " + QSCHEMA,
-				"create table "  + QSCHEMA + ".\"cat.master\" (" +
+				"create schema " + QSCHEMA + " AUTHORIZATION dba",
+				"create table "  + QSCHEMA + "." + QTABLE2 + " (" +
 						" id integer NOT NULL," + 
 						"  tt integer," + 
 						"  CONSTRAINT master_pk PRIMARY KEY (id)" +
 				")",
-				"create table " + QSCHEMA + ".\"cat.child\" (" +
+				"create table " + QSCHEMA + "." + QTABLE1 + " (" +
 				" childid integer NOT NULL,\r\n" + 
 				" masterref integer,\r\n" + 
 				" CONSTRAINT child_pk PRIMARY KEY (childid),\r\n" + 
-				" CONSTRAINT masterref FOREIGN KEY (masterref) references "+ QSCHEMA + ".\"cat.master\"(id)" +
+				" CONSTRAINT masterref FOREIGN KEY (masterref) references "+ QSCHEMA + "." + QTABLE2 + "(id)" +
 				")",
 		};
 	}
@@ -141,14 +144,10 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	protected String[] getDropSQL() {
 		
 		return new String[]  {
-				"drop table " + QSCHEMA + ".\"cat.child\"",
-				"drop table " + QSCHEMA + ".\"cat.master\"",
+				"drop table " + QSCHEMA + "." + QTABLE1,
+				"drop table " + QSCHEMA + "." + QTABLE2,
 				"drop schema " + QSCHEMA
 		};
-	}
-
-	public boolean appliesTo(Dialect dialect) {
-		return dialect instanceof PostgreSQLDialect;
 	}
 
 }
