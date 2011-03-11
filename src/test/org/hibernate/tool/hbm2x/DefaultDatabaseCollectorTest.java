@@ -120,12 +120,9 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		return list;
 	}
 	
-	protected void tearDown() throws Exception {
-		executeDDL(getDropSQL(), false);
-		// need this for non hsqldb databases
-		executeDDL(new String[] { "drop role dba " }, true);
-
-	}
+   protected void tearDown() throws Exception {
+        executeDDL(getDropSQL(), false);
+    }
 
 	protected String[] getCreateSQL() {
 		return new String[] {
@@ -151,15 +148,6 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 				"drop table " + QSCHEMA + "." + QTABLE2,
 				"drop schema " + QSCHEMA
 		};
-	}
-
-	/* (non-Javadoc)
-	 * @see org.hibernate.tool.JDBCMetaDataBinderTestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		//need this for non hsqldb databases
-		executeDDL(new String[] { "create role dba" }, true);
-		super.setUp();
 	}
 
 }
