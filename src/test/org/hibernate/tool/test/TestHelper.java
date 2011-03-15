@@ -20,7 +20,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.jdt.internal.compiler.batch.Main;
+import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.util.StringHelper;
 import org.xml.sax.SAXException;
 
@@ -29,6 +32,8 @@ import org.xml.sax.SAXException;
  * 
  */
 public final class TestHelper {
+
+	private static final Log log = LogFactory.getLog(TestHelper.class);
 
 	private TestHelper() {
 		// noop
@@ -160,15 +165,17 @@ public final class TestHelper {
 		if ( dir.isDirectory() ) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir( new File( dir, children[i] ) );
+				File childFile = new File( dir, children[i] );
+				boolean success = deleteDir( childFile );
 				if ( !success ) {
-					return false;
+					throw new RuntimeException("Could not delete " + childFile);
+					//return false;
 				}
 			}
 		}
 
 		// The directory is now empty so delete it
-		System.out.println("deleting: " + dir);
+		log.debug("deleting: " + dir);
 		return dir.delete();
 	}
 

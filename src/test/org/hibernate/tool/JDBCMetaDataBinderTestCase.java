@@ -144,7 +144,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	}
 
    protected void tearDown() throws Exception {
-        executeDDL(getDropSQL(), false);
+        executeDDL(getDropSQL(), true);
         
         super.tearDown();
     }
