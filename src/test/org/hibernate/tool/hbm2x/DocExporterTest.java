@@ -120,7 +120,6 @@ public class DocExporterTest extends NonReflectiveTestCase {
 
 	private void testHtml(final Tidy tidy, File dir) {
 		try {
-			System.out.println("*****Parsing " + dir);
 			tidy.parse( new FileInputStream(dir), (OutputStream)null );
 			assertEquals(dir + "has errors ", 0, tidy.getParseErrors());
 			assertEquals(dir + "has warnings ", 0, tidy.getParseWarnings());

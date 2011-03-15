@@ -9,6 +9,8 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tool.test.TestHelper;
 
@@ -17,6 +19,9 @@ import org.hibernate.tool.test.TestHelper;
  *
  */
 public class AntHibernateToolTest extends BuildFileTestCase {
+
+
+	private static final Log log = LogFactory.getLog(AntHibernateToolTest.class);
 
 	private String property;
 	
@@ -46,6 +51,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		short attempt = 1;
 		do {
 			try {
+				log.debug("Attempt " + attempt + " for calling 'remmoveDirs'");
 				executeTarget("removeDirs");
 				removed = true;
 			} catch (BuildException be){
@@ -58,6 +64,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 				//User SA not found for all the next tests.
 			}
 			attempt++;
+			
 			if (attempt > ATTEMPT_COUNT && !removed){
 				fail("Could not complete cleanup. Next tests behaviour is unpredictable.");
 			}

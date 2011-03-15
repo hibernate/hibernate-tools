@@ -41,8 +41,6 @@ public class HbmLintTest extends JDBCMetaDataBinderTestCase {
 		List result = analyzer.getResults();
 		
 		assertEquals(1,result.size());
-
-		System.out.println(result);
 		
 	}
 
@@ -60,7 +58,6 @@ public class HbmLintTest extends JDBCMetaDataBinderTestCase {
 		
 		assertEquals(1,result.size());
 
-		System.out.println(result);
 		
 	}
 	
@@ -78,7 +75,6 @@ public class HbmLintTest extends JDBCMetaDataBinderTestCase {
 		
 		assertEquals(2,result.size());
 
-		System.out.println(result);
 		
 	}
 	

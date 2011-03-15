@@ -53,30 +53,6 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		} 		
 	}
 	
-
-	private void dumpHeader(ResultSet columnRs) throws SQLException {
-		   ResultSetMetaData md2 = columnRs.getMetaData();
-		   
-		   int columnCount = md2.getColumnCount();
-		   for (int i = 1; i <= columnCount; i++) {
-			   System.out.print(md2.getColumnName(i) + "|");
-		   }		
-		   System.out.println();
-	}
-
-	private void dumpRow(ResultSet columnRs) throws SQLException {
-		   ResultSetMetaData md2 = columnRs.getMetaData();
-		   
-		   int columnCount = md2.getColumnCount();
-		   for (int i = 1; i <= columnCount; i++) {
-			   System.out.print(columnRs.getObject(i) + "|");
-		   }		
-		   System.out.println();
-	}
-
-    
-	
-
 	public Iterator getIndexInfo(final String xcatalog, final String xschema, final String xtable) {
 		try {
 			final String catalog = caseForSearch( xcatalog );

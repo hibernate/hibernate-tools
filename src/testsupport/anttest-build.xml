@@ -27,7 +27,7 @@
 		<path location="${testlibs.dir}/javaassist.jar" /> 
 		<path location="${test-classes}" />
 		<path location="${target.dir}/classes" />
-		<path location="./etc" />
+		<path location="${target.dir}/test-classes" />
 		<path location="${jdbc.lib}" />
 	</path>
 
