@@ -229,7 +229,11 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<includes>
-						<include>**/*Test.java</include> 
+						<include>**/*hbm2hbmxml*/*.java</include> <!-- 69 -->
+						<include>**/*query*/*.java</include> <!-- 1 -->
+						<include>**/*jdbc2cfg*/*.java</include> <!--  90 (2 error, 2 failures) -->
+						<include>**/*hbm2x*/*.java</include>
+						
 					</includes>
 				</configuration>
 			</plugin>
