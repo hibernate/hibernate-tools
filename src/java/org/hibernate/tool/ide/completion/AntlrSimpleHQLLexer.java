@@ -27,9 +27,8 @@ public class AntlrSimpleHQLLexer implements SimpleHQLLexer {
 			public int getColumn() {
 				return super.getColumn()-1;
 			}
-			
-			
 		};
+		lexer.setTabSize(1);
 	}
 
 	public int getTokenLength() {
