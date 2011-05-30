@@ -310,6 +310,31 @@ public class ModelCompletionTest extends TestCase {
     	assertTrue(completionProposals.length > 0);
  	
     }
+    
+    public void testFromWithTabs() {
+    	Collector c = new Collector();
+    	
+    	IHQLCodeAssist hqlEval = new HQLCodeAssist(sf);
+    	
+    	String query = null;
+    	int caretPosition = -1;
+    	HQLCompletionProposal[] completionProposals = null;
+    	
+    	c.clear();
+		final String codeCompletionPlaceMarker = " from ";
+		query = "select\t \tt1." + codeCompletionPlaceMarker + "Product t1";
+		caretPosition = query.indexOf(codeCompletionPlaceMarker);
+		hqlEval.codeComplete(query, caretPosition, c);    
+    	completionProposals = c.getCompletionProposals();    	
+    	assertTrue(completionProposals.length == 0);
+
+    	c.clear();
+		query = query.replace('\t', ' ');
+		hqlEval.codeComplete(query, caretPosition, c);    
+    	completionProposals = c.getCompletionProposals();    	
+    	assertTrue(completionProposals.length > 0);
+    }
+    
     public void testBasicFromPartialEntityName() {
     	Collector c = new Collector();
     	
