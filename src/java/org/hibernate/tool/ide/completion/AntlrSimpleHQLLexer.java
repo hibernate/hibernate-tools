@@ -2,7 +2,7 @@ package org.hibernate.tool.ide.completion;
 
 import java.io.CharArrayReader;
 
-import org.hibernate.hql.antlr.HqlBaseLexer;
+import org.hibernate.hql.internal.antlr.HqlBaseLexer;
 
 import antlr.Token;
 import antlr.TokenStreamException;

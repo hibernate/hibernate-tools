@@ -25,7 +25,6 @@ import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
-import org.hibernate.util.DTDEntityResolver;
 
 /**
  * Initial implentation based on the Hbm2XTest class.

@@ -3,8 +3,9 @@ package org.hibernate.tool.hbmlint;
 import net.sf.cglib.transform.impl.InterceptFieldCallback;
 import net.sf.cglib.transform.impl.InterceptFieldEnabled;
 
-import org.hibernate.bytecode.javassist.FieldHandled;
-import org.hibernate.bytecode.javassist.FieldHandler;
+import org.hibernate.bytecode.internal.javassist.FieldHandled;
+import org.hibernate.bytecode.internal.javassist.FieldHandler;
+
 
 public class FakeNonLazy implements InterceptFieldEnabled, FieldHandled {
 

@@ -10,11 +10,11 @@ import java.util.Set;
 
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.engine.Versioning;
-import org.hibernate.engine.query.sql.NativeSQLQueryCollectionReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryJoinReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryRootReturn;
+import org.hibernate.engine.internal.Versioning;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryCollectionReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryJoinReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryRootReturn;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;

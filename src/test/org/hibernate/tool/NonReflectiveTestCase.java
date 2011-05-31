@@ -5,12 +5,14 @@ package org.hibernate.tool;
 import org.dom4j.io.SAXReader;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.SessionFactoryImplementor;
-import org.hibernate.util.DTDEntityResolver;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.internal.SessionImpl;
+import org.hibernate.internal.util.xml.DTDEntityResolver;
 
 public abstract class NonReflectiveTestCase extends BaseTestCase {
 
@@ -18,7 +20,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	private static Configuration cfg;
 	private static Dialect dialect;
 	private static Class lastTestClass;
-	private org.hibernate.classic.Session session;
+	private Session session;
 
 	
 	
@@ -115,7 +117,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 			if (stats) sessions.getStatistics().logSummary();
 			
 			if ( session!=null && session.isOpen() ) {
-				if ( session.isConnected() ) session.connection().rollback();
+				if ( session.isConnected() ) ((SessionImpl)session).connection().rollback();
 				session.close();
 				session = null;
 				fail("unclosed session");
@@ -127,7 +129,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 		catch (Throwable e) {
 			try {
 				if ( session!=null && session.isOpen() ) {
-					if ( session.isConnected() ) session.connection().rollback();
+					if ( session.isConnected() ) ((SessionImpl)session).connection().rollback();
 					session.close();
 				}
 			}
@@ -143,14 +145,14 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 		}
 	}
 
-	public org.hibernate.classic.Session openSession() throws HibernateException {
+	public Session openSession() throws HibernateException {
 		session = getSessions().openSession();
 		return session;
 	}
 
-	public org.hibernate.classic.Session openSession(Interceptor interceptor) 
+	public Session openSession(Interceptor interceptor) 
 	throws HibernateException {
-		session = getSessions().openSession(interceptor);
+		session = getSessions().withOptions().interceptor(interceptor).openSession();
 		return session;
 	}
 

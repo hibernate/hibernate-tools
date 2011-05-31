@@ -3,9 +3,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.EntityMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.classic.Session;
 import org.hibernate.metadata.ClassMetadata;
 
 
@@ -36,7 +36,7 @@ public class HibernateTestAuto {
 		while (iterator.hasNext() ) {
 			ClassMetadata element =  (ClassMetadata) iterator.next();
 			
-			List list = session.find("from " + element.getMappedClass(EntityMode.POJO).getName() );
+			List list = session.createQuery("from " + element.getMappedClass(EntityMode.POJO).getName() ).list();
 			System.out.println(list);
 		}
 	}

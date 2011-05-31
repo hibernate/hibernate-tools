@@ -15,8 +15,6 @@ import java.util.List;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
@@ -26,7 +24,12 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.test.TestHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseTestCase extends TestCase {
 
@@ -85,7 +88,7 @@ public abstract class BaseTestCase extends TestCase {
 		
 	}
 
-	protected static final Log SKIP_LOG = LogFactory.getLog("org.hibernate.tool.test.SKIPPED");
+	protected static final Logger SKIP_LOG = LoggerFactory.getLogger("org.hibernate.tool.test.SKIPPED");
 	
 	private File outputdir;
 	
@@ -143,21 +146,27 @@ public abstract class BaseTestCase extends TestCase {
 
 	public void assertNoTables() throws SQLException {
 		Configuration configuration = new Configuration();
-		Settings testSettings = configuration.buildSettings();
 		
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		
+		Settings testSettings = configuration.buildSettings(serviceRegistry);
+		
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Connection con = null;
         try {
 		
-		con = testSettings.getConnectionProvider().getConnection();
+		con = jdbcServices.getConnectionProvider().getConnection();
 		
 		JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(testSettings.getConnectionProvider(), testSettings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(), jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		Iterator tables = dialect.getTables( testSettings.getDefaultCatalogName(), testSettings.getDefaultSchemaName(), null );
 		
 		assertHasNext( 0, tables );
         } finally {
-        	testSettings.getConnectionProvider().closeConnection(con);	
+        	jdbcServices.getConnectionProvider().closeConnection(con);	
         }
 		
 	}

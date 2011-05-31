@@ -19,7 +19,7 @@ import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PropertySet;
 import org.hibernate.MappingNotFoundException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 /**
  * @author max
