@@ -76,6 +76,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testNeedQuote() {
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 		Settings buildSettings = cfg.buildSettings();
 		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 				

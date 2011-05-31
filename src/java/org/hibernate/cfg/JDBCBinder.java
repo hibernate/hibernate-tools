@@ -49,11 +49,13 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.internal.ServiceProxy;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
+import org.hibernate.type.TypeFactory;
+import org.hibernate.type.TypeResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +74,7 @@ public class JDBCBinder {
 
 	private final JDBCMetaDataConfiguration cfg;
 	private ReverseEngineeringStrategy revengStrategy;
+	private ServiceRegistry serviceRegistry;
 
 	/**
 	 * @param mappings
@@ -82,6 +85,7 @@ public class JDBCBinder {
 		this.settings = settings;
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
+		this.serviceRegistry = cfg.getServiceRegistry();
 	}
 
 	/**
@@ -89,24 +93,19 @@ public class JDBCBinder {
 	 */
 	public void readFromDatabase(String catalog, String schema, Mapping mapping) {
 
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		this.connectionProvider = jdbcServices.getConnectionProvider();
+
 		try {
 
 			DatabaseCollector collector = readDatabaseSchema(catalog, schema);
 			createPersistentClasses(collector, mapping); //move this to a different step!
 		}
 		catch (SQLException e) {
-			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
 			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
 		finally	{
-			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
-			this.connectionProvider = jdbcServices.getConnectionProvider();
-			if (connectionProvider instanceof ServiceProxy){
-				ConnectionProvider cp = ((ServiceProxy)connectionProvider).getTargetInstance();
-				if (cp instanceof Stoppable ) {
-					( ( Stoppable ) cp ).stop();
-				}
-			} else if ( connectionProvider instanceof Stoppable ) {
+			if ( connectionProvider instanceof Stoppable ) {
 				( ( Stoppable ) connectionProvider ).stop();
 			}
 		}
@@ -126,7 +125,7 @@ public class JDBCBinder {
 	     catalog = catalog!=null ? catalog : settings.getDefaultCatalogName();
 	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy, cfg.getServiceRegistry());
+	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy);
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;

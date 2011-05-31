@@ -34,7 +34,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-	private ServiceRegistry serviceRegistry = null;
     
 	protected void secondPassCompileForeignKeys(Table table, Set done)
 			throws MappingException {
@@ -47,27 +46,11 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	}
 	
 	public ServiceRegistry getServiceRegistry(){
-		if(serviceRegistry == null){
-			serviceRegistry = new ServiceRegistryBuilder( getProperties() ).buildServiceRegistry();
-		}
-		return serviceRegistry;
-	}
-	
-	private void destroyServiceRegistry(){
-		if (serviceRegistry instanceof BasicServiceRegistryImpl) {
-			( (BasicServiceRegistryImpl) serviceRegistry ).destroy();
-		}
-		serviceRegistry = null;
+		return new ServiceRegistryBuilder( getProperties() ).buildServiceRegistry();
 	}
 	
 	public Settings buildSettings() {
-		destroyServiceRegistry();
 		return buildSettings( getServiceRegistry() );
-	}
-	
-	public Settings buildSettings(ServiceRegistry serviceRegistry) {
-		this.serviceRegistry = serviceRegistry;
-		return super.buildSettings(serviceRegistry);
 	}
 	
 	public void readFromJDBC() {
