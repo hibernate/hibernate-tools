@@ -51,8 +51,9 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>3.5.6-Final</hibernateversion>
+		<hibernateversion>4.0.0.Alpha3</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
+		<hibernateCommonsAnnotationsVersion>3.2.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
@@ -82,8 +83,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>${hibernateversion}</version>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>${hibernateCommonsAnnotationsVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -195,6 +196,13 @@
 		<artifactId>${jdbc.driver.artifactId}</artifactId>
 		<version>${jdbc.driver.jdbc.driver.version}</version>
 		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>antlr</groupId>
+		<artifactId>antlr</artifactId>
+		<version>2.7.7</version>
+		<type>jar</type>
+		<scope>compile</scope>
 	</dependency>
 	</dependencies>
 
@@ -341,8 +349,8 @@
 					<includes>
 						<include>**/*.java</include>
 					</includes>
-					<source>1.4</source>
-					<target>1.4</target>
+					<source>1.5</source>
+					<target>1.5</target>
 				</configuration>
 			</plugin>
 			<plugin>
