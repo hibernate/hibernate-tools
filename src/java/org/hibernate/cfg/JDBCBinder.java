@@ -49,13 +49,11 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.internal.ServiceProxy;
 import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.type.TypeResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +103,12 @@ public class JDBCBinder {
 			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
 		finally	{
-			if ( connectionProvider instanceof Stoppable ) {
+			if (connectionProvider instanceof ServiceProxy){
+				ConnectionProvider cp = ((ServiceProxy)connectionProvider).getTargetInstance();
+				if (cp instanceof Stoppable ) {
+					( ( Stoppable ) cp ).stop();
+				}
+			} else if ( connectionProvider instanceof Stoppable ) {
 				( ( Stoppable ) connectionProvider ).stop();
 			}
 		}
