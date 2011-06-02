@@ -24,6 +24,7 @@ import java.util.Iterator;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.internal.util.ReflectHelper;
@@ -83,7 +84,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 		final Configuration configuration = getConfiguration();
 		if (schemaUpdate) {
-			SchemaUpdate update = new SchemaUpdate(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			SchemaUpdate update = new SchemaUpdate(builder.buildServiceRegistry(), configuration);
 			
 			// classic schemaupdate execution, will work with all releases
 			if(outputFileName == null && delimiter == null && haltOnError && format) 
