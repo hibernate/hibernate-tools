@@ -12,6 +12,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.hibernate.MappingException;
+import org.hibernate.cfg.Mappings;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
@@ -75,11 +76,12 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 		dropSQL = new ArrayList(TABLECOUNT);
 		createSQL = new ArrayList(TABLECOUNT);
 		Table lastTable = null;
+		Mappings mappings = cfg.createMappings();
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
 			Table table = new Table("perftest" + tablecount);
 			Column col = new Column("id");
 			//FIXME
-			SimpleValue sv = new SimpleValue(null, table);
+			SimpleValue sv = new SimpleValue(mappings, table);
 			sv.setTypeName("string");
 			col.setValue(sv);			
 			table.addColumn(col);
@@ -90,7 +92,7 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 			for(int colcount=0;colcount<COLCOUNT;colcount++) {
 				col = new Column("col"+tablecount+"_"+colcount);
 				//FIXME
-				sv = new SimpleValue(null, table);
+				sv = new SimpleValue(mappings, table);
 				sv.setTypeName("string");
 				col.setValue(sv);				
 				table.addColumn(col);
