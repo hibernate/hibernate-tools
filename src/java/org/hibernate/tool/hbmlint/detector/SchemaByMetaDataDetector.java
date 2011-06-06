@@ -68,7 +68,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		tableSelector = new TableSelectorStrategy(
 				new DefaultReverseEngineeringStrategy() );
 		reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(),
-				settings, tableSelector);
+				settings, tableSelector, serviceRegistry);
 		dbc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		mapping = cfg.buildMapping();
 	}

@@ -72,7 +72,6 @@ public class JDBCBinder {
 
 	private final JDBCMetaDataConfiguration cfg;
 	private ReverseEngineeringStrategy revengStrategy;
-	private ServiceRegistry serviceRegistry;
 
 	/**
 	 * @param mappings
@@ -83,7 +82,6 @@ public class JDBCBinder {
 		this.settings = settings;
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
-		this.serviceRegistry = cfg.getServiceRegistry();
 	}
 
 	/**
@@ -91,18 +89,18 @@ public class JDBCBinder {
 	 */
 	public void readFromDatabase(String catalog, String schema, Mapping mapping) {
 
-		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-		this.connectionProvider = jdbcServices.getConnectionProvider();
-
 		try {
 
 			DatabaseCollector collector = readDatabaseSchema(catalog, schema);
 			createPersistentClasses(collector, mapping); //move this to a different step!
 		}
 		catch (SQLException e) {
+			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
 			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
 		finally	{
+			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
+			this.connectionProvider = jdbcServices.getConnectionProvider();
 			if (connectionProvider instanceof ServiceProxy){
 				ConnectionProvider cp = ((ServiceProxy)connectionProvider).getTargetInstance();
 				if (cp instanceof Stoppable ) {
@@ -128,7 +126,7 @@ public class JDBCBinder {
 	     catalog = catalog!=null ? catalog : settings.getDefaultCatalogName();
 	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy);
+	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy, cfg.getServiceRegistry());
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
