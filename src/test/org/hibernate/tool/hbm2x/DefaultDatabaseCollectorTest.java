@@ -76,8 +76,8 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testNeedQuote() {
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 		Settings buildSettings = cfg.buildSettings();
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 				
 		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		assertTrue("The name must be quoted!", realMetaData.needQuote(SCHEMA));
