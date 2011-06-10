@@ -18,7 +18,7 @@ import org.hibernate.tool.hbm2x.doc.DocFile;
 import org.hibernate.tool.hbm2x.doc.DocFileManager;
 import org.hibernate.tool.hbm2x.doc.DocHelper;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 /**
  * Exporter implementation that creates Hibernate Documentation.

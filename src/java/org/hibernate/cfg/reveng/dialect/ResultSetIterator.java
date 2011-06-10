@@ -6,7 +6,8 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.hibernate.exception.SQLExceptionConverter;
+import org.hibernate.exception.spi.SQLExceptionConverter;
+
 
 /**
  * Iterator over a resultset; intended usage only for metadata reading.  

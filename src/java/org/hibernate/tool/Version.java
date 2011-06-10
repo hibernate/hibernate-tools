@@ -1,7 +1,7 @@
 package org.hibernate.tool;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final public class Version {
 
@@ -9,7 +9,7 @@ final public class Version {
 	
 	private static final Version instance = new Version();
 	
-	private static Log log = LogFactory.getLog( Version.class );
+	private static Logger log = LoggerFactory.getLogger( Version.class );
 
 	static {
 		log.info( "Hibernate Tools " + VERSION );

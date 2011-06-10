@@ -16,21 +16,20 @@ import java.util.Set;
 import net.sf.cglib.core.KeyFactory;
 
 import org.apache.commons.collections.MultiMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.hibernate.MappingException;
+import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.xml.XMLHelper;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
-import org.hibernate.util.StringHelper;
-import org.hibernate.util.XMLHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 public class OverrideRepository  {
 
-	final private static Log log = LogFactory.getLog( OverrideRepository.class );
+	final private static Logger log = LoggerFactory.getLogger( OverrideRepository.class );
 
 	final private transient XMLHelper xmlHelper;
 	final private transient EntityResolver entityResolver;

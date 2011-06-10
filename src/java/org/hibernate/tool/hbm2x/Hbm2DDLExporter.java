@@ -24,9 +24,10 @@ import java.util.Iterator;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
-import org.hibernate.util.ReflectHelper;
+import org.hibernate.internal.util.ReflectHelper;
 
 /**
  * Schema Export (.ddl) code generation. 
@@ -83,7 +84,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 		final Configuration configuration = getConfiguration();
 		if (schemaUpdate) {
-			SchemaUpdate update = new SchemaUpdate(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			SchemaUpdate update = new SchemaUpdate(builder.buildServiceRegistry(), configuration);
 			
 			// classic schemaupdate execution, will work with all releases
 			if(outputFileName == null && delimiter == null && haltOnError && format) 
@@ -156,7 +159,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			}
 
 		} else {
-			SchemaExport export = new SchemaExport(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			SchemaExport export = new SchemaExport(builder.buildServiceRegistry(), configuration);
 			if (null != outputFileName) {
 				export.setOutputFile(new File(getOutputDirectory(),
 						outputFileName).toString());
@@ -167,7 +172,8 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			export.setHaltOnError(haltOnError);
 			export.setFormat(format);
 			if (drop && create) {
-				export.create(scriptToConsole, exportToDatabase);
+				// not just drop or create but both!
+				export.execute(scriptToConsole, exportToDatabase, false, false);
 			} else {
 				export.execute(scriptToConsole, exportToDatabase, drop, create);
 			}

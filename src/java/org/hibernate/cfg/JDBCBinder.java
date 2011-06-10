@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
@@ -28,9 +26,11 @@ import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.engine.Mapping;
-import org.hibernate.engine.Versioning;
+import org.hibernate.engine.internal.Versioning;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.spi.Mapping;
+import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.collections.JoinedIterator;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -48,11 +48,14 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.internal.ServiceProxy;
+import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.util.JoinedIterator;
-import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -63,7 +66,7 @@ public class JDBCBinder {
 
 	private Settings settings;
 	private ConnectionProvider connectionProvider;
-	private static final Log log = LogFactory.getLog(JDBCBinder.class);
+	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
 
 	private final Mappings mappings;
 
@@ -86,18 +89,26 @@ public class JDBCBinder {
 	 */
 	public void readFromDatabase(String catalog, String schema, Mapping mapping) {
 
-		this.connectionProvider = settings.getConnectionProvider();
-
 		try {
 
 			DatabaseCollector collector = readDatabaseSchema(catalog, schema);
 			createPersistentClasses(collector, mapping); //move this to a different step!
 		}
 		catch (SQLException e) {
-			throw settings.getSQLExceptionConverter().convert(e, "Reading from database", null);
+			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
+			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
 		finally	{
-				if(connectionProvider!=null) connectionProvider.close();
+			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
+			this.connectionProvider = jdbcServices.getConnectionProvider();
+			if (connectionProvider instanceof ServiceProxy){
+				ConnectionProvider cp = ((ServiceProxy)connectionProvider).getTargetInstance();
+				if (cp instanceof Stoppable ) {
+					( ( Stoppable ) cp ).stop();
+				}
+			} else if ( connectionProvider instanceof Stoppable ) {
+				( ( Stoppable ) connectionProvider ).stop();
+			}
 		}
 
 	}
@@ -115,7 +126,7 @@ public class JDBCBinder {
 	     catalog = catalog!=null ? catalog : settings.getDefaultCatalogName();
 	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy);
+	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy, cfg.getServiceRegistry());
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
@@ -260,7 +271,7 @@ public class JDBCBinder {
             ForeignKey fk, Set processedColumns, boolean constrained, boolean inverseProperty) {
 
 
-        OneToOne value = new OneToOne(targetTable, rc);
+        OneToOne value = new OneToOne(mappings, targetTable, rc);
         value.setReferencedEntityName(revengStrategy
                 .tableToClassName(TableIdentifier.create(targetTable)));
 
@@ -309,7 +320,7 @@ public class JDBCBinder {
      * @param propName
      */
     private Property bindManyToOne(String propertyName, boolean mutable, Table table, ForeignKey fk, Set processedColumns) {
-        ManyToOne value = new ManyToOne(table);
+        ManyToOne value = new ManyToOne(mappings, table);
         value.setReferencedEntityName( fk.getReferencedEntityName() );
 		Iterator columns = fk.getColumnIterator();
         while ( columns.hasNext() ) {
@@ -407,7 +418,7 @@ public class JDBCBinder {
 
 		Table collectionTable = foreignKey.getTable();
 
-		Collection collection = new org.hibernate.mapping.Set(rc); // MASTER TODO: allow overriding collection type
+		Collection collection = new org.hibernate.mapping.Set(mappings, rc); // MASTER TODO: allow overriding collection type
 
 		collection.setCollectionTable(collectionTable); // CHILD+
 
@@ -423,7 +434,7 @@ public class JDBCBinder {
 
         if(manyToMany) {
 
-        	ManyToOne element = new ManyToOne( collection.getCollectionTable() );
+        	ManyToOne element = new ManyToOne(mappings, collection.getCollectionTable() );
         	//TODO: find the other foreignkey and choose the other side.
         	Iterator foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
         	List keys = new ArrayList();
@@ -449,7 +460,7 @@ public class JDBCBinder {
         } else {
         	String tableToClassName = bindCollection( rc, foreignKey, null, collection );
 
-        	OneToMany oneToMany = new OneToMany( collection.getOwner() );
+        	OneToMany oneToMany = new OneToMany(mappings, collection.getOwner() );
 
 			oneToMany.setReferencedEntityName( tableToClassName ); // Child
         	mappings.addSecondPass( new JDBCCollectionSecondPass(mappings, collection) );
@@ -468,7 +479,7 @@ public class JDBCBinder {
 				.getValue();
 		}
 
-		SimpleValue keyValue = new DependantValue( collectionTable, referencedKeyValue );
+		SimpleValue keyValue = new DependantValue(mappings, collectionTable, referencedKeyValue );
 		//keyValue.setForeignKeyName("none"); // Avoid creating the foreignkey
 		//key.setCascadeDeleteEnabled( "cascade".equals( subnode.attributeValue("on-delete") ) );
 		Iterator columnIterator = foreignKey.getColumnIterator();
@@ -777,7 +788,7 @@ public class JDBCBinder {
 	}
 
 	private SimpleValue bindColumnToSimpleValue(Table table, Column column, Mapping mapping, boolean generatedIdentifier) {
-		SimpleValue value = new SimpleValue(table);
+		SimpleValue value = new SimpleValue(mappings, table);
 		value.addColumn(column);
 		value.setTypeName(guessAndAlignType(table, column, mapping, generatedIdentifier));
 		return value;
@@ -825,7 +836,7 @@ public class JDBCBinder {
 				column.getLength(), column.getPrecision(), column.getScale(), column.isNullable(), generatedIdentifier
 		);
 
-		Type wantedType = TypeFactory.heuristicType(preferredHibernateType);
+		Type wantedType = mappings.getTypeResolver().heuristicType(preferredHibernateType);
 
 		if(wantedType!=null) {
 			int[] wantedSqlTypes = wantedType.sqlTypes(mapping);
@@ -865,7 +876,7 @@ public class JDBCBinder {
 	 * @return
 	 */
 	private SimpleValue handleCompositeKey(RootClass rc, Set processedColumns, List keyColumns, Mapping mapping) {
-		Component pkc = new Component(rc);
+		Component pkc = new Component(mappings, rc);
         pkc.setMetaAttributes(Collections.EMPTY_MAP);
         pkc.setEmbedded(false);
 
