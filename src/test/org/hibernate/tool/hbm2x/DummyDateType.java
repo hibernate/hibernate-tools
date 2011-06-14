@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -12,8 +13,7 @@ import org.hibernate.usertype.UserType;
 public class DummyDateType implements UserType {
 
 	public int[] sqlTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return new int[]{Types.DATE};
 	}
 
 	public Class returnedClass() {
