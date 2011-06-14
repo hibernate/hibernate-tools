@@ -159,7 +159,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			}
 
 		} else {
-			SchemaExport export = new SchemaExport(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			SchemaExport export = new SchemaExport(builder.buildServiceRegistry(), configuration);
 			if (null != outputFileName) {
 				export.setOutputFile(new File(getOutputDirectory(),
 						outputFileName).toString());
@@ -170,7 +172,8 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			export.setHaltOnError(haltOnError);
 			export.setFormat(format);
 			if (drop && create) {
-				export.create(scriptToConsole, exportToDatabase);
+				// not just drop or create but both!
+				export.execute(scriptToConsole, exportToDatabase, false, false);
 			} else {
 				export.execute(scriptToConsole, exportToDatabase, drop, create);
 			}
