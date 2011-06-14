@@ -4,17 +4,13 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Array;
@@ -33,6 +29,7 @@ import org.hibernate.tool.hbm2x.pojo.ImportContext;
 import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.visitor.JavaTypeFromValueVisitor;
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
@@ -198,34 +195,9 @@ public class Cfg2JavaTool {
 
 	}
 
-	private static Set NONPRIMITIVETYPES = null;
-
 	static public boolean isNonPrimitiveTypeName(String typeName) {
-		if ( NONPRIMITIVETYPES == null ) {
-			NONPRIMITIVETYPES = new HashSet();
-			Field[] fields = Hibernate.class.getFields();
-			for ( int i = 0; i < fields.length ; i++ ) {
-				Field field = fields[i];
-				if ( Modifier.isStatic( field.getModifiers() ) ) {
-					if ( Type.class.isAssignableFrom( field.getType() ) ) {
-						try {
-							Type type = (Type) field.get( Hibernate.class );
-							if ( !PRIMITIVES.containsKey( type.getName() ) ) {
-								NONPRIMITIVETYPES.add( type.getName() );
-							}
-						}
-						catch (IllegalArgumentException e) {
-							throw new ExporterException( "Could not create list of basic hibernate types", e );
-						}
-						catch (IllegalAccessException e) {
-							throw new ExporterException( "Could not create list of basic hibernate types", e );
-						}
-					}
-				}
-			}
-		}
-
-		return NONPRIMITIVETYPES.contains( typeName );
+		return (!PRIMITIVES.containsKey( typeName ))
+				&& new BasicTypeRegistry().getRegisteredType(typeName) != null;
 	}
 
 	private String getRawTypeName(Property p, boolean useGenerics, boolean preferRawTypeNames, ImportContext importContext) {
