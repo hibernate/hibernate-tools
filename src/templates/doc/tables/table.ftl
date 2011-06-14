@@ -15,7 +15,7 @@
 		<h2>Table ${table.name}</h2>
 
 		<#if table.comment?exists>
-			<p>${table.comment}</p>
+			<p>${c2h.escape(table.comment)}</p>
 		</#if>
 
 		<table id="column_summary">
@@ -272,7 +272,7 @@
 						<strong>Unique:</strong> ${column.unique?string}
 					</li>
 					<li>
-						<strong>Comment:</strong> ${column.comment?if_exists}
+						<strong>Comment:</strong> <#if column.comment?exists >${c2h.escape(column.comment)}</#if>
 					</li>
 				</ul>
 
