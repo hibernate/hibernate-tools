@@ -6,7 +6,7 @@ package org.hibernate.tool.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.util.ReflectHelper;
+import org.hibernate.internal.util.ReflectHelper;
 
 /**
  * Class that uses reflection to load AnnotatioConfiguration.

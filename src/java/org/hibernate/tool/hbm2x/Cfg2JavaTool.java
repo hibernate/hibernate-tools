@@ -14,10 +14,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -36,8 +35,9 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.visitor.JavaTypeFromValueVisitor;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.util.StringHelper;
+import org.hibernate.type.TypeResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper methods for javacode generation.
@@ -48,7 +48,7 @@ import org.hibernate.util.StringHelper;
  */
 public class Cfg2JavaTool {
 
-	private static final Log log = LogFactory.getLog( Cfg2JavaTool.class );	
+	private static final Logger log = LoggerFactory.getLogger( Cfg2JavaTool.class );	
 			
 	public Cfg2JavaTool() {
 
@@ -373,7 +373,7 @@ public class Cfg2JavaTool {
 			Type type = null;
 			if(entry.getValue() instanceof String) {
 				try {
-					type = TypeFactory.heuristicType((String) entry.getValue());
+					type = new TypeResolver().heuristicType((String) entry.getValue());
 				} catch(Throwable t) {
 					type = null;
 					typename = (String) entry.getValue();

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.internal.BasicServiceRegistryImpl;
 import org.hibernate.tool.hbmlint.detector.BadCachingDetector;
 import org.hibernate.tool.hbmlint.detector.InstrumentationDetector;
 import org.hibernate.tool.hbmlint.detector.SchemaByMetaDataDetector;
@@ -23,7 +26,10 @@ public class HbmLint implements IssueCollector {
 	
 	public void analyze(Configuration cfg) {
 		
-		Settings settings = cfg.buildSettings();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(cfg.getProperties());
+		BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+		Settings settings = cfg.buildSettings(serviceRegistry);
 		
 		for (int i = 0; i < detectors.length; i++) {
 			detectors[i].initialize( cfg, settings );

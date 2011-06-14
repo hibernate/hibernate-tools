@@ -1,7 +1,7 @@
 package org.hibernate.tool.hbmlint.detector;
 
 import org.hibernate.MappingException;
-import org.hibernate.bytecode.cglib.BytecodeProviderImpl;
+import org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.Settings;
@@ -25,7 +25,7 @@ public class InstrumentationDetector extends EntityModelDetector {
 		
 		if(Environment.getBytecodeProvider() instanceof BytecodeProviderImpl) {
 			cglibEnabled = true;
-		} else if(Environment.getBytecodeProvider() instanceof org.hibernate.bytecode.javassist.BytecodeProviderImpl) {
+		} else if(Environment.getBytecodeProvider() instanceof BytecodeProviderImpl) {
 			javassistEnabled = true;
 		}		
 	}

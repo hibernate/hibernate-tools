@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.exception.SQLExceptionConverter;
 
 public class CachedMetaDataDialect implements MetaDataDialect {
 	

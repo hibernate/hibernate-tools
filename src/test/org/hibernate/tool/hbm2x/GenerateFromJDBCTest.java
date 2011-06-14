@@ -5,10 +5,6 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
@@ -22,11 +18,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
+import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.xml.DTDEntityResolver;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.test.TestHelper;
-import org.hibernate.util.DTDEntityResolver;
-import org.hibernate.util.StringHelper;
 
 /**
  * @author max

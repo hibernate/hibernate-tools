@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Environment;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
