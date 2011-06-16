@@ -63,7 +63,7 @@
 <#include "meta.hbm.ftl"/>
 
 <#if clazz.table.comment?exists  && clazz.table.comment?trim?length!=0>
- <comment>${clazz.table.comment}</comment>
+ <comment>${c2h.escape(clazz.table.comment)}</comment>
 </#if>
 <#-- TODO: move this to id.hbm.ftl -->
 <#if !c2h.isSubclass(clazz)>

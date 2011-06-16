@@ -15,7 +15,7 @@
 		<h2>Table ${table.name}</h2>
 
 		<#if table.comment?exists>
-			<p>${table.comment}</p>
+			<p>${c2h.escape(table.comment)}</p>
 		</#if>
 
 		<table id="column_summary">
