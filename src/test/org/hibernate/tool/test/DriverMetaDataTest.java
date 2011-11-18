@@ -11,7 +11,6 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 
@@ -43,7 +42,7 @@ protected String[] getCreateSQL() {
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		

@@ -29,7 +29,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
+import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 /**
@@ -95,7 +95,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	 */
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
 		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 				
 		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );

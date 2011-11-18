@@ -4,24 +4,20 @@
  */
 package org.hibernate.cfg;
 
-import java.util.Properties;
 import java.util.Set;
 
 import org.dom4j.Element;
 import org.hibernate.MappingException;
-import org.hibernate.SessionFactory;
-import org.hibernate.SessionFactoryObserver;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
-import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
+import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,14 +44,16 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	
 	public ServiceRegistry getServiceRegistry(){
 		if(serviceRegistry == null){
-			serviceRegistry = new ServiceRegistryBuilder( getProperties() ).buildServiceRegistry();
+			serviceRegistry = new ServiceRegistryBuilder()
+				.applySettings(getProperties())
+				.buildServiceRegistry();
 		}
 		return serviceRegistry;
 	}
 	
 	private void destroyServiceRegistry(){
-		if (serviceRegistry instanceof BasicServiceRegistryImpl) {
-			( (BasicServiceRegistryImpl) serviceRegistry ).destroy();
+		if (serviceRegistry instanceof StandardServiceRegistryImpl) {
+			( (StandardServiceRegistryImpl) serviceRegistry ).destroy();
 		}
 		serviceRegistry = null;
 	}

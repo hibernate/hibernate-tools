@@ -37,7 +37,9 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 		configuration.buildMappings();
 	
 		SchemaByMetaDataDetector analyzer = new SchemaByMetaDataDetector();
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder( configuration.getProperties() ).buildServiceRegistry();
+		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+			.applySettings( configuration.getProperties() )
+			.buildServiceRegistry();
 		analyzer.initialize( configuration, configuration.buildSettings(serviceRegistry) );
 		
 		Iterator tableMappings = configuration.getTableMappings();

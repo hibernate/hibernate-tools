@@ -69,7 +69,9 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		Statement statement = null;
 		Connection con = null;
 		Settings settings = null;
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder( getConfiguration().getProperties() ).buildServiceRegistry();
+		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+			.applySettings( getConfiguration().getProperties() )
+			.buildServiceRegistry();
     	
         try {
         	settings = getConfiguration().buildSettings(serviceRegistry);
@@ -91,13 +93,13 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		return "org/hibernate/tool/stat/";
 	}
 	
-	protected void addMappings(String[] files, Configuration cfg) {
+	/*protected void addMappings(String[] files, Configuration cfg) {
 		Properties prop = new Properties();
 		prop.put(Environment.CACHE_PROVIDER,
 				"org.hibernate.cache.EhCacheProvider");
 		cfg.addProperties(prop);
 		super.addMappings(files, cfg);
-	}
+	}*/
 	
 	protected String[] getMappings() {
 		return new String[] { "UserGroup.hbm.xml"};

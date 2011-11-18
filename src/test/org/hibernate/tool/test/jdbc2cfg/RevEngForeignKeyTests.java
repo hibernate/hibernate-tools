@@ -23,7 +23,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 /**
@@ -227,7 +226,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
 			//builder.configure();
 			builder.applySettings(Environment.getProperties());
-			BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
 			
 			settings = new SettingsFactory() {
 				// trick to get hibernate.properties settings for defaultschema/catalog in here

@@ -31,8 +31,8 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 /**
@@ -135,12 +135,12 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 
 
 	static Settings settings;
-	static BasicServiceRegistryImpl serviceRegistry;
+	static ServiceRegistry serviceRegistry;
 	
 	private OverrideRepository buildOverrideRepository() {
 		if(settings==null) {
 			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
 			settings = new SettingsFactory() {
 				// trick to get hibernate.properties settings for defaultschema/catalog in here
 			}.buildSettings(Environment.getProperties(), serviceRegistry);

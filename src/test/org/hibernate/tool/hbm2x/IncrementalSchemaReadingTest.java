@@ -17,10 +17,9 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.BasicServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbmlint.detector.TableSelectorStrategy;
 
@@ -49,7 +48,7 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 	public void testReadSchemaIncremental() {
 		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
-		BasicServiceRegistryImpl serviceRegistry = (BasicServiceRegistryImpl) builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
 
 		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 
