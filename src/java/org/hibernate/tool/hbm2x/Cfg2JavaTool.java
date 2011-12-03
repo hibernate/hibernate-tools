@@ -36,7 +36,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.visitor.JavaTypeFromValueVisitor;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
+import org.hibernate.type.TypeResolver;
 import org.hibernate.util.StringHelper;
 
 /**
@@ -49,7 +49,8 @@ import org.hibernate.util.StringHelper;
 public class Cfg2JavaTool {
 
 	private static final Log log = LogFactory.getLog( Cfg2JavaTool.class );	
-			
+	private final TypeResolver typeResolver = new TypeResolver();
+	
 	public Cfg2JavaTool() {
 
 	}
@@ -373,7 +374,7 @@ public class Cfg2JavaTool {
 			Type type = null;
 			if(entry.getValue() instanceof String) {
 				try {
-					type = TypeFactory.heuristicType((String) entry.getValue());
+					type = typeResolver.heuristicType((String) entry.getValue());
 				} catch(Throwable t) {
 					type = null;
 					typename = (String) entry.getValue();

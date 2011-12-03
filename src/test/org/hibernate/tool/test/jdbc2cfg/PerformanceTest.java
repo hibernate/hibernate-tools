@@ -77,7 +77,7 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
 			Table table = new Table("perftest" + tablecount);
 			Column col = new Column("id");
-			SimpleValue sv = new SimpleValue(table);
+			SimpleValue sv = new SimpleValue( cfg.getMappings(), table );
 			sv.setTypeName("string");
 			col.setValue(sv);			
 			table.addColumn(col);
@@ -87,7 +87,7 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 			
 			for(int colcount=0;colcount<COLCOUNT;colcount++) {
 				col = new Column("col"+tablecount+"_"+colcount);
-				sv = new SimpleValue(table);
+				sv = new SimpleValue( cfg.getMappings(), table );
 				sv.setTypeName("string");
 				col.setValue(sv);				
 				table.addColumn(col);
