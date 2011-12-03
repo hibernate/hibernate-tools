@@ -50,8 +50,6 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.type.TypeResolver;
 import org.hibernate.util.JoinedIterator;
 import org.hibernate.util.StringHelper;
 
@@ -70,7 +68,6 @@ public class JDBCBinder {
 
 	private final JDBCMetaDataConfiguration cfg;
 	private ReverseEngineeringStrategy revengStrategy;
-	private final TypeResolver typeResolver = new TypeResolver();
 	
 	/**
 	 * @param mappings
@@ -827,7 +824,7 @@ public class JDBCBinder {
 				column.getLength(), column.getPrecision(), column.getScale(), column.isNullable(), generatedIdentifier
 		);
 
-		Type wantedType = typeResolver.heuristicType(preferredHibernateType);
+		Type wantedType = mappings.getTypeResolver().heuristicType(preferredHibernateType);
 
 		if(wantedType!=null) {
 			int[] wantedSqlTypes = wantedType.sqlTypes(mapping);
