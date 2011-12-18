@@ -8,6 +8,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.Table;
 
 /**
@@ -27,6 +28,11 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return null;
 	}
 
+	public PropertyGeneration columnToPropertyGeneration(TableIdentifier table, String column) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public String foreignKeyToCollectionName(String keyname,
 			TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
 		// TODO Auto-generated method stub

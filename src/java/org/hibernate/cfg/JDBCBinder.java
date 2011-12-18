@@ -43,6 +43,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -357,7 +358,7 @@ public class JDBCBinder {
         	value.setFetchMode(FetchMode.SELECT);
         }
 
-        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null);
+        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null, PropertyGeneration.NEVER);
 
 	}
 
@@ -394,7 +395,7 @@ public class JDBCBinder {
         	value.setFetchMode(FetchMode.SELECT);
         }
 
-        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null);
+        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null, PropertyGeneration.NEVER);
 	}
 
 	/**
@@ -644,7 +645,7 @@ public class JDBCBinder {
 			id.setNullValue("undefined");
 		}
 
-		Property property = makeProperty(tableIdentifier, makeUnique(rc,idPropertyname), id, true, true, false, null, null);
+		Property property = makeProperty(tableIdentifier, makeUnique(rc,idPropertyname), id, true, true, false, null, null, PropertyGeneration.NEVER);
 		rc.setIdentifierProperty(property);
 		rc.setIdentifier(id);
 
@@ -715,14 +716,17 @@ public class JDBCBinder {
 			if ( !processedColumns.contains(column) ) {
 				checkColumn(column);
 
-				String propertyName = revengStrategy.columnToPropertyName(TableIdentifier.create(table), column.getName() );
-
+				TableIdentifier ti = TableIdentifier.create(table);
+				String propertyName = revengStrategy.columnToPropertyName( ti, column.getName() );
+				PropertyGeneration propertyGeneration = revengStrategy.columnToPropertyGeneration( ti, column.getName() );
+				
 				Property property = bindBasicProperty(
 						makeUnique(rc,propertyName),
 						table,
 						column,
 						processedColumns,
-						mapping
+						mapping,
+						propertyGeneration
 					);
 
 				rc.addProperty(property);
@@ -761,7 +765,7 @@ public class JDBCBinder {
 
 		processed.add(column);
 		String propertyName = revengStrategy.columnToPropertyName( identifier, column.getName() );
-		Property property = bindBasicProperty(makeUnique(rc, propertyName), table, column, processed, mapping);
+		Property property = bindBasicProperty(makeUnique(rc, propertyName), table, column, processed, mapping, PropertyGeneration.NEVER );
 		rc.addProperty(property);
 		rc.setVersion(property);
 		rc.setOptimisticLockMode(Versioning.OPTIMISTIC_LOCK_VERSION);
@@ -769,11 +773,11 @@ public class JDBCBinder {
 
 	}
 
-	private Property bindBasicProperty(String propertyName, Table table, Column column, Set processedColumns, Mapping mapping) {
+	private Property bindBasicProperty(String propertyName, Table table, Column column, Set processedColumns, Mapping mapping, PropertyGeneration propertyGeneration) {
 
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
 
-		return makeProperty(TableIdentifier.create( table ), propertyName, value, true, true, false, null, null);
+		return makeProperty(TableIdentifier.create( table ), propertyName, value, true, true, false, null, null, propertyGeneration);
 	}
 
 	private SimpleValue bindColumnToSimpleValue(Table table, Column column, Mapping mapping, boolean generatedIdentifier) {
@@ -894,7 +898,7 @@ public class JDBCBinder {
                     checkColumn(column);
 
                     String propertyName = revengStrategy.columnToPropertyName( TableIdentifier.create(table), column.getName() );
-					property = bindBasicProperty( makeUnique(pkc, propertyName), table, column, processedColumns, mapping);
+					property = bindBasicProperty( makeUnique(pkc, propertyName), table, column, processedColumns, mapping, PropertyGeneration.NEVER );
 
                     processedColumns.add(column);
                 }
@@ -1003,7 +1007,7 @@ public class JDBCBinder {
         }
     }
 
-    private Property makeProperty(TableIdentifier table, String propertyName, Value value, boolean insertable, boolean updatable, boolean lazy, String cascade, String propertyAccessorName) {
+    private Property makeProperty(TableIdentifier table, String propertyName, Value value, boolean insertable, boolean updatable, boolean lazy, String cascade, String propertyAccessorName, PropertyGeneration propertyGeneration) {
     	log.debug("Building property " + propertyName);
         Property prop = new Property();
 		prop.setName(propertyName);
@@ -1013,6 +1017,7 @@ public class JDBCBinder {
 		prop.setLazy(lazy);
 		prop.setCascade(cascade==null?"none":cascade);
 		prop.setPropertyAccessorName(propertyAccessorName==null?"property":propertyAccessorName);
+		prop.setGeneration( propertyGeneration );
 		bindMeta(prop, table);
 
 		return prop;

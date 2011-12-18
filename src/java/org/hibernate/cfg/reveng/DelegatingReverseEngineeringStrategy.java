@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.Table;
 
 public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringStrategy {
@@ -23,6 +24,10 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?null:delegate.columnToPropertyName(table, column);
 	}
 
+	public PropertyGeneration columnToPropertyGeneration(TableIdentifier table, String column) {
+		return delegate==null?null:delegate.columnToPropertyGeneration(table, column);
+	}
+	
 	public boolean excludeTable(TableIdentifier ti) {
 		return delegate==null?false:delegate.excludeTable(ti);
 	}

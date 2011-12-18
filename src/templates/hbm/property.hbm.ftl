@@ -18,6 +18,9 @@
 <#if !property.optimisticLocked>
         optimistic-lock="false"
 </#if>
+<#if property.generation.name != "never">
+        generated="${property.generation.name}"
+</#if>
 <#if property.value.hasFormula()>
 <#assign formula = c2h.getFormulaForProperty(property)>
 <#if formula?has_content>

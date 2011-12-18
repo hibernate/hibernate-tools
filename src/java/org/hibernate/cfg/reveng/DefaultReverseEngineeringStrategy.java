@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.Table;
 import org.hibernate.util.StringHelper;
 
@@ -44,6 +45,10 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return keywordCheck( decapitalize );
 	}
 
+	public PropertyGeneration columnToPropertyGeneration(TableIdentifier table, String column) {
+		return PropertyGeneration.NEVER;
+	}	
+	
 	private String keywordCheck(String possibleKeyword) {
 		if(ReverseEngineeringStrategyUtil.isReservedJavaKeyword(possibleKeyword)) {
 			possibleKeyword = possibleKeyword + "_";
