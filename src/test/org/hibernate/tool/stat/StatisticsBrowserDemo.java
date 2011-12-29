@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Properties;
 
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.Settings;
-import org.hibernate.classic.Session;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.NonReflectiveTestCase;
 
 public class StatisticsBrowserDemo extends NonReflectiveTestCase {
@@ -66,9 +69,13 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		Statement statement = null;
 		Connection con = null;
 		Settings settings = null;
+		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+			.applySettings( getConfiguration().getProperties() )
+			.buildServiceRegistry();
+    	
         try {
-        	settings = getConfiguration().buildSettings();
-        	con = settings.getConnectionProvider().getConnection();
+        	settings = getConfiguration().buildSettings(serviceRegistry);
+        	con = serviceRegistry.getService(JdbcServices.class).getConnectionProvider().getConnection();
         	statement = con.createStatement();
         	statement.execute("drop table Session_attributes");
         	statement.execute("drop table Users");
@@ -76,7 +83,7 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
         	con.commit();
         } finally {
         	if (statement!=null) statement.close();
-        	settings.getConnectionProvider().closeConnection(con);
+        	serviceRegistry.getService(JdbcServices.class).getConnectionProvider().closeConnection(con);
         }
         
 		super.tearDown();
@@ -86,13 +93,13 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		return "org/hibernate/tool/stat/";
 	}
 	
-	protected void addMappings(String[] files, Configuration cfg) {
+	/*protected void addMappings(String[] files, Configuration cfg) {
 		Properties prop = new Properties();
 		prop.put(Environment.CACHE_PROVIDER,
 				"org.hibernate.cache.EhCacheProvider");
 		cfg.addProperties(prop);
 		super.addMappings(files, cfg);
-	}
+	}*/
 	
 	protected String[] getMappings() {
 		return new String[] { "UserGroup.hbm.xml"};

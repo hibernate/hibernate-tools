@@ -10,14 +10,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author max
@@ -25,7 +27,7 @@ import org.hibernate.mapping.Table;
  */
 public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 
-	private Log log = LogFactory.getLog( this.getClass() );
+	private Logger log = LoggerFactory.getLogger( this.getClass() );
 	
 	public JDBCMetaDataBinderTestCase() {
 		super( null );
@@ -71,10 +73,13 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	 */
 	protected void executeDDL(String[] sqls, boolean ignoreErrors) throws SQLException {		
 		Configuration configuration = new Configuration();
-		Settings testSettings = configuration.buildSettings();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		
-		if(!appliesTo( testSettings.getDialect() )) {
-			fail("test case does not apply to " + testSettings.getDialect());
+		if(!appliesTo( jdbcServices.getDialect() )) {
+			fail("test case does not apply to " + jdbcServices.getDialect());
 			return; // don't do anything to avoid crippled db
 		}
 		
@@ -82,7 +87,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 		Connection con = null;
         try {
         	
-		con = testSettings.getConnectionProvider().getConnection();
+		con = jdbcServices.getConnectionProvider().getConnection();
 		
 		DatabaseMetaData metaData = con.getMetaData();
 		storesLowerCaseIdentifiers = metaData.storesLowerCaseIdentifiers();
@@ -112,7 +117,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 		con.commit();
         } finally {
         	if (statement!=null) statement.close();
-        	testSettings.getConnectionProvider().closeConnection(con);
+        	jdbcServices.getConnectionProvider().closeConnection(con);
         	
         }
 	}

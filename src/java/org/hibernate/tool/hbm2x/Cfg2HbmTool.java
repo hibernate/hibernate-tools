@@ -10,11 +10,11 @@ import java.util.Set;
 
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.engine.Versioning;
-import org.hibernate.engine.query.sql.NativeSQLQueryCollectionReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryJoinReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryReturn;
-import org.hibernate.engine.query.sql.NativeSQLQueryRootReturn;
+import org.hibernate.engine.internal.Versioning;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryCollectionReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryJoinReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryRootReturn;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;
@@ -427,6 +427,35 @@ public class Cfg2HbmTool {
 		});						
 		
 		return accept.booleanValue();
+	}
+	
+	/**
+	 * Encodes special characters by standard XML/HTML predefined entities.
+	 * */
+	public String escape(String comment) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < comment.length(); i++) {
+			char ch = comment.charAt(i);
+			switch (ch) {
+			case '&':
+				if ((i <= comment.length() - 4)
+					&& comment.substring(i + 1, i + 5).equals("amp;")){
+					sb.append(ch);//already escaped
+					break;
+				}
+				sb.append("&amp;");
+				break;
+			case '<':
+				sb.append("&lt;");
+				break;
+			case '>':
+				sb.append("&gt;");
+				break;
+			default:
+				sb.append(ch);
+			}
+		}
+		return sb.toString();
 	}
 
 	public boolean isSubclass(PersistentClass clazz) {

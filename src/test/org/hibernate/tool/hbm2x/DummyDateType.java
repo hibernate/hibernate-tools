@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
 
 public class DummyDateType implements UserType {
 
 	public int[] sqlTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return new int[]{Types.DATE};
 	}
 
 	public Class returnedClass() {
@@ -27,16 +28,6 @@ public class DummyDateType implements UserType {
 	public int hashCode(Object x) throws HibernateException {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public Object deepCopy(Object value) throws HibernateException {
@@ -63,5 +54,22 @@ public class DummyDateType implements UserType {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//@Override
+	public Object nullSafeGet(ResultSet rs, String[] names,
+			SessionImplementor session, Object owner)
+			throws HibernateException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//@Override
+	public void nullSafeSet(PreparedStatement st, Object value, int index,
+			SessionImplementor session) throws HibernateException, SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

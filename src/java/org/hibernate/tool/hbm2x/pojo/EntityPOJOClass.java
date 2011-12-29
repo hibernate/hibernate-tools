@@ -33,8 +33,8 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.ForeignKeyDirection;
-import org.hibernate.util.JoinedIterator;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.collections.JoinedIterator;
+import org.hibernate.internal.util.StringHelper;
 
 public class EntityPOJOClass extends BasicPOJOClass {
 

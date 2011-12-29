@@ -23,7 +23,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.util.DTDEntityResolver;
 
 public class ManyToManyTest extends NonReflectiveTestCase {
 

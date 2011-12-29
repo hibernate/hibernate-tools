@@ -1,27 +1,15 @@
 package org.hibernate.tool.hbmlint;
 
-import net.sf.cglib.transform.impl.InterceptFieldCallback;
-import net.sf.cglib.transform.impl.InterceptFieldEnabled;
+import org.hibernate.bytecode.internal.javassist.FieldHandled;
+import org.hibernate.bytecode.internal.javassist.FieldHandler;
 
-import org.hibernate.bytecode.javassist.FieldHandled;
-import org.hibernate.bytecode.javassist.FieldHandler;
 
-public class FakeNonLazy implements InterceptFieldEnabled, FieldHandled {
+public class FakeNonLazy implements FieldHandled {
 
 	long id;
 	
 	public FakeNonLazy(long id) {
 		this.id = id;
-	}
-
-	public InterceptFieldCallback getInterceptFieldCallback() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setInterceptFieldCallback(InterceptFieldCallback callback) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public FieldHandler getFieldHandler() {

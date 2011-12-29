@@ -6,18 +6,21 @@ package org.hibernate.cfg;
 
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.engine.Mapping;
+import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.type.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author max
@@ -25,9 +28,9 @@ import org.hibernate.type.Type;
  */
 public class JDBCMetaDataConfiguration extends Configuration {
 
-    private static final Log log = LogFactory.getLog(JDBCMetaDataConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-
+	private ServiceRegistry serviceRegistry = null;
     
 	protected void secondPassCompileForeignKeys(Table table, Set done)
 			throws MappingException {
@@ -35,12 +38,42 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		// TODO: doing nothing to avoid creating foreignkeys which is NOT actually in the database. 
 	}
 	
+	public JDBCMetaDataConfiguration(){
+		
+	}
 	
+	public ServiceRegistry getServiceRegistry(){
+		if(serviceRegistry == null){
+			serviceRegistry = new ServiceRegistryBuilder()
+				.applySettings(getProperties())
+				.buildServiceRegistry();
+		}
+		return serviceRegistry;
+	}
+	
+	private void destroyServiceRegistry(){
+		if (serviceRegistry instanceof StandardServiceRegistryImpl) {
+			( (StandardServiceRegistryImpl) serviceRegistry ).destroy();
+		}
+		serviceRegistry = null;
+	}
+	
+	public Settings buildSettings() {
+		destroyServiceRegistry();
+		return buildSettings( getServiceRegistry() );
+	}
+	
+	public Settings buildSettings(ServiceRegistry serviceRegistry) {
+		this.serviceRegistry = serviceRegistry;
+		return super.buildSettings(serviceRegistry);
+	}
 	
 	public void readFromJDBC() {
-		JDBCBinder binder = new JDBCBinder(this, buildSettings(), createMappings(),revEngStrategy);
+
+		JDBCBinder binder = new JDBCBinder(this, buildSettings(), createMappings(), revEngStrategy);
 		
 		binder.readFromDatabase(null, null, buildMapping(this));
+		
 	}
 
 	static private Mapping buildMapping(final Configuration cfg) {
@@ -95,8 +128,9 @@ public class JDBCMetaDataConfiguration extends Configuration {
     }
 	    
     protected void parseMappingElement(Element subelement, String name) {
-        if(!ignoreconfigxmlmapppings ) {            
-            super.parseMappingElement(subelement, name);
+        if(!ignoreconfigxmlmapppings ) {  
+        	//FIXME the method is private
+           // super.parseMappingElement(subelement, name);
         } 
         else {
             log.info("Ignoring " + name + " mapping");

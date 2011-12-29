@@ -3,8 +3,6 @@ package org.hibernate.cfg.reveng.dialect;
 import java.util.Iterator;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.exception.SQLExceptionConverter;
 
 /**
  * Interface for fetching metadata from databases.

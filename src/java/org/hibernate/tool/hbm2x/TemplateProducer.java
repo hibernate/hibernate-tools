@@ -8,13 +8,13 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class TemplateProducer {
 
-	private static final Log log = LogFactory.getLog(TemplateProducer.class);
+	private static final Logger log = LoggerFactory.getLogger(TemplateProducer.class);
 	private final TemplateHelper th;
 	private ArtifactCollector ac;
 	

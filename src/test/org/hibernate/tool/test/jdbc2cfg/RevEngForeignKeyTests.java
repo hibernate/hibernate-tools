@@ -21,6 +21,8 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 /**
@@ -37,6 +39,8 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 	}
 
 	private Settings settings;
+	
+	private ServiceRegistry serviceRegistry;
 
 	public void testDefaultBiDirectional() {
 		
@@ -219,9 +223,14 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 
 	private OverrideRepository buildOverrideRepository() {
 		if(settings==null) {
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			//builder.configure();
+			builder.applySettings(Environment.getProperties());
+			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+			
 			settings = new SettingsFactory() {
 				// trick to get hibernate.properties settings for defaultschema/catalog in here
-			}.buildSettings(Environment.getProperties());
+			}.buildSettings(Environment.getProperties(), serviceRegistry);
 		}
 		//return new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
 		return new OverrideRepository();

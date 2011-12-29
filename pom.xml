@@ -11,7 +11,7 @@
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
-	<version>3.5.0.Alpha-SNAPSHOT</version>
+	<version>3.5.0.Beta-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Hibernate Tools</name>
@@ -51,8 +51,9 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>3.5.6-Final</hibernateversion>
+		<hibernateversion>4.0.0.CR6</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
+		<hibernateCommonsAnnotationsVersion>3.2.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
@@ -63,7 +64,7 @@
 		<jdbc.pass/>
 		<jdbc.driver.groupId>hsqldb</jdbc.driver.groupId>
 	    <jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
-	    <jdbc.driver.jdbc.driver.version>1.8.0.2</jdbc.driver.jdbc.driver.version>		
+	    <jdbc.driver.jdbc.driver.version>1.8.0.10</jdbc.driver.jdbc.driver.version>		
 	    <!-- End of settings for Database connection -->
 	</properties>
 	
@@ -82,8 +83,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>${hibernateversion}</version>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>${hibernateCommonsAnnotationsVersion}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -109,12 +110,6 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.1</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-		    <groupId>cglib</groupId>
-		    <artifactId>cglib</artifactId>
-		    <version>2.2</version>
-		    <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -154,8 +149,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.2.0-v_671</version>
+			<artifactId>core</artifactId>
+			<version>3.2.0.666</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -196,6 +191,13 @@
 		<version>${jdbc.driver.jdbc.driver.version}</version>
 		<scope>test</scope>
 	</dependency>
+	<dependency>
+		<groupId>antlr</groupId>
+		<artifactId>antlr</artifactId>
+		<version>2.7.7</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -229,7 +231,11 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<includes>
-						<include>**/*Test.java</include> 
+						<include>**/*hbm2hbmxml*/*.java</include> <!-- 69 -->
+						<include>**/*query*/*.java</include> <!-- 1 -->
+						<include>**/*jdbc2cfg*/*.java</include> <!--  90 (2 error, 2 failures) -->
+						<include>**/*hbm2x*/*.java</include>
+						
 					</includes>
 				</configuration>
 			</plugin>
@@ -337,8 +343,8 @@
 					<includes>
 						<include>**/*.java</include>
 					</includes>
-					<source>1.4</source>
-					<target>1.4</target>
+					<source>1.5</source>
+					<target>1.5</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -462,6 +468,10 @@
 			repository to your settings.xml See also
 			http://community.jboss.org/wiki/ContributingtoHibernateSearch
 		-->
+		<repository>
+			<id>jboss</id>
+  			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+  		</repository>
 	</repositories>
 
 

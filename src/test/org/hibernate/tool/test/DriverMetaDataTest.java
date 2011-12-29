@@ -8,6 +8,9 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 
@@ -38,10 +41,13 @@ protected String[] getCreateSQL() {
 	public void testExportedKeys() {
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		Settings settings = cfg.buildSettings(serviceRegistry);
 		
-		Settings settings = cfg.buildSettings();
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier("tab_master") ); 
 		
@@ -73,10 +79,13 @@ protected String[] getCreateSQL() {
 	public void testDataType() {
 		
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
+
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		Settings settings = cfg.buildSettings(serviceRegistry);
 		
-		Settings settings = cfg.buildSettings();
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getColumns( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), "test", null ); 
 		
@@ -94,9 +103,12 @@ protected String[] getCreateSQL() {
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
 		
-		Settings settings = cfg.buildSettings();
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		Settings settings = cfg.buildSettings(serviceRegistry);
 		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(settings.getConnectionProvider(), settings.getSQLExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		
 		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier( "TAB_MASTER"));
 		
