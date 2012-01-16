@@ -93,16 +93,17 @@ public class JDBCMetaDataConfiguration extends Configuration {
     public void setPreferBasicCompositeIds(boolean flag) {
         preferBasicCompositeIds = flag;
     }
-	    
+    
     protected void parseMappingElement(Element subelement, String name) {
-        if(!ignoreconfigxmlmapppings ) {            
-            super.parseMappingElement(subelement, name);
+        if(!ignoreconfigxmlmapppings ) {  
+        	//FIXME the method is private
+           // super.parseMappingElement(subelement, name);
         } 
         else {
             log.info("Ignoring " + name + " mapping");
         }
     }
-
+	    
 	public void setReverseEngineeringStrategy(ReverseEngineeringStrategy reverseEngineeringStrategy) {
 		this.revEngStrategy = reverseEngineeringStrategy;		
 	}
