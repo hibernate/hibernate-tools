@@ -107,8 +107,10 @@ public class ConfigurationTask extends Task {
 	protected Properties getProperties() {
 		if (propertyFile!=null) { 
 			Properties properties = new Properties(); // TODO: should we "inherit" from the ant projects properties ?
+			FileInputStream is = null;
 			try {
-				properties.load(new FileInputStream(propertyFile) );
+				is = new FileInputStream(propertyFile);
+				properties.load(is);
 				return properties;
 			} 
 			catch (FileNotFoundException e) {
@@ -116,7 +118,13 @@ public class ConfigurationTask extends Task {
 			} 
 			catch (IOException e) {
 				throw new BuildException("Problem while loading " + propertyFile,e);				
-			}		
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e) {}
+				}
+			}
 		} else {
 			return null;
 		}
