@@ -189,8 +189,15 @@ public class GenericExporterTest extends NonReflectiveTestCase {
 		ge.start();		
 		
 		Properties generated = new Properties();
-		generated.load(new FileInputStream(new File(getOutputDir(), "org/hibernate/tool/hbm2x/genericArticle.txt")));
-		
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(new File(getOutputDir(), "org/hibernate/tool/hbm2x/genericArticle.txt"));
+			generated.load(is);
+		} finally {
+			if (is != null) {
+				is.close();
+			}
+		}
 		assertEquals(generated.getProperty("booleanProperty"), "true");
 		assertEquals(generated.getProperty("hibernatetool.booleanProperty"), "true");
 		assertNull(generated.getProperty("booleanWasTrue"));

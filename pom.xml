@@ -11,7 +11,7 @@
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
-	<version>3.5.0.Alpha-SNAPSHOT</version>
+	<version>3.6.0.Alpha1</version>
 	<packaging>jar</packaging>
 
 	<name>Hibernate Tools</name>
@@ -51,8 +51,8 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>3.5.6-Final</hibernateversion>
-		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
+		<hibernateversion>3.6.6.Final</hibernateversion>
+		<hibernateJpaversion>1.0.1.Final</hibernateJpaversion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
@@ -80,12 +80,12 @@
 			<version>${hibernateversion}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>${hibernateversion}</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -117,6 +117,12 @@
 		    <scope>compile</scope>
 		</dependency>
 		<dependency>
+		    <groupId>javassist</groupId>
+		    <artifactId>javassist</artifactId>
+		    <version>3.12.0.GA</version>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
@@ -137,7 +143,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
+			<version>1.6.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -229,7 +235,11 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<includes>
-						<include>**/*Test.java</include> 
+						<include>**/*hbm2hbmxml*/*.java</include> <!-- 69 -->
+						<include>**/*query*/*.java</include> <!-- 1 -->
+						<include>**/*jdbc2cfg*/*.java</include> <!--  90 (2 error, 2 failures) -->
+						<include>**/*hbm2x*/*.java</include>
+						
 					</includes>
 				</configuration>
 			</plugin>
