@@ -1,6 +1,6 @@
 Hibernate Tools
 ===============
-Version: 3.4.0.CR1, February 2011
+Version: 3.6.0.Alpha1, February 2011
 
 What is it
 ----------
