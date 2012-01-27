@@ -16,7 +16,10 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.CachedMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 
@@ -115,14 +118,16 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testCachedDialect() {
-		Settings buildSettings = cfg.buildSettings();
+		
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
 		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
 		
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
@@ -131,7 +136,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 		mock.setFailOnDelegateAccess(true);
 		
-		reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect );
+		reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
 		
 		dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );

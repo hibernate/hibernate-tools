@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.hibernate.hql.antlr.HqlSqlTokenTypes;
+import org.hibernate.hql.internal.antlr.HqlSqlTokenTypes;
 
 /**
  * The HQLAnalyzer can answer certain questions about a HQL String.

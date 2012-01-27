@@ -234,7 +234,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					element.put("TABLE_CAT", null);
 					element.put("TABLE_TYPE", tableResultSet.getString(4));
 					element.put("REMARKS", tableResultSet.getString(3));
-					log.info( element );
+					log.info( element.toString() );
 					return element;
 				}
 

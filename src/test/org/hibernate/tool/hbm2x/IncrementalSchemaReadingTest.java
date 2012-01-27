@@ -18,6 +18,8 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbmlint.detector.TableSelectorStrategy;
 
@@ -44,10 +46,15 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testReadSchemaIncremental() {
-		Settings buildSettings = cfg.buildSettings();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(cfg.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+
+		Settings buildSettings = cfg.buildSettings(serviceRegistry);
+
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultReverseEngineeringStrategy());
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, tss, mockedMetaDataDialect );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		

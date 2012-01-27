@@ -12,12 +12,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
@@ -132,9 +135,13 @@ public final class DocHelper {
 
         this.cfg = cfg;
 
-        dialect = cfg.buildSettings().getDialect(); // TODO: get it from somewhere "cached".
-        
-        Settings settings = cfg.buildSettings();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(cfg.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		Settings settings = cfg.buildSettings(serviceRegistry);
+		
+        dialect = jdbcServices.getDialect(); // TODO: get it from somewhere "cached".
 
         String defaultCatalog = settings.getDefaultCatalogName();
 

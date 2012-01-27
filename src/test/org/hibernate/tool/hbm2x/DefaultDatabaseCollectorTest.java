@@ -25,7 +25,11 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 /**
@@ -73,8 +77,9 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testNeedQuote() {
 		Settings buildSettings = cfg.buildSettings();
+		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		assertTrue("The name must be quoted!", realMetaData.needQuote(SCHEMA));
 		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE1));
 		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE2));
@@ -89,11 +94,13 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	 * but getTable uses non-quoted names )
 	 */
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
-		Settings buildSettings = cfg.buildSettings();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( buildSettings.getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), realMetaData );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), realMetaData, serviceRegistry );
 		
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, SCHEMA );

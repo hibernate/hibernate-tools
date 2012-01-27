@@ -7,4 +7,4 @@ Jar files from JBoss 4.0.4.GA and jboss-seam-1.0.0.CR3
 
 Warning: in order to run AntHibernateToolTest.testHbm2DDLExportExecution,testHbm2DDLLogic and testHbm2DDLUpdateExecution
 you must have an up to date hibernate core jar in your classpath.
-In lib\testlibs, provided hibernate3.jar allows you to run these tests
+In lib\testlibs, provided hibernate-core-4.0.0.Final.jar allows you to run these tests

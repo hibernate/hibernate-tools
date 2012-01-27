@@ -4,7 +4,7 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 /**
  * This class replicates the global settings that can be selected

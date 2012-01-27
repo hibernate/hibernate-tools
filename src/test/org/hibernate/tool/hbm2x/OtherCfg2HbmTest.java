@@ -14,7 +14,6 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
-import org.hibernate.util.DTDEntityResolver;
 
 /**
  * @author max

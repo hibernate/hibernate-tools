@@ -1,8 +1,9 @@
 package org.hibernate.cfg.reveng;
 
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.exception.SQLExceptionConverter;
+
+import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 
 /**
  * Provides runtime-only information for reverse engineering process.

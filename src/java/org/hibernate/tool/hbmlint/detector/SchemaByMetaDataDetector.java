@@ -18,18 +18,21 @@ import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.Mapping;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.IdentifierCollection;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
-import org.hibernate.util.StringHelper;
 
 public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
@@ -56,12 +59,16 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 	public void initialize(Configuration cfg, Settings settings) {
 		super.initialize( cfg, settings );
-		dialect = settings.getDialect();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(cfg.getProperties());
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		
+		dialect = serviceRegistry.getService(JdbcServices.class).getDialect();
 
 		tableSelector = new TableSelectorStrategy(
 				new DefaultReverseEngineeringStrategy() );
 		reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(),
-				settings, tableSelector );
+				settings, tableSelector, serviceRegistry);
 		dbc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		mapping = cfg.buildMapping();
 	}

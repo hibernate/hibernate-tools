@@ -13,7 +13,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 
 public class GenericExporter extends AbstractExporter {

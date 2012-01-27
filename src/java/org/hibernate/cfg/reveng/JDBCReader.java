@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.JDBCException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.exception.SQLExceptionConverter;
+import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Index;
@@ -31,11 +31,11 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 import org.hibernate.sql.Alias;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 public class JDBCReader {
 
-	private static final Log log = LogFactory.getLog(JDBCReader.class);
+	private static final Logger log = LoggerFactory.getLogger(JDBCReader.class);
 	
 	private final ReverseEngineeringStrategy revengStrategy;
 	

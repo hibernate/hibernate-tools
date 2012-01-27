@@ -49,7 +49,7 @@ public class Hbm2HibernateDAOTest extends NonReflectiveTestCase {
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
 		jars.add("commons-logging-1.0.4.jar");
-		jars.add("hibernate3.jar");
+		jars.add("hibernate-core-4.0.0.Final.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars) );
 		
 		

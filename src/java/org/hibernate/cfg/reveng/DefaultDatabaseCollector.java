@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Table;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 
 public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 

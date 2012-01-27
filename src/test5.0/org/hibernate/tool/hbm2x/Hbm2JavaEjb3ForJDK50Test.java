@@ -261,10 +261,9 @@ public class Hbm2JavaEjb3ForJDK50Test extends NonReflectiveTestCase {
 	}
 
 	private void addAnnotationJars(List jars) {
-		jars.add( "ejb3-persistence.jar" );
-		jars.add( "hibernate-annotations.jar" );
-		jars.add( "hibernate-commons-annotations.jar" );
-		jars.add( "hibernate3.jar" );
+		jars.add( "hibernate-jpa-2.0-api-1.0.1.Final.jar" );
+		jars.add( "hibernate-commons-annotations-4.0.1.Final.jar" );
+		jars.add( "hibernate-core-4.0.0.Final.jar" );
 		jars.add( "dom4j-1.6.1.jar" );
 		jars.add( "commons-logging-1.0.4.jar" );
 		

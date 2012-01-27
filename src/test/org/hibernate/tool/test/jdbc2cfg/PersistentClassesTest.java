@@ -16,7 +16,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.OneToMany;
