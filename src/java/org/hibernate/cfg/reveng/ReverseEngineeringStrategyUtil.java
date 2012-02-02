@@ -128,14 +128,25 @@ final public class ReverseEngineeringStrategyUtil {
 	
 	static public String simplePluralize(String singular) {
 		char last = singular.charAt( singular.length()-1 );
+		Character prev = singular.length() > 1 ? singular.charAt( singular.length() - 2 ) : null;
+		String vowels = "aeiouy";
 		switch (last) {
 			case 'x':
 			case 's':
 				singular += "es";
 				break;
 			case 'y':
-				singular = singular.substring( 0, singular.length()-1 ) + "ies";
+				if (prev != null && vowels.indexOf(prev) >= 0){
+					singular += "s";
+				} else {
+					singular = singular.substring( 0, singular.length()-1 ) + "ies";
+				}
 				break;
+			case 'h':
+				if (prev == 'c' || prev == 's'){
+					singular += "es";
+					break;
+				}
 			default:
 				singular += "s";
 		}
