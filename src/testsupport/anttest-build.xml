@@ -22,7 +22,7 @@
 	<path id="annlib">
 		<path location="${lib.dir}/freemarker.jar" />
 		<path location="${testlibs.dir}/hibernate3.jar" />
-		<path location="${testlibs.dir}/hibernate-jpa-2.0-api-1.0.0.Final.jar" />
+		<path location="${testlibs.dir}/hibernate-jpa-2.0-api-1.0.1.Final.jar" />
 		<path location="${testlibs.dir}/jboss-archive-browsing.jar" />
 		<path location="${testlibs.dir}/javaassist.jar" /> 
 		<path location="${test-classes}" />
