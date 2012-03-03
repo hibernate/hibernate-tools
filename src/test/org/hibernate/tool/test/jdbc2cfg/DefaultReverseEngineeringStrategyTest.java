@@ -18,6 +18,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PropertyGeneration;
 
 /**
  * @author max
@@ -50,6 +51,11 @@ public class DefaultReverseEngineeringStrategyTest extends TestCase {
 	
 	public void testColumnChangeCamelCase() {
 		assertEquals("labelForField", rns.columnToPropertyName(null, "LabelForField") );	
+	}
+	
+	public void testColumnToPropertyGeneration() {
+	    assertEquals(PropertyGeneration.NEVER, rns.columnToPropertyGeneration(
+	            new TableIdentifier("PATIENTS"), "LabelForField"));	    
 	}
 	
 	public void testTableKeepCase() {
