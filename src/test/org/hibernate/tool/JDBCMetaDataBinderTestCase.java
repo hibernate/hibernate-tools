@@ -71,6 +71,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	 */
 	protected void executeDDL(String[] sqls, boolean ignoreErrors) throws SQLException {		
 		Configuration configuration = new Configuration();
+		configure(configuration);
 		Settings testSettings = configuration.buildSettings();
 		
 		if(!appliesTo( testSettings.getDialect() )) {
@@ -151,6 +152,11 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	/**
 	 * @param cfg2
 	 */
+	protected void configure(Configuration configuration) {
+		
+		
+	}
+	
 	protected void configure(JDBCMetaDataConfiguration configuration) {
 		
 		
