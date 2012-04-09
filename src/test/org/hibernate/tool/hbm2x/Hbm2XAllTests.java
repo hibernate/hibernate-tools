@@ -34,7 +34,7 @@ public class Hbm2XAllTests {
 		suite.addTestSuite(GenericExporterTest.class);
 		suite.addTestSuite(Hbm2JavaTest.class);		
 		//$JUnit-END$
-		
+		suite.addTestSuite(H2SpecialSymbolsTest.class);
 		suite.addTestSuite(H2IdentityTest.class);
 		suite.addTestSuite(MySQLIdentityTest.class);
 		suite.addTestSuite(HSQLIdentityTest.class);

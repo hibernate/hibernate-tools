@@ -20,11 +20,12 @@ public class MappingsDatabaseCollector extends AbstractDatabaseCollector {
 	}
 
 	public Table addTable(String schema, String catalog, String name) {
-		return mappings.addTable(quote(schema), quote(catalog), quote(name), null, false);
+		//pass catalog as it is as Table#setCatalog(catalog) doesn't do unquote
+		return mappings.addTable(quote(schema), catalog, quote(name), null, false);
 	}
 
 	public Table getTable(String schema, String catalog, String name) {
-		return mappings.getTable(quote(schema), quote(catalog), quote(name));
+		return mappings.getTable(quote(schema), catalog, quote(name));
 	}
 
 }
