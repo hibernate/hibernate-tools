@@ -21,12 +21,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
-import org.hibernate.util.ReflectHelper;
 
 /**
  * Schema Export (.ddl) code generation. 
@@ -83,7 +83,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 		final Configuration configuration = getConfiguration();
 		if (schemaUpdate) {
-			SchemaUpdate update = new SchemaUpdate(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			SchemaUpdate update = new SchemaUpdate(builder.buildServiceRegistry(), configuration);
 			
 			// classic schemaupdate execution, will work with all releases
 			if(outputFileName == null && delimiter == null && haltOnError && format) 
@@ -139,24 +141,28 @@ public class Hbm2DDLExporter extends AbstractExporter {
 				} catch (NoSuchMethodException e) {
 					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate3.jar or don't used the involved parameters", e );
+							" either update hibernate jar or don't used the involved parameters", e );
 				} catch (IllegalArgumentException e) {
 					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate3.jar or don't used the involved parameters", e );
+							" either update hibernate jar or don't used the involved parameters", e );
 				} catch (InvocationTargetException e) {
 					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate3.jar or don't used the involved parameters", e );
+							" either update hibernate jar or don't used the involved parameters", e );
 				} catch (IllegalAccessException e) {
 					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate3.jar or don't used the involved parameters", e );
+							" either update hibernate jar or don't used the involved parameters", e );
 				}
 			}
 
 		} else {
-			SchemaExport export = new SchemaExport(configuration);
+			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			builder.applySettings(configuration.getProperties());
+			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+			serviceRegistry.getService( JdbcServices.class );
+			SchemaExport export = new SchemaExport(serviceRegistry, configuration);
 			if (null != outputFileName) {
 				export.setOutputFile(new File(getOutputDirectory(),
 						outputFileName).toString());
@@ -167,7 +173,8 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			export.setHaltOnError(haltOnError);
 			export.setFormat(format);
 			if (drop && create) {
-				export.create(scriptToConsole, exportToDatabase);
+				// not just drop or create but both!
+				export.execute(scriptToConsole, exportToDatabase, false, false);
 			} else {
 				export.execute(scriptToConsole, exportToDatabase, drop, create);
 			}

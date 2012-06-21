@@ -23,6 +23,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -222,8 +223,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 			.addFile( new File(getOutputDir(), "Right.hbm.xml"));
 		
 		configuration.buildMappings();
-
-		new SchemaValidator(configuration).validate();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		new SchemaValidator(builder.buildServiceRegistry(), configuration).validate();
 		} finally {
 			Thread.currentThread().setContextClassLoader(oldLoader);			
 		}
@@ -250,8 +252,8 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		List jars = new ArrayList();
 		
 		
-		jars.add( "hibernate3.jar" );
-		jars.add( "hibernate-jpa-2.0-api-1.0.0.Final.jar");
+		jars.add( "hibernate-core-4.0.0.Final.jar" );
+		jars.add( "hibernate-jpa-2.0-api-1.0.1.Final.jar");
 		
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
@@ -283,7 +285,10 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 			.addAnnotatedClass(leftClass);
 		
 		configuration.buildMappings();
-		new SchemaValidator(configuration).validate();
+		
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		new SchemaValidator(builder.buildServiceRegistry(), configuration).validate();
         } finally {
         	Thread.currentThread().setContextClassLoader(oldLoader);
         }

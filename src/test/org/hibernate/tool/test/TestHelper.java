@@ -20,11 +20,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.jdt.internal.compiler.batch.Main;
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.util.StringHelper;
+import org.hibernate.internal.util.StringHelper;
 import org.xml.sax.SAXException;
 
 /**
@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
  */
 public final class TestHelper {
 
-	private static final Log log = LogFactory.getLog(TestHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(TestHelper.class);
 
 	private TestHelper() {
 		// noop

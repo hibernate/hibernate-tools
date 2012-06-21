@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.hibernate.stat.SecondLevelCacheStatistics;
 import org.hibernate.stat.Statistics;
-import org.hibernate.util.IdentityMap;
+import org.hibernate.internal.util.collections.IdentityMap;
 
 public class StatisticsTreeModel extends AbstractTreeModel {
 
@@ -15,7 +15,7 @@ public class StatisticsTreeModel extends AbstractTreeModel {
 	String collections = "Collections";
 	String secondlevelcache = "Cache";
 	
-	Map im = IdentityMap.instantiate( 10 ); 
+	Map im = IdentityMap.instantiateSequenced( 10 ); 
 	
 	public StatisticsTreeModel(Statistics stats) {
 		this.stats = stats;
