@@ -473,9 +473,9 @@ public class JDBCReader {
 		  try {			  
 		     progress.startSubTask("Finding tables in " + schemaSelection);
 		     
-		     tableIterator = getMetaDataDialect().getTables(StringHelper.replace(schemaSelection.getMatchCatalog(),".*", "%"), 
-		    		                                        StringHelper.replace(schemaSelection.getMatchSchema(),".*", "%"), 
-		    		                                        StringHelper.replace(schemaSelection.getMatchTable(),".*", "%"));
+		     tableIterator = getMetaDataDialect().getTables(StringHelper.replace(schemaSelection.getMatchCatalog(),"*", "%"), 
+		    		                                        StringHelper.replace(schemaSelection.getMatchSchema(),"*", "%"), 
+		    		                                        StringHelper.replace(schemaSelection.getMatchTable(),"*", "%"));
 		     String[] lastQualifier = null;
 		     String[] foundQualifier = new String[2];
 		     
