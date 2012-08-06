@@ -428,6 +428,35 @@ public class Cfg2HbmTool {
 		
 		return accept.booleanValue();
 	}
+	
+	/**
+	 * Encodes special characters by standard XML/HTML predefined entities.
+	 */
+	public String escape(String comment) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < comment.length(); i++) {
+			char ch = comment.charAt(i);
+			switch (ch) {
+			case '&':
+				if ((i <= comment.length() - 4)
+						&& comment.substring(i + 1, i + 5).equals("amp;")) {
+					sb.append(ch);// already escaped
+					break;
+				}
+				sb.append("&amp;");
+				break;
+			case '<':
+				sb.append("&lt;");
+				break;
+			case '>':
+				sb.append("&gt;");
+				break;
+			default:
+				sb.append(ch);
+			}
+		}
+		return sb.toString();
+	}
 
 	public boolean isSubclass(PersistentClass clazz) {
 		return clazz instanceof org.hibernate.mapping.Subclass;

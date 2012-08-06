@@ -22,6 +22,7 @@ public class Cfg2HbmAllTests {
 		suite.addTest(Cfg2HbmToolTest.suite());
 		suite.addTest(AbstractTest.suite());
 		suite.addTest(TypeParamsTest.suite());
+		suite.addTest(CommentEscapeCharactersTest.suite());
 		//$JUnit-END$
 		return suite;
 	}
