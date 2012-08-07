@@ -27,7 +27,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 
     private static final Log log = LogFactory.getLog(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-
+	private Mappings mappings;
     
 	protected void secondPassCompileForeignKeys(Table table, Set done)
 			throws MappingException {
@@ -38,7 +38,8 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	
 	
 	public void readFromJDBC() {
-		JDBCBinder binder = new JDBCBinder(this, buildSettings(), createMappings(),revEngStrategy);
+		this.mappings = createMappings();
+		JDBCBinder binder = new JDBCBinder(this, buildSettings(), this.mappings, revEngStrategy);
 		
 		binder.readFromDatabase(null, null, buildMapping(this));
 	}
@@ -95,8 +96,10 @@ public class JDBCMetaDataConfiguration extends Configuration {
     }
 	    
     protected void parseMappingElement(Element subelement, String name) {
-        if(!ignoreconfigxmlmapppings ) {            
-            super.parseMappingElement(subelement, name);
+        if(!ignoreconfigxmlmapppings ) {
+        	// commenting this out since Configuration.parseMappingElement is private in Hibernate 3.6.X
+        	// and this never seems to be called, since ignoreconfigxmlmapppings is set to true above 
+            // super.parseMappingElement(subelement, name);
         } 
         else {
             log.info("Ignoring " + name + " mapping");
@@ -111,4 +114,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		return revEngStrategy;
 	}
 
+	public Mappings getMappings(){
+		return this.mappings;
+	}
 }

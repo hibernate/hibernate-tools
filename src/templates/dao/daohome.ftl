@@ -226,7 +226,7 @@ public class ${declarationName}Home {
 <#foreach queryName in cfg.namedQueries.keySet()>
 <#if queryName.startsWith(clazz.entityName + ".")>
 <#assign methname = c2j.unqualify(queryName)>
-<#assign params = cfg.namedQueries.get(queryName).parameterTypes><#assign argList = c2j.asFinderArgumentList(params, pojo)>
+<#assign params = cfg.namedQueries.get(queryName).parameterTypes><#assign argList = c2j.asFinderArgumentList(cfg, params, pojo)>
 <#if jdk5 && methname.startsWith("find")>
     public ${pojo.importType("java.util.List")}<${declarationName}> ${methname}(${argList}) {
 <#elseif methname.startsWith("count")>
