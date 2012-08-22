@@ -147,12 +147,21 @@
 			<version>r8-20060801</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!-- This dependency should be added to Maven Central so that the tests 
+		     in error on JDK 1.7 are fixed.
+ 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>core</artifactId>
-			<version>3.2.0.666</version>
+			<version>3.8.1-v20120531-0637</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency> -->
+		<!-- In the meantime use this version from the JBoss repository -->
+        <dependency>
+           <groupId>org.eclipse.jdt</groupId>
+           <artifactId>core</artifactId>
+           <version>3.4.2.v_883_R34x</version>
+           <scope>compile</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>text</artifactId>
