@@ -65,7 +65,7 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 	protected void setupContext() {
 
-		exportToDatabase = setupBoolProperty("export", exportToDatabase);
+		exportToDatabase = setupBoolProperty("exportToDatabase", exportToDatabase);
 		scriptToConsole = setupBoolProperty("scriptToConsole", scriptToConsole);
 		schemaUpdate = setupBoolProperty("schemaUpdate", schemaUpdate);
 		delimiter = getProperties().getProperty("delimiter", delimiter);
