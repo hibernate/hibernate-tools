@@ -8,15 +8,15 @@ import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect;
-//import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.Oracle9iDialect;
-//import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.Oracle9Dialect;
 import org.hibernate.util.ReflectHelper;
+//import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
+//import org.hibernate.dialect.SQLServerDialect;
 
 public class MetaDataDialectFactory {
 
@@ -52,7 +52,7 @@ public class MetaDataDialectFactory {
 	
 	public MetaDataDialect fromDialect(Dialect dialect) {
 		if(dialect!=null) {  
-			if(dialect instanceof Oracle9iDialect) {
+			if(dialect instanceof Oracle9Dialect) {
 				return new OracleMetaDataDialect();
 			} else if(dialect instanceof Oracle8iDialect) {
 				return new OracleMetaDataDialect();
