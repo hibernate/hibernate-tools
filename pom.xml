@@ -147,12 +147,12 @@
 			<version>r8-20060801</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>core</artifactId>
-			<version>3.2.0.666</version>
-			<scope>compile</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.8.0.v_C03</version>
+            <scope>compile</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>text</artifactId>
