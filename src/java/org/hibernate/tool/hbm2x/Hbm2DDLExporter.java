@@ -22,9 +22,11 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.integrator.spi.IntegratorService;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.spi.SessionFactoryServiceRegistryFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
@@ -80,12 +82,14 @@ public class Hbm2DDLExporter extends AbstractExporter {
 	}
 
 	protected void doStart() {
-
 		final Configuration configuration = getConfiguration();
+		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		builder.applySettings( configuration.getProperties() );
+		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		integrateEnvers( configuration, serviceRegistry );
+
 		if (schemaUpdate) {
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.applySettings(configuration.getProperties());
-			SchemaUpdate update = new SchemaUpdate(builder.buildServiceRegistry(), configuration);
+			SchemaUpdate update = new SchemaUpdate(serviceRegistry, configuration);
 			
 			// classic schemaupdate execution, will work with all releases
 			if(outputFileName == null && delimiter == null && haltOnError && format) 
@@ -158,10 +162,6 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			}
 
 		} else {
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-			builder.applySettings(configuration.getProperties());
-			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
-			serviceRegistry.getService( JdbcServices.class );
 			SchemaExport export = new SchemaExport(serviceRegistry, configuration);
 			if (null != outputFileName) {
 				export.setOutputFile(new File(getOutputDirectory(),
@@ -180,6 +180,24 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			}
 		}
 		
+	}
+
+	/**
+	 * Integrate Hibernate Envers extension if present in the classpath.
+	 */
+	private void integrateEnvers(Configuration configuration, ServiceRegistry serviceRegistry) {
+		// Omit building SessionFactory.
+		// TODO: Update this part when Integrator does not need SessionFactory for applying Hibernate extensions.
+		for ( Integrator integrator : serviceRegistry.getService( IntegratorService.class ).getIntegrators() ) {
+			if ( "org.hibernate.envers.event.EnversIntegrator".equals( integrator.getClass().getName() ) ) {
+				integrator.integrate(
+						configuration,
+						null,
+						serviceRegistry.getService( SessionFactoryServiceRegistryFactory.class ).buildServiceRegistry( null, configuration )
+				);
+				break;
+			}
+		}
 	}
 
 	public void setExport(boolean export) {
