@@ -3,30 +3,30 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
- <parent>
-   <groupId>org.jboss</groupId>
-   <artifactId>jboss-parent</artifactId>
-   <version>5</version>
- </parent>
+	<parent>
+		<groupId>org.jboss</groupId>
+		<artifactId>jboss-parent</artifactId>
+		<version>6</version>
+	</parent>
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.0.0-CR1</version>
 	<packaging>jar</packaging>
 
 	<name>Hibernate Tools</name>
 	<description>Hibernate Tools</description>
-	<url>http://tools.hibernate.org</url>
+	<url>http://www.hibernate.org/subprojects/tools.html</url>
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://opensource.atlassian.com/projects/hibernate/browse/HBX</url>
+		<url>http://hibernate.onjira.com/browse/HBX</url>
 	</issueManagement>
 
 	<scm>
-	  <connection>scm:git:git://github.com/hibernate/hibernate-search.git</connection>
-	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-search.git</developerConnection>
-	  <url>http://fisheye.jboss.org/browse/Hibernatetools</url>
+	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
+	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
+	  <url>http://github.com/hibernate/hibernate-tools</url>
 	</scm>
 
 	<organization>
@@ -184,6 +184,12 @@
 			<scope>system</scope>
 		  	<systemPath>${java.home}/../lib/tools.jar</systemPath>
 		</dependency> -->
+		<dependency>
+   			<groupId>mysql</groupId>
+   			<artifactId>mysql-connector-java</artifactId>
+   			<version>5.1.18</version>
+   			<scope>test</scope>
+   		</dependency>
 
 	<dependency>
 		<groupId>${jdbc.driver.groupId}</groupId>
@@ -230,13 +236,20 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-				        <excludes>
-					  <exclude>org/hibernate/tool/ant/AntHibernateToolTest.java</exclude>
-					</excludes>
-
+					<excludes>
+						<!-- Tests that don't apply for HSQLDB -->
+						<exclude>org/hibernate/tool/test/jdbc2cfg/OracleCompositeIdOrderTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/OracleViewsTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/H2IdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/HSQLIdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/MySQLIdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/SQLServerIdentityTest.java</exclude>
+						<!-- HSQLDB 1.8.0.2 does not support multiple schemas -->
+						<exclude>org/hibernate/tool/test/jdbc2cfg/TernarySchemaTest.java</exclude>
+					</excludes> 
 					<includes>
-					  <include>**/*Test.java</include>
-					</includes>
+						<include>**/*Test.java</include>
+					</includes> 
 				</configuration>
 			</plugin>
 			<plugin>

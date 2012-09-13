@@ -11,8 +11,7 @@
     	<id name="id" type="integer">
             <generator class="increment">
             	<param name="testkey">avalue</param>
-            	     	<param name="testkey">avalue</param>
-            	     	<param name="testkey2">avalue2</param>
+            	<param name="testkey2">avalue2</param>
             </generator>
         </id>
 
