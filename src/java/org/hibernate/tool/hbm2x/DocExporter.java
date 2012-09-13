@@ -391,8 +391,10 @@ public class DocExporter extends AbstractExporter {
     	parameters.put("docFile", docFile);
     	
         List list = docHelper.getPackages();
-        //Remove All Classes
-        list.remove(0);
+        if (list.size() > 0){
+    		//Remove All Classes
+        	list.remove(0);
+    	}
         parameters.put("packageList", list );
         parameters.put( "graphsGenerated", Boolean.valueOf( graphsGenerated ) );
         if(graphsGenerated) {
@@ -458,8 +460,10 @@ public class DocExporter extends AbstractExporter {
         Map parameters = new HashMap();
         parameters.put("docFile", docFile);
         List list = docHelper.getPackages();
-        //Remove All Classes
-        list.remove(0);
+        if (list.size() > 0){
+        	 //Remove All Classes
+            list.remove(0);
+        }
         parameters.put("packageList", list );
 
         processTemplate(parameters, FTL_ENTITIES_PACKAGE_LIST, file);
@@ -512,7 +516,10 @@ public class DocExporter extends AbstractExporter {
      */
     public void generateEntitiesPackageDetailedInfo() {
     	List packageList = docHelper.getPackages();
-    	packageList.remove(0);    	
+    	if (packageList.size() > 0){
+    		//Remove All Classes
+    		packageList.remove(0);
+    	}
         Iterator packages = packageList.iterator();
         
         while (packages.hasNext() ) {
