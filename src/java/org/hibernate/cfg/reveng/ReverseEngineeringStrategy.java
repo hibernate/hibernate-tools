@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
+import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.Table;
 
 public interface ReverseEngineeringStrategy {
@@ -45,7 +46,14 @@ public interface ReverseEngineeringStrategy {
 	 * @return a property name
 	 */
 	public String columnToPropertyName(TableIdentifier table, String column);
-	   
+
+	/**
+	 * Return a PropertyGeneration for a Column.
+	 * @param column a columnname
+	 * @return a PropertyGeneration
+	 */
+	public PropertyGeneration columnToPropertyGeneration(TableIdentifier table, String column);	
+	
 	public boolean excludeTable(TableIdentifier ti);
 	
 	public boolean excludeColumn(TableIdentifier identifier, String columnName);
