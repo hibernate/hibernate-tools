@@ -235,6 +235,22 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<!-- Tests that don't apply for HSQLDB -->
+						<exclude>org/hibernate/tool/test/jdbc2cfg/OracleCompositeIdOrderTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/OracleViewsTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/H2IdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/HSQLIdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/MySQLIdentityTest.java</exclude>
+						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/SQLServerIdentityTest.java</exclude>
+						<!-- HSQLDB 1.8.0.2 does not support multiple schemas -->
+						<exclude>org/hibernate/tool/test/jdbc2cfg/TernarySchemaTest.java</exclude>
+					</excludes> 
+					<includes>
+						<include>**/*Test.java</include>
+					</includes> 
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
