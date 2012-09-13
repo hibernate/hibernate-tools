@@ -40,14 +40,14 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private static final String SQL_TABLE_NONE = SQL_TABLE_BASE	+ SQL_TABLE_VIEW;
 
 	private static final String SQL_TABLE_SCHEMA = SQL_TABLE_BASE
-			+ "where a.owner = ? " + SQL_TABLE_VIEW + " where owner = ?";
+			+ "where a.owner like ? " + SQL_TABLE_VIEW + " where owner like ?";
 
 	private static final String SQL_TABLE_TABLE = SQL_TABLE_BASE
-			+ "where a.table_name = ?" + SQL_TABLE_VIEW + "where view_name = ?";
+			+ "where a.table_name like ?" + SQL_TABLE_VIEW + "where view_name like ?";
 
 	private static final String SQL_TABLE_SCHEMA_AND_TABLE = SQL_TABLE_BASE
-			+ "where a.owner = ? and a.table_name = ?" + SQL_TABLE_VIEW
-			+ "where owner = ? and view_name = ?";
+			+ "where a.owner like ? and a.table_name like ?" + SQL_TABLE_VIEW
+			+ "where owner like ? and view_name like ?";
 
 	private PreparedStatement prepTableNone;
 
@@ -74,13 +74,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ SQL_INDEX_ORDER;
 
 	private static final String SQL_INDEX_SCHEMA = SQL_INDEX_BASE
-			+ "where a.table_owner = ? " + SQL_INDEX_ORDER;
+			+ "where a.table_owner like ? " + SQL_INDEX_ORDER;
 
 	private static final String SQL_INDEX_TABLE = SQL_INDEX_BASE
-			+ "where a.table_name = ? " + SQL_INDEX_ORDER;
+			+ "where a.table_name like ? " + SQL_INDEX_ORDER;
 
 	private static final String SQL_INDEX_SCHEMA_AND_TABLE = SQL_INDEX_BASE
-			+ "where a.table_owner = ? and a.table_name = ? " + SQL_INDEX_ORDER;
+			+ "where a.table_owner like ? and a.table_name like ? " + SQL_INDEX_ORDER;
 
 	private PreparedStatement prepIndexNone;
 
@@ -112,26 +112,26 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_SCHEMA = SQL_COLUMN_BASE
-			+ "where a.owner = ? " + SQL_COLUMN_ORDER;
+			+ "where a.owner like ? " + SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_TABLE = SQL_COLUMN_BASE
-			+ "where a.table_name = ? " + SQL_COLUMN_ORDER;
+			+ "where a.table_name like ? " + SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_COLUMN = SQL_COLUMN_BASE
-			+ "where a.column_name = ? " + SQL_COLUMN_ORDER;
+			+ "where a.column_name like ? " + SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_SCHEMA_AND_TABLE = SQL_COLUMN_BASE
-			+ "where a.owner = ? and a.table_name = ? " + SQL_COLUMN_ORDER;
+			+ "where a.owner like ? and a.table_name like ? " + SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_SCHEMA_AND_COLUMN = SQL_COLUMN_BASE
-			+ "where a.owner = ? and a.column_name = ? " + SQL_COLUMN_ORDER;
+			+ "where a.owner like ? and a.column_name like ? " + SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_TABLE_AND_COLUMN = SQL_COLUMN_BASE
-			+ "where a.table_name = ? and a.column_name = ? "
+			+ "where a.table_name like ? and a.column_name like ? "
 			+ SQL_COLUMN_ORDER;
 
 	private static final String SQL_COLUMN_SCHEMA_AND_TABLE_AND_COLUMN = SQL_COLUMN_BASE
-			+ "where a.owner = ? and a.table_name = ? and a.column_name = ? "
+			+ "where a.owner like ? and a.table_name like ? and a.column_name like ? "
 			+ SQL_COLUMN_ORDER;
 
 	private PreparedStatement prepColumnNone;
@@ -163,13 +163,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private static final String SQL_PK_NONE = SQL_PK_BASE + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA = SQL_PK_BASE
-			+ " and c.owner = ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_TABLE = SQL_PK_BASE
-			+ " and c.table_name = ? " + SQL_PK_ORDER;
+			+ " and c.table_name like ? " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA_AND_TABLE = SQL_PK_BASE
-			+ " and c.owner = ? and c.table_name = ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? and c.table_name like ? " + SQL_PK_ORDER;
 
 	private PreparedStatement prepPkNone;
 
@@ -196,13 +196,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private static final String SQL_FK_NONE = SQL_FK_BASE + SQL_FK_ORDER;
 
 	private static final String SQL_FK_SCHEMA = SQL_FK_BASE
-			+ " and p.owner = ? " + SQL_FK_ORDER;
+			+ " and p.owner like ? " + SQL_FK_ORDER;
 
 	private static final String SQL_FK_TABLE = SQL_FK_BASE
-			+ " and p.table_name = ? " + SQL_FK_ORDER;
+			+ " and p.table_name like ? " + SQL_FK_ORDER;
 
 	private static final String SQL_FK_SCHEMA_AND_TABLE = SQL_FK_BASE
-			+ " and p.owner = ? and p.table_name = ? " + SQL_FK_ORDER;
+			+ " and p.owner like ? and p.table_name like ? " + SQL_FK_ORDER;
 
 	private PreparedStatement prepFkNone;
 
