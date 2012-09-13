@@ -15,6 +15,8 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.Oracle9Dialect;
 import org.hibernate.util.ReflectHelper;
+//import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
+//import org.hibernate.dialect.SQLServerDialect;
 
 public class MetaDataDialectFactory {
 
@@ -60,6 +62,8 @@ public class MetaDataDialectFactory {
 				return new MySQLMetaDataDialect();
 			} else if (dialect instanceof HSQLDialect) {
 				return new HSQLMetaDataDialect();
+//			}else if (dialect instanceof SQLServerDialect) {
+//				return new SQLServerMetaDataDialect();
 			}			
 		}
 		return null;
@@ -78,6 +82,9 @@ public class MetaDataDialectFactory {
 		if (dialect.toLowerCase().contains("hsql")) {
 			return new HSQLMetaDataDialect();
 		}
+//		if (dialect.toLowerCase().contains("sqlserver")) {
+//			return new SQLServerMetaDataDialect();
+//		}
 		return null;
 	}
 
