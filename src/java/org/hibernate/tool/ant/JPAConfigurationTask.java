@@ -2,6 +2,8 @@ package org.hibernate.tool.ant;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,10 +11,16 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.util.ReflectHelper;
 import org.reflections.Reflections;
+import org.reflections.scanners.Scanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.xml.sax.EntityResolver;
 
 public class JPAConfigurationTask extends ConfigurationTask {
@@ -57,17 +65,40 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			}
 
 			if (basePackage != null) {
-				Method addAnnotatedClass = clazz.getMethod("addAnnotatedClass",
-						new Class[] { Class.class });
-				Reflections reflections = new Reflections(basePackage, null);
 				Class entity = ReflectHelper.classForName(
 						"javax.persistence.Entity", JPAConfigurationTask.class);
+				Collection urls = ClasspathHelper.forPackage(basePackage, null);
+				Scanner[] scanners = new Scanner[] { new SubTypesScanner(),
+						new TypeAnnotationsScanner() };
+				Reflections reflections = new Reflections(
+						new ConfigurationBuilder().addUrls(urls).addScanners(
+								scanners));
+
 				Set jpaEntities = reflections.getTypesAnnotatedWith(entity);
-				Iterator i = jpaEntities.iterator();
-				while (i.hasNext()) {
-					Object entityClass = i.next();
-					addAnnotatedClass.invoke(ejb3cfg,
-							new Object[] { entityClass });
+				if (jpaEntities != null && jpaEntities.size() > 0) {
+					log(MessageFormat.format(
+							"Found {0} entities under package {1}",
+							new Object[] { new Integer(jpaEntities.size()),
+									basePackage }), Project.MSG_DEBUG);
+
+					Method addAnnotatedClass = clazz.getMethod(
+							"addAnnotatedClass", new Class[] { Class.class });
+					Iterator i = jpaEntities.iterator();
+					while (i.hasNext()) {
+						Object entityClass = i.next();
+						if (entityClass != null) {
+							addAnnotatedClass.invoke(ejb3cfg,
+									new Object[] { entityClass });
+							log(MessageFormat.format(
+									"Add annotated entity {0}.",
+									new Object[] { entityClass }),
+									Project.MSG_DEBUG);
+						}
+					}
+				} else {
+					log(MessageFormat.format(
+							"No entities found for package \"{0}\"",
+							new Object[] { basePackage }), Project.MSG_INFO);
 				}
 			}
 
@@ -102,6 +133,14 @@ public class JPAConfigurationTask extends ConfigurationTask {
 
 	public void setConfigurationFile(File configurationFile) {
 		complain("configurationfile");
+	}
+
+	public void setBasePackage(String basePackage) {
+		this.basePackage = basePackage;
+	}
+
+	public String getBasePackage() {
+		return basePackage;
 	}
 
 	private void complain(String param) {
