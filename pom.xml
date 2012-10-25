@@ -24,9 +24,9 @@
 	</issueManagement>
 
 	<scm>
-	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
-	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-	  <url>http://github.com/hibernate/hibernate-tools</url>
+		<connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
+		<developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
+		<url>http://github.com/hibernate/hibernate-tools</url>
 	</scm>
 
 	<organization>
@@ -51,26 +51,25 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>3.6.9.Final</hibernateversion>
+		<hibernateversion>3.6.10.Final</hibernateversion>
 		<hibernateJpaversion>1.0.1.Final</hibernateJpaversion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
+		<!-- Default settings for Database connection; to be overridden in db specific 
+			profiles -->
 		<db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
 		<jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
 		<jdbc.url>jdbc:hsqldb:testdb/hsqldb;shutdown=true</jdbc.url>
 		<jdbc.user>sa</jdbc.user>
-		<jdbc.pass/>
+		<jdbc.pass />
 		<jdbc.driver.groupId>hsqldb</jdbc.driver.groupId>
-	    <jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
-	    <jdbc.driver.jdbc.driver.version>1.8.0.2</jdbc.driver.jdbc.driver.version>		
-	    <!-- End of settings for Database connection -->
+		<jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
+		<jdbc.driver.jdbc.driver.version>1.8.0.2</jdbc.driver.jdbc.driver.version>
+		<!-- End of settings for Database connection -->
 	</properties>
-	
-	<!--
-		Graphviz should be installed for junit tests and it's bin dir should
-		be in classpath
-	-->
+
+	<!-- Graphviz should be installed for junit tests and it's bin dir should 
+		be in classpath -->
 	<!-- TODO: is it possible to automate this with maven? -->
 
 	<dependencies>
@@ -78,55 +77,73 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernateversion}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernateversion}</version>
-			<scope>compile</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>${hibernateJpaversion}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
-		    <groupId>cglib</groupId>
-		    <artifactId>cglib</artifactId>
-		    <version>2.2</version>
-		    <scope>compile</scope>
-		</dependency>
-                <dependency>
-		    <groupId>javassist</groupId>
-		    <artifactId>javassist</artifactId>
-		    <version>3.12.0.GA</version>
-		    <scope>compile</scope>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.0.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>ant</groupId>
 			<artifactId>ant</artifactId>
 			<version>1.6.5</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>jtidy</artifactId>
+			<version>r8-20060801</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.8.0.v_C03</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>text</artifactId>
+			<version>3.2.0-v20060605-1400</version>
+		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ant</groupId>
@@ -141,29 +158,18 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-			<version>2.3.8</version>
-			<scope>compile</scope>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>jtidy</artifactId>
-			<version>r8-20060801</version>
-			<scope>compile</scope>
+			<groupId>${jdbc.driver.groupId}</groupId>
+			<artifactId>${jdbc.driver.artifactId}</artifactId>
+			<version>${jdbc.driver.jdbc.driver.version}</version>
+			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.8.0.v_C03</version>
-            <scope>compile</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>text</artifactId>
-			<version>3.2.0-v20060605-1400</version>
-			<scope>compile</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
@@ -176,26 +182,6 @@
 			<version>3.2.0-v20060603</version>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>1.1</version>
-			<scope>test</scope>
-		</dependency>
-		<!--  <dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.5.0_12</version>
-			<scope>system</scope>
-		  	<systemPath>${java.home}/../lib/tools.jar</systemPath>
-		</dependency> -->
-
-	<dependency>
-		<groupId>${jdbc.driver.groupId}</groupId>
-		<artifactId>${jdbc.driver.artifactId}</artifactId>
-		<version>${jdbc.driver.jdbc.driver.version}</version>
-		<scope>test</scope>
-	</dependency>
 	</dependencies>
 
 	<build>
@@ -238,10 +224,10 @@
 						<exclude>org/hibernate/tool/test/jdbc2cfg/identity/SQLServerIdentityTest.java</exclude>
 						<!-- HSQLDB 1.8.0.2 does not support multiple schemas -->
 						<exclude>org/hibernate/tool/test/jdbc2cfg/TernarySchemaTest.java</exclude>
-					</excludes> 
+					</excludes>
 					<includes>
 						<include>**/*Test.java</include>
-					</includes> 
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -274,7 +260,7 @@
 						<configuration>
 							<outputFile>
 								${project.build.directory}/test-classes/hibernate.properties
-              				</outputFile>
+							</outputFile>
 						</configuration>
 					</execution>
 				</executions>
@@ -292,7 +278,9 @@
 						<configuration>
 							<tasks>
 								<echo></echo>
-								<copy file="${project.build.directory}/test-classes/hibernate.properties" tofile="${project.build.directory}/test-classes/log4j.properties" />
+								<copy
+									file="${project.build.directory}/test-classes/hibernate.properties"
+									tofile="${project.build.directory}/test-classes/log4j.properties" />
 							</tasks>
 						</configuration>
 					</execution>
@@ -358,15 +346,10 @@
 				<version>2.2</version>
 				<configuration>
 					<archive>
-				<!--		<manifestEntries>
-							<Implementation-Title>${project.name}</Implementation-Title>
-							<Implementation-version>${project.version}</Implementation-version>
-							<Implementation-Vendor>hibernate.org</Implementation-Vendor>
-							<Implementation-Vendor-Id>hibernate.org
-							</Implementation-Vendor-Id>
-							<Implementation-URL>http://www.hibernate.org/subprojects/tools.html
-							</Implementation-URL> 
-						</manifestEntries> -->
+						<!-- <manifestEntries> <Implementation-Title>${project.name}</Implementation-Title> 
+							<Implementation-version>${project.version}</Implementation-version> <Implementation-Vendor>hibernate.org</Implementation-Vendor> 
+							<Implementation-Vendor-Id>hibernate.org </Implementation-Vendor-Id> <Implementation-URL>http://www.hibernate.org/subprojects/tools.html 
+							</Implementation-URL> </manifestEntries> -->
 					</archive>
 				</configuration>
 			</plugin>
@@ -390,7 +373,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--TODO TEXT. This plugin's configuration is used in m2e only.-->
+				<!--TODO TEXT. This plugin's configuration is used in m2e only. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -468,33 +451,30 @@
 	</build>
 
 	<repositories>
-		<!--
-			To build Hibernate Tools Core you have to add the JBoss Maven
-			repository to your settings.xml See also
-			http://community.jboss.org/wiki/ContributingtoHibernateSearch
-		-->
+		<!-- To build Hibernate Tools Core you have to add the JBoss Maven repository 
+			to your settings.xml See also http://community.jboss.org/wiki/ContributingtoHibernateSearch -->
 	</repositories>
 
 
 	<profiles>
-		
+
 		<!-- =============================== -->
-		<!-- Database profiles               -->
+		<!-- Database profiles -->
 		<!-- =============================== -->
 		<!-- HSQLDB is the default -->
 		<profile>
 			<id>hsqldb</id>
-	<properties>
-		<db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
-		<jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
-		<jdbc.url>jdbc:hsqldb:testdb/hsqldb;shutdown=true</jdbc.url>
-		<jdbc.user>sa</jdbc.user>
-		<jdbc.pass />
-		<jdbc.driver.groupId>hsqldb</jdbc.driver.groupId>
-		<jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
-		<jdbc.driver.jdbc.driver.version>1.8.0.2</jdbc.driver.jdbc.driver.version>
+			<properties>
+				<db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
+				<jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+				<jdbc.url>jdbc:hsqldb:testdb/hsqldb;shutdown=true</jdbc.url>
+				<jdbc.user>sa</jdbc.user>
+				<jdbc.pass />
+				<jdbc.driver.groupId>hsqldb</jdbc.driver.groupId>
+				<jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
+				<jdbc.driver.jdbc.driver.version>1.8.0.2</jdbc.driver.jdbc.driver.version>
 
-	</properties>
+			</properties>
 		</profile>
 
 		<profile>
@@ -511,18 +491,15 @@
 				<jdbc.isolation />
 			</properties>
 		</profile>
-		
-		<!--
-			###################################################################
-			Profiles naming db instances in the Red Hat QA/QE lab First, those
-			with OSS drivers
-			###################################################################
-		-->
+
+		<!-- ################################################################### 
+			Profiles naming db instances in the Red Hat QA/QE lab First, those with OSS 
+			drivers ################################################################### -->
 
 		<!-- The MySQL 5 test envionment -->
 		<profile>
 			<id>mysql50</id>
-				<properties>
+			<properties>
 				<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
 				<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
 				<jdbc.driver.jdbc.driver.version>5.0.5</jdbc.driver.jdbc.driver.version>
@@ -555,13 +532,13 @@
 		<profile>
 			<id>mysql51-cluster</id>
 			<properties>
-					<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
-					<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
-					<jdbc.driver.jdbc.driver.version>5.1.8</jdbc.driver.jdbc.driver.version>
+				<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+				<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
+				<jdbc.driver.jdbc.driver.version>5.1.8</jdbc.driver.jdbc.driver.version>
 				<db.dialect>org.hibernate.dialect.MySQL5Dialect</db.dialect>
 				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
 				<jdbc.url>jdbc:mysql:loadbalance://dev61.qa.atl2.redhat.com:3306,dev62.qa.atl2.redhat.com:3306/hibbrtru
-                </jdbc.url>
+				</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
 				<jdbc.pass>hibbrtru</jdbc.pass>
 				<jdbc.isolation />
@@ -572,9 +549,9 @@
 		<profile>
 			<id>postgresql82</id>
 			<properties>
-					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
-					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
-					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
+				<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
+				<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
+				<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
 				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg01.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
@@ -587,10 +564,10 @@
 		<!-- The PostgreSQL 8.3.7 test envionment -->
 		<profile>
 			<id>postgresql83</id>
-			   <properties>
-					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
-					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
-					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
+			<properties>
+				<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
+				<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
+				<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
 				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg03.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
@@ -600,13 +577,10 @@
 			</properties>
 		</profile>
 
-		<!--
-			###################################################################
-			Then, those with commercial drivers
-			###################################################################
-		-->
+		<!-- ################################################################### 
+			Then, those with commercial drivers ################################################################### -->
 
-		<!-- The DB2 8.x test envionment (using 9x drivers)-->
+		<!-- The DB2 8.x test envionment (using 9x drivers) -->
 		<profile>
 			<id>db2v82</id>
 			<dependencies>
@@ -618,19 +592,19 @@
 				</dependency>
 			</dependencies>
 			<properties>
-					<jdbc.driver.groupId>com.ibm</jdbc.driver.groupId>
-					<jdbc.driver.artifactId>db2jcc</jdbc.driver.artifactId>
-					<jdbc.driver.jdbc.driver.version>3.1.57</jdbc.driver.jdbc.driver.version>
-					<db.dialect>org.hibernate.dialect.DB2Dialect</db.dialect>
-					<jdbc.driver>com.ibm.db2.jcc.DB2Driver</jdbc.driver>
-					<jdbc.url>jdbc:db2://dev32.qa.atl.jboss.com:50000/jbossqa</jdbc.url>
-					<jdbc.user>hibbrtru</jdbc.user>
-					<jdbc.pass>hibbrtru</jdbc.pass>
-					<jdbc.isolation />
+				<jdbc.driver.groupId>com.ibm</jdbc.driver.groupId>
+				<jdbc.driver.artifactId>db2jcc</jdbc.driver.artifactId>
+				<jdbc.driver.jdbc.driver.version>3.1.57</jdbc.driver.jdbc.driver.version>
+				<db.dialect>org.hibernate.dialect.DB2Dialect</db.dialect>
+				<jdbc.driver>com.ibm.db2.jcc.DB2Driver</jdbc.driver>
+				<jdbc.url>jdbc:db2://dev32.qa.atl.jboss.com:50000/jbossqa</jdbc.url>
+				<jdbc.user>hibbrtru</jdbc.user>
+				<jdbc.pass>hibbrtru</jdbc.pass>
+				<jdbc.isolation />
 			</properties>
 		</profile>
 
-		<!-- The DB2 9.1 test envionment (using 9x drivers)-->
+		<!-- The DB2 9.1 test envionment (using 9x drivers) -->
 		<profile>
 			<id>db2-91</id>
 			<dependencies>
@@ -654,7 +628,7 @@
 			</properties>
 		</profile>
 
-		<!-- The DB2 9.7 test envionment (using 9x drivers)-->
+		<!-- The DB2 9.7 test envionment (using 9x drivers) -->
 		<profile>
 			<id>db2-97</id>
 			<dependencies>
@@ -740,7 +714,7 @@
 				<jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
 				<jdbc.url>
 					jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(LOAD_BALANCE=ON)(ADDRESS=(PROTOCOL=TCP)(HOST=vmg24-vip.mw.lab.eng.bos.redhat.com)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=vmg25-vip.mw.lab.eng.bos.redhat.com)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=qarac.jboss)))
-                </jdbc.url>
+				</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
 				<jdbc.pass>hibbrtru</jdbc.pass>
 				<jdbc.isolation />
@@ -778,14 +752,15 @@
 				<jdbc.isolation>4096</jdbc.isolation>
 			</properties>
 		</profile>
-		
+
 		<!-- The SQLServer2005 (MS JDBC) test envionment -->
 		<profile>
 			<id>mssql2005_jtds</id>
 			<properties>
 				<jdbc.driver.groupId>net.sourceforge.jtds</jdbc.driver.groupId>
 				<jdbc.driver.artifactId>jtds</jdbc.driver.artifactId>
-				<jdbc.driver.jdbc.driver.version>1.2.4</jdbc.driver.jdbc.driver.version><!-- newest is 1.2.5 but not in repo -->
+				<jdbc.driver.jdbc.driver.version>1.2.4</jdbc.driver.jdbc.driver.version><!-- 
+					newest is 1.2.5 but not in repo -->
 				<db.dialect>org.hibernate.dialect.SQLServerDialect</db.dialect>
 				<jdbc.driver>net.sourceforge.jtds.jdbc.Driver</jdbc.driver>
 				<jdbc.url>jdbc:jtds:sqlserver://dev30.qa.atl.jboss.com:3918</jdbc.url>
