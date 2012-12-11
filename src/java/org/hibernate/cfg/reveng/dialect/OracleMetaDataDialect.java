@@ -95,7 +95,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ "decode(a.nullable,'N',0,1) as NULLABLE, "
 			+ "decode(a.data_type, 'FLOAT',decode(a.data_precision,null, "
 			+ "a.data_length, a.data_precision), 'NUMBER', decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), a.data_length) as COLUMN_SIZE, "
+			+ "38, a.data_precision), a.data_length) as COLUMN_SIZE, "
 			+ "decode(a.data_type,'CHAR',1, 'DATE',91, 'FLOAT',6, "
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
