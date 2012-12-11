@@ -102,7 +102,8 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ "'RAW',-3, 'ROWID',1111, 'UROWID',1111, 'LONG RAW', -4, "
 			+ "'TIMESTAMP', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
 			+ "a.table_name as TABLE_NAME, a.data_type as TYPE_NAME, "
-			+ "decode(a.data_scale, null, 0 ,a.data_scale) as DECIMAL_DIGITS, b.comments "
+			+ "decode(a.data_scale, null, decode(a.data_type, 'NUMBER', "
+			+ "decode(a.data_precision, null, 38, 0), 0), a.data_scale) as DECIMAL_DIGITS, b.comments "
 			+ "from all_tab_columns a left join all_col_comments b on "
 			+ "(a.owner=b.owner and a.table_name=b.table_name and a.column_name=b.column_name) ";
 
