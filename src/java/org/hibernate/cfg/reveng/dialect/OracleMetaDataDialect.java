@@ -1,4 +1,3 @@
-
 package org.hibernate.cfg.reveng.dialect;
 
 import java.sql.Connection;
@@ -99,7 +98,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ "decode(a.data_type,'CHAR',1, 'DATE',91, 'FLOAT',6, "
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
-			+ "'RAW',-3, 'ROWID',1111, 'UROWID',1111, 'LONG RAW', -4, "
+			+ "'RAW',-3, 'ROWID',-8, 'UROWID',-8, 'LONG RAW', -4, "
 			+ "'TIMESTAMP', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
 			+ "a.table_name as TABLE_NAME, a.data_type as TYPE_NAME, "
 			+ "decode(a.data_scale, null, 0 ,a.data_scale) as DECIMAL_DIGITS, b.comments "
