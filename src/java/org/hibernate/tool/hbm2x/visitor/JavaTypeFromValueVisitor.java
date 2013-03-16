@@ -13,8 +13,10 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
+import org.hibernate.type.AbstractStandardBasicType;
 import org.hibernate.type.CompositeCustomType;
 import org.hibernate.type.CustomType;
+import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 
@@ -78,20 +80,22 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 
 	protected Object handle(Value o) {
 		Value value = (Value) o;
+		Type type = null;
 		try {
-			// have to attempt calling gettype to decide if its custom type.
-			Type type = value.getType();
-			if(type instanceof CustomType || type instanceof CompositeCustomType) {
-				return toName( type.getReturnedClass() );
-			}
+			// attempt calling gettype
+			type = value.getType();
 		} catch(HibernateException he) {
-			// ignore
+            // ignore
+        }
+
+		if(type != null && ( type instanceof CustomType || type instanceof CompositeCustomType )) {
+			return toName( type.getReturnedClass() );
 		}
 
 		if ( preferRawTypeNames && value.isSimpleValue() ) {
 			// this logic make us use the raw typename if it is something else than an Hibernate type. So, if user wrote long we will use long...if he meant to have a Long then he should use the java.lang.Long version.
 			String typename = ( (SimpleValue) value ).getTypeName();
-			if ( !Cfg2JavaTool.isNonPrimitiveTypeName( typename ) ) {
+			if ( !Cfg2JavaTool.isNonPrimitiveTypeName( typename ) && (type == null || type instanceof PrimitiveType)) {
 				String val = ( (SimpleValue) value ).getTypeName();
 				if(val!=null) return val; // val can be null when type is any 
 			}
