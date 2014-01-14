@@ -104,6 +104,13 @@ public class HibernateToolTask extends Task {
 		return generator;
 	}
 	
+	public ExporterTask createHbm2Groovy() {
+        ExporterTask generator = new Hbm2GroovyExporterTask(this);
+        addGenerator( generator );
+        return generator;
+    }
+	
+	
     public ExporterTask createHbm2HbmXml() {
         ExporterTask generator= new Hbm2HbmXmlExporterTask(this);
         addGenerator( generator );

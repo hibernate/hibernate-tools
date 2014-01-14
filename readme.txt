@@ -1,15 +1,15 @@
 Hibernate Tools
 ===============
-Version: 4.0.0, February 2012
+Version: 4.1.0-SNAPSHOT, January 2014 
 
 What is it
 ----------
 
 The tools for Hibernate provides various tools to use with Hibernate.
 The primary tools can be used for generating source artifacts such as
-mapping files, java entities, DAO and other scaffolding code.  The
-source of this generation can be JDBC database, classes or even just
-existing mappings.
+mapping files, java entities, groovy entities, DAO and other scaffolding 
+code.  The source of this generation can be JDBC database, classes or 
+even just existing mappings.
 
 It uses Hibernate core metamodel to generate from and to the source
 artifacts. Allowing it to support both top-down, bottom-up and

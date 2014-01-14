@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.hbm2x.GenericExporter.ModelIterator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.internal.util.StringHelper;
@@ -22,59 +23,63 @@ public class GenericExporter extends AbstractExporter {
 		abstract void process(GenericExporter ge);
 	}
 	
-	static Map modelIterators = new HashMap();
-	static {
-		modelIterators.put( "configuration", new ModelIterator() {
+	Map<String,ModelIterator> modelIterators = new HashMap<String, ModelIterator>();
 
-			void process(GenericExporter ge) {
-				TemplateProducer producer = new TemplateProducer(ge.getTemplateHelper(),ge.getArtifactCollector());
-				producer.produce(new HashMap(), ge.getTemplateName(), new File(ge.getOutputDirectory(),ge.filePattern), ge.templateName, "Configuration");
-				
-			}
-			
-		});
-		modelIterators.put("entity", new ModelIterator() {
-		
-			void process(GenericExporter ge) {
-				Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
-				Map additionalContext = new HashMap();
-				while ( iterator.hasNext() ) {					
-					POJOClass element = (POJOClass) iterator.next();
-					ge.exportPersistentClass( additionalContext, element );					
-				}
-			}
-		});
-		modelIterators.put("component", new ModelIterator() {
-			
-			void process(GenericExporter ge) {
-				Map components = new HashMap();
-				
-				Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
-				Map additionalContext = new HashMap();
-				while ( iterator.hasNext() ) {					
-					POJOClass element = (POJOClass) iterator.next();
-					ConfigurationNavigator.collectComponents(components, element);											
-				}
-						
-				iterator = components.values().iterator();
-				while ( iterator.hasNext() ) {					
-					Component component = (Component) iterator.next();
-					ComponentPOJOClass element = new ComponentPOJOClass(component,ge.getCfg2JavaTool());
-					ge.exportComponent( additionalContext, element );					
-				}
-			}
-		});
-	}
-	
 	private String templateName;
 	private String filePattern;
 	private String forEach;
 	
 	public GenericExporter(Configuration cfg, File outputdir) {
 		super(cfg,outputdir);
+		init();
 	}
 
 	public GenericExporter() {
+	    init();
+	}
+	
+	private void init() {
+	    modelIterators.put( "configuration", new ModelIterator() {
+            @SuppressWarnings("rawtypes")
+            void process(GenericExporter ge) {
+                TemplateProducer producer = new TemplateProducer(ge.getTemplateHelper(),ge.getArtifactCollector());
+                producer.produce(new HashMap(), ge.getTemplateName(), new File(ge.getOutputDirectory(),ge.filePattern), ge.templateName, "Configuration");
+                
+            }
+            
+        });
+        modelIterators.put("entity", new ModelIterator() {
+            @SuppressWarnings("rawtypes")
+            void process(GenericExporter ge) {
+                Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
+                Map additionalContext = new HashMap();
+                while ( iterator.hasNext() ) {                  
+                    POJOClass element = (POJOClass) iterator.next();
+                    ge.exportPersistentClass( additionalContext, element );                 
+                }
+            }
+        });
+        modelIterators.put("component", new ModelIterator() {
+            @SuppressWarnings("rawtypes")
+            void process(GenericExporter ge) {
+                Map components = new HashMap();
+                
+                Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
+                Map additionalContext = new HashMap();
+                while ( iterator.hasNext() ) {                  
+                    POJOClass element = (POJOClass) iterator.next();
+                    ConfigurationNavigator.collectComponents(components, element);                                          
+                }
+                        
+                iterator = components.values().iterator();
+                while ( iterator.hasNext() ) {                  
+                    Component component = (Component) iterator.next();
+                    ComponentPOJOClass element = (ComponentPOJOClass) ge.getCfg2JavaTool().getPOJOClass(component);
+                    ge.exportComponent( additionalContext, element );                   
+                }
+            }
+        });
+
 	}
 	
 	public String getTemplateName() {
