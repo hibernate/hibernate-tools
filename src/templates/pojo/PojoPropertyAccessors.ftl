@@ -1,5 +1,5 @@
 <#-- // Property accessors -->
-<#foreach property in pojo.getAllPropertiesIterator()>
+<#if groovy??><#else><#foreach property in pojo.getAllPropertiesIterator()>
 <#if pojo.getMetaAttribAsBool(property, "gen-property", true)>
  <#if pojo.hasFieldJavaDoc(property)>    
     /**       
@@ -15,4 +15,4 @@
         this.${property.name} = ${property.name};
     }
 </#if>
-</#foreach>
+</#foreach></#if>

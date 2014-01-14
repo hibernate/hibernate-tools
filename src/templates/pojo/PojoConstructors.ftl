@@ -1,7 +1,7 @@
 
-<#--  /** default constructor */ -->
+<#--  /** default constructor */ --><#if pojo.needsMinimalConstructor() || pojo.needsFullConstructor()>
     public ${pojo.getDeclarationName()}() {
-    }
+    }</#if>
 
 <#if pojo.needsMinimalConstructor()>	<#-- /** minimal constructor */ -->
     public ${pojo.getDeclarationName()}(${c2j.asParameterList(pojo.getPropertyClosureForMinimalConstructor(), jdk5, pojo)}) {
