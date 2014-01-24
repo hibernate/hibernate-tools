@@ -168,7 +168,7 @@
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>common</artifactId>
-			<version>3.2.0-v20060603</version>
+			<version>3.6.200-v20130402-1505</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
