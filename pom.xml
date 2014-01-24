@@ -51,9 +51,9 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>4.0.0.Final</hibernateversion>
+		<hibernateversion>4.3.1.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
-		<hibernateCommonsAnnotationsVersion>3.2.0.Final</hibernateCommonsAnnotationsVersion>
+		<hibernateCommonsAnnotationsVersion>4.0.4.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
@@ -82,7 +82,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>${hibernateCommonsAnnotationsVersion}</version>
 			<scope>compile</scope>
@@ -95,7 +95,7 @@
 		</dependency>		
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>${hibernateJpaversion}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -150,19 +150,19 @@
         <dependency>
             <groupId>org.eclipse.tycho</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.8.0.v_C03</version>
+            <version>3.9.1.v20130905-0837</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>text</artifactId>
-			<version>3.2.0-v20060605-1400</version>
+			<version>3.3.0-v20070606-0010</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
-			<version>3.2.0-v20060603</version>
+			<version>3.9.0-v20130326-1255</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
