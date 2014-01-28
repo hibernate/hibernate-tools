@@ -6,6 +6,7 @@ package org.hibernate.tool.hbm2x;
 
 import java.util.Iterator;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
@@ -119,7 +120,8 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testCachedDialect() {
 		
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 				
 		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
