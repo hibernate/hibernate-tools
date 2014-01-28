@@ -10,7 +10,7 @@ import java.util.Set;
 
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.engine.internal.Versioning;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryCollectionReturn;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryJoinReturn;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
@@ -291,18 +291,18 @@ public class Cfg2HbmTool {
 	}
 
 	public boolean isClassLevelOptimisticLockMode(PersistentClass pc) {
-		return pc.getOptimisticLockMode() != Versioning.OPTIMISTIC_LOCK_VERSION;
+		return pc.getOptimisticLockStyle() != OptimisticLockStyle.VERSION;
 	}
 
 	public String getClassLevelOptimisticLockMode(PersistentClass pc) {
-		int oMode = pc.getOptimisticLockMode();
-		if ( oMode == Versioning.OPTIMISTIC_LOCK_DIRTY ) {
+		OptimisticLockStyle oMode = pc.getOptimisticLockStyle();
+		if ( oMode == OptimisticLockStyle.DIRTY ) {
 			return "dirty";
 		}
-		else if ( oMode == Versioning.OPTIMISTIC_LOCK_ALL ) {
+		else if ( oMode == OptimisticLockStyle.ALL ) {
 			return "all";
 		}
-		else if ( oMode == Versioning.OPTIMISTIC_LOCK_NONE ) {
+		else if ( oMode == OptimisticLockStyle.NONE ) {
 			return "none";
 		}
 		else {

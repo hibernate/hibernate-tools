@@ -26,7 +26,9 @@ import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.internal.Versioning;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.internal.util.StringHelper;
@@ -48,7 +50,6 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
@@ -768,7 +769,7 @@ public class JDBCBinder {
 		Property property = bindBasicProperty(makeUnique(rc, propertyName), table, column, processed, mapping);
 		rc.addProperty(property);
 		rc.setVersion(property);
-		rc.setOptimisticLockMode(Versioning.OPTIMISTIC_LOCK_VERSION);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.VERSION);
 		log.debug("Column " + column.getName() + " will be used for <version>/<timestamp> columns in " + identifier);
 
 	}

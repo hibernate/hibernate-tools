@@ -28,6 +28,7 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.MetaAttributeConstants;
 import org.hibernate.tool.hbm2x.MetaAttributeHelper;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
+import org.hibernate.tuple.GenerationTiming;
 import org.hibernate.internal.util.StringHelper;
 
 /**
@@ -827,7 +828,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 			return false;
 		}
 		if(field.getValue()!=null) {			
-			if (!field.isOptional() && field.getGeneration().equals(PropertyGeneration.NEVER)) {				
+			if (!field.isOptional() && field.getValueGenerationStrategy().getGenerationTiming().equals(GenerationTiming.NEVER)) {				
 				return true;
 			} else if (field.getValue() instanceof Component) {
 				Component c = (Component) field.getValue();
