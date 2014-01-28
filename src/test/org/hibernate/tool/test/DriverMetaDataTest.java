@@ -3,6 +3,7 @@ package org.hibernate.tool.test;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
@@ -41,8 +42,8 @@ protected String[] getCreateSQL() {
 	public void testExportedKeys() {
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
@@ -79,8 +80,8 @@ protected String[] getCreateSQL() {
 	public void testDataType() {
 		
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
@@ -102,8 +103,8 @@ protected String[] getCreateSQL() {
 		
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		

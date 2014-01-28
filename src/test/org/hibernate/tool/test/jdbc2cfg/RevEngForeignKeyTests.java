@@ -11,6 +11,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.hibernate.MappingException;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
@@ -222,10 +223,10 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 
 	private OverrideRepository buildOverrideRepository() {
 		if(settings==null) {
-			ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 			//builder.configure();
 			builder.applySettings(Environment.getProperties());
-			ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+			ServiceRegistry serviceRegistry = builder.build();
 			
 			settings = new SettingsFactory() {
 				// trick to get hibernate.properties settings for defaultschema/catalog in here

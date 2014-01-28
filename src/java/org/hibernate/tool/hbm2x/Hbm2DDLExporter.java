@@ -21,11 +21,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.integrator.spi.IntegratorService;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.service.spi.SessionFactoryServiceRegistryFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -83,9 +83,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 	protected void doStart() {
 		final Configuration configuration = getConfiguration();
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings( configuration.getProperties() );
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		integrateEnvers( configuration, serviceRegistry );
 
 		if (schemaUpdate) {

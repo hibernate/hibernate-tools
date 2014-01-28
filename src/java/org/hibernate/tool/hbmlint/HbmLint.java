@@ -3,6 +3,7 @@ package org.hibernate.tool.hbmlint;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.service.ServiceRegistry;
@@ -25,9 +26,9 @@ public class HbmLint implements IssueCollector {
 	
 	public void analyze(Configuration cfg) {
 		
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
 		for (int i = 0; i < detectors.length; i++) {

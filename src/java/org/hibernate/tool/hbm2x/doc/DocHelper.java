@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.dialect.Dialect;
@@ -135,9 +136,9 @@ public final class DocHelper {
 
         this.cfg = cfg;
 
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
