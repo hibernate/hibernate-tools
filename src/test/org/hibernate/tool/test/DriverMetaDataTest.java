@@ -80,8 +80,8 @@ protected String[] getCreateSQL() {
 	public void testDataType() {
 		
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
@@ -103,8 +103,8 @@ protected String[] getCreateSQL() {
 		
 	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		Settings settings = cfg.buildSettings(serviceRegistry);
 		
