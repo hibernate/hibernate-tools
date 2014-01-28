@@ -17,6 +17,7 @@ import org.apache.commons.collections.MultiMap;
 import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.internal.util.xml.XMLHelper;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -140,9 +141,9 @@ public class OverrideRepository  {
 
 	public OverrideRepository addInputStream(InputStream xmlInputStream) throws MappingException {
 		try {
-			List errors = new ArrayList();
-			org.dom4j.Document doc = xmlHelper.createSAXReader( "XML InputStream", errors, entityResolver ).read( new InputSource( xmlInputStream ) );
-			if ( errors.size() != 0 ) throw new MappingException( "invalid override definition", ( Throwable ) errors.get( 0 ) );
+			ErrorLogger errorLogger = new ErrorLogger( "XML InputStream" );
+			org.dom4j.Document doc = xmlHelper.createSAXReader( errorLogger, entityResolver ).read( new InputSource( xmlInputStream ) );
+			if ( errorLogger.hasErrors() ) throw new MappingException( "invalid override definition", ( Throwable ) errorLogger.getErrors().get( 0 ) );
 			add( doc );
 			return this;
 		}

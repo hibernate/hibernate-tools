@@ -51,7 +51,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>4.0.0.Final</hibernateversion>
+		<hibernateversion>4.2.0.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>3.2.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -204,6 +204,11 @@
 		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
