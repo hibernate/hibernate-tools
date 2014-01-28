@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.Settings;
@@ -69,9 +70,9 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		Statement statement = null;
 		Connection con = null;
 		Settings settings = null;
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 			.applySettings( getConfiguration().getProperties() )
-			.buildServiceRegistry();
+			.build();
     	
         try {
         	settings = getConfiguration().buildSettings(serviceRegistry);

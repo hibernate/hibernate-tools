@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
@@ -73,9 +74,9 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	 */
 	protected void executeDDL(String[] sqls, boolean ignoreErrors) throws SQLException {		
 		Configuration configuration = new Configuration();
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		
 		if(!appliesTo( jdbcServices.getDialect() )) {

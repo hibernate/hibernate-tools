@@ -22,7 +22,7 @@ import org.hibernate.JDBCException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;

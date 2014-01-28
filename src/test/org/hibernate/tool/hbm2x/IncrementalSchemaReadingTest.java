@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
@@ -19,7 +20,6 @@ import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbmlint.detector.TableSelectorStrategy;
 
@@ -46,9 +46,9 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testReadSchemaIncremental() {
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 
 		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 

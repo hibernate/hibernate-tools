@@ -95,7 +95,8 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         ignoredProperties.put(Environment.SESSION_FACTORY_NAME, null);
         ignoredProperties.put(Environment.HBM2DDL_AUTO, "false" );
         ignoredProperties.put("hibernate.temp.use_jdbc_metadata_defaults", null );
-        ignoredProperties.put(Environment.TRANSACTION_MANAGER_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup");
+        // FIXME was Environment.TRANSACTION_MANAGER_STRATEGY
+        ignoredProperties.put(Environment.TRANSACTION_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup");
         
         Set set = props.entrySet();
         Iterator iterator = set.iterator();

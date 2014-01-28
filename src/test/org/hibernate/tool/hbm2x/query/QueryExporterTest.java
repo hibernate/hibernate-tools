@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.NonReflectiveTestCase;
@@ -59,9 +60,9 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 	}
 	
 	protected void tearDown() throws Exception {
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(getCfg().getProperties());
-		SchemaExport export = new SchemaExport(builder.buildServiceRegistry(), getCfg());
+		SchemaExport export = new SchemaExport(builder.build(), getCfg());
 		export.drop( false, true );
 		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){

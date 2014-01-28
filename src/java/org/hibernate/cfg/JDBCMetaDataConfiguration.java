@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.dom4j.Element;
 import org.hibernate.MappingException;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
@@ -16,8 +18,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.service.internal.StandardServiceRegistryImpl;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +44,9 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	
 	public ServiceRegistry getServiceRegistry(){
 		if(serviceRegistry == null){
-			serviceRegistry = new ServiceRegistryBuilder()
+			serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(getProperties())
-				.buildServiceRegistry();
+				.build();
 		}
 		return serviceRegistry;
 	}

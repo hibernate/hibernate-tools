@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -147,9 +148,9 @@ public abstract class BaseTestCase extends TestCase {
 	public void assertNoTables() throws SQLException {
 		Configuration configuration = new Configuration();
 		
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		
 		Settings testSettings = configuration.buildSettings(serviceRegistry);
 		

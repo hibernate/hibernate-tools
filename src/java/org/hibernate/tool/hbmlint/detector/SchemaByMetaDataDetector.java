@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
@@ -59,9 +60,9 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 	public void initialize(Configuration cfg, Settings settings) {
 		super.initialize( cfg, settings );
-		ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
-		ServiceRegistry serviceRegistry = builder.buildServiceRegistry();
+		ServiceRegistry serviceRegistry = builder.build();
 		
 		dialect = serviceRegistry.getService(JdbcServices.class).getDialect();
 
