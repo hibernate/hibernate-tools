@@ -159,6 +159,7 @@ public class JDBCBinder {
 			String className = revengStrategy.tableToClassName( tableIdentifier );
 			log.debug("Building entity " + className + " based on " + tableIdentifier);
 			rc.setEntityName( className );
+			rc.setJpaEntityName( StringHelper.unqualify( className ) );
 			rc.setClassName( className );
 			rc.setProxyInterfaceName( rc.getEntityName() ); // TODO: configurable ?
 			rc.setLazy(true);
