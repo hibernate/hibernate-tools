@@ -50,9 +50,10 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			Class hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", JPAConfigurationTask.class);
 			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
 			
-			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getMethod(
+			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getDeclaredMethod(
 					"getEntityManagerFactoryBuilderOrNull", 
 					new Class[] { String.class, Map.class });
+			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
 			Object entityManagerFactoryBuilder = 
 					getEntityManagerFactoryBuilderOrNull.invoke(
 							hibernatePersistanceProvider, 
