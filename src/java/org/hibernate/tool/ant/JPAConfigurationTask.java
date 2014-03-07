@@ -29,23 +29,46 @@ public class JPAConfigurationTask extends ConfigurationTask {
 				overrides.putAll( p );
 			}
 
-			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
-			Object ejb3cfg = clazz.newInstance();
+//			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
+//			Object ejb3cfg = clazz.newInstance();
+//			
+//			if(entityResolver!=null) {
+//				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
+//				Object object = resolver.newInstance();
+//				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });
+//				method.invoke(ejb3cfg, new Object[] { object } );
+//			}
+//			
+//			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class });
+//			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
+//				throw new BuildException("Persistence unit not found: '" + persistenceUnit + "'.");
+//			}
+//			
+//			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);
+//			return (Configuration) method.invoke(ejb3cfg, null);
+
+			Class hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", JPAConfigurationTask.class);
+			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
 			
-			if(entityResolver!=null) {
-				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
-				Object object = resolver.newInstance();
-				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });
-				method.invoke(ejb3cfg, new Object[] { object } );
-			}
+			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getMethod(
+					"getEntityManagerFactoryBuilderOrNull", 
+					new Class[] { String.class, Map.class });
+			Object entityManagerFactoryBuilder = 
+					getEntityManagerFactoryBuilderOrNull.invoke(
+							hibernatePersistanceProvider, 
+							new Object[] { persistenceUnit, overrides});
 			
-			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class });
-			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
-				throw new BuildException("Persistence unit not found: '" + persistenceUnit + "'.");
-			}
+			Method build =
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"build", new Class[0]);
+			build.invoke(entityManagerFactoryBuilder, null);
 			
-			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);
-			return (Configuration) method.invoke(ejb3cfg, null);
+			Method getHibernateConfiguration = 
+					entityManagerFactoryBuilder.getClass().getMethod(
+							"getHibernateConfiguration", new Class[0]);
+			return (Configuration)getHibernateConfiguration.invoke(
+							entityManagerFactoryBuilder, null);
+			
 		} 
 		catch(HibernateException he) {
 			throw new BuildException(he);
