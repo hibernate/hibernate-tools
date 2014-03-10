@@ -10,7 +10,6 @@ import org.apache.tools.ant.BuildException;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
-import org.xml.sax.EntityResolver;
 
 public class JPAConfigurationTask extends ConfigurationTask {
 	
@@ -78,7 +77,13 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			throw be;
 		}
 		catch(Exception t) {
-			throw new BuildException("Problems in creating a configuration for JPA. Have you remembered to add hibernate EntityManager jars to the classpath ?",t);			
+			Throwable cause = t.getCause();
+			if (cause != null) {
+				throw new BuildException(cause);
+			} else {
+				t.printStackTrace();
+				throw new BuildException("Problems in creating a configuration for JPA. Have you remembered to add hibernate EntityManager jars to the classpath ?",t);	
+			}
 		}
 		
 	}
