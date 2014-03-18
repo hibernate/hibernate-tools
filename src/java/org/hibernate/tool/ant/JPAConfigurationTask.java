@@ -58,6 +58,13 @@ public class JPAConfigurationTask extends ConfigurationTask {
 							hibernatePersistanceProvider, 
 							new Object[] { persistenceUnit, overrides});
 			
+			if (entityManagerFactoryBuilder == null) {
+				throw new BuildException(
+						"Persistence unit not found: '" + 
+						persistenceUnit + 
+						"'.");
+			}
+			
 			Method build =
 					entityManagerFactoryBuilder.getClass().getMethod(
 							"build", new Class[0]);
