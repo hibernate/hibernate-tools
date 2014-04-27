@@ -495,7 +495,7 @@ public final class DocHelper {
     public POJOClass getComponentPOJO(Property property){
     	if (property.getValue() instanceof Component) {
     		Component comp = (Component) property.getValue();
-    		ComponentPOJOClass componentPOJOClass = new ComponentPOJOClass(comp, new Cfg2JavaTool());    		
+    		ComponentPOJOClass componentPOJOClass = new ComponentPOJOClass(comp, new Cfg2JavaTool(cfg));    		
     		return componentPOJOClass;
     	}
       	else{

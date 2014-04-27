@@ -3,15 +3,18 @@ package org.hibernate.tool.hbm2x.visitor;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.CompositeCustomType;
 import org.hibernate.type.CustomType;
@@ -22,9 +25,11 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 
 	
 	private boolean preferRawTypeNames = true;
+	private Configuration cfg;
 
-	public JavaTypeFromValueVisitor() {
+	public JavaTypeFromValueVisitor(Configuration cfg) {
 		super( true );
+		this.cfg = cfg;
 	}
 	
 	// special handling for Map's to avoid initialization of comparators that depends on the keys/values which might not be generated yet.
@@ -57,7 +62,20 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 	}
 	
 	private Object acceptToOne(ToOne value) {
-		return value.getReferencedEntityName(); // should get the cfg and lookup the persistenclass.			
+		String referencedEntityName = value.getReferencedEntityName();
+		PersistentClass classMapping = cfg.getClassMapping(referencedEntityName);
+		if (classMapping != null) {
+			/* If it has a proxy then we should reference this instead, as the object we get given may be
+			 * a proxy rather than the concrete type.
+			 */
+			if (classMapping.getProxyInterfaceName() != null) {
+				return classMapping.getProxyInterfaceName();
+			} else {
+				return classMapping.getEntityName();
+			}
+		} else {
+			return referencedEntityName;
+		}
 	}
 	
 	public Object accept(OneToMany value) {

@@ -39,6 +39,7 @@ public abstract class AbstractExporter implements Exporter {
 	public AbstractExporter(Configuration cfg, File outputdir) {
 		this();
 		setConfiguration(cfg);
+		c2j.setConfiguration(cfg);
 		setOutputDirectory(outputdir);		
 	}
 
@@ -53,6 +54,7 @@ public abstract class AbstractExporter implements Exporter {
 
 	public void setConfiguration(Configuration cfg) {
 		configuration = cfg;
+		c2j.setConfiguration(cfg);
 	}
 
     /**

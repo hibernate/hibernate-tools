@@ -119,7 +119,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	public void testPackageName() {
 
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass classMapping = getCfg()
 				.getClassMapping( "org.hibernate.tool.hbm2x.Order" );
@@ -138,7 +138,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	public void testJavaDoc() {
 
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		assertEquals( " * test", c2j.toJavaDoc( "test", 0 ) );
 		assertEquals( "   * test", c2j.toJavaDoc( "test", 2 ) );
@@ -156,7 +156,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	public void testExtraCode() {
 
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		assertFalse( c2j.hasMetaAttribute( getCfg().getClassMapping(
 				"HelloWorld" ), "class-code" ) );
@@ -171,7 +171,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	public void testScope() {
 
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -182,7 +182,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testDeclarationType() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -194,7 +194,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testTypeName() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -205,7 +205,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testUseRawTypeNullability() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool( /*true*/ );
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg() /*true*/ );
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Product" );
@@ -239,7 +239,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testExtendsImplements() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -283,7 +283,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testDeclarationName() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -299,7 +299,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testAsArguments() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping(
 				"org.hibernate.tool.hbm2x.Order" );
@@ -312,7 +312,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testPropertiesForFullConstructor() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
@@ -332,7 +332,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 
 	public void testToString() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
@@ -424,7 +424,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 	}
 	
 	public void testEqualsHashCode() {
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 
 		PersistentClass pc = getCfg().getClassMapping( "org.hibernate.tool.hbm2x.Customer" );
 		POJOClass pjc = c2j.getPOJOClass((Component) pc.getProperty("addressComponent").getValue());
@@ -482,7 +482,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Customer");
 		
 		Property property = classMapping.getProperty("customDate");
-		assertEquals("java.sql.Date", new Cfg2JavaTool().getJavaTypeName(property, false));
+		assertEquals("java.sql.Date", new Cfg2JavaTool(getCfg()).getJavaTypeName(property, false));
 		
 	}
 	
