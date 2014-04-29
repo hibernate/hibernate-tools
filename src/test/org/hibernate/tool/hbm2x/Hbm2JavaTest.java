@@ -114,7 +114,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	protected String[] getMappings() {
 		return new String[] { "Customer.hbm.xml", "Order.hbm.xml",
-				"LineItem.hbm.xml", "Product.hbm.xml", "HelloWorld.hbm.xml", "Train.hbm.xml", "Passenger.hbm.xml" };
+				"LineItem.hbm.xml", "Product.hbm.xml", "HelloWorld.hbm.xml", "Train.hbm.xml", "Passenger.hbm.xml", "Proxies.hbm.xml" };
 	}
 
 	public void testPackageName() {
@@ -484,6 +484,16 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		Property property = classMapping.getProperty("customDate");
 		assertEquals("java.sql.Date", new Cfg2JavaTool(getCfg()).getJavaTypeName(property, false));
 		
+	}
+	
+	public void testProxies() {
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
+
+		PersistentClass classMapping = getCfg().getClassMapping( "proxies.ClassA" );
+		Property property = classMapping.getProperty("myClassB");
+		
+		String javaTypeName = c2j.getJavaTypeName(property, true);
+		assertEquals("proxies.ProxyB", javaTypeName);
 	}
 	
 	

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="proxies">
+	<class name="ClassA" abstract="true">
+		<id name="id" type="long">
+			<generator class="native">
+				<param name="sequence">ClassA_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="myClassB" class="ClassB" not-null="true" />
+	</class>
+	<class name="ClassB" proxy="ProxyB" abstract="true">
+		<id name="id" type="int">
+			<generator class="native">
+				<param name="sequence">ClassB_seq</param>
+			</generator>
+		</id>
+		<discriminator column="myType" />
+		<property name="name" type="string" />
+		<subclass name="ClassBSubA" discriminator-value="a" proxy="ProxyBSubA">
+			<property name="valueA" type="string" />
+		</subclass>
+		<subclass name="ClassBSubB" discriminator-value="iTunes"
+			proxy="ProxyBSubB">
+			<property name="valueB" type="string" />
+		</subclass>
+	</class>
+</hibernate-mapping>
