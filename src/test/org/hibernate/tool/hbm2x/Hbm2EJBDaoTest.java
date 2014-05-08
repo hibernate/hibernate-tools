@@ -50,6 +50,7 @@ public class Hbm2EJBDaoTest extends NonReflectiveTestCase {
 		jars.add("commons-logging-1.0.4.jar");
 		jars.add("hibernate-jpa-2.0-api-1.0.1.Final.jar");
 		jars.add("jboss-ejb3x.jar");
+		jars.add("hibernate-core-4.0.0.Final.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars) );
 		
 		
