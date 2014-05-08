@@ -64,7 +64,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 
 	public void testEntityConstructorLogic() {
 		
-		Cfg2JavaTool c2j = new Cfg2JavaTool();
+		Cfg2JavaTool c2j = new Cfg2JavaTool(getCfg());
 		
 		POJOClass company = c2j.getPOJOClass(getCfg().getClassMapping("Company"));
 		
@@ -115,7 +115,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 	
 	
 	public void testMinimal() {
-		POJOClass bp = new EntityPOJOClass(getCfg().getClassMapping("BrandProduct"), new Cfg2JavaTool());
+		POJOClass bp = new EntityPOJOClass(getCfg().getClassMapping("BrandProduct"), new Cfg2JavaTool(getCfg()));
 		
 		List propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
 		

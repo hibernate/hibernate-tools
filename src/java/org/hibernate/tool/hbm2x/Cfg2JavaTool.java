@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Array;
@@ -47,8 +48,22 @@ public class Cfg2JavaTool {
 
 	private static final Logger log = LoggerFactory.getLogger( Cfg2JavaTool.class );	
 			
+	private Configuration cfg;
+	
 	public Cfg2JavaTool() {
+		
+	}
+	
+	public Cfg2JavaTool(Configuration cfg) {
+		this.cfg = cfg;
+	}
 
+	public Configuration getConfiguration() {
+		return cfg;
+	}
+
+	public void setConfiguration(Configuration cfg) {
+		this.cfg = cfg;
 	}
 
 	public POJOClass getPOJOClass(Component comp) {		
@@ -272,7 +287,7 @@ public class Cfg2JavaTool {
 	}
 
 	private String getJavaTypeName(Value value, boolean preferRawTypeNames) {
-		return (String) value.accept( new JavaTypeFromValueVisitor() );
+		return (String) value.accept( new JavaTypeFromValueVisitor(this.cfg) );
 	}
 
 	public String asParameterList(Iterator fields, boolean useGenerics, ImportContext ic) {

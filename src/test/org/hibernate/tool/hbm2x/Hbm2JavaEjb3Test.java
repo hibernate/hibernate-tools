@@ -84,12 +84,12 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 
 	public void testEqualsHashCode() {
 		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Passenger");
-		POJOClass clazz = new Cfg2JavaTool().getPOJOClass(classMapping);
+		POJOClass clazz = new Cfg2JavaTool(getCfg()).getPOJOClass(classMapping);
 		
 		assertFalse(clazz.needsEqualsHashCode());
 		
 		classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
-		clazz = new Cfg2JavaTool().getPOJOClass(classMapping);
+		clazz = new Cfg2JavaTool(getCfg()).getPOJOClass(classMapping);
 		
 		assertTrue(clazz.needsEqualsHashCode());
 		
@@ -98,7 +98,7 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 
 	public void testAnnotationColumnDefaults() {
 		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
-		Cfg2JavaTool cfg2java = new Cfg2JavaTool();
+		Cfg2JavaTool cfg2java = new Cfg2JavaTool(getCfg());
 		POJOClass clazz = cfg2java.getPOJOClass(classMapping);
 		
 		Property p = classMapping.getProperty("content");
@@ -140,7 +140,7 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 	public void testEmptyCascade() {
 		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
 		
-		Cfg2JavaTool cfg2java = new Cfg2JavaTool();
+		Cfg2JavaTool cfg2java = new Cfg2JavaTool(getCfg());
 		EntityPOJOClass clazz = (EntityPOJOClass) cfg2java.getPOJOClass(classMapping);
 		Property property = classMapping.getProperty( "author" );
 		

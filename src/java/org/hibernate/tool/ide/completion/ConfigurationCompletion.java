@@ -173,7 +173,7 @@ class ConfigurationCompletion {
         
         // Add superclass's properties too
         while (cmd != null){
-        	EntityPOJOClass pc = new EntityPOJOClass(cmd, new Cfg2JavaTool()); // TODO: we should extract the needed functionallity from this hbm2java class.
+        	EntityPOJOClass pc = new EntityPOJOClass(cmd, new Cfg2JavaTool(cfg)); // TODO: we should extract the needed functionallity from this hbm2java class.
             
         	Iterator allPropertiesIterator = pc.getAllPropertiesIterator();
             while ( allPropertiesIterator.hasNext() ) {
