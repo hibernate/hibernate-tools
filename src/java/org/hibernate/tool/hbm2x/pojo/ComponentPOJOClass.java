@@ -24,6 +24,11 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return clazz.getComponentClassName();
 	}
 	
+	@Override
+	public String getProxyOrDeclarationName() {
+		return getDeclarationName();
+	}
+	
 	public String getExtends() {
 		String extendz = "";
 

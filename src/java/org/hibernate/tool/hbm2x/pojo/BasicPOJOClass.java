@@ -125,6 +125,8 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	protected abstract String getMappedClassName();
+	
+	public abstract String getProxyOrDeclarationName();
 
 	public String getMetaAsString(String attribute) {
 		MetaAttribute c = meta.getMetaAttribute( attribute );
