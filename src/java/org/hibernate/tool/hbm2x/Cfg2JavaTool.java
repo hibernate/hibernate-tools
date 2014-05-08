@@ -18,6 +18,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MetaAttributable;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PersistentClass;
@@ -159,6 +160,10 @@ public class Cfg2JavaTool {
 	}
 
 	public String getJavaTypeName(Property p, boolean useGenerics, ImportContext importContext) {
+		return getJavaTypeName(p, useGenerics, false, importContext);
+	}
+	
+	public String getJavaTypeName(Property p, boolean useGenerics, boolean preferProxies, ImportContext importContext) {
 		String overrideType = getMetaAsString( p, "property-type" );
 		if ( !StringHelper.isEmpty( overrideType ) ) {
 			String importType = importContext.importType(overrideType);			
@@ -170,13 +175,22 @@ public class Cfg2JavaTool {
 			}
 			return importType;
 		}
-		else {
-			String rawType = getRawTypeName( p, useGenerics, true, importContext );
-			if(rawType==null) {
-					throw new IllegalStateException("getJavaTypeName *must* return a value");				
+		
+		if (preferProxies && p.getValue() instanceof ManyToOne) {
+			ManyToOne m2one = (ManyToOne) p.getValue();
+			String referencedEntityName = m2one.getReferencedEntityName();
+			PersistentClass referencedEntity = m2one.getMappings().getClass(referencedEntityName);
+			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
+				String proxyInterfaceName = referencedEntity.getProxyInterfaceName();
+				return importContext.importType(proxyInterfaceName);
 			}
-			return importContext.importType(rawType);
 		}
+		
+		String rawType = getRawTypeName( p, useGenerics, true, importContext );
+		if(rawType==null) {
+				throw new IllegalStateException("getJavaTypeName *must* return a value");				
+		}
+		return importContext.importType(rawType);
 	}
 	
 	private static final Map<String,String> PRIMITIVES = 
@@ -277,7 +291,7 @@ public class Cfg2JavaTool {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
 			Property field = (Property)fields.next();
-			buf.append( getJavaTypeName( field, useGenerics, ic ) )
+			buf.append( getJavaTypeName( field, useGenerics, true, ic ) )
 					.append( " " )
 					.append( field.getName() );
 			if ( fields.hasNext() ) {
