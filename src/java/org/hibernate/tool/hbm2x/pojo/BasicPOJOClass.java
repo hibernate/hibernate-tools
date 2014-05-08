@@ -14,8 +14,10 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IdentifierBag;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MetaAttributable;
 import org.hibernate.mapping.MetaAttribute;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Selectable;
@@ -854,6 +856,15 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	public String getJavaTypeName(Property p, boolean useGenerics) {
+		if (p.getValue() instanceof ManyToOne) {
+			ManyToOne m2one = (ManyToOne) p.getValue();
+			String referencedEntityName = m2one.getReferencedEntityName();
+			PersistentClass referencedEntity = m2one.getMappings().getClass(referencedEntityName);
+			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
+				return referencedEntity.getProxyInterfaceName();
+			}
+		}
+		
 		return c2j.getJavaTypeName(p, useGenerics, this);
 	}
 	
