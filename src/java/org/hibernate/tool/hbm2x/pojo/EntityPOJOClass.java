@@ -50,6 +50,15 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return clazz.getClassName();
 	}
 
+	@Override
+	public String getProxyOrDeclarationName() {
+		if (clazz.getProxyInterfaceName() != null) {
+			return clazz.getProxyInterfaceName();
+		} else {
+			return getDeclarationName();
+		}
+	}
+
 	/**
 	 * @return whatever the class (or interface) extends (null if it does not extend anything)
 	 */
