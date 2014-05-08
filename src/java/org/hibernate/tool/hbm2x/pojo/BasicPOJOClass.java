@@ -859,16 +859,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	public String getJavaTypeName(Property p, boolean useGenerics) {
-		if (p.getValue() instanceof ManyToOne) {
-			ManyToOne m2one = (ManyToOne) p.getValue();
-			String referencedEntityName = m2one.getReferencedEntityName();
-			PersistentClass referencedEntity = m2one.getMappings().getClass(referencedEntityName);
-			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
-				return referencedEntity.getProxyInterfaceName();
-			}
-		}
-		
-		return c2j.getJavaTypeName(p, useGenerics, this);
+		return c2j.getJavaTypeName(p, useGenerics, true, this);
 	}
 	
 	static private class DefaultInitializor {
