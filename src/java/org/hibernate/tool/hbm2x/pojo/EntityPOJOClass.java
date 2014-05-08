@@ -53,7 +53,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	@Override
 	public String getProxyOrDeclarationName() {
 		if (clazz.getProxyInterfaceName() != null) {
-			return clazz.getProxyInterfaceName();
+			return importContext.importType(clazz.getProxyInterfaceName());
 		} else {
 			return getDeclarationName();
 		}
