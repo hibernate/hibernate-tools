@@ -963,7 +963,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				}
 
 				if(useGenerics) {
-					decl = c2j.getGenericCollectionDeclaration((Collection) p.getValue(), true, importContext);
+					decl = c2j.getGenericCollectionDeclaration((Collection) p.getValue(), true, true, importContext);
 				}
 				return initialization.getDefaultValue(comparator, decl, this);
 			} else {

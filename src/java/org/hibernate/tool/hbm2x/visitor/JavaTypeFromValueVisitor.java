@@ -6,6 +6,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
@@ -19,11 +20,17 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 
 	
 	private boolean preferRawTypeNames = true;
+	private boolean preferProxies = false;
 
 	public JavaTypeFromValueVisitor() {
 		super( true );
 	}
 	
+	public JavaTypeFromValueVisitor(boolean preferProxies) {
+		super(true);
+		this.preferProxies = preferProxies;
+	}
+
 	// special handling for Map's to avoid initialization of comparators that depends on the keys/values which might not be generated yet.
 	public Object accept(Map o) {
 		if ( o.isSorted() ) {
@@ -54,6 +61,14 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 	}
 	
 	private Object acceptToOne(ToOne value) {
+		if (preferProxies) {
+			String referencedEntityName = value.getReferencedEntityName();
+			PersistentClass referencedEntity = value.getMappings().getClass(referencedEntityName);
+			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
+				return referencedEntity.getProxyInterfaceName();
+			}
+		}
+		
 		return value.getReferencedEntityName(); // should get the cfg and lookup the persistenclass.			
 	}
 	
