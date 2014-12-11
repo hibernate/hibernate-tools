@@ -67,7 +67,9 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		assertFileAndExists( new File( getOutputDir(), "org/hibernate/tool/hbm2x/FatherComponent.java" ) );
 		assertFileAndExists( new File( getOutputDir(), "org/hibernate/tool/hbm2x/ChildComponent.java" ) );
 
-		assertEquals(15, artifactCollector.getFileCount("java"));
+	    assertFileAndExists( new File( getOutputDir(), "org/hibernate/tool/hbm2x/Outer.java" ) );
+
+		assertEquals(16, artifactCollector.getFileCount("java"));
 	}
 	
 	public void testCompilable() {
@@ -114,7 +116,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 	protected String[] getMappings() {
 		return new String[] { "Customer.hbm.xml", "Order.hbm.xml",
-				"LineItem.hbm.xml", "Product.hbm.xml", "HelloWorld.hbm.xml", "Train.hbm.xml", "Passenger.hbm.xml" };
+				"LineItem.hbm.xml", "Product.hbm.xml", "HelloWorld.hbm.xml", "Train.hbm.xml", "Passenger.hbm.xml", "Outer.hbm.xml" };
 	}
 
 	public void testPackageName() {
