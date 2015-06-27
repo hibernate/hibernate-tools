@@ -392,6 +392,7 @@ public class JDBCBinder {
 
         if(FetchMode.JOIN.toString().equalsIgnoreCase(fetchMode)) {
         	value.setFetchMode(FetchMode.JOIN);
+            value.setLazy(false);
         }
         else if(FetchMode.SELECT.toString().equalsIgnoreCase(fetchMode)) {
         	value.setFetchMode(FetchMode.SELECT);
