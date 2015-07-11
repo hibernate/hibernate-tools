@@ -15,6 +15,7 @@ public class ImportContextImpl implements ImportContext {
 	Map simpleNames = new HashMap();
 	
 	String basePackage = "";
+	String eol = System.getProperty( "line.separator" );
 
 	// TODO: share this somehow, redundant from Cfg2JavaTool
 	private static final Map PRIMITIVES = new HashMap();
@@ -136,9 +137,9 @@ public class ImportContextImpl implements ImportContext {
 					// dont add automatically "imported" stuff
 				} else {
 					if(staticImports.contains(next)) {
-						buf.append("import static " + next + ";\r\n");
+						buf.append("import static " + next + ";" + eol);
 					} else {
-						buf.append("import " + next + ";\r\n");
+						buf.append("import " + next + ";" + eol);
 					}
 				}
 		}
