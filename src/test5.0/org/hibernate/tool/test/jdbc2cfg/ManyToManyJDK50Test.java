@@ -163,7 +163,7 @@ public class ManyToManyJDK50Test extends JDBCMetaDataBinderTestCase {
 	private void addAnnotationJars(List jars) {
 		jars.add( "hibernate-jpa-2.0-api-1.0.1.Final.jar" );
 		jars.add( "hibernate-commons-annotations-4.0.1.Final.jar" );
-		jars.add( "hibernate-core-4.0.0.Final.jar" );
+		jars.add( "hibernate-core-4.0.1.Final.jar" );
 		jars.add( "dom4j-1.6.1.jar" );
 		jars.add( "commons-logging-1.0.4.jar" );
 		
