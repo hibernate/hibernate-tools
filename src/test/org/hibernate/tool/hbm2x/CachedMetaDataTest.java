@@ -145,10 +145,19 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 
 	private void validate(DatabaseCollector dc) {
 		Iterator iterator = dc.iterateTables();
-		Table firstChild = (Table) iterator.next();
-		assertTrue("CHILD".equals(firstChild.getName()) || 
-				"MASTER".equals(firstChild.getName()));
-		assertTrue(iterator.hasNext());
+		Table table = (Table) iterator.next();
+		Table master = null, child = null;
+		if ("MASTER".equals(table.getName())) {
+			master = table;
+			child = (Table)iterator.next();
+		} else if ("CHILD".equals(table.getName())) {
+			child = table;
+			master = (Table)iterator.next();
+		} else {
+			fail("Only tables named 'MASTER' and 'CHILD' should exist");
+		}
+		assertNotNull(master);
+		assertNotNull(child);
 		
 		iterator = dc.iterateTables();
 		assertNotNull(iterator.next());
@@ -156,7 +165,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		assertFalse(iterator.hasNext());
 		
 		
-		assertHasNext("should have recorded one foreignkey to child table", 1, firstChild.getForeignKeyIterator() );
+		assertHasNext("should have recorded one foreignkey to child table", 1, child.getForeignKeyIterator() );
 	}
 
 	protected String[] getCreateSQL() {
