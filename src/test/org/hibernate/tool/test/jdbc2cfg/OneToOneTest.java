@@ -252,7 +252,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		List jars = new ArrayList();
 		
 		
-		jars.add( "hibernate-core-4.0.0.Final.jar" );
+		jars.add( "hibernate-core-4.3.10.Final.jar" );
 		jars.add( "hibernate-jpa-2.0-api-1.0.1.Final.jar");
 		
 		TestHelper.compile(
