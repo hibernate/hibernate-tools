@@ -51,7 +51,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>4.0.0.Final</hibernateversion>
+		<hibernateversion>4.0.1.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>3.2.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
