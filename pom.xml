@@ -150,7 +150,7 @@
         <dependency>
             <groupId>org.eclipse.tycho</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.8.0.v_C03</version>
+            <version>3.9.1.v20130905-0837</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
@@ -162,7 +162,7 @@
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>runtime</artifactId>
-			<version>3.2.0-v20060603</version>
+			<version>3.10.0-v20140318-2214</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -476,6 +476,17 @@
 	</build>
 
 	<repositories>
+                <repository>
+                        <id>jboss-public-repository-group</id>
+                        <name>JBoss Public Repository Group</name>
+                        <url>http://repository.jboss.org/nexus/content/groups/public</url>
+                        <releases>
+                                <enabled>true</enabled>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </repository>
 		<!--
 			To build Hibernate Tools Core you have to add the JBoss Maven
 			repository to your settings.xml See also
