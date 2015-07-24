@@ -7,7 +7,7 @@
     <!-- Name of project and version, used to create filenames -->
     <property name="Name" value="Hibernate Tools"/>
     <property name="name" value="hibernate-tools"/>
-    <property name="version" value="3.4.0.Beta2"/>
+    <property name="version" value="3.5.0.Final"/>
 
 	<property name="javadoc.packagenames" value="org.hibernate.tool"/>	
 

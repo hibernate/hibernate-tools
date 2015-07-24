@@ -11,7 +11,7 @@
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
-	<version>3.4.0.CR2</version>
+	<version>3.5.0.Final</version>
 	<packaging>jar</packaging>
 
 	<name>Hibernate Tools</name>
