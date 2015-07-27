@@ -260,7 +260,6 @@ create table BottomUp (
 	</target>
 
 	<target name="jpa-boguspunit">
-		<property file="${testlibs.dir}/version.properties" prefix="h3"/>
 
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" /> 
 
@@ -291,7 +290,6 @@ create table BottomUp (
 	</target>
 
 	<target name="jpa-punit">
-		<property file="${testlibs.dir}/version.properties" prefix="h3"/>
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="annlib" />
 
 		<delete dir="${build.dir}/ejb3" />
