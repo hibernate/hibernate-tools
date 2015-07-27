@@ -21,7 +21,7 @@
 	
 	<path id="annlib">
 		<path location="${lib.dir}/freemarker.jar" />
-		<path location="${testlibs.dir}/hibernate-core-4.0.0.Final.jar" />
+		<path location="${testlibs.dir}/hibernate-core-5.0.0.CR2.jar" />
 		<path location="${testlibs.dir}/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
 		<path location="${test-classes}" />
 		<path location="${target.dir}/classes" />

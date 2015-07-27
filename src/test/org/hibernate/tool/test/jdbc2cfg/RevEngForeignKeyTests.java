@@ -115,7 +115,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 
 	private void addAnnotationJars(List jars) {
 		jars.add( "hibernate-jpa-2.1-api-1.0.0.Final.jar" );
-		jars.add( "hibernate-core-4.0.0.Final.jar" );
+		jars.add( "hibernate-core-5.0.0.CR2.jar" );
 		
 	}
 	
