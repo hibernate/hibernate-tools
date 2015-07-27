@@ -55,7 +55,6 @@ public class VersioningForJDK50Test extends VersioningTest {
 		
 		ArrayList list = new ArrayList();
 		List jars = new ArrayList();
-		jars.add("hibernate-commons-annotations-4.0.1.Final.jar");
 		jars.add("hibernate-jpa-2.0-api-1.0.1.Final.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars));
 		
