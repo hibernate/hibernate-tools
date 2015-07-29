@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateModelIterator;
 
 
 /**
@@ -145,15 +147,16 @@ public class TemplateHelper {
 
 	
 	   
-    public void putInContext(String key, Object value) {
+    public Object putInContext(String key, Object value) {
     	log.trace("putInContext " + key + "=" + value);
         if(value == null) throw new IllegalStateException("value must not be null for " + key);
         Object replaced = internalPutInContext(key,value);
         if(replaced!=null) {
         	log.warn( "Overwriting " + replaced + " when setting " + key + " to " + value + ".");
         }
+		return replaced;
     }
-    
+
 	public void removeFromContext(String key, Object expected) {
     	log.trace("removeFromContext " + key + "=" + expected);
         Object replaced = internalRemoveFromContext(key);

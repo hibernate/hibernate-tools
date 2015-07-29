@@ -3,6 +3,7 @@ package org.hibernate.tool.hbm2x.pojo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,7 +43,9 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	protected ImportContext importContext;
 	protected MetaAttributable meta;
 	protected final Cfg2JavaTool c2j;
-	
+	protected List<POJOClass> innerClasses = new LinkedList<POJOClass>( );
+	protected POJOClass outerClass;
+
 	public BasicPOJOClass(MetaAttributable ma, Cfg2JavaTool c2j) {
 		this.meta = ma;
 		this.c2j = c2j;		
@@ -106,10 +109,18 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	 * @return unqualified classname for this class (can be changed by meta attribute "generated-class")
 	 */
 	public String getDeclarationName() {
-		return qualifyInnerClass(StringHelper.unqualify( getGeneratedClassName() ));
+		if(outerClass != null) {
+			String outerClassGeneratedClassName = outerClass.getGeneratedClassName();
+			String className = getGeneratedClassName();
+			int i = className.lastIndexOf( '$' );
+			if(i >= 0 && className.substring( 0, i ).equals( outerClassGeneratedClassName )) {
+				return className.substring( i + 1 );
+			}
+		}
+		return qualifyInnerClass( StringHelper.unqualify( getGeneratedClassName() ) );
 	}
-	
-	protected String getGeneratedClassName()
+
+	public String getGeneratedClassName()
 	{
 		String generatedClass = getMetaAsString(MetaAttributeConstants.GENERATED_CLASS).trim();
 		if(StringHelper.isEmpty(generatedClass) ) {
@@ -124,7 +135,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return className.replace('$', '.');
 	}
 	
-	protected abstract String getMappedClassName();
+	public abstract String getMappedClassName();
 
 	public String getMetaAsString(String attribute) {
 		MetaAttribute c = meta.getMetaAttribute( attribute );
@@ -169,7 +180,9 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		if ( meta.getMetaAttribute( CLASS_MODIFIER ) != null ) {
 			classModifiers = getMetaAsString( CLASS_MODIFIER ).trim();
 		}
-		return classModifiers == null ? "public" : classModifiers;
+
+		String staticModifier = getOuterClass() != null? " static" : "";
+		return (classModifiers == null ? "public" : classModifiers) + staticModifier;
 	}
 
 	public String getDeclarationType() {
@@ -303,7 +316,11 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 
 	
 	public String importType(String fqcn) {
-		return importContext.importType(fqcn);
+		if(outerClass != null) {
+			return outerClass.importType(fqcn);
+		} else {
+			return importContext.importType( fqcn );
+		}
 	}
 	
 	public String generateImports() {
@@ -311,7 +328,11 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public String staticImport(String fqcn, String member) {
-		return importContext.staticImport(fqcn, member);
+		if(outerClass != null) {
+			return outerClass.staticImport( fqcn, member );
+		} else {
+			return importContext.staticImport( fqcn, member );
+		}
 	}
 	
 	public String generateBasicAnnotation(Property property) {
@@ -976,7 +997,23 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		} else {
 			return null;
 		}
-	}	
-	
+	}
+
+	public void setOuterClass(POJOClass pojoClass) {
+		outerClass = pojoClass;
+	}
+
+	public POJOClass getOuterClass() {
+		return outerClass;
+	}
+
+	public void addInnerClass(POJOClass pojoClass) {
+		innerClasses.add( pojoClass );
+		pojoClass.setOuterClass(  this );
+	}
+
+	public List<POJOClass> getInnerClasses() {
+		return innerClasses;
+	}
 }
  

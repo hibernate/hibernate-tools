@@ -13,7 +13,12 @@ import org.hibernate.mapping.Property;
  */
 public interface POJOClass extends ImportContext {
 
-	/** 
+	public void addInnerClass(POJOClass pojoClass);
+	public List<POJOClass> getInnerClasses();
+	public void setOuterClass(POJOClass pojoClass);
+	public POJOClass getOuterClass();
+
+	/**
 	 * Returns "package packagename;" where packagename is either the declared packagename,
 	 * or the one provide via meta attribute "generated-class".
 	 * 
@@ -28,6 +33,10 @@ public interface POJOClass extends ImportContext {
 	public String getClassModifiers();
 
 	public String getQualifiedDeclarationName();
+
+	public String getGeneratedClassName();
+
+	public String getMappedClassName();
 	
 	/**
 	 * Returns the javadoc associated with the class.

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -58,14 +59,14 @@ public class TemplateProducer {
 	}
 
 
-	private String produceToString(Map additionalContext, String templateName, String rootContext) {
+	public String produceToString(Map additionalContext, String templateName, String rootContext) {
 		Map contextForFirstPass = additionalContext;
-		putInContext( th, contextForFirstPass );		
+		Map map = putInContext( th, contextForFirstPass );
 		StringWriter tempWriter = new StringWriter();
 		BufferedWriter bw = new BufferedWriter(tempWriter);
 		// First run - writes to in-memory string
 		th.processTemplate(templateName, bw, rootContext);
-		removeFromContext( th, contextForFirstPass );
+		removeFromContext( th, map );
 		try {
 			bw.flush();
 		}
@@ -79,16 +80,23 @@ public class TemplateProducer {
 		Iterator iterator = context.entrySet().iterator();
 		while ( iterator.hasNext() ) {
 			Map.Entry element = (Map.Entry) iterator.next();
-			templateHelper.removeFromContext((String) element.getKey(), element.getValue());
+			Object value = element.getValue();
+			if(value != null) {
+				templateHelper.putInContext( (String) element.getKey(), value );
+			} else {
+				templateHelper.removeFromContext( (String) element.getKey(), value );
+			}
 		}
 	}
 
-	private void putInContext(TemplateHelper templateHelper, Map context) {
+	private Map putInContext(TemplateHelper templateHelper, Map context) {
+		Map map = new HashMap();
 		Iterator iterator = context.entrySet().iterator();
 		while ( iterator.hasNext() ) {
 			Map.Entry element = (Map.Entry) iterator.next();
-			templateHelper.putInContext((String) element.getKey(), element.getValue());
+			map.put( element.getKey(), templateHelper.putInContext( (String) element.getKey(), element.getValue()) );
 		}
+		return map;
 	}
 
 	public void produce(Map additionalContext, String templateName, File outputFile, String identifier) {

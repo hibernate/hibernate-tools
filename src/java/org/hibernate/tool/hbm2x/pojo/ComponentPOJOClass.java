@@ -20,7 +20,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		init();
 	}
 
-	protected String getMappedClassName() {
+	public String getMappedClassName() {
 		return clazz.getComponentClassName();
 	}
 	

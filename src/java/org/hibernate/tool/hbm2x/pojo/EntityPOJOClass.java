@@ -46,7 +46,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		init();
 	}
 
-	protected String getMappedClassName() {
+	public String getMappedClassName() {
 		return clazz.getClassName();
 	}
 
@@ -68,11 +68,12 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			}
 		}
 		else if ( clazz.getSuperclass() != null ) {
-			if ( c2j.getPOJOClass(clazz.getSuperclass()).isInterface() ) {
+			POJOClass pojoClass = c2j.getPOJOClass( clazz.getSuperclass() );
+			if ( pojoClass.isInterface() ) {
 				// class cannot extend it's superclass because the superclass is marked as an interface
 			}
 			else {
-				extendz = clazz.getSuperclass().getClassName();
+				extendz = pojoClass.getQualifiedDeclarationName();
 			}
 		}
 		else if ( clazz.getMetaAttribute( EXTENDS ) != null ) {
