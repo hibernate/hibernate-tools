@@ -17,6 +17,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MetaAttributable;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PersistentClass;
@@ -158,24 +159,27 @@ public class Cfg2JavaTool {
 	}
 
 	public String getJavaTypeName(Property p, boolean useGenerics, ImportContext importContext) {
+		return getJavaTypeName(p, useGenerics, false, importContext);
+	}
+	
+	public String getJavaTypeName(Property p, boolean useGenerics, boolean preferProxies, ImportContext importContext) {
 		String overrideType = getMetaAsString( p, "property-type" );
 		if ( !StringHelper.isEmpty( overrideType ) ) {
 			String importType = importContext.importType(overrideType);			
 			if ( useGenerics && importType.indexOf( "<" )<0) {
 				if ( p.getValue() instanceof Collection ) {
-					String decl = getGenericCollectionDeclaration( (Collection) p.getValue(), true, importContext );
+					String decl = getGenericCollectionDeclaration( (Collection) p.getValue(), preferProxies, true, importContext );
 					return importType + decl;
 				}
 			}
 			return importType;
 		}
-		else {
-			String rawType = getRawTypeName( p, useGenerics, true, importContext );
-			if(rawType==null) {
-					throw new IllegalStateException("getJavaTypeName *must* return a value");				
-			}
-			return importContext.importType(rawType);
+		
+		String rawType = getRawTypeName( p, useGenerics, preferProxies, true, importContext );
+		if(rawType==null) {
+				throw new IllegalStateException("getJavaTypeName *must* return a value");				
 		}
+		return importContext.importType(rawType);
 	}
 	
 	private static final Map PRIMITIVES = new HashMap();
@@ -200,7 +204,7 @@ public class Cfg2JavaTool {
 				&& new BasicTypeRegistry().getRegisteredType(typeName) != null;
 	}
 
-	private String getRawTypeName(Property p, boolean useGenerics, boolean preferRawTypeNames, ImportContext importContext) {
+	private String getRawTypeName(Property p, boolean useGenerics, boolean preferProxies, boolean preferRawTypeNames, ImportContext importContext) {
 		Value value = p.getValue();
 		try {			
 			
@@ -213,7 +217,7 @@ public class Cfg2JavaTool {
 				else if (a.getElementClassName()!=null){
 					return a.getElementClassName() + "[]";
 				} else {
-					return getJavaTypeName(a.getElement(), preferRawTypeNames) + "[]";
+					return getJavaTypeName(a.getElement(), preferProxies, preferRawTypeNames) + "[]";
 				}
 			}
 
@@ -225,12 +229,12 @@ public class Cfg2JavaTool {
 			
 			if ( useGenerics ) {
 				if ( value instanceof Collection ) {
-					String decl = getGenericCollectionDeclaration( (Collection) value, preferRawTypeNames, importContext );
-					return getJavaTypeName(value, preferRawTypeNames) + decl;
+					String decl = getGenericCollectionDeclaration( (Collection) value, preferProxies, preferRawTypeNames, importContext );
+					return getJavaTypeName(value, preferProxies, preferRawTypeNames) + decl;
 				}
 			}
 
-			return getJavaTypeName( value, preferRawTypeNames );			
+			return getJavaTypeName( value, preferProxies, preferRawTypeNames );			
 		}
 		catch (Exception e) {
 			//e.printStackTrace();
@@ -246,15 +250,15 @@ public class Cfg2JavaTool {
 		}
 	}
 
-	public String getGenericCollectionDeclaration(Collection collection, boolean preferRawTypeNames, ImportContext importContext) {
+	public String getGenericCollectionDeclaration(Collection collection, boolean preferProxies, boolean preferRawTypeNames, ImportContext importContext) {
 		Value element = collection.getElement();
-		String elementType = importContext.importType(getJavaTypeName(element, preferRawTypeNames));
+		String elementType = importContext.importType(getJavaTypeName(element, preferProxies, preferRawTypeNames));
 		String genericDecl = elementType;
 		if(collection.isIndexed()) {
 			IndexedCollection idxCol = (IndexedCollection) collection;
 			if(!idxCol.isList()) {
 				Value idxElement = idxCol.getIndex();
-				String indexType = importContext.importType(getJavaTypeName(idxElement, preferRawTypeNames));
+				String indexType = importContext.importType(getJavaTypeName(idxElement, preferProxies, preferRawTypeNames));
 				genericDecl = indexType + "," + elementType;
 			}
 		} 
@@ -271,15 +275,15 @@ public class Cfg2JavaTool {
 		return Cfg2HbmTool.getFilteredIdentifierGeneratorProperties(p);
 	}
 
-	private String getJavaTypeName(Value value, boolean preferRawTypeNames) {
-		return (String) value.accept( new JavaTypeFromValueVisitor() );
+	private String getJavaTypeName(Value value, boolean preferProxies, boolean preferRawTypeNames) {
+		return (String) value.accept( new JavaTypeFromValueVisitor(preferProxies) );
 	}
 
 	public String asParameterList(Iterator fields, boolean useGenerics, ImportContext ic) {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
 			Property field = (Property) fields.next();
-			buf.append( getJavaTypeName( field, useGenerics, ic ) )
+			buf.append( getJavaTypeName( field, useGenerics, true, ic ) )
 					.append( " " )
 					.append( field.getName() );
 			if ( fields.hasNext() ) {
