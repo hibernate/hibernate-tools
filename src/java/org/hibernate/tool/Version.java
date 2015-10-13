@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 final public class Version {
 
-	public static final String VERSION = "5.0.0.Alpha1";
+	public static final String VERSION = "5.1.0-SNAPSHOT";
 	
 	private static final Version instance = new Version();
 	
