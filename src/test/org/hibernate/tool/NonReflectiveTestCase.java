@@ -2,24 +2,29 @@
 package org.hibernate.tool;
 
 
+import java.util.Properties;
+
 import org.dom4j.io.SAXReader;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;
+import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.internal.util.xml.DTDEntityResolver;
+import org.hibernate.service.ServiceRegistry;
 
 public abstract class NonReflectiveTestCase extends BaseTestCase {
 
 	private static SessionFactory sessions;
 	private static Configuration cfg;
 	private static Dialect dialect;
-	private static Class lastTestClass;
+	private static Class<?> lastTestClass;
 	private Session session;
 
 	
@@ -40,49 +45,12 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	 * @param files
 	 */
 	private void buildConfiguration(String[] files) {
-		setCfg( new Configuration() );
-		
+		setCfg( new Configuration() );		
 		if( recreateSchema() ) {
 			cfg.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
-		}
-		
+		}		
 		Configuration cfg2 = getCfg();
-		addMappings( files, cfg2 );
-				
-		/*if ( getCacheConcurrencyStrategy()!=null ) {
-			
-			Iterator iter = cfg.getClassMappings();
-			while ( iter.hasNext() ) {
-				PersistentClass clazz = (PersistentClass) iter.next();
-				Iterator props = clazz.getPropertyClosureIterator();
-				boolean hasLob = false;
-				while ( props.hasNext() ) {
-					Property prop = (Property) props.next();
-					if ( prop.getValue().isSimpleValue() ) {
-						String type = ( (SimpleValue) prop.getValue() ).getTypeName();
-						if ( "blob".equals(type) || "clob".equals(type) ) hasLob = true;
-						if ( Blob.class.getName().equals(type) || Clob.class.getName().equals(type) ) hasLob = true;
-					}
-				}
-				if ( !hasLob && !clazz.isInherited() ) {
-					cfg.setCacheConcurrencyStrategy( 
-							clazz.getEntityName(), 
-							getCacheConcurrencyStrategy() 
-					);
-				}
-			}
-			
-			iter = cfg.getCollectionMappings();
-			while ( iter.hasNext() ) {
-				Collection coll = (Collection) iter.next();
-				cfg.setCollectionCacheConcurrencyStrategy( 
-						coll.getRole(), 
-						getCacheConcurrencyStrategy() 
-				);
-			}
-			
-		}*/
-		
+		addMappings( files, cfg2 );				
 		setDialect( Dialect.getDialect() );
 		cfg2.buildMappings();
 	}
@@ -93,7 +61,6 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 
 	protected void setUp() throws Exception {
 		if ( getSessions()==null || lastTestClass!=getClass() ) {
-			//buildSessionFactory( getMappings() );
 			buildConfiguration( getMappings() );
 			lastTestClass = getClass();
 			prepareTestData();
@@ -102,10 +69,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 		super.setUp();
 	}
 	
-	protected void prepareTestData() {
-		// by default, nothing to do.  Let subclasses override to
-		// run data initialization once per test run...
-	}
+	protected void prepareTestData() {}
 
 	protected void runTest() throws Throwable {
 		final boolean stats = sessions!=null?( (SessionFactoryImplementor) sessions ).getStatistics().isStatisticsEnabled():false;
@@ -184,7 +148,13 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	}
 	
 	protected void buildSessionFactory() {
-		sessions = getCfg().buildSessionFactory();
+		Properties properties = getCfg().getProperties();
+		Environment.verifyProperties( properties );
+		ConfigurationHelper.resolvePlaceHolders( properties );
+		ServiceRegistry serviceRegistry =  new StandardServiceRegistryBuilder()
+				.applySettings( properties )
+				.build();
+		sessions = getCfg().buildSessionFactory(serviceRegistry);
 	}
 	
 	public SAXReader getSAXReader() {
