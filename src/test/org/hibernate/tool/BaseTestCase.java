@@ -8,12 +8,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -25,12 +22,15 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.test.TestHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.ComparisonFailure;
+import junit.framework.TestCase;
 
 public abstract class BaseTestCase extends TestCase {
 
@@ -38,10 +38,10 @@ public abstract class BaseTestCase extends TestCase {
 	
 		private final File sourceDir;
 		private final File outputDir;
-		private final List jars;
+		private final List<?> jars;
 		private URLClassLoader ucl;
 	
-		public ExecuteContext(File sourceDir, File outputDir, List jars) {
+		public ExecuteContext(File sourceDir, File outputDir, List<?> jars) {
 			this.sourceDir = sourceDir;
 			this.outputDir = outputDir;
 			this.jars = jars;
@@ -50,30 +50,25 @@ public abstract class BaseTestCase extends TestCase {
 		public void run() throws Exception {
 			
 			TestHelper.compile(
-					sourceDir, outputDir, TestHelper.visitAllFiles( sourceDir, new ArrayList() ), "1.5",
+					sourceDir, 
+					outputDir, 
+					TestHelper.visitAllFiles( sourceDir, Collections.emptyList() ), 
+					"1.5",
 					TestHelper.buildClasspath( jars )
 			);
+
 			URL[] urls = TestHelper.buildClasspathURLS(jars, outputDir);
 			
 			Thread currentThread = null;
 			ClassLoader contextClassLoader = null;
 			
 			try {
-			currentThread = Thread.currentThread();
-			contextClassLoader = currentThread.getContextClassLoader();
-			ucl = new URLClassLoader( urls, contextClassLoader ) {
-				
-				public Class loadClass(String name)
-						throws ClassNotFoundException {
-					// TODO Auto-generated method stub
-					return super.loadClass(name);
-				}
-				
-				
-			};
-			currentThread.setContextClassLoader( ucl );
-	
-			execute();
+				currentThread = Thread.currentThread();
+				contextClassLoader = currentThread.getContextClassLoader();
+				ucl = new URLClassLoader( urls, contextClassLoader);
+				currentThread.setContextClassLoader( ucl );
+		
+				execute();
 			
 			} finally {
 				currentThread.setContextClassLoader( contextClassLoader );
@@ -155,24 +150,24 @@ public abstract class BaseTestCase extends TestCase {
 		Settings testSettings = configuration.buildSettings(serviceRegistry);
 		
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
+		ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
 		Connection con = null;
-        try {
-		
-		con = jdbcServices.getConnectionProvider().getConnection();
-		
-		JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(), jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		Iterator tables = dialect.getTables( testSettings.getDefaultCatalogName(), testSettings.getDefaultSchemaName(), null );
+        try {		
+        	con = connectionProvider.getConnection();
+        	JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();		
+        	dialect.configure(
+        			ReverseEngineeringRuntimeInfo.createInstance(
+        					connectionProvider, jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+		Iterator<?> tables = dialect.getTables( testSettings.getDefaultCatalogName(), testSettings.getDefaultSchemaName(), null );
 		
 		assertHasNext( 0, tables );
         } finally {
-        	jdbcServices.getConnectionProvider().closeConnection(con);	
+        	connectionProvider.closeConnection(con);	
         }
 		
 	}
 
-	protected void assertHasNext(int expected, Iterator iterator) {
+	protected void assertHasNext(int expected, Iterator<?> iterator) {
 		assertHasNext(null, expected, iterator);
 	}
 
@@ -180,7 +175,7 @@ public abstract class BaseTestCase extends TestCase {
 	 * @param i
 	 * @param iterator
 	 */
-	protected void assertHasNext(String reason, int expected, Iterator iterator) {
+	protected void assertHasNext(String reason, int expected, Iterator<?> iterator) {
 		int actual = 0;
 		Object last = null;
 		while(iterator.hasNext() && actual <= expected) {
