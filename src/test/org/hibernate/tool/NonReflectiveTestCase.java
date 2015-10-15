@@ -21,10 +21,9 @@ import org.hibernate.service.ServiceRegistry;
 
 public abstract class NonReflectiveTestCase extends BaseTestCase {
 
-	private static SessionFactory sessions;
-	private static Configuration cfg;
-	private static Dialect dialect;
-	private static Class<?> lastTestClass;
+	private SessionFactory sessions;
+	private Configuration cfg;
+	private Dialect dialect;
 	private Session session;
 
 	
@@ -60,9 +59,8 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	}
 
 	protected void setUp() throws Exception {
-		if ( getSessions()==null || lastTestClass!=getClass() ) {
+		if ( getSessions()==null) {
 			buildConfiguration( getMappings() );
-			lastTestClass = getClass();
 			prepareTestData();
 		}
 		assertNoTables();		
@@ -130,18 +128,18 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	}
 
 	private void setDialect(Dialect dialect) {
-		NonReflectiveTestCase.dialect = dialect;
+		this.dialect = dialect;
 	}
 
 	protected Dialect getDialect() {
 		return dialect;
 	}
 
-	protected static void setCfg(Configuration cfg) {
-		NonReflectiveTestCase.cfg = cfg;
+	protected void setCfg(Configuration cfg) {
+		this.cfg = cfg;
 	}
 
-	protected static Configuration getCfg() {
+	protected Configuration getCfg() {
 		return cfg;
 	}
 
