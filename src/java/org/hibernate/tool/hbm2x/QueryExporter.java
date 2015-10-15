@@ -6,19 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.SessionFactoryObserver;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.internal.util.config.ConfigurationHelper;
-import org.hibernate.service.ServiceRegistry;
 
 /** 
  * exporter for query execution.
@@ -29,29 +21,13 @@ public class QueryExporter extends AbstractExporter {
 	private String filename;
 	private List<String> queryStrings;
 
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void doStart() {
 		Session session = null;
 		SessionFactory sessionFactory = null;
 		Transaction transaction = null;
-		ServiceRegistry serviceRegistry = null;
 		try {	
-			Configuration configuration = getConfiguration();
-			Properties properties = configuration.getProperties();
-			Environment.verifyProperties( getConfiguration().getProperties() );
-			ConfigurationHelper.resolvePlaceHolders( properties );
-			serviceRegistry =  new StandardServiceRegistryBuilder()
-					.applySettings( properties )
-					.build();
-			configuration.setSessionFactoryObserver(
-				new SessionFactoryObserver() {
-					public void sessionFactoryCreated(SessionFactory factory) {
-					}
-					public void sessionFactoryClosed(SessionFactory factory) {
-					}
-				}
-			);
-			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+			sessionFactory = getConfiguration().buildSessionFactory();
 			session = sessionFactory.openSession();
 			transaction = session.beginTransaction();
 			for (Iterator<String> iter = queryStrings.iterator(); iter.hasNext();) {
@@ -95,9 +71,6 @@ public class QueryExporter extends AbstractExporter {
 			}
 			if(sessionFactory!=null) {
 				sessionFactory.close();
-				if (serviceRegistry != null) {
-					( (StandardServiceRegistryImpl) serviceRegistry ).destroy();
-				}
 			}
 			
 		}
