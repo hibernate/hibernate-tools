@@ -6,9 +6,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
@@ -30,36 +31,43 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 	String FILE = "queryresult.txt";
 	
 	protected void setUp() throws Exception {
-		super.setUp();
-		getCfg().setProperty( Environment.HBM2DDL_AUTO, "update" );
-		SessionFactory factory = getCfg().buildSessionFactory();
-		
-		Session s = factory.openSession();
-		
+
+		setCfg(createConfiguration());
+		assertNoTables();		
+		if(getOutputDir()!=null) {
+			getOutputDir().mkdirs();
+		}
+
+		SessionFactory factory = getCfg().buildSessionFactory();		
+		Session s = factory.openSession();	
+		Transaction t = s.beginTransaction();
 		User user = new User("max", "jboss");
-		s.persist( user );
-		
+		s.persist( user );		
 		user = new User("gavin", "jboss");
-		s.persist( user );
-		
-		s.flush();
-		
+		s.persist( user );		
+		s.flush();		
+		t.commit();
 		s.close();
+		factory.close();
 		
+	}
+	
+	public void testQueryExporter() {		
+
 		QueryExporter exporter = new QueryExporter();
-		exporter.setConfiguration( getCfg() );
+		exporter.setConfiguration(createConfiguration());
 		exporter.setOutputDirectory( getOutputDir() );
 		exporter.setFilename( FILE );
-		List queries = new ArrayList();
+		List<String> queries = new ArrayList<String>();
 		queries.add("from java.lang.Object");
-		exporter.setQueries( queries );
-		
+		exporter.setQueries( queries );		
 		exporter.start();
-		
-		factory.close();
+
+		assertFileAndExists( new File(getOutputDir(), FILE ));		
 	}
 	
 	protected void tearDown() throws Exception {
+
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(getCfg().getProperties());
 		SchemaExport export = new SchemaExport(builder.build(), getCfg());
@@ -67,17 +75,16 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
 			fail("Schema export failed");
-		}
-		
+		}		
 		super.tearDown();
 	}
 	
 	
-	public void testQueryExporter() {
-		
-		assertFileAndExists( new File(getOutputDir(), FILE ));
-		
-		
+	private Configuration createConfiguration() {
+		Configuration result = new Configuration();
+		addMappings(getMappings(), result);
+		result.setProperty(Environment.HBM2DDL_AUTO, "update");
+		return result;
 	}
 
 }
