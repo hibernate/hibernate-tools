@@ -65,8 +65,11 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 			lastTestClass = getClass();
 			prepareTestData();
 		}
+		assertNoTables();		
+		if(getOutputDir()!=null) {
+			getOutputDir().mkdirs();
+		}
 		
-		super.setUp();
 	}
 	
 	protected void prepareTestData() {}
