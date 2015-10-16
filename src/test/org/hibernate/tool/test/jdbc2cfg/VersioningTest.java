@@ -29,10 +29,10 @@ public class VersioningTest extends JDBCMetaDataBinderTestCase {
 	protected String[] getCreateSQL() {
 		
 		return new String[] {
-				"create table withVersion (first int, second int, version int, name varchar, primary key (first))",
-				"create table noVersion (first int, second int, name varchar, primary key (second))",
-				"create table withRealTimestamp (first int, second int, timestamp timestamp, name varchar, primary key (first))",
-				"create table withFakeTimestamp (first int, second int, timestamp int, name varchar, primary key (first))",
+				"create table withVersion (first int, second int, version int, name varchar(256), primary key (first))",
+				"create table noVersion (first int, second int, name varchar(256), primary key (second))",
+				"create table withRealTimestamp (first int, second int, timestamp timestamp, name varchar(256), primary key (first))",
+				"create table withFakeTimestamp (first int, second int, timestamp int, name varchar(256), primary key (first))",
 		};
 	}
 
