@@ -122,8 +122,8 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 		assertFileAndExists( new File(getOutputDir(), "Project.hbm.xml") );
 		assertFileAndExists( new File(getOutputDir(), "WorksOnContext.hbm.xml") );
 		
-		assertFileAndExists( new File(getOutputDir(), "Right.hbm.xml") );
-		assertFileAndExists( new File(getOutputDir(), "Left.hbm.xml") );
+		assertFileAndExists( new File(getOutputDir(), "RightTable.hbm.xml") );
+		assertFileAndExists( new File(getOutputDir(), "LeftTable.hbm.xml") );
 		assertFileAndExists( new File(getOutputDir(), "NonMiddle.hbm.xml") ); //Must be there since it has a fkey that is not part of the pk
 		
 		assertFalse(new File(getOutputDir(), "WorksOn.hbm.xml").exists() );
@@ -157,9 +157,9 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 			"create table WORKS_ON_CONTEXT ( project_id integer not null, employee_id integer not null, created_by integer, primary key (project_id, employee_id), constraint workson_ctx_employee foreign key (employee_id) references EMPLOYEE, foreign key (project_id) references PROJECT(project_id), foreign key (created_by) references EMPLOYEE(id) )",
 			//"alter  table PROJECT add constraint project_manager foreign key (team_lead) references EMPLOYEE"
 			// nonmiddle left and right are used to test a false association table isn't detected.
-			"create table LEFT ( id integer not null, primary key (id) )",
-			"create table RIGHT ( id integer not null, primary key (id) )",
-			"create table NON_MIDDLE ( left_id integer not null, right_id integer not null, primary key (left_id), constraint FK_MIDDLE_LEFT foreign key (left_id) references LEFT(id), constraint FK_MIDDLE_RIGHT foreign key (right_id) references RIGHT(id))",
+			"create table LEFT_TABLE ( id integer not null, primary key (id) )",
+			"create table RIGHT_TABLE ( id integer not null, primary key (id) )",
+			"create table NON_MIDDLE ( left_id integer not null, right_id integer not null, primary key (left_id), constraint FK_MIDDLE_LEFT foreign key (left_id) references LEFT_TABLE(id), constraint FK_MIDDLE_RIGHT foreign key (right_id) references RIGHT_TABLE(id))",
 		};
 	}
 
@@ -171,8 +171,8 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 				"drop table EMPLOYEE",
 				"drop table PROJECT",
 				"drop table NON_MIDDLE",
-				"drop table LEFT",
-				"drop table RIGHT",
+				"drop table LEFT_TABLE",
+				"drop table RIGHT_TABLE",
 			};
 	}
 
