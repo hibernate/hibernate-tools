@@ -187,9 +187,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		assertFileAndExists( new File(getOutputDir(), "AddressPerson.hbm.xml") );
 		assertFileAndExists( new File(getOutputDir(), "AddressMultiPerson.hbm.xml") );
 		assertFileAndExists( new File(getOutputDir(), "MultiPerson.hbm.xml") );
-		assertFileAndExists( new File(getOutputDir(), "Middle.hbm.xml") );
-		assertFileAndExists( new File(getOutputDir(), "Left.hbm.xml") );
-		assertFileAndExists( new File(getOutputDir(), "Right.hbm.xml") );
+		assertFileAndExists( new File(getOutputDir(), "MiddleTable.hbm.xml") );
+		assertFileAndExists( new File(getOutputDir(), "LeftTable.hbm.xml") );
+		assertFileAndExists( new File(getOutputDir(), "RightTable.hbm.xml") );
 		
 		assertEquals(7, getOutputDir().listFiles().length);
 	
@@ -218,9 +218,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		    .addFile( new File(getOutputDir(), "AddressPerson.hbm.xml") )
 			.addFile( new File(getOutputDir(), "AddressMultiPerson.hbm.xml"))
 			.addFile( new File(getOutputDir(), "MultiPerson.hbm.xml"))
-			.addFile( new File(getOutputDir(), "Middle.hbm.xml"))
-			.addFile( new File(getOutputDir(), "Left.hbm.xml"))
-			.addFile( new File(getOutputDir(), "Right.hbm.xml"));
+			.addFile( new File(getOutputDir(), "MiddleTable.hbm.xml"))
+			.addFile( new File(getOutputDir(), "LeftTable.hbm.xml"))
+			.addFile( new File(getOutputDir(), "RightTable.hbm.xml"));
 		
 		configuration.buildMappings();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -268,9 +268,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
         Class addressMultiPersonId = ucl.loadClass("AddressMultiPersonId");
         Class addressPerson = ucl.loadClass("AddressPerson");
         Class multiPersonIdClass = ucl.loadClass("MultiPersonId");
-        Class middleClass = ucl.loadClass("Middle");
-        Class rightClass = ucl.loadClass("Left");
-        Class leftClass = ucl.loadClass("Right");
+        Class middleClass = ucl.loadClass("MiddleTable");
+        Class rightClass = ucl.loadClass("LeftTable");
+        Class leftClass = ucl.loadClass("RightTable");
         try {
         Thread.currentThread().setContextClassLoader(ucl);
 		AnnotationConfiguration configuration = new AnnotationConfiguration();
@@ -307,9 +307,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 	protected String[] getCreateSQL() {
 		return new String[] {
 			// middle left and right are used to test a false association table isn't detected.
-			"create table LEFT ( id integer not null, primary key (id) )",
-			"create table RIGHT ( id integer not null, primary key (id) )",
-			"create table MIDDLE ( left_id integer not null, right_id integer not null, primary key (left_id), constraint FK_MIDDLE_LEFT foreign key (left_id) references LEFT, constraint FK_MIDDLE_RIGHT foreign key (right_id) references RIGHT)",
+			"create table LEFT_TABLE ( id integer not null, primary key (id) )",
+			"create table RIGHT_TABLE ( id integer not null, primary key (id) )",
+			"create table MIDDLE_TABLE ( left_id integer not null, right_id integer not null, primary key (left_id), constraint FK_MIDDLE_LEFT foreign key (left_id) references LEFT_TABLE, constraint FK_MIDDLE_RIGHT foreign key (right_id) references RIGHT_TABLE)",
 			"create table PERSON ( person_id integer not null, name varchar(50), primary key (person_id) )",
 			"create table ADDRESS_PERSON ( address_id integer not null, name varchar(50), primary key (address_id), constraint address_person foreign key (address_id) references PERSON)",			
 			"create table MULTI_PERSON ( person_id integer not null, person_compid integer not null, name varchar(50), primary key (person_id, person_compid) )",
@@ -320,9 +320,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 
 	protected String[] getDropSQL() {
 		return new String[] {
-				"drop table MIDDLE",
-				"drop table LEFT",
-				"drop table RIGHT",
+				"drop table MIDDLE_TABLE",
+				"drop table LEFT_TABLE",
+				"drop table RIGHT_TABLE",
 				"drop table ADDRESS_PERSON",
 				"drop table PERSON",
 				"drop table ADDRESS_MULTI_PERSON",
