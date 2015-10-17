@@ -23,15 +23,11 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.xml.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 public class OverrideRepository  {
 
 	final private static Logger log = LoggerFactory.getLogger( OverrideRepository.class );
-
-	final private transient XMLHelper xmlHelper;
-	final private transient EntityResolver entityResolver;
 
 	final private Map typeMappings; // from sqltypes to list of SQLTypeMapping
 
@@ -81,8 +77,6 @@ public class OverrideRepository  {
 	public OverrideRepository() {
 		//this.defaultCatalog = null;
 		//this.defaultSchema = null;
-		xmlHelper = new XMLHelper();
-		entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 		typeMappings = new HashMap();
 		tableFilters = new ArrayList();
 		tables = new ArrayList();
@@ -142,7 +136,7 @@ public class OverrideRepository  {
 	public OverrideRepository addInputStream(InputStream xmlInputStream) throws MappingException {
 		try {
 			ErrorLogger errorLogger = new ErrorLogger( "XML InputStream" );
-			org.dom4j.Document doc = xmlHelper.createSAXReader( errorLogger, entityResolver ).read( new InputSource( xmlInputStream ) );
+			org.dom4j.Document doc = XMLHelper.createSAXReader( errorLogger).read( new InputSource( xmlInputStream ) );
 			if ( errorLogger.hasErrors() ) throw new MappingException( "invalid override definition", ( Throwable ) errorLogger.getErrors().get( 0 ) );
 			add( doc );
 			return this;

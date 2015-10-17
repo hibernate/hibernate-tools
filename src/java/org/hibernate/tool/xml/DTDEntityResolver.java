@@ -25,13 +25,10 @@ package org.hibernate.tool.xml;
  */
 
 import java.io.InputStream;
-import java.io.Serializable;
 
 import org.hibernate.internal.CoreMessageLogger;
 import org.hibernate.internal.util.ConfigHelper;
-
 import org.jboss.logging.Logger;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -56,7 +53,7 @@ import org.xml.sax.InputSource;
  * @author Steve Ebersole
  * @author Hardy Ferentschik
  */
-public class DTDEntityResolver implements EntityResolver, Serializable {
+final class DTDEntityResolver implements EntityResolver {
 
 	private static final CoreMessageLogger LOG = Logger.getMessageLogger( CoreMessageLogger.class, DTDEntityResolver.class.getName() );
 
@@ -114,11 +111,11 @@ public class DTDEntityResolver implements EntityResolver, Serializable {
 		return source;
 	}
 
-	protected InputStream resolveInHibernateNamespace(String path) {
+	private InputStream resolveInHibernateNamespace(String path) {
 		return this.getClass().getClassLoader().getResourceAsStream( path );
 	}
 
-	protected InputStream resolveInLocalNamespace(String path) {
+	private InputStream resolveInLocalNamespace(String path) {
 		try {
 			return ConfigHelper.getUserResourceAsStream( path );
 		}
