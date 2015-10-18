@@ -46,30 +46,30 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         
         return new String[] {
                 "create table SimpleLineItem (\r\n" +
-                "   lineItemId varchar not null,\r\n" +
-                "   customerOrderIdRef varchar,\r\n" +
-                "   productId varchar not null,\r\n" +
-                "   extraId varchar not null,\r\n" +
+                "   lineItemId varchar(256) not null,\r\n" +
+                "   customerOrderIdRef varchar(256),\r\n" +
+                "   productId varchar(256) not null,\r\n" +
+                "   extraId varchar(256) not null,\r\n" +
                 "   quantity double,\r\n" + 
                 "   primary key (lineItemId)\r\n" + 
                 ")",
                 "create table Product (\r\n" + 
-                "   productId varchar not null,\r\n" +                
-                "   extraId varchar not null,\r\n" +
-                "   description varchar not null,\r\n" + 
+                "   productId varchar(256) not null,\r\n" +                
+                "   extraId varchar(256) not null,\r\n" +
+                "   description varchar(256) not null,\r\n" + 
                 "   price double,\r\n" + 
                 "   numberAvailable double,\r\n" + 
                 "   primary key (productId, extraId)\r\n" + 
                 ")",
                 "create table Customer (\r\n" + 
-                "   customerId varchar not null,\r\n" + 
-                "   name varchar not null,\r\n" + 
-                "   address varchar not null,\r\n" + 
+                "   customerId varchar(256) not null,\r\n" + 
+                "   name varchar(256) not null,\r\n" + 
+                "   address varchar(256) not null,\r\n" + 
                 "   primary key (customerId)\r\n" + 
                 ")",
                 "create table SimpleCustomerOrder (\r\n" + 
-                "   customerOrderId varchar not null,\r\n" +
-                "   customerId varchar not null,\r\n" + 
+                "   customerOrderId varchar(256) not null,\r\n" +
+                "   customerId varchar(256) not null,\r\n" + 
                 "   orderNumber double not null,\r\n" + 
                 "   orderDate date not null,\r\n" + 
                 "   primary key (customerOrderId)\r\n" + 
@@ -78,16 +78,16 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
                 "alter table SimpleLineItem add constraint fromSimpletoProduct foreign key (productId,extraId) references Product",
                 "alter table SimpleCustomerOrder add constraint fromSimpletoCustomer foreign key (customerId) references Customer",
                 "create table LineItem (\r\n" + 
-                "   customerIdRef varchar not null,\r\n" + 
+                "   customerIdRef varchar(256) not null,\r\n" + 
                 "   orderNumber double not null,\r\n" + 
-                "   productId varchar not null,\r\n" +
-                "   extraProdId varchar not null,\r\n" +
+                "   productId varchar(256) not null,\r\n" +
+                "   extraProdId varchar(256) not null,\r\n" +
                 "   quantity double,\r\n" + 
                 "   primary key (customerIdRef, orderNumber, productId, extraProdId)\r\n" + 
                 ")",
                 
                 "create table CustomerOrder (\r\n" + 
-                "   customerId varchar not null,\r\n" + 
+                "   customerId varchar(256) not null,\r\n" + 
                 "   orderNumber double not null,\r\n" + 
                 "   orderDate date not null,\r\n" + 
                 "   primary key (customerId, orderNumber)\r\n" + 
