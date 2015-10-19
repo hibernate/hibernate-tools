@@ -29,7 +29,7 @@ import org.xml.sax.ErrorHandler;
 
 public final class XMLHelper {
 
-	private static final EntityResolver DEFAULT_DTD_RESOLVER = new DTDEntityResolver();
+	public static final EntityResolver DEFAULT_DTD_RESOLVER = new DTDEntityResolver();
 
 	public static SAXReader createSAXReader(ErrorHandler errorHandler) {
 		SAXReader saxReader = resolveSAXReader();
