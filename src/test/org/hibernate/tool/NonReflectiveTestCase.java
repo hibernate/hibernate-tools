@@ -16,8 +16,8 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.internal.util.config.ConfigurationHelper;
-import org.hibernate.internal.util.xml.DTDEntityResolver;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.xml.XMLHelper;
 
 public abstract class NonReflectiveTestCase extends BaseTestCase {
 
@@ -160,7 +160,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	
 	public SAXReader getSAXReader() {
     	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setEntityResolver(new DTDEntityResolver() );
+    	xmlReader.setEntityResolver(XMLHelper.DEFAULT_DTD_RESOLVER);
     	xmlReader.setValidation(true);
     	return xmlReader;
     }
