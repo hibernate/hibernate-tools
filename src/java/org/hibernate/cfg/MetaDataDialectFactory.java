@@ -8,19 +8,20 @@ import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect;
-//import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
+import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.Oracle9Dialect;
+import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.internal.util.ReflectHelper;
-//import org.hibernate.dialect.SQLServerDialect;
 
 public class MetaDataDialectFactory {
+	
+	private MetaDataDialectFactory() {}
 
-	public MetaDataDialect createMetaDataDialect(Dialect dialect, Properties cfg) {
+	public static MetaDataDialect createMetaDataDialect(Dialect dialect, Properties cfg) {
 		String property = cfg.getProperty( "hibernatetool.metadatadialect" );
 		MetaDataDialect mdd = fromClassName(property);
 		if(mdd==null) {
@@ -35,7 +36,7 @@ public class MetaDataDialectFactory {
 		return mdd;
 	}
 
-	private MetaDataDialect fromClassName(String property) {
+	static MetaDataDialect fromClassName(String property) {
 		if ( property != null ) {
 			try {
 				return (MetaDataDialect) ReflectHelper.classForName( property,
@@ -50,11 +51,9 @@ public class MetaDataDialectFactory {
 		}
 	}
 	
-	public MetaDataDialect fromDialect(Dialect dialect) {
+	static MetaDataDialect fromDialect(Dialect dialect) {
 		if(dialect!=null) {  
-			if(dialect instanceof Oracle9Dialect) {
-				return new OracleMetaDataDialect();
-			} else if(dialect instanceof Oracle8iDialect) {
+			if(dialect instanceof Oracle8iDialect) {
 				return new OracleMetaDataDialect();
 			} else if (dialect instanceof H2Dialect) {
 				return new H2MetaDataDialect();
@@ -62,14 +61,14 @@ public class MetaDataDialectFactory {
 				return new MySQLMetaDataDialect();
 			} else if (dialect instanceof HSQLDialect) {
 				return new HSQLMetaDataDialect();
-//			}else if (dialect instanceof SQLServerDialect) {
-//				return new SQLServerMetaDataDialect();
+			}else if (dialect instanceof SQLServerDialect) {
+				return new SQLServerMetaDataDialect();
 			}			
 		}
 		return null;
 	}
 	
-	public MetaDataDialect fromDialectName(String dialect) {
+	static MetaDataDialect fromDialectName(String dialect) {
 		if (dialect.toLowerCase().contains("oracle")) {
 			return new OracleMetaDataDialect();
 		}
@@ -82,9 +81,9 @@ public class MetaDataDialectFactory {
 		if (dialect.toLowerCase().contains("hsql")) {
 			return new HSQLMetaDataDialect();
 		}
-//		if (dialect.toLowerCase().contains("sqlserver")) {
-//			return new SQLServerMetaDataDialect();
-//		}
+		if (dialect.toLowerCase().contains("sqlserver")) {
+			return new SQLServerMetaDataDialect();
+		}
 		return null;
 	}
 

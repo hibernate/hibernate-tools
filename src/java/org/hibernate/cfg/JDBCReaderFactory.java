@@ -28,7 +28,7 @@ final public class JDBCReaderFactory {
 	}
 
 	public static MetaDataDialect newMetaDataDialect(Dialect dialect, Properties cfg) {
-		return new MetaDataDialectFactory().createMetaDataDialect(dialect, cfg);		
+		return MetaDataDialectFactory.createMetaDataDialect(dialect, cfg);		
 		
 	}
 	
