@@ -1,6 +1,8 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 
+import org.hibernate.cfg.MetaDataDialectFactoryTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
