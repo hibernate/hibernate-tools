@@ -5,7 +5,6 @@
 package org.hibernate.cfg;
 
 import java.util.Properties;
-import java.util.Set;
 
 import org.dom4j.Element;
 import org.hibernate.MappingException;
@@ -17,7 +16,6 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
@@ -27,22 +25,13 @@ import org.slf4j.LoggerFactory;
  * @author max
  *
  */
+@SuppressWarnings("serial")
 public class JDBCMetaDataConfiguration extends Configuration {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	private ServiceRegistry serviceRegistry = null;
     
-	protected void secondPassCompileForeignKeys(Table table, Set done)
-			throws MappingException {
-		super.secondPassCompileForeignKeys(table, done);
-		// TODO: doing nothing to avoid creating foreignkeys which is NOT actually in the database. 
-	}
-	
-	public JDBCMetaDataConfiguration(){
-		
-	}
-	
 	public ServiceRegistry getServiceRegistry(){
 		if(serviceRegistry == null){
 			serviceRegistry = new StandardServiceRegistryBuilder()
