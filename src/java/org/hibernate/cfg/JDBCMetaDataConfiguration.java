@@ -4,8 +4,6 @@
  */
 package org.hibernate.cfg;
 
-import java.util.Properties;
-
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -59,8 +57,12 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	}
 	
 	public void readFromJDBC() {
-		Properties properties = getProperties();
-		JDBCBinder binder = new JDBCBinder(this, properties, createMappings(), revEngStrategy, preferBasicCompositeIds());
+		JDBCBinder binder = new JDBCBinder(
+				getServiceRegistry(), 
+				getProperties(), 
+				createMappings(), 
+				getReverseEngineeringStrategy(), 
+				preferBasicCompositeIds());
 		binder.readFromDatabase(null, null, buildMapping(this));		
 	}
 

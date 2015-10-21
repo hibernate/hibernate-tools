@@ -27,7 +27,6 @@ import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.engine.OptimisticLockStyle;
-import org.hibernate.engine.internal.Versioning;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
@@ -50,6 +49,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
@@ -69,17 +69,17 @@ public class JDBCBinder {
 
 	private final Mappings mappings;
 
-	private final JDBCMetaDataConfiguration cfg;
 	private ReverseEngineeringStrategy revengStrategy;
 	
 	private final boolean preferBasicCompositeIds;
+	private final ServiceRegistry serviceRegistry;
 
 	/**
 	 * @param mappings
 	 * @param configuration
 	 */
-	public JDBCBinder(JDBCMetaDataConfiguration cfg, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
-		this.cfg = cfg;
+	public JDBCBinder(ServiceRegistry serviceRegistry, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
+		this.serviceRegistry = serviceRegistry;
 		this.properties = properties;
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
@@ -97,12 +97,11 @@ public class JDBCBinder {
 			createPersistentClasses(collector, mapping); //move this to a different step!
 		}
 		catch (SQLException e) {
-			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
+			JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
 		finally	{
-			JdbcServices jdbcServices = cfg.getServiceRegistry().getService(JdbcServices.class);
-			this.connectionProvider = jdbcServices.getConnectionProvider();
+			this.connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
 			if ( connectionProvider instanceof Stoppable ) {
 				( ( Stoppable ) connectionProvider ).stop();
 			}
@@ -123,7 +122,7 @@ public class JDBCBinder {
 	     catalog = catalog!=null ? catalog : properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 	     schema = schema!=null ? schema : properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),revengStrategy, cfg.getServiceRegistry());
+	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(properties,revengStrategy,serviceRegistry);
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
