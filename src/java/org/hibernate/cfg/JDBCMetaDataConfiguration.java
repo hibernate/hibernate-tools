@@ -7,7 +7,6 @@ package org.hibernate.cfg;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
@@ -37,18 +36,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 				.build();
 		}
 		return serviceRegistry;
-	}
-	
-	private void destroyServiceRegistry(){
-		if (serviceRegistry instanceof StandardServiceRegistryImpl) {
-			( (StandardServiceRegistryImpl) serviceRegistry ).destroy();
-		}
-		serviceRegistry = null;
-	}
-	
-	public Settings buildSettings() {
-		destroyServiceRegistry();
-		return buildSettings( getServiceRegistry() );
 	}
 	
 	public Settings buildSettings(ServiceRegistry serviceRegistry) {
