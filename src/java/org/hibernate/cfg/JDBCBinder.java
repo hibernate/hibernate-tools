@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JDBCBinder {
 
-	private Settings settings;
+	private Properties properties;
 	private ConnectionProvider connectionProvider;
 	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
 
@@ -76,9 +76,9 @@ public class JDBCBinder {
 	 * @param mappings
 	 * @param configuration
 	 */
-	public JDBCBinder(JDBCMetaDataConfiguration cfg, Settings settings, Mappings mappings, ReverseEngineeringStrategy revengStrategy) {
+	public JDBCBinder(JDBCMetaDataConfiguration cfg, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy) {
 		this.cfg = cfg;
-		this.settings = settings;
+		this.properties = properties;
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
 	}
@@ -117,8 +117,8 @@ public class JDBCBinder {
 	 */
 	public DatabaseCollector readDatabaseSchema(String catalog, String schema) throws SQLException {
 	  	 // use default from settings if nothing else specified.
-	     catalog = catalog!=null ? catalog : settings.getDefaultCatalogName();
-	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
+	     catalog = catalog!=null ? catalog : properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+	     schema = schema!=null ? schema : properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
 	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),revengStrategy, cfg.getServiceRegistry());
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
