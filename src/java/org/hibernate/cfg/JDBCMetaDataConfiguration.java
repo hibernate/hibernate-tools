@@ -71,7 +71,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	
 	public void readFromJDBC() {
 		Properties properties = getProperties();
-		JDBCBinder binder = new JDBCBinder(this, properties, createMappings(), revEngStrategy);
+		JDBCBinder binder = new JDBCBinder(this, properties, createMappings(), revEngStrategy, preferBasicCompositeIds());
 		binder.readFromDatabase(null, null, buildMapping(this));		
 	}
 
