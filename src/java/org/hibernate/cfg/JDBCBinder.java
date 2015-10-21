@@ -120,7 +120,7 @@ public class JDBCBinder {
 	     catalog = catalog!=null ? catalog : settings.getDefaultCatalogName();
 	     schema = schema!=null ? schema : settings.getDefaultSchemaName();
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),settings,revengStrategy, cfg.getServiceRegistry());
+	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(cfg.getProperties(),revengStrategy, cfg.getServiceRegistry());
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
