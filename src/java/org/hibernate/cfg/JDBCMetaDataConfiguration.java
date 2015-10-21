@@ -4,6 +4,7 @@
  */
 package org.hibernate.cfg;
 
+import java.util.Properties;
 import java.util.Set;
 
 import org.dom4j.Element;
@@ -69,11 +70,9 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	}
 	
 	public void readFromJDBC() {
-
-		JDBCBinder binder = new JDBCBinder(this, buildSettings(), createMappings(), revEngStrategy);
-		
-		binder.readFromDatabase(null, null, buildMapping(this));
-		
+		Properties properties = getProperties();
+		JDBCBinder binder = new JDBCBinder(this, properties, createMappings(), revEngStrategy);
+		binder.readFromDatabase(null, null, buildMapping(this));		
 	}
 
 	static private Mapping buildMapping(final Configuration cfg) {
