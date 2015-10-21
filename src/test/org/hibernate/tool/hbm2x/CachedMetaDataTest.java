@@ -5,11 +5,12 @@
 package org.hibernate.tool.hbm2x;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -20,7 +21,6 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 
@@ -122,14 +122,15 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();
-		Settings buildSettings = cfg.buildSettings(serviceRegistry);
+		
+		Properties properties = cfg.getProperties();
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
 		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( properties, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
 		
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
@@ -138,7 +139,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 		mock.setFailOnDelegateAccess(true);
 		
-		reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
+		reader = JDBCReaderFactory.newJDBCReader( properties, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
 		
 		dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );

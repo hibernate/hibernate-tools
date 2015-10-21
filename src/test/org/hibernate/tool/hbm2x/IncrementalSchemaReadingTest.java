@@ -50,11 +50,9 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		builder.applySettings(cfg.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();
 
-		Settings buildSettings = cfg.buildSettings(serviceRegistry);
-
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultReverseEngineeringStrategy());
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, tss, mockedMetaDataDialect, serviceRegistry);
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(), tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
