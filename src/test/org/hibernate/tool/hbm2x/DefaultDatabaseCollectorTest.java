@@ -18,7 +18,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -56,7 +55,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		List tables = getTables(configuration);
+		List<?> tables = getTables(configuration);
 		
 		assertEquals(2,tables.size());
 		
@@ -76,7 +75,6 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testNeedQuote() {
-		Settings buildSettings = cfg.buildSettings();
 		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 				
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
@@ -116,11 +114,11 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		return "\"" + name + "\"";
 	}
 
-	private List getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
-		List list = new ArrayList();
-		Iterator iter = metaDataConfiguration.getTableMappings();
+	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
+		List<Table> list = new ArrayList<Table>();
+		Iterator<Table> iter = metaDataConfiguration.getTableMappings();
 		while(iter.hasNext()) {
-			Table element = (Table) iter.next();
+			Table element = iter.next();
 			list.add(element);
 		}
 		return list;
