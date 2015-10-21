@@ -71,16 +71,19 @@ public class JDBCBinder {
 
 	private final JDBCMetaDataConfiguration cfg;
 	private ReverseEngineeringStrategy revengStrategy;
+	
+	private final boolean preferBasicCompositeIds;
 
 	/**
 	 * @param mappings
 	 * @param configuration
 	 */
-	public JDBCBinder(JDBCMetaDataConfiguration cfg, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy) {
+	public JDBCBinder(JDBCMetaDataConfiguration cfg, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
 		this.cfg = cfg;
 		this.properties = properties;
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
+		this.preferBasicCompositeIds = preferBasicCompositeIds;
 	}
 
 	/**
@@ -671,7 +674,7 @@ public class JDBCBinder {
 
 			boolean mutable = true;
             if ( contains( foreignKey.getColumnIterator(), processedColumns ) ) {
-				if ( !cfg.preferBasicCompositeIds() ) continue; //it's in the pk, so skip this one
+				if ( !preferBasicCompositeIds ) continue; //it's in the pk, so skip this one
 				mutable = false;
             }
 
@@ -882,7 +885,7 @@ public class JDBCBinder {
         pkc.setComponentClassName(compositeIdName);
 		Table table = rc.getTable();
         List list = null;
-		if (cfg.preferBasicCompositeIds() ) {
+		if (preferBasicCompositeIds ) {
             list = new ArrayList(keyColumns);
         }
 		else {
