@@ -17,6 +17,7 @@ import java.util.List;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
+import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -78,7 +79,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		Settings buildSettings = cfg.buildSettings();
 		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		assertTrue("The name must be quoted!", realMetaData.needQuote(SCHEMA));
 		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE1));
 		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE2));
@@ -95,11 +96,10 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();
-		Settings buildSettings = cfg.buildSettings(serviceRegistry);
 				
-		MetaDataDialect realMetaData = JDBCReaderFactory.newMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( buildSettings, new DefaultReverseEngineeringStrategy(), realMetaData, serviceRegistry );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(), new DefaultReverseEngineeringStrategy(), realMetaData, serviceRegistry );
 		
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, SCHEMA );
