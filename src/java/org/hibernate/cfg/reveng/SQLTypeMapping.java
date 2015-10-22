@@ -1,6 +1,6 @@
 package org.hibernate.cfg.reveng;
 
-public class SQLTypeMapping implements Comparable {
+public class SQLTypeMapping implements Comparable<SQLTypeMapping> {
 
 	//static public final int UNKNOWN_TYPE = Integer.MAX_VALUE;
 	public static final int UNKNOWN_LENGTH = Integer.MAX_VALUE;
@@ -95,10 +95,8 @@ public class SQLTypeMapping implements Comparable {
 		return false;
 	}
 
-	public int compareTo(Object o) {
-		if(o==null) return 1;
-		
-		SQLTypeMapping other = (SQLTypeMapping) o;
+	public int compareTo(SQLTypeMapping other) {
+		if(other==null) return 1;
 		
 		if(this.jdbcType==other.jdbcType) {
 			if(this.length==other.length) {
@@ -143,7 +141,12 @@ public class SQLTypeMapping implements Comparable {
 	}
 	
 	public boolean equals(Object obj) {
-		return compareTo(obj)==0;
+		if (getClass().isAssignableFrom(obj.getClass())) {
+			SQLTypeMapping other = getClass().cast(obj);
+			return compareTo(other)==0;
+		} else {
+			return false;
+		}
 	}
 	
 	public int hashCode() {
