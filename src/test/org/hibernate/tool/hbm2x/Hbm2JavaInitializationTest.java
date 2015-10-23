@@ -4,20 +4,11 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.NonReflectiveTestCase;
-import org.hibernate.tool.hbm2x.pojo.AnnotationBuilder;
-import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
-import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass.IteratorTransformer;
-import org.hibernate.tool.test.TestHelper;
 
 /**
  * @author max
