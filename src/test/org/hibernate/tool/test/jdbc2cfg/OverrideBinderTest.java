@@ -9,14 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.SettingsFactory;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -33,8 +27,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -95,7 +91,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		or.addResource(SCHEMA_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 
-		List schemaSelectors = repository.getSchemaSelections();
+		List<?> schemaSelectors = repository.getSchemaSelections();
 		
 		assertNotNull(schemaSelectors);
 		assertEquals(4,schemaSelectors.size());
@@ -128,25 +124,16 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		Iterator tableMappings = configuration.getTableMappings();
+		Iterator<?> tableMappings = configuration.getTableMappings();
 		Table t = (Table) tableMappings.next();
 		assertEquals(t.getName(), "DUMMY");
 		assertFalse(tableMappings.hasNext());
 	}
 
 
-	static Settings settings;
 	static ServiceRegistry serviceRegistry;
 	
 	private OverrideRepository buildOverrideRepository() {
-		if(settings==null) {
-			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-			ServiceRegistry serviceRegistry = builder.build();
-			settings = new SettingsFactory() {
-				// trick to get hibernate.properties settings for defaultschema/catalog in here
-			}.buildSettings(Environment.getProperties(), serviceRegistry);
-		}
-		//return new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
 		return new OverrideRepository();
 	}
 	
@@ -204,7 +191,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 
 		TableIdentifier miscTable = new TableIdentifier(null,null, "MISC_TYPES");
 		assertEquals("sequence",repository.getTableIdentifierStrategyName(miscTable));
-		Map props = repository.getTableIdentifierProperties(miscTable);
+		Map<?,?> props = repository.getTableIdentifierProperties(miscTable);
 		assertEquals("seq_table", props.get("table"));
 		
 		assertNull(repository.getTableIdentifierStrategyName(new TableIdentifier("blah")));
@@ -217,7 +204,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertEquals("CustomOID", repository.tableToCompositeIdName(ordersTable));
 		assertEquals(null, repository.tableToCompositeIdName(new TableIdentifier("blah")));
 		
-		List primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(new TableIdentifier("blah"));
+		List<?> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(new TableIdentifier("blah"));
 		assertNull(primaryKeyColumnNames);
 		
 		primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(ordersTable);
@@ -276,7 +263,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public Table findTable(String name) {
-		Iterator tableIter = cfg.getTableMappings();
+		Iterator<?> tableIter = cfg.getTableMappings();
 		
 		Table table = null;
 		while(tableIter.hasNext() ) {
@@ -293,7 +280,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertNull(findTable(identifier("defunct_table") ) );
 		Table foundTable = findTable(identifier("inthemiddle") );
 		assertNotNull(foundTable);
-		Iterator fkiter = foundTable.getForeignKeyIterator();
+		Iterator<?> fkiter = foundTable.getForeignKeyIterator();
 		ForeignKey fk1 = (ForeignKey) fkiter.next();
 		assertNotNull(fk1);
 		assertFalse(fkiter.hasNext() );
@@ -393,7 +380,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		
 		Table table = findTable(identifier("Orders") );
 		
-		Iterator foreignKeyIterator = table.getForeignKeyIterator();
+		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), identifier("Customer") );
 		
@@ -409,7 +396,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		
 		Table table = findTable(identifier("Children") );
 		
-		Iterator foreignKeyIterator = table.getForeignKeyIterator();
+		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), identifier("Parent") );
 		assertEquals(2, fk.getReferencedColumns().size());
@@ -442,7 +429,10 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		TableIdentifier tableIdentifier = new TableIdentifier(null, null, "TblTest");
 		assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
 		
-		tableIdentifier = new TableIdentifier(settings.getDefaultCatalogName(), "Werd", "Testy");
+		tableIdentifier = new TableIdentifier(
+				getConfiguration().getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				"Werd", 
+				"Testy");
 		assertEquals("org.werd.Testy", res.tableToClassName(tableIdentifier));
 		
 		tableIdentifier = new TableIdentifier(null, null, "Nothing");
@@ -455,14 +445,17 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		ReverseEngineeringStrategy res = buildOverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		
 		TableIdentifier tableIdentifier = new TableIdentifier(null, null, "TblTest");
-		Map attributes = res.tableToMetaAttributes(tableIdentifier);
+		Map<?,?> attributes = res.tableToMetaAttributes(tableIdentifier);
 		assertNotNull(attributes);
 		assertEquals(attributes.size(),1);
 		MetaAttribute ma = (MetaAttribute) attributes.get("use-in-test");
 		assertEquals(ma.getName(), "use-in-test");
 		assertEquals(ma.getValue(), "true");
 				
-		tableIdentifier = new TableIdentifier(settings.getDefaultCatalogName(), "Werd", "Testy");
+		tableIdentifier = new TableIdentifier(
+				getConfiguration().getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				"Werd", 
+				"Testy");
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		assertNotNull(attributes);
 		ma = (MetaAttribute) attributes.get( "werd-meta" );
