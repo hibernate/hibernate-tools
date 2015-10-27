@@ -34,15 +34,10 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 
 	private static final String PACKAGE_NAME = "org.hibernate.tool.test.jdbc2cfg";
 
-
-
-	protected String[] getCreateSQL() {
-		
+	protected String[] getCreateSQL() {		
 		return new String[] {
                 "create table orders ( id numeric(10,0) not null, name varchar(20), primary key (id) )",
 				"create table item  ( child_id numeric(10,0) not null, name varchar(50), order_id numeric(10,0), related_order_id numeric(10,0), primary key (child_id), foreign key (order_id) references orders(id), foreign key (related_order_id) references orders(id) )"
-				// todo - link where pk is fk to something
-				
 		};
 	}
 
@@ -51,8 +46,8 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
         c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName(PACKAGE_NAME));
         cfgToConfigure.setReverseEngineeringStrategy(c);
     }
+    
 	protected String[] getDropSQL() {
-		
 		return new String[]  {
 				"drop table item",
 				"drop table orders",				
@@ -61,64 +56,41 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 
 	public void testCreatePersistentClasses() {
 		cfg.buildMappings();
-		PersistentClass classMapping = cfg.getClassMapping(toClassName("orders") );
-		
+		PersistentClass classMapping = cfg.getClassMapping(toClassName("orders") );		
 		assertNotNull("class not found", classMapping);		
-		
 		KeyValue identifier = classMapping.getIdentifier();
-		
-		assertNotNull(identifier);
-		
+		assertNotNull(identifier);		
 	}
 	
 	public void testCreateManyToOne() {
 		cfg.buildMappings();
 		PersistentClass classMapping = cfg.getClassMapping(toClassName("item") );
-		
 		assertNotNull(classMapping);		
-		
 		KeyValue identifier = classMapping.getIdentifier();
-		
 		assertNotNull(identifier);	
-		
-		assertEquals(3,classMapping.getPropertyClosureSpan() );
-		
+		assertEquals(3,classMapping.getPropertyClosureSpan() );	
 		Property property = classMapping.getProperty("ordersByRelatedOrderId");		
-		assertNotNull(property);
-		
+		assertNotNull(property);	
 		property = classMapping.getProperty("ordersByOrderId");		
 		assertNotNull(property);
-		
-		
-		
 	}
 	
 	public void testCreateOneToMany() {
-		cfg.buildMappings();
-        
-		PersistentClass orders = cfg.getClassMapping(toClassName("orders") );
-		
-		Property itemset = orders.getProperty("itemsForRelatedOrderId");
-		
-		Collection col = (Collection) itemset.getValue();
-         
+		cfg.buildMappings();        
+		PersistentClass orders = cfg.getClassMapping(toClassName("orders") );		
+		Property itemset = orders.getProperty("itemsForRelatedOrderId");	
+		Collection col = (Collection) itemset.getValue();         
 		OneToMany otm = (OneToMany) col.getElement();
         assertEquals(otm.getReferencedEntityName(), toClassName("item") );
         assertEquals(otm.getAssociatedClass().getClassName(), toClassName("item") );
-        assertEquals(otm.getTable().getName(), identifier("orders") );
-        
-		assertNotNull(itemset);
-		
-		assertTrue(itemset.getValue() instanceof Set);
-		
+        assertEquals(otm.getTable().getName(), identifier("orders") );        
+		assertNotNull(itemset);		
+		assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
-	public void testBinding() throws HibernateException, SQLException {
-		
+	@SuppressWarnings("deprecation")
+	public void testBinding() throws HibernateException, SQLException {	
 		SessionFactory sf = cfg.buildSessionFactory();
-		
-		
-		
 		Session session = sf.openSession();
         Transaction t = session.beginTransaction();
 	
@@ -176,7 +148,8 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
      * @param itemid TODO
      * @return
      */
-    private Item addItem(Orders m, int itemid, String name) {
+    @SuppressWarnings("unchecked")
+	private Item addItem(Orders m, int itemid, String name) {
         Item item = new Item();
         item.setChildId(new Long(itemid) );
         item.setOrderId(m);
