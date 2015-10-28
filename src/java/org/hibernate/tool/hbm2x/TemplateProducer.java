@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class TemplateProducer {
 		this.ac = ac;
 	}
 	
-	public void produce(Map additionalContext, String templateName, File destination, String identifier, String fileType, String rootContext) {
+	public void produce(Map<String,Object> additionalContext, String templateName, File destination, String identifier, String fileType, String rootContext) {
 		
 		String tempResult = produceToString( additionalContext, templateName, rootContext );
 		
@@ -58,8 +59,8 @@ public class TemplateProducer {
 	}
 
 
-	private String produceToString(Map additionalContext, String templateName, String rootContext) {
-		Map contextForFirstPass = additionalContext;
+	private String produceToString(Map<String,Object> additionalContext, String templateName, String rootContext) {
+		Map<String,Object> contextForFirstPass = additionalContext;
 		putInContext( th, contextForFirstPass );		
 		StringWriter tempWriter = new StringWriter();
 		BufferedWriter bw = new BufferedWriter(tempWriter);
@@ -75,29 +76,29 @@ public class TemplateProducer {
 		return tempWriter.toString();
 	}
 
-	private void removeFromContext(TemplateHelper templateHelper, Map context) {
-		Iterator iterator = context.entrySet().iterator();
+	private void removeFromContext(TemplateHelper templateHelper, Map<String,Object> context) {
+		Iterator<Entry<String,Object>> iterator = context.entrySet().iterator();
 		while ( iterator.hasNext() ) {
-			Map.Entry element = (Map.Entry) iterator.next();
+			Entry<String,Object> element = iterator.next();
 			templateHelper.removeFromContext((String) element.getKey(), element.getValue());
 		}
 	}
 
-	private void putInContext(TemplateHelper templateHelper, Map context) {
-		Iterator iterator = context.entrySet().iterator();
+	private void putInContext(TemplateHelper templateHelper, Map<String,Object> context) {
+		Iterator<Entry<String,Object>> iterator = context.entrySet().iterator();
 		while ( iterator.hasNext() ) {
-			Map.Entry element = (Map.Entry) iterator.next();
+			Entry<String,Object> element = iterator.next();
 			templateHelper.putInContext((String) element.getKey(), element.getValue());
 		}
 	}
 
-	public void produce(Map additionalContext, String templateName, File outputFile, String identifier) {
+	public void produce(Map<String,Object> additionalContext, String templateName, File outputFile, String identifier) {
 		String fileType = outputFile.getName();
 		fileType = fileType.substring(fileType.indexOf('.')+1);
 		produce(additionalContext, templateName, outputFile, identifier, fileType, null);
 	}
 	
-	public void produce(Map additionalContext, String templateName, File outputFile, String identifier, String rootContext) {
+	public void produce(Map<String,Object> additionalContext, String templateName, File outputFile, String identifier, String rootContext) {
 		String fileType = outputFile.getName();
 		fileType = fileType.substring(fileType.indexOf('.')+1);
 		produce(additionalContext, templateName, outputFile, identifier, fileType, rootContext);
