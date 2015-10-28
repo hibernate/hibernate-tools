@@ -5,14 +5,14 @@ package org.hibernate.tool.hbm2x;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base exporter for the template and direct output generation.
@@ -31,7 +31,7 @@ public abstract class AbstractExporter implements Exporter {
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
 
-	private Iterator iterator;
+	private Iterator<Entry<Object, Object>> iterator;
 
 	private Cfg2HbmTool c2h;
 	private Cfg2JavaTool c2j;
@@ -155,7 +155,7 @@ public abstract class AbstractExporter implements Exporter {
 		if(getProperties()!=null) {
 			iterator = getProperties().entrySet().iterator();
 			while ( iterator.hasNext() ) {
-				Map.Entry element = (Map.Entry) iterator.next();
+				Entry<Object, Object> element = iterator.next();
 				String key = element.getKey().toString();
 				Object value = transformValue(element.getValue());
 				getTemplateHelper().putInContext(key, value);
@@ -163,7 +163,7 @@ public abstract class AbstractExporter implements Exporter {
 					getTemplateHelper().putInContext(key.substring(ExporterSettings.PREFIX_KEY.length()), value);
 					if(key.endsWith(".toolclass")) {
 						try {
-							Class toolClass = ReflectHelper.classForName(value.toString(), this.getClass());
+							Class<?> toolClass = ReflectHelper.classForName(value.toString(), this.getClass());
 							Object object = toolClass.newInstance();
 							getTemplateHelper().putInContext(key.substring(ExporterSettings.PREFIX_KEY.length(),key.length()-".toolclass".length()), object);
 						}
@@ -195,7 +195,7 @@ public abstract class AbstractExporter implements Exporter {
 		if(getProperties()!=null) {
 			iterator = getProperties().entrySet().iterator();
 			while ( iterator.hasNext() ) {
-				Map.Entry element = (Map.Entry) iterator.next();
+				Entry<Object, Object> element = iterator.next();
 				Object value = transformValue(element.getValue());
 				String key = element.getKey().toString();
 				if(key.startsWith(ExporterSettings.PREFIX_KEY)) {
