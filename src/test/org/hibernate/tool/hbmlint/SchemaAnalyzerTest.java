@@ -23,10 +23,8 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 	}
 
 	static class MockCollector implements IssueCollector {
-		List problems = new ArrayList();
-		
-		public void reportIssue(Issue analyze) {
-			
+		List<Issue> problems = new ArrayList<Issue>();		
+		public void reportIssue(Issue analyze) {			
 			problems.add(analyze);
 		}		
 	}
@@ -42,7 +40,7 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 			.build();
 		analyzer.initialize( configuration, configuration.buildSettings(serviceRegistry) );
 		
-		Iterator tableMappings = configuration.getTableMappings();
+		Iterator<?> tableMappings = configuration.getTableMappings();
 		
 		
 		while ( tableMappings.hasNext() ) {
