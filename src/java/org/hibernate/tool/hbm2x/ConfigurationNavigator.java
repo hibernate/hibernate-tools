@@ -31,11 +31,11 @@ public class ConfigurationNavigator {
 	 */
 	public void export(Configuration cfg, ConfigurationVisitor exporter) {
 
-		Map components = new HashMap();
+		Map<String, Component> components = new HashMap<String, Component>();
 		
-		for (Iterator classes = cfg.getClassMappings(); classes.hasNext(); ) {
+		for (Iterator<PersistentClass> classes = cfg.getClassMappings(); classes.hasNext(); ) {
 		    if(exporter.startMapping(cfg) ) {
-		        PersistentClass clazz = (PersistentClass) classes.next();
+		        PersistentClass clazz = classes.next();
 		        collectComponents(components,clazz);
 		        
 		        if(exporter.startPersistentClass(clazz) ) {
@@ -47,7 +47,7 @@ public class ConfigurationNavigator {
 						exporter.startEmbeddedIdentifier( (Component)clazz.getKey() );
 						exporter.endEmbeddedIdentifier( (Component)clazz.getKey() );
 		            }
-		            Iterator unjoinedPropertyIterator = clazz.getUnjoinedPropertyIterator();
+		            Iterator<?> unjoinedPropertyIterator = clazz.getUnjoinedPropertyIterator();
 		            while(unjoinedPropertyIterator.hasNext() ) {
 		                Property prop = (Property)unjoinedPropertyIterator.next();
 		                exporter.startProperty(prop);
@@ -61,7 +61,7 @@ public class ConfigurationNavigator {
 		    }
 		}
 		
-		for(Iterator comps = components.values().iterator(); comps.hasNext(); ) {
+		for(Iterator<?> comps = components.values().iterator(); comps.hasNext(); ) {
 			Component component = (Component)comps.next();
 			exporter.startComponent(component);
 		}
@@ -74,17 +74,17 @@ public class ConfigurationNavigator {
 	/**
 	 * @param clazz
 	 */
-	public static void collectComponents(Map components, PersistentClass clazz) {
-		Iterator iter = new Cfg2JavaTool().getPOJOClass(clazz).getAllPropertiesIterator();
+	public static void collectComponents(Map<String, Component> components, PersistentClass clazz) {
+		Iterator<?> iter = new Cfg2JavaTool().getPOJOClass(clazz).getAllPropertiesIterator();
 		collectComponents( components, iter );		
 	}
 
-	public static void collectComponents(Map components, POJOClass clazz) {
-		Iterator iter = clazz.getAllPropertiesIterator();
+	public static void collectComponents(Map<String, Component> components, POJOClass clazz) {
+		Iterator<?> iter = clazz.getAllPropertiesIterator();
 		collectComponents( components, iter );		
 	}
 	
-	private static void collectComponents(Map components, Iterator iter) {
+	private static void collectComponents(Map<String, Component> components, Iterator<?> iter) {
 		while(iter.hasNext()) {
 			Property property = (Property) iter.next();
 			if (!"embedded".equals(property.getPropertyAccessorName()) && // HBX-267, embedded property for <properties> should not be generated as component. 
@@ -103,17 +103,20 @@ public class ConfigurationNavigator {
 		}
 	}
 
-	private static void addComponent(Map components, Component comp) {
+	private static void addComponent(Map<String, Component> components, Component comp) {
 		if(!comp.isDynamic()) {
-			Component existing = (Component) components.put(comp.getComponentClassName(), comp);
-			
+			Component existing = (Component) components.put(
+					comp.getComponentClassName(), 
+					comp);		
 			if(existing!=null) {
 				log.warn("Component " + existing.getComponentClassName() + " found more than once! Will only generate the last found.");
 			}
 		} else {
 			log.debug("dynamic-component found. Ignoring it as a component, but will collect any embedded components.");
 		}	
-		collectComponents( components, new ComponentPOJOClass(comp, new Cfg2JavaTool()).getAllPropertiesIterator());		
+		collectComponents( 
+				components, 
+				new ComponentPOJOClass(comp, new Cfg2JavaTool()).getAllPropertiesIterator());		
 	}
 
 }
