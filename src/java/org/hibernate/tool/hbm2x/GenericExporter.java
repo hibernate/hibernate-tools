@@ -9,11 +9,10 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.internal.util.StringHelper;
 
 
 public class GenericExporter extends AbstractExporter {
@@ -22,22 +21,28 @@ public class GenericExporter extends AbstractExporter {
 		abstract void process(GenericExporter ge);
 	}
 	
-	static Map modelIterators = new HashMap();
+	static Map<String, ModelIterator> modelIterators = new HashMap<String, ModelIterator>();
 	static {
 		modelIterators.put( "configuration", new ModelIterator() {
-
 			void process(GenericExporter ge) {
-				TemplateProducer producer = new TemplateProducer(ge.getTemplateHelper(),ge.getArtifactCollector());
-				producer.produce(new HashMap(), ge.getTemplateName(), new File(ge.getOutputDirectory(),ge.filePattern), ge.templateName, "Configuration");
-				
-			}
-			
+				TemplateProducer producer = 
+						new TemplateProducer(
+								ge.getTemplateHelper(),
+								ge.getArtifactCollector());
+				producer.produce(
+						new HashMap<String, Object>(), 
+						ge.getTemplateName(), 
+						new File(ge.getOutputDirectory(),ge.filePattern), 
+						ge.templateName, 
+						"Configuration");				
+			}			
 		});
-		modelIterators.put("entity", new ModelIterator() {
-		
+		modelIterators.put("entity", new ModelIterator() {		
 			void process(GenericExporter ge) {
-				Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
-				Map additionalContext = new HashMap();
+				Iterator<?> iterator = 
+						ge.getCfg2JavaTool().getPOJOIterator(
+								ge.getConfiguration().getClassMappings());
+				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
 					ge.exportPersistentClass( additionalContext, element );					
@@ -47,10 +52,12 @@ public class GenericExporter extends AbstractExporter {
 		modelIterators.put("component", new ModelIterator() {
 			
 			void process(GenericExporter ge) {
-				Map components = new HashMap();
+				Map<String, Component> components = new HashMap<String, Component>();
 				
-				Iterator iterator = ge.getCfg2JavaTool().getPOJOIterator(ge.getConfiguration().getClassMappings());
-				Map additionalContext = new HashMap();
+				Iterator<?> iterator = 
+						ge.getCfg2JavaTool().getPOJOIterator(
+								ge.getConfiguration().getClassMappings());
+				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
 					ConfigurationNavigator.collectComponents(components, element);											
@@ -100,7 +107,7 @@ public class GenericExporter extends AbstractExporter {
 			throw new ExporterException("Template name not set on " + this.getClass());
 		}
 		
-		List exporters = new ArrayList();
+		List<ModelIterator> exporters = new ArrayList<ModelIterator>();
 	
 		if(StringHelper.isEmpty( forEach )) {
 			if(filePattern.indexOf("{class-name}")>=0) {				
@@ -114,30 +121,30 @@ public class GenericExporter extends AbstractExporter {
 		 
 			while ( tokens.hasMoreTokens() ) {
 				String nextToken = tokens.nextToken();
-				Object object = modelIterators.get(nextToken);
-				if(object==null) {
+				ModelIterator modelIterator = modelIterators.get(nextToken);
+				if(modelIterator==null) {
 					throw new ExporterException("for-each does not support [" + nextToken + "]");
 				}
-				exporters.add( object );
+				exporters.add(modelIterator);
 			}
 		}
 
-		Iterator it = exporters.iterator();
+		Iterator<ModelIterator> it = exporters.iterator();
 		while(it.hasNext()) {
-			ModelIterator mit = (ModelIterator) it.next();
+			ModelIterator mit = it.next();
 			mit.process( this );
 		}
 	}
 
-	protected void exportComponent(Map additionalContext, POJOClass element) {
+	protected void exportComponent(Map<String, Object> additionalContext, POJOClass element) {
 		exportPOJO(additionalContext, element);		
 	}
 
-	protected void exportPersistentClass(Map additionalContext, POJOClass element) {
+	protected void exportPersistentClass(Map<String, Object> additionalContext, POJOClass element) {
 		exportPOJO(additionalContext, element);		
 	}
 
-	protected void exportPOJO(Map additionalContext, POJOClass element) {
+	protected void exportPOJO(Map<String, Object> additionalContext, POJOClass element) {
 		TemplateProducer producer = new TemplateProducer(getTemplateHelper(),getArtifactCollector());					
 		additionalContext.put("pojo", element);
 		additionalContext.put("clazz", element.getDecoratedObject());
