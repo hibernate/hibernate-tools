@@ -11,13 +11,14 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -142,12 +143,10 @@ public abstract class BaseTestCase extends TestCase {
 
 	public void assertNoTables() throws SQLException {
 		Configuration configuration = new Configuration();
-		
+		Properties properties = configuration.getProperties();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
+		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
-		
-		Settings testSettings = configuration.buildSettings(serviceRegistry);
 		
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
@@ -158,7 +157,10 @@ public abstract class BaseTestCase extends TestCase {
         	dialect.configure(
         			ReverseEngineeringRuntimeInfo.createInstance(
         					connectionProvider, jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		Iterator<?> tables = dialect.getTables( testSettings.getDefaultCatalogName(), testSettings.getDefaultSchemaName(), null );
+		Iterator<?> tables = dialect.getTables( 
+				properties.getProperty(AvailableSettings.DEFAULT_CATALOG),
+				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA),
+				null);
 		
 		assertHasNext( 0, tables );
         } finally {
