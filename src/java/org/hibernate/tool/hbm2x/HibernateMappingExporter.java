@@ -29,8 +29,7 @@ public class HibernateMappingExporter extends GenericExporter {
 	}
 	
 	public void doStart() {
-		exportGeneralSettings();
-		
+		exportGeneralSettings();		
 		super.doStart();
 	}
 
@@ -39,7 +38,7 @@ public class HibernateMappingExporter extends GenericExporter {
 		Configuration cfg = getConfiguration();
 		if(c2h.isImportData(cfg) && (c2h.isNamedQueries(cfg)) && (c2h.isNamedSQLQueries(cfg)) && (c2h.isFilterDefinitions(cfg))) {
 			TemplateProducer producer = new TemplateProducer(getTemplateHelper(),getArtifactCollector());
-			producer.produce(new HashMap(), "hbm/generalhbm.hbm.ftl", new File(getOutputDirectory(),"GeneralHbmSettings.hbm.xml"), getTemplateName(), "General Settings");
+			producer.produce(new HashMap<String, Object>(), "hbm/generalhbm.hbm.ftl", new File(getOutputDirectory(),"GeneralHbmSettings.hbm.xml"), getTemplateName(), "General Settings");
 		}
 	}
 	
@@ -66,7 +65,7 @@ public class HibernateMappingExporter extends GenericExporter {
 	}
 	
 	
-	protected void exportComponent(Map additionalContext, POJOClass element) {
+	protected void exportComponent(Map<String, Object> additionalContext, POJOClass element) {
 		// we don't want component's exported.
 	}
 	
