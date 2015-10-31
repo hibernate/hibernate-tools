@@ -7,11 +7,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.HibernateException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Column;
@@ -21,7 +22,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
@@ -136,17 +136,18 @@ public final class DocHelper {
 
         this.cfg = cfg;
 
+        Properties properties = cfg.getProperties();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-		Settings settings = cfg.buildSettings(serviceRegistry);
+//		Settings settings = cfg.buildSettings(serviceRegistry);
 		
         dialect = jdbcServices.getDialect(); // TODO: get it from somewhere "cached".
 
-        String defaultCatalog = settings.getDefaultCatalogName();
+        String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 
-        String defaultSchema = settings.getDefaultSchemaName();      
+        String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);      
         
 
         if (defaultSchema == null) {
@@ -215,9 +216,9 @@ public final class DocHelper {
             
             this.processClass(pojoClazz);
             
-            Iterator properties = clazz.getPropertyIterator();
-            while (properties.hasNext() ) {
-                Property property = (Property) properties.next();
+            Iterator propertyIterator = clazz.getPropertyIterator();
+            while (propertyIterator.hasNext() ) {
+                Property property = (Property) propertyIterator.next();
                 Value value = property.getValue();                
                 List props = (List) propsByValue.get(value);
                 if (props == null) {
