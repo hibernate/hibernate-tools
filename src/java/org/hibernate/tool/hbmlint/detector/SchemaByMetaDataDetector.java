@@ -3,12 +3,14 @@ package org.hibernate.tool.hbmlint.detector;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
@@ -31,7 +33,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
 
@@ -82,9 +83,9 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	}
 	
 	public void visitGenerators(Configuration cfg, IssueCollector collector) {
-		Iterator iter = iterateGenerators(cfg);
+		Iterator<?> iter = iterateGenerators(cfg);
 		
-		Set sequences = Collections.EMPTY_SET;
+		Set<?> sequences = Collections.EMPTY_SET;
 		if(dialect.supportsSequences()) {
 			sequences = reader.readSequences(dialect.getQuerySequencesString());
 		}
@@ -101,7 +102,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		
 	}
 
-	private boolean isSequence(Object key, Set sequences) {
+	private boolean isSequence(Object key, Set<?> sequences) {
 		if(key instanceof String) {
 			if ( sequences.contains( key ) ) {
 				return true;
@@ -124,17 +125,17 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			if(strings.length==1) {
 				tableSelector.clearSchemaSelections();
 				tableSelector.addSchemaSelection( new SchemaSelection(null,null, strings[0]) );
-				List list = reader.readDatabaseSchema( dbc, null, null );
+				List<?> list = reader.readDatabaseSchema( dbc, null, null );
 				return !list.isEmpty();
 			} else if(strings.length==3) {
 				tableSelector.clearSchemaSelections();
 				tableSelector.addSchemaSelection( new SchemaSelection(strings[0],strings[1], strings[2]) );
-				List list = reader.readDatabaseSchema( dbc, null, null );
+				List<?> list = reader.readDatabaseSchema( dbc, null, null );
 				return !list.isEmpty();
 			} else if (strings.length==2) {
 				tableSelector.clearSchemaSelections();
 				tableSelector.addSchemaSelection( new SchemaSelection(null,strings[0], strings[1]) );
-				List list = reader.readDatabaseSchema( dbc, null, null );
+				List<?> list = reader.readDatabaseSchema( dbc, null, null );
 				return !list.isEmpty();
 			}
 		}
@@ -146,7 +147,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		if ( table.isPhysicalTable() ) {
 			setSchemaSelection( table );
 
-			List list = reader.readDatabaseSchema( dbc, null, null );
+			List<?> list = reader.readDatabaseSchema( dbc, null, null );
 
 			if ( list.isEmpty() ) {
 				pc.reportIssue( new Issue( "SCHEMA_TABLE_MISSING",
@@ -220,15 +221,17 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	 * @return iterator over all the IdentifierGenerator's found in the entitymodel and return a list of unique IdentifierGenerators
 	 * @throws MappingException
 	 */
-	private Iterator iterateGenerators(Configuration cfg) throws MappingException {
+	private Iterator<IdentifierGenerator> iterateGenerators(Configuration cfg) throws MappingException {
 
-		TreeMap generators = new TreeMap();
-		String defaultCatalog = getSettings().getDefaultCatalogName();
-		String defaultSchema = getSettings().getDefaultSchemaName();
+		TreeMap<Object, IdentifierGenerator> generators = 
+				new TreeMap<Object, IdentifierGenerator>();
+		Properties properties = getConfiguration().getProperties();
+		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
-		Iterator iter = cfg.getClassMappings();
-		while ( iter.hasNext() ) {
-			PersistentClass pc = (PersistentClass) iter.next();
+		Iterator<PersistentClass> persistentClassIterator = cfg.getClassMappings();
+		while ( persistentClassIterator.hasNext() ) {
+			PersistentClass pc = persistentClassIterator.next();
 
 			if ( !pc.isInherited() ) {
 
@@ -248,9 +251,9 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			}
 		}
 
-		iter = getConfiguration().getCollectionMappings();
-		while ( iter.hasNext() ) {
-			Collection collection = (Collection) iter.next();
+		Iterator<?> collectionIterator = getConfiguration().getCollectionMappings();
+		while ( collectionIterator.hasNext() ) {
+			Collection collection = (Collection) collectionIterator.next();
 
 			if ( collection.isIdentified() ) {
 
