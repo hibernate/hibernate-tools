@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Table;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.detector.SchemaByMetaDataDetector;
@@ -35,10 +33,7 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 		configuration.buildMappings();
 	
 		SchemaByMetaDataDetector analyzer = new SchemaByMetaDataDetector();
-		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-			.applySettings( configuration.getProperties() )
-			.build();
-		analyzer.initialize( configuration, configuration.buildSettings(serviceRegistry) );
+		analyzer.initialize( configuration);
 		
 		Iterator<?> tableMappings = configuration.getTableMappings();
 		

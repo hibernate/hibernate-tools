@@ -13,7 +13,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -59,8 +58,8 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 	}
 
-	public void initialize(Configuration cfg, Settings settings) {
-		super.initialize( cfg, settings );
+	public void initialize(Configuration cfg) {
+		super.initialize( cfg);
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();
