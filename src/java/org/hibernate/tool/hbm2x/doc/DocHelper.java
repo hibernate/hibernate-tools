@@ -38,529 +38,502 @@ import org.hibernate.type.Type;
 public final class DocHelper {
 
 	/** used to sort pojoclass according to their declaration name */
-    static final Comparator POJOCLASS_COMPARATOR = new Comparator() {
-		public int compare(Object o1, Object o2) {
-			POJOClass that = (POJOClass) o1;
-			POJOClass what = (POJOClass) o2;
-				
-			return that.getDeclarationName().compareTo(what.getDeclarationName());				
+	static final Comparator<POJOClass> POJOCLASS_COMPARATOR = new Comparator<POJOClass>() {
+		public int compare(POJOClass left, POJOClass right) {
+			return left.getDeclarationName().compareTo(right.getDeclarationName());
 		}
 	};
-	
+
 	/**
 	 * Used to sort properties according to their name.
 	 */
-	private static final Comparator PROPERTY_COMPARATOR = new Comparator()
-	{
-		public int compare(Object o1, Object o2)
-		{
-			Property property1 = (Property) o1;
-			Property property2 = (Property) o2;
-			
-			return property1.getName().compareTo(property2.getName());
+	private static final Comparator<Property> PROPERTY_COMPARATOR = new Comparator<Property>() {
+		public int compare(Property left, Property right) {
+			return left.getName().compareTo(right.getName());
 		}
 	};
 
 	/**
-     * Name to use if the schema is not specified.
-     */
-    public static final String DEFAULT_NO_SCHEMA_NAME = "default";
-    
-    /**
-     * Name to use if there are no packages specified for any class
-     */
-    public static final String DEFAULT_NO_PACKAGE = "All Entities";
+	 * Name to use if the schema is not specified.
+	 */
+	public static final String DEFAULT_NO_SCHEMA_NAME = "default";
 
-    /**
-     * Hibernate Configuration.
-     */
-    private Configuration cfg;
+	/**
+	 * Name to use if there are no packages specified for any class
+	 */
+	public static final String DEFAULT_NO_PACKAGE = "All Entities";
 
-    /**
-     * Map with Tables keyed by Schema FQN. The keys are Strings and the values
-     * are Lists of Tables
-     */
-    private Map tablesBySchema = new HashMap();
-    
-    /**
-     * Map with classes keyed by package name. PackageName is String key and values 
-     * are List of POJOClass
-     */
-    private Map classesByPackage = new HashMap();
-    
-    /**
-     * Lits of all POJOClass
-     */
-    private List classes = new ArrayList();
-    
-    /**
-     * Map where the keys are column names (tableFQN.column) and the values are
-     * lists with the Value instances where those columns referenced.
-     */
-    private Map valuesByColumn = new HashMap();
+	/**
+	 * Hibernate Configuration.
+	 */
+	private Configuration cfg;
 
-    /**
-     * Holds intances of Property keyed by Value objects.
-     */
-    private Map propsByValue = new HashMap();
+	/**
+	 * Map with Tables keyed by Schema FQN. The keys are Strings and the values
+	 * are Lists of Tables
+	 */
+	private Map<String, List<Table>> tablesBySchema = 
+			new HashMap<String, List<Table>>();
 
-    /**
-     * List with all the tables.
-     */
-    private List tables = new ArrayList();
+	/**
+	 * Map with classes keyed by package name. PackageName is String key and
+	 * values are List of POJOClass
+	 */
+	private Map<String, List<POJOClass>> classesByPackage = 
+			new HashMap<String, List<POJOClass>>();
 
-    /**
-     * Map that holds the Schema FQN for each Table. The keys are Table
-     * instances and the values are Strings with the Schema FQN for that table.
-     */
-    private Map tableSchemaNames = new HashMap();
+	/**
+	 * Lits of all POJOClass
+	 */
+	private List<POJOClass> classes = 
+			new ArrayList<POJOClass>();
 
-    /**
-     * The Dialect.
-     */
-    private Dialect dialect;
-    
-    /**
-     * Constructor.
-     * 
-     * @param cfg Hibernate configuration.
-     */
-    public DocHelper(Configuration cfg, Cfg2JavaTool cfg2JavaTool) {
+	/**
+	 * Map where the keys are column names (tableFQN.column) and the values are
+	 * lists with the Value instances where those columns referenced.
+	 */
+	private Map<String, List<Value>> valuesByColumn = 
+			new HashMap<String, List<Value>>();
 
-        super();
+	/**
+	 * Holds intances of Property keyed by Value objects.
+	 */
+	private Map<Value, List<Property>> propsByValue = 
+			new HashMap<Value, List<Property>>();
 
-        if (cfg == null) {
-            throw new IllegalArgumentException(
-                    "Hibernate Configuration cannot be null");
-        }
+	/**
+	 * List with all the tables.
+	 */
+	private List<Table> tables = new ArrayList<Table>();
 
-        this.cfg = cfg;
+	/**
+	 * Map that holds the Schema FQN for each Table. The keys are Table
+	 * instances and the values are Strings with the Schema FQN for that table.
+	 */
+	private Map<Table, String> tableSchemaNames = new HashMap<Table, String>();
 
-        Properties properties = cfg.getProperties();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+	/**
+	 * The Dialect.
+	 */
+	private Dialect dialect;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param cfg
+	 *            Hibernate configuration.
+	 */
+	@SuppressWarnings("unchecked")
+	public DocHelper(Configuration cfg, Cfg2JavaTool cfg2JavaTool) {
+
+		super();
+
+		if (cfg == null) {
+			throw new IllegalArgumentException("Hibernate Configuration cannot be null");
+		}
+
+		this.cfg = cfg;
+
+		Properties properties = cfg.getProperties();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(cfg.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-//		Settings settings = cfg.buildSettings(serviceRegistry);
-		
-        dialect = jdbcServices.getDialect(); // TODO: get it from somewhere "cached".
+		dialect = jdbcServices.getDialect(); 
+		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
+		if (defaultSchema == null) {
+			defaultSchema = DEFAULT_NO_SCHEMA_NAME;
+		}
+		Iterator<Table> tablesIter = cfg.getTableMappings();
 
-        String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		while (tablesIter.hasNext()) {
+			Table table = tablesIter.next();
 
-        String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);      
-        
+			if (!table.isPhysicalTable()) {
+				continue;
+			}
+			tables.add(table);
 
-        if (defaultSchema == null) {
-            defaultSchema = DEFAULT_NO_SCHEMA_NAME;
-        }
+			StringBuffer sb = new StringBuffer();
 
-        Iterator tablesIter = cfg.getTableMappings();
-        
-        while (tablesIter.hasNext() ) {
-        	Table table = (Table) tablesIter.next();
-        	
-        	if(!table.isPhysicalTable()) {
-        		continue; 
-        	}
-            tables.add(table);
+			String catalog = table.getCatalog();
+			if (catalog == null) {
+				catalog = defaultCatalog;
+			}
+			if (catalog != null) {
+				sb.append(catalog + ".");
+			}
 
-            StringBuffer sb = new StringBuffer();
+			String schema = table.getSchema();
+			if (schema == null) {
+				schema = defaultSchema;
+			}
 
-            String catalog = table.getCatalog();
-            if (catalog == null) {
-                catalog = defaultCatalog;
-            }
-            if (catalog != null) {
-                sb.append(catalog + ".");
-            }
+			sb.append(schema);
 
-            String schema = table.getSchema();
-            if (schema == null) {
-                schema = defaultSchema;
-            }
+			String qualSchemaName = sb.toString();
 
-            sb.append(schema);
+			tableSchemaNames.put(table, qualSchemaName);
 
-            String qualSchemaName = sb.toString();
+			List<Table> tableList = tablesBySchema.get(qualSchemaName);
+			if (tableList == null) {
+				tableList = new ArrayList<Table>();
+				tablesBySchema.put(qualSchemaName, tableList);
+			}
+			tableList.add(table);
 
-            tableSchemaNames.put(table, qualSchemaName);
+			Iterator<Column> columns = table.getColumnIterator();
+			while (columns.hasNext()) {
+				Column column = columns.next();
+				String columnFQN = getQualifiedColumnName(table, column);
+				List<Value> values = valuesByColumn.get(columnFQN);
+				if (values == null) {
+					values = new ArrayList<Value>();
+					valuesByColumn.put(columnFQN, values);
+				}
+				values.add(column.getValue());
+			}
+		}
 
-            List tableList = (List) tablesBySchema.get(qualSchemaName);
-            if (tableList == null) {
-                tableList = new ArrayList();
-                tablesBySchema.put(qualSchemaName, tableList);
-            }
-            tableList.add(table);
+		Map<String, Component> components = new HashMap<String, Component>();
 
-            Iterator columns = table.getColumnIterator();
-            while (columns.hasNext() ) {
-                Column column = (Column) columns.next();
-                String columnFQN = getQualifiedColumnName(table, column);
-                List values = (List) valuesByColumn.get(columnFQN);
-                if (values == null) {
-                    values = new ArrayList();
-                    valuesByColumn.put(columnFQN, values);
-                }
-                values.add(column.getValue() );
-            }
-        }
-        
-        Map components = new HashMap();
+		Iterator<PersistentClass> classesItr = cfg.getClassMappings();
+		while (classesItr.hasNext()) {
+			PersistentClass clazz = classesItr.next();
 
-        Iterator classesItr = cfg.getClassMappings();
-        while (classesItr.hasNext() ) {
-            PersistentClass clazz = (PersistentClass) classesItr.next();
-            
-            POJOClass pojoClazz = cfg2JavaTool.getPOJOClass(clazz);
-            ConfigurationNavigator.collectComponents(components, pojoClazz);						
-            
-            this.processClass(pojoClazz);
-            
-            Iterator propertyIterator = clazz.getPropertyIterator();
-            while (propertyIterator.hasNext() ) {
-                Property property = (Property) propertyIterator.next();
-                Value value = property.getValue();                
-                List props = (List) propsByValue.get(value);
-                if (props == null) {
-                    props = new ArrayList();
-                    propsByValue.put(value, props);
-                }
-                props.add(property);
-            }
-        }
-        
-        Iterator iterator = components.values().iterator();
-		while ( iterator.hasNext() ) {					
+			POJOClass pojoClazz = cfg2JavaTool.getPOJOClass(clazz);
+			ConfigurationNavigator.collectComponents(components, pojoClazz);
+
+			this.processClass(pojoClazz);
+
+			Iterator<Property> propertyIterator = clazz.getPropertyIterator();
+			while (propertyIterator.hasNext()) {
+				Property property = propertyIterator.next();
+				Value value = property.getValue();
+				List<Property> props = propsByValue.get(value);
+				if (props == null) {
+					props = new ArrayList<Property>();
+					propsByValue.put(value, props);
+				}
+				props.add(property);
+			}
+		}
+
+		Iterator<Component> iterator = components.values().iterator();
+		while (iterator.hasNext()) {
 			Component component = (Component) iterator.next();
-			ComponentPOJOClass element = new ComponentPOJOClass(component,cfg2JavaTool);
+			ComponentPOJOClass element =
+					new ComponentPOJOClass(component, cfg2JavaTool);
 			this.processClass(element);
 		}
-    }
-    
-    
-    /**
-     * Populate classes List and classesByPackage Map
-     * @param pojoClazz
-     */
-    private void processClass(POJOClass pojoClazz){       
-        
-        classes.add(pojoClazz);        
-        String packageName = pojoClazz.getPackageName();
-        
-        if("".equals(packageName)){
-        	packageName = DEFAULT_NO_PACKAGE;
-        }       
-        
-        List classList = (List)classesByPackage.get(packageName);
-        if(classList == null){
-        	classList = new ArrayList();
-        	classesByPackage.put(packageName, classList);
-        }
-        classList.add(pojoClazz);
+	}
 
-}    
+	/**
+	 * Populate classes List and classesByPackage Map
+	 * 
+	 * @param pojoClazz
+	 */
+	private void processClass(POJOClass pojoClazz) {
 
-    /**
-     * Returns the Hibernate Configuration.
-     * 
-     * @return the Hibernate Configuration.
-     */
-    public Configuration getCfg() {
+		classes.add(pojoClazz);
+		String packageName = pojoClazz.getPackageName();
 
-        return cfg;
-    }
+		if ("".equals(packageName)) {
+			packageName = DEFAULT_NO_PACKAGE;
+		}
 
-    /**
-     * Return a Map with the tables keyed by Schema. The keys are the schema
-     * names and the values are Lists of tables.
-     * 
-     * @return a Map with the tables keyed by Schema Name.
-     */
-    public Map getTablesBySchema() {
+		List<POJOClass> classList = classesByPackage.get(packageName);
+		if (classList == null) {
+			classList = new ArrayList<POJOClass>();
+			classesByPackage.put(packageName, classList);
+		}
+		classList.add(pojoClazz);
+	}
 
-        return tablesBySchema;
-    }
-    
-    /**
-     * return a Map which has List of POJOClass as value keyed by package name as String. 
-     * @return
-     */
-    public Map getClassesByPackage(){
-    	return classesByPackage;
-    }
- 
+	/**
+	 * Returns the Hibernate Configuration.
+	 * 
+	 * @return the Hibernate Configuration.
+	 */
+	public Configuration getCfg() {
+		return cfg;
+	}
 
-    /**
-     * Returns a list with all the schemas.
-     * 
-     * @return a list with all the schemas.
-     */
-    public List getSchemas() {
+	/**
+	 * Return a Map with the tables keyed by Schema. The keys are the schema
+	 * names and the values are Lists of tables.
+	 * 
+	 * @return a Map with the tables keyed by Schema Name.
+	 */
+	public Map<String, List<Table>> getTablesBySchema() {
+		return tablesBySchema;
+	}
 
-        List schemas = new ArrayList(tablesBySchema.keySet() );
-        Collections.sort(schemas);
+	/**
+	 * return a Map which has List of POJOClass as value keyed by package name
+	 * as String.
+	 * 
+	 * @return
+	 */
+	public Map<String, List<POJOClass>> getClassesByPackage() {
+		return classesByPackage;
+	}
 
-        return schemas;
-    }
-    
-    
-    /**
-     * Return a sorted List of packages
-     * @return
-     */
-    public List getPackages(){
-    	List packages = new ArrayList(classesByPackage.keySet());
-    	Collections.sort(packages);
-    	return packages;
-    }
-    
-    
+	/**
+	 * Returns a list with all the schemas.
+	 * 
+	 * @return a list with all the schemas.
+	 */
+	public List<String> getSchemas() {
+		List<String> schemas = new ArrayList<String>(tablesBySchema.keySet());
+		Collections.sort(schemas);
+		return schemas;
+	}
 
-    /**
-     * Return the list of tables for a particular schema.
-     * 
-     * @param schema the name of the schema.
-     * 
-     * @return a list with all the tables.
-     */
-    public List getTables(String schema) {
+	/**
+	 * Return a sorted List of packages
+	 * 
+	 * @return
+	 */
+	public List<String> getPackages() {
+		List<String> packages = new ArrayList<String>(classesByPackage.keySet());
+		Collections.sort(packages);
+		return packages;
+	}
 
-        List list = (List) tablesBySchema.get(schema);
-        return list;
-    }
-    
-    /**
-     * return a sorted List of POJOClass corresponding to packageName passed
-     * @param packageName packageName other than DEFAULT_NO_PACKAGE
-     * @return a sorted List of POJOClass
-     */
-    public List getClasses(String packageName){
-    	List clazzes = (List)classesByPackage.get(packageName);
-    	List orderedClasses = new ArrayList(clazzes);
-    	Collections.sort(orderedClasses, POJOCLASS_COMPARATOR);
-    	return orderedClasses;
-    }
+	/**
+	 * Return the list of tables for a particular schema.
+	 * 
+	 * @param schema
+	 *            the name of the schema.
+	 * 
+	 * @return a list with all the tables.
+	 */
+	public List<Table> getTables(String schema) {
+		List<Table> list = tablesBySchema.get(schema);
+		return list;
+	}
 
-    /**
-     * Return all the tables.
-     * 
-     * @return all the tables.
-     */
-    public List getTables() {
+	/**
+	 * return a sorted List of POJOClass corresponding to packageName passed
+	 * 
+	 * @param packageName
+	 *            packageName other than DEFAULT_NO_PACKAGE
+	 * @return a sorted List of POJOClass
+	 */
+	public List<POJOClass> getClasses(String packageName) {
+		List<POJOClass> clazzes = classesByPackage.get(packageName);
+		List<POJOClass> orderedClasses = new ArrayList<POJOClass>(clazzes);
+		Collections.sort(orderedClasses, POJOCLASS_COMPARATOR);
+		return orderedClasses;
+	}
 
-        return tables;
-    }
-    
-    /**
-     * Return a sorted List of all POJOClass
-     * @return
-     */
-    public List getClasses(){
-    	List orderedClasses = new ArrayList(classes);
-    	Collections.sort(orderedClasses, POJOCLASS_COMPARATOR);
-    	return orderedClasses;
-    }
-    
-    /**
-     * Returns the qualified schema name for a table. The qualified schema name
-     * will include the catalog name if one is specified.
-     * 
-     * @param table the table.
-     * 
-     * @return the qualified schema name for the table.
-     */
-    public String getQualifiedSchemaName(Table table) {
+	/**
+	 * Return all the tables.
+	 * 
+	 * @return all the tables.
+	 */
+	public List<Table> getTables() {
+		return tables;
+	}
 
-        return (String) tableSchemaNames.get(table);
-    }
+	/**
+	 * Return a sorted List of all POJOClass
+	 * 
+	 * @return
+	 */
+	public List<POJOClass> getClasses() {
+		List<POJOClass> orderedClasses = new ArrayList<POJOClass>(classes);
+		Collections.sort(orderedClasses, POJOCLASS_COMPARATOR);
+		return orderedClasses;
+	}
 
-    /**
-     * Returns the qualified name of a table.
-     * 
-     * @param table the table.
-     * 
-     * @return the qualified name of the table.
-     */
-    public String getQualifiedTableName(Table table) {
+	/**
+	 * Returns the qualified schema name for a table. The qualified schema name
+	 * will include the catalog name if one is specified.
+	 * 
+	 * @param table
+	 *            the table.
+	 * 
+	 * @return the qualified schema name for the table.
+	 */
+	public String getQualifiedSchemaName(Table table) {
 
-        String qualifiedSchemaName = getQualifiedSchemaName(table);
+		return (String) tableSchemaNames.get(table);
+	}
 
-        return qualifiedSchemaName + '.' + table.getName();
-    }
-    
-    public String getPropertyType(Property p){
-    	Value v = p.getValue();
-    	Type t;
-    	String propertyString = "N/D";    	
-    	try{
-	    	t = v.getType();	    	
-	    	propertyString = t.getReturnedClass().getName();
-	    	
-    	}
-    	catch(Exception ex){
-    		//TODO we should try to get the value from value here
-    		//Eat Exception??
-    	}
-    	
-    	return propertyString;
-    }
+	/**
+	 * Returns the qualified name of a table.
+	 * 
+	 * @param table
+	 *            the table.
+	 * 
+	 * @return the qualified name of the table.
+	 */
+	public String getQualifiedTableName(Table table) {
 
-    /**
-     * Returns the qualified name of a column.
-     * 
-     * @param table the table.
-     * @param column the column
-     * 
-     * @return the FQN of the column.
-     */
-    public String getQualifiedColumnName(Table table, Column column) {
+		String qualifiedSchemaName = getQualifiedSchemaName(table);
 
-        String qualifiedTableName = getQualifiedTableName(table);
+		return qualifiedSchemaName + '.' + table.getName();
+	}
 
-        return qualifiedTableName + '.' + column.getName();
-    }
+	public String getPropertyType(Property p) {
+		Value v = p.getValue();
+		Type t;
+		String propertyString = "N/D";
+		try {
+			t = v.getType();
+			propertyString = t.getReturnedClass().getName();
 
-    /**
-     * Get the SQL type name for a column.
-     * 
-     * @param column the column.
-     * 
-     * @return a String with the SQL type name.
-     */
-    public String getSQLTypeName(Column column) {
+		} catch (Exception ex) {
+			// TODO we should try to get the value from value here
+			// Eat Exception??
+		}
 
-        try {
-            return column.getSqlType(dialect, null);
-        } 
-        catch (HibernateException ex) {
+		return propertyString;
+	}
 
-            // TODO: Fix this when we find a way to get the type or
-            // the mapping.
+	/**
+	 * Returns the qualified name of a column.
+	 * 
+	 * @param table
+	 *            the table.
+	 * @param column
+	 *            the column
+	 * 
+	 * @return the FQN of the column.
+	 */
+	public String getQualifiedColumnName(Table table, Column column) {
+		String qualifiedTableName = getQualifiedTableName(table);
+		return qualifiedTableName + '.' + column.getName();
+	}
 
-            return "N/D";
-        }
-    }
+	/**
+	 * Get the SQL type name for a column.
+	 * 
+	 * @param column
+	 *            the column.
+	 * 
+	 * @return a String with the SQL type name.
+	 */
+	public String getSQLTypeName(Column column) {
 
-    /**
-     * Returns the values that use the specified column.
-     * 
-     * @param table the table.
-     * @param column the column.
-     * 
-     * @return a list with the values.
-     */
-    public List getValues(Table table, Column column) {
+		try {
+			return column.getSqlType(dialect, null);
+		} catch (HibernateException ex) {
 
-        String columnFQN = getQualifiedColumnName(table, column);
-        List values = (List) valuesByColumn.get(columnFQN);
-        if (values != null) {
+			// TODO: Fix this when we find a way to get the type or
+			// the mapping.
 
-            return values;
-        } 
-        else {
+			return "N/D";
+		}
+	}
 
-            return new ArrayList();
-        }
-    }
+	/**
+	 * Returns the values that use the specified column.
+	 * 
+	 * @param table
+	 *            the table.
+	 * @param column
+	 *            the column.
+	 * 
+	 * @return a list with the values.
+	 */
+	public List<Value> getValues(Table table, Column column) {
+		String columnFQN = getQualifiedColumnName(table, column);
+		List<Value> values = valuesByColumn.get(columnFQN);
+		if (values != null) {
+			return values;
+		} else {
+			return new ArrayList<Value>();
+		}
+	}
 
-    /**
-     * Returns the properties that map to a column.
-     * 
-     * @param table the table.
-     * @param column the column.
-     * 
-     * @return a list of properties.
-     */
-    public List getProperties(Table table, Column column) {
+	/**
+	 * Returns the properties that map to a column.
+	 * 
+	 * @param table
+	 *            the table.
+	 * @param column
+	 *            the column.
+	 * 
+	 * @return a list of properties.
+	 */
+	public List<Property> getProperties(Table table, Column column) {
 
-        List result = new ArrayList();
-        Iterator values = getValues(table, column).iterator();
-        while (values.hasNext() ) {
-            Value value = (Value) values.next();
-            List props = (List) propsByValue.get(value);
-            if (props != null) {
-                result.addAll(props);
-            }
-        }
+		List<Property> result = new ArrayList<Property>();
+		Iterator<Value> values = getValues(table, column).iterator();
+		while (values.hasNext()) {
+			Value value = values.next();
+			List<Property> props = propsByValue.get(value);
+			if (props != null) {
+				result.addAll(props);
+			}
+		}
+		return result;
+	}
 
-        return result;
-    }
-    
-    /**
-     * Method used in class.vm template to get the ComponentPOJO class corresponding to Property
-     * if its of Type Component. 
-     * @param property Get ComponentPOJO corresponding to this Property
-     * @return POJOClass for Property
-     */
-    //TODO We haven't taken into account Array?
-    public POJOClass getComponentPOJO(Property property){
-    	if (property.getValue() instanceof Component) {
-    		Component comp = (Component) property.getValue();
-    		ComponentPOJOClass componentPOJOClass = new ComponentPOJOClass(comp, new Cfg2JavaTool());    		
-    		return componentPOJOClass;
-    	}
-      	else{
-    		return null;
-    	}
-    }
-    
-    public List getInheritanceHierarchy(POJOClass pc) {
-    	if(pc.isSubclass()) {
-    		List superClasses = new ArrayList();
+	/**
+	 * Method used in class.vm template to get the ComponentPOJO class
+	 * corresponding to Property if its of Type Component.
+	 * 
+	 * @param property
+	 *            Get ComponentPOJO corresponding to this Property
+	 * @return POJOClass for Property
+	 */
+	// TODO We haven't taken into account Array?
+	public POJOClass getComponentPOJO(Property property) {
+		if (property.getValue() instanceof Component) {
+			Component comp = (Component) property.getValue();
+			ComponentPOJOClass componentPOJOClass = new ComponentPOJOClass(comp, new Cfg2JavaTool());
+			return componentPOJOClass;
+		} else {
+			return null;
+		}
+	}
 
-    		POJOClass superClass = pc.getSuperClass();
-    		while (superClass != null)
-    		{
-    			superClasses.add(superClass);
-    			superClass = superClass.getSuperClass();
-    		}
+	public List<POJOClass> getInheritanceHierarchy(POJOClass pc) {
+		if (pc.isSubclass()) {
+			List<POJOClass> superClasses = new ArrayList<POJOClass>();
+			POJOClass superClass = pc.getSuperClass();
+			while (superClass != null) {
+				superClasses.add(superClass);
+				superClass = superClass.getSuperClass();
+			}
+			return superClasses;
+		} else {
+			return Collections.emptyList();
+		}
+	}
 
-    		return superClasses; 
-    	} else {
-    		return Collections.EMPTY_LIST;
-    	}
-    }
-    
-    public List getOrderedProperties(POJOClass pojoClass)
-    {
-    	List orderedProperties = getAllProperties(pojoClass);
+	public List<Property> getOrderedProperties(POJOClass pojoClass) {
+		List<Property> orderedProperties = getAllProperties(pojoClass);
+		Collections.sort(orderedProperties, PROPERTY_COMPARATOR);
 
-    	Collections.sort(orderedProperties, PROPERTY_COMPARATOR);
-    	
-    	return orderedProperties;
-    }
-    
-    public List getSimpleProperties(POJOClass pojoClass)
-    {
-    	List properties = getAllProperties(pojoClass);
-    	
-    	if (pojoClass.hasIdentifierProperty())
-    		properties.remove(pojoClass.getIdentifierProperty());
-    	
-    	// TODO: do we need to also remove component id properties?
-    	
-    	if (pojoClass.hasVersionProperty())
-    		properties.remove(pojoClass.getVersionProperty());
-    	
-    	return properties;
-    }
-    
-    public List getOrderedSimpleProperties(POJOClass pojoClass)
-    {
-    	List orderedProperties = getSimpleProperties(pojoClass);
+		return orderedProperties;
+	}
 
-    	Collections.sort(orderedProperties, PROPERTY_COMPARATOR);
-    	
-    	return orderedProperties;
-    }
-    
-    private List getAllProperties(POJOClass pojoClass)
-    {
-    	List properties = new ArrayList();
-    	
-    	for (Iterator iterator = pojoClass.getAllPropertiesIterator(); iterator.hasNext(); )
-    		properties.add(iterator.next());
-    	
-    	return properties;
-    }
+	public List<Property> getSimpleProperties(POJOClass pojoClass) {
+		List<Property> properties = getAllProperties(pojoClass);
+		if (pojoClass.hasIdentifierProperty())
+			properties.remove(pojoClass.getIdentifierProperty());
+		// TODO: do we need to also remove component id properties?
+		if (pojoClass.hasVersionProperty())
+			properties.remove(pojoClass.getVersionProperty());
+		return properties;
+	}
+
+	public List<Property> getOrderedSimpleProperties(POJOClass pojoClass) {
+		List<Property> orderedProperties = getSimpleProperties(pojoClass);
+		Collections.sort(orderedProperties, PROPERTY_COMPARATOR);
+		return orderedProperties;
+	}
+
+	private List<Property> getAllProperties(POJOClass pojoClass) {
+		List<Property> properties = new ArrayList<Property>();
+		for (Iterator<?> iterator = pojoClass.getAllPropertiesIterator(); iterator.hasNext();)
+			properties.add((Property)iterator.next());
+		return properties;
+	}
 }
