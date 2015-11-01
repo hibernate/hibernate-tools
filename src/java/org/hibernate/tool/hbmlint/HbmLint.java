@@ -25,14 +25,8 @@ public class HbmLint implements IssueCollector {
 	List results = new ArrayList();
 	
 	public void analyze(Configuration cfg) {
-		
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(cfg.getProperties());
-		ServiceRegistry serviceRegistry = builder.build();
-		Settings settings = cfg.buildSettings(serviceRegistry);
-		
 		for (int i = 0; i < detectors.length; i++) {
-			detectors[i].initialize( cfg, settings );
+			detectors[i].initialize(cfg);
 			detectors[i].visit(cfg, this);
 		}
 					

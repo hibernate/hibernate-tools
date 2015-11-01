@@ -17,9 +17,8 @@ public class InstrumentationDetector extends EntityModelDetector {
 
 	private boolean javassistEnabled;
 	
-	public void initialize(Configuration cfg, Settings settings) {
-		super.initialize( cfg, settings );
-		
+	public void initialize(Configuration cfg) {
+		super.initialize(cfg);	
 		if(Environment.getBytecodeProvider() instanceof BytecodeProviderImpl) {
 			javassistEnabled = true;
 		}		
