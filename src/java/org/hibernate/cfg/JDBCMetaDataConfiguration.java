@@ -38,11 +38,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		return serviceRegistry;
 	}
 	
-	public Settings buildSettings(ServiceRegistry serviceRegistry) {
-		this.serviceRegistry = serviceRegistry;
-		return super.buildSettings(serviceRegistry);
-	}
-	
 	public void readFromJDBC() {
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
