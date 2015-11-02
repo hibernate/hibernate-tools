@@ -5,26 +5,19 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 import java.net.MalformedURLException;
-import java.util.List;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 import org.hibernate.MappingException;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
-import org.hibernate.cfg.SettingsFactory;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -38,10 +31,6 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 	public static Test suite() {
 		return new TestSuite(RevEngForeignKeyTests.class);
 	}
-
-	private Settings settings;
-	
-	private ServiceRegistry serviceRegistry;
 
 	public void testDefaultBiDirectional() {
 		
@@ -113,15 +102,6 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 	
 	}
 
-	private void addAnnotationJars(List jars) {
-		jars.add( "hibernate-jpa-2.0-api-1.0.1.Final.jar" );
-		jars.add( "hibernate-commons-annotations-4.0.1.Final.jar" );
-		jars.add( "hibernate-core-4.3.10.Final.jar" );
-		jars.add( "dom4j-1.6.1.jar" );
-		jars.add( "commons-logging-1.0.4.jar" );
-		
-	}
-	
 	public void testOneToOne() throws MalformedURLException, ClassNotFoundException {
 		
 		OverrideRepository or = buildOverrideRepository();
@@ -222,17 +202,6 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 	}
 
 	private OverrideRepository buildOverrideRepository() {
-		if(settings==null) {
-			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-			//builder.configure();
-			builder.applySettings(Environment.getProperties());
-			ServiceRegistry serviceRegistry = builder.build();
-			
-			settings = new SettingsFactory() {
-				// trick to get hibernate.properties settings for defaultschema/catalog in here
-			}.buildSettings(Environment.getProperties(), serviceRegistry);
-		}
-		//return new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
 		return new OverrideRepository();
 	}
 	
