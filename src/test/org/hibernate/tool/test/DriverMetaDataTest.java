@@ -2,16 +2,16 @@ package org.hibernate.tool.test;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Settings;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 
 
@@ -39,84 +39,96 @@ protected String[] getCreateSQL() {
 		};
 	}
 
-	public void testExportedKeys() {
-	
+	public void testExportedKeys() {	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
+		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-		Settings settings = cfg.buildSettings(serviceRegistry);
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
-				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		
-		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier("tab_master") ); 
-		
+		ConnectionProvider connectionProvider = 
+				serviceRegistry.getService(ConnectionProvider.class);			
+		dialect.configure(
+				ReverseEngineeringRuntimeInfo.createInstance(
+						connectionProvider,
+						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
+						new DefaultDatabaseCollector(dialect)));		
+		Properties properties = getConfiguration().getProperties();
+		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
+		Iterator<?> tables = 
+				dialect.getTables(
+						catalog, 
+						schema, 
+						identifier("tab_master") ); 		
 		boolean foundMaster = false;
 		while(tables.hasNext()) {
-			Map map = (Map) tables.next();
-			
+			Map<?,?> map = (Map<?,?>) tables.next();		
 			String tableName = (String) map.get("TABLE_NAME");
 			String schemaName = (String) map.get("TABLE_SCHEM");
-	        String catalogName = (String) map.get("TABLE_CAT");
-	        
+	        String catalogName = (String) map.get("TABLE_CAT");        
 	        if(tableName.equals(identifier("tab_master"))) {
 				foundMaster = true;
-				Iterator exportedKeys = dialect.getExportedKeys( catalogName, schemaName, tableName );
+				Iterator<?> exportedKeys = 
+						dialect.getExportedKeys(
+								catalogName, 
+								schemaName, 
+								tableName );
 				int cnt = 0;
 				while ( exportedKeys.hasNext() ) {
-					Map element = (Map) exportedKeys.next();
+					exportedKeys.next();
 					cnt++;
 				}
 				assertEquals(1,cnt);
-			/*	assertEquals(schemaName, settings.getDefaultSchemaName());
-				assertEquals(catalogName, settings.getDefaultCatalogName());*/
 			}
 		}
 		
 		assertTrue(foundMaster);
 	}
 
-	public void testDataType() {
-		
+	public void testDataType() {		
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
+		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-		Settings settings = cfg.buildSettings(serviceRegistry);
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
-				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		
-		Iterator tables = dialect.getColumns( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), "test", null ); 
-		
-		
+		ConnectionProvider connectionProvider = 
+				serviceRegistry.getService(ConnectionProvider.class);	
+		dialect.configure(
+				ReverseEngineeringRuntimeInfo.createInstance(
+						connectionProvider,
+						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
+						new DefaultDatabaseCollector(dialect)));		
+		Properties properties = getConfiguration().getProperties();
+		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
+		Iterator<?> tables = 
+				dialect.getColumns( 
+						catalog, 
+						schema, 
+						"test", 
+						null ); 
 		while(tables.hasNext()) {
-			Map map = (Map) tables.next();
-			
-			System.out.println(map);
-			
+			Map<?,?> map = (Map<?,?>) tables.next();			
+			System.out.println(map);			
 		}
 	}
 	
 	public void testCaseTest() {
-		
-	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
+		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
-		Settings settings = cfg.buildSettings(serviceRegistry);
-		
-		dialect.configure( ReverseEngineeringRuntimeInfo.createInstance(jdbcServices.getConnectionProvider(),
-				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		
-		Iterator tables = dialect.getTables( settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), identifier( "TAB_MASTER"));
-		
+		ConnectionProvider connectionProvider = 
+				serviceRegistry.getService(ConnectionProvider.class);
+		dialect.configure( 
+				ReverseEngineeringRuntimeInfo.createInstance(
+						connectionProvider,
+						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
+						new DefaultDatabaseCollector(dialect)));
+		Properties properties = getConfiguration().getProperties();
+		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
+		Iterator<?> tables = 
+				dialect.getTables(
+						catalog, 
+						schema, 
+						identifier( "TAB_MASTER"));		
 		assertHasNext( 1,	tables );
-		
-		
-		
 	}
 
 	
