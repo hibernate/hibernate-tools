@@ -90,9 +90,7 @@ public class JDBCBinder {
 	 *
 	 */
 	public void readFromDatabase(String catalog, String schema, Mapping mapping) {
-
 		try {
-
 			DatabaseCollector collector = readDatabaseSchema(catalog, schema);
 			createPersistentClasses(collector, mapping); //move this to a different step!
 		}
@@ -100,13 +98,6 @@ public class JDBCBinder {
 			JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 			throw jdbcServices.getSqlExceptionHelper().convert(e, "Reading from database", null);
 		}
-		finally	{
-			this.connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
-			if ( connectionProvider instanceof Stoppable ) {
-				( ( Stoppable ) connectionProvider ).stop();
-			}
-		}
-
 	}
 
 	/**
