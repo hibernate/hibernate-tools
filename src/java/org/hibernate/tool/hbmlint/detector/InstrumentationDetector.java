@@ -4,7 +4,6 @@ import org.hibernate.MappingException;
 import org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.Settings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
@@ -25,7 +24,7 @@ public class InstrumentationDetector extends EntityModelDetector {
 	}
 	
 	public void visit(Configuration cfg, PersistentClass clazz, IssueCollector collector) {
-		Class mappedClass;
+		Class<?> mappedClass;
 
 		
 		try {
@@ -48,10 +47,10 @@ public class InstrumentationDetector extends EntityModelDetector {
 			}
 
 		} else if(javassistEnabled){
-			Class[] interfaces = mappedClass.getInterfaces();
+			Class<?>[] interfaces = mappedClass.getInterfaces();
 			boolean javaassist = false;
 			for (int i = 0; i < interfaces.length; i++) {
-				Class intface = interfaces[i];				
+				Class<?> intface = interfaces[i];				
 				if(intface.getName().equals( "org.hibernate.bytecode.internal.javassist.FieldHandled" )) {
 					javaassist = true;
 				} 							
