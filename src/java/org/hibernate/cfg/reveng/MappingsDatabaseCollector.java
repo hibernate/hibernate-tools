@@ -15,7 +15,7 @@ public class MappingsDatabaseCollector extends AbstractDatabaseCollector {
 		this.mappings = mappings;
 	}
 
-	public Iterator iterateTables() {
+	public Iterator<Table> iterateTables() {
 		return mappings.iterateTables();
 	}
 
