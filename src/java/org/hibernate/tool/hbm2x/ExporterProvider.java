@@ -12,9 +12,9 @@ public class ExporterProvider {
 	
 	final String exporterClassName;
 	final String exporterName;
-	final Map supportedProperties;
+	final Map<?,?> supportedProperties;
 	
-	public ExporterProvider(String exporterName, String exporterClassName, Map supportedProperties) {
+	public ExporterProvider(String exporterName, String exporterClassName, Map<?,?> supportedProperties) {
 		this.exporterClassName = exporterClassName;
 		this.exporterName = exporterName;
 		this.supportedProperties = supportedProperties;
@@ -24,11 +24,11 @@ public class ExporterProvider {
 		return exporterName;
 	}
 	
-	public Set getSupportedProperties() {
+	public Set<?> getSupportedProperties() {
 		return supportedProperties.keySet();
 	}
 	
-	public List validateProperties(Properties properties) {
+	public List<?> validateProperties(Properties properties) {
 		return Collections.EMPTY_LIST;
 	}
 	
