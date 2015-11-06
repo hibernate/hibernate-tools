@@ -89,7 +89,7 @@ public class Cfg2HbmTool {
 	static Properties getFilteredIdentifierGeneratorProperties(Properties properties) {
 		if (properties != null){
 			Properties fProp = new Properties();
-			Iterator itr = properties.keySet().iterator();
+			Iterator<?> itr = properties.keySet().iterator();
 			while (itr.hasNext() ) {
 				String key = (String) itr.next();
 				if (! (key.startsWith("target_") || key.equals(PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER)))
@@ -162,7 +162,7 @@ public class Cfg2HbmTool {
 	 * @param property
 	 * @return
 	 */
-	public Set getFilteredIdentifierGeneratorKeySet(Property property) {
+	public Set<?> getFilteredIdentifierGeneratorKeySet(Property property) {
 		return getFilteredIdentifierGeneratorProperties(this.getIdentifierGeneratorProperties(property)).keySet();
 	}
 
@@ -237,12 +237,12 @@ public class Cfg2HbmTool {
 	}
 
     public boolean isNamedQueries(Configuration cfg) {
-		Map nqry = cfg.getNamedQueries();
+		Map<?,?> nqry = cfg.getNamedQueries();
 		return nqry == null || nqry.isEmpty() ? false : true;
 	}
 
 	public boolean isNamedSQLQueries(Configuration cfg) {
-		Map nsqlqry = cfg.getNamedSQLQueries();
+		Map<?,?> nsqlqry = cfg.getNamedSQLQueries();
 		return nsqlqry == null || nsqlqry.isEmpty() ? false : true;
 	}
 
@@ -286,7 +286,7 @@ public class Cfg2HbmTool {
 	}
 
 	public boolean isFilterDefinitions(Configuration cfg) {
-		Map filterdefs = cfg.getFilterDefinitions();
+		Map<?,?> filterdefs = cfg.getFilterDefinitions();
 		return filterdefs == null || filterdefs.isEmpty() ? false : true;
 	}
 
@@ -325,7 +325,7 @@ public class Cfg2HbmTool {
 
 
 	public Formula getFormulaForProperty(Property prop) {
-		Iterator iter = prop.getValue().getColumnIterator();
+		Iterator<?> iter = prop.getValue().getColumnIterator();
 		while ( iter.hasNext() ) {
 			Object o = iter.next();
 			if (o instanceof Formula)
@@ -438,7 +438,7 @@ public class Cfg2HbmTool {
 	}
 
 	public boolean hasCustomEntityPersister(PersistentClass clazz) {
-		Class entityPersisterClass = clazz.getEntityPersisterClass();
+		Class<?> entityPersisterClass = clazz.getEntityPersisterClass();
 		if(entityPersisterClass==null) return false;
 		final String name = entityPersisterClass.getName();
 
@@ -455,11 +455,11 @@ public class Cfg2HbmTool {
 		return (String) p.getValue().accept(new EntityNameFromValueVisitor(false));
 	}
 
-	public Iterator getProperties(Component v) {
+	public Iterator<?> getProperties(Component v) {
 		return new SkipBackRefPropertyIterator(v.getPropertyIterator());
 	}
 
-	public Iterator getProperties(PersistentClass pc) {
+	public Iterator<?> getProperties(PersistentClass pc) {
 		return new SkipBackRefPropertyIterator(pc.getUnjoinedPropertyIterator());
 	}
 }
