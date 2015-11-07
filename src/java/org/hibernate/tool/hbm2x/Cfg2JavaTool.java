@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
 import org.hibernate.internal.util.StringHelper;
@@ -129,10 +129,10 @@ public class Cfg2JavaTool {
 	}
 
 	
-	private String toName(Class c) {
+	private String toName(Class<?> c) {
 
 		if ( c.isArray() ) {
-			Class a = c.getComponentType();
+			Class<?> a = c.getComponentType();
 			
 			return a.getName() + "[]";
 		}
@@ -178,21 +178,18 @@ public class Cfg2JavaTool {
 		}
 	}
 	
-	private static final Map PRIMITIVES = new HashMap();
+	private static final Map<String,String> PRIMITIVES = 
+			new HashMap<String,String>();
 
 	static {
 		PRIMITIVES.put( "char", "Character" );
-
 		PRIMITIVES.put( "byte", "Byte" );
 		PRIMITIVES.put( "short", "Short" );
 		PRIMITIVES.put( "int", "Integer" );
 		PRIMITIVES.put( "long", "Long" );
-
 		PRIMITIVES.put( "boolean", "Boolean" );
-
 		PRIMITIVES.put( "float", "Float" );
 		PRIMITIVES.put( "double", "Double" );
-
 	}
 
 	static public boolean isNonPrimitiveTypeName(String typeName) {
@@ -275,10 +272,10 @@ public class Cfg2JavaTool {
 		return (String) value.accept( new JavaTypeFromValueVisitor() );
 	}
 
-	public String asParameterList(Iterator fields, boolean useGenerics, ImportContext ic) {
+	public String asParameterList(Iterator<Property> fields, boolean useGenerics, ImportContext ic) {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
-			Property field = (Property) fields.next();
+			Property field = fields.next();
 			buf.append( getJavaTypeName( field, useGenerics, ic ) )
 					.append( " " )
 					.append( field.getName() );
@@ -295,10 +292,10 @@ public class Cfg2JavaTool {
 	 *         <p/>
 	 *         TODO: handle this in a template ?
 	 */
-	public String asArgumentList(Iterator fields) {
+	public String asArgumentList(Iterator<Property> fields) {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
-			Property field = (Property) fields.next();
+			Property field = fields.next();
 			buf.append( field.getName() );
 			if ( fields.hasNext() ) {
 				buf.append( ", " );
@@ -314,7 +311,7 @@ public class Cfg2JavaTool {
 	 *         TODO: handle this in a template ?
 	 */
 	public String asNaturalIdParameterList(PersistentClass clazz) {
-		Iterator fields = clazz.getRootClass().getPropertyIterator();
+		Iterator<?> fields = clazz.getRootClass().getPropertyIterator();
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
 			Property field = (Property) fields.next();
@@ -328,19 +325,19 @@ public class Cfg2JavaTool {
 		return buf.substring( 0, buf.length() - 2 );
 	}
 
-	public String asParameterList(List fields, boolean useGenerics, ImportContext ic) {
+	public String asParameterList(List<Property> fields, boolean useGenerics, ImportContext ic) {
 		return asParameterList( fields.iterator(), useGenerics, ic );
 	}
 
-	public String asArgumentList(List fields) {
+	public String asArgumentList(List<Property> fields) {
 		return asArgumentList( fields.iterator() );
 	}
 	
-	public String asFinderArgumentList(Map parameterTypes, ImportContext ctx) {
+	public String asFinderArgumentList(Map<Object,Object> parameterTypes, ImportContext ctx) {
 		StringBuffer buf = new StringBuffer();
-		Iterator iter = parameterTypes.entrySet().iterator();
+		Iterator<Entry<Object,Object>> iter = parameterTypes.entrySet().iterator();
 		while ( iter.hasNext() ) {
-			Map.Entry entry = (Map.Entry) iter.next();
+			Entry<Object,Object> entry = iter.next();
 			String typename = null;
 			Type type = null;
 			if(entry.getValue() instanceof String) {
@@ -353,9 +350,9 @@ public class Cfg2JavaTool {
 			}
 			
 			if(type!=null) {
-				Class typeClass;
+				Class<?> typeClass;
 				if ( type instanceof PrimitiveType ) {
-					typeClass = ( (PrimitiveType) type ).getPrimitiveClass();
+					typeClass = ( (PrimitiveType<?>) type ).getPrimitiveClass();
 				}
 				else {
 					typeClass = type.getReturnedClass();
@@ -386,24 +383,19 @@ public class Cfg2JavaTool {
 	
 	// TODO: should consult exporter/cfg2java tool for cached POJOEntities....or maybe not since they
 	// have their own state...
-	public Iterator getPOJOIterator(final Iterator persistentClasses) {
-		return new Iterator() {
-		
-			public Object next() {
+	public Iterator<POJOClass> getPOJOIterator(
+			final Iterator<PersistentClass> persistentClasses) {
+		return new Iterator<POJOClass>() {		
+			public POJOClass next() {
 				return getPOJOClass((PersistentClass)persistentClasses.next());
-			}
-		
+			}		
 			public boolean hasNext() {
 				return persistentClasses.hasNext();
-			}
-		
+			}		
 			public void remove() {
 				persistentClasses.remove();
-			}
-		
+			}		
 		};
-		
-		
 	}
 
 
