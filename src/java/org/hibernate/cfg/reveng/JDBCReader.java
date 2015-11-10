@@ -82,7 +82,7 @@ public class JDBCReader {
 			Iterator tables = foundTables.iterator(); // not dbs.iterateTables() to avoid "double-read" of columns etc.
 			while ( tables.hasNext() ) {
 				Table table = (Table) tables.next();
-				processBasicColumns(table, progress);
+				BasicColumnProcessor.processBasicColumns(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, table, progress);
 				processPrimaryKey(dbs, table);
 				if(hasIndices.contains(table)) {
 					processIndices(table);
@@ -464,108 +464,6 @@ public class JDBCReader {
 		return value.equals(tf);
 	}
 
-	private void processBasicColumns(Table table, ProgressListener progress) {
-		// get the columns
-		
-		String qualify = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() );
-		Iterator columnIterator = null;
-		
-		try {
-			Map columnRs = null;
-			log.debug("Finding columns for " + qualify );
-			progress.startSubTask("Finding columns for " + qualify);
-			columnIterator = getMetaDataDialect().getColumns(getCatalogForDBLookup(table.getCatalog()), getSchemaForDBLookup(table.getSchema()), table.getName(), null);
-			//dumpHeader(columnRs);
-			while (columnIterator.hasNext() ) {
-				//dumpRow(columnRs);
-				columnRs = (Map) columnIterator.next();
-				String tableName = (String) columnRs.get("TABLE_NAME");
-				int sqlType = ((Integer)columnRs.get("DATA_TYPE")).intValue();
-				//String sqlTypeName = (String) columnRs.get("TYPE_NAME");
-				String columnName = (String) columnRs.get("COLUMN_NAME");
-				
-			
-				
-				
-				String comment = (String) columnRs.get("REMARKS");
-				
-				TableIdentifier ti = TableIdentifier.create(table);
-				if(revengStrategy.excludeColumn(ti, columnName)) {
-					log.debug("Column " + ti + "." + columnName + " excluded by strategy");
-					continue;
-				}
-				if(!tableName.equals(table.getName())) {
-					log.debug("Table name " + tableName + " does not match requested " + table.getName() + ". Ignoring column " + columnName + " since it either is invalid or a duplicate" );
-					continue;
-				}
-				
-				//String columnDefaultValue = columnRs.getString("COLUMN_DEF"); TODO: only read if have a way to avoid issues with clobs/lobs and similar
-				int dbNullability = ((Integer)columnRs.get("NULLABLE")).intValue();
-				boolean isNullable = true;
-				switch (dbNullability) {
-				case DatabaseMetaData.columnNullable:
-				case DatabaseMetaData.columnNullableUnknown:
-					isNullable = true;
-					break;
-				case DatabaseMetaData.columnNoNulls:
-					isNullable = false;
-					break;
-				default:
-					isNullable = true;
-				}
-				
-				int size = ((Integer)columnRs.get("COLUMN_SIZE")).intValue();
-				int decimalDigits = ((Integer)columnRs.get("DECIMAL_DIGITS")).intValue();
-				
-				Column column = new Column();
-				column.setName(quote(columnName));
-				Column existing = table.getColumn(column);
-				if(existing!=null) {
-					// TODO: should we just pick it up and fill it up with whatever we get from the db instead ?
-					throw new JDBCBinderException(column + " already exists in " + qualify);
-				}
-								
-				//TODO: column.setSqlType(sqlTypeName); //this does not work 'cos the precision/scale/length are not retured in TYPE_NAME
-				//column.setSqlType(sqlTypeName);
-				column.setComment(comment);
-				column.setSqlTypeCode(new Integer(sqlType) );
-                if(intBounds(size) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasLength(sqlType) ) {
-                		column.setLength(size);
-                	} 
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
-                		column.setPrecision(size); 
-                	}
-				} 
-                if(intBounds(decimalDigits) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
-                		column.setScale(decimalDigits);
-                	}
-				}
-				
-				column.setNullable(isNullable);
-
-				// columnDefaultValue is useless for Hibernate
-				// isIndexed  (available via Indexes)
-				// unique - detected when getting indexes
-				// isPk - detected when finding primary keys				
-				
-				table.addColumn(column);
-			}
-		}
-		finally {
-			
-			if(columnIterator!=null) {
-				try {
-					getMetaDataDialect().close(columnIterator);
-				} catch(JDBCException se) {
-					log.warn("Exception while closing iterator for column meta data",se);
-				}
-			}
-		}
-				
-	}
-
 
 	private String quote(String columnName) {
 		   if(columnName==null) return columnName;
@@ -584,15 +482,6 @@ public class JDBCReader {
 	}
 	
 	  
-		/**
-	     * @param size
-	     * @return
-	     */
-	    private boolean intBounds(int size) {
-	        return size>=0 && size!=Integer.MAX_VALUE;
-	    }
-
-	
 	    private void processIndices(Table table) {
 			
 			Map indexes = new HashMap(); // indexname (String) -> Index
