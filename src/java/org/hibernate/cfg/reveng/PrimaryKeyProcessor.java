@@ -101,7 +101,7 @@ public class PrimaryKeyProcessor {
 	      
 	      if(key==null) {
 	      	log.warn("The JDBC driver didn't report any primary key columns in " + table.getName() + ". Asking rev.eng. strategy" );
-	      	List userPrimaryKey = revengStrategy.getPrimaryKeyColumnNames(TableIdentifier.create(table));
+	      	List<String> userPrimaryKey = revengStrategy.getPrimaryKeyColumnNames(TableIdentifier.create(table));
 	      	if(userPrimaryKey!=null && !userPrimaryKey.isEmpty()) {
 	      		key = new PrimaryKey();
 	      		key.setName(new Alias(15, "PK").toAliasString( table.getName()));

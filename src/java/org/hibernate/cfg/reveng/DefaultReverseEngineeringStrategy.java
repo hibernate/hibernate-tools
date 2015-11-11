@@ -159,7 +159,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return null;
 	}
 
-	public List getPrimaryKeyColumnNames(TableIdentifier identifier) {
+	public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier) {
 		return null;
 	}
 

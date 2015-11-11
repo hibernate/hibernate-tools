@@ -204,7 +204,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertEquals("CustomOID", repository.tableToCompositeIdName(ordersTable));
 		assertEquals(null, repository.tableToCompositeIdName(new TableIdentifier("blah")));
 		
-		List<?> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(new TableIdentifier("blah"));
+		List<String> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(new TableIdentifier("blah"));
 		assertNull(primaryKeyColumnNames);
 		
 		primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(ordersTable);

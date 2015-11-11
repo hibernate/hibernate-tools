@@ -55,7 +55,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?null:delegate.getTableIdentifierProperties(identifier);
 	}
 
-	public List getPrimaryKeyColumnNames(TableIdentifier identifier) {
+	public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier) {
 		return delegate==null?null:delegate.getPrimaryKeyColumnNames(identifier);
 	}
 
