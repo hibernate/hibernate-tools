@@ -84,7 +84,7 @@ public interface ReverseEngineeringStrategy {
 	 * If a table does not have any primarykey columns reported, this method is called. 
 	 * @return list of strings for each column name that is part of the primary key 
 	 **/
-	public List getPrimaryKeyColumnNames(TableIdentifier identifier);
+	public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier);
 
 	/**
 	 * Given a class name return the name for its composite id if it will have one.
