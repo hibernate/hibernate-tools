@@ -69,7 +69,7 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return null;
 	}
 
-	public List getPrimaryKeyColumnNames(TableIdentifier identifier) {
+	public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
