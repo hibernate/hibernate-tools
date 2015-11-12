@@ -147,8 +147,8 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		
 	}
 
-	public List getForeignKeys(TableIdentifier referencedTable) {
-		return Collections.EMPTY_LIST;
+	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
+		return Collections.emptyList();
 	}
 
 	public String getTableIdentifierStrategyName(TableIdentifier identifier) {

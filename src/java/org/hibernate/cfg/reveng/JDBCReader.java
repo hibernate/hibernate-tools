@@ -266,11 +266,11 @@ public class JDBCReader {
         	// we continue after this to allow user provided keys to be added.
         }
         
-        List userForeignKeys = revengStrategy.getForeignKeys(TableIdentifier.create(referencedTable));
+        List<ForeignKey> userForeignKeys = revengStrategy.getForeignKeys(TableIdentifier.create(referencedTable));
         if(userForeignKeys!=null) {
-        	Iterator iterator = userForeignKeys.iterator();
+        	Iterator<ForeignKey> iterator = userForeignKeys.iterator();
         	while ( iterator.hasNext() ) {
-        		ForeignKey element = (ForeignKey) iterator.next();
+        		ForeignKey element = iterator.next();
         		
         		if(!equalTable(referencedTable, element.getReferencedTable() ) ) {
         			log.debug("Referenced table " + element.getReferencedTable().getName() + " is not " +  referencedTable + ". Ignoring userdefined foreign key " + element );
