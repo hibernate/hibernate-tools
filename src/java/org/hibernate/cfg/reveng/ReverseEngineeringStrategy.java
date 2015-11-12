@@ -70,7 +70,7 @@ public interface ReverseEngineeringStrategy {
 	 * @param identifier 
 	 * @return a list of ForeignKey's
 	 */
-	public List getForeignKeys(TableIdentifier referencedTable);
+	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable);
 
 	/** 
 	 * @param identifier the table to look up for

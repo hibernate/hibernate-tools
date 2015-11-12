@@ -11,7 +11,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 
 	ReverseEngineeringStrategy delegate;
 
-	public List getForeignKeys(TableIdentifier referencedTable) {
+	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
 		return delegate==null?null:delegate.getForeignKeys(referencedTable);
 	}
 

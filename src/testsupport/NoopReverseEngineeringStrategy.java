@@ -49,7 +49,7 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return null;
 	}
 
-	public List getForeignKeys(TableIdentifier referencedTable) {
+	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
