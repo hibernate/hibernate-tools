@@ -359,8 +359,8 @@ public class OverrideRepository  {
 				}
 			}
 
-			public List getForeignKeys(TableIdentifier referencedTable) {
-				List list = (List) foreignKeys.get(referencedTable);
+			public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
+				List<ForeignKey> list = (List<ForeignKey>) foreignKeys.get(referencedTable);
 				if(list==null) {
 					return super.getForeignKeys(referencedTable);
 				} else {
