@@ -105,7 +105,7 @@ public interface ReverseEngineeringStrategy {
 	 * 
 	 * @return list of {@link SchemaSelection} instances 
 	 */
-	public List getSchemaSelections();
+	public List<SchemaSelection> getSchemaSelections();
 
 	/**
 	 * Given a table name, return the wanted name for the identifier. 
