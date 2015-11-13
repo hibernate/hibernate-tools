@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.dom4j.Document;
@@ -157,7 +158,7 @@ public abstract class BaseTestCase extends TestCase {
         	dialect.configure(
         			ReverseEngineeringRuntimeInfo.createInstance(
         					connectionProvider, jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
-		Iterator<?> tables = dialect.getTables( 
+		Iterator<Map<String,Object>> tables = dialect.getTables( 
 				properties.getProperty(AvailableSettings.DEFAULT_CATALOG),
 				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA),
 				null);

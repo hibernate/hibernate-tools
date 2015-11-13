@@ -53,7 +53,7 @@ protected String[] getCreateSQL() {
 		Properties properties = getConfiguration().getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
-		Iterator<?> tables = 
+		Iterator<Map<String,Object>> tables = 
 				dialect.getTables(
 						catalog, 
 						schema, 
@@ -123,7 +123,7 @@ protected String[] getCreateSQL() {
 		Properties properties = getConfiguration().getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
-		Iterator<?> tables = 
+		Iterator<Map<String, Object>> tables = 
 				dialect.getTables(
 						catalog, 
 						schema, 

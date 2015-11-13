@@ -17,7 +17,7 @@ import org.hibernate.mapping.Table;
  */
 public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 	
-	public Iterator getTables(String xcatalog, String xschema, String xtable) {
+	public Iterator<Map<String,Object>> getTables(String xcatalog, String xschema, String xtable) {
 		try {			
 			final String catalog = caseForSearch( xcatalog );
 			final String schema = caseForSearch( xschema );
