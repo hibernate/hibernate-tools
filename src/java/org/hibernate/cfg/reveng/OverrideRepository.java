@@ -50,7 +50,7 @@ public class OverrideRepository  {
 
 	final private Map tableToClassName;
 
-	final private List schemaSelections;
+	final private List<SchemaSelection> schemaSelections;
 
 	final private Map propertyNameForPrimaryKey;
 
@@ -296,7 +296,7 @@ public class OverrideRepository  {
 					return result;
 				}
 			}
-			public List getSchemaSelections() {
+			public List<SchemaSelection> getSchemaSelections() {
 				if(schemaSelections.isEmpty()) {
 					return super.getSchemaSelections();
 				} else {

@@ -6,6 +6,7 @@ import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -104,7 +105,7 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return false;
 	}
 
-	public List getSchemaSelections() {
+	public List<SchemaSelection> getSchemaSelections() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -79,7 +79,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?false:delegate.useColumnForOptimisticLock(identifier, column);
 	}
 
-	public List getSchemaSelections() {
+	public List<SchemaSelection> getSchemaSelections() {
 		return delegate==null?null:delegate.getSchemaSelections();
 	}
 
