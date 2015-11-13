@@ -85,7 +85,7 @@ public class JDBCReader {
 				BasicColumnProcessor.processBasicColumns(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, table, progress);
 				PrimaryKeyProcessor.processPrimaryKey(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, dbs, table);
 				if(hasIndices.contains(table)) {
-					processIndices(table);
+					IndexProcessor.processIndices(getMetaDataDialect(), defaultSchema, defaultCatalog, table);
 				}
 			}
 			
@@ -351,116 +351,6 @@ public class JDBCReader {
 		return metadataDialect;
 	}
 	
-	  
-	    private void processIndices(Table table) {
-			
-			Map indexes = new HashMap(); // indexname (String) -> Index
-			Map uniquekeys = new HashMap(); // name (String) -> UniqueKey
-			Map uniqueColumns = new HashMap(); // Column -> List<Index>
-			
-			Iterator indexIterator = null;
-			try {
-				Map indexRs = null;	
-				indexIterator = getMetaDataDialect().getIndexInfo(getCatalogForDBLookup(table.getCatalog()), getSchemaForDBLookup(table.getSchema()), table.getName());
-				
-				while (indexIterator.hasNext() ) {
-					indexRs = (Map) indexIterator.next();
-					String indexName = (String) indexRs.get("INDEX_NAME");
-					String columnName = (String) indexRs.get("COLUMN_NAME");
-					boolean unique = !((Boolean)indexRs.get("NON_UNIQUE")).booleanValue();
-					
-					if (columnName != null || indexName != null) { // both can be non-null with statistical indexs which we don't have any use for.
-						
-						if(unique) {
-							UniqueKey key = (UniqueKey) uniquekeys.get(indexName);
-							if (key==null) {
-								key = new UniqueKey();
-								key.setName(indexName);
-								key.setTable(table);
-								table.addUniqueKey(key);							
-								uniquekeys.put(indexName, key);
-							}
-					
-							if(indexes.containsKey(indexName) ) {
-								throw new JDBCBinderException("UniqueKey exists also as Index! ");
-							}
-							Column column = getColumn(table, columnName);
-							key.addColumn(column);
-							
-							if (unique && key.getColumnSpan()==1) {
-								// make list of columns that has the chance of being unique
-								List l = (List) uniqueColumns.get(column);
-								if (l == null) {
-									l = new ArrayList();
-									uniqueColumns.put(column, l);
-								}
-								l.add(key);
-							}
-						} 
-						else {
-							Index index = (Index) indexes.get(indexName);
-							if(index==null) {
-								index = new Index();
-								index.setName(indexName);
-								index.setTable(table);
-								table.addIndex(index);
-								indexes.put(indexName, index);					
-							}
-							
-							if(uniquekeys.containsKey(indexName) ) {
-								throw new JDBCBinderException("Index exists also as Unique! ");
-							}
-							Column column = getColumn(table, columnName);
-							index.addColumn(column);
-						}
-						
-					} 
-					else {
-						if(DatabaseMetaData.tableIndexStatistic != ((Short)indexRs.get("TYPE")).shortValue() ) {
-							log.warn("Index was not statistical, but no column name was found in " + indexName);
-						}
-							
-					}								
-				}
-			} 
-			catch (JDBCException t) {
-				log.warn("Exception while trying to get indexinfo on " + Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) +  "=" + t.getMessage() );
-				// Bug #604761 Oracle getIndexInfo() needs major grants And other dbs sucks too ;)
-				// http://sourceforge.net/tracker/index.php?func=detail&aid=604761&group_id=36044&atid=415990				
-			} 
-			finally {
-				if (indexIterator != null) {
-					try {
-						getMetaDataDialect().close(indexIterator);
-					} catch(JDBCException se) {
-						log.warn("Exception while trying to close resultset for index meta data",se);
-					}
-				}
-			}
-			
-			// mark columns that are unique TODO: multiple columns are not unique on their own.
-			Iterator iterator = uniqueColumns.entrySet().iterator();
-			while (iterator.hasNext() ) {
-				Map.Entry entry = (Map.Entry) iterator.next();
-				Column col = (Column) entry.getKey();
-				Iterator keys = ( (List)entry.getValue() ).iterator();
-				 while (keys.hasNext() ) {
-					UniqueKey key = (UniqueKey) keys.next();
-				
-					if(key.getColumnSpan()==1) {
-						col.setUnique(true);
-					}
-				}
-			}
-			
-			iterator = uniquekeys.entrySet().iterator();
-			while(iterator.hasNext()) {
-				// if keyset has no overlaps with primary key (table.getPrimaryKey())
-				// if only key matches then mark as setNaturalId(true);
-				iterator.next();
-			}
-		}
-
 	    private void mergeMultiMap(Map dest, Map src) {
 	    	Iterator items = src.entrySet().iterator();
 	    	
