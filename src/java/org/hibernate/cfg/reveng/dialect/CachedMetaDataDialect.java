@@ -87,7 +87,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}
 	}
 
-	public Iterator getTables(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
 		List cached = (List) cachedTables.get( sk );
 		if(cached==null) {

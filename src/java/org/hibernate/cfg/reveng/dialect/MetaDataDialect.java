@@ -1,6 +1,7 @@
 package org.hibernate.cfg.reveng.dialect;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 
@@ -31,7 +32,7 @@ public interface MetaDataDialect {
 	 * @param table name or null 
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "TABLE_TYPE" keys. 
 	 */
-	Iterator getTables(String catalog, String schema, String table);
+	Iterator<Map<String,Object>> getTables(String catalog, String schema, String table);
 
 	/**
 	 * Close the iterator.

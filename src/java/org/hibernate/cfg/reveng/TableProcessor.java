@@ -27,9 +27,9 @@ public class TableProcessor {
 			SchemaSelection schemaSelection, 
 			Set<Table> hasIndices, 
 			ProgressListener progress) {
-		Map<?,?> tableRs = null;
-		Iterator<?> tableIterator = null;
-		List<Map<Object,Object>> tables = new ArrayList<Map<Object,Object>>();
+		Map<String,Object> tableRs = null;
+		Iterator<Map<String,Object>> tableIterator = null;
+		List<Map<String,Object>> tables = new ArrayList<Map<String,Object>>();
 		boolean multiSchema = false; 
 		// TODO: the code below detects if the reveng is multischema'ed, but not used for anything yet. should be used to remove schema/catalog info from output if only one schema/catalog used.
 		
@@ -43,7 +43,7 @@ public class TableProcessor {
 		     String[] foundQualifier = new String[2];
 		     
 		     while (tableIterator.hasNext() ) {
-		        tableRs = (Map<?,?>) tableIterator.next();
+		        tableRs = tableIterator.next();
 		        String tableName = (String) tableRs.get("TABLE_NAME");
 				String schemaName = (String) tableRs.get("TABLE_SCHEM");
 		        String catalogName = (String) tableRs.get("TABLE_CAT");
@@ -67,7 +67,7 @@ public class TableProcessor {
 					}
 				}
 				
-				tables.add(new HashMap<Object,Object>(tableRs));
+				tables.add(new HashMap<String,Object>(tableRs));
 		     }
 		  } 
 		  finally {
@@ -81,7 +81,7 @@ public class TableProcessor {
 		  List<Table> processedTables = new ArrayList<Table>();
 		  tableIterator = tables.iterator();
 		  while (tableIterator.hasNext() ) {
-			  tableRs = (Map<?,?>) tableIterator.next();
+			  tableRs = tableIterator.next();
 			  String tableName = (String) tableRs.get("TABLE_NAME");
 			  String schemaName = (String) tableRs.get("TABLE_SCHEM");
 			  String catalogName = (String) tableRs.get("TABLE_CAT");

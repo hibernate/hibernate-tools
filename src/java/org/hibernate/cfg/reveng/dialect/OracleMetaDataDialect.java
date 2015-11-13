@@ -212,7 +212,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 
 	private PreparedStatement prepFkSchemaAndTable;
 	
-	public Iterator getTables(final String catalog, final String schema,
+	public Iterator<Map<String,Object>> getTables(final String catalog, final String schema,
 			String table) {
 		try {
 			log.debug("getTables(" + catalog + "." + schema + "." + table + ")");

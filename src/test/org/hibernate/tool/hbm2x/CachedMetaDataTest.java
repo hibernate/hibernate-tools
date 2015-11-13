@@ -5,6 +5,7 @@
 package org.hibernate.tool.hbm2x;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -88,7 +89,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			}
 		}
 
-		public Iterator getTables(String catalog, String schema, String table) {
+		public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {
