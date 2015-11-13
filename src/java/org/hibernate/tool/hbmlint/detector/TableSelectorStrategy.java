@@ -12,13 +12,13 @@ import org.hibernate.cfg.reveng.SchemaSelection;
 
 public class TableSelectorStrategy extends DelegatingReverseEngineeringStrategy {
 	
-	List selections = new ArrayList();
+	List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
 	
 	public TableSelectorStrategy(ReverseEngineeringStrategy res) {
 		super(res);
 	}
 	
-	public List getSchemaSelections() {
+	public List<SchemaSelection> getSchemaSelections() {
 		return selections;
 	}
 	

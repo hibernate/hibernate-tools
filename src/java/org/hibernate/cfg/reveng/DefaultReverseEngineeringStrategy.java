@@ -190,7 +190,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		}
 	}
 
-	public List getSchemaSelections() {
+	public List<SchemaSelection> getSchemaSelections() {
 		return null;
 	}
 
