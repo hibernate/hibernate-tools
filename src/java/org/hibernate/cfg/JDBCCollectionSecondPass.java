@@ -12,22 +12,17 @@ import org.hibernate.mapping.Value;
 @SuppressWarnings("serial")
 public class JDBCCollectionSecondPass extends CollectionSecondPass {
 
-    /**
-     * @param mappings
-     * @param coll
-     */
     JDBCCollectionSecondPass(Mappings mappings, Collection coll) {
         super(mappings, coll);
     }
 
-    /* (non-Javadoc)
-     * @see org.hibernate.cfg.HbmBinder.SecondPass#secondPass(java.util.Map, java.util.Map)
-     */
-    public void secondPass(Map persistentClasses, Map inheritedMetas) throws MappingException {
+    @SuppressWarnings("rawtypes")
+	public void secondPass(Map persistentClasses, Map inheritedMetas) throws MappingException {
         bindCollectionSecondPass(collection, persistentClasses, mappings, inheritedMetas);
     }
 
-    public void doSecondPass(Map persistentClasses) throws MappingException {
+    @SuppressWarnings("rawtypes")
+	public void doSecondPass(Map persistentClasses) throws MappingException {
     	Value element = collection.getElement();
     	DependantValue dep = null;
     	String oldFkName = null;
@@ -45,9 +40,9 @@ public class JDBCCollectionSecondPass extends CollectionSecondPass {
     
     private void bindCollectionSecondPass(
             Collection collection,
-            java.util.Map persistentClasses,
+            Map<?,?> persistentClasses,
             Mappings mappings,
-            java.util.Map inheritedMetas) throws MappingException {
+            Map<?,?> inheritedMetas) throws MappingException {
 
         if(collection.isOneToMany() ) {
             OneToMany oneToMany = (OneToMany) collection.getElement();
