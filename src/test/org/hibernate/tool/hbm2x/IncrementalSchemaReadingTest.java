@@ -62,8 +62,8 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
 		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
 		
-		Iterator iterator = dc.iterateTables();
-		Table firstChild = (Table) iterator.next();
+		Iterator<Table> iterator = dc.iterateTables();
+		Table firstChild = iterator.next();
 		assertEquals(firstChild.getName(), "CHILD");
 		assertFalse(iterator.hasNext());
 		

@@ -153,15 +153,15 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 	}
 
 	private void validate(DatabaseCollector dc) {
-		Iterator iterator = dc.iterateTables();
-		Table table = (Table)iterator.next();
+		Iterator<Table> iterator = dc.iterateTables();
+		Table table = iterator.next();
 		Table master = null, child = null;
 		if ("MASTER".equals(table.getName())) {
 			master = table;
-			child = (Table)iterator.next();
+			child = iterator.next();
 		} else if ("CHILD".equals(table.getName())) {
 			child = table;
-			master = (Table)iterator.next();
+			master = iterator.next();
 		} else {
 			fail("Only tables named 'MASTER' and 'CHILD' should exist");
 		}
