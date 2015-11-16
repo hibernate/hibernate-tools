@@ -1,13 +1,15 @@
 package org.hibernate.cfg.reveng;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.mapping.ForeignKey;
 
 public abstract class AbstractDatabaseCollector implements DatabaseCollector {
 
-	private Map oneToManyCandidates;
+	private Map<String, List<ForeignKey>> oneToManyCandidates;
 	protected final Map suggestedIdentifierStrategies;
 	private MetaDataDialect metaDataDialect;
 
@@ -20,7 +22,7 @@ public abstract class AbstractDatabaseCollector implements DatabaseCollector {
 		this.oneToManyCandidates = oneToManyCandidates;
 	}
 
-	public Map getOneToManyCandidates() {
+	public Map<String, List<ForeignKey>> getOneToManyCandidates() {
 		return oneToManyCandidates;
 	}
 
