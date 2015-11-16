@@ -11,7 +11,7 @@ import org.hibernate.mapping.Table;
  */
 public interface DatabaseCollector {
 
-	public Iterator iterateTables();
+	public Iterator<Table> iterateTables();
 
 	public Table addTable(String schema, String catalog, String name);
 
