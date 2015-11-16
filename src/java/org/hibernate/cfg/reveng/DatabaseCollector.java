@@ -1,8 +1,10 @@
 package org.hibernate.cfg.reveng;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 
 // split up to readonly/writeable interface
@@ -19,7 +21,7 @@ public interface DatabaseCollector {
 
 	public Table getTable(String schema, String catalog, String name);
 
-	public Map getOneToManyCandidates();
+	public Map<String, List<ForeignKey>> getOneToManyCandidates();
 
 	public void addSuggestedIdentifierStrategy(String catalog, String schema, String name, String strategy);
 	
