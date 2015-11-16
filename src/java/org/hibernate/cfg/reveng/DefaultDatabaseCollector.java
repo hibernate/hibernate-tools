@@ -21,7 +21,7 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 		qualifiers = new HashMap();
 	}
 	
-	public Iterator iterateTables() {
+	public Iterator<Table> iterateTables() {
 		return tables.values().iterator();
 	}
 
