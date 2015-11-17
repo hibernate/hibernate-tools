@@ -17,7 +17,7 @@ public interface DatabaseCollector {
 
 	public Table addTable(String schema, String catalog, String name);
 
-	public void setOneToManyCandidates(Map oneToManyCandidates);
+	public void setOneToManyCandidates(Map<String, List<ForeignKey>> oneToManyCandidates);
 
 	public Table getTable(String schema, String catalog, String name);
 
