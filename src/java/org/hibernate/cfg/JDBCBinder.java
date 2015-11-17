@@ -126,7 +126,7 @@ public class JDBCBinder {
 	 * @param mappings2
 	 */
 	private void createPersistentClasses(DatabaseCollector collector, Mapping mapping) {
-		Map manyToOneCandidates = collector.getOneToManyCandidates();
+		Map<String, List<ForeignKey>> manyToOneCandidates = collector.getOneToManyCandidates();
 
 		for (Iterator iter = mappings.iterateTables(); iter.hasNext();) {
 			Table table = (Table) iter.next();
