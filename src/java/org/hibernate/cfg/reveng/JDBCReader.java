@@ -73,7 +73,7 @@ public class JDBCReader {
 			}
 			
 			tables = foundTables.iterator(); //dbs.iterateTables();
-			Map oneToManyCandidates = resolveForeignKeys( dbs, tables, progress );
+			Map<String, List<ForeignKey>> oneToManyCandidates = resolveForeignKeys( dbs, tables, progress );
 			
 			dbs.setOneToManyCandidates(oneToManyCandidates);
 			
@@ -91,8 +91,8 @@ public class JDBCReader {
 	 * @param tables
 	 * @return
 	 */
-	private Map resolveForeignKeys(DatabaseCollector dbs, Iterator tables, ProgressListener progress) {
-		List fks = new ArrayList();
+	private Map<String, List<ForeignKey>> resolveForeignKeys(DatabaseCollector dbs, Iterator tables, ProgressListener progress) {
+		List<ForeignKeysInfo> fks = new ArrayList<ForeignKeysInfo>();
 		while ( tables.hasNext() ) {
 			Table table = (Table) tables.next();
 			// Done here after the basic process of collections as we might not have touched 
@@ -103,9 +103,9 @@ public class JDBCReader {
 			fks.add( foreignKeys );				  	   
 		}
 		
-		Map oneToManyCandidates = new HashMap();			
-		for (Iterator iter = fks.iterator(); iter.hasNext();) {
-			ForeignKeysInfo element = (ForeignKeysInfo) iter.next();
+		Map<String, List<ForeignKey>> oneToManyCandidates = new HashMap<String, List<ForeignKey>>();			
+		for (Iterator<ForeignKeysInfo> iter = fks.iterator(); iter.hasNext();) {
+			ForeignKeysInfo element = iter.next();
 			Map map = element.process( revengStrategy ); // the actual foreignkey is created here.
 			mergeMultiMap( oneToManyCandidates, map );
 		}

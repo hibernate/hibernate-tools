@@ -18,7 +18,7 @@ public abstract class AbstractDatabaseCollector implements DatabaseCollector {
 		this.metaDataDialect = metaDataDialect;
 	}
 	
-	public void setOneToManyCandidates(Map oneToManyCandidates) {
+	public void setOneToManyCandidates(Map<String, List<ForeignKey>> oneToManyCandidates) {
 		this.oneToManyCandidates = oneToManyCandidates;
 	}
 
