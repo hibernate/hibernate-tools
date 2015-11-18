@@ -19,6 +19,7 @@ import java.util.Set;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
+import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -571,13 +572,6 @@ public class JDBCBinder {
 		}
 		return true;
 	}
-
-    static private class PrimaryKeyInfo {
-
-    	String suggestedStrategy = null;
-    	Properties suggestedProperties = null;
-    }
-
 
 	private PrimaryKeyInfo bindPrimaryKeyToProperties(Table table, RootClass rc, Set processed, Mapping mapping, DatabaseCollector collector) {
 		SimpleValue id = null;
