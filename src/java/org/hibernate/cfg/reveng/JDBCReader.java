@@ -112,42 +112,6 @@ public class JDBCReader {
 		return oneToManyCandidates;
 	}
 	
-	static class ForeignKeysInfo {
-		
-		final Map dependentTables;
-		final Map dependentColumns;
-		final Map referencedColumns;
-		private final Table referencedTable;
-		
-		public ForeignKeysInfo(Table referencedTable, Map tables, Map columns, Map refColumns) {
-			this.referencedTable = referencedTable;
-			this.dependentTables = tables;
-			this.dependentColumns = columns;
-			this.referencedColumns = refColumns;
-		}
-		
-		Map process(ReverseEngineeringStrategy revengStrategy) {
-			Map oneToManyCandidates = new HashMap();
-	        Iterator iterator = dependentTables.entrySet().iterator();
-			while (iterator.hasNext() ) {
-				Map.Entry entry = (Map.Entry) iterator.next();
-				String fkName = (String) entry.getKey();
-				Table fkTable = (Table) entry.getValue();			
-				List columns = (List) dependentColumns.get(fkName);
-				List refColumns = (List) referencedColumns.get(fkName);
-				
-				String className = revengStrategy.tableToClassName(TableIdentifier.create(referencedTable) );
-
-				ForeignKey key = fkTable.createForeignKey(fkName, columns, className, refColumns);			
-				key.setReferencedTable(referencedTable);
-
-				addToMultiMap(oneToManyCandidates, className, key);				
-			}
-			// map<className, foreignkey>
-			return oneToManyCandidates;
-		}
-	}
-	
 	private boolean safeEquals(Object value, Object tf) {
 		if(value==tf) return true;
 		if(value==null) return false;
@@ -187,15 +151,6 @@ public class JDBCReader {
 	    	}
 	    	
 	    }
-
-		static private void addToMultiMap(Map multimap, String key, Object item) {
-			List existing = (List) multimap.get(key);
-			if(existing == null) {
-				existing = new ArrayList();
-				multimap.put(key, existing);
-			}
-			existing.add(item);
-		}
 
 		static class NoopProgressListener implements ProgressListener {
 			public void startSubTask(String name) {	// noop };
