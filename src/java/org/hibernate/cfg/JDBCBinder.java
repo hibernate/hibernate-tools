@@ -24,6 +24,7 @@ import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
+import org.hibernate.cfg.reveng.RevEngUtils;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.engine.OptimisticLockStyle;
@@ -73,6 +74,8 @@ public class JDBCBinder {
 	
 	private final boolean preferBasicCompositeIds;
 	private final ServiceRegistry serviceRegistry;
+	private final String defaultCatalog;
+	private final String defaultSchema;
 
 	/**
 	 * @param mappings
@@ -84,6 +87,8 @@ public class JDBCBinder {
 		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
 		this.preferBasicCompositeIds = preferBasicCompositeIds;
+		this.defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		this.defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 	}
 
 	/**
@@ -611,7 +616,7 @@ public class JDBCBinder {
 			}
 		}
 		else {
-			pki.suggestedStrategy = revengStrategy.getTableIdentifierStrategyName(tableIdentifier);
+			pki.suggestedStrategy = RevEngUtils.getTableIdentifierStrategyNameInRevengStrategy(revengStrategy, table, defaultCatalog, defaultSchema);
 			String suggestedStrategy = pki.suggestedStrategy;
 			if(suggestedStrategy==null) {
 				suggestedStrategy = collector.getSuggestedIdentifierStrategy( tableIdentifier.getCatalog(), tableIdentifier.getSchema(), tableIdentifier.getName() );
