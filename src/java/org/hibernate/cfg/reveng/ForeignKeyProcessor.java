@@ -9,7 +9,6 @@ import java.util.Map;
 import org.hibernate.JDBCException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.JDBCBinderException;
-import org.hibernate.cfg.reveng.JDBCReader.ForeignKeysInfo;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
