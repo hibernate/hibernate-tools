@@ -13,6 +13,8 @@ public class PropertyBinder {
 
 	public static Property makeProperty(
 			Table table, 
+			String defaultCatalog,
+			String defaultSchema,
 			String propertyName, 
 			Value value, 
 			boolean insertable, 
@@ -33,7 +35,9 @@ public class PropertyBinder {
 		MetaAttributesBinder.bindMetaAttributes(
 				prop, 
 				revengStrategy, 
-				table);
+				table,
+				defaultCatalog,
+				defaultSchema);
 		return prop;
 	}
 
