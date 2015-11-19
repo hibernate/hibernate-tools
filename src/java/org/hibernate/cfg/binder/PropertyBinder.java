@@ -3,6 +3,7 @@ package org.hibernate.cfg.binder;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ public class PropertyBinder {
 	private static final Logger log = LoggerFactory.getLogger(PropertyBinder.class);
 
 	public static Property makeProperty(
-			TableIdentifier table, 
+			Table table, 
 			String propertyName, 
 			Value value, 
 			boolean insertable, 
@@ -30,7 +31,10 @@ public class PropertyBinder {
 		prop.setLazy(lazy);
 		prop.setCascade(cascade==null?"none":cascade);
 		prop.setPropertyAccessorName(propertyAccessorName==null?"property":propertyAccessorName);
-		MetaAttributesBinder.bindMetaAttributes(prop, revengStrategy, table);
+		MetaAttributesBinder.bindMetaAttributes(
+				prop, 
+				revengStrategy, 
+				TableIdentifier.create(table));
 		return prop;
 	}
 
