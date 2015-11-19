@@ -1,9 +1,11 @@
 package org.hibernate.cfg.binder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.internal.util.collections.JoinedIterator;
@@ -51,4 +53,13 @@ public class BinderUtils {
 	public static String makeUnique(Component clazz, String propertyName) {
         return BinderUtils.makeUnique(clazz.getPropertyIterator(), propertyName);
     }
+    
+	public static Map<?,?> safeMap(Map<?,?> map) {
+		if(map==null) {
+			return Collections.emptyMap();
+		} else {
+			return map;
+		}
+	}
+
 }

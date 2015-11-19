@@ -167,7 +167,7 @@ public class JDBCBinder {
 			rc.setProxyInterfaceName( rc.getEntityName() ); // TODO: configurable ?
 			rc.setLazy(true);
 
-			rc.setMetaAttributes( safeMeta(revengStrategy.tableToMetaAttributes( tableIdentifier )) );
+			rc.setMetaAttributes( BinderUtils.safeMap(revengStrategy.tableToMetaAttributes( tableIdentifier )) );
 
 
 			rc.setDiscriminatorValue( rc.getEntityName() );
@@ -229,14 +229,6 @@ public class JDBCBinder {
 			}
 		}
 		return null;
-	}
-
-	private Map safeMeta(Map map) {
-		if(map==null) {
-			return new HashMap();
-		} else {
-			return map;
-		}
 	}
 
 	// bind collections.
