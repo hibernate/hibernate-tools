@@ -139,6 +139,12 @@ public class JDBCBinder {
 
 		for (Iterator iter = mappings.iterateTables(); iter.hasNext();) {
 			Table table = (Table) iter.next();
+			if (table.getCatalog() != null && table.getCatalog().equals(defaultCatalog)) {
+				table.setCatalog(null);
+			}
+			if (table.getSchema() != null && table.getSchema().equals(defaultSchema)) {
+				table.setSchema(null);
+			}
 			if(table.getColumnSpan()==0) {
 				log.warn("Cannot create persistent class for " + table + " as no columns were found.");
 				continue;
