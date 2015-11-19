@@ -367,6 +367,8 @@ public class JDBCBinder {
 
         return PropertyBinder.makeProperty(
         		table, 
+        		defaultCatalog,
+        		defaultSchema,
         		propertyName, 
         		value, 
         		insert, 
@@ -413,6 +415,8 @@ public class JDBCBinder {
 
         return PropertyBinder.makeProperty(
         		table, 
+        		defaultCatalog,
+        		defaultSchema,
         		propertyName, 
         		value, 
         		insert, 
@@ -665,6 +669,8 @@ public class JDBCBinder {
 
 		Property property = PropertyBinder.makeProperty(
 				table, 
+				defaultCatalog,
+				defaultSchema,
 				BinderUtils.makeUnique(rc,idPropertyname), 
 				id, 
 				true, 
@@ -801,6 +807,8 @@ public class JDBCBinder {
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
 		return PropertyBinder.makeProperty(
 				table, 
+				defaultCatalog,
+				defaultSchema,
 				propertyName, 
 				value, 
 				true, 
