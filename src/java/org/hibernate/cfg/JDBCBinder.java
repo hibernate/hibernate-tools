@@ -366,7 +366,7 @@ public class JDBCBinder {
         }
 
         return PropertyBinder.makeProperty(
-        		TableIdentifier.create( table ), 
+        		table, 
         		propertyName, 
         		value, 
         		insert, 
@@ -412,7 +412,7 @@ public class JDBCBinder {
         }
 
         return PropertyBinder.makeProperty(
-        		TableIdentifier.create( table ), 
+        		table, 
         		propertyName, 
         		value, 
         		insert, 
@@ -664,7 +664,7 @@ public class JDBCBinder {
 		}
 
 		Property property = PropertyBinder.makeProperty(
-				tableIdentifier, 
+				table, 
 				BinderUtils.makeUnique(rc,idPropertyname), 
 				id, 
 				true, 
@@ -800,7 +800,7 @@ public class JDBCBinder {
 	private Property bindBasicProperty(String propertyName, Table table, Column column, Set processedColumns, Mapping mapping) {
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
 		return PropertyBinder.makeProperty(
-				TableIdentifier.create( table ), 
+				table, 
 				propertyName, 
 				value, 
 				true, 
