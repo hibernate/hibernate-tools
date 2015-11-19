@@ -19,6 +19,7 @@ import java.util.Set;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
+import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DatabaseCollector;
@@ -544,7 +545,7 @@ public class JDBCBinder {
 				foreignKeyReferencedTable,
 				targetKey.getReferencedColumns());
 
-		collectionRole = makeUnique(rc,collectionRole);
+		collectionRole = BinderUtils.makeUnique(rc,collectionRole);
 
 		String fullRolePath = StringHelper.qualify(rc.getEntityName(), collectionRole);
 		if (mappings.getCollection(fullRolePath)!=null) {
@@ -642,7 +643,9 @@ public class JDBCBinder {
 			id.setNullValue("undefined");
 		}
 
-		Property property = makeProperty(tableIdentifier, makeUnique(rc,idPropertyname), id, true, true, false, null, null);
+		Property property = makeProperty(
+				tableIdentifier, 
+				BinderUtils.makeUnique(rc,idPropertyname), id, true, true, false, null, null);
 		rc.setIdentifierProperty(property);
 		rc.setIdentifier(id);
 
@@ -689,7 +692,7 @@ public class JDBCBinder {
             	);
 
             	Property property = bindManyToOne(
-            			makeUnique(rc, propertyName),
+            			BinderUtils.makeUnique(rc, propertyName),
             			mutable,
             			table,
             			foreignKey,
@@ -716,7 +719,7 @@ public class JDBCBinder {
 				String propertyName = revengStrategy.columnToPropertyName(TableIdentifier.create(table), column.getName() );
 
 				Property property = bindBasicProperty(
-						makeUnique(rc,propertyName),
+						BinderUtils.makeUnique(rc,propertyName),
 						table,
 						column,
 						processedColumns,
@@ -759,7 +762,7 @@ public class JDBCBinder {
 
 		processed.add(column);
 		String propertyName = revengStrategy.columnToPropertyName( identifier, column.getName() );
-		Property property = bindBasicProperty(makeUnique(rc, propertyName), table, column, processed, mapping);
+		Property property = bindBasicProperty(BinderUtils.makeUnique(rc, propertyName), table, column, processed, mapping);
 		rc.addProperty(property);
 		rc.setVersion(property);
 		rc.setOptimisticLockStyle(OptimisticLockStyle.VERSION);
@@ -892,7 +895,7 @@ public class JDBCBinder {
                     checkColumn(column);
 
                     String propertyName = revengStrategy.columnToPropertyName( TableIdentifier.create(table), column.getName() );
-					property = bindBasicProperty( makeUnique(pkc, propertyName), table, column, processedColumns, mapping);
+					property = bindBasicProperty( BinderUtils.makeUnique(pkc, propertyName), table, column, processedColumns, mapping);
 
                     processedColumns.add(column);
                 }
@@ -905,7 +908,7 @@ public class JDBCBinder {
 						TableIdentifier.create(foreignKey.getTable() ),
 						foreignKey.getColumns(), TableIdentifier.create(foreignKey.getReferencedTable() ), foreignKey.getReferencedColumns(), true
 					);
-                property = bindManyToOne( makeUnique(pkc, propertyName), true, table, foreignKey, processedColumns);
+                property = bindManyToOne( BinderUtils.makeUnique(pkc, propertyName), true, table, foreignKey, processedColumns);
                 processedColumns.addAll(fkfc.columns);
             }
 			else {
@@ -1030,50 +1033,4 @@ public class JDBCBinder {
 		return property;
     }
 
-    /**
-     * @param pkc
-     * @param string
-     * @return
-     */
-    private String makeUnique(Component clazz, String propertyName) {
-        return makeUnique(clazz.getPropertyIterator(), propertyName);
-    }
-
-    private String makeUnique(PersistentClass clazz, String propertyName) {
-        List list = new ArrayList();
-
-        if( clazz.hasIdentifierProperty() ) {
-            list.add( clazz.getIdentifierProperty() );
-        }
-
-        if( clazz.isVersioned() ) {
-            list.add( clazz.getVersion() );
-        }
-
-        JoinedIterator iterator = new JoinedIterator( list.iterator(),clazz.getPropertyClosureIterator() );
-        return makeUnique(iterator, propertyName);
-    }
-    /**
-     * @param clazz
-     * @param propertyName
-     * @return
-     */
-    private static String makeUnique(Iterator props, String originalPropertyName) {
-        int cnt = 0;
-        String propertyName = originalPropertyName;
-        Set uniqueNames = new HashSet();
-
-        while ( props.hasNext() ) {
-            Property element = (Property) props.next();
-            uniqueNames.add( element.getName() );
-        }
-
-        while( uniqueNames.contains(propertyName) ) {
-            cnt++;
-            propertyName = originalPropertyName + "_" + cnt;
-        }
-
-        return propertyName;
-    }
-
-}
+ }
