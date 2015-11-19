@@ -167,7 +167,13 @@ public class JDBCBinder {
 			rc.setProxyInterfaceName( rc.getEntityName() ); // TODO: configurable ?
 			rc.setLazy(true);
 
-			rc.setMetaAttributes( BinderUtils.safeMap(revengStrategy.tableToMetaAttributes( tableIdentifier )) );
+			rc.setMetaAttributes(
+					BinderUtils.safeMap(
+							RevEngUtils.getTableToMetaAttributesInRevengStrategy(
+									revengStrategy, 
+									table, 
+									defaultCatalog, 
+									defaultSchema)));
 
 
 			rc.setDiscriminatorValue( rc.getEntityName() );
