@@ -22,6 +22,7 @@ import org.hibernate.MappingException;
 import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.MetaAttributesBinder;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
+import org.hibernate.cfg.binder.PropertyBinder;
 import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -364,7 +365,16 @@ public class JDBCBinder {
         	value.setFetchMode(FetchMode.SELECT);
         }
 
-        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null);
+        return PropertyBinder.makeProperty(
+        		TableIdentifier.create( table ), 
+        		propertyName, 
+        		value, 
+        		insert, 
+        		update, 
+        		value.getFetchMode()!=FetchMode.JOIN, 
+        		cascade, 
+        		null,
+        		revengStrategy);
 
 	}
 
@@ -401,7 +411,16 @@ public class JDBCBinder {
         	value.setFetchMode(FetchMode.SELECT);
         }
 
-        return makeProperty(TableIdentifier.create( table ), propertyName, value, insert, update, value.getFetchMode()!=FetchMode.JOIN, cascade, null);
+        return PropertyBinder.makeProperty(
+        		TableIdentifier.create( table ), 
+        		propertyName, 
+        		value, 
+        		insert, 
+        		update, 
+        		value.getFetchMode()!=FetchMode.JOIN, 
+        		cascade, 
+        		null,
+        		revengStrategy);
 	}
 
 	/**
@@ -644,9 +663,16 @@ public class JDBCBinder {
 			id.setNullValue("undefined");
 		}
 
-		Property property = makeProperty(
+		Property property = PropertyBinder.makeProperty(
 				tableIdentifier, 
-				BinderUtils.makeUnique(rc,idPropertyname), id, true, true, false, null, null);
+				BinderUtils.makeUnique(rc,idPropertyname), 
+				id, 
+				true, 
+				true, 
+				false, 
+				null, 
+				null,
+				revengStrategy);
 		rc.setIdentifierProperty(property);
 		rc.setIdentifier(id);
 
@@ -772,10 +798,17 @@ public class JDBCBinder {
 	}
 
 	private Property bindBasicProperty(String propertyName, Table table, Column column, Set processedColumns, Mapping mapping) {
-
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
-
-		return makeProperty(TableIdentifier.create( table ), propertyName, value, true, true, false, null, null);
+		return PropertyBinder.makeProperty(
+				TableIdentifier.create( table ), 
+				propertyName, 
+				value, 
+				true, 
+				true, 
+				false, 
+				null, 
+				null,
+				revengStrategy);
 	}
 
 	private SimpleValue bindColumnToSimpleValue(Table table, Column column, Mapping mapping, boolean generatedIdentifier) {
@@ -1004,19 +1037,5 @@ public class JDBCBinder {
             this.columns = columns;
         }
     }
-
-    private Property makeProperty(TableIdentifier table, String propertyName, Value value, boolean insertable, boolean updatable, boolean lazy, String cascade, String propertyAccessorName) {
-    	log.debug("Building property " + propertyName);
-        Property prop = new Property();
-		prop.setName(propertyName);
-		prop.setValue(value);
-		prop.setInsertable(insertable);
-		prop.setUpdateable(updatable);
-		prop.setLazy(lazy);
-		prop.setCascade(cascade==null?"none":cascade);
-		prop.setPropertyAccessorName(propertyAccessorName==null?"property":propertyAccessorName);
-		MetaAttributesBinder.bindMetaAttributes(prop, revengStrategy, table);
-		return prop;
-	}
 
  }
