@@ -1,7 +1,6 @@
 package org.hibernate.cfg.binder;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -34,7 +33,7 @@ public class PropertyBinder {
 		MetaAttributesBinder.bindMetaAttributes(
 				prop, 
 				revengStrategy, 
-				TableIdentifier.create(table));
+				table);
 		return prop;
 	}
 

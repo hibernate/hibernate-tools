@@ -1,6 +1,7 @@
 package org.hibernate.cfg.reveng;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.mapping.Table;
 
@@ -38,6 +39,24 @@ public class RevEngUtils {
 			result = revengStrat.getTableIdentifierStrategyName(tableIdentifier);
 		}
 		return result;	
+	}
+
+	public static Map<?,?> getColumnToMetaAttributesInRevengStrategy(
+			ReverseEngineeringStrategy revengStrat,
+			Table table,
+			String defaultCatalog,
+			String defaultSchema,
+			String column) {
+		Map<?,?> result = null;
+		TableIdentifier tableIdentifier = TableIdentifier.create(table);
+		result = revengStrat.columnToMetaAttributes(tableIdentifier, column);
+		if (result == null) {
+			String catalog = getCatalogForModel(table.getCatalog(), defaultCatalog);
+			String schema = getSchemaForModel(table.getSchema(), defaultSchema);
+			tableIdentifier = new TableIdentifier(catalog, schema, table.getName());
+			result = revengStrat.columnToMetaAttributes(tableIdentifier, column);
+		}
+		return result;
 	}
 
 	/** If catalog is equal to defaultCatalog then we return null so it will be null in the generated code. */
