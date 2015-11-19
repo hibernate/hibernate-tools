@@ -20,6 +20,7 @@ import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.binder.BinderUtils;
+import org.hibernate.cfg.binder.MetaAttributesBinder;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DatabaseCollector;
@@ -1014,23 +1015,8 @@ public class JDBCBinder {
 		prop.setLazy(lazy);
 		prop.setCascade(cascade==null?"none":cascade);
 		prop.setPropertyAccessorName(propertyAccessorName==null?"property":propertyAccessorName);
-		bindMeta(prop, table);
-
+		MetaAttributesBinder.bindMetaAttributes(prop, revengStrategy, table);
 		return prop;
 	}
-
-    private Property bindMeta(Property property, TableIdentifier identifier) {
-    	Iterator columnIterator = property.getValue().getColumnIterator();
-		while(columnIterator.hasNext()) {
-			Column col = (Column) columnIterator.next();
-
-			Map map = revengStrategy.columnToMetaAttributes( identifier, col.getName() );
-			if(map!=null) { // TODO: merge from each column ?
-				property.setMetaAttributes( map );
-			}
-		}
-
-		return property;
-    }
 
  }
