@@ -58,6 +58,23 @@ public class RevEngUtils {
 		}
 		return result;
 	}
+	
+	public static Map<?,?> getTableToMetaAttributesInRevengStrategy(
+			ReverseEngineeringStrategy revengStrat,
+			Table table,
+			String defaultCatalog,
+			String defaultSchema) {
+		Map<?,?> result = null;
+		TableIdentifier tableIdentifier = TableIdentifier.create(table);
+		result = revengStrat.tableToMetaAttributes(tableIdentifier);
+		if (result == null) {
+			String catalog = getCatalogForModel(table.getCatalog(), defaultCatalog);
+			String schema = getSchemaForModel(table.getSchema(), defaultSchema);
+			tableIdentifier = new TableIdentifier(catalog, schema, table.getName());
+			result = revengStrat.tableToMetaAttributes(tableIdentifier);
+		}
+		return result;
+	}
 
 	/** If catalog is equal to defaultCatalog then we return null so it will be null in the generated code. */
 	private static String getCatalogForModel(String catalog, String defaultCatalog) {
