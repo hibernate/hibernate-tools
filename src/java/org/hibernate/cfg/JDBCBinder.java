@@ -747,7 +747,13 @@ public class JDBCBinder {
 			if ( !processedColumns.contains(column) ) {
 				checkColumn(column);
 
-				String propertyName = revengStrategy.columnToPropertyName(TableIdentifier.create(table), column.getName() );
+				String propertyName = 
+						RevEngUtils.getColumnToPropertyNameInRevengStrategy(
+								revengStrategy, 
+								table, 
+								defaultCatalog, 
+								defaultSchema, 
+								column.getName());
 
 				Property property = bindBasicProperty(
 						BinderUtils.makeUnique(rc,propertyName),
