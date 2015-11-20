@@ -41,7 +41,7 @@ public class BasicColumnProcessor {
 				String columnName = (String) columnRs.get("COLUMN_NAME");
 				String comment = (String) columnRs.get("REMARKS");
 				
-				TableIdentifier ti = TableIdentifier.create(table);
+				TableIdentifier ti = RevEngUtils.createTableIdentifier(table, defaultCatalog, defaultSchema);
 				if(revengStrategy.excludeColumn(ti, columnName)) {
 					log.debug("Column " + ti + "." + columnName + " excluded by strategy");
 					continue;
