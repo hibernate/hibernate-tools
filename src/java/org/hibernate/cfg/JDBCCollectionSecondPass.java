@@ -24,18 +24,28 @@ public class JDBCCollectionSecondPass extends CollectionSecondPass {
     @SuppressWarnings("rawtypes")
 	public void doSecondPass(Map persistentClasses) throws MappingException {
     	Value element = collection.getElement();
-    	DependantValue dep = null;
-    	String oldFkName = null;
+    	DependantValue elementDependantValue = null;
+    	String oldElementForeignKeyName = null;
     	if(element instanceof DependantValue) {
-			dep = (DependantValue)element;
-    		oldFkName = dep.getForeignKeyName();
-    		dep.setForeignKeyName("none"); // Workaround to avoid DependantValue to create foreignkey just because reference columns are not the same + no need to create keys already in the db!
+			elementDependantValue = (DependantValue)element;
+			oldElementForeignKeyName = elementDependantValue.getForeignKeyName();
+    		elementDependantValue.setForeignKeyName("none"); // Workaround to avoid DependantValue to create foreignkey just because reference columns are not the same + no need to create keys already in the db!
+    	}
+    	Value key = collection.getKey();
+    	DependantValue keyDependantValue = null;
+    	String oldKeyForeignKeyName = null;
+    	if (key instanceof DependantValue) {
+    		keyDependantValue = (DependantValue)key;
+    		oldKeyForeignKeyName = keyDependantValue.getForeignKeyName();
+    		keyDependantValue.setForeignKeyName("none");
     	}
     	super.doSecondPass(persistentClasses);
-    	if(dep!=null) {
-    		dep.setForeignKeyName(oldFkName);
+    	if(elementDependantValue!=null) {
+    		elementDependantValue.setForeignKeyName(oldElementForeignKeyName);
     	}
-
+    	if (keyDependantValue != null) {
+    		keyDependantValue.setForeignKeyName(oldKeyForeignKeyName);
+    	}
     }
     
     private void bindCollectionSecondPass(
