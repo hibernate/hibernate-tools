@@ -94,6 +94,16 @@ public class RevEngUtils {
 		return result;
 	}
 
+	public static TableIdentifier createTableIdentifier(
+			Table table, 
+			String defaultCatalog, 
+			String defaultSchema) {
+		String tableName = table.getName();
+		String tableCatalog = getCatalogForModel(table.getCatalog(), defaultCatalog);
+		String tableSchema = getSchemaForModel(table.getSchema(), defaultSchema);
+		return new TableIdentifier(tableCatalog, tableSchema, tableName);
+	}
+
 	/** If catalog is equal to defaultCatalog then we return null so it will be null in the generated code. */
 	private static String getCatalogForModel(String catalog, String defaultCatalog) {
 		if(catalog==null) return null;
