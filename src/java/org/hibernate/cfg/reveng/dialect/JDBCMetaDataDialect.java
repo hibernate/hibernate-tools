@@ -152,7 +152,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		}	
 	}
 
-	public Iterator getExportedKeys(final String xcatalog, final String xschema, final String xtable) {
+	public Iterator<Map<String, Object>> getExportedKeys(final String xcatalog, final String xschema, final String xtable) {
 		try {
 			final String catalog = caseForSearch( xcatalog );
 			final String schema = caseForSearch( xschema );
