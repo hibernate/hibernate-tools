@@ -80,7 +80,7 @@ public interface MetaDataDialect {
 	 * @param table name or null
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "FKTABLE_CAT", "FKTABLE_SCHEM", "FKTABLE_NAME", "FK_NAME", "KEY_SEQ"
 	 */
-	Iterator getExportedKeys(String catalog, String schema, String table);
+	Iterator<Map<String, Object>> getExportedKeys(String catalog, String schema, String table);
 
 	/**
 	 * Does this name need quoting
