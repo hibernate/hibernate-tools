@@ -54,7 +54,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}		
 	}
 
-	public Iterator getExportedKeys(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getExportedKeys(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
 		List cached = (List) cachedExportedKeys.get( sk );
 		if(cached==null) {

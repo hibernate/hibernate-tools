@@ -38,7 +38,7 @@ public class ForeignKeyProcessor {
 		
 		// first get all the relationships dictated by the database schema
 		
-		Iterator exportedKeyIterator = null;
+		Iterator<Map<String, Object>> exportedKeyIterator = null;
 		
         log.debug("Calling getExportedKeys on " + referencedTable);
         progress.startSubTask("Finding exported foreignkeys on " + referencedTable.getName());

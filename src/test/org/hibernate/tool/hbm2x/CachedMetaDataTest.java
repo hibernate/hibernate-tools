@@ -65,7 +65,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			}
 		}
 
-		public Iterator getExportedKeys(String catalog, String schema, String table) {
+		public Iterator<Map<String, Object>> getExportedKeys(String catalog, String schema, String table) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {
