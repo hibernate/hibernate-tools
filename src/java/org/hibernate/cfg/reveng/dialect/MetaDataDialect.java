@@ -69,7 +69,7 @@ public interface MetaDataDialect {
 	 * @param table name or null
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "COLUMN_NAME", "KEY_SEQ", "PK_NAME",
 	 */
-	Iterator getPrimaryKeys(String catalog, String schema, String name);
+	Iterator<Map<String, Object>> getPrimaryKeys(String catalog, String schema, String name);
 
 
 	/**

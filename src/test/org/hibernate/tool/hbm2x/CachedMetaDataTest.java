@@ -81,7 +81,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			}
 		}
 
-		public Iterator getPrimaryKeys(String catalog, String schema, String name) {
+		public Iterator<Map<String, Object>> getPrimaryKeys(String catalog, String schema, String name) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {

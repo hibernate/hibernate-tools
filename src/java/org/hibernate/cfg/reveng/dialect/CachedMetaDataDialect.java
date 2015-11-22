@@ -76,11 +76,11 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}
 	}
 
-	public Iterator getPrimaryKeys(String catalog, String schema, String name) {
+	public Iterator<Map<String, Object>> getPrimaryKeys(String catalog, String schema, String name) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, name });
-		List cached = (List) cachedPrimaryKeys .get( sk );
+		List<Map<String, Object>> cached = (List) cachedPrimaryKeys .get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedPrimaryKeys, sk, cached, delegate.getPrimaryKeys( catalog, schema, name ));
 		} else {
 			return cached.iterator();
@@ -166,7 +166,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		private Map destination;
 		private Iterator realIterator;
 		final CachedMetaDataDialect owner;
-		public CachedIterator(CachedMetaDataDialect owner, Map destination, StringKey sk, List cache, Iterator realIterator) {
+		public CachedIterator(CachedMetaDataDialect owner, Map destination, StringKey sk, List cache, Iterator<Map<String, Object>> realIterator) {
 			this.owner = owner;
 			this.destination = destination;
 			this.target = sk;
