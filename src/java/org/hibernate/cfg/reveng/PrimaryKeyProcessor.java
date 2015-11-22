@@ -31,7 +31,7 @@ public class PrimaryKeyProcessor {
 				
 		List columns = new ArrayList();
 		PrimaryKey key = null;
-		Iterator primaryKeyIterator = null;
+		Iterator<Map<String, Object>> primaryKeyIterator = null;
 		try {
 			Map primaryKeyRs = null;	
 			primaryKeyIterator = metaDataDialect.getPrimaryKeys(getCatalogForDBLookup(table.getCatalog(), defaultCatalog), getSchemaForDBLookup(table.getSchema(), defaultSchema), table.getName() );		
