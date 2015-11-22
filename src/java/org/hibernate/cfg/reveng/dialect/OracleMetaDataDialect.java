@@ -351,7 +351,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		}
 	}
 
-	public Iterator getPrimaryKeys(final String catalog, final String schema,
+	public Iterator<Map<String, Object>> getPrimaryKeys(final String catalog, final String schema,
 			final String table) {
 		
 		try {
