@@ -43,11 +43,11 @@ public class ForeignKeyProcessor {
         log.debug("Calling getExportedKeys on " + referencedTable);
         progress.startSubTask("Finding exported foreignkeys on " + referencedTable.getName());
         try {
-        	Map exportedKeyRs = null;
+        	Map<String, Object> exportedKeyRs = null;
         	exportedKeyIterator = metaDataDialect.getExportedKeys(getCatalogForDBLookup(referencedTable.getCatalog(), defaultCatalog), getSchemaForDBLookup(referencedTable.getSchema(), defaultSchema), referencedTable.getName() );
         try {
 			while (exportedKeyIterator.hasNext() ) {
-				exportedKeyRs = (Map) exportedKeyIterator.next();
+				exportedKeyRs = exportedKeyIterator.next();
 				String fkCatalog = getCatalogForModel((String) exportedKeyRs.get("FKTABLE_CAT"), defaultCatalog);
 				String fkSchema = getSchemaForModel((String) exportedKeyRs.get("FKTABLE_SCHEM"), defaultSchema);
 				String fkTableName = (String) exportedKeyRs.get("FKTABLE_NAME");
