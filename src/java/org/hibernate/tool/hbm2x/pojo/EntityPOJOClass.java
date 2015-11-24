@@ -199,7 +199,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			}
 			AnnotationBuilder constraint = AnnotationBuilder.createAnnotation( importType("javax.persistence.UniqueConstraint") );
 			constraint.addQuotedAttributes( "columnNames", new IteratorTransformer(key.getColumnIterator()) {
-				public Object transform(Object object) {
+				public String transform(Object object) {
 					return ((Column)object).getName();
 				}
 			});
@@ -916,29 +916,6 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	public Property getVersionProperty()
 	{
 		return clazz.getVersion();
-	}
-
-	static public abstract class IteratorTransformer implements Iterator {
-
-		private Iterator delegate;
-
-		public IteratorTransformer(Iterator delegate) {
-			this.delegate = delegate;
-		}
-
-		public boolean hasNext() {
-			return delegate.hasNext();
-		}
-
-		public Object next() {
-			return transform(delegate.next());
-		}
-
-		public abstract Object transform(Object object);
-
-		public void remove() {
-			delegate.remove();
-		}
 	}
 
 }
