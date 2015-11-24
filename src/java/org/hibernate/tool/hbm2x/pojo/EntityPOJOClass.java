@@ -83,8 +83,9 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public String getImplements() {
-		List interfaces = new ArrayList();
+		List<String> interfaces = new ArrayList<String>();
 
 		//			implement proxy, but NOT if the proxy is the class it self!
 		if ( clazz.getProxyInterfaceName() != null && ( !clazz.getProxyInterfaceName().equals( clazz.getClassName() ) ) ) {
@@ -107,7 +108,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 		if ( interfaces.size() > 0 ) {
 			StringBuffer sbuf = new StringBuffer();
-			for ( Iterator iter = interfaces.iterator(); iter.hasNext() ; ) {
+			for ( Iterator<String> iter = interfaces.iterator(); iter.hasNext() ; ) {
 				//sbuf.append(JavaTool.shortenType(iter.next().toString(), pc.getImports() ) );
 				sbuf.append( iter.next() );
 				if ( iter.hasNext() ) sbuf.append( "," );
@@ -119,14 +120,15 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		}
 	}
 
-	public Iterator getAllPropertiesIterator() {
+	public Iterator<Property> getAllPropertiesIterator() {
 		return getAllPropertiesIterator(clazz);
 	}
 
 
-	public Iterator getAllPropertiesIterator(PersistentClass pc) {
-		List properties = new ArrayList();
-		List iterators = new ArrayList();
+	@SuppressWarnings("unchecked")
+	public Iterator<Property> getAllPropertiesIterator(PersistentClass pc) {
+		List<Property> properties = new ArrayList<Property>();
+		List<Iterator<Property>> iterators = new ArrayList<Iterator<Property>>();
 		if ( pc.getSuperclass() == null ) {
 			// only include identifier for the root class.
 			if ( pc.hasIdentifierProperty() ) {
@@ -145,7 +147,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		//		iterators.add( pc.getPropertyIterator() );
 		// Need to skip <properties> element which are defined via "embedded" components
 		// Best if we could return an intelligent iterator, but for now we just iterate explicitly.
-		Iterator pit = pc.getPropertyIterator();
+		Iterator<Property> pit = pc.getPropertyIterator();
 		while(pit.hasNext())
 		{
 			Property element = (Property) pit.next();
@@ -153,7 +155,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 					&& element.getPropertyAccessorName().equals( "embedded" )) {
 				Component component = (Component) element.getValue();
 				// need to "explode" property to get proper sequence in java code.
-				Iterator embeddedProperty = component.getPropertyIterator();
+				Iterator<Property> embeddedProperty = component.getPropertyIterator();
 				while(embeddedProperty.hasNext()) {
 					properties.add(embeddedProperty.next());
 				}
@@ -164,8 +166,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 		iterators.add( properties.iterator() );
 
-		Iterator[] it = (Iterator[]) iterators.toArray( new Iterator[iterators.size()] );
-		return new SkipBackRefPropertyIterator( new JoinedIterator( it ) );
+		Iterator<Property>[] it = (Iterator<Property>[]) iterators.toArray( new Iterator[iterators.size()] );
+		return new SkipBackRefPropertyIterator( new JoinedIterator<Property>( it ) );
 	}
 
 	public boolean isComponent() {
@@ -190,17 +192,17 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	protected String generateAnnTableUniqueConstraint(Table table) {
-		Iterator uniqueKeys = table.getUniqueKeyIterator();
-		List cons = new ArrayList();
+		Iterator<UniqueKey> uniqueKeys = table.getUniqueKeyIterator();
+		List<String> cons = new ArrayList<String>();
 		while ( uniqueKeys.hasNext() ) {
 			UniqueKey key = (UniqueKey) uniqueKeys.next();
 			if (table.hasPrimaryKey() && table.getPrimaryKey().getColumns().equals(key.getColumns())) {
 				continue;
 			}
 			AnnotationBuilder constraint = AnnotationBuilder.createAnnotation( importType("javax.persistence.UniqueConstraint") );
-			constraint.addQuotedAttributes( "columnNames", new IteratorTransformer(key.getColumnIterator()) {
-				public String transform(Object object) {
-					return ((Column)object).getName();
+			constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<Column>(key.getColumnIterator()) {
+				public String transform(Column column) {
+					return column.getName();
 				}
 			});
 			cons.add( constraint.getResult() );
@@ -275,10 +277,10 @@ public class EntityPOJOClass extends BasicPOJOClass {
 					.addQuotedAttribute( "name", "generator" )
 					.addQuotedAttribute( "strategy", strategy);
 
-				List params = new ArrayList();
+				List<AnnotationBuilder> params = new ArrayList<AnnotationBuilder>();
 				//wholeString.append( "parameters = {  " );
 				if ( properties != null ) {
-					Enumeration propNames = properties.propertyNames();
+					Enumeration<?> propNames = properties.propertyNames();
 					while ( propNames.hasMoreElements() ) {
 
 						String propertyName = (String) propNames.nextElement();
@@ -331,13 +333,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return propertyValue != null && propertyValue.equals( defaultValue );
 	}
 
+	@SuppressWarnings("unchecked")
 	public String generateJoinColumnsAnnotation(Property property, Configuration cfg) {
 		boolean insertable = property.isInsertable();
 		boolean updatable = property.isUpdateable();
 		Value value = property.getValue();
 		int span;
-		Iterator columnIterator;
-		Iterator referencedColumnsIterator = null;
+		Iterator<Selectable> columnIterator;
+		Iterator<Selectable> referencedColumnsIterator = null;
 		if (value != null && value instanceof Collection) {
 			Collection collection = (Collection) value;
 			span = collection.getKey().getColumnSpan();
@@ -358,11 +361,11 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 		StringBuffer annotations = new StringBuffer( "    " );
 		if ( span == 1 ) {
-				Selectable selectable = (Selectable) columnIterator.next();
+				Selectable selectable = columnIterator.next();
 				buildJoinColumnAnnotation( selectable, null, annotations, insertable, updatable );
 		}
 		else {
-			Iterator columns = columnIterator;
+			Iterator<Selectable> columns = columnIterator;
 			annotations.append("@").append( importType("javax.persistence.JoinColumns") ).append("( { " );
 			buildArrayOfJoinColumnAnnotation( columns, referencedColumnsIterator, annotations, insertable, updatable );
 			annotations.append( " } )" );
@@ -371,14 +374,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	private void buildArrayOfJoinColumnAnnotation(
-			Iterator columns, Iterator referencedColumnsIterator, StringBuffer annotations, boolean insertable,
+			Iterator<Selectable> columns, Iterator<Selectable> referencedColumnsIterator, StringBuffer annotations, boolean insertable,
 			boolean updatable
 	) {
 		while ( columns.hasNext() ) {
-			Selectable selectable = (Selectable) columns.next();
+			Selectable selectable = columns.next();
             Selectable referencedColumn = null;
             if(referencedColumnsIterator!=null) {
-            	referencedColumn = (Selectable) referencedColumnsIterator.next();
+            	referencedColumn = referencedColumnsIterator.next();
             }
 
 			if ( selectable.isFormula() ) {
@@ -417,7 +420,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	public String[] getCascadeTypes(Property property) {
 		StringTokenizer st =  new StringTokenizer( property.getCascade(), ", ", false );
-		List types = new ArrayList();
+		List<String> types = new ArrayList<String>();
 		while ( st.hasMoreElements() ) {
 			String element = ( (String) st.nextElement() ).toLowerCase();
 			if ( "persist".equals( element ) ) {
@@ -449,8 +452,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	public boolean isSharedPkBasedOneToOne(OneToOne oneToOne){
-		Iterator joinColumnsIt = oneToOne.getColumnIterator();
-		Set joinColumns = new HashSet();
+		Iterator<Selectable> joinColumnsIt = oneToOne.getColumnIterator();
+		Set<Selectable> joinColumns = new HashSet<Selectable>();
 		while ( joinColumnsIt.hasNext() ) {
 			joinColumns.add( joinColumnsIt.next() );
 		}
@@ -458,8 +461,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		if ( joinColumns.size() == 0 )
 			return false;
 
-		Iterator idColumnsIt = getIdentifierProperty().getColumnIterator();
-		Set idColumns = new HashSet();
+		Iterator<?> idColumnsIt = getIdentifierProperty().getColumnIterator();
 		while ( idColumnsIt.hasNext() ) {
 			if (!joinColumns.contains(idColumnsIt.next()) )
 				return false;
@@ -637,14 +639,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	private String getManyToManyMappedBy(Configuration cfg, Collection collection) {
 		String mappedBy;
-		Iterator joinColumnsIt = collection.getKey().getColumnIterator();
-		Set joinColumns = new HashSet();
+		Iterator<Selectable> joinColumnsIt = collection.getKey().getColumnIterator();
+		Set<Selectable> joinColumns = new HashSet<Selectable>();
 		while ( joinColumnsIt.hasNext() ) {
 			joinColumns.add( joinColumnsIt.next() );
 		}
 		ManyToOne manyToOne = (ManyToOne) collection.getElement();
 		PersistentClass pc = cfg.getClassMapping( manyToOne.getReferencedEntityName() );
-		Iterator properties = pc.getPropertyClosureIterator();
+		Iterator<?> properties = pc.getPropertyClosureIterator();
 		//TODO we should check the table too
 		boolean isOtherSide = false;
 		mappedBy = "unresolved";
@@ -656,7 +658,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 				if ( ! realCollectionValue.isOneToMany() ) {
 					if ( joinColumns.size() == realCollectionValue.getElement().getColumnSpan() ) {
 						isOtherSide = true;
-						Iterator it = realCollectionValue.getElement().getColumnIterator();
+						Iterator<?> it = realCollectionValue.getElement().getColumnIterator();
 						while ( it.hasNext() ) {
 							Object column = it.next();
 							if (! joinColumns.contains( column ) ) {
@@ -676,14 +678,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	private String getOneToManyMappedBy(Configuration cfg, Collection collection) {
 		String mappedBy;
-		Iterator joinColumnsIt = collection.getKey().getColumnIterator();
-		Set joinColumns = new HashSet();
+		Iterator<Selectable> joinColumnsIt = collection.getKey().getColumnIterator();
+		Set<Selectable> joinColumns = new HashSet<Selectable>();
 		while ( joinColumnsIt.hasNext() ) {
 			joinColumns.add( joinColumnsIt.next() );
 		}
 		OneToMany oneToMany = (OneToMany) collection.getElement();
 		PersistentClass pc = cfg.getClassMapping( oneToMany.getReferencedEntityName() );
-		Iterator properties = pc.getPropertyClosureIterator();
+		Iterator<?> properties = pc.getPropertyClosureIterator();
 		//TODO we should check the table too
 		boolean isOtherSide = false;
 		mappedBy = "unresolved";
@@ -693,7 +695,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			if ( manyValue != null && manyValue instanceof ManyToOne ) {
 				if ( joinColumns.size() == manyValue.getColumnSpan() ) {
 					isOtherSide = true;
-					Iterator it = manyValue.getColumnIterator();
+					Iterator<?> it = manyValue.getColumnIterator();
 					while ( it.hasNext() ) {
 						Object column = it.next();
 						if (! joinColumns.contains( column ) ) {
@@ -713,8 +715,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 	private String getOneToOneMappedBy(Configuration cfg, OneToOne oneToOne) {
 		String mappedBy;
-		Iterator joinColumnsIt = oneToOne.getColumnIterator();
-		Set joinColumns = new HashSet();
+		Iterator<Selectable> joinColumnsIt = oneToOne.getColumnIterator();
+		Set<Selectable> joinColumns = new HashSet<Selectable>();
 		while ( joinColumnsIt.hasNext() ) {
 			joinColumns.add( joinColumnsIt.next() );
 		}
@@ -723,7 +725,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		if ( referencedPropertyName != null )
 			return referencedPropertyName;
 
-		Iterator properties = pc.getPropertyClosureIterator();
+		Iterator<?> properties = pc.getPropertyClosureIterator();
 		//TODO we should check the table too
 		boolean isOtherSide = false;
 		mappedBy = "unresolved";
@@ -735,7 +737,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			if ( manyValue != null && ( manyValue instanceof OneToOne || manyValue instanceof ManyToOne ) ) {
 				if ( joinColumns.size() == manyValue.getColumnSpan() ) {
 					isOtherSide = true;
-					Iterator it = manyValue.getColumnIterator();
+					Iterator<?> it = manyValue.getColumnIterator();
 					while ( it.hasNext() ) {
 						Object column = it.next();
 						if (! joinColumns.contains( column ) ) {
@@ -757,24 +759,24 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return clazz.getSuperclass()!=null;
 	}
 
-	public List getPropertyClosureForFullConstructor() {
+	public List<Property> getPropertyClosureForFullConstructor() {
 		return getPropertyClosureForFullConstructor(clazz);
 	}
 
-	protected List getPropertyClosureForFullConstructor(PersistentClass pc) {
-		List l = new ArrayList(getPropertyClosureForSuperclassFullConstructor( pc ));
+	protected List<Property> getPropertyClosureForFullConstructor(PersistentClass pc) {
+		List<Property> l = new ArrayList<Property>(getPropertyClosureForSuperclassFullConstructor( pc ));
 		l.addAll(getPropertiesForFullConstructor( pc ));
 		return l;
 	}
 
-	public List getPropertiesForFullConstructor() {
+	public List<Property> getPropertiesForFullConstructor() {
 		return getPropertiesForFullConstructor(clazz);
 	}
 
-	protected List getPropertiesForFullConstructor(PersistentClass pc) {
-		List result = new ArrayList();
+	protected List<Property> getPropertiesForFullConstructor(PersistentClass pc) {
+		List<Property> result = new ArrayList<Property>();
 
-		for ( Iterator myFields = getAllPropertiesIterator(pc); myFields.hasNext() ; ) {
+		for ( Iterator<Property> myFields = getAllPropertiesIterator(pc); myFields.hasNext() ; ) {
 			Property field = (Property) myFields.next();
 			// TODO: if(!field.isGenerated() ) ) {
 			if(field.equals(pc.getIdentifierProperty()) && !isAssignedIdentifier(pc, field)) {
@@ -798,9 +800,9 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		boolean foundFormula = false;
 
 		if(value!=null && value.getColumnSpan()>0) {
-			Iterator columnIterator = value.getColumnIterator();
+			Iterator<Selectable> columnIterator = value.getColumnIterator();
 			while ( columnIterator.hasNext() ) {
-				Selectable element = (Selectable) columnIterator.next();
+				Selectable element = columnIterator.next();
 				if(!(element instanceof Formula)) {
 					return false;
 				} else {
@@ -813,12 +815,12 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return foundFormula;
 	}
 
-	public List getPropertyClosureForSuperclassFullConstructor() {
+	public List<Property> getPropertyClosureForSuperclassFullConstructor() {
 		return getPropertyClosureForSuperclassFullConstructor(clazz);
 	}
 
-	public List getPropertyClosureForSuperclassFullConstructor(PersistentClass pc) {
-		List result = new ArrayList();
+	public List<Property> getPropertyClosureForSuperclassFullConstructor(PersistentClass pc) {
+		List<Property> result = new ArrayList<Property>();
 		if ( pc.getSuperclass() != null ) {
 			// The correct sequence is vital here, as the subclass should be
 			// able to invoke the fullconstructor based on the sequence returned
@@ -831,24 +833,24 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 
-	public List getPropertyClosureForMinimalConstructor() {
+	public List<Property> getPropertyClosureForMinimalConstructor() {
 		return getPropertyClosureForMinimalConstructor(clazz);
 	}
 
-	protected List getPropertyClosureForMinimalConstructor(PersistentClass pc) {
-		List l = new ArrayList(getPropertyClosureForSuperclassMinConstructor( pc ));
+	protected List<Property> getPropertyClosureForMinimalConstructor(PersistentClass pc) {
+		List<Property> l = new ArrayList<Property>(getPropertyClosureForSuperclassMinConstructor( pc ));
 		l.addAll(getPropertiesForMinimalConstructor( pc ));
 		return l;
 	}
 
-	public List getPropertiesForMinimalConstructor() {
+	public List<Property> getPropertiesForMinimalConstructor() {
 		return getPropertiesForMinimalConstructor(clazz);
 	}
 
-	protected List getPropertiesForMinimalConstructor(PersistentClass pc) {
-		List result = new ArrayList();
+	protected List<Property> getPropertiesForMinimalConstructor(PersistentClass pc) {
+		List<Property> result = new ArrayList<Property>();
 
-		for ( Iterator myFields = getAllPropertiesIterator(pc); myFields.hasNext() ; ) {
+		for ( Iterator<Property> myFields = getAllPropertiesIterator(pc); myFields.hasNext() ; ) {
 			Property property = (Property) myFields.next();
 			if(property.equals(pc.getIdentifierProperty())) {
 				if(isAssignedIdentifier(pc, property)) {
@@ -878,12 +880,12 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return false;
 	}
 
-	public List getPropertyClosureForSuperclassMinimalConstructor() {
+	public List<Property> getPropertyClosureForSuperclassMinimalConstructor() {
 		return getPropertyClosureForSuperclassMinConstructor(clazz);
 	}
 
-	protected List getPropertyClosureForSuperclassMinConstructor(PersistentClass pc) {
-		List result = new ArrayList();
+	protected List<Property> getPropertyClosureForSuperclassMinConstructor(PersistentClass pc) {
+		List<Property> result = new ArrayList<Property>();
 		if ( pc.getSuperclass() != null ) {
 			// The correct sequence is vital here, as the subclass should be
 			// able to invoke the fullconstructor based on the sequence returned
