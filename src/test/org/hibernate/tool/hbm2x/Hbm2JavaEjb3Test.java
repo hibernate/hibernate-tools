@@ -17,7 +17,7 @@ import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.pojo.AnnotationBuilder;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass.IteratorTransformer;
+import org.hibernate.tool.hbm2x.pojo.IteratorTransformer;
 import org.hibernate.tool.test.TestHelper;
 
 /**
@@ -182,8 +182,8 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		columns.add("second");
 		
 		AnnotationBuilder constraint = AnnotationBuilder.createAnnotation( "UniqueConstraint" );
-		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer(columns.iterator()) {
-			public Object transform(Object object) {					
+		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<Object>(columns.iterator()) {
+			public String transform(Object object) {					
 				return object.toString();
 			}
 		});
