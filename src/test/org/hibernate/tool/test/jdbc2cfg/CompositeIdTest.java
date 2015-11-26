@@ -11,14 +11,15 @@ import java.net.URLClassLoader;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ForeignKey;
@@ -26,12 +27,16 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.hbm2x.XMLPrettyPrinter;
 import org.hibernate.tool.test.TestHelper;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -149,7 +154,7 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         PersistentClass lineMapping = cfg.getClassMapping(toClassName(identifier("LineItem") ) );
         
         assertEquals(4,lineMapping.getIdentifier().getColumnSpan() );
-        Iterator columnIterator = lineMapping.getIdentifier().getColumnIterator();
+        Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
         assertEquals(((Column)(columnIterator.next())).getName(), "CUSTOMERIDREF");
         assertEquals(((Column)(columnIterator.next())).getName(), "ORDERNUMBER");
         
@@ -173,7 +178,7 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
          
          assertEquals(2, cmpid.getPropertySpan() );
          
-         Iterator iter = cmpid.getPropertyIterator();
+         Iterator<?> iter = cmpid.getPropertyIterator();
          Property id = (Property) iter.next();
          Property extraId = (Property) iter.next();
          
@@ -201,7 +206,7 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         
         assertEquals(2, cmpid.getPropertySpan() );
         
-        Iterator iter = cmpid.getPropertyIterator();
+        Iterator<?> iter = cmpid.getPropertyIterator();
         Property id = (Property) iter.next();
         Property extraId = (Property) iter.next();
         
@@ -239,23 +244,29 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         
         derived.buildMappings();        
         
-        /*assertNotNull(derived.getClassMapping("org.reveng.Child") );
-        assertNotNull(derived.getClassMapping("org.reveng.Master") );*/
-        URL[] urls = new URL[] { outputdir.toURL() };
+        URL[] urls = new URL[] { outputdir.toURI().toURL() };
         URLClassLoader ucl = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader() );
         Thread.currentThread().setContextClassLoader(ucl);
-        SessionFactory factory = derived.buildSessionFactory();
+        
+        Properties properties = derived.getProperties();
+		Environment.verifyProperties( properties );
+		ConfigurationHelper.resolvePlaceHolders( properties );
+		ServiceRegistry serviceRegistry =  new StandardServiceRegistryBuilder()
+				.applySettings( properties )
+				.build();
+        
+        SessionFactory factory = derived.buildSessionFactory(serviceRegistry);
         Session session = factory.openSession();
         
         executeDDL(getGenDataSQL(), false);
         session.createQuery("from Lineitem").list();
-        List list = session.createQuery("from Product").list();
+        List<?> list = session.createQuery("from Product").list();
         assertEquals(2,list.size() );
         
         list = session.createQuery(getCustomerOrderQuery()).list();
         assertTrue(list.size()>0);
         
-        Class productIdClass = ucl.loadClass("ProductId");
+        Class<?> productIdClass = ucl.loadClass("ProductId");
         Object object = productIdClass.newInstance();
         int hash = -1;
         try {
