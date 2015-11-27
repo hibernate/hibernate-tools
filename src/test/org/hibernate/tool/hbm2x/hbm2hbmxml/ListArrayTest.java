@@ -87,7 +87,7 @@ public class ListArrayTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/list");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get two list element", 2, list.size());
 		Element node = (Element) list.get(1); //second list
 		assertEquals("fooComponents", node.attribute( "name" ).getText());
@@ -128,7 +128,7 @@ public class ListArrayTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/array");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one array element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals("proxyArray", node.attribute( "name" ).getText());
