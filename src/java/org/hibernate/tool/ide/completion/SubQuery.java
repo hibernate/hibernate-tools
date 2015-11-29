@@ -7,15 +7,15 @@ import java.util.StringTokenizer;
 
 import org.hibernate.hql.internal.antlr.HqlSqlTokenTypes;
 
-public class SubQuery implements Comparable {
+public class SubQuery implements Comparable<SubQuery> {
 
-    public int compareTo(Object s) {
-        return startOffset - ((SubQuery)s).startOffset;
+    public int compareTo(SubQuery s) {
+        return startOffset - s.startOffset;
     }
     
-    List tokenIds = new ArrayList();
+    List<Integer> tokenIds = new ArrayList<Integer>();
 
-    List tokenText = new ArrayList();
+    List<String> tokenText = new ArrayList<String>();
 
     int startOffset;
 
@@ -28,14 +28,14 @@ public class SubQuery implements Comparable {
     }
 
     public int getToken(int i) {
-        return ((Number)tokenIds.get(i)).intValue();
+        return tokenIds.get(i);
     }
 
     public String getTokenText(int i) {
         return (String) tokenText.get(i);
     }
 
-    public List getEntityNames() {
+    public List<EntityNameReference> getEntityNames() {
         boolean afterFrom = false;
         boolean afterJoin = false;
         StringBuffer tableNames = new StringBuffer();
@@ -43,7 +43,7 @@ public class SubQuery implements Comparable {
         int i = 0;
         boolean cont = true;
         int lastToken = HqlSqlTokenTypes.EOF;
-        for (Iterator iter = tokenIds.iterator(); iter.hasNext();) {
+        for (Iterator<Integer> iter = tokenIds.iterator(); iter.hasNext();) {
 			Integer typeInteger = (Integer) iter.next();
 			int type = typeInteger.intValue();
 			if (!cont) {
@@ -114,13 +114,13 @@ public class SubQuery implements Comparable {
             i++;
             lastToken = type;
         }
-        List tables = new ArrayList();
+        List<EntityNameReference> tables = new ArrayList<EntityNameReference>();
         addEntityReferences(tables, tableNames);
         addEntityReferences(tables, joins);
         return tables;
     }
 
-    private void addEntityReferences(final List tables, final StringBuffer tableNames) {
+    private void addEntityReferences(final List<EntityNameReference> tables, final StringBuffer tableNames) {
         StringTokenizer tableTokenizer = new StringTokenizer(tableNames.toString(), ",");
         while (tableTokenizer.hasMoreTokens()) {
             String table = tableTokenizer.nextToken().trim();
