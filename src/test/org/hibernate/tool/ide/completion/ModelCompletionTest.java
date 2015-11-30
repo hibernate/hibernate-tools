@@ -19,6 +19,7 @@ package org.hibernate.tool.ide.completion;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -31,14 +32,18 @@ import org.hibernate.cfg.Configuration;
 public class ModelCompletionTest extends TestCase {
 
     private final class Collector implements IHQLCompletionRequestor {
-		private List proposals = new ArrayList();
+		private List<HQLCompletionProposal> proposals = new ArrayList<HQLCompletionProposal>();
 		
 		public void clear() {
 			proposals.clear();
 		}
 
 		public HQLCompletionProposal[] getCompletionProposals() {
-			Collections.sort( proposals, new HQLCompletionProposalComparator() );
+			Collections.sort( proposals, new Comparator<HQLCompletionProposal>() {
+				public int compare(HQLCompletionProposal o1, HQLCompletionProposal o2) {
+					return o1.getSimpleName().compareTo( o2.getSimpleName() );
+				}
+			});
 			return (HQLCompletionProposal[]) proposals.toArray(new HQLCompletionProposal[proposals.size()]);			
 		}
 
@@ -183,7 +188,7 @@ public class ModelCompletionTest extends TestCase {
     
     public void testProductOwnerAddress() {
         String query = "select p from Product p where p.owner.";
-        List visible = getVisibleEntityNames(query.toCharArray());
+        List<EntityNameReference> visible = getVisibleEntityNames(query.toCharArray());
         
     	Collector hcc = new Collector();
     	
@@ -198,13 +203,13 @@ public class ModelCompletionTest extends TestCase {
         doTestFields(hcc.getCompletionProposals(), new String[] {"id", "number", "street"});
     }
     
-    private List getVisibleEntityNames(char[] cs) {
+    private List<EntityNameReference> getVisibleEntityNames(char[] cs) {
     	return new HQLAnalyzer().getVisibleEntityNames( cs, cs.length);	
 	}
 
 	public void testStoreCity() {
         String query = "select p from Product p join p.stores store where store";
-        List visible = getVisibleEntityNames(query.toCharArray());
+        List<EntityNameReference> visible = getVisibleEntityNames(query.toCharArray());
         Collector hcc = new Collector();
     	
     	String canonicalPath = cc.getCanonicalPath(visible, "store.city");
@@ -221,7 +226,7 @@ public class ModelCompletionTest extends TestCase {
     private void doTestUnaliasedProductQuery(final String query) {
         Collector hcc = new Collector();
 
-    	List visible = getVisibleEntityNames(query.toCharArray());
+    	List<EntityNameReference> visible = getVisibleEntityNames(query.toCharArray());
         cc.getMatchingProperties( cc.getCanonicalPath(visible, "owner"), "f", hcc );
 
     	HQLCompletionProposal[] completionProposals = hcc.getCompletionProposals();
