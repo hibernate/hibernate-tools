@@ -125,11 +125,11 @@ public class HQLAnalyzer {
         return show;    	
     }
     
-    public List getVisibleSubQueries(char[] chars, int position) {
+    public List<SubQuery> getVisibleSubQueries(char[] chars, int position) {
     	SubQueryList sqList = getSubQueries(chars, position);
-        List visible = new ArrayList();
-        for (Iterator iter = sqList.subQueries.iterator(); iter.hasNext();) {
-			SubQuery sq = (SubQuery) iter.next();
+        List<SubQuery> visible = new ArrayList<SubQuery>();
+        for (Iterator<SubQuery> iter = sqList.subQueries.iterator(); iter.hasNext();) {
+			SubQuery sq = iter.next();
 			 if (sqList.caretDepth >= sq.depth && (sq.startOffset <= position || sq.endOffset >= position)) {
                 visible.add(sq);
             }
@@ -137,11 +137,11 @@ public class HQLAnalyzer {
         return visible;
     }
 
-    public List getVisibleEntityNames(char[] chars, int position) {
-        List sqs = getVisibleSubQueries(chars, position);
-        List entityReferences = new ArrayList();
-        for (Iterator iter = sqs.iterator(); iter.hasNext();) {
-			SubQuery sq = (SubQuery) iter.next();
+    public List<EntityNameReference> getVisibleEntityNames(char[] chars, int position) {
+        List<SubQuery> sqs = getVisibleSubQueries(chars, position);
+        List<EntityNameReference> entityReferences = new ArrayList<EntityNameReference>();
+        for (Iterator<SubQuery> iter = sqs.iterator(); iter.hasNext();) {
+			SubQuery sq = iter.next();
 			entityReferences.addAll(sq.getEntityNames());
 		}
         return entityReferences;
@@ -150,10 +150,10 @@ public class HQLAnalyzer {
     protected SubQueryList getSubQueries(char[] query, int position) {
     	SimpleHQLLexer syntax = getLexer( query );
     	int numericId = -1;
-        List subQueries = new ArrayList();
+        List<SubQuery> subQueries = new ArrayList<SubQuery>();
         int depth = 0;
         int caretDepth = 0;
-        Map level2SubQuery = new HashMap();
+        Map<Integer, SubQuery> level2SubQuery = new HashMap<Integer, SubQuery>();
         SubQuery current = null;
         while ((numericId = syntax.nextTokenId()) != HqlSqlTokenTypes.EOF) {
             boolean tokenAdded = false;
@@ -163,7 +163,7 @@ public class HQLAnalyzer {
                     caretDepth = depth;
                 }
             } else if (numericId == HqlSqlTokenTypes.CLOSE) {
-                SubQuery currentDepthQuery = (SubQuery) level2SubQuery.get(new Integer(depth));
+                SubQuery currentDepthQuery = level2SubQuery.get(new Integer(depth));
                 // We check if we have a query on the current depth.
                 // If yes, we'll have to close it
                 if (currentDepthQuery != null && currentDepthQuery.depth == depth) {
@@ -195,10 +195,10 @@ public class HQLAnalyzer {
                     break;
                 default:
                     if (!tokenAdded) {
-                        SubQuery sq = (SubQuery) level2SubQuery.get(new Integer(depth));
+                        SubQuery sq = level2SubQuery.get(new Integer(depth));
                         int i = depth;
                         while (sq == null && i >= 0) {
-                            sq = (SubQuery) level2SubQuery.get(new Integer(i--));
+                            sq = level2SubQuery.get(new Integer(i--));
                         }
                         if (sq != null) {
                             sq.tokenIds.add(new Integer(numericId));
@@ -207,8 +207,8 @@ public class HQLAnalyzer {
                     }
             }
         }
-        for (Iterator iter = level2SubQuery.values().iterator(); iter.hasNext();) {
-			SubQuery sq = (SubQuery) iter.next();
+        for (Iterator<SubQuery> iter = level2SubQuery.values().iterator(); iter.hasNext();) {
+			SubQuery sq = iter.next();
 			sq.endOffset = syntax.getTokenOffset() + syntax.getTokenLength();
             subQueries.add(sq);
         }
@@ -239,7 +239,7 @@ public class HQLAnalyzer {
 
         int caretDepth;
 
-        List subQueries;
+        List<SubQuery> subQueries;
     }
 
     
