@@ -38,12 +38,12 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 				collector.completionFailure("Configuration not available nor open");
 			}
 		} else {
-			List visible = new HQLAnalyzer().getVisibleEntityNames( query.toCharArray(), position );
+			List<EntityNameReference> visible = new HQLAnalyzer().getVisibleEntityNames( query.toCharArray(), position );
 			int dotIndex = prefix.lastIndexOf(".");
             if (dotIndex == -1) {
                 // It's a simple path, not a dot separated one (find aliases that matches)
-            	for (Iterator iter = visible.iterator(); iter.hasNext();) {
-					EntityNameReference qt = (EntityNameReference) iter.next();
+            	for (Iterator<EntityNameReference> iter = visible.iterator(); iter.hasNext();) {
+					EntityNameReference qt = iter.next();
 					String alias = qt.getAlias();
                     if (alias.startsWith(prefix)) {
                     		HQLCompletionProposal completionProposal = new HQLCompletionProposal(HQLCompletionProposal.ALIAS_REF, position);
