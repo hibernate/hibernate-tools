@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,12 +12,12 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.doc.DocFile;
 import org.hibernate.tool.hbm2x.doc.DocFileManager;
 import org.hibernate.tool.hbm2x.doc.DocHelper;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.internal.util.StringHelper;
 
 /**
  * Exporter implementation that creates Hibernate Documentation.
@@ -297,7 +296,7 @@ public class DocExporter extends AbstractExporter {
         try {
             DocFile cssStylesDocFile = docFileManager.getCssStylesDocFile();
 
-            processTemplate(Collections.EMPTY_MAP, FILE_CSS_DEFINITION, cssStylesDocFile.getFile());
+            processTemplate(new HashMap<String, Object>(0), FILE_CSS_DEFINITION, cssStylesDocFile.getFile());
 
             DocFile hibernateLogoDocFile = docFileManager.getHibernateImageDocFile();
 
@@ -310,7 +309,7 @@ public class DocExporter extends AbstractExporter {
             
             DocFile mainIndexDocFile = docFileManager.getMainIndexDocFile();
 
-            processTemplate(Collections.EMPTY_MAP, FILE_INDEX, mainIndexDocFile.getFile() );
+            processTemplate(new HashMap<String, Object>(0), FILE_INDEX, mainIndexDocFile.getFile() );
         } 
         catch (IOException ioe) {
             throw new RuntimeException("Error while copying files.", ioe);
@@ -325,7 +324,7 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFile.getFile();
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
 
         processTemplate(parameters, FTL_TABLES_INDEX, file);
@@ -337,7 +336,7 @@ public class DocExporter extends AbstractExporter {
     public void generateEntitiesIndex(){
     	DocFile docFile = docFileManager.getClassIndexDocFile();
     	File file = docFile.getFile();
-    	Map parameters = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("docFile", docFile);
     	processTemplate(parameters, FTL_ENTITIES_INDEX, file );
     }
@@ -351,7 +350,7 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFileManager.getTableSummaryDocFile().getFile();
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
         parameters.put( "graphsGenerated", Boolean.valueOf( graphsGenerated ) );
         if(graphsGenerated) {
@@ -387,10 +386,10 @@ public class DocExporter extends AbstractExporter {
     	DocFile docFile = docFileManager.getClassSummaryFile(); 
     	File file = docFile.getFile();
     	
-    	Map parameters = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("docFile", docFile);
     	
-        List list = docHelper.getPackages();
+        List<String> list = docHelper.getPackages();
         if (list.size() > 0){
     		//Remove All Classes
         	list.remove(0);
@@ -411,15 +410,15 @@ public class DocExporter extends AbstractExporter {
      * Generate one file per table with detail information.
      */
     public void generateTablesDetails() {
-        Iterator tables = getConfiguration().getTableMappings();
+        Iterator<Table> tables = getConfiguration().getTableMappings();
         while (tables.hasNext() ) {
-            Table table = (Table) tables.next();
+            Table table = tables.next();
 
             DocFile docFile = docFileManager.getTableDocFile(table);
             if(docFile!=null) {
             	File file = docFile.getFile();
 
-            	Map parameters = new HashMap();
+            	Map<String, Object> parameters = new HashMap<String, Object>();
             	parameters.put("docFile", docFile);
             	parameters.put("table", table);
 
@@ -433,15 +432,15 @@ public class DocExporter extends AbstractExporter {
      *
      */
     public void generateEntitiesDetails(){
-    	Iterator classes = docHelper.getClasses().iterator();
+    	Iterator<POJOClass> classes = docHelper.getClasses().iterator();
     	while(classes.hasNext()){
-    		POJOClass pcObj = (POJOClass)classes.next();  
+    		POJOClass pcObj = classes.next();  
     		
     		pcObj.getPropertiesForMinimalConstructor();		
     		DocFile docFile = docFileManager.getEntityDocFile(pcObj);
     		File file = docFile.getFile();
     		
-    		Map parameters = new HashMap();
+    		Map<String, Object> parameters = new HashMap<String, Object>();
     		parameters.put("docFile", docFile);
     		parameters.put("class", pcObj);    		
     		processTemplate(parameters, FTL_ENTITIES_ENTITY, file);
@@ -457,9 +456,9 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFile.getFile();
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
-        List list = docHelper.getPackages();
+        List<String> list = docHelper.getPackages();
         if (list.size() > 0){
         	 //Remove All Classes
             list.remove(0);
@@ -478,7 +477,7 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFile.getFile();   
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
         parameters.put("classList", docHelper.getClasses());  
 
@@ -490,16 +489,16 @@ public class DocExporter extends AbstractExporter {
      *
      */
     public void generateEntitiesPackageEntityList() {
-        Iterator packages = docHelper.getPackages().iterator();
+        Iterator<String> packages = docHelper.getPackages().iterator();
 
         while (packages.hasNext() ) {
-            String packageName = (String) packages.next();
+            String packageName = packages.next();
             
             if(!packageName.equals(DocHelper.DEFAULT_NO_PACKAGE)){
                 DocFile docFile = docFileManager.getPackageEntityListDocFile(packageName);
                 File file = docFile.getFile();
 
-                Map parameters = new HashMap();
+                Map<String, Object> parameters = new HashMap<String, Object>();
                 parameters.put("docFile", docFile);
                 parameters.put("title", packageName);
                 parameters.put("classList", docHelper.getClasses(packageName));
@@ -515,18 +514,18 @@ public class DocExporter extends AbstractExporter {
      *
      */
     public void generateEntitiesPackageDetailedInfo() {
-    	List packageList = docHelper.getPackages();
+    	List<String> packageList = docHelper.getPackages();
     	if (packageList.size() > 0){
     		//Remove All Classes
     		packageList.remove(0);
     	}
-        Iterator packages = packageList.iterator();
+        Iterator<String> packages = packageList.iterator();
         
         while (packages.hasNext() ) {
-            String packageName = (String) packages.next();
+            String packageName = packages.next();
 
             DocFile summaryDocFile = docFileManager.getPackageSummaryDocFile(packageName);
-            Map parameters = new HashMap();
+            Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("docFile", summaryDocFile);
             parameters.put("package", packageName);           
             parameters.put("classList", docHelper.getClasses(packageName));                       
@@ -544,7 +543,7 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFile.getFile();
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
         parameters.put("schemaList", docHelper.getSchemas() );
 
@@ -559,7 +558,7 @@ public class DocExporter extends AbstractExporter {
 
         File file = docFile.getFile();
 
-        Map parameters = new HashMap();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("docFile", docFile);
         parameters.put("tableList", docHelper.getTables() );
 
@@ -567,16 +566,16 @@ public class DocExporter extends AbstractExporter {
     }
 
     public void generateTablesSchemaTableList() {
-        Iterator schemas = docHelper.getSchemas().iterator();
+        Iterator<String> schemas = docHelper.getSchemas().iterator();
 
         while (schemas.hasNext() ) {
-            String schemaName = (String) schemas.next();
+            String schemaName = schemas.next();
 
             DocFile docFile = docFileManager.getSchemaTableListDocFile(schemaName);
 
             File file = docFile.getFile();
 
-            Map parameters = new HashMap();
+            Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("docFile", docFile);
             parameters.put("title", schemaName);
             parameters.put("tableList", docHelper.getTables(schemaName) );
@@ -590,13 +589,13 @@ public class DocExporter extends AbstractExporter {
      * schema and another one with a list of tables.
      */
     public void generateTablesSchemaDetailedInfo() {
-        Iterator schemas = docHelper.getSchemas().iterator();
+        Iterator<String> schemas = docHelper.getSchemas().iterator();
         while (schemas.hasNext() ) {
-            String schemaName = (String) schemas.next();
+            String schemaName = schemas.next();
 
             DocFile summaryDocFile = docFileManager.getSchemaSummaryDocFile(schemaName);
 
-            Map parameters = new HashMap();
+            Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("docFile", summaryDocFile);
             parameters.put("schema", schemaName);
 
@@ -605,7 +604,7 @@ public class DocExporter extends AbstractExporter {
 
             DocFile tableListDocFile = docFileManager.getSchemaSummaryDocFile(schemaName);
 
-            parameters = new HashMap();
+            parameters = new HashMap<String, Object>();
             parameters.put("docFile", tableListDocFile);
             parameters.put("schema", schemaName);
 
@@ -623,7 +622,7 @@ public class DocExporter extends AbstractExporter {
      * @param templateName the template to use.
      * @param outputFile the output file.
      */
-    protected void processTemplate(Map parameters, String templateName,
+    protected void processTemplate(Map<String, Object> parameters, String templateName,
             File outputFile) {
     	
     	TemplateProducer producer = new TemplateProducer(getTemplateHelper(), getArtifactCollector() );
