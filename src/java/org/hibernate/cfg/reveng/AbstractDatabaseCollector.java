@@ -10,11 +10,11 @@ import org.hibernate.mapping.ForeignKey;
 public abstract class AbstractDatabaseCollector implements DatabaseCollector {
 
 	private Map<String, List<ForeignKey>> oneToManyCandidates;
-	protected final Map suggestedIdentifierStrategies;
+	protected final Map<TableIdentifier, String> suggestedIdentifierStrategies;
 	private MetaDataDialect metaDataDialect;
 
 	public AbstractDatabaseCollector(MetaDataDialect metaDataDialect) {
-		suggestedIdentifierStrategies = new HashMap();
+		suggestedIdentifierStrategies = new HashMap<TableIdentifier, String>();
 		this.metaDataDialect = metaDataDialect;
 	}
 	
