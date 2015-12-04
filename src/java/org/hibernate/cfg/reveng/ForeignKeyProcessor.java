@@ -29,10 +29,10 @@ public class ForeignKeyProcessor {
 			Table referencedTable, 
 			ProgressListener progress) throws JDBCBinderException {
 		// foreign key name to list of columns
-		Map dependentColumns = new HashMap();
+		Map<String, List<Column>> dependentColumns = new HashMap<String, List<Column>>();
 		// foreign key name to Table
-		Map dependentTables = new HashMap();
-		Map referencedColumns = new HashMap();
+		Map<String, Table> dependentTables = new HashMap<String, Table>();
+		Map<String, List<Column>> referencedColumns = new HashMap<String, List<Column>>();
 		
 		short bogusFkName = 0;
 		
@@ -79,9 +79,9 @@ public class ForeignKeyProcessor {
 				//Table fkTable = mappings.addTable(fkSchema, fkCatalog, fkTableName, null, false);
 				
 				
-				List depColumns =  (List) dependentColumns.get(fkName);
+				List<Column> depColumns =  dependentColumns.get(fkName);
 				if (depColumns == null) {
-					depColumns = new ArrayList();
+					depColumns = new ArrayList<Column>();
 					dependentColumns.put(fkName,depColumns);
 					dependentTables.put(fkName, fkTable);
 				} 
@@ -98,9 +98,9 @@ public class ForeignKeyProcessor {
 				
 				depColumns.add(column);
 				
-				List primColumns = (List) referencedColumns.get(fkName);
+				List<Column> primColumns = referencedColumns.get(fkName);
 				if (primColumns == null) {
-					primColumns = new ArrayList();
+					primColumns = new ArrayList<Column>();
 					referencedColumns.put(fkName,primColumns);					
 				} 
 				
@@ -142,10 +142,10 @@ public class ForeignKeyProcessor {
         		String userfkName = element.getName();        		
         		Table userfkTable = element.getTable();
         		
-        		List userColumns = element.getColumns();
-        		List userrefColumns = element.getReferencedColumns();
+        		List<?> userColumns = element.getColumns();
+        		List<?> userrefColumns = element.getReferencedColumns();
         		
-        		Table deptable = (Table) dependentTables.get(userfkName);
+        		Table deptable = dependentTables.get(userfkName);
         		if(deptable!=null) { // foreign key already defined!?
         			throw new MappingException("Foreign key " + userfkName + " already defined in the database!");
         		}
@@ -159,8 +159,8 @@ public class ForeignKeyProcessor {
         		
         		dependentTables.put(userfkName, deptable);
         		
-        		List depColumns = new ArrayList(userColumns.size() );
-        		Iterator colIterator = userColumns.iterator();
+        		List<Column> depColumns = new ArrayList<Column>(userColumns.size() );
+        		Iterator<?> colIterator = userColumns.iterator();
         		while(colIterator.hasNext() ) {
         			Column jdbcColumn = (Column) colIterator.next();
         			Column column = new Column(jdbcColumn.getName() );
@@ -169,7 +169,7 @@ public class ForeignKeyProcessor {
     				depColumns.add(column);
         		}
         		
-        		List refColumns = new ArrayList(userrefColumns.size() );
+        		List<Column> refColumns = new ArrayList<Column>(userrefColumns.size() );
         		colIterator = userrefColumns.iterator();
         		while(colIterator.hasNext() ) {
         			Column jdbcColumn = (Column) colIterator.next();
