@@ -14,20 +14,6 @@ import org.hibernate.tool.hbm2x.MetaAttributeHelper;
 
 public class MetaAttributeBinder {
 
-	static class SimpleMetaAttribute {
-		String value;
-		boolean inheritable = true;
-	
-		public SimpleMetaAttribute(String value, boolean inherit) {
-			this.value = value;
-			this.inheritable = inherit;
-		}
-	
-		public String toString() {
-			return value;
-		}
-	}
-
 	/**
 	 * Merges a Multimap with inherited maps.
 	 * Values specified always overrules/replaces the inherited values.
@@ -53,7 +39,7 @@ public class MetaAttributeBinder {
 					for (Iterator iterator = ml.iterator();
 						iterator.hasNext();
 						) {
-						MetaAttributeBinder.SimpleMetaAttribute element = (MetaAttributeBinder.SimpleMetaAttribute) iterator.next();
+						SimpleMetaAttribute element = (SimpleMetaAttribute) iterator.next();
 						if (element.inheritable) {
 							result.put(key, element);
 						}
@@ -69,7 +55,7 @@ public class MetaAttributeBinder {
 	public static MetaAttribute toRealMetaAttribute(String name, List values) {
 		MetaAttribute attribute = new MetaAttribute(name);
 		for (Iterator iter = values.iterator(); iter.hasNext();) {
-			MetaAttributeBinder.SimpleMetaAttribute element = (MetaAttributeBinder.SimpleMetaAttribute) iter.next();
+			SimpleMetaAttribute element = (SimpleMetaAttribute) iter.next();
 			attribute.addValue(element.value);
 		}
 		
@@ -112,7 +98,7 @@ public class MetaAttributeBinder {
 				inherit = Boolean.valueOf(inheritStr).booleanValue(); 
 			}			
 			
-			MetaAttributeBinder.SimpleMetaAttribute ma = new MetaAttributeBinder.SimpleMetaAttribute(value, inherit);
+			SimpleMetaAttribute ma = new SimpleMetaAttribute(value, inherit);
 			result.put(attribute, ma);
 		}
 		return result;
