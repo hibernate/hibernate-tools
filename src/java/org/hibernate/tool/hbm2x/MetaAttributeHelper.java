@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.collections.MultiMap;
+import org.hibernate.mapping.MetaAttribute;
 
 /**
  * Helper for loading, merging  and accessing <meta> tags.
@@ -23,20 +24,20 @@ public final class MetaAttributeHelper {
 	 * @param collection
 	 * @param string
 	 */
-	public static String getMetaAsString(Collection meta, String seperator) {
+	public static String getMetaAsString(Collection<?> meta, String seperator) {
 		if(meta==null || meta.isEmpty() ) {
 	        return "";
 	    }
 		StringBuffer buf = new StringBuffer();
 		
-			for (Iterator iter = meta.iterator(); iter.hasNext();) {				
+			for (Iterator<?> iter = meta.iterator(); iter.hasNext();) {				
 				buf.append(iter.next() );
 				if(iter.hasNext() ) buf.append(seperator);
 			}
 		return buf.toString();
 	}
 
-	public static String getMetaAsString(org.hibernate.mapping.MetaAttribute meta, String seperator) {
+	public static String getMetaAsString(MetaAttribute meta, String seperator) {
 		if(meta==null) {
 			return null;
 		} 
@@ -45,7 +46,7 @@ public final class MetaAttributeHelper {
 		}
 	}
 
-	static	boolean getMetaAsBool(Collection c, boolean defaultValue) {
+	static	boolean getMetaAsBool(Collection<?> c, boolean defaultValue) {
 			if(c==null || c.isEmpty() ) {
 				return defaultValue;
 			} 
@@ -57,7 +58,8 @@ public final class MetaAttributeHelper {
 	public static String getMetaAsString(org.hibernate.mapping.MetaAttribute c) {		
 		return c==null?"":getMetaAsString(c.getValues() );
 	}
-	static String getMetaAsString(Collection c) {
+	
+	static String getMetaAsString(Collection<?> c) {
 		return getMetaAsString(c, "");
 	}
 
@@ -73,11 +75,11 @@ public final class MetaAttributeHelper {
      * @param destination
      * @param specific
      */
-     public static void copyMultiMap(MultiMap destination, Map specific) {
-        for (Iterator keyIterator = specific.keySet().iterator(); keyIterator.hasNext(); ) {
+     public static void copyMultiMap(MultiMap destination, Map<Object ,Collection<?>> specific) {
+        for (Iterator<?> keyIterator = specific.keySet().iterator(); keyIterator.hasNext(); ) {
             Object key = keyIterator.next();
-            Collection c = (Collection) specific.get(key);
-            for (Iterator valueIterator = c.iterator(); valueIterator.hasNext(); ) 
+            Collection<?> c = specific.get(key);
+            for (Iterator<?> valueIterator = c.iterator(); valueIterator.hasNext(); ) 
                 destination.put(key, valueIterator.next() );
         }
     }
