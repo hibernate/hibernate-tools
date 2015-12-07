@@ -64,7 +64,7 @@
 		<synchronize table="mytable" />
 		<return 
              alias="e"
-             class="org.hibernate.tool.hbm2x.hbm2hbmxml.elephant"
+             class="org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals"
 		/>
 		<![CDATA[from elephant as {e} where {e.age} > 50]]>
 	</sql-query>
@@ -80,7 +80,7 @@
 
 	<sql-query name="test_sqlquery_6">
 		<synchronize table="mytable" />
-        <load-collection alias="e" role="elephant.age" lock-mode="none"/>
+        <load-collection alias="e" role="BasicGlobals.price" lock-mode="none"/>
 		<![CDATA[from elephant as {e} where {e.age} > 25]]>
 	</sql-query>
 	
