@@ -491,7 +491,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		genAtt = returnEl.attribute("alias");
 		assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
 		genAtt = returnEl.attribute("class");
-		assertEquals("Unexpected class value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.elephant", genAtt.getStringValue() );
+		assertEquals("Unexpected class value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals", genAtt.getStringValue() );
 
 	}
 
@@ -547,7 +547,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		genAtt = returnEl.attribute("alias");
 		assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
 		genAtt = returnEl.attribute("role");
-		assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.elephant.age", genAtt.getStringValue() );
+		assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals.price", genAtt.getStringValue() );
 		genAtt = returnEl.attribute("lock-mode");
 		assertEquals("Unexpected class lock-mode for return element", "none", genAtt.getStringValue() );
 
