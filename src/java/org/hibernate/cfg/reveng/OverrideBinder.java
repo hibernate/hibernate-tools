@@ -5,15 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.internal.util.StringHelper;
 
 
 public final class OverrideBinder {
@@ -27,7 +27,7 @@ public final class OverrideBinder {
 		Element rootElement = doc.getRootElement();
 		
 		Element element;
-		List elements;
+		List<?> elements;
 
 		elements = rootElement.elements("schema-selection");
 		bindSchemaSelection(elements, repository);
@@ -42,7 +42,7 @@ public final class OverrideBinder {
 		elements = rootElement.elements("table-filter");
 		bindTableFilters(elements, repository);
 		
-		List tables = rootElement.elements("table");
+		List<?> tables = rootElement.elements("table");
 		bindTables(tables, repository);
 		
 	}
@@ -78,8 +78,8 @@ public final class OverrideBinder {
 		}
 	}
 	
-	private static void bindSchemaSelection(List selection, OverrideRepository repository) {
-		Iterator iterator = selection.iterator();
+	private static void bindSchemaSelection(List<?> selection, OverrideRepository repository) {
+		Iterator<?> iterator = selection.iterator();
 		
 		while ( iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
@@ -93,8 +93,8 @@ public final class OverrideBinder {
 		}		
 	}
 
-	private static void bindTables(List tables, OverrideRepository repository) {
-		Iterator iterator = tables.iterator();
+	private static void bindTables(List<?> tables, OverrideRepository repository) {
+		Iterator<?> iterator = tables.iterator();
 		
 		while ( iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
@@ -107,11 +107,11 @@ public final class OverrideBinder {
 			
 			Element primaryKey = element.element("primary-key");			
 			bindPrimaryKey(primaryKey, table, repository);
-			List columns = element.elements("column");
+			List<?> columns = element.elements("column");
 			bindColumns(columns, table, repository);
 			
 			
-			List foreignKeys = element.elements("foreign-key");
+			List<?> foreignKeys = element.elements("foreign-key");
 			bindForeignKeys(foreignKeys, table, repository);
 			
 			bindMetaAttributes(element, table, repository);
@@ -123,7 +123,7 @@ public final class OverrideBinder {
 	}
 
 	private static void bindMetaAttributes(Element element, Table table, OverrideRepository repository) {
-		MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiHashMap());
+		MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
 		if(map!=null && !map.isEmpty()) {
 			repository.addMetaAttributeInfo( table, map);
 		} 
@@ -140,7 +140,7 @@ public final class OverrideBinder {
 			String identifierClass = element.attributeValue("class");
 			
 			Properties params = new Properties();
-			Iterator iter = element.elementIterator( "param" );
+			Iterator<?> iter = element.elementIterator( "param" );
 			while ( iter.hasNext() ) {
 				Element childNode = (Element) iter.next();
 				params.setProperty( childNode.attributeValue( "name" ), childNode.getText() );
@@ -149,14 +149,14 @@ public final class OverrideBinder {
 			repository.addTableIdentifierStrategy(table, identifierClass, params);
 		}
 		
-		List boundColumnNames = bindColumns(identifier.elements("key-column"), table, repository);
+		List<?> boundColumnNames = bindColumns(identifier.elements("key-column"), table, repository);
 		
 		repository.addPrimaryKeyNamesForTable(table, boundColumnNames, propertyName, compositeIdName);
 		
 	}
 
-	private static void bindForeignKeys(List foreignKeys, Table table, OverrideRepository repository) {
-		Iterator iterator = foreignKeys.iterator();
+	private static void bindForeignKeys(List<?> foreignKeys, Table table, OverrideRepository repository) {
+		Iterator<?> iterator = foreignKeys.iterator();
 		
 		while( iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
@@ -170,10 +170,10 @@ public final class OverrideBinder {
 				foreignTable.setCatalog(getValue(element.attributeValue( "foreign-catalog"), table.getCatalog()) );
 				foreignTable.setSchema(getValue(element.attributeValue( "foreign-schema"), table.getSchema()) );
 
-				List localColumns = new ArrayList();
-				List foreignColumns = new ArrayList();
+				List<Column> localColumns = new ArrayList<Column>();
+				List<Column> foreignColumns = new ArrayList<Column>();
 				
-				Iterator columnRefs = element.elements("column-ref").iterator();
+				Iterator<?> columnRefs = element.elements("column-ref").iterator();
 				while ( columnRefs.hasNext() ) {
 					Element columnRef = (Element) columnRefs.next();
 					String localColumnName = columnRef.attributeValue("local-column");
@@ -303,9 +303,9 @@ public final class OverrideBinder {
 		}
 	}
 
-	private static List bindColumns(List columns, Table table, OverrideRepository repository) {
-		Iterator iterator = columns.iterator();
-		List columnNames = new ArrayList();
+	private static List<String> bindColumns(List<?> columns, Table table, OverrideRepository repository) {
+		Iterator<?> iterator = columns.iterator();
+		List<String> columnNames = new ArrayList<String>();
 		while( iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
 			Column column = new Column();
@@ -320,7 +320,7 @@ public final class OverrideBinder {
 				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
 			}
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiHashMap());
+			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
 			if(map!=null && !map.isEmpty()) {
 				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
 			} 
@@ -337,9 +337,9 @@ public final class OverrideBinder {
 			
 			String foreignTableName = element.attributeValue("foreign-table");
 			if(foreignTableName!=null) {
-				List localColumns = new ArrayList();
+				List<Column> localColumns = new ArrayList<Column>();
 				localColumns.add(column);
-				List foreignColumns = new ArrayList();
+				List<Column> foreignColumns = new ArrayList<Column>();
 				
 				Table foreignTable = new Table();
 				foreignTable.setName(foreignTableName);
@@ -371,8 +371,8 @@ public final class OverrideBinder {
 		return Boolean.valueOf(value).booleanValue();
 	}
 
-	private static void bindTableFilters(List filters, OverrideRepository respository) {
-		Iterator iterator = filters.iterator();
+	private static void bindTableFilters(List<?> filters, OverrideRepository respository) {
+		Iterator<?> iterator = filters.iterator();
 		
 		while(iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
@@ -383,7 +383,7 @@ public final class OverrideBinder {
 			filter.setExclude(Boolean.valueOf(element.attributeValue("exclude") ) );
 			filter.setPackage(element.attributeValue("package") );
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiHashMap());
+			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
 			if(map!=null && !map.isEmpty()) {
 				filter.setMetaAttributes( map );
 			} else {
@@ -395,7 +395,7 @@ public final class OverrideBinder {
 	}
 
 	private static void bindTypeMappings(Element typeMapping, OverrideRepository repository) {
-		Iterator iterator = typeMapping.elements("sql-type").iterator();
+		Iterator<?> iterator = typeMapping.elements("sql-type").iterator();
 		
 		while (iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
