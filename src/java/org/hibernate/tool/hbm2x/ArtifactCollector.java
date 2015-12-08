@@ -18,28 +18,29 @@ import java.util.Set;
  */
 public class ArtifactCollector {
 
-	final protected Map files = new HashMap();
+	final protected Map<String, List<File>> files = 
+			new HashMap<String, List<File>>();
 	
 	/** 
 	 * Called to inform that a file has been created by the exporter.
 	 */
 	public void addFile(File file, String type) {		
-		List existing = (List) files.get(type);
+		List<File> existing = files.get(type);
 		if(existing==null) {
-			existing = new ArrayList();
+			existing = new ArrayList<File>();
 			files.put(type, existing);
 		}
 		existing.add(file);
 	}
 
 	public int getFileCount(String type) {
-		List existing = (List) files.get(type);
+		List<File> existing = files.get(type);
 		
 		return (existing==null) ? 0 : existing.size();
 	}
 
 	public File[] getFiles(String type) {
-		List existing = (List) files.get(type);
+		List<File> existing = files.get(type);
 		
 		if(existing==null) {
 			return new File[0];
@@ -48,7 +49,7 @@ public class ArtifactCollector {
 		}
 	}
 	
-	public Set getFileTypes() {
+	public Set<String> getFileTypes() {
 		return files.keySet();
 	}
 
@@ -61,10 +62,10 @@ public class ArtifactCollector {
 	}
 
 	private void formatXml(String type) throws ExporterException {
-		List list = (List) files.get(type);
+		List<File> list = files.get(type);
 		if(list!=null && !list.isEmpty()) {
-			for (Iterator iter = list.iterator(); iter.hasNext();) {
-				File xmlFile = (File) iter.next();
+			for (Iterator<File> iter = list.iterator(); iter.hasNext();) {
+				File xmlFile = iter.next();
 				try {					
 					XMLPrettyPrinter.prettyPrintFile(XMLPrettyPrinter.getDefaultTidy(), xmlFile, xmlFile, true);
 				}
