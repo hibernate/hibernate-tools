@@ -13,11 +13,11 @@ import org.hibernate.mapping.Property;
  */
 public class SkipBackRefPropertyIterator implements Iterator<Property> {
 
-	private Iterator<Property> delegate;
+	private Iterator<?> delegate;
 
 	private Property backLog;
 
-	public SkipBackRefPropertyIterator(Iterator<Property> iterator) {
+	public SkipBackRefPropertyIterator(Iterator<?> iterator) {
 		delegate = iterator;
 	}
 
