@@ -68,7 +68,7 @@ public class BackrefTest extends NonReflectiveTestCase {
 	public void testBackrefPresent() {
 		Configuration config = getCfg();
 		PersistentClass pc = config.getClassMapping("org.hibernate.tool.hbm2x.hbm2hbmxml.CarPart");
-		Iterator iterator = pc.getPropertyIterator();
+		Iterator<?> iterator = pc.getPropertyIterator();
 		boolean hasBackrefs = false;
 		while (iterator.hasNext() && !hasBackrefs) {
 			hasBackrefs = (iterator.next() instanceof Backref);			
