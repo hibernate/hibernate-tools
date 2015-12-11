@@ -6,9 +6,7 @@ package org.hibernate.tool.hbm2x;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -16,10 +14,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.NonReflectiveTestCase;
-import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.test.TestHelper;
 
 /**
@@ -64,7 +59,7 @@ public class PropertiesTest extends NonReflectiveTestCase {
 		try {
 			document = xmlReader.read(outputXml);
 			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/properties");
-			List list = xpath.selectNodes(document);
+			List<?> list = xpath.selectNodes(document);
 			assertEquals("Expected to get one properties element", 1, list.size());
 			Element node = (Element) list.get(0);
 			assertEquals(node.attribute( "name" ).getText(),"emergencyContact");
@@ -82,7 +77,7 @@ public class PropertiesTest extends NonReflectiveTestCase {
 		File file = new File( "compilable" );
 		file.mkdir();
 
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		list.add( new File( "src/testoutputdependent/properties/PropertiesUsage.java" )
 				.getAbsolutePath() );		
 		TestHelper.compile( getOutputDir(), file, TestHelper.visitAllFiles(
