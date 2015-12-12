@@ -13,8 +13,8 @@ public class Orders {
 
     String name;
 
-    Set items = new HashSet();
-    Set items_1 = new HashSet();
+    Set<Item> items = new HashSet<Item>();
+    Set<Item> items_1 = new HashSet<Item>();
     
 
     /**
@@ -50,7 +50,7 @@ public class Orders {
     /**
      * @return Returns the setOfItem.
      */
-    public Set getItemsForOrderId() {
+    public Set<Item> getItemsForOrderId() {
         return items;
     }
 
@@ -58,19 +58,19 @@ public class Orders {
      * @param items
      *            The setOfItem to set.
      */
-    public void setItemsForOrderId(Set items) {
+    public void setItemsForOrderId(Set<Item> items) {
         this.items = items;
     }
     /**
      * @return Returns the setOfItem_1.
      */
-    public Set getItemsForRelatedOrderId() {
+    public Set<Item> getItemsForRelatedOrderId() {
         return items_1;
     }
     /**
      * @param items_1 The setOfItem_1 to set.
      */
-    public void setItemsForRelatedOrderId(Set items_1) {
+    public void setItemsForRelatedOrderId(Set<Item> items_1) {
         this.items_1 = items_1;
     }
 }
