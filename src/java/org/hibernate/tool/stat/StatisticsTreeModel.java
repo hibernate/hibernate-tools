@@ -15,7 +15,7 @@ public class StatisticsTreeModel extends AbstractTreeModel {
 	String collections = "Collections";
 	String secondlevelcache = "Cache";
 	
-	Map im = IdentityMap.instantiateSequenced( 10 ); 
+	Map<Object, Object> im = IdentityMap.instantiateSequenced( 10 ); 
 	
 	public StatisticsTreeModel(Statistics stats) {
 		this.stats = stats;
