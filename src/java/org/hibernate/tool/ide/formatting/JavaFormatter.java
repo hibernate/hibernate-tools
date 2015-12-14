@@ -20,25 +20,10 @@ public class JavaFormatter {
 
 	private CodeFormatter codeFormatter;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		//DefaultCodeFormatter.USE_NEW_FORMATTER = true;
-		HashMap hashMap = new HashMap();
-		hashMap.put( JavaCore.COMPILER_SOURCE, "1.5");
-		hashMap.put( JavaCore.COMPILER_COMPLIANCE, "1.5");
-		hashMap.put( JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.5");
-		final CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(hashMap);
-		
-		//new JavaFormatter().formatFile(new File("c:/temp/SomeJava.java"), codeFormatter);
-
-	}
-	
-	public JavaFormatter(Map settings) {
+	public JavaFormatter(Map<String, String> settings) {
 		if(settings==null) {
 			// if no settings run with jdk 5 as default 
-			settings = new HashMap();
+			settings = new HashMap<String, String>();
 			settings.put( JavaCore.COMPILER_SOURCE, "1.5");
 			settings.put( JavaCore.COMPILER_COMPLIANCE, "1.5");
 			settings.put( JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.5");			
