@@ -5,7 +5,7 @@
 <hibernate-mapping>
 
 	<class name="org.hibernate.tool.hbm2x.ant.TopDown">
-		<id type="long">
+		<id name="id" type="long">
 			<generator class="assigned"></generator>
 		</id>
 		<property name="name" type="AnyKindOfUserType"></property>
