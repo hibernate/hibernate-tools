@@ -17,8 +17,6 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -87,80 +85,37 @@ public class Hbm2DDLExporter extends AbstractExporter {
 		builder.applySettings( configuration.getProperties() );
 		ServiceRegistry serviceRegistry = builder.build();
 		integrateEnvers( configuration, serviceRegistry );
-
 		if (schemaUpdate) {
 			SchemaUpdate update = new SchemaUpdate(serviceRegistry, configuration);
-			
-			// classic schemaupdate execution, will work with all releases
 			if(outputFileName == null && delimiter == null && haltOnError && format) 
 				update.execute(scriptToConsole, exportToDatabase);
-
-			// at least one of the parameter unmanaged by 
-			// hibernate core prior versions is set 
-			else {
-				
-				/* working with reflection as no idea what hibernate core version is used */
-				try {
-					Class schemaUpdateClass = SchemaUpdate.class;
-					
-					if (null != outputFileName) {
-						Method setOutputFile = schemaUpdateClass.getMethod("setOutputFile", 
-								new Class[] {String.class});
-						setOutputFile.invoke(update, new Object[] {new File(getOutputDirectory(),
-								outputFileName).toString()});
-										
-						log.debug("delimiter ='"+ delimiter + "'");
-						Method setDelimiter = schemaUpdateClass.getMethod("setDelimiter", 
-								new Class[] {String.class});
-						setDelimiter.invoke(update, new Object[] {delimiter});
-						
-						Method setFormat = schemaUpdateClass.getMethod("setFormat", 
-								new Class[] {boolean.class});
-						setFormat.invoke(update, new Object[] {Boolean.valueOf(format)});
-						
-					}
-					
-					if (haltOnError) {
-						Method setHaltOnError = schemaUpdateClass.getMethod("setHaltOnError", 
-								new Class[] {boolean.class});
-						setHaltOnError.invoke(update, new Object[] {Boolean.valueOf(haltOnError)});
-					}
-					
-					update.execute(scriptToConsole, exportToDatabase);
-					if (!update.getExceptions().isEmpty()) {
-						int i = 1;
-						for (Iterator iterator = update.getExceptions().iterator(); iterator
-								.hasNext(); i++) {
-							Throwable element = (Throwable) iterator.next();
-							log.warn("Error #" + i + ": ", element);
-
-						}
-						log.error(i - 1 + " errors occurred while performing Hbm2DDLExporter.");
-						if (haltOnError) {
-							throw new ExporterException(
-									"Errors while performing Hbm2DDLExporter");
-						}
-					}
-					
-				} catch (NoSuchMethodException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
-							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate jar or don't used the involved parameters", e );
-				} catch (IllegalArgumentException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
-							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate jar or don't used the involved parameters", e );
-				} catch (InvocationTargetException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
-							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate jar or don't used the involved parameters", e );
-				} catch (IllegalAccessException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
-							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
-							" either update hibernate jar or don't used the involved parameters", e );
+			else {				
+				if (null != outputFileName) {
+					File outputFile = new File(getOutputDirectory(), outputFileName);
+					update.setOutputFile(outputFile.getPath());				
+					log.debug("delimiter ='"+ delimiter + "'");
+					update.setDelimiter(delimiter);
+					update.setFormat(Boolean.valueOf(format));						
 				}
+				
+				if (haltOnError) {
+					update.setHaltOnError(Boolean.valueOf(haltOnError));
+				}				
+				update.execute(scriptToConsole, exportToDatabase);
+				if (!update.getExceptions().isEmpty()) {
+					int i = 1;
+					for (Iterator<?> iterator = update.getExceptions().iterator(); iterator
+							.hasNext(); i++) {
+						Throwable element = (Throwable) iterator.next();
+						log.warn("Error #" + i + ": ", element);
+					}
+					log.error(i - 1 + " errors occurred while performing Hbm2DDLExporter.");
+					if (haltOnError) {
+						throw new ExporterException(
+								"Errors while performing Hbm2DDLExporter");
+					}
+				}					
 			}
-
 		} else {
 			SchemaExport export = new SchemaExport(serviceRegistry, configuration);
 			if (null != outputFileName) {
@@ -178,8 +133,7 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			} else {
 				export.execute(scriptToConsole, exportToDatabase, drop, create);
 			}
-		}
-		
+		}		
 	}
 
 	/**
