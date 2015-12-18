@@ -32,7 +32,7 @@ public class HibernateToolTask extends Task {
 	}
 	ConfigurationTask configurationTask;
 	private File destDir;
-	private List generators = new ArrayList();
+	private List<ExporterTask> generators = new ArrayList<ExporterTask>();
 	private Path classPath;
 	private Path templatePath;
 	private Properties properties = new Properties(); 	
@@ -169,7 +169,7 @@ public class HibernateToolTask extends Task {
 		}
 		log("Executing Hibernate Tool with a " + configurationTask.getDescription() );
 		validateParameters();
-		Iterator iterator = generators.iterator();
+		Iterator<ExporterTask> iterator = generators.iterator();
 		
 		AntClassLoader loader = getProject().createClassLoader(classPath);
 		
@@ -181,7 +181,7 @@ public class HibernateToolTask extends Task {
 			loader.setThreadContextLoader();
 			
 			while (iterator.hasNext() ) {				
-				generatorTask = (ExporterTask) iterator.next();
+				generatorTask = iterator.next();
 				log(count++ + ". task: " + generatorTask.getName() );
 				generatorTask.execute();			
 			}
@@ -275,10 +275,10 @@ public class HibernateToolTask extends Task {
 		if(generators.isEmpty()) {
 			throw new BuildException("No exporters specified in <hibernatetool>. There has to be at least one specified. An exporter is e.g. <hbm2java> or <hbmtemplate>. See documentation for details.", getLocation());
 		} else {
-			Iterator iterator = generators.iterator();
+			Iterator<ExporterTask> iterator = generators.iterator();
 			
 			while (iterator.hasNext() ) {
-				ExporterTask generatorTask = (ExporterTask) iterator.next();
+				ExporterTask generatorTask = iterator.next();
 				generatorTask.validateParameters();			
 			}
 		}
