@@ -13,7 +13,7 @@ public class QueryExporterTask extends ExporterTask {
 
 	private String query = "";
 	private String filename;
-	List queries = new ArrayList();
+	List<HQL> queries = new ArrayList<HQL>();
 
 	public QueryExporterTask(HibernateToolTask parent) {
 		super( parent );		
@@ -21,12 +21,12 @@ public class QueryExporterTask extends ExporterTask {
 
 	protected Exporter configureExporter(Exporter exp) {
 		QueryExporter exporter = (QueryExporter) exp;
-		List queryStrings = new ArrayList();
+		List<String> queryStrings = new ArrayList<String>();
 		if(StringHelper.isNotEmpty(query)) {
 			queryStrings.add(query);
 		}
-		for (Iterator iter = queries.iterator(); iter.hasNext();) {
-			HQL hql = (HQL) iter.next();
+		for (Iterator<HQL> iter = queries.iterator(); iter.hasNext();) {
+			HQL hql = iter.next();
 			if(StringHelper.isNotEmpty(hql.query)) {
 				queryStrings.add(hql.query);
 			}
@@ -43,8 +43,8 @@ public class QueryExporterTask extends ExporterTask {
 			throw new BuildException("Need to specify at least one query.");
 		}
 		
-		for (Iterator iter = queries.iterator(); iter.hasNext();) {
-			HQL hql = (HQL) iter.next();
+		for (Iterator<HQL> iter = queries.iterator(); iter.hasNext();) {
+			HQL hql = iter.next();
 			if(StringHelper.isEmpty(hql.query)) {
 				throw new BuildException("Query must not be empty");
 			}
