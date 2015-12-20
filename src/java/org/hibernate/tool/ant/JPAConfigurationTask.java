@@ -21,32 +21,14 @@ public class JPAConfigurationTask extends ConfigurationTask {
 	
 	protected Configuration createConfiguration() {
 		try {
-			Map overrides = new HashMap();
+			Map<Object, Object> overrides = new HashMap<Object, Object>();
 			Properties p = getProperties();
 			
 			if(p!=null) {
 				overrides.putAll( p );
 			}
 
-//			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
-//			Object ejb3cfg = clazz.newInstance();
-//			
-//			if(entityResolver!=null) {
-//				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
-//				Object object = resolver.newInstance();
-//				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });
-//				method.invoke(ejb3cfg, new Object[] { object } );
-//			}
-//			
-//			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class });
-//			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
-//				throw new BuildException("Persistence unit not found: '" + persistenceUnit + "'.");
-//			}
-//			
-//			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);
-//			return (Configuration) method.invoke(ejb3cfg, null);
-
-			Class hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", JPAConfigurationTask.class);
+			Class<?> hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", JPAConfigurationTask.class);
 			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
 			
 			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getDeclaredMethod(
@@ -68,13 +50,13 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			Method build =
 					entityManagerFactoryBuilder.getClass().getMethod(
 							"build", new Class[0]);
-			build.invoke(entityManagerFactoryBuilder, null);
+			build.invoke(entityManagerFactoryBuilder, (Object[])null);
 			
 			Method getHibernateConfiguration = 
 					entityManagerFactoryBuilder.getClass().getMethod(
 							"getHibernateConfiguration", new Class[0]);
 			return (Configuration)getHibernateConfiguration.invoke(
-							entityManagerFactoryBuilder, null);
+							entityManagerFactoryBuilder, (Object[])null);
 			
 		} 
 		catch(HibernateException he) {
