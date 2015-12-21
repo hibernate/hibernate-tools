@@ -49,8 +49,7 @@ public class GenericExporterTask extends ExporterTask {
 			return new GenericExporter();
 		} else {
 			try {
-				Class theClass = ReflectHelper.classForName(exporterClass);
-				return (Exporter) theClass.newInstance();
+				return (Exporter) ReflectHelper.classForName(exporterClass).newInstance();
 			} catch (ClassNotFoundException e) {
 				throw new BuildException("Could not find custom exporter class: " + exporterClass, e);
 			} catch (InstantiationException e) {
