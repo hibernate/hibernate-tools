@@ -21,7 +21,7 @@ import org.hibernate.tool.ide.formatting.JavaFormatter;
 
 public class JavaFormatterTask extends Task {
 	
-	private List fileSets = new ArrayList();
+	private List<FileSet> fileSets = new ArrayList<FileSet>();
 	private boolean failOnError;
 	private File configurationFile;
 	
@@ -56,7 +56,7 @@ public class JavaFormatterTask extends Task {
 	
 	public void execute() throws BuildException {
 		
-		Map settings = null;
+		Map<Object, Object> settings = null;
 		if(configurationFile!=null) {
 			 try {
 				settings = readConfig( configurationFile );
@@ -68,7 +68,6 @@ public class JavaFormatterTask extends Task {
 		
 		File[] files = getFiles();
 		
-		int success = 0;
 		int failed = 0;
 	
 		if(files.length>0) {
@@ -82,7 +81,6 @@ public class JavaFormatterTask extends Task {
 						failed++;
 						getProject().log(this, "Formatting failed - skipping " + file, Project.MSG_WARN);						
 					} else {
-						success++;
 						getProject().log(this, "Formatted " + file, Project.MSG_VERBOSE);
 					}
 				} catch(ExporterException ee) {
@@ -102,10 +100,10 @@ public class JavaFormatterTask extends Task {
 
 	private File[] getFiles() {
 
-		List files = new LinkedList();
-		for ( Iterator i = fileSets.iterator(); i.hasNext(); ) {
+		List<File> files = new LinkedList<File>();
+		for ( Iterator<FileSet> i = fileSets.iterator(); i.hasNext(); ) {
 
-			FileSet fs = (FileSet) i.next();
+			FileSet fs = i.next();
 			DirectoryScanner ds = fs.getDirectoryScanner( getProject() );
 
 			String[] dsFiles = ds.getIncludedFiles();
