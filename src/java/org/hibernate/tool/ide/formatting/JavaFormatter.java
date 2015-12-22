@@ -20,10 +20,10 @@ public class JavaFormatter {
 
 	private CodeFormatter codeFormatter;
 
-	public JavaFormatter(Map<String, String> settings) {
+	public JavaFormatter(Map<Object, Object> settings) {
 		if(settings==null) {
 			// if no settings run with jdk 5 as default 
-			settings = new HashMap<String, String>();
+			settings = new HashMap<Object, Object>();
 			settings.put( JavaCore.COMPILER_SOURCE, "1.5");
 			settings.put( JavaCore.COMPILER_COMPLIANCE, "1.5");
 			settings.put( JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.5");			
