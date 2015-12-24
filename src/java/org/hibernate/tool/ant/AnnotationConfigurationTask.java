@@ -23,7 +23,7 @@ public class AnnotationConfigurationTask extends ConfigurationTask {
 	
 	protected Configuration createConfiguration() {
 		try {
-		Class clazz = ReflectHelper.classForName("org.hibernate.cfg.AnnotationConfiguration", AnnotationConfigurationTask.class);
+		Class<?> clazz = ReflectHelper.classForName("org.hibernate.cfg.AnnotationConfiguration", AnnotationConfigurationTask.class);
 		return (Configuration) clazz.newInstance();
 		} 
 		catch(Throwable t) {
