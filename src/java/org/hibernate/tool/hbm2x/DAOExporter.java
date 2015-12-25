@@ -25,7 +25,7 @@ public class DAOExporter extends POJOExporter {
     	setFilePattern("{package-name}/{class-name}Home.java");    	    	
     }
     
-    protected void exportComponent(Map additionalContext, POJOClass element) {
+    protected void exportComponent(Map<String, Object> additionalContext, POJOClass element) {
     	// noop - we dont want components
     }
 
