@@ -81,7 +81,7 @@ public class DAONewExporter extends GenericExporter {
      * Override to avoid overwriting the existing files
      * In the final version this should be moved to GenericExporter 
      */
-    protected void exportPOJO(Map additionalContext, POJOClass element)
+    protected void exportPOJO(Map<String, Object> additionalContext, POJOClass element)
     {
         String filename = resolveFilename(element);
         File file = new File(getOutputDirectory(), filename);
@@ -107,7 +107,7 @@ public class DAONewExporter extends GenericExporter {
      * @param paramValues map with key-value pairs for parameter values
      * @return string where parameters are replaced with their values
      */
-    public String replaceParameters(String pattern, Map paramValues) {
+    public String replaceParameters(String pattern, Map<Object, Object> paramValues) {
         Matcher matcher = Pattern.compile("\\{(.*?)\\}").matcher(pattern);
         String output = pattern;
         while (matcher.find()) {
