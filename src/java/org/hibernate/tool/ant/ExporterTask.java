@@ -26,7 +26,6 @@ public abstract class ExporterTask {
 	Properties properties;
 	File destdir;
 	private Path templatePath;
-	private String templatePrefix = null;
 	
 	public ExporterTask(HibernateToolTask parent) {
 		this.parent = parent;
@@ -60,7 +59,6 @@ public abstract class ExporterTask {
 	}
 	
 	public void setTemplatePrefix(String s) {
-		templatePrefix = s;
 	}
 	
 	public void validateParameters() {
