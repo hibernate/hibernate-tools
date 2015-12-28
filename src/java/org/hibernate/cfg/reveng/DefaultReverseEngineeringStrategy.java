@@ -22,13 +22,13 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 
 	static final private Logger log = LoggerFactory.getLogger(DefaultReverseEngineeringStrategy.class);
 	
-	private static Set AUTO_OPTIMISTICLOCK_COLUMNS;
+	private static Set<String> AUTO_OPTIMISTICLOCK_COLUMNS;
 
 	private ReverseEngineeringSettings settings = new ReverseEngineeringSettings(this);
 
 	private ReverseEngineeringRuntimeInfo runtimeInfo;
 	static {
-		AUTO_OPTIMISTICLOCK_COLUMNS = new HashSet();
+		AUTO_OPTIMISTICLOCK_COLUMNS = new HashSet<String>();
 		AUTO_OPTIMISTICLOCK_COLUMNS.add("version");
 		AUTO_OPTIMISTICLOCK_COLUMNS.add("timestamp");
 	}
