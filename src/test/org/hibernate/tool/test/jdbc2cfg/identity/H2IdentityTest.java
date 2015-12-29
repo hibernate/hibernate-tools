@@ -4,17 +4,13 @@
  */
 package org.hibernate.tool.test.jdbc2cfg.identity;
 
-import java.sql.SQLException;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.SimpleValue;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
