@@ -1,17 +1,12 @@
 package org.hibernate.tool.test.jdbc2cfg.identity;
 
-import java.sql.SQLException;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.SimpleValue;
-import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
