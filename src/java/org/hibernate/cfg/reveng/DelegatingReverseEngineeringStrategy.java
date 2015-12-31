@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 
 public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringStrategy {
@@ -131,7 +132,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?null:delegate.foreignKeyToManyToManyName( fromKey, middleTable, toKey, uniqueReference );
 	}
 
-	public Map tableToMetaAttributes(TableIdentifier tableIdentifier) {
+	public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
 		return delegate==null?null:delegate.tableToMetaAttributes( tableIdentifier );		
 	}
 
