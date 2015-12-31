@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.internal.util.StringHelper;
@@ -339,7 +340,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
         return propertyName;      
 	}
 
-	public Map tableToMetaAttributes(TableIdentifier tableIdentifier) {
+	public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
 		return null;
 	}
 

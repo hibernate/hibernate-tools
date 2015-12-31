@@ -445,7 +445,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		ReverseEngineeringStrategy res = buildOverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		
 		TableIdentifier tableIdentifier = new TableIdentifier(null, null, "TblTest");
-		Map<?,?> attributes = res.tableToMetaAttributes(tableIdentifier);
+		Map<String,MetaAttribute> attributes = res.tableToMetaAttributes(tableIdentifier);
 		assertNotNull(attributes);
 		assertEquals(attributes.size(),1);
 		MetaAttribute ma = (MetaAttribute) attributes.get("use-in-test");
@@ -458,7 +458,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 				"Testy");
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		assertNotNull(attributes);
-		ma = (MetaAttribute) attributes.get( "werd-meta" );
+		ma = attributes.get( "werd-meta" );
 		assertEquals(ma.getName(), "werd-meta");
 		assertEquals(ma.getValues().size(), 2);				
 	
@@ -466,11 +466,11 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		assertNotNull(attributes);
 		assertEquals(2, attributes.size());
-		ma = (MetaAttribute) attributes.get("specific-werd");
+		ma = attributes.get("specific-werd");
 		assertEquals(ma.getName(), "specific-werd");
 		assertEquals(ma.getValue(), "a one");
 		
-		ma = (MetaAttribute) attributes.get( "werd-meta" );
+		ma = attributes.get( "werd-meta" );
 		assertEquals(ma.getName(), "werd-meta");
 		assertEquals(1, ma.getValues().size()); // as long as no inherit this should be one
 		assertEquals("value three", ma.getValue());
@@ -482,7 +482,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertNull(res.columnToMetaAttributes( new TableIdentifier(null, "Werd", "MetaTable"), "bogusColumn" ));
 		attributes = res.columnToMetaAttributes( new TableIdentifier(null, "Werd", "MetaTable"), "MetaColumn" );
 		assertEquals(1, attributes.size());
-		ma = (MetaAttribute) attributes.get("specific-column");
+		ma = attributes.get("specific-column");
 		assertEquals("specific-column",ma.getName());
 		assertEquals("yes a column with meta",ma.getValue());
 		
