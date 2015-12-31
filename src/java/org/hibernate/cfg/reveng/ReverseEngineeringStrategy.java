@@ -126,7 +126,7 @@ public interface ReverseEngineeringStrategy {
 	 * @param tableIdentifier
 	 * @return a Map from String to {@link MetaAttribute}
 	 */
-	public Map tableToMetaAttributes(TableIdentifier tableIdentifier);
+	public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier);
 	
 	/**
 	 * Return the list of metaattributes to assign to properties created based on the given column 

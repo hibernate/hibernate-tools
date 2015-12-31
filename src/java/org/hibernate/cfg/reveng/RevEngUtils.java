@@ -3,6 +3,7 @@ package org.hibernate.cfg.reveng;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 
 public class RevEngUtils {
@@ -59,12 +60,12 @@ public class RevEngUtils {
 		return result;
 	}
 	
-	public static Map<?,?> getTableToMetaAttributesInRevengStrategy(
+	public static Map<String,MetaAttribute> getTableToMetaAttributesInRevengStrategy(
 			ReverseEngineeringStrategy revengStrat,
 			Table table,
 			String defaultCatalog,
 			String defaultSchema) {
-		Map<?,?> result = null;
+		Map<String,MetaAttribute> result = null;
 		TableIdentifier tableIdentifier = TableIdentifier.create(table);
 		result = revengStrat.tableToMetaAttributes(tableIdentifier);
 		if (result == null) {
