@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 public class AnnotationBuilder {
 
 	String annotation;
-	LinkedHashMap attributes = new LinkedHashMap(); 
+	LinkedHashMap<String, String[]> attributes = new LinkedHashMap<String, String[]>(); 
 	
 	public static AnnotationBuilder createAnnotation(String annotation) {
 		return new AnnotationBuilder(annotation);
@@ -52,12 +52,12 @@ public class AnnotationBuilder {
 			return b.toString();
 		} else {
 			b.append("(");
-			Iterator elements = attributes.entrySet().iterator();
+			Iterator<Entry<String, String[]>> elements = attributes.entrySet().iterator();
 			boolean addedBefore = false;
 			while ( elements.hasNext() ) {
-				Map.Entry element = (Map.Entry) elements.next();
+				Entry<String, String[]> element = elements.next();
 
-				String[] s = (String[]) element.getValue();
+				String[] s = element.getValue();
 				if(s.length==0) {
 					addedBefore = false;
 					continue;
@@ -65,7 +65,7 @@ public class AnnotationBuilder {
 					if(addedBefore) {
 						b.append(", ");
 					}
-					String key = (String) element.getKey();
+					String key = element.getKey();
 					b.append(key).append("=");
 					attributeToString( b, s );
 					
@@ -95,22 +95,21 @@ public class AnnotationBuilder {
 		
 	}
 
-	public void addQuotedAttributes(String name, Iterator iterator) {
-		List values = new ArrayList();
+	public void addQuotedAttributes(String name, Iterator<?> iterator) {
+		List<String> values = new ArrayList<String>();
 		while ( iterator.hasNext() ) {
-			String element = iterator.next().toString();
-			values.add(quote( element ));
+			values.add(quote( iterator.next().toString() ));
 		}
-		addAttribute(name, (String[]) values.toArray( new String[values.size()] ));
+		addAttribute(name, values.toArray( new String[values.size()] ));
 	}
 
-	public void addAttributes(String name, Iterator iterator) {
-		List values = new ArrayList();
+	public void addAttributes(String name, Iterator<?> iterator) {
+		List<String> values = new ArrayList<String>();
 		while ( iterator.hasNext() ) {
 			String element = iterator.next().toString();
 			values.add( element );
 		}
-		addAttribute(name, (String[]) values.toArray( new String[values.size()] ));		
+		addAttribute(name, values.toArray( new String[values.size()] ));		
 	}
 	private String quote(String element) {
 		return "\"" + element + "\"";
