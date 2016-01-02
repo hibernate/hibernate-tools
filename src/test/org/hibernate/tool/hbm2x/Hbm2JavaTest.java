@@ -75,7 +75,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		File file = new File( "compilable" );
 		file.mkdir();
 
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		list.add( new File( "src/testoutputdependent/HelloWorld.java" )
 				.getAbsolutePath() );
 		TestHelper.compile( getOutputDir(), file, TestHelper.visitAllFiles(
@@ -262,7 +262,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		assertEquals( null, c2j.getPOJOClass(base).getExtends() );
 		assertEquals( "Base", c2j.getPOJOClass(sub).getExtends() );
 
-		Map m = new HashMap();
+		Map<String, MetaAttribute> m = new HashMap<String, MetaAttribute>();
 		MetaAttribute attribute = new MetaAttribute( "extends" );
 		attribute.addValue( "x" );
 		attribute.addValue( "y" );
@@ -274,7 +274,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		sub.setMetaAttributes( m );
 		assertEquals( "Base,x,y", c2j.getPOJOClass(sub).getExtends() );
 
-		m = new HashMap();
+		m = new HashMap<String, MetaAttribute>();
 		attribute = new MetaAttribute( "implements" );
 		attribute.addValue( "intf" );
 		m.put( attribute.getName(), attribute );
@@ -306,9 +306,11 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 		assertEquals(
 				"java.util.Calendar orderDate, java.math.BigDecimal total, org.hibernate.tool.hbm2x.Customer customer, java.util.Collection lineItems",
-				c2j.asParameterList( pc.getPropertyIterator(), false, new NoopImportContext() ));
-		assertEquals( "orderDate, total, customer, lineItems", c2j
-				.asArgumentList( pc.getPropertyIterator() ) );
+				c2j.asParameterList( 
+						pc.getPropertyIterator(), false, new NoopImportContext() ));
+		assertEquals( 
+				"orderDate, total, customer, lineItems", 
+				c2j.asArgumentList( pc.getPropertyIterator() ) );
 	}
 
 	public void testPropertiesForFullConstructor() {
@@ -317,12 +319,12 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		PersistentClass pc = getCfg().getClassMapping( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
 		
-		List wl = pjc.getPropertiesForFullConstructor();
+		List<?> wl = pjc.getPropertiesForFullConstructor();
 		assertEquals( 3, wl.size() );
 
 		PersistentClass uni = getCfg().getClassMapping( "HelloUniverse" );
 		pjc = c2j.getPOJOClass(uni);
-		List local = pjc.getPropertyClosureForFullConstructor();
+		List<?> local = pjc.getPropertyClosureForFullConstructor();
 		assertEquals( 6, local.size() );
 
 		for(int i=0;i<wl.size();i++) {
@@ -337,7 +339,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		PersistentClass pc = getCfg().getClassMapping( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
 		assertTrue( pjc.needsToString() );
-		Iterator iter = pjc.getToStringPropertiesIterator();
+		Iterator<?> iter = pjc.getToStringPropertiesIterator();
 
 		// in HelloWorld.hbm.xml there're 2 Properties for toString
 		assertEquals( "id", ((Property) iter.next() ).getName() );
@@ -430,7 +432,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		POJOClass pjc = c2j.getPOJOClass((Component) pc.getProperty("addressComponent").getValue());
 		 
 		assertTrue( pjc.needsEqualsHashCode() );
-		Iterator iter = pjc.getEqualsHashCodePropertiesIterator();
+		Iterator<?> iter = pjc.getEqualsHashCodePropertiesIterator();
 
 		// in HelloWorld.hbm.xml there're 2 Properties for toString
 		assertEquals( "streetAddress1", ((Property) iter.next() ).getName() );
@@ -451,7 +453,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		File cfile = new File( getOutputDir(), "genericscompilable" );
 		cfile.mkdir();
 
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		list.add( new File( "src/testoutputdependent/HelloWorld.java" )
 				.getAbsolutePath() );
 		TestHelper.compile( file, cfile, TestHelper.visitAllFiles(

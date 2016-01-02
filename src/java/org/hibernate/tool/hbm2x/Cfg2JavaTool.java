@@ -272,10 +272,10 @@ public class Cfg2JavaTool {
 		return (String) value.accept( new JavaTypeFromValueVisitor() );
 	}
 
-	public String asParameterList(Iterator<Property> fields, boolean useGenerics, ImportContext ic) {
+	public String asParameterList(Iterator<?> fields, boolean useGenerics, ImportContext ic) {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
-			Property field = fields.next();
+			Property field = (Property)fields.next();
 			buf.append( getJavaTypeName( field, useGenerics, ic ) )
 					.append( " " )
 					.append( field.getName() );
@@ -292,10 +292,10 @@ public class Cfg2JavaTool {
 	 *         <p/>
 	 *         TODO: handle this in a template ?
 	 */
-	public String asArgumentList(Iterator<Property> fields) {
+	public String asArgumentList(Iterator<?> fields) {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
-			Property field = fields.next();
+			Property field = (Property)fields.next();
 			buf.append( field.getName() );
 			if ( fields.hasNext() ) {
 				buf.append( ", " );
