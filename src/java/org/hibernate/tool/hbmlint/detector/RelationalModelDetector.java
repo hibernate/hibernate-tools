@@ -11,7 +11,7 @@ import org.hibernate.tool.hbmlint.IssueCollector;
 public abstract class RelationalModelDetector extends Detector {
 
 	public void visit(Configuration cfg, IssueCollector collector) {
-		for (Iterator iter = cfg.getTableMappings(); iter.hasNext();) {
+		for (Iterator<?> iter = cfg.getTableMappings(); iter.hasNext();) {
 			Table table = (Table) iter.next();
 			this.visit(cfg, table, collector);
 		}					
@@ -23,7 +23,7 @@ public abstract class RelationalModelDetector extends Detector {
 	}
 
 	protected void visitColumns(Configuration cfg, Table table, IssueCollector collector) {
-		Iterator columnIter = table.getColumnIterator();
+		Iterator<?> columnIter = table.getColumnIterator();
 		while ( columnIter.hasNext() ) {
 			Column col = ( Column ) columnIter.next();
 			this.visit( cfg, table, col, collector );
