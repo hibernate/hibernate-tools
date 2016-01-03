@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
@@ -80,7 +81,7 @@ public class HibernateConfigurationExporter extends AbstractExporter {
 
         boolean ejb3 = Boolean.valueOf((String)getProperties().get("ejb3")).booleanValue();
         
-        Map props = new TreeMap();
+        Map<Object, Object> props = new TreeMap<Object, Object>();
         if(getConfiguration()!=null) {
             props.putAll(getConfiguration().getProperties() );
         }
@@ -91,17 +92,17 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         String sfname = (String) props.get(Environment.SESSION_FACTORY_NAME);
         pw.println("    <session-factory" + (sfname==null?"":" name=\"" + sfname + "\"") + ">");
 
-        Map ignoredProperties = new HashMap();
+        Map<Object, Object> ignoredProperties = new HashMap<Object, Object>();
         ignoredProperties.put(Environment.SESSION_FACTORY_NAME, null);
         ignoredProperties.put(Environment.HBM2DDL_AUTO, "false" );
         ignoredProperties.put("hibernate.temp.use_jdbc_metadata_defaults", null );
         // FIXME was Environment.TRANSACTION_MANAGER_STRATEGY
         ignoredProperties.put(Environment.TRANSACTION_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup");
         
-        Set set = props.entrySet();
-        Iterator iterator = set.iterator();
+        Set<Entry<Object, Object>> set = props.entrySet();
+        Iterator<Entry<Object, Object>> iterator = set.iterator();
         while (iterator.hasNext() ) {
-            Map.Entry element = (Map.Entry) iterator.next();
+            Entry<Object, Object> element = iterator.next();
             String key = (String) element.getKey();
             if(ignoredProperties.containsKey( key )) {
             	Object ignoredValue = ignoredProperties.get( key );
@@ -115,9 +116,9 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         }
         
 		if(getConfiguration()!=null) {
-		    Iterator classMappings = getConfiguration().getClassMappings();
+		    Iterator<PersistentClass> classMappings = getConfiguration().getClassMappings();
 		    while (classMappings.hasNext() ) {
-		        PersistentClass element = (PersistentClass) classMappings.next();
+		        PersistentClass element = classMappings.next();
 		        if(element instanceof RootClass) {
 		            dump(pw, ejb3, element);
 		        }
@@ -151,9 +152,9 @@ public class HibernateConfigurationExporter extends AbstractExporter {
 			pw.println("<mapping resource=\"" + getMappingFileResource(element) + "\"/>");
 		}
 			
-		Iterator directSubclasses = element.getDirectSubclasses();
+		Iterator<?> directSubclasses = element.getDirectSubclasses();
 		while (directSubclasses.hasNext() ) {
-			PersistentClass subclass = (PersistentClass) directSubclasses.next();
+			PersistentClass subclass = (PersistentClass)directSubclasses.next();
 			dump(pw, useClass, subclass);		
 		}
 		
