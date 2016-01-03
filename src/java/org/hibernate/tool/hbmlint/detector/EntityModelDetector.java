@@ -11,7 +11,7 @@ import org.hibernate.tool.hbmlint.IssueCollector;
 public abstract class EntityModelDetector extends Detector {
 
 	public void visit(Configuration cfg, IssueCollector collector) {
-		for (Iterator iter = cfg.getClassMappings(); iter.hasNext();) {
+		for (Iterator<?> iter = cfg.getClassMappings(); iter.hasNext();) {
 			PersistentClass clazz = (PersistentClass) iter.next();
 			this.visit(cfg, clazz, collector);				
 		}
@@ -25,7 +25,7 @@ public abstract class EntityModelDetector extends Detector {
 		if(clazz.hasIdentifierProperty()) {
 			this.visitProperty(getConfiguration(), clazz, clazz.getIdentifierProperty(), collector);								
 		}
-		Iterator propertyIterator = clazz.getPropertyIterator();
+		Iterator<?> propertyIterator = clazz.getPropertyIterator();
 		while ( propertyIterator.hasNext() ) {
 			Property property = (Property) propertyIterator.next();
 			this.visitProperty(getConfiguration(), clazz, property, collector);					
