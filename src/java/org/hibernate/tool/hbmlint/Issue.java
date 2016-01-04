@@ -24,4 +24,8 @@ public class Issue {
 	public String getDescription() {
 		return description;
 	}
+	
+	public int getPriority() {
+		return priority;
+	}
 }
