@@ -3,11 +3,7 @@ package org.hibernate.tool.hbmlint;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Settings;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbmlint.detector.BadCachingDetector;
 import org.hibernate.tool.hbmlint.detector.InstrumentationDetector;
 import org.hibernate.tool.hbmlint.detector.SchemaByMetaDataDetector;
@@ -22,7 +18,7 @@ public class HbmLint implements IssueCollector {
 		this.detectors = detectors;
 	}
 	
-	List results = new ArrayList();
+	List<Issue> results = new ArrayList<Issue>();
 	
 	public void analyze(Configuration cfg) {
 		for (int i = 0; i < detectors.length; i++) {
@@ -39,7 +35,7 @@ public class HbmLint implements IssueCollector {
 		results.add(analyze);
 	}
 	
-	public List getResults() {
+	public List<Issue> getResults() {
 		return results;	
 	}
 
