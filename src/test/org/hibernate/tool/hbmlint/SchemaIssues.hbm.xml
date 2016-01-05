@@ -5,33 +5,30 @@
 
 <hibernate-mapping package="org.hibernate.tool.hbmlint">
 
-    <class name="Category">
-    
+    <class name="Category">    
     	<id name="id" type="int">
-    		<generator class="sequence">
-    			<param name="sequence">should_be_there</param>
+    		<generator class="enhanced-sequence">
+    			<param name="sequence_name">should_be_there</param>
     		</generator>
-    	</id>
-		
-		<property name="name" type="string"/>
-		
+    	</id>	
+		<property name="name" type="string"/>		
 	</class>
 
-    <class name="BadType">
-    
+    <class name="BadType">   
     	<id name="id" type="int">
-    		<generator class="hilo"/>
-    	</id>
-		
-		<property name="name" type="text"/>
-		
+    		<generator class="enhanced-table">
+    			<param name="table_name">does_not_exist</param>
+    		</generator>
+    	</id>		
+		<property name="name" type="text"/>		
 	</class>
 
 	<class name="MissingTable">
 		<id name="id" type="long">
-    		<generator class="hilo">
-    			<param name="table">hilo_table</param>
+    		<generator class="enhanced-table">
+    			<param name="table_name">hilo_table</param>
     		</generator>
     	</id>		
 	</class>	
+	
 </hibernate-mapping>

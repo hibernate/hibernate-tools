@@ -58,8 +58,6 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 				assertEquals(mc.problems.size(),1);
 				Issue ap = (Issue) mc.problems.get( 0 );
 				assertTrue(ap.getDescription().indexOf( "wrong column type for name" ) >=0);
-			} else {
-				fail("Unkown table " + table);
 			}
 		}
 		
@@ -67,8 +65,7 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 		analyzer.visitGenerators( configuration, mc );
 		assertEquals(1,mc.problems.size());
 		Issue issue = (Issue) mc.problems.get( 0 );
-		assertTrue(issue.getDescription().indexOf( "hibernate_unique_key" ) >=0);
-		
+		assertTrue(issue.getDescription().indexOf( "does_not_exist" ) >=0);		
 	}
 	
 	
@@ -93,6 +90,5 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 	protected String[] getDropSQL() {
 		return new String[] { "drop table Category", "drop table BadType", "drop sequence should_be_there", "drop table hilo_table" };
 	}
-	
 	
 }
