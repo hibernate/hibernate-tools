@@ -64,7 +64,7 @@ public class TemplateHelper {
         context = new SimpleHash(ObjectWrapper.BEANS_WRAPPER);
     	freeMarkerEngine = new Configuration();
         
-        List loaders = new ArrayList();
+        List<TemplateLoader> loaders = new ArrayList<TemplateLoader>();
         
         for (int i = 0; i < templatePaths.length; i++) {
         	File file = new File(templatePaths[i]);
