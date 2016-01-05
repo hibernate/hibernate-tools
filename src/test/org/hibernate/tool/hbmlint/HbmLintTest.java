@@ -1,7 +1,5 @@
 package org.hibernate.tool.hbmlint;
 
-import java.util.List;
-
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
@@ -28,54 +26,31 @@ public class HbmLintTest extends JDBCMetaDataBinderTestCase {
 		new HbmLintExporter(configuration, getOutputDir()).start();
 		
 	}
-	public void testValidateCache() {
-		
+	public void testValidateCache() {		
 		Configuration configuration = new Configuration();
 		addMappings( getMappings(), configuration );
-		configuration.buildMappings();
-		
-		HbmLint analyzer = new HbmLint(new Detector[] { new BadCachingDetector() });
-		
+		configuration.buildMappings();		
+		HbmLint analyzer = new HbmLint(new Detector[] { new BadCachingDetector() });		
 		analyzer.analyze(configuration);
-		
-		List result = analyzer.getResults();
-		
-		assertEquals(1,result.size());
-		
+		assertEquals(1,analyzer.getResults().size());		
 	}
 
-	public void testValidateIdentifier() {
-		
+	public void testValidateIdentifier() {		
 		Configuration configuration = new Configuration();
 		addMappings( getMappings(), configuration );
-		configuration.buildMappings();
-		
-		HbmLint analyzer = new HbmLint(new Detector[] { new ShadowedIdentifierDetector() });
-		
-		analyzer.analyze(configuration);
-		
-		List result = analyzer.getResults();
-		
-		assertEquals(1,result.size());
-
-		
+		configuration.buildMappings();		
+		HbmLint analyzer = new HbmLint(new Detector[] { new ShadowedIdentifierDetector() });		
+		analyzer.analyze(configuration);		
+		assertEquals(1,analyzer.getResults().size());
 	}
 	
-	public void testBytecodeRestrictions() {
-		
+	public void testBytecodeRestrictions() {		
 		Configuration configuration = new Configuration();
 		addMappings( getMappings(), configuration );
-		configuration.buildMappings();
-		
-		HbmLint analyzer = new HbmLint(new Detector[] { new InstrumentationDetector() });
-		
-		analyzer.analyze(configuration);
-		
-		List result = analyzer.getResults();
-		
-		
-		
-		assertEquals(result.toString(), 2,result.size());
+		configuration.buildMappings();		
+		HbmLint analyzer = new HbmLint(new Detector[] { new InstrumentationDetector() });		
+		analyzer.analyze(configuration);	
+		assertEquals(analyzer.getResults().toString(), 2,analyzer.getResults().size());
 
 		
 	}
