@@ -519,7 +519,7 @@ public final class StringUtils {
      * @param separator  the separator character to use
      * @return the joined String
      */
-    public static String join(Iterator iterator, String separator) {
+    public static String join(Iterator<?> iterator, String separator) {
         if (separator == null) {
             separator = "";
         }
