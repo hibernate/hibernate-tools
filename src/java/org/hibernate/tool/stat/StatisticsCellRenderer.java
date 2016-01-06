@@ -14,6 +14,7 @@ import org.hibernate.stat.EntityStatistics;
 import org.hibernate.stat.QueryStatistics;
 import org.hibernate.stat.Statistics;
 
+@SuppressWarnings("serial")
 public class StatisticsCellRenderer extends DefaultTreeCellRenderer {
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
