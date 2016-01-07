@@ -7,11 +7,11 @@ package org.hibernate.tool.hbm2x;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -37,8 +37,8 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public class MockedMetaDataDialect extends JDBCMetaDataDialect {
-		List gottenTables = new ArrayList();
-		public Iterator getTables(String catalog, String schema, String table) {
+		List<String> gottenTables = new ArrayList<String>();
+		public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
 			gottenTables.add(table);
 			return super.getTables( catalog, schema, table );
 		}
