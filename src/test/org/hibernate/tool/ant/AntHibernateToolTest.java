@@ -56,7 +56,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 				removed = true;
 			} catch (BuildException be){
 				try {
-					Thread.currentThread().sleep(500);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 				}
 				//Unable to delete file ...\testdb\hsqldb.log
