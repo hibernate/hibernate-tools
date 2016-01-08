@@ -18,9 +18,7 @@ import java.util.Set;
 
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
-import org.hibernate.MappingException;
 import org.hibernate.cfg.binder.BinderUtils;
-import org.hibernate.cfg.binder.MetaAttributesBinder;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.binder.PropertyBinder;
 import org.hibernate.cfg.reveng.AssociationInfo;
@@ -32,11 +30,9 @@ import org.hibernate.cfg.reveng.RevEngUtils;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.engine.OptimisticLockStyle;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.internal.util.collections.JoinedIterator;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -53,9 +49,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
-import org.hibernate.mapping.Value;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.spi.Stoppable;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
@@ -69,7 +63,6 @@ import org.slf4j.LoggerFactory;
 public class JDBCBinder {
 
 	private Properties properties;
-	private ConnectionProvider connectionProvider;
 	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
 
 	private final Mappings mappings;
@@ -137,8 +130,8 @@ public class JDBCBinder {
 	private void createPersistentClasses(DatabaseCollector collector, Mapping mapping) {
 		Map<String, List<ForeignKey>> manyToOneCandidates = collector.getOneToManyCandidates();
 
-		for (Iterator iter = mappings.iterateTables(); iter.hasNext();) {
-			Table table = (Table) iter.next();
+		for (Iterator<Table> iter = mappings.iterateTables(); iter.hasNext();) {
+			Table table = iter.next();
 			if (table.getCatalog() != null && table.getCatalog().equals(defaultCatalog)) {
 				table.setCatalog(null);
 			}
@@ -194,14 +187,14 @@ public class JDBCBinder {
 			}
 			mappings.addImport( rc.getEntityName(), rc.getEntityName() );
 
-			Set processed = new HashSet();
+			Set<Column> processed = new HashSet<Column>();
 
 
 			PrimaryKeyInfo pki = bindPrimaryKeyToProperties(table, rc, processed, mapping, collector);
 			bindColumnsToVersioning(table, rc, processed, mapping);
 			bindOutgoingForeignKeys(table, rc, processed);
 			bindColumnsToProperties(table, rc, processed, mapping);
-			List incomingForeignKeys = (List) manyToOneCandidates.get( rc.getEntityName() );
+			List<ForeignKey> incomingForeignKeys = manyToOneCandidates.get( rc.getEntityName() );
 			bindIncomingForeignKeys(rc, processed, incomingForeignKeys, mapping);
 			updatePrimaryKey(rc, pki);
 
@@ -230,7 +223,7 @@ public class JDBCBinder {
 	}
 
 	private Property getConstrainedOneToOne(RootClass rc) {
-		Iterator propertyClosureIterator = rc.getPropertyClosureIterator();
+		Iterator<?> propertyClosureIterator = rc.getPropertyClosureIterator();
 		while (propertyClosureIterator.hasNext()) {
 			Property property = (Property) propertyClosureIterator.next();
 			if(property.getValue() instanceof OneToOne) {
@@ -244,10 +237,10 @@ public class JDBCBinder {
 	}
 
 	// bind collections.
-	private void bindIncomingForeignKeys(PersistentClass rc, Set processed, List foreignKeys, Mapping mapping) {
+	private void bindIncomingForeignKeys(PersistentClass rc, Set<Column> processed, List<ForeignKey> foreignKeys, Mapping mapping) {
 		if(foreignKeys!=null) {
-			for (Iterator iter = foreignKeys.iterator(); iter.hasNext();) {
-				ForeignKey foreignKey = (ForeignKey) iter.next();
+			for (Iterator<ForeignKey> iter = foreignKeys.iterator(); iter.hasNext();) {
+				ForeignKey foreignKey = iter.next();
 
 				if(revengStrategy.excludeForeignKeyAsCollection(
 						foreignKey.getName(),
@@ -269,7 +262,7 @@ public class JDBCBinder {
 
 
     private Property bindOneToOne(PersistentClass rc, Table targetTable,
-            ForeignKey fk, Set processedColumns, boolean constrained, boolean inverseProperty) {
+            ForeignKey fk, Set<Column> processedColumns, boolean constrained, boolean inverseProperty) {
 
 
         OneToOne value = new OneToOne(mappings, targetTable, rc);
@@ -290,9 +283,9 @@ public class JDBCBinder {
                                 .create(targetTable), fk.getColumns(), isUnique);
         }
 
-        Iterator columns = fk.getColumnIterator();
+        Iterator<Column> columns = fk.getColumnIterator();
         while (columns.hasNext()) {
-            Column fkcolumn = (Column) columns.next();
+            Column fkcolumn = columns.next();
             checkColumn(fkcolumn);
             value.addColumn(fkcolumn);
             processedColumns.add(fkcolumn);
@@ -320,12 +313,12 @@ public class JDBCBinder {
      * @param rc
      * @param propName
      */
-    private Property bindManyToOne(String propertyName, boolean mutable, Table table, ForeignKey fk, Set processedColumns) {
+    private Property bindManyToOne(String propertyName, boolean mutable, Table table, ForeignKey fk, Set<Column> processedColumns) {
         ManyToOne value = new ManyToOne(mappings, table);
         value.setReferencedEntityName( fk.getReferencedEntityName() );
-		Iterator columns = fk.getColumnIterator();
+		Iterator<Column> columns = fk.getColumnIterator();
         while ( columns.hasNext() ) {
-			Column fkcolumn = (Column) columns.next();
+			Column fkcolumn = columns.next();
             checkColumn(fkcolumn);
             value.addColumn(fkcolumn);
             processedColumns.add(fkcolumn);
@@ -437,7 +430,7 @@ public class JDBCBinder {
 	 * @param table
 	 * @param object
 	 */
-	private Property bindOneToMany(PersistentClass rc, ForeignKey foreignKey, Set processed, Mapping mapping) {
+	private Property bindOneToMany(PersistentClass rc, ForeignKey foreignKey, Set<Column> processed, Mapping mapping) {
 
 		Table collectionTable = foreignKey.getTable();
 
@@ -459,8 +452,8 @@ public class JDBCBinder {
 
         	ManyToOne element = new ManyToOne(mappings, collection.getCollectionTable() );
         	//TODO: find the other foreignkey and choose the other side.
-        	Iterator foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
-        	List keys = new ArrayList();
+        	Iterator<?> foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
+        	List<Object> keys = new ArrayList<Object>();
         	while ( foreignKeyIterator.hasNext() ) {
 				Object next = foreignKeyIterator.next();
 				if(next!=foreignKey) {
@@ -505,9 +498,9 @@ public class JDBCBinder {
 		SimpleValue keyValue = new DependantValue(mappings, collectionTable, referencedKeyValue );
 		//keyValue.setForeignKeyName("none"); // Avoid creating the foreignkey
 		//key.setCascadeDeleteEnabled( "cascade".equals( subnode.attributeValue("on-delete") ) );
-		Iterator columnIterator = foreignKey.getColumnIterator();
+		Iterator<Column> columnIterator = foreignKey.getColumnIterator();
 		while ( columnIterator.hasNext() ) {
-			Column fkcolumn = (Column) columnIterator.next();
+			Column fkcolumn = columnIterator.next();
 			if(fkcolumn.getSqlTypeCode()!=null) { // TODO: user defined foreign ref columns does not have a type set.
 				guessAndAlignType(collectionTable, fkcolumn, mapping, false); // needed to ensure foreign key columns has same type as the "property" column.
 			}
@@ -592,7 +585,7 @@ public class JDBCBinder {
 	/** return true if this foreignkey is the only reference from this table to the same foreign table */
     private boolean isUniqueReference(ForeignKey foreignKey) {
 
-    	Iterator foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
+    	Iterator<?> foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
     	while ( foreignKeyIterator.hasNext() ) {
 			ForeignKey element = (ForeignKey) foreignKeyIterator.next();
 			if(element!=foreignKey && element.getReferencedTable().equals(foreignKey.getReferencedTable())) {
@@ -602,20 +595,20 @@ public class JDBCBinder {
 		return true;
 	}
 
-	private PrimaryKeyInfo bindPrimaryKeyToProperties(Table table, RootClass rc, Set processed, Mapping mapping, DatabaseCollector collector) {
+	private PrimaryKeyInfo bindPrimaryKeyToProperties(Table table, RootClass rc, Set<Column> processed, Mapping mapping, DatabaseCollector collector) {
 		SimpleValue id = null;
 		String idPropertyname = null;
 
 		PrimaryKeyInfo pki = new PrimaryKeyInfo();
 
-		List keyColumns = null;
+		List<Object> keyColumns = null;
 		if (table.getPrimaryKey()!=null) {
 			keyColumns = table.getPrimaryKey().getColumns();
 		}
 		else {
 			log.debug("No primary key found for " + table + ", using all properties as the identifier.");
-			keyColumns = new ArrayList();
-			Iterator iter = table.getColumnIterator();
+			keyColumns = new ArrayList<Object>();
+			Iterator<?> iter = table.getColumnIterator();
 			while (iter.hasNext() ) {
 				Column col = (Column) iter.next();
 				keyColumns.add(col);
@@ -695,10 +688,10 @@ public class JDBCBinder {
 	 * @param rc
 	 * @param primaryKey
 	 */
-	private void bindOutgoingForeignKeys(Table table, RootClass rc, Set processedColumns) {
+	private void bindOutgoingForeignKeys(Table table, RootClass rc, Set<Column> processedColumns) {
 
 		// Iterate the outgoing foreign keys and create many-to-one's
-		for(Iterator iterator = table.getForeignKeyIterator(); iterator.hasNext();) {
+		for(Iterator<?> iterator = table.getForeignKeyIterator(); iterator.hasNext();) {
 			ForeignKey foreignKey = (ForeignKey) iterator.next();
 
 			boolean mutable = true;
@@ -746,9 +739,9 @@ public class JDBCBinder {
 	 * @param rc
 	 * @param primaryKey
 	 */
-	private void bindColumnsToProperties(Table table, RootClass rc, Set processedColumns, Mapping mapping) {
+	private void bindColumnsToProperties(Table table, RootClass rc, Set<Column> processedColumns, Mapping mapping) {
 
-		for (Iterator iterator = table.getColumnIterator(); iterator.hasNext();) {
+		for (Iterator<?> iterator = table.getColumnIterator(); iterator.hasNext();) {
 			Column column = (Column) iterator.next();
 			if ( !processedColumns.contains(column) ) {
 				checkColumn(column);
@@ -774,7 +767,7 @@ public class JDBCBinder {
 		}
 	}
 
-	private void bindColumnsToVersioning(Table table, RootClass rc, Set processed, Mapping mapping) {
+	private void bindColumnsToVersioning(Table table, RootClass rc, Set<Column> processed, Mapping mapping) {
 		TableIdentifier identifier = TableIdentifier.create(table);
 
 		String optimisticLockColumnName = revengStrategy.getOptimisticLockColumnName(identifier);
@@ -788,7 +781,7 @@ public class JDBCBinder {
 			}
 		} else {
 			log.debug("Scanning " + identifier + " for <version>/<timestamp> columns.");
-			Iterator columnIterator = table.getColumnIterator();
+			Iterator<?> columnIterator = table.getColumnIterator();
 			while(columnIterator.hasNext()) {
 				Column column = (Column) columnIterator.next();
 				boolean useIt = revengStrategy.useColumnForOptimisticLock(identifier, column.getName());
@@ -801,7 +794,7 @@ public class JDBCBinder {
 		}
 	}
 
-	private void bindVersionProperty(Table table, TableIdentifier identifier, Column column, RootClass rc, Set processed, Mapping mapping) {
+	private void bindVersionProperty(Table table, TableIdentifier identifier, Column column, RootClass rc, Set<Column> processed, Mapping mapping) {
 
 		processed.add(column);
 		String propertyName = revengStrategy.columnToPropertyName( identifier, column.getName() );
@@ -813,7 +806,7 @@ public class JDBCBinder {
 
 	}
 
-	private Property bindBasicProperty(String propertyName, Table table, Column column, Set processedColumns, Mapping mapping) {
+	private Property bindBasicProperty(String propertyName, Table table, Column column, Set<Column> processedColumns, Mapping mapping) {
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
 		return PropertyBinder.makeProperty(
 				table, 
@@ -841,9 +834,9 @@ public class JDBCBinder {
      * @param processedColumns
      * @return
      */
-    private boolean contains(Iterator columnIterator, Set processedColumns) {
+    private boolean contains(Iterator<Column> columnIterator, Set<Column> processedColumns) {
         while (columnIterator.hasNext() ) {
-            Column element = (Column) columnIterator.next();
+            Column element = columnIterator.next();
             if(processedColumns.contains(element) ) {
                 return true;
             }
@@ -917,7 +910,7 @@ public class JDBCBinder {
 	 * @param processed
 	 * @return
 	 */
-	private SimpleValue handleCompositeKey(RootClass rc, Set processedColumns, List keyColumns, Mapping mapping) {
+	private SimpleValue handleCompositeKey(RootClass rc, Set<Column> processedColumns, List<Object> keyColumns, Mapping mapping) {
 		Component pkc = new Component(mappings, rc);
         pkc.setMetaAttributes(Collections.EMPTY_MAP);
         pkc.setEmbedded(false);
@@ -928,14 +921,14 @@ public class JDBCBinder {
         }
         pkc.setComponentClassName(compositeIdName);
 		Table table = rc.getTable();
-        List list = null;
+        List<Object> list = null;
 		if (preferBasicCompositeIds ) {
-            list = new ArrayList(keyColumns);
+            list = new ArrayList<Object>(keyColumns);
         }
 		else {
             list = findForeignKeys(table.getForeignKeyIterator(), keyColumns);
         }
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
+        for (Iterator<Object> iter = list.iterator(); iter.hasNext();) {
             Object element = iter.next();
 			Property property;
             if (element instanceof Column) {
@@ -979,7 +972,7 @@ public class JDBCBinder {
      * @param property
      */
     private void markAsUseInEquals(Property property) {
-        Map m = new HashMap();
+        Map<String, MetaAttribute> m = new HashMap<String, MetaAttribute>();
         MetaAttribute ma = new MetaAttribute("use-in-equals");
         ma.addValue("true");
         m.put(ma.getName(),ma);
@@ -991,16 +984,16 @@ public class JDBCBinder {
      * @param columns
      * @return
      */
-    private List findForeignKeys(Iterator foreignKeyIterator, List pkColumns) {
+    private List<Object> findForeignKeys(Iterator<?> foreignKeyIterator, List<Object> pkColumns) {
 
-    	List tempList = new ArrayList();
+    	List<Object> tempList = new ArrayList<Object>();
     	while(foreignKeyIterator.hasNext()) {
     		tempList.add(foreignKeyIterator.next());
     	}
 
 //    	Collections.reverse(tempList);
 
-    	List result = new ArrayList();
+    	List<Object> result = new ArrayList<Object>();
     	Column myPkColumns[] = (Column[]) pkColumns.toArray(new Column[pkColumns.size()]);
 
     	for (int i = 0; i < myPkColumns.length; i++) {
@@ -1009,7 +1002,7 @@ public class JDBCBinder {
     		foreignKeyIterator = tempList.iterator();
     		while(foreignKeyIterator.hasNext()) {
     			ForeignKey key = (ForeignKey) foreignKeyIterator.next();
-    			List matchingColumns = columnMatches(myPkColumns, i, key);
+    			List<Column> matchingColumns = columnMatches(myPkColumns, i, key);
     			if(matchingColumns!=null) {
     				result.add(new ForeignKeyForColumns(key, matchingColumns));
     				i+=matchingColumns.size()-1;
@@ -1027,13 +1020,13 @@ public class JDBCBinder {
     	return result;
     }
 
-    private List columnMatches(Column[] myPkColumns, int offset, ForeignKey key) {
+    private List<Column> columnMatches(Column[] myPkColumns, int offset, ForeignKey key) {
 
     	if(key.getColumnSpan()>(myPkColumns.length-offset)) {
     		return null; // not enough columns in the key
     	}
 
-    	List columns = new ArrayList();
+    	List<Column> columns = new ArrayList<Column>();
     	for (int j = 0; j < key.getColumnSpan(); j++) {
 			Column column = myPkColumns[j+offset];
 			if(!column.equals(key.getColumn(j))) {
@@ -1047,10 +1040,10 @@ public class JDBCBinder {
 
 	static class ForeignKeyForColumns {
 
-        protected final List columns;
+        protected final List<Column> columns;
         protected final ForeignKey key;
 
-        public ForeignKeyForColumns(ForeignKey key, List columns) {
+        public ForeignKeyForColumns(ForeignKey key, List<Column> columns) {
             this.key = key;
             this.columns = columns;
         }
