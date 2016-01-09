@@ -344,7 +344,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return null;
 	}
 
-	public Map columnToMetaAttributes(TableIdentifier identifier, String column) {
+	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column) {
 		return null;
 	}
 

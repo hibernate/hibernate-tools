@@ -136,7 +136,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?null:delegate.tableToMetaAttributes( tableIdentifier );		
 	}
 
-	public Map columnToMetaAttributes(TableIdentifier identifier, String column) {
+	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column) {
 		return delegate==null?null:delegate.columnToMetaAttributes( identifier, column );
 	}
 

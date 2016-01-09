@@ -134,7 +134,7 @@ public interface ReverseEngineeringStrategy {
 	 * @param column
 	 * @return a Map from String to {@link MetaAttribute}
 	 */
-	public Map columnToMetaAttributes(TableIdentifier identifier, String column);
+	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column);
 	
 	/** Should this foreignkey be excluded as a oneToMany */
 	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns);
