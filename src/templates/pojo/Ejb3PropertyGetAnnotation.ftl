@@ -8,13 +8,13 @@
 </#if>
 
 <#if c2h.isOneToOne(property)>
-${pojo.generateOneToOneAnnotation(property, cfg)}
+${pojo.generateOneToOneAnnotation(property, md)}
 <#elseif c2h.isManyToOne(property)>
 ${pojo.generateManyToOneAnnotation(property)}
 <#--TODO support optional and targetEntity-->    
-${pojo.generateJoinColumnsAnnotation(property, cfg)}
+${pojo.generateJoinColumnsAnnotation(property, md)}
 <#elseif c2h.isCollection(property)>
-${pojo.generateCollectionAnnotation(property, cfg)}
+${pojo.generateCollectionAnnotation(property, md)}
 <#else>
 ${pojo.generateBasicAnnotation(property)}
 ${pojo.generateAnnColumnAnnotation(property)}

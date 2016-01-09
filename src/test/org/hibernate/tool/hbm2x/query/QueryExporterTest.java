@@ -7,7 +7,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.NonReflectiveTestCase;
@@ -68,9 +69,7 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 	
 	protected void tearDown() throws Exception {
 
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(getCfg().getProperties());
-		SchemaExport export = new SchemaExport(builder.build(), getCfg());
+		SchemaExport export = new SchemaExport(createMetadata());
 		export.drop( false, true );
 		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
@@ -85,6 +84,12 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 		addMappings(getMappings(), result);
 		result.setProperty(Environment.HBM2DDL_AUTO, "update");
 		return result;
+	}
+
+	private MetadataImplementor createMetadata() {
+		MetadataSources mds = new MetadataSources();
+		addMappings(getMappings(), mds);
+		return (MetadataImplementor)mds.buildMetadata();
 	}
 
 }

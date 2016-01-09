@@ -95,7 +95,10 @@ public class TableProcessor {
 			  String comment = (String) tableRs.get("REMARKS");
 			  String tableType = (String) tableRs.get("TABLE_TYPE");
 			  
-			  if(dbs.getTable(schemaName, catalogName, tableName)!=null) {
+			  if(dbs.getTable
+					  (schemaName, 
+							  catalogName, 
+							  tableName)!=null) {
 				  log.debug("Ignoring " + tableName + " since it has already been processed");
 				  continue;
 			  } else {
@@ -112,7 +115,7 @@ public class TableProcessor {
 					  }
 					  log.debug("Adding table " + tableName + " of type " + tableType);
 					  progress.startSubTask("Found " + tableName);
-					  Table table = dbs.addTable(getSchemaForModel(schemaName, defaultSchema), getCatalogForModel(catalogName, defaultCatalog), tableName);
+					  Table table = dbs.addTable(schemaName, catalogName, tableName);
 					  table.setComment(comment);
 					  if(tableType.equalsIgnoreCase("TABLE")) {
 						  hasIndices.add(table);
@@ -134,18 +137,4 @@ public class TableProcessor {
 		return value.equals(tf);
 	}
 
-	/** If catalog is equal to defaultCatalog then we return null so it will be null in the generated code. */
-	private static String getCatalogForModel(String catalog, String defaultCatalog) {
-		if(catalog==null) return null;
-		if(catalog.equals(defaultCatalog)) return null;
-		return catalog;
-	}
-
-	/** If catalog is equal to defaultSchema then we return null so it will be null in the generated code. */
-	private static String getSchemaForModel(String schema, String defaultSchema) {
-		if(schema==null) return null;
-		if(schema.equals(defaultSchema)) return null;
-		return schema;
-	}
-	
 }

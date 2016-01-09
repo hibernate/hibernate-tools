@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.util.MetadataHelper;
 
 
 public class GenericExporter extends AbstractExporter {
@@ -41,7 +44,7 @@ public class GenericExporter extends AbstractExporter {
 			void process(GenericExporter ge) {
 				Iterator<?> iterator = 
 						ge.getCfg2JavaTool().getPOJOIterator(
-								ge.getConfiguration().getClassMappings());
+								ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
@@ -56,7 +59,7 @@ public class GenericExporter extends AbstractExporter {
 				
 				Iterator<?> iterator = 
 						ge.getCfg2JavaTool().getPOJOIterator(
-								ge.getConfiguration().getClassMappings());
+								ge.getMetadata().getEntityBindings().iterator());
 				Map<String, Object> additionalContext = new HashMap<String, Object>();
 				while ( iterator.hasNext() ) {					
 					POJOClass element = (POJOClass) iterator.next();
@@ -76,6 +79,7 @@ public class GenericExporter extends AbstractExporter {
 	private String templateName;
 	private String filePattern;
 	private String forEach;
+	private Metadata metadata = null;
 	
 	public GenericExporter(Configuration cfg, File outputdir) {
 		super(cfg,outputdir);
@@ -180,4 +184,23 @@ public class GenericExporter extends AbstractExporter {
 	public String getFilePattern() {
 		return filePattern;
 	}
+	
+	private Metadata getMetadata() {
+		if (metadata == null) {
+			metadata = buildMetadata();
+		}
+		return metadata;
+	}
+	
+	private Metadata buildMetadata() {
+		Metadata result = null;
+		Configuration configuration = getConfiguration();
+		if (configuration != null) {
+			result = MetadataHelper.getMetadata(getConfiguration());
+		} else {
+			result = new MetadataSources().buildMetadata();
+		}
+		return result;
+	}
+	
 }

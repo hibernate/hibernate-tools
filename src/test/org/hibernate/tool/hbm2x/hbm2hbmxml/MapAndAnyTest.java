@@ -81,7 +81,6 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "StringPropertyValue.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "PropertySet.hbm.xml"));
 
-        cfg.buildMappings();
     }
 
 	public void testAnyNode() throws DocumentException {
@@ -121,8 +120,7 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 	}
 
 	public void testMetaValueRead() throws Exception{
-		Configuration config = getCfg();
-		PersistentClass pc = config.getClassMapping("org.hibernate.tool.hbm2x.hbm2hbmxml.Person2");
+		PersistentClass pc = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.Person2");
 		assertNotNull(pc);
 		Property prop = pc.getProperty("data");
 		assertNotNull(prop);

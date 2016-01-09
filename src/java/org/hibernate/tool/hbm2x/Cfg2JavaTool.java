@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
+import org.hibernate.engine.spi.NamedQueryDefinition;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
@@ -265,7 +266,7 @@ public class Cfg2JavaTool {
 	 */
 	public Properties getFilteredIdentifierGeneratorProperties(SimpleValue simpleValue) {
 		Properties p = simpleValue.getIdentifierGeneratorProperties();
-		return Cfg2HbmTool.getFilteredIdentifierGeneratorProperties(p);
+		return Cfg2HbmTool.getFilteredIdentifierGeneratorProperties(p, new Properties());
 	}
 
 	private String getJavaTypeName(Value value, boolean preferRawTypeNames) {
@@ -405,5 +406,13 @@ public class Cfg2JavaTool {
 
 	public boolean isArray(String typeName) {
 		return typeName!=null && typeName.endsWith("[]");
+	}
+	
+	public Map<?, ?> getParameterTypes(NamedQueryDefinition query) {
+		Map<?, ?> result = query.getParameterTypes();
+		if (result == null) {
+			result = new HashMap<>();
+		}
+		return result;
 	}
 }

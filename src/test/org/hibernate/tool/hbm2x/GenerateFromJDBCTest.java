@@ -14,6 +14,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -72,7 +74,6 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testGenerateMappings() {
 		
-		cfg.buildMappings();
 		TestHelper.deleteDir(getOutputDir());
 		
 		Exporter exporter = new HibernateMappingExporter(cfg, getOutputDir());		
@@ -82,16 +83,16 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 		
 		File file = new File(getOutputDir(), "GeneralHbmSettings.hbm.xml");
 		assertTrue(file + " should not exist", !file.exists() );
+
+		MetadataSources metadataSources = new MetadataSources();
 		
-		Configuration derived = new Configuration();
+		metadataSources.addFile(new File(getOutputDir(), "org/reveng/Child.hbm.xml") );
+		metadataSources.addFile(new File(getOutputDir(), "org/reveng/Master.hbm.xml") );
 		
-		derived.addFile(new File(getOutputDir(), "org/reveng/Child.hbm.xml") );
-		derived.addFile(new File(getOutputDir(), "org/reveng/Master.hbm.xml") );
+		Metadata metadata = metadataSources.buildMetadata();
 		
-		derived.buildMappings();
-		
-		assertNotNull(derived.getClassMapping("org.reveng.Child") );
-		assertNotNull(derived.getClassMapping("org.reveng.Master") );
+		assertNotNull(metadata.getEntityBinding("org.reveng.Child") );
+		assertNotNull(metadata.getEntityBinding("org.reveng.Master") );
 		TestHelper.deleteDir(getOutputDir());
 	}
 	
@@ -165,9 +166,9 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testPackageNames() {
-		Iterator iter = cfg.getClassMappings();
+		Iterator<PersistentClass> iter = cfg.getMetadata().getEntityBindings().iterator();
 		while (iter.hasNext() ) {
-			PersistentClass element = (PersistentClass) iter.next();
+			PersistentClass element = iter.next();
 			assertEquals("org.reveng", StringHelper.qualifier(element.getClassName() ) );
 		}
 	}

@@ -21,9 +21,6 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.internal.util.ReflectHelper;
-import org.xml.sax.EntityResolver;
 
 /**
  * @author max
@@ -67,6 +64,9 @@ public class ConfigurationTask extends Task {
 	 */
 	protected void doConfiguration(Configuration configuration) {	
 		validateParameters();		
+
+		
+		/** skip entity resolver and naming strategy for now 
 		
 		if (entityResolver != null) {
 			try {
@@ -92,6 +92,7 @@ public class ConfigurationTask extends Task {
 				throw new BuildException("Could not create or find " + namingStrategy + " class to use for naming strategy");
 			}			
 		}
+		**/
 		
 		if (configurationFile != null) configuration.configure( configurationFile );
 		addMappings(getFiles() );

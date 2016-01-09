@@ -3,7 +3,7 @@ package org.hibernate.tool.hbmlint;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbmlint.detector.BadCachingDetector;
 import org.hibernate.tool.hbmlint.detector.InstrumentationDetector;
 import org.hibernate.tool.hbmlint.detector.SchemaByMetaDataDetector;
@@ -20,10 +20,10 @@ public class HbmLint implements IssueCollector {
 	
 	List<Issue> results = new ArrayList<Issue>();
 	
-	public void analyze(Configuration cfg) {
+	public void analyze(Metadata metadata) {
 		for (int i = 0; i < detectors.length; i++) {
-			detectors[i].initialize(cfg);
-			detectors[i].visit(cfg, this);
+			detectors[i].initialize(metadata);
+			detectors[i].visit(this);
 		}
 					
 	}

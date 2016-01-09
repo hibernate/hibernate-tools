@@ -9,6 +9,7 @@ import java.util.Iterator;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -87,7 +88,7 @@ public class ForeignKeysTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testExport() {
 		
-		new SchemaExport(cfg).create(true, false);
+		new SchemaExport((MetadataImplementor)cfg.getMetadata()).create(true, false);
 		
 	}
 	

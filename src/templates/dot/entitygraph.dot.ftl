@@ -21,7 +21,7 @@ digraph EntityGraph {
        fillcolor="#D4E5FE", 
        style="solid,filled"];
 
-<#foreach entity in cfg.classMappings> 
+<#foreach entity in md.entityBindings> 
   /* Node ${entity.entityName} */
   <@nodeName entity.entityName/> [ label = "<@propertyLabels name=entity.entityName properties=entity.propertyIterator/>", URL="${entity.entityName?replace(".","/")}.html" ]
   /* Subclass edges for ${entity.entityName} */

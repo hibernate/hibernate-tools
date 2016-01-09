@@ -10,16 +10,16 @@
 	for General Global Setttings
 -->
 
-<#if c2h.isImportData(cfg)>
+<#if c2h.isImportData(md)>
 <#include "import.hbm.ftl">
 </#if>
-<#if c2h.isNamedQueries(cfg)>
-<#include "query.hbm.ftl">
+<#if c2h.isNamedQueries(md)>
+<#include "query.hbm.ftl"> 
 </#if>
-<#if c2h.isNamedSQLQueries(cfg)>
+<#if c2h.isNamedSQLQueries(md)>
 <#include "sql-query.hbm.ftl">
 </#if>
-<#if c2h.isFilterDefinitions(cfg)>
+<#if c2h.isFilterDefinitions(md)>
 <#include "filter-def.hbm.ftl">
 </#if>
 

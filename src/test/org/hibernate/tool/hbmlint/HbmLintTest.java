@@ -1,5 +1,6 @@
 package org.hibernate.tool.hbmlint;
 
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
@@ -17,42 +18,33 @@ public class HbmLintTest extends JDBCMetaDataBinderTestCase {
 		return new String[] { "hbmlint/CachingSettings.hbm.xml", "hbmlint/IdentifierIssues.hbm.xml", "hbmlint/BrokenLazy.hbm.xml" };
 	}
 	
-	public void testExporter() {
-	
+	public void testExporter() {	
 		Configuration configuration = new Configuration();
 		addMappings( getMappings(), configuration );
-		configuration.buildMappings();
-	
-		new HbmLintExporter(configuration, getOutputDir()).start();
-		
+		new HbmLintExporter(configuration, getOutputDir()).start();		
 	}
-	public void testValidateCache() {		
-		Configuration configuration = new Configuration();
-		addMappings( getMappings(), configuration );
-		configuration.buildMappings();		
+	public void testValidateCache() {	
+		MetadataSources metadataSources = new MetadataSources();
+		addMappings( getMappings(), metadataSources );
 		HbmLint analyzer = new HbmLint(new Detector[] { new BadCachingDetector() });		
-		analyzer.analyze(configuration);
+		analyzer.analyze(metadataSources.buildMetadata());
 		assertEquals(1,analyzer.getResults().size());		
 	}
 
 	public void testValidateIdentifier() {		
-		Configuration configuration = new Configuration();
-		addMappings( getMappings(), configuration );
-		configuration.buildMappings();		
+		MetadataSources metadataSources = new MetadataSources();
+		addMappings( getMappings(), metadataSources );
 		HbmLint analyzer = new HbmLint(new Detector[] { new ShadowedIdentifierDetector() });		
-		analyzer.analyze(configuration);		
+		analyzer.analyze(metadataSources.buildMetadata());
 		assertEquals(1,analyzer.getResults().size());
 	}
 	
 	public void testBytecodeRestrictions() {		
-		Configuration configuration = new Configuration();
-		addMappings( getMappings(), configuration );
-		configuration.buildMappings();		
+		MetadataSources metadataSources = new MetadataSources();
+		addMappings( getMappings(), metadataSources );
 		HbmLint analyzer = new HbmLint(new Detector[] { new InstrumentationDetector() });		
-		analyzer.analyze(configuration);	
+		analyzer.analyze(metadataSources.buildMetadata());
 		assertEquals(analyzer.getResults().toString(), 2,analyzer.getResults().size());
-
-		
 	}
 	
 	protected String[] getCreateSQL() {

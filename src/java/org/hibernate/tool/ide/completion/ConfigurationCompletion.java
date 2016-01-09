@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.OneToMany;
@@ -30,11 +30,10 @@ import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
  */
 class ConfigurationCompletion {
 
-	private final Configuration cfg;
+	private final Metadata metadata;
 
-	public ConfigurationCompletion(Configuration cfg) {
-		this.cfg = cfg;
-		
+	public ConfigurationCompletion(Metadata md) {
+		this.metadata = md;
 	}
 
 	public void getMatchingImports(String prefix , IHQLCompletionRequestor collector) {
@@ -42,9 +41,9 @@ class ConfigurationCompletion {
 	}
 	
 	public void getMatchingImports(String prefix, int cursorPosition, IHQLCompletionRequestor collector) {
-		Iterator iterator = cfg.getImports().entrySet().iterator();
+		Iterator<Entry<String, String>> iterator = metadata.getImports().entrySet().iterator();
 		while ( iterator.hasNext() ) {
-			Map.Entry entry = (Entry) iterator.next();
+			Entry<String, String> entry = iterator.next();
 			String entityImport = (String) entry.getKey();
 			String entityName = (String) entry.getValue();
 			
@@ -211,11 +210,11 @@ class ConfigurationCompletion {
 	/** returns PersistentClass for path. Can be null if path is an imported non-mapped class */
 	private PersistentClass getPersistentClass(String path) {
 		if(path==null) return null;
-		String entityName = (String) cfg.getImports().get( path );
+		String entityName = (String) metadata.getImports().get( path );
 		if(entityName==null) {
-			return cfg.getClassMapping( path ); // annotationconfiguration does not put full imports into imports.
+			return metadata.getEntityBinding(path);
 		} else {
-			return cfg.getClassMapping( entityName );
+			return metadata.getEntityBinding(entityName);
 		}	
 	}
 

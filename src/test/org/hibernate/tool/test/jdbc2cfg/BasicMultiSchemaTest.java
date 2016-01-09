@@ -49,7 +49,7 @@ public class BasicMultiSchemaTest extends JDBCMetaDataBinderTestCase {
 	public void testBasic() throws SQLException {
 
 		assertHasNext( "There should be three tables!", 3, cfg
-				.getTableMappings() );
+				.getMetadata().getEntityBindings().iterator() );
 
 		Table table = getTable( identifier( "basic" ) );
 

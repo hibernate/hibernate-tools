@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.hibernate.cfg.JDBCBinderException;
@@ -154,23 +155,30 @@ public abstract class AbstractMetaDataDialect implements MetaDataDialect {
 			if ( getMetaData().storesMixedCaseQuotedIdentifiers() ) {
 				return value;
 			} else if ( getMetaData().storesUpperCaseQuotedIdentifiers() ) { 
-				return StringHelper.toUpperCase( value ); 
+				return toUpperCase( value ); 
 			} else if( getMetaData().storesLowerCaseQuotedIdentifiers() ) {
-				return StringHelper.toLowerCase( value );
+				return toLowerCase( value );
 			} else {
 				return value;
 			}
 		} else if ( getMetaData().storesMixedCaseQuotedIdentifiers() ) {
 			return value;
 		} else if ( getMetaData().storesUpperCaseIdentifiers() ) { 
-			return StringHelper.toUpperCase( value ); 
+			return toUpperCase( value ); 
 		} else if( getMetaData().storesLowerCaseIdentifiers() ) {
-			return StringHelper.toLowerCase( value );
+			return toLowerCase( value );
 		} else {
 			return value;
 		}		
 	}
 
+	private String toUpperCase(String str) {
+		return str==null ? null : str.toUpperCase();
+	}
+	
+	private String toLowerCase(String str) {
+		return str == null ? null : str.toLowerCase(Locale.ENGLISH);
+	}
 	
 	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 		Map m = new HashMap();

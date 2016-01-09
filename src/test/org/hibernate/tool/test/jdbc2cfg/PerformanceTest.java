@@ -8,11 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.MappingException;
-import org.hibernate.cfg.Mappings;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
@@ -24,6 +21,9 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.type.Type;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -76,23 +76,23 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 		dropSQL = new ArrayList(TABLECOUNT);
 		createSQL = new ArrayList(TABLECOUNT);
 		Table lastTable = null;
-		Mappings mappings = cfg.createMappings();
+//		Mappings mappings = cfg.createMappings();
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
 			Table table = new Table("perftest" + tablecount);
 			Column col = new Column("id");
 			//FIXME
-			SimpleValue sv = new SimpleValue(mappings, table);
+			SimpleValue sv = new SimpleValue((MetadataImplementor) cfg.getMetadata(), table);
 			sv.setTypeName("string");
 			col.setValue(sv);			
 			table.addColumn(col);
-			PrimaryKey pk = new PrimaryKey();
+			PrimaryKey pk = new PrimaryKey(table);
 			pk.addColumn(col);
 			table.setPrimaryKey(pk);
 			
 			for(int colcount=0;colcount<COLCOUNT;colcount++) {
 				col = new Column("col"+tablecount+"_"+colcount);
 				//FIXME
-				sv = new SimpleValue(mappings, table);
+				sv = new SimpleValue((MetadataImplementor) cfg.getMetadata(), table);
 				sv.setTypeName("string");
 				col.setValue(sv);				
 				table.addColumn(col);
@@ -126,9 +126,9 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testBasic() throws SQLException {
 				
-		assertHasNext("There should be three tables!",TABLECOUNT, cfg.getTableMappings() );
+		assertHasNext("There should be three tables!",TABLECOUNT, cfg.getMetadata().collectTableMappings().iterator() );
 		
-		Table tab = (Table) cfg.getTableMappings().next();
+		Table tab = (Table) cfg.getMetadata().collectTableMappings().iterator().next();
 		assertEquals(tab.getColumnSpan(), COLCOUNT+1);
 		
 		

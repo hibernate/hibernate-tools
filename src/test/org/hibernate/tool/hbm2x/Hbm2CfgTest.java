@@ -5,8 +5,8 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
-import java.util.Properties;
 
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.NonReflectiveTestCase;
@@ -58,11 +58,11 @@ public class Hbm2CfgTest extends NonReflectiveTestCase {
 
 	   srcCfg = new Configuration();
 	   // FIXME was Environment.TRANSACTION_MANAGER_STRATEGY, and this is possibly / probably not a correct substitution
-	   srcCfg.setProperty( Environment.TRANSACTION_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
+	   srcCfg.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   HibernateConfigurationExporter exp = new HibernateConfigurationExporter(srcCfg, getOutputDir());
 	   exp.start();
 	   
-	   assertNull(findFirstString( Environment.TRANSACTION_STRATEGY, file ));
+	   assertNull(findFirstString( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, file ));
 	   
 	 
 	}

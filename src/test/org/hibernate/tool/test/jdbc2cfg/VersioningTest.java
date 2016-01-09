@@ -6,10 +6,8 @@ package org.hibernate.tool.test.jdbc2cfg;
 
 import java.io.File;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
@@ -17,7 +15,9 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.TimestampType;
-;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * To be extended by VersioningForJDK50Test for the JPA generation part
@@ -26,8 +26,7 @@ import org.hibernate.type.TimestampType;
  */
 public class VersioningTest extends JDBCMetaDataBinderTestCase {
 	
-	protected String[] getCreateSQL() {
-		
+	protected String[] getCreateSQL() {		
 		return new String[] {
 				"create table withVersion (first int, second int, version int, name varchar(256), primary key (first))",
 				"create table noVersion (first int, second int, name varchar(256), primary key (second))",
@@ -45,58 +44,44 @@ public class VersioningTest extends JDBCMetaDataBinderTestCase {
 		};
 	}
 
-	public void testVersion() {
-		
-		PersistentClass cl = cfg.getClassMapping("Withversion");
-		
+	public void testVersion() {		
+		PersistentClass cl = cfg.getMetadata().getEntityBinding("Withversion");		
 		Property version = cl.getVersion();
 		assertNotNull(version);
-		assertEquals("version", version.getName());
-		
-		cl = cfg.getClassMapping("Noversion");
+		assertEquals("version", version.getName());		
+		cl = cfg.getMetadata().getEntityBinding("Noversion");
 		assertNotNull(cl);
 		version = cl.getVersion();
-		assertNull(version);
-		
+		assertNull(version);		
 	}
 	
 	public void testGenerateMappings() {
-        cfg.buildMappings();
-        Exporter exporter = new HibernateMappingExporter(cfg, getOutputDir());
-		
-		exporter.start();
-		
-		Configuration derived = new Configuration();
-		
+        Exporter exporter = new HibernateMappingExporter(cfg, getOutputDir());		
+		exporter.start();		
+		MetadataSources derived = new MetadataSources();		
 		derived.addFile(new File(getOutputDir(), "Withversion.hbm.xml") );
 		derived.addFile(new File(getOutputDir(), "Noversion.hbm.xml") );
 		derived.addFile(new File(getOutputDir(), "Withrealtimestamp.hbm.xml") );
-		derived.addFile(new File(getOutputDir(), "Withfaketimestamp.hbm.xml") );
-		
+		derived.addFile(new File(getOutputDir(), "Withfaketimestamp.hbm.xml") );		
 		testVersioningInDerivedCfg(derived);
 	}
     
-	protected void testVersioningInDerivedCfg(Configuration derived){
-		derived.buildMappings();
-		
-		PersistentClass cl = derived.getClassMapping( "Withversion" );		
-		
+	protected void testVersioningInDerivedCfg(MetadataSources derived){
+		Metadata metadata = derived.buildMetadata();		
+		PersistentClass cl = metadata.getEntityBinding( "Withversion" );				
 		Property version = cl.getVersion();
 		assertNotNull(version);
-		assertEquals("version", version.getName());
-		
-		cl = derived.getClassMapping( "Noversion" );
+		assertEquals("version", version.getName());	
+		cl = metadata.getEntityBinding( "Noversion" );
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNull(version);
-
-		cl = derived.getClassMapping( "Withrealtimestamp" );
+		cl = metadata.getEntityBinding( "Withrealtimestamp" );
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);
-		assertTrue(version.getType() instanceof TimestampType);
-		
-		cl = derived.getClassMapping( "Withfaketimestamp" );
+		assertTrue(version.getType() instanceof TimestampType);	
+		cl = metadata.getEntityBinding( "Withfaketimestamp" );
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);

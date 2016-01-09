@@ -50,7 +50,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>4.3.1.Final</hibernateversion>
+		<hibernateversion>5.0.4.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>5.0.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,9 +61,9 @@
 		<jdbc.url>jdbc:hsqldb:testdb/hsqldb;shutdown=true</jdbc.url>
 		<jdbc.user>sa</jdbc.user>
 		<jdbc.pass/>
-		<jdbc.driver.groupId>hsqldb</jdbc.driver.groupId>
+		<jdbc.driver.groupId>org.hsqldb</jdbc.driver.groupId>
 	    <jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
-	    <jdbc.driver.jdbc.driver.version>1.8.0.10</jdbc.driver.jdbc.driver.version>		
+	    <jdbc.driver.jdbc.driver.version>2.3.3</jdbc.driver.jdbc.driver.version>		
 	    <!-- End of settings for Database connection -->
 	</properties>
 	

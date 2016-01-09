@@ -18,6 +18,12 @@ import java.util.Set;
 
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
+import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.binder.PropertyBinder;
@@ -65,7 +71,11 @@ public class JDBCBinder {
 	private Properties properties;
 	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
 
-	private final Mappings mappings;
+	private final MetadataBuildingContext mdbc;
+	
+	private final InFlightMetadataCollector metadataCollector;
+	
+	private Metadata metadata;
 
 	private ReverseEngineeringStrategy revengStrategy;
 	
@@ -78,14 +88,17 @@ public class JDBCBinder {
 	 * @param mappings
 	 * @param configuration
 	 */
-	public JDBCBinder(ServiceRegistry serviceRegistry, Properties properties, Mappings mappings, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
+	public JDBCBinder(ServiceRegistry serviceRegistry, Properties properties, MetadataBuildingContext mdbc, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
 		this.serviceRegistry = serviceRegistry;
+		this.mdbc = mdbc;
 		this.properties = properties;
-		this.mappings = mappings;
 		this.revengStrategy = revengStrategy;
 		this.preferBasicCompositeIds = preferBasicCompositeIds;
 		this.defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		this.defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
+		metadataCollector = mdbc.getMetadataCollector();
+		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+		this.metadata = metadataSources.buildMetadata();
 	}
 
 	/**
@@ -95,6 +108,7 @@ public class JDBCBinder {
 		try {
 			DatabaseCollector collector = readDatabaseSchema(catalog, schema);
 			createPersistentClasses(collector, mapping); //move this to a different step!
+			((InFlightMetadataCollectorImpl)metadataCollector).processSecondPasses(mdbc);
 		}
 		catch (SQLException e) {
 			JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
@@ -116,7 +130,8 @@ public class JDBCBinder {
 	     schema = schema!=null ? schema : properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
 	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(properties,revengStrategy,serviceRegistry);
-	     DatabaseCollector dbs = new MappingsDatabaseCollector(mappings, reader.getMetaDataDialect());
+	     DatabaseCollector dbs = new MappingsDatabaseCollector(metadataCollector, reader.getMetaDataDialect());
+
 	     reader.readDatabaseSchema(dbs, catalog, schema);
 	     return dbs;
 	}
@@ -129,8 +144,7 @@ public class JDBCBinder {
 	 */
 	private void createPersistentClasses(DatabaseCollector collector, Mapping mapping) {
 		Map<String, List<ForeignKey>> manyToOneCandidates = collector.getOneToManyCandidates();
-
-		for (Iterator<Table> iter = mappings.iterateTables(); iter.hasNext();) {
+		for (Iterator<Table> iter = metadataCollector.collectTableMappings().iterator(); iter.hasNext();) {
 			Table table = iter.next();
 			if (table.getCatalog() != null && table.getCatalog().equals(defaultCatalog)) {
 				table.setCatalog(null);
@@ -156,7 +170,7 @@ public class JDBCBinder {
 			}
 
 	    	
-			RootClass rc = new RootClass();
+			RootClass rc = new RootClass(mdbc);
 			TableIdentifier tableIdentifier = TableIdentifier.create(table);
 			String className = revengStrategy.tableToClassName( tableIdentifier );
 			log.debug("Building entity " + className + " based on " + tableIdentifier);
@@ -178,14 +192,14 @@ public class JDBCBinder {
 			rc.setDiscriminatorValue( rc.getEntityName() );
 			rc.setTable(table);
 			try {
-				mappings.addClass(rc);
+				metadataCollector.addEntityBinding(rc);
 			} catch(DuplicateMappingException dme) {
 				// TODO: detect this and generate a "permutation" of it ?
-				PersistentClass class1 = mappings.getClass(dme.getName());
+				PersistentClass class1 = metadataCollector.getEntityBinding(dme.getName());
 				Table table2 = class1.getTable();
 				throw new JDBCBinderException("Duplicate class name '" + rc.getEntityName() + "' generated for '" + table + "'. Same name where generated for '" + table2 + "'");
 			}
-			mappings.addImport( rc.getEntityName(), rc.getEntityName() );
+			metadataCollector.addImport( rc.getEntityName(), rc.getEntityName() );
 
 			Set<Column> processed = new HashSet<Column>();
 
@@ -265,8 +279,7 @@ public class JDBCBinder {
     private Property bindOneToOne(PersistentClass rc, Table targetTable,
             ForeignKey fk, Set<Column> processedColumns, boolean constrained, boolean inverseProperty) {
 
-
-        OneToOne value = new OneToOne(mappings, targetTable, rc);
+        OneToOne value = new OneToOne((MetadataImplementor)metadata, targetTable, rc);
         value.setReferencedEntityName(revengStrategy
                 .tableToClassName(TableIdentifier.create(targetTable)));
 
@@ -286,7 +299,7 @@ public class JDBCBinder {
 
         Iterator<Column> columns = fk.getColumnIterator();
         while (columns.hasNext()) {
-            Column fkcolumn = columns.next();
+            Column fkcolumn = (Column) columns.next();
             checkColumn(fkcolumn);
             value.addColumn(fkcolumn);
             processedColumns.add(fkcolumn);
@@ -296,8 +309,8 @@ public class JDBCBinder {
 
         value.setConstrained(constrained);
         value.setForeignKeyType( constrained ?
-				ForeignKeyDirection.FOREIGN_KEY_FROM_PARENT :
-				ForeignKeyDirection.FOREIGN_KEY_TO_PARENT );
+				ForeignKeyDirection.FROM_PARENT :
+				ForeignKeyDirection.TO_PARENT );
 
 
         return makeEntityProperty(propertyName, true, targetTable, fk, value, inverseProperty);
@@ -315,11 +328,11 @@ public class JDBCBinder {
      * @param propName
      */
     private Property bindManyToOne(String propertyName, boolean mutable, Table table, ForeignKey fk, Set<Column> processedColumns) {
-        ManyToOne value = new ManyToOne(mappings, table);
+        ManyToOne value = new ManyToOne((MetadataImplementor)metadata, table);
         value.setReferencedEntityName( fk.getReferencedEntityName() );
 		Iterator<Column> columns = fk.getColumnIterator();
         while ( columns.hasNext() ) {
-			Column fkcolumn = columns.next();
+			Column fkcolumn = (Column) columns.next();
             checkColumn(fkcolumn);
             value.addColumn(fkcolumn);
             processedColumns.add(fkcolumn);
@@ -435,7 +448,7 @@ public class JDBCBinder {
 
 		Table collectionTable = foreignKey.getTable();
 
-		Collection collection = new org.hibernate.mapping.Set(mappings, rc); // MASTER TODO: allow overriding collection type
+		Collection collection = new org.hibernate.mapping.Set((MetadataImplementor)metadata, rc); // MASTER TODO: allow overriding collection type
 
 		collection.setCollectionTable(collectionTable); // CHILD+
 
@@ -451,12 +464,12 @@ public class JDBCBinder {
 
         if(manyToMany) {
 
-        	ManyToOne element = new ManyToOne(mappings, collection.getCollectionTable() );
+        	ManyToOne element = new ManyToOne((MetadataImplementor)metadata, collection.getCollectionTable() );
         	//TODO: find the other foreignkey and choose the other side.
         	Iterator<?> foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
-        	List<Object> keys = new ArrayList<Object>();
+        	List<ForeignKey> keys = new ArrayList<ForeignKey>();
         	while ( foreignKeyIterator.hasNext() ) {
-				Object next = foreignKeyIterator.next();
+				ForeignKey next = (ForeignKey)foreignKeyIterator.next();
 				if(next!=foreignKey) {
 					keys.add(next);
 				}
@@ -477,10 +490,10 @@ public class JDBCBinder {
         } else {
         	String tableToClassName = bindCollection( rc, foreignKey, null, collection );
 
-        	OneToMany oneToMany = new OneToMany(mappings, collection.getOwner() );
+        	OneToMany oneToMany = new OneToMany((MetadataImplementor)metadata, collection.getOwner() );
 
 			oneToMany.setReferencedEntityName( tableToClassName ); // Child
-        	mappings.addSecondPass( new JDBCCollectionSecondPass(mappings, collection) );
+        	metadataCollector.addSecondPass( new JDBCCollectionSecondPass(mdbc, collection) );
 
         	collection.setElement(oneToMany);
         }
@@ -496,7 +509,7 @@ public class JDBCBinder {
 				.getValue();
 		}
 
-		SimpleValue keyValue = new DependantValue(mappings, collectionTable, referencedKeyValue );
+		SimpleValue keyValue = new DependantValue((MetadataImplementor)metadata, collectionTable, referencedKeyValue );
 		//keyValue.setForeignKeyName("none"); // Avoid creating the foreignkey
 		//key.setCascadeDeleteEnabled( "cascade".equals( subnode.attributeValue("on-delete") ) );
 		Iterator<Column> columnIterator = foreignKey.getColumnIterator();
@@ -510,7 +523,7 @@ public class JDBCBinder {
 
 		collection.setKey(keyValue);
 
-		mappings.addCollection(collection);
+		metadataCollector.addCollectionBinding(collection);
 
 		return makeCollectionProperty(StringHelper.unqualify( collection.getRole() ), true, rc.getTable(), foreignKey, collection, true);
 		//return makeProperty(TableIdentifier.create( rc.getTable() ), StringHelper.unqualify( collection.getRole() ), collection, true, true, true, "none", null); // TODO: cascade isn't all by default
@@ -570,7 +583,7 @@ public class JDBCBinder {
 		collectionRole = BinderUtils.makeUnique(rc,collectionRole);
 
 		String fullRolePath = StringHelper.qualify(rc.getEntityName(), collectionRole);
-		if (mappings.getCollection(fullRolePath)!=null) {
+		if (metadata.getCollectionBinding(fullRolePath)!=null) {
 		    log.debug(fullRolePath + " found twice!");
 		}
 
@@ -602,13 +615,13 @@ public class JDBCBinder {
 
 		PrimaryKeyInfo pki = new PrimaryKeyInfo();
 
-		List<Object> keyColumns = null;
+		List<Column> keyColumns = null;
 		if (table.getPrimaryKey()!=null) {
 			keyColumns = table.getPrimaryKey().getColumns();
 		}
 		else {
 			log.debug("No primary key found for " + table + ", using all properties as the identifier.");
-			keyColumns = new ArrayList<Object>();
+			keyColumns = new ArrayList<Column>();
 			Iterator<?> iter = table.getColumnIterator();
 			while (iter.hasNext() ) {
 				Column col = (Column) iter.next();
@@ -824,7 +837,7 @@ public class JDBCBinder {
 	}
 
 	private SimpleValue bindColumnToSimpleValue(Table table, Column column, Mapping mapping, boolean generatedIdentifier) {
-		SimpleValue value = new SimpleValue(mappings, table);
+		SimpleValue value = new SimpleValue((MetadataImplementor)metadata, table);
 		value.addColumn(column);
 		value.setTypeName(guessAndAlignType(table, column, mapping, generatedIdentifier));
 		return value;
@@ -837,7 +850,7 @@ public class JDBCBinder {
      */
     private boolean contains(Iterator<Column> columnIterator, Set<Column> processedColumns) {
         while (columnIterator.hasNext() ) {
-            Column element = columnIterator.next();
+            Column element = (Column) columnIterator.next();
             if(processedColumns.contains(element) ) {
                 return true;
             }
@@ -872,7 +885,7 @@ public class JDBCBinder {
 				column.getLength(), column.getPrecision(), column.getScale(), column.isNullable(), generatedIdentifier
 		);
 
-		Type wantedType = mappings.getTypeResolver().heuristicType(preferredHibernateType);
+		Type wantedType = metadataCollector.getTypeResolver().heuristicType(preferredHibernateType);
 
 		if(wantedType!=null) {
 			int[] wantedSqlTypes = wantedType.sqlTypes(mapping);
@@ -911,8 +924,8 @@ public class JDBCBinder {
 	 * @param processed
 	 * @return
 	 */
-	private SimpleValue handleCompositeKey(RootClass rc, Set<Column> processedColumns, List<Object> keyColumns, Mapping mapping) {
-		Component pkc = new Component(mappings, rc);
+	private SimpleValue handleCompositeKey(RootClass rc, Set<Column> processedColumns, List<Column> keyColumns, Mapping mapping) {
+		Component pkc = new Component((MetadataImplementor)metadata, rc);
         pkc.setMetaAttributes(Collections.EMPTY_MAP);
         pkc.setEmbedded(false);
 
@@ -929,7 +942,7 @@ public class JDBCBinder {
 		else {
             list = findForeignKeys(table.getForeignKeyIterator(), keyColumns);
         }
-        for (Iterator<Object> iter = list.iterator(); iter.hasNext();) {
+        for (Iterator<?> iter = list.iterator(); iter.hasNext();) {
             Object element = iter.next();
 			Property property;
             if (element instanceof Column) {
@@ -985,11 +998,11 @@ public class JDBCBinder {
      * @param columns
      * @return
      */
-    private List<Object> findForeignKeys(Iterator<?> foreignKeyIterator, List<Object> pkColumns) {
+    private List<Object> findForeignKeys(Iterator<?> foreignKeyIterator, List<Column> pkColumns) {
 
-    	List<Object> tempList = new ArrayList<Object>();
+    	List<ForeignKey> tempList = new ArrayList<ForeignKey>();
     	while(foreignKeyIterator.hasNext()) {
-    		tempList.add(foreignKeyIterator.next());
+    		tempList.add((ForeignKey)foreignKeyIterator.next());
     	}
 
 //    	Collections.reverse(tempList);

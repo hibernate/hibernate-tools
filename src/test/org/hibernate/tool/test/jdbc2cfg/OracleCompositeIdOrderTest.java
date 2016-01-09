@@ -6,9 +6,6 @@ package org.hibernate.tool.test.jdbc2cfg;
 
 import java.util.Iterator;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.Oracle9Dialect;
@@ -18,6 +15,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -130,14 +130,14 @@ public class OracleCompositeIdOrderTest extends JDBCMetaDataBinderTestCase {
         
         cfg.buildMappings();
         
-        PersistentClass course = cfg.getClassMapping(toClassName(identifier("Course") ) );
+        PersistentClass course = cfg.getMetadata().getEntityBinding(toClassName(identifier("Course") ) );
         
         assertEquals(2,course.getIdentifier().getColumnSpan() );
         Iterator columnIterator = course.getIdentifier().getColumnIterator();
         assertEquals(((Column)(columnIterator.next())).getName(), "SCHEDULE_KEY");
         assertEquals(((Column)(columnIterator.next())).getName(), "REQUEST_KEY");
         
-        course = cfg.getClassMapping(toClassName(identifier("COURSE_TOPIC") ) );
+        course = cfg.getMetadata().getEntityBinding(toClassName(identifier("COURSE_TOPIC") ) );
         
         Property property = course.getProperty(toPropertyName(identifier("course")));
         columnIterator = property.getValue().getColumnIterator();

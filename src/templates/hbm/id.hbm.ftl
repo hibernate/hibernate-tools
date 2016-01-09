@@ -38,7 +38,7 @@
  <#else>
 	    <generator class="${property.value.identifierGeneratorStrategy}">
         <#assign parameters = c2h.getIdentifierGeneratorProperties(property)>
-        <#foreach paramkey in c2h.getFilteredIdentifierGeneratorKeySet(property)>
+        <#foreach paramkey in c2h.getFilteredIdentifierGeneratorKeySet(property, props)>
             <param name="${paramkey}">${parameters.get(paramkey)}</param>
         </#foreach>
 		</generator>

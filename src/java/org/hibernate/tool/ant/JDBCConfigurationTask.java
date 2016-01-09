@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -17,6 +18,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.service.ServiceRegistry;
 
 
 /**
@@ -54,6 +56,8 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		DefaultReverseEngineeringStrategy defaultStrategy = new DefaultReverseEngineeringStrategy();
 		
 		ReverseEngineeringStrategy strategy = defaultStrategy;
+		
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		
 		if(revengFiles!=null) {
 			OverrideRepository or = new OverrideRepository();

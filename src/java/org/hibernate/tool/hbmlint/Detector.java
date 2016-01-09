@@ -1,22 +1,20 @@
 package org.hibernate.tool.hbmlint;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 
 public abstract class Detector {
 
-	private Configuration cfg;
+	private Metadata metadata;
 	
-	public void initialize(Configuration configuration) {
-		this.cfg = configuration;
+	public void initialize(Metadata metadata) {
+		this.metadata = metadata;
 	}
 	
-	protected Configuration getConfiguration() {
-		return cfg;
+	protected Metadata getMetadata() {
+		return metadata;
 	}
 
-	public void visit(Configuration configuration, IssueCollector collector) {
-		
-	}
+	abstract public void visit(IssueCollector collector);
 	
 	abstract public String getName();
 }

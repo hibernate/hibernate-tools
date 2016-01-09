@@ -125,7 +125,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		ServiceRegistry serviceRegistry = builder.build();
 		
 		Properties properties = cfg.getProperties();
-				
+
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
 		
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);

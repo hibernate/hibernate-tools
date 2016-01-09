@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
@@ -18,6 +19,7 @@ import org.hibernate.tool.hbm2x.doc.DocFile;
 import org.hibernate.tool.hbm2x.doc.DocFileManager;
 import org.hibernate.tool.hbm2x.doc.DocHelper;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * Exporter implementation that creates Hibernate Documentation.
@@ -410,7 +412,8 @@ public class DocExporter extends AbstractExporter {
      * Generate one file per table with detail information.
      */
     public void generateTablesDetails() {
-        Iterator<Table> tables = getConfiguration().getTableMappings();
+    	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+        Iterator<Table> tables = metadata.collectTableMappings().iterator();
         while (tables.hasNext() ) {
             Table table = tables.next();
 

@@ -24,7 +24,7 @@ digraph TableGraph {
        style="solid,filled"];
 
 /* TODO: multi schema tables */
-<#foreach table in cfg.getTableMappings()> 
+<#foreach table in tables> 
   <#if table.isPhysicalTable()>
   /* Node ${table.name} */
   <@nodeName table/> [ label = "<@columnLabels name=table.name columns=table.columnIterator/>" ]  

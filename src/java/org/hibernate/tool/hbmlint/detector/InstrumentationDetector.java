@@ -1,10 +1,11 @@
 package org.hibernate.tool.hbmlint.detector;
 
 import org.hibernate.MappingException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
 
@@ -16,17 +17,15 @@ public class InstrumentationDetector extends EntityModelDetector {
 
 	private boolean javassistEnabled;
 	
-	public void initialize(Configuration cfg) {
-		super.initialize(cfg);	
+	public void initialize(Metadata metadata) {
+		super.initialize(metadata);	
 		if(Environment.getBytecodeProvider() instanceof BytecodeProviderImpl) {
 			javassistEnabled = true;
 		}		
 	}
 	
-	public void visit(Configuration cfg, PersistentClass clazz, IssueCollector collector) {
-		Class<?> mappedClass;
-
-		
+	protected void visit(PersistentClass clazz, IssueCollector collector) {
+		Class<?> mappedClass;	
 		try {
 			mappedClass = clazz.getMappedClass();
 		} catch(MappingException me) {
@@ -64,5 +63,12 @@ public class InstrumentationDetector extends EntityModelDetector {
 			}
 			
 		}
+	}
+
+	@Override
+	protected void visitProperty(
+			PersistentClass clazz, 
+			Property property,
+			IssueCollector collector) {
 	}
 }

@@ -11,15 +11,13 @@ import java.net.URLClassLoader;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.BootstrapServiceRegistry;
+import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ForeignKey;
@@ -27,7 +25,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -149,26 +146,16 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMERID");
         assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDERNUMBER");
         
-        cfg.buildMappings();
-        
-        PersistentClass lineMapping = cfg.getClassMapping(toClassName(identifier("LineItem") ) );
+        PersistentClass lineMapping = cfg.getMetadata().getEntityBinding(toClassName(identifier("LineItem") ) );
         
         assertEquals(4,lineMapping.getIdentifier().getColumnSpan() );
         Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
         assertEquals(((Column)(columnIterator.next())).getName(), "CUSTOMERIDREF");
         assertEquals(((Column)(columnIterator.next())).getName(), "ORDERNUMBER");
-        
-        
-/*        Property productproperty = lineMapping.getProperty("Product");        
-        assertNotNull(productproperty);*/
-        
-        
      }
      
      public void testPossibleKeyManyToOne() {
-         cfg.buildMappings();
-         
-         PersistentClass product = cfg.getClassMapping( toClassName(identifier("CustomerOrder") ) );
+         PersistentClass product = cfg.getMetadata().getEntityBinding( toClassName(identifier("CustomerOrder") ) );
          
          Property identifierProperty = product.getIdentifierProperty();
          
@@ -194,9 +181,7 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
 	}
      
      public void testKeyProperty() {
-        cfg.buildMappings();
-        
-        PersistentClass product = cfg.getClassMapping( toClassName(identifier("Product") ) );
+        PersistentClass product = cfg.getMetadata().getEntityBinding( toClassName(identifier("Product") ) );
         
         Property identifierProperty = product.getIdentifierProperty();
         
@@ -222,8 +207,6 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         final File outputdir = new File("reverseoutput");
         outputdir.mkdirs();
         
-        cfg.buildMappings();
-         
         Exporter exporter = new HibernateMappingExporter(cfg, outputdir);
 		
         Exporter javaExp = new POJOExporter(cfg, outputdir);
@@ -233,7 +216,15 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         XMLPrettyPrinter.prettyPrintDirectory(outputdir,".hbm.xml", false);
         TestHelper.compile(outputdir, outputdir);
         
-        Configuration derived = new Configuration();
+        URL[] urls = new URL[] { outputdir.toURI().toURL() };
+        URLClassLoader ucl = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+
+        BootstrapServiceRegistry bootstrapServiceRegistry =  
+        		new BootstrapServiceRegistryBuilder()
+        			.applyClassLoader(ucl)
+        			.build();
+        
+        Configuration derived = new Configuration(bootstrapServiceRegistry);
         
         derived.addFile(new File(outputdir, "Simplecustomerorder.hbm.xml") );
         derived.addFile(new File(outputdir, "Simplelineitem.hbm.xml") );
@@ -242,20 +233,8 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         derived.addFile(new File(outputdir, "Lineitem.hbm.xml") );
         derived.addFile(new File(outputdir, "Customerorder.hbm.xml") );
         
-        derived.buildMappings();        
-        
-        URL[] urls = new URL[] { outputdir.toURI().toURL() };
-        URLClassLoader ucl = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader() );
         Thread.currentThread().setContextClassLoader(ucl);
-        
-        Properties properties = derived.getProperties();
-		Environment.verifyProperties( properties );
-		ConfigurationHelper.resolvePlaceHolders( properties );
-		ServiceRegistry serviceRegistry =  new StandardServiceRegistryBuilder()
-				.applySettings( properties )
-				.build();
-        
-        SessionFactory factory = derived.buildSessionFactory(serviceRegistry);
+        SessionFactory factory = derived.buildSessionFactory();
         Session session = factory.openSession();
         
         executeDDL(getGenDataSQL(), false);

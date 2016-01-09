@@ -21,12 +21,12 @@ public class Cfg2HbmToolTest extends TestCase {
 	
 	public void testNeedsTable(){
 		Cfg2HbmTool c2h = new Cfg2HbmTool();
-		PersistentClass pc = new RootClass();
+		PersistentClass pc = new RootClass(null);
 		assertTrue(c2h.needsTable(pc));
-		assertTrue(c2h.needsTable(new JoinedSubclass(pc)));
-		assertTrue(c2h.needsTable(new UnionSubclass(pc)));
-		assertFalse(c2h.needsTable(new SingleTableSubclass(pc)));
-		assertFalse(c2h.needsTable(new Subclass(pc)));
+		assertTrue(c2h.needsTable(new JoinedSubclass(pc, null)));
+		assertTrue(c2h.needsTable(new UnionSubclass(pc, null)));
+		assertFalse(c2h.needsTable(new SingleTableSubclass(pc, null)));
+		assertFalse(c2h.needsTable(new Subclass(pc, null)));
 				
 	}
 	

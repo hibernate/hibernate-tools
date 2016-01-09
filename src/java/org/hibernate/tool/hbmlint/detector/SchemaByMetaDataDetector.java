@@ -9,9 +9,9 @@ import java.util.TreeMap;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -50,39 +50,33 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	private Dialect dialect;
 
 	private Mapping mapping;
-
+	
 	/** current table as read from the database */
 	Table currentDbTable = null;
 
-	public SchemaByMetaDataDetector() {
-
-	}
-
-	public void initialize(Configuration cfg) {
-		super.initialize( cfg);
+	public void initialize(Metadata metadata) {
+		super.initialize( metadata);
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(cfg.getProperties());
 		ServiceRegistry serviceRegistry = builder.build();
 		
 		dialect = serviceRegistry.getService(JdbcServices.class).getDialect();
 
 		tableSelector = new TableSelectorStrategy(
 				new DefaultReverseEngineeringStrategy() );
-		reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(),
-				tableSelector, serviceRegistry);
+		reader = JDBCReaderFactory.newJDBCReader( 
+				(Properties)builder.getSettings(),
+				tableSelector, 
+				serviceRegistry);
 		dbc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
-		mapping = cfg.buildMapping();
 	}
 
-	public void visit(Configuration cfg, IssueCollector collector) {
-		super.visit( cfg, collector );
-		
-		visitGenerators(cfg, collector);
-				
+	public void visit(IssueCollector collector) {
+		super.visit(collector);		
+		visitGenerators(collector);				
 	}
 	
-	public void visitGenerators(Configuration cfg, IssueCollector collector) {
-		Iterator<?> iter = iterateGenerators(cfg);
+	public void visitGenerators(IssueCollector collector) {
+		Iterator<?> iter = iterateGenerators();
 		
 		Set<?> sequences = Collections.EMPTY_SET;
 		if(dialect.supportsSequences()) {
@@ -141,7 +135,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		return false;
 	}
 	
-	public void visit(Configuration cfg, Table table, IssueCollector pc) {
+	public void visit(Table table, IssueCollector pc) {
 
 		if ( table.isPhysicalTable() ) {
 			setSchemaSelection( table );
@@ -166,7 +160,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			}
 			else {
 				currentDbTable = (Table) list.get( 0 );
-				visitColumns(cfg,table,pc);				
+				visitColumns(table,pc);				
 			}
 		}
 		else {
@@ -178,7 +172,9 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		return Table.qualify( t.getCatalog(), t.getSchema(), t.getName() );
 	}
 	
-	public void visit(Configuration cfg, Table table, Column col,
+	public void visit(
+			Table table, 
+			Column col,
 			IssueCollector pc) {
 		if ( currentDbTable == null ) {
 			return;
@@ -220,15 +216,17 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	 * @return iterator over all the IdentifierGenerator's found in the entitymodel and return a list of unique IdentifierGenerators
 	 * @throws MappingException
 	 */
-	private Iterator<IdentifierGenerator> iterateGenerators(Configuration cfg) throws MappingException {
+	@SuppressWarnings("deprecation")
+	private Iterator<IdentifierGenerator> iterateGenerators() throws MappingException {
 
 		TreeMap<Object, IdentifierGenerator> generators = 
 				new TreeMap<Object, IdentifierGenerator>();
-		Properties properties = getConfiguration().getProperties();
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		Properties properties = (Properties)builder.getSettings();
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
-		Iterator<PersistentClass> persistentClassIterator = cfg.getClassMappings();
+		Iterator<PersistentClass> persistentClassIterator = getMetadata().getEntityBindings().iterator();
 		while ( persistentClassIterator.hasNext() ) {
 			PersistentClass pc = persistentClassIterator.next();
 
@@ -236,7 +234,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = pc.getIdentifier()
 						.createIdentifierGenerator(
-								cfg.getIdentifierGeneratorFactory(),
+								getMetadata().getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,
@@ -250,7 +248,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			}
 		}
 
-		Iterator<?> collectionIterator = getConfiguration().getCollectionMappings();
+		Iterator<?> collectionIterator = getMetadata().getCollectionBindings().iterator();
 		while ( collectionIterator.hasNext() ) {
 			Collection collection = (Collection) collectionIterator.next();
 
@@ -258,7 +256,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = ( (IdentifierCollection) collection ).getIdentifier()
 						.createIdentifierGenerator(
-								getConfiguration().getIdentifierGeneratorFactory(),
+								getMetadata().getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,

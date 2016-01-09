@@ -34,14 +34,14 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 
 	public void testDefaultBiDirectional() {
 		
-		PersistentClass project = cfg.getClassMapping("Project");
+		PersistentClass project = cfg.getMetadata().getEntityBinding("Project");
 		
 		assertNotNull(project.getProperty("worksOns"));
 		assertNotNull(project.getProperty("employee"));
 		assertEquals(3, project.getPropertyClosureSpan());		
 		assertEquals("projectId", project.getIdentifierProperty().getName());
 		
-		PersistentClass employee = cfg.getClassMapping("Employee");
+		PersistentClass employee = cfg.getMetadata().getEntityBinding("Employee");
 		
 		assertNotNull(employee.getProperty("worksOns"));
 		assertNotNull(employee.getProperty("employees"));
@@ -50,7 +50,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		assertEquals(5, employee.getPropertyClosureSpan());
 		assertEquals("id", employee.getIdentifierProperty().getName());
 		
-		PersistentClass worksOn = cfg.getClassMapping("WorksOn");
+		PersistentClass worksOn = cfg.getMetadata().getEntityBinding("WorksOn");
 		
 		assertNotNull(worksOn.getProperty("project"));
 		assertNotNull(worksOn.getProperty("employee"));
@@ -70,7 +70,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		localCfg.setReverseEngineeringStrategy(repository);
 		localCfg.readFromJDBC();			
 		
-		PersistentClass project = localCfg.getClassMapping("Project");
+		PersistentClass project = localCfg.getMetadata().getEntityBinding("Project");
 		
 		assertNotNull(project.getProperty("worksOns"));
 		assertPropertyNotExists(project, "employee", "should be removed by reveng.xml");
@@ -80,7 +80,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		assertEquals(3, project.getPropertyClosureSpan());		
 		assertEquals("projectId", project.getIdentifierProperty().getName());
 		
-		PersistentClass employee = localCfg.getClassMapping("Employee");
+		PersistentClass employee = localCfg.getMetadata().getEntityBinding("Employee");
 		
 		assertNotNull(employee.getProperty("worksOns"));
 		assertNotNull("property should be renamed by reveng.xml", employee.getProperty("manager"));		
@@ -93,7 +93,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		assertEquals(4, employee.getPropertyClosureSpan());
 		assertEquals("id", employee.getIdentifierProperty().getName());
 		
-		PersistentClass worksOn = localCfg.getClassMapping("WorksOn");
+		PersistentClass worksOn = localCfg.getMetadata().getEntityBinding("WorksOn");
 		
 		assertNotNull(worksOn.getProperty("project"));
 		assertNotNull(worksOn.getProperty("employee"));
@@ -113,10 +113,10 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		localCfg.setReverseEngineeringStrategy(repository);
 		localCfg.readFromJDBC();			
 
-		PersistentClass person = localCfg.getClassMapping("Person");
-		PersistentClass addressPerson = localCfg.getClassMapping("AddressPerson");
-		PersistentClass addressMultiPerson = localCfg.getClassMapping("AddressMultiPerson");
-		PersistentClass multiPerson = localCfg.getClassMapping("MultiPerson");
+		PersistentClass person = localCfg.getMetadata().getEntityBinding("Person");
+		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressPerson");
+		PersistentClass addressMultiPerson = localCfg.getMetadata().getEntityBinding("AddressMultiPerson");
+		PersistentClass multiPerson = localCfg.getMetadata().getEntityBinding("MultiPerson");
 		
 		assertPropertyNotExists(addressPerson, "person", "should be removed by reveng.xml");
 		assertPropertyNotExists(person, "addressPerson", "should be removed by reveng.xml");
@@ -157,7 +157,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 
 	public void testManyToOneAttributeDefaults() {	
 
-		PersistentClass classMapping = cfg.getClassMapping("Employee");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Employee");
 		Property property = classMapping.getProperty("employee");	
 
 		assertEquals("none", property.getCascade());
@@ -178,7 +178,7 @@ public class RevEngForeignKeyTests extends JDBCMetaDataBinderTestCase {
 		localCfg.setReverseEngineeringStrategy(repository);
 		localCfg.readFromJDBC();			
 			
-		PersistentClass classMapping = localCfg.getClassMapping("Employee");
+		PersistentClass classMapping = localCfg.getMetadata().getEntityBinding("Employee");
 		Property property = classMapping.getProperty("manager");	
 
 		assertEquals("all", property.getCascade());

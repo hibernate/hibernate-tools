@@ -1,4 +1,4 @@
-<nested-composite-element class="${elementValue.componentClassName}" name="${elementValue.nodeName}">
+<nested-composite-element class="${elementValue.componentClassName}" name="subcomponent">
 	<#assign metaattributable=property>
 	<#include "meta.hbm.ftl">
 	<#foreach property in elementValue.getPropertyIterator()>

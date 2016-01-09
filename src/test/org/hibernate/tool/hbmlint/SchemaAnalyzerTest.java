@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.detector.SchemaByMetaDataDetector;
+import org.hibernate.tool.util.MetadataHelper;
 
 public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 
@@ -30,31 +32,30 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 	public void testSchemaAnalyzer() {
 		Configuration configuration = new Configuration();
 		addMappings( getMappings(), configuration );
-		configuration.buildMappings();
-	
 		SchemaByMetaDataDetector analyzer = new SchemaByMetaDataDetector();
-		analyzer.initialize( configuration);
+		analyzer.initialize( MetadataHelper.getMetadata(configuration) );
 		
-		Iterator<?> tableMappings = configuration.getTableMappings();
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		
+		Iterator<Table> tableMappings = metadata.collectTableMappings().iterator();
 		
 		while ( tableMappings.hasNext() ) {
-			Table table = (Table) tableMappings.next();
+			Table table = tableMappings.next();
 		
 			MockCollector mc = new MockCollector();
 			
 			if(table.getName().equalsIgnoreCase( "missingtable" )) {
-				analyzer.visit( configuration, table, mc );				
+				analyzer.visit(table, mc );				
 				assertEquals(mc.problems.size(),1);
 				Issue ap = (Issue) mc.problems.get( 0 );
 				assertTrue(ap.getDescription().indexOf( "Missing table" ) >=0);
 			} else if(table.getName().equalsIgnoreCase( "category" )) {
-				analyzer.visit( configuration, table, mc );
+				analyzer.visit(table, mc );
 				assertEquals(mc.problems.size(),1);
 				Issue ap = (Issue) mc.problems.get( 0 );
 				assertTrue(ap.getDescription().indexOf( "missing column: name" ) >=0);							
 			} else if(table.getName().equalsIgnoreCase( "badtype" )) {
-				analyzer.visit( configuration, table, mc );
+				analyzer.visit(table, mc );
 				assertEquals(mc.problems.size(),1);
 				Issue ap = (Issue) mc.problems.get( 0 );
 				assertTrue(ap.getDescription().indexOf( "wrong column type for name" ) >=0);
@@ -62,23 +63,16 @@ public class SchemaAnalyzerTest extends JDBCMetaDataBinderTestCase {
 		}
 		
 		MockCollector mc = new MockCollector();
-		analyzer.visitGenerators( configuration, mc );
+		analyzer.visitGenerators(mc);
 		assertEquals(1,mc.problems.size());
 		Issue issue = (Issue) mc.problems.get( 0 );
 		assertTrue(issue.getDescription().indexOf( "does_not_exist" ) >=0);		
 	}
-	
-	
-		
-		public void testExporter() {
 			
-			Configuration configuration = new Configuration();
-			addMappings( getMappings(), configuration );
-			configuration.buildMappings();
-		
-			new HbmLintExporter(configuration, getOutputDir()).start();
-			
-		}
+	public void testExporter() {		
+		Configuration configuration = new Configuration();
+		new HbmLintExporter(configuration, getOutputDir()).start();			
+	}
 		
 	protected String[] getCreateSQL() {
 		return new String[] { "create table Category (id int, parent_id numeric(5))",
