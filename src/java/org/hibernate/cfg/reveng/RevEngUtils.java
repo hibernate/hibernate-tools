@@ -42,13 +42,13 @@ public class RevEngUtils {
 		return result;	
 	}
 
-	public static Map<?,?> getColumnToMetaAttributesInRevengStrategy(
+	public static Map<String,MetaAttribute> getColumnToMetaAttributesInRevengStrategy(
 			ReverseEngineeringStrategy revengStrat,
 			Table table,
 			String defaultCatalog,
 			String defaultSchema,
 			String column) {
-		Map<?,?> result = null;
+		Map<String,MetaAttribute> result = null;
 		TableIdentifier tableIdentifier = TableIdentifier.create(table);
 		result = revengStrat.columnToMetaAttributes(tableIdentifier, column);
 		if (result == null) {
