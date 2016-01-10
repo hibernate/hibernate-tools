@@ -237,6 +237,7 @@ public class JDBCBinder {
 	}
 
 	// bind collections.
+	@SuppressWarnings("unchecked")
 	private void bindIncomingForeignKeys(PersistentClass rc, Set<Column> processed, List<ForeignKey> foreignKeys, Mapping mapping) {
 		if(foreignKeys!=null) {
 			for (Iterator<ForeignKey> iter = foreignKeys.iterator(); iter.hasNext();) {
