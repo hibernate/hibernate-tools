@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
@@ -92,7 +93,7 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?null:delegate.tableToCompositeIdName(identifier);
 	}
 
-	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
+	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
 		return delegate==null?false:delegate.excludeForeignKeyAsCollection(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
 	}
 

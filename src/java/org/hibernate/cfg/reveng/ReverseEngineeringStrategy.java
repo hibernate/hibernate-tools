@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
@@ -137,7 +138,7 @@ public interface ReverseEngineeringStrategy {
 	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column);
 	
 	/** Should this foreignkey be excluded as a oneToMany */
-	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns);
+	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns);
 
 	/** Should this foreignkey be excluded as a many-to-one */
 	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns);
