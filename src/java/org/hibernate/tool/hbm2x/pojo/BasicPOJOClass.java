@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
-import org.hibernate.mapping.Any;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
@@ -19,7 +18,6 @@ import org.hibernate.mapping.MetaAttributable;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.PropertyGeneration;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -29,7 +27,6 @@ import org.hibernate.tool.hbm2x.MetaAttributeConstants;
 import org.hibernate.tool.hbm2x.MetaAttributeHelper;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
 import org.hibernate.tuple.GenerationTiming;
-import org.hibernate.internal.util.StringHelper;
 
 /**
  * Abstract implementation of POJOClass. To be extended by ComponentPOJO and EntityPOJO
@@ -59,7 +56,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		
 		MetaAttribute metaAttribute = meta.getMetaAttribute("extra-import");
 		if(metaAttribute!=null) {
-			Iterator values = metaAttribute.getValues().iterator();
+			Iterator<?> values = metaAttribute.getValues().iterator();
 			while ( values.hasNext() ) {
 				String element = (String) values.next();
 				importContext.importType(element);				
@@ -207,14 +204,14 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	public String generateEquals(String thisName, String otherName, boolean useGenerics) {
-		Iterator allPropertiesIterator = getEqualsHashCodePropertiesIterator();
+		Iterator<Property> allPropertiesIterator = getEqualsHashCodePropertiesIterator();
 		return generateEquals( thisName, otherName, allPropertiesIterator, useGenerics );
 	}
 	
 	/** returns the properties that would be visible on this entity as a pojo. This does not return *all* properties since hibernate has certain properties that are only relevant in context of persistence. */ 
-	public abstract Iterator getAllPropertiesIterator();
+	public abstract Iterator<Property> getAllPropertiesIterator();
 
-	protected String generateEquals(String thisName, String otherName, Iterator allPropertiesIterator, boolean useGenerics) {
+	protected String generateEquals(String thisName, String otherName, Iterator<Property> allPropertiesIterator, boolean useGenerics) {
 		StringBuffer buf = new StringBuffer();
 		while ( allPropertiesIterator.hasNext() ) {
 			Property property = (Property) allPropertiesIterator.next();
@@ -282,7 +279,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return getMetaAsString( "class-code", "\n" );
 	}
 	
-	private boolean needsEqualsHashCode(Iterator iter) {
+	private boolean needsEqualsHashCode(Iterator<?> iter) {
 		while ( iter.hasNext() ) {
 			Property element = (Property) iter.next();
 			if ( usePropertyInEquals( element ) ) {
@@ -293,7 +290,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public boolean needsEqualsHashCode() {
-		Iterator iter = getAllPropertiesIterator();
+		Iterator<?> iter = getAllPropertiesIterator();
 		return needsEqualsHashCode( iter );
 	}
 
@@ -355,7 +352,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		if ( property.isComposite() ) {
 			annotations.append( "@" + importType("javax.persistence.AttributeOverrides") +"( {" );
 			Component component = (Component) property.getValue();
-			Iterator subElements = component.getPropertyIterator();
+			Iterator<?> subElements = component.getPropertyIterator();
 			buildRecursiveAttributeOverride( subElements, null, property, annotations );
 			annotations.setLength( annotations.length() - 2 );
 			annotations.append( " } )" );
@@ -366,7 +363,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				buildColumnAnnotation( selectable, annotations, insertable, updatable );				
 			}
 			else {
-				Iterator columns = property.getColumnIterator();
+				Iterator<?> columns = property.getColumnIterator();
 				annotations.append("@").append( importType("org.hibernate.annotations.Columns") ).append("( { " );
 				while ( columns.hasNext() ) {
 					Selectable selectable = (Selectable) columns.next();
@@ -388,7 +385,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return annotations.toString();
 	}
 
-	private void buildRecursiveAttributeOverride(Iterator subElements, String path, Property property, StringBuffer annotations) {
+	private void buildRecursiveAttributeOverride(Iterator<?> subElements, String path, Property property, StringBuffer annotations) {
 		while ( subElements.hasNext() ) {
 			Property subProperty = (Property) subElements.next();
 			if ( subProperty.isComposite() ) {
@@ -403,7 +400,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				buildRecursiveAttributeOverride( component.getPropertyIterator(), path, subProperty, annotations );
 			}
 			else {
-				Iterator columns = subProperty.getColumnIterator();
+				Iterator<?> columns = subProperty.getColumnIterator();
 				Selectable selectable = (Selectable) columns.next();
 				if ( selectable.isFormula() ) {
 					//TODO formula in multicolumns not supported by annotations
@@ -478,13 +475,13 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 
-	public Iterator getToStringPropertiesIterator() {
-		Iterator iter = getAllPropertiesIterator();
+	public Iterator<Property> getToStringPropertiesIterator() {
+		Iterator<Property> iter = getAllPropertiesIterator();
 		return getToStringPropertiesIterator( iter );
 	}
 
-	private Iterator getToStringPropertiesIterator(Iterator iter) {
-		List properties = new ArrayList();
+	private Iterator<Property> getToStringPropertiesIterator(Iterator<Property> iter) {
+		List<Property> properties = new ArrayList<Property>();
 
 		while ( iter.hasNext() ) {
 			Property element = (Property) iter.next();
@@ -496,13 +493,13 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return properties.iterator();
 	}
 
-	public Iterator getEqualsHashCodePropertiesIterator() {
-		Iterator iter = getAllPropertiesIterator();
+	public Iterator<Property> getEqualsHashCodePropertiesIterator() {
+		Iterator<Property> iter = getAllPropertiesIterator();
 		return getEqualsHashCodePropertiesIterator(iter);
 	}
 
-	private Iterator getEqualsHashCodePropertiesIterator(Iterator iter) {
-		List properties = new ArrayList();
+	private Iterator<Property> getEqualsHashCodePropertiesIterator(Iterator<Property> iter) {
+		List<Property> properties = new ArrayList<Property>();
 
 		while ( iter.hasNext() ) {
 			Property element = (Property) iter.next();
@@ -515,11 +512,11 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public boolean needsToString() {
-		Iterator iter = getAllPropertiesIterator();
+		Iterator<Property> iter = getAllPropertiesIterator();
 		return needsToString( iter );
 	}
 	
-	private boolean needsToString(Iterator iter) {
+	private boolean needsToString(Iterator<Property> iter) {
 		while ( iter.hasNext() ) {
 			Property element = (Property) iter.next();
 			if ( c2j.getMetaAsBool( element, "use-in-tostring" ) ) {
@@ -712,7 +709,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		.append( " = 1;\n" );
 
 //		for (int i=0; i<property.length; i++)
-		String elementType = javaTypeName.replaceAll("\\[\\]", "");
+		javaTypeName.replaceAll("\\[\\]", "");
 		buf.append( "             for (int i=0; i<" )
 		.append( propertyArrayName )
 		.append( ".length; i++) {\n" );
@@ -832,7 +829,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				return true;
 			} else if (field.getValue() instanceof Component) {
 				Component c = (Component) field.getValue();
-				Iterator it = c.getPropertyIterator();
+				Iterator<?> it = c.getPropertyIterator();
 				while ( it.hasNext() ) {
 					Property prop = (Property) it.next();
 					if(isRequiredInConstructor(prop)) {
@@ -846,7 +843,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public boolean needsMinimalConstructor() {
-		List propClosure = getPropertyClosureForMinimalConstructor();
+		List<Property> propClosure = getPropertyClosureForMinimalConstructor();
 		if(propClosure.isEmpty()) return false; // minimal=default
 		if(propClosure.equals(getPropertyClosureForFullConstructor())) return false; // minimal=full
 		return true;
@@ -890,12 +887,9 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 			return val.toString();
 		}
 		
-		public String getType() {
-			return type;
-		}
 	}
 	
-	static Map defaultInitializors = new HashMap();
+	static Map<String, DefaultInitializor> defaultInitializors = new HashMap<String, DefaultInitializor>();
 	static {
 		defaultInitializors.put("java.util.List", new DefaultInitializor("java.util.ArrayList", true));
 		defaultInitializors.put("java.util.Map", new DefaultInitializor("java.util.HashMap", true));
