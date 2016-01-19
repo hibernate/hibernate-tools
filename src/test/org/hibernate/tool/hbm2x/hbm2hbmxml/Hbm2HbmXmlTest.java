@@ -524,34 +524,33 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 
 	}
 	    
-	// TODO Re-enable this test: HBX-1244
 	public void testGeneralHbmSettingsSQLQueryWithReturnCollection()  throws Exception {
 
-//		File outputXml = new File(getOutputDir().getAbsolutePath() + "/GeneralHbmSettings.hbm.xml");
-//		assertFileAndExists(outputXml);
-//
-//		SAXReader xmlReader =  this.getSAXReader();
-//		
-//		Document document = xmlReader.read(outputXml);
-//		
-//		// Validate the Generator and that it does have arguments 
-//		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_6\"]");
-//		List list = xpath.selectNodes(document);
-//		
-//		Element node = (Element)list.get(0);
-//		assertNotNull("Expected sql-query named 'test_sqlquery_6' not to be null", node);
-//
-//		Attribute genAtt = node.attribute("name");
-//		assertEquals("Unexpected query name", "test_sqlquery_6", genAtt.getStringValue() );
-//
-//		Element returnEl = node.element("load-collection");
-//		assertNotNull("Expected return element to not be null", returnEl);
-//		genAtt = returnEl.attribute("alias");
-//		assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
-//		genAtt = returnEl.attribute("role");
-//		assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals.price", genAtt.getStringValue() );
-//		genAtt = returnEl.attribute("lock-mode");
-//		assertEquals("Unexpected class lock-mode for return element", "none", genAtt.getStringValue() );
+		File outputXml = new File(getOutputDir().getAbsolutePath() + "/GeneralHbmSettings.hbm.xml");
+		assertFileAndExists(outputXml);
+
+		SAXReader xmlReader =  this.getSAXReader();
+		
+		Document document = xmlReader.read(outputXml);
+		
+		// Validate the Generator and that it does have arguments 
+		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_6\"]");
+		List list = xpath.selectNodes(document);
+		
+		Element node = (Element)list.get(0);
+		assertNotNull("Expected sql-query named 'test_sqlquery_6' not to be null", node);
+
+		Attribute genAtt = node.attribute("name");
+		assertEquals("Unexpected query name", "test_sqlquery_6", genAtt.getStringValue() );
+
+		Element returnEl = node.element("load-collection");
+		assertNotNull("Expected return element to not be null", returnEl);
+		genAtt = returnEl.attribute("alias");
+		assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
+		genAtt = returnEl.attribute("role");
+		assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals.price", genAtt.getStringValue() );
+		genAtt = returnEl.attribute("lock-mode");
+		assertEquals("Unexpected class lock-mode for return element", "none", genAtt.getStringValue() );
 
 	}
 	
