@@ -55,16 +55,14 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 	}
 
 	public void testCreatePersistentClasses() {
-		cfg.buildMappings();
-		PersistentClass classMapping = cfg.getClassMapping(toClassName("orders") );		
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding(toClassName("orders") );		
 		assertNotNull("class not found", classMapping);		
 		KeyValue identifier = classMapping.getIdentifier();
 		assertNotNull(identifier);		
 	}
 	
 	public void testCreateManyToOne() {
-		cfg.buildMappings();
-		PersistentClass classMapping = cfg.getClassMapping(toClassName("item") );
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding(toClassName("item") );
 		assertNotNull(classMapping);		
 		KeyValue identifier = classMapping.getIdentifier();
 		assertNotNull(identifier);	
@@ -76,8 +74,7 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testCreateOneToMany() {
-		cfg.buildMappings();        
-		PersistentClass orders = cfg.getClassMapping(toClassName("orders") );		
+		PersistentClass orders = cfg.getMetadata().getEntityBinding(toClassName("orders") );		
 		Property itemset = orders.getProperty("itemsForRelatedOrderId");	
 		Collection col = (Collection) itemset.getValue();         
 		OneToMany otm = (OneToMany) col.getElement();
@@ -88,7 +85,6 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
 		assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void testBinding() throws HibernateException, SQLException {	
 		SessionFactory sf = cfg.buildSessionFactory();
 		Session session = sf.openSession();

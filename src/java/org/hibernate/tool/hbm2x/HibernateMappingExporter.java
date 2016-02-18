@@ -7,9 +7,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.internal.util.StringHelper;
 
 /**
@@ -36,7 +38,11 @@ public class HibernateMappingExporter extends GenericExporter {
 	private void exportGeneralSettings() {
 		Cfg2HbmTool c2h = getCfg2HbmTool();
 		Configuration cfg = getConfiguration();
-		if(c2h.isImportData(cfg) && (c2h.isNamedQueries(cfg)) && (c2h.isNamedSQLQueries(cfg)) && (c2h.isFilterDefinitions(cfg))) {
+		Metadata md = MetadataHelper.getMetadata(cfg);
+		if( c2h.isImportData(md) && 
+				(c2h.isNamedQueries(md)) && 
+				(c2h.isNamedSQLQueries(md)) && 
+				(c2h.isFilterDefinitions(md))) {
 			TemplateProducer producer = new TemplateProducer(getTemplateHelper(),getArtifactCollector());
 			producer.produce(new HashMap<String, Object>(), "hbm/generalhbm.hbm.ftl", new File(getOutputDirectory(),"GeneralHbmSettings.hbm.xml"), getTemplateName(), "General Settings");
 		}

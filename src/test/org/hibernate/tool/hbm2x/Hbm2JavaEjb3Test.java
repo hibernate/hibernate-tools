@@ -5,9 +5,6 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,12 +80,12 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 	}
 
 	public void testEqualsHashCode() {
-		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Passenger");
+		PersistentClass classMapping = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.Passenger");
 		POJOClass clazz = new Cfg2JavaTool().getPOJOClass(classMapping);
 		
 		assertFalse(clazz.needsEqualsHashCode());
 		
-		classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
+		classMapping = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.Article");
 		clazz = new Cfg2JavaTool().getPOJOClass(classMapping);
 		
 		assertTrue(clazz.needsEqualsHashCode());
@@ -97,7 +94,7 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 	
 
 	public void testAnnotationColumnDefaults() {
-		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
+		PersistentClass classMapping = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.Article");
 		Cfg2JavaTool cfg2java = new Cfg2JavaTool();
 		POJOClass clazz = cfg2java.getPOJOClass(classMapping);
 		
@@ -123,7 +120,7 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		assertTrue(string.indexOf("length=100")>0);
 		
 		
-		classMapping = getCfg().getClassMapping( "org.hibernate.tool.hbm2x.Train" );
+		classMapping = getMetadata().getEntityBinding( "org.hibernate.tool.hbm2x.Train" );
 		clazz = cfg2java.getPOJOClass(classMapping);
 		
 		p = classMapping.getProperty( "name" );
@@ -138,7 +135,7 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 	}
 	
 	public void testEmptyCascade() {
-		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
+		PersistentClass classMapping = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.Article");
 		
 		Cfg2JavaTool cfg2java = new Cfg2JavaTool();
 		EntityPOJOClass clazz = (EntityPOJOClass) cfg2java.getPOJOClass(classMapping);

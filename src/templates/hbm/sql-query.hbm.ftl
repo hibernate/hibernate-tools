@@ -1,7 +1,6 @@
-<#foreach queryKey in cfg.namedSQLQueries.keySet()>
-<#assign queryDef = cfg.namedSQLQueries.get(queryKey)>
+<#foreach queryDef in md.namedNativeQueryDefinitions>
     <sql-query 
-        name="${queryKey}"
+        name="${queryDef.name}"
 <#if queryDef.flushMode?exists>
         flush-mode="${queryDef.flushMode.toString().toLowerCase()}"
 </#if>
@@ -18,9 +17,12 @@
         timeout="${queryDef.timeout?c}"
 </#if>    
 >
+<#if queryDef.querySpaces?exists>
 <#foreach tableName in queryDef.querySpaces>
 	    <synchronize table="${tableName}" />
 </#foreach>
+</#if>
+<#if queryDef.queryReturns?exists>
 <#foreach returnDef in queryDef.queryReturns>
 <#assign returnTag = c2h.getNamedSQLReturnTag(returnDef)>
 	    <${returnTag}
@@ -35,7 +37,8 @@
 <#if returnDef.lockMode?exists>
              lock-mode="${returnDef.lockMode.toString().toLowerCase()}"
 </#if>	    />
-</#foreach>        
+</#foreach>     
+</#if>   
       <![CDATA[${queryDef.queryString.trim()}]]>
     </sql-query>
     

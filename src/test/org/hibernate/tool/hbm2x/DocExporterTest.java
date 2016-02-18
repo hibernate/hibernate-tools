@@ -63,10 +63,10 @@ public class DocExporterTest extends NonReflectiveTestCase {
     	assertFileAndExists(new File(getOutputDir(), "assets/doc-style.css") );
     	assertFileAndExists(new File(getOutputDir(), "assets/hibernate_logo.gif") );
     	
-    	assertFileAndExists(new File(getOutputDir(), "tables/PUBLIC/summary.html") );
-    	assertFileAndExists(new File(getOutputDir(), "tables/PUBLIC/Customer.html") );
-    	assertFalse(new File(getOutputDir(), "tables/PUBLIC/UPerson.html").exists() );
-    	assertFileAndExists(new File(getOutputDir(), "tables/CROWN/CROWN_USERS.html") );
+    	assertFileAndExists(new File(getOutputDir(), "tables/PUBLIC.PUBLIC/summary.html") );
+    	assertFileAndExists(new File(getOutputDir(), "tables/PUBLIC.PUBLIC/Customer.html") );
+    	assertFalse(new File(getOutputDir(), "tables/PUBLIC.PUBLIC/UPerson.html").exists() );
+    	assertFileAndExists(new File(getOutputDir(), "tables/PUBLIC.CROWN/CROWN_USERS.html") );
     	
     	assertFileAndExists(new File(getOutputDir(), "entities/org/hibernate/tool/hbm2x/Customer.html") );
     	assertTrue(new File(getOutputDir(), "entities/org/hibernate/tool/hbm2x/UPerson.html").exists() );
@@ -95,7 +95,7 @@ public class DocExporterTest extends NonReflectiveTestCase {
     
     public void testCommentIncluded() {
     	//A unique customer comment!
-    	File tableFile = new File(getOutputDir(), "tables/PUBLIC/Customer.html");
+    	File tableFile = new File(getOutputDir(), "tables/PUBLIC.PUBLIC/Customer.html");
 		assertFileAndExists(tableFile );
 		
 		assertNotNull(findFirstString("A unique customer comment!", tableFile));

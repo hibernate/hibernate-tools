@@ -41,9 +41,8 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
 			gottenTables.add(table);
 			return super.getTables( catalog, schema, table );
-		}
-				
-	}
+		}				
+	}	
 	
 	public void testReadSchemaIncremental() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -84,7 +83,7 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		assertNotNull(iterator.next());
 		assertFalse(iterator.hasNext());
 		
-		Table table = dc.getTable( null, null, "CHILD" );
+		Table table = dc.getTable( "PUBLIC", "PUBLIC", "CHILD" );
 		assertSame( firstChild, table );
 		
 		assertHasNext("should have recorded one foreignkey to child table", 1, firstChild.getForeignKeyIterator() );		
@@ -93,9 +92,9 @@ public class IncrementalSchemaReadingTest extends JDBCMetaDataBinderTestCase {
 		tss.clearSchemaSelections();		
 		reader.readDatabaseSchema( dc, null, null );
 		
-		Table finalMaster = dc.getTable( null, null, "MASTER" );
+		Table finalMaster = dc.getTable( "PUBLIC", "PUBLIC", "MASTER" );
 		
-		assertSame(firstChild, dc.getTable( null, null, "CHILD" ));
+		assertSame(firstChild, dc.getTable( "PUBLIC", "PUBLIC", "CHILD" ));
 		assertHasNext( 1, firstChild.getForeignKeyIterator() );
 		assertHasNext( 0, finalMaster.getForeignKeyIterator() );
 		

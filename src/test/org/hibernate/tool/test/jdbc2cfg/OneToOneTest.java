@@ -11,24 +11,26 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.MappingException;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.test.TestHelper;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -65,7 +67,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 
 	public void testOneToOneSingleColumnBiDirectional() {
 		
-		PersistentClass person = localCfg.getClassMapping("Person");
+		PersistentClass person = localCfg.getMetadata().getEntityBinding("Person");
 		
 		Property addressProperty = person.getProperty("addressPerson");
 		assertNotNull(addressProperty);
@@ -83,7 +85,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		assertEquals("personId", person.getIdentifierProperty().getName());
 		assertFalse(oto.isConstrained());
 		
-		PersistentClass addressPerson = localCfg.getClassMapping("AddressPerson");
+		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressPerson");
 		
 		
 		Property personProperty = addressPerson.getProperty("person");
@@ -105,14 +107,14 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testAddressWithForeignKeyGeneration() {
 		
-		PersistentClass address = localCfg.getClassMapping("AddressPerson");
+		PersistentClass address = localCfg.getMetadata().getEntityBinding("AddressPerson");
 		
 		assertEquals("foreign", ((SimpleValue)address.getIdentifier()).getIdentifierGeneratorStrategy());
 	}
 
 	public void testOneToOneMultiColumnBiDirectional() {
 		
-		PersistentClass person = localCfg.getClassMapping("MultiPerson");
+		PersistentClass person = localCfg.getMetadata().getEntityBinding("MultiPerson");
 		
 		Property addressProperty = person.getProperty("addressMultiPerson");
 		assertNotNull(addressProperty);
@@ -129,7 +131,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(2, person.getPropertyClosureSpan());		
 		assertEquals("compositeid gives generic id name", "id", person.getIdentifierProperty().getName());
 		
-		PersistentClass addressPerson = localCfg.getClassMapping("AddressMultiPerson");
+		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressMultiPerson");
 		
 		
 		Property personProperty = addressPerson.getProperty("multiPerson");
@@ -151,14 +153,14 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 
 	public void xtestNoCreation() {
 	    
-        assertNull("No middle class should be generated.", cfg.getClassMapping( "WorksOn" ));
+        assertNull("No middle class should be generated.", cfg.getMetadata().getEntityBinding( "WorksOn" ));
         
-        assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", cfg.getClassMapping( "WorksOnContext" ));
+        assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", cfg.getMetadata().getEntityBinding( "WorksOnContext" ));
         
-        PersistentClass projectClass = cfg.getClassMapping("Project");
+        PersistentClass projectClass = cfg.getMetadata().getEntityBinding("Project");
 		assertNotNull( projectClass );
 
-		PersistentClass employeeClass = cfg.getClassMapping("Employee");
+		PersistentClass employeeClass = cfg.getMetadata().getEntityBinding("Employee");
 		assertNotNull( employeeClass );
 				
 		assertPropertyNotExist( projectClass, "worksOns" );
@@ -213,7 +215,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		try {
 	        Thread.currentThread().setContextClassLoader(ucl);
 			
-		Configuration configuration = new Configuration()
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
+		MetadataSources mds = new MetadataSources(serviceRegistry)
 		    .addFile( new File(getOutputDir(), "Person.hbm.xml") )
 		    .addFile( new File(getOutputDir(), "AddressPerson.hbm.xml") )
 			.addFile( new File(getOutputDir(), "AddressMultiPerson.hbm.xml"))
@@ -222,10 +226,8 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 			.addFile( new File(getOutputDir(), "LeftTable.hbm.xml"))
 			.addFile( new File(getOutputDir(), "RightTable.hbm.xml"));
 		
-		configuration.buildMappings();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		new SchemaValidator(builder.build(), configuration).validate();
+		Metadata metadata = mds.buildMetadata();
+		new SchemaValidator().validate(metadata, serviceRegistry);
 		} finally {
 			Thread.currentThread().setContextClassLoader(oldLoader);			
 		}
@@ -273,8 +275,12 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
         Class leftClass = ucl.loadClass("RightTable");
         try {
         Thread.currentThread().setContextClassLoader(ucl);
-		AnnotationConfiguration configuration = new AnnotationConfiguration();
-		configuration.addAnnotatedClass(personClass)
+		
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = builder.build();
+		
+		MetadataSources mds = new MetadataSources(serviceRegistry);
+		mds.addAnnotatedClass(personClass)
 			.addAnnotatedClass(multiPersonClass)
 			.addAnnotatedClass(addressMultiPerson)
 			.addAnnotatedClass(addressMultiPersonId)
@@ -283,12 +289,9 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 			.addAnnotatedClass(middleClass)
 			.addAnnotatedClass(rightClass)
 			.addAnnotatedClass(leftClass);
+		Metadata metadata = mds.buildMetadata();
 		
-		configuration.buildMappings();
-		
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		new SchemaValidator(builder.build(), configuration).validate();
+		new SchemaValidator().validate(metadata, serviceRegistry);
         } finally {
         	Thread.currentThread().setContextClassLoader(oldLoader);
         }

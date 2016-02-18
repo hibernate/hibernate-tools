@@ -28,10 +28,12 @@
 		<property name="name" type="string"/>
 	</subclass>
 	
-	<joined-subclass name="Alien" extends="Animal">
-	  <comment>A comment for joined-subclass</comment>
-	  <key column="aid"/>
-	  <property name="planet" type="string"/>
-	</joined-subclass>
+	<subclass name="Alien" extends="Animal">
+	  <join table="ALIEN">
+		  <comment>A comment for joined-subclass</comment>
+		  <key column="aid"/>
+		  <property name="planet" type="string"/>
+	  </join>
+	</subclass>
 		
 </hibernate-mapping>

@@ -55,7 +55,7 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		List<?> tables = getTables(configuration);
+		List<Table> tables = getTables(configuration);
 		
 		assertEquals(2,tables.size());
 		
@@ -102,10 +102,10 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, SCHEMA );
 		
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, TABLE1));
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, null, TABLE2));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, QTABLE1));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), null, QTABLE2));
+		assertNotNull("The table should be found", dc.getTable(SCHEMA, "PUBLIC", TABLE1));
+		assertNotNull("The table should be found", dc.getTable(SCHEMA, "PUBLIC", TABLE2));
+		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), "PUBLIC", QTABLE1));
+		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), "PUBLIC", QTABLE2));
 		
 		assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
 	}
@@ -113,10 +113,10 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	private static String quote(String name) {
 		return "\"" + name + "\"";
 	}
-
+	
 	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
 		List<Table> list = new ArrayList<Table>();
-		Iterator<Table> iter = metaDataConfiguration.getTableMappings();
+		Iterator<Table> iter = metaDataConfiguration.getMetadata().collectTableMappings().iterator();
 		while(iter.hasNext()) {
 			Table element = iter.next();
 			list.add(element);

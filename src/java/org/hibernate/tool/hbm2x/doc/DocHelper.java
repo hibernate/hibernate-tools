@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.HibernateException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -26,6 +27,7 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.type.Type;
 
 /**
@@ -145,7 +147,9 @@ public final class DocHelper {
 		if (defaultSchema == null) {
 			defaultSchema = DEFAULT_NO_SCHEMA_NAME;
 		}
-		Iterator<Table> tablesIter = cfg.getTableMappings();
+		
+		Metadata metadata = MetadataHelper.getMetadata(cfg);		
+		Iterator<Table> tablesIter = metadata.collectTableMappings().iterator();
 
 		while (tablesIter.hasNext()) {
 			Table table = tablesIter.next();
@@ -198,7 +202,7 @@ public final class DocHelper {
 
 		Map<String, Component> components = new HashMap<String, Component>();
 
-		Iterator<PersistentClass> classesItr = cfg.getClassMappings();
+		Iterator<PersistentClass> classesItr = metadata.getEntityBindings().iterator();
 		while (classesItr.hasNext()) {
 			PersistentClass clazz = classesItr.next();
 
@@ -536,4 +540,5 @@ public final class DocHelper {
 			properties.add((Property)iterator.next());
 		return properties;
 	}
+	
 }

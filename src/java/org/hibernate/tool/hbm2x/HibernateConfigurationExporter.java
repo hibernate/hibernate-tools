@@ -17,10 +17,12 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -97,7 +99,7 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         ignoredProperties.put(Environment.HBM2DDL_AUTO, "false" );
         ignoredProperties.put("hibernate.temp.use_jdbc_metadata_defaults", null );
         // FIXME was Environment.TRANSACTION_MANAGER_STRATEGY
-        ignoredProperties.put(Environment.TRANSACTION_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup");
+        ignoredProperties.put(Environment.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup");
         
         Set<Entry<Object, Object>> set = props.entrySet();
         Iterator<Entry<Object, Object>> iterator = set.iterator();
@@ -116,7 +118,8 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         }
         
 		if(getConfiguration()!=null) {
-		    Iterator<PersistentClass> classMappings = getConfiguration().getClassMappings();
+			Metadata md = MetadataHelper.getMetadata(getConfiguration());
+		    Iterator<PersistentClass> classMappings = md.getEntityBindings().iterator();
 		    while (classMappings.hasNext() ) {
 		        PersistentClass element = classMappings.next();
 		        if(element instanceof RootClass) {

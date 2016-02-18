@@ -4,16 +4,19 @@
  */
 package org.hibernate.tool.test.jdbc2cfg;
 
+import java.util.EnumSet;
 import java.util.Iterator;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -87,7 +90,11 @@ public class ForeignKeysTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testExport() {
 		
-		new SchemaExport(cfg).create(true, false);
+		SchemaExport schemaExport = new SchemaExport();
+		Metadata metadata = cfg.getMetadata();
+		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
+		targetTypes.add( TargetType.STDOUT );
+		schemaExport.create(targetTypes, metadata);
 		
 	}
 	

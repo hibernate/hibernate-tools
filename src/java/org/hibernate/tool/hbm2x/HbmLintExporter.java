@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbmlint.HbmLint;
+import org.hibernate.tool.util.MetadataHelper;
 
 public class HbmLintExporter extends GenericExporter {
 
@@ -25,7 +26,7 @@ public class HbmLintExporter extends GenericExporter {
     }
 	protected void setupContext() {
 		HbmLint hbmlint = HbmLint.createInstance();
-		hbmlint.analyze( getConfiguration() );
+		hbmlint.analyze( MetadataHelper.getMetadata(getConfiguration()) );
 		getProperties().put("lintissues", hbmlint.getResults());
 		super.setupContext();		
 	}

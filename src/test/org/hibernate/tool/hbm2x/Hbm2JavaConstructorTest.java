@@ -66,7 +66,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		Cfg2JavaTool c2j = new Cfg2JavaTool();
 		
-		POJOClass company = c2j.getPOJOClass(getCfg().getClassMapping("Company"));
+		POJOClass company = c2j.getPOJOClass(getMetadata().getEntityBinding("Company"));
 		
 		List all = company.getPropertyClosureForFullConstructor();
 		assertNoDuplicates(all);
@@ -81,7 +81,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		assertNoOverlap(superCons, subCons);
 		
-		POJOClass bigCompany = c2j.getPOJOClass(getCfg().getClassMapping("BigCompany"));
+		POJOClass bigCompany = c2j.getPOJOClass(getMetadata().getEntityBinding("BigCompany"));
 		
 		List bigsuperCons = bigCompany.getPropertyClosureForSuperclassFullConstructor();
 		assertNoDuplicates(bigsuperCons);
@@ -97,7 +97,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		assertNoDuplicates(bigall);
 		assertEquals(4, bigall.size());
 		
-		PersistentClass classMapping = getCfg().getClassMapping("Person");
+		PersistentClass classMapping = getMetadata().getEntityBinding("Person");
 		POJOClass person = c2j.getPOJOClass(classMapping);
 		List propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
 		assertEquals(2,propertiesForMinimalConstructor.size());
@@ -115,7 +115,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 	
 	
 	public void testMinimal() {
-		POJOClass bp = new EntityPOJOClass(getCfg().getClassMapping("BrandProduct"), new Cfg2JavaTool());
+		POJOClass bp = new EntityPOJOClass(getMetadata().getEntityBinding("BrandProduct"), new Cfg2JavaTool());
 		
 		List propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
 		

@@ -41,7 +41,7 @@ public class SearchEscapeStringTest extends JDBCMetaDataBinderTestCase {
 
 	public void testBasic() throws SQLException {
 
-		assertHasNext( "There should be 2 tables!", 2, cfg.getTableMappings() );
+		assertHasNext( "There should be 2 tables!", 2, cfg.getMetadata().collectTableMappings().iterator() );
 
 		Table table = getTable( identifier( "b_tab" ) );
 		Table table2 = getTable( identifier( "b2tab" ) );

@@ -8,9 +8,11 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
+import org.hibernate.tool.util.MetadataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -176,7 +178,10 @@ public abstract class AbstractExporter implements Exporter {
 		}
 		getTemplateHelper().putInContext("artifacts", collector);
         if(getConfiguration()!=null) {
-        	getTemplateHelper().putInContext("cfg", getConfiguration());
+        	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+        	getTemplateHelper().putInContext("md", metadata);
+        	getTemplateHelper().putInContext("props", getConfiguration().getProperties());
+        	getTemplateHelper().putInContext("tables", metadata.collectTableMappings());
         }
 	}
 	
@@ -211,7 +216,10 @@ public abstract class AbstractExporter implements Exporter {
 		getTemplateHelper().removeFromContext("exporter", this);
 		getTemplateHelper().removeFromContext("artifacts", collector);
         if(getConfiguration()!=null) {
-        	getTemplateHelper().removeFromContext("cfg", getConfiguration());
+        	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+        	getTemplateHelper().removeFromContext("md", metadata);
+        	getTemplateHelper().removeFromContext("props", getConfiguration().getProperties());
+        	getTemplateHelper().removeFromContext("tables", metadata.collectTableMappings());
         }
         
         getTemplateHelper().removeFromContext("c2h", getCfg2HbmTool());

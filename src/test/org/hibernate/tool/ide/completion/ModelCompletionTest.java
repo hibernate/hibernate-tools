@@ -22,9 +22,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import junit.framework.TestCase;
-
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.util.MetadataHelper;
+
+import junit.framework.TestCase;
 
 /**
  * @author leon
@@ -52,10 +54,7 @@ public class ModelCompletionTest extends TestCase {
 			return true;
 		}
 
-		public void completionFailure(String errorMessage) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void completionFailure(String errorMessage) {}
 	}
 
 	private Configuration sf;
@@ -66,8 +65,10 @@ public class ModelCompletionTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-    	cc = new ConfigurationCompletion(sf);
+    	Metadata md = MetadataHelper.getMetadata(sf);
+    	cc = new ConfigurationCompletion(md);
     }
+    
     public void testGetMappedClasses() {
     	Collector hcc = new Collector();
     	cc.getMatchingImports("", hcc);

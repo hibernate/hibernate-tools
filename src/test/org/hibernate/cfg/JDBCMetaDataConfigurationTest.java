@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
@@ -23,10 +24,11 @@ public class JDBCMetaDataConfigurationTest extends TestCase {
 	public void testReadFromJDBC() throws Exception {
 		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 		cfg.readFromJDBC();
-		assertNotNull("Withrealtimestamp", cfg.getClassMapping("Withrealtimestamp"));
-		assertNotNull("Noversion", cfg.getClassMapping("Noversion"));
-		assertNotNull("Withfaketimestamp", cfg.getClassMapping("Withfaketimestamp"));
-		assertNotNull("Withversion", cfg.getClassMapping("Withversion"));
+		Metadata metadata = cfg.getMetadata();
+		assertNotNull("Withrealtimestamp", metadata.getEntityBinding("Withrealtimestamp"));
+		assertNotNull("Noversion", metadata.getEntityBinding("Noversion"));
+		assertNotNull("Withfaketimestamp", metadata.getEntityBinding("Withfaketimestamp"));
+		assertNotNull("Withversion", metadata.getEntityBinding("Withversion"));
 	}
 
 	private void executeDDL(String[] sqls) throws SQLException {

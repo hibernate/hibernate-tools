@@ -56,7 +56,15 @@ public class ForeignKeyProcessor {
 				String fkName = (String) exportedKeyRs.get("FK_NAME");
 				short keySeq = ((Short)exportedKeyRs.get("KEY_SEQ")).shortValue();
 								
-				Table fkTable = dbs.getTable(fkSchema, fkCatalog, fkTableName);
+				Table fkTable = dbs.getTable((String) exportedKeyRs.get("FKTABLE_SCHEM"), (String) exportedKeyRs.get("FKTABLE_CAT"), fkTableName);
+				
+				if (fkTable == null) {
+					fkTable = dbs.getTable(
+							getSchemaForModel(fkSchema, defaultSchema), 
+							getCatalogForModel(fkCatalog, defaultCatalog), 
+							fkTableName);
+				}
+				
 				if(fkTable==null) {
 					//	filter out stuff we don't have tables for!
 					log.debug("Foreign key " + fkName + " references unknown or filtered table " + Table.qualify(fkCatalog, fkSchema, fkTableName) );
@@ -128,18 +136,19 @@ public class ForeignKeyProcessor {
         	// we continue after this to allow user provided keys to be added.
         }
         
-        List<ForeignKey> userForeignKeys = revengStrategy.getForeignKeys(TableIdentifier.create(referencedTable));
+        List<ForeignKey> userForeignKeys = revengStrategy.getForeignKeys(
+        		RevEngUtils.createTableIdentifier(referencedTable, defaultCatalog, defaultSchema));
         if(userForeignKeys!=null) {
         	Iterator<ForeignKey> iterator = userForeignKeys.iterator();
         	while ( iterator.hasNext() ) {
         		ForeignKey element = iterator.next();
         		
-        		if(!equalTable(referencedTable, element.getReferencedTable() ) ) {
+        		if(!equalTable(referencedTable, element.getReferencedTable(), defaultSchema, defaultCatalog)) {
         			log.debug("Referenced table " + element.getReferencedTable().getName() + " is not " +  referencedTable + ". Ignoring userdefined foreign key " + element );
         			continue; // skip non related foreign keys
         		}
         		
-        		String userfkName = element.getName();        		
+        		String userfkName = element.getName();        
         		Table userfkTable = element.getTable();
         		
         		List<?> userColumns = element.getColumns();
@@ -150,7 +159,10 @@ public class ForeignKeyProcessor {
         			throw new MappingException("Foreign key " + userfkName + " already defined in the database!");
         		}
         		
-        		deptable = dbs.getTable(userfkTable.getSchema(), userfkTable.getCatalog(), userfkTable.getName() );
+        		deptable = dbs.getTable(
+        				getSchemaForDBLookup(userfkTable.getSchema(), defaultSchema), 
+        				getCatalogForDBLookup(userfkTable.getCatalog(), defaultCatalog),
+        				userfkTable.getName());
         		if(deptable==null) {
 					//	filter out stuff we don't have tables for!
 					log.debug("User defined foreign key " + userfkName + " references unknown or filtered table " + TableIdentifier.create(userfkTable) );
@@ -211,10 +223,18 @@ public class ForeignKeyProcessor {
 		return schema;
 	}
 	
-    private static boolean equalTable(Table table1, Table table2) {
+    private static boolean equalTable(
+    		Table table1, 
+    		Table table2, 
+    		String defaultSchema, 
+    		String defaultCatalog) {
 		return  table1.getName().equals(table2.getName()) 
-				&& ( equal(table1.getSchema(), table2.getSchema() )
-				&& ( equal(table1.getCatalog(), table2.getCatalog() ) ) );
+				&& ( equal(
+						getSchemaForModel(table1.getSchema(), defaultSchema),
+						getSchemaForModel(table2.getSchema(), defaultSchema))
+				&& ( equal(
+						getCatalogForModel(table1.getCatalog(), defaultCatalog), 
+						getCatalogForModel(table2.getCatalog(), defaultCatalog))));
 	}
 
 	private static boolean equal(String str, String str2) {

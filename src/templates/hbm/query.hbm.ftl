@@ -1,5 +1,6 @@
-<#foreach queryKey in cfg.namedQueries.keySet()><#assign queryDef = cfg.namedQueries.get(queryKey)>    <query 
-        name="${queryKey}"
+<#foreach queryDef in md.namedQueryDefinitions>
+    <query 
+        name="${queryDef.name}"
 <#if queryDef.flushMode?exists>
         flush-mode="${queryDef.flushMode.toString().toLowerCase()}"
 </#if>

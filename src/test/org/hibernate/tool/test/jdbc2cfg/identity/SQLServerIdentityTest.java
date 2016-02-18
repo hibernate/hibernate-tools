@@ -58,14 +58,14 @@ public class SQLServerIdentityTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testIdentity() throws SQLException {
-		PersistentClass classMapping = cfg.getClassMapping(toClassName("identity") );
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding(toClassName("identity"));
 		assertNotNull(classMapping);
 	
 		assertEquals("identity", ((SimpleValue)classMapping.getIdentifierProperty().getValue()).getIdentifierGeneratorStrategy());		
 	}
 	
 	public void testGuid() throws SQLException {
-		PersistentClass classMapping = cfg.getClassMapping(toClassName("guid") );
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding(toClassName("guid"));
 		assertNotNull(classMapping);
 	
 		assertEquals("guid", ((SimpleValue)classMapping.getIdentifierProperty().getValue()).getIdentifierGeneratorStrategy());		

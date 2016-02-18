@@ -4,12 +4,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.util.MetadataHelper;
 
 public class HQLCodeAssist implements IHQLCodeAssist {
 
 	private Configuration configuration;
 	private ConfigurationCompletion completion;
+	private Metadata metadata;
 	
 	private static final char[] charSeparators;	
 	static {
@@ -17,9 +20,10 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 		Arrays.sort(charSeparators);
 	}
 	
-	public HQLCodeAssist(Configuration configuration) {
-		this.configuration = configuration;
-		completion = new ConfigurationCompletion(configuration);
+	public HQLCodeAssist(Configuration cfg) {
+		configuration = cfg;
+		metadata = MetadataHelper.getMetadata(configuration);
+		completion = new ConfigurationCompletion(metadata);
 	}
 
 	public void codeComplete(String query, int position, IHQLCompletionRequestor collector) {
@@ -53,7 +57,7 @@ public class HQLCodeAssist implements IHQLCodeAssist {
                     		completionProposal.setSimpleName( alias );
                     		completionProposal.setShortEntityName( qt.getEntityName() );
                     		if(hasConfiguration()) {
-                    			String importedName = (String) getConfiguration().getImports().get( qt.getEntityName() );
+                    			String importedName = (String) metadata.getImports().get( qt.getEntityName() );
                     			completionProposal.setEntityName( importedName );
                     		}
                     		collector.accept( completionProposal );
@@ -84,10 +88,6 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 		return configuration!=null;
 	}
 	
-	private Configuration getConfiguration() {
-		return configuration;
-	}
-
 	public static int findNearestWhiteSpace( CharSequence doc, int start ) {
     	boolean loop = true;
     	

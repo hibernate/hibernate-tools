@@ -17,6 +17,7 @@ import java.util.Properties;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -220,8 +221,18 @@ public abstract class BaseTestCase extends TestCase {
 			if ( !files[i].startsWith("net/") ) {
 				files[i] = getBaseForMappings() + files[i];
 			}
-			//System.out.println("bc in " + this.getClass() + " " + getBaseForMappings() + " " + files[i]);
-			cfg.addResource( files[i], this.getClass().getClassLoader() );
+			cfg.addResource( files[i]);
+		}
+	}
+	
+	protected void addMappings(
+			String[] files, 
+			MetadataSources metadataSources) {
+		for (int i=0; i<files.length; i++) {						
+			if ( !files[i].startsWith("net/") ) {
+				files[i] = getBaseForMappings() + files[i];
+			}
+			metadataSources.addResource( files[i]);
 		}
 	}
 	
@@ -263,5 +274,6 @@ public abstract class BaseTestCase extends TestCase {
 		pw.flush();
 		pw.close();
 	}
+	
 }
 

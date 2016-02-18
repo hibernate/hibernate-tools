@@ -33,7 +33,7 @@ public class Hbm2JavaInitializationTest extends NonReflectiveTestCase {
 	
 	
 	public void testFieldInitializationAndTypeNames() {
-		PersistentClass classMapping = getCfg().getClassMapping("org.hibernate.tool.hbm2x.Article");
+		PersistentClass classMapping = getMetadata().getEntityBinding("org.hibernate.tool.hbm2x.Article");
 		Cfg2JavaTool cfg2java = new Cfg2JavaTool();
 		POJOClass clazz = cfg2java.getPOJOClass(classMapping);
 		

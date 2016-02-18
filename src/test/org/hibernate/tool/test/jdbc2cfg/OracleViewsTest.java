@@ -6,9 +6,6 @@ package org.hibernate.tool.test.jdbc2cfg;
 
 import java.sql.SQLException;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect;
 import org.hibernate.dialect.Dialect;
@@ -16,6 +13,9 @@ import org.hibernate.dialect.Oracle9Dialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -62,10 +62,10 @@ public class OracleViewsTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testViewAndSynonyms() throws SQLException {
-				PersistentClass classMapping = cfg.getClassMapping(toClassName("basicview") );
+				PersistentClass classMapping = cfg.getMetadata().getEntityBinding(toClassName("basicview") );
 				assertNotNull(classMapping);
 			
-				classMapping = cfg.getClassMapping(toClassName("weirdname") );
+				classMapping = cfg.getMetadata().getEntityBinding(toClassName("weirdname") );
 				assertTrue("If this is not-null synonyms apparently work!",classMapping==null);
 
 				// get comments

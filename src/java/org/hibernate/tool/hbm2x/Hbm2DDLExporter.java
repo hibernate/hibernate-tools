@@ -17,16 +17,16 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
+import java.util.EnumSet;
 import java.util.Iterator;
 
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.integrator.spi.IntegratorService;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.spi.SessionFactoryServiceRegistryFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2ddl.SchemaExport.Action;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
+import org.hibernate.tool.schema.TargetType;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * Schema Export (.ddl) code generation. 
@@ -62,7 +62,6 @@ public class Hbm2DDLExporter extends AbstractExporter {
 	}
 
 	protected void setupContext() {
-
 		exportToDatabase = setupBoolProperty("exportToDatabase", exportToDatabase);
 		scriptToConsole = setupBoolProperty("scriptToConsole", scriptToConsole);
 		schemaUpdate = setupBoolProperty("schemaUpdate", schemaUpdate);
@@ -81,33 +80,37 @@ public class Hbm2DDLExporter extends AbstractExporter {
 
 	protected void doStart() {
 		final Configuration configuration = getConfiguration();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings( configuration.getProperties() );
-		ServiceRegistry serviceRegistry = builder.build();
-		integrateEnvers( configuration, serviceRegistry );
+		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
+		if (scriptToConsole) targetTypes.add(TargetType.STDOUT);
+		if (exportToDatabase) targetTypes.add(TargetType.DATABASE);
+		if (null != outputFileName) targetTypes.add(TargetType.SCRIPT);
 		if (schemaUpdate) {
-			SchemaUpdate update = new SchemaUpdate(serviceRegistry, configuration);
-			if(outputFileName == null && delimiter == null && haltOnError && format) 
-				update.execute(scriptToConsole, exportToDatabase);
+			SchemaUpdate update = new SchemaUpdate();
+			if(outputFileName == null && delimiter == null && haltOnError && format)  {
+				update.execute(targetTypes, metadata);
+			}
 			else {				
 				if (null != outputFileName) {
 					File outputFile = new File(getOutputDirectory(), outputFileName);
-					update.setOutputFile(outputFile.getPath());				
+					update.setOutputFile(outputFile.getPath());		
 					log.debug("delimiter ='"+ delimiter + "'");
 					update.setDelimiter(delimiter);
-					update.setFormat(Boolean.valueOf(format));						
+					update.setFormat(Boolean.valueOf(format));	
 				}
 				
 				if (haltOnError) {
 					update.setHaltOnError(Boolean.valueOf(haltOnError));
-				}				
-				update.execute(scriptToConsole, exportToDatabase);
+				}
+				
+				update.execute(targetTypes, metadata);
 				if (!update.getExceptions().isEmpty()) {
 					int i = 1;
 					for (Iterator<?> iterator = update.getExceptions().iterator(); iterator
 							.hasNext(); i++) {
 						Throwable element = (Throwable) iterator.next();
 						log.warn("Error #" + i + ": ", element);
+
 					}
 					log.error(i - 1 + " errors occurred while performing Hbm2DDLExporter.");
 					if (haltOnError) {
@@ -116,8 +119,9 @@ public class Hbm2DDLExporter extends AbstractExporter {
 					}
 				}					
 			}
+
 		} else {
-			SchemaExport export = new SchemaExport(serviceRegistry, configuration);
+			SchemaExport export = new SchemaExport();
 			if (null != outputFileName) {
 				export.setOutputFile(new File(getOutputDirectory(),
 						outputFileName).toString());
@@ -128,31 +132,18 @@ public class Hbm2DDLExporter extends AbstractExporter {
 			export.setHaltOnError(haltOnError);
 			export.setFormat(format);
 			if (drop && create) {
-				// not just drop or create but both!
-				export.execute(scriptToConsole, exportToDatabase, false, false);
+				export.execute(targetTypes, Action.BOTH, metadata);
+			} else if (drop) {
+				export.execute(targetTypes, Action.DROP, metadata);
+			} else if (create) {
+				export.execute(targetTypes, Action.CREATE, metadata);
 			} else {
-				export.execute(scriptToConsole, exportToDatabase, drop, create);
-			}
-		}		
-	}
-
-	/**
-	 * Integrate Hibernate Envers extension if present in the classpath.
-	 */
-	private void integrateEnvers(Configuration configuration, ServiceRegistry serviceRegistry) {
-		// Omit building SessionFactory.
-		// TODO: Update this part when Integrator does not need SessionFactory for applying Hibernate extensions.
-		for ( Integrator integrator : serviceRegistry.getService( IntegratorService.class ).getIntegrators() ) {
-			if ( "org.hibernate.envers.event.EnversIntegrator".equals( integrator.getClass().getName() ) ) {
-				integrator.integrate(
-						configuration,
-						null,
-						serviceRegistry.getService( SessionFactoryServiceRegistryFactory.class ).buildServiceRegistry( null, configuration )
-				);
-				break;
+				export.execute(targetTypes, Action.NONE, metadata);
 			}
 		}
+		
 	}
+
 
 	public void setExport(boolean export) {
 		exportToDatabase = export;

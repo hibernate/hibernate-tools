@@ -54,14 +54,14 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testNoManyToManyBiDirectional() {
 		
-		PersistentClass project = localCfg.getClassMapping("Project");
+		PersistentClass project = localCfg.getMetadata().getEntityBinding("Project");
 		
 		assertNotNull(project.getProperty("worksOns"));
 		//assertNotNull(project.getProperty("employee"));
 		assertEquals(3, project.getPropertyClosureSpan());		
 		assertEquals("projectId", project.getIdentifierProperty().getName());
 		
-		PersistentClass employee = localCfg.getClassMapping("Employee");
+		PersistentClass employee = localCfg.getMetadata().getEntityBinding("Employee");
 		
 		assertNotNull(employee.getProperty("worksOns"));
 		assertNotNull(employee.getProperty("employees"));
@@ -70,7 +70,7 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(6, employee.getPropertyClosureSpan());
 		assertEquals("id", employee.getIdentifierProperty().getName());
 		
-		PersistentClass worksOn = localCfg.getClassMapping("WorksOn");
+		PersistentClass worksOn = localCfg.getMetadata().getEntityBinding("WorksOn");
 		
 		assertNotNull(worksOn.getProperty("project"));
 		assertNotNull(worksOn.getProperty("employee"));
@@ -80,14 +80,14 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testAutoCreation() {
 	    
-        assertNull("No middle class should be generated.", cfg.getClassMapping( "WorksOn" ));
+        assertNull("No middle class should be generated.", cfg.getMetadata().getEntityBinding( "WorksOn" ));
         
-        assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", cfg.getClassMapping( "WorksOnContext" ));
+        assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", cfg.getMetadata().getEntityBinding( "WorksOnContext" ));
         
-        PersistentClass projectClass = cfg.getClassMapping("Project");
+        PersistentClass projectClass = cfg.getMetadata().getEntityBinding("Project");
 		assertNotNull( projectClass );
 
-		PersistentClass employeeClass = cfg.getClassMapping("Employee");
+		PersistentClass employeeClass = cfg.getMetadata().getEntityBinding("Employee");
 		assertNotNull( employeeClass );
 				
 		assertPropertyNotExist( projectClass, "worksOns" );
@@ -101,7 +101,7 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 
 	public void testFalsePositive() {
 	    
-        assertNotNull("Middle class should be generated.", cfg.getClassMapping( "NonMiddle" ));
+        assertNotNull("Middle class should be generated.", cfg.getMetadata().getEntityBinding( "NonMiddle" ));
                 				
 		
 	}

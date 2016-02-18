@@ -41,7 +41,7 @@ public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		List tables = getTables(configuration);
+		List<Table> tables = getTables(configuration);
 		
 		assertEquals(2,tables.size());
 		
@@ -71,10 +71,10 @@ public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		Set tables = new HashSet();
-		Iterator iter = configuration.getTableMappings();
+		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
+		Iterator<Table> iter = configuration.getMetadata().collectTableMappings().iterator();
 		while(iter.hasNext()) {
-			Table element = (Table) iter.next();
+			Table element = iter.next();
 			boolean added = tables.add(TableIdentifier.create(element));
 			if(!added) fail("duplicate table found for " + element); 
 		}
@@ -89,7 +89,7 @@ public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
 		configuration.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		configuration.readFromJDBC();
 		
-		List tables = getTables(configuration);
+		List<Table> tables = getTables(configuration);
 		
 		assertEquals(2,tables.size());
 		
@@ -108,11 +108,11 @@ public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
 		assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
 	}
 
-	private List getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
-		List list = new ArrayList();
-		Iterator iter = metaDataConfiguration.getTableMappings();
+	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
+		List<Table> list = new ArrayList<Table>();
+		Iterator<Table> iter = metaDataConfiguration.getMetadata().collectTableMappings().iterator();
 		while(iter.hasNext()) {
-			Table element = (Table) iter.next();
+			Table element = iter.next();
 			list.add(element);
 		}
 		return list;

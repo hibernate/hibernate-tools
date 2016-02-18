@@ -208,7 +208,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 	}
 
 	protected Table getTable(JDBCMetaDataConfiguration configuration, String tabName) {
-		Iterator<?> iter = configuration.getTableMappings();
+		Iterator<Table> iter = configuration.getMetadata().collectTableMappings().iterator();
 		while (iter.hasNext()) {
 			Table table = (Table) iter.next();
 			if (table.getName().equals(tabName)) {

@@ -2,17 +2,21 @@ package org.hibernate.tool.hbm2x.query;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
+import org.hibernate.tool.schema.TargetType;
 
 public class QueryExporterTest extends NonReflectiveTestCase {
 
@@ -68,10 +72,11 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 	
 	protected void tearDown() throws Exception {
 
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(getCfg().getProperties());
-		SchemaExport export = new SchemaExport(builder.build(), getCfg());
-		export.drop( false, true );
+		SchemaExport export = new SchemaExport();
+		Metadata metadata = createMetadata();
+		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
+		targetTypes.add( TargetType.DATABASE );
+		export.drop(targetTypes, metadata);
 		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
 			fail("Schema export failed");
@@ -85,6 +90,12 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 		addMappings(getMappings(), result);
 		result.setProperty(Environment.HBM2DDL_AUTO, "update");
 		return result;
+	}
+
+	private MetadataImplementor createMetadata() {
+		MetadataSources mds = new MetadataSources();
+		addMappings(getMappings(), mds);
+		return (MetadataImplementor)mds.buildMetadata();
 	}
 
 }

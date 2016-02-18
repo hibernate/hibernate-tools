@@ -3,6 +3,7 @@ package org.hibernate.cfg;
 import java.util.Map;
 
 import org.hibernate.MappingException;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
@@ -12,13 +13,16 @@ import org.hibernate.mapping.Value;
 @SuppressWarnings("serial")
 public class JDBCCollectionSecondPass extends CollectionSecondPass {
 
-    JDBCCollectionSecondPass(Mappings mappings, Collection coll) {
-        super(mappings, coll);
+	MetadataBuildingContext mdbc;
+
+    JDBCCollectionSecondPass(MetadataBuildingContext mdbc, Collection coll) {
+        super(mdbc, coll);
+        this.mdbc = mdbc;
     }
 
-    @SuppressWarnings("rawtypes")
-	public void secondPass(Map persistentClasses, Map inheritedMetas) throws MappingException {
-        bindCollectionSecondPass(collection, persistentClasses, mappings, inheritedMetas);
+   @SuppressWarnings("rawtypes")
+   public void secondPass(Map persistentClasses, Map inheritedMetas) throws MappingException {
+        bindCollectionSecondPass(collection, persistentClasses, mdbc, inheritedMetas);
     }
 
     @SuppressWarnings("rawtypes")
@@ -47,16 +51,15 @@ public class JDBCCollectionSecondPass extends CollectionSecondPass {
     		keyDependantValue.setForeignKeyName(oldKeyForeignKeyName);
     	}
     }
-    
+
     private void bindCollectionSecondPass(
             Collection collection,
             Map<?,?> persistentClasses,
-            Mappings mappings,
+            MetadataBuildingContext mdbc,
             Map<?,?> inheritedMetas) throws MappingException {
-
         if(collection.isOneToMany() ) {
             OneToMany oneToMany = (OneToMany) collection.getElement();
-            PersistentClass persistentClass = mappings.getClass(oneToMany.getReferencedEntityName() );
+            PersistentClass persistentClass = mdbc.getMetadataCollector().getEntityBinding(oneToMany.getReferencedEntityName());
 
             if (persistentClass==null) throw new MappingException(
                     "Association " + collection.getRole() + " references unmapped class: " + oneToMany.getReferencedEntityName()
@@ -64,8 +67,7 @@ public class JDBCCollectionSecondPass extends CollectionSecondPass {
 
             oneToMany.setAssociatedClass(persistentClass); // Child
         }
-
     }
-
     
 }
+    

@@ -2,21 +2,17 @@
 package org.hibernate.tool;
 
 
-import java.util.Properties;
-
 import org.dom4j.io.SAXReader;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;
-import org.hibernate.internal.util.config.ConfigurationHelper;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.xml.XMLHelper;
 
 public abstract class NonReflectiveTestCase extends BaseTestCase {
@@ -25,8 +21,12 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	private Configuration cfg;
 	private Dialect dialect;
 	private Session session;
+//	private MetadataSources mds;
+	private Metadata md;
 
-	
+	protected Metadata getMetadata() {
+		return md;
+	}
 	
 	public NonReflectiveTestCase(String name, String outputdir) {
 		super(name, outputdir);		
@@ -44,16 +44,13 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	 * @param files
 	 */
 	private void buildConfiguration(String[] files) {
-		setCfg( new Configuration() );		
-		if( recreateSchema() ) {
-			cfg.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
-		}		
-		Configuration cfg2 = getCfg();
-		addMappings( files, cfg2 );				
+		MetadataSources mds = new MetadataSources();
+		addMappings(files, mds);
+		cfg = new Configuration(mds);
+		md = mds.buildMetadata();		
 		setDialect( Dialect.getDialect() );
-		cfg2.buildMappings();
 	}
-
+	
 	public String getCacheConcurrencyStrategy() {
 		return "nonstrict-read-write";
 	}
@@ -66,8 +63,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 		assertNoTables();		
 		if(getOutputDir()!=null) {
 			getOutputDir().mkdirs();
-		}
-		
+		}		
 	}
 	
 	protected void prepareTestData() {}
@@ -149,13 +145,7 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 	}
 	
 	protected void buildSessionFactory() {
-		Properties properties = getCfg().getProperties();
-		Environment.verifyProperties( properties );
-		ConfigurationHelper.resolvePlaceHolders( properties );
-		ServiceRegistry serviceRegistry =  new StandardServiceRegistryBuilder()
-				.applySettings( properties )
-				.build();
-		sessions = getCfg().buildSessionFactory(serviceRegistry);
+		sessions = getCfg().buildSessionFactory();
 	}
 	
 	public SAXReader getSAXReader() {
@@ -164,4 +154,14 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
     	xmlReader.setValidation(true);
     	return xmlReader;
     }
+	
+	protected void addMappings(String[] files, MetadataSources mds) {
+		for (int i=0; i<files.length; i++) {						
+			if ( !files[i].startsWith("net/") ) {
+				files[i] = getBaseForMappings() + files[i];
+			}
+			mds.addResource( files[i]);
+		}
+	}
+		
 }

@@ -10,9 +10,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.id.MultipleHiLoPerTableGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
+import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.collections.JoinedIterator;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -33,8 +35,6 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.ForeignKeyDirection;
-import org.hibernate.internal.util.collections.JoinedIterator;
-import org.hibernate.internal.util.StringHelper;
 
 public class EntityPOJOClass extends BasicPOJOClass {
 
@@ -334,7 +334,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String generateJoinColumnsAnnotation(Property property, Configuration cfg) {
+	public String generateJoinColumnsAnnotation(Property property, Metadata md) {
 		boolean insertable = property.isInsertable();
 		boolean updatable = property.isUpdateable();
 		Value value = property.getValue();
@@ -353,7 +353,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 		if(property.getValue() instanceof ToOne) {
 			String referencedEntityName = ((ToOne)property.getValue()).getReferencedEntityName();
-			PersistentClass target = cfg.getClassMapping(referencedEntityName);
+			PersistentClass target = md.getEntityBinding(referencedEntityName);
 			if(target!=null) {
 				referencedColumnsIterator = target.getKey().getColumnIterator();
 			}
@@ -470,7 +470,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return true;
 	}
 
-	public String generateOneToOneAnnotation(Property property, Configuration cfg) {
+	public String generateOneToOneAnnotation(Property property, Metadata md) {
 		OneToOne oneToOne = (OneToOne)property.getValue();
 
 		boolean pkIsAlsoFk = isSharedPkBasedOneToOne(oneToOne);
@@ -479,14 +479,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			.addAttribute( "cascade", getCascadeTypes(property))
 			.addAttribute( "fetch", getFetchType(property));
 
-		if ( oneToOne.getForeignKeyType().equals(ForeignKeyDirection.FOREIGN_KEY_TO_PARENT) ){
-			ab.addQuotedAttribute("mappedBy", getOneToOneMappedBy(cfg, oneToOne));
+		if ( oneToOne.getForeignKeyType().equals(ForeignKeyDirection.TO_PARENT) ){
+			ab.addQuotedAttribute("mappedBy", getOneToOneMappedBy(md, oneToOne));
 		}
 
 		StringBuffer buffer = new StringBuffer(ab.getResult());
 		buffer.append(getHibernateCascadeTypeAnnotation(property));
 
-		if ( pkIsAlsoFk && oneToOne.getForeignKeyType().equals(ForeignKeyDirection.FOREIGN_KEY_FROM_PARENT) ){
+		if ( pkIsAlsoFk && oneToOne.getForeignKeyType().equals(ForeignKeyDirection.FROM_PARENT) ){
 			AnnotationBuilder ab1 = AnnotationBuilder.createAnnotation( importType("javax.persistence.PrimaryKeyJoinColumn") );
 			buffer.append(ab1.getResult());
 		}
@@ -561,7 +561,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return clazz;
 	}
 
-	public String generateCollectionAnnotation(Property property, Configuration cfg) {
+	public String generateCollectionAnnotation(Property property, Metadata md) {
 		StringBuffer annotation = new StringBuffer();
 		Value value = property.getValue();
 		if ( value != null && value instanceof Collection) {
@@ -572,12 +572,12 @@ public class EntityPOJOClass extends BasicPOJOClass {
 				ab.addAttribute( "cascade", getCascadeTypes( property ) );
 				ab.addAttribute( "fetch", getFetchType (property) );
 				if ( collection.isInverse() ) {
-					mappedBy = getOneToManyMappedBy( cfg, collection );
+					mappedBy = getOneToManyMappedBy( md, collection );
 					ab.addQuotedAttribute( "mappedBy", mappedBy );
 				}
 				annotation.append( ab.getResult() );
 
-				if (mappedBy == null) annotation.append("\n").append( generateJoinColumnsAnnotation(property, cfg) );
+				if (mappedBy == null) annotation.append("\n").append( generateJoinColumnsAnnotation(property, md) );
 			}
 			else {
 				//TODO do the @OneToMany @JoinTable
@@ -588,7 +588,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 				ab.addAttribute( "fetch", getFetchType (property) );
 
 				if ( collection.isInverse() ) {
-					mappedBy = getManyToManyMappedBy( cfg, collection );
+					mappedBy = getManyToManyMappedBy( md, collection );
 					ab.addQuotedAttribute( "mappedBy", mappedBy );
 				}
 				annotation.append(ab.getResult());
@@ -637,7 +637,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return annotation.toString();
 	}
 
-	private String getManyToManyMappedBy(Configuration cfg, Collection collection) {
+	private String getManyToManyMappedBy(Metadata md, Collection collection) {
 		String mappedBy;
 		Iterator<Selectable> joinColumnsIt = collection.getKey().getColumnIterator();
 		Set<Selectable> joinColumns = new HashSet<Selectable>();
@@ -645,7 +645,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			joinColumns.add( joinColumnsIt.next() );
 		}
 		ManyToOne manyToOne = (ManyToOne) collection.getElement();
-		PersistentClass pc = cfg.getClassMapping( manyToOne.getReferencedEntityName() );
+		PersistentClass pc = md.getEntityBinding(manyToOne.getReferencedEntityName());
 		Iterator<?> properties = pc.getPropertyClosureIterator();
 		//TODO we should check the table too
 		boolean isOtherSide = false;
@@ -676,7 +676,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return mappedBy;
 	}
 
-	private String getOneToManyMappedBy(Configuration cfg, Collection collection) {
+	private String getOneToManyMappedBy(Metadata md, Collection collection) {
 		String mappedBy;
 		Iterator<Selectable> joinColumnsIt = collection.getKey().getColumnIterator();
 		Set<Selectable> joinColumns = new HashSet<Selectable>();
@@ -684,7 +684,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			joinColumns.add( joinColumnsIt.next() );
 		}
 		OneToMany oneToMany = (OneToMany) collection.getElement();
-		PersistentClass pc = cfg.getClassMapping( oneToMany.getReferencedEntityName() );
+		PersistentClass pc = md.getEntityBinding(oneToMany.getReferencedEntityName());
 		Iterator<?> properties = pc.getPropertyClosureIterator();
 		//TODO we should check the table too
 		boolean isOtherSide = false;
@@ -713,14 +713,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		return mappedBy;
 	}
 
-	private String getOneToOneMappedBy(Configuration cfg, OneToOne oneToOne) {
+	private String getOneToOneMappedBy(Metadata md, OneToOne oneToOne) {
 		String mappedBy;
 		Iterator<Selectable> joinColumnsIt = oneToOne.getColumnIterator();
 		Set<Selectable> joinColumns = new HashSet<Selectable>();
 		while ( joinColumnsIt.hasNext() ) {
 			joinColumns.add( joinColumnsIt.next() );
 		}
-		PersistentClass pc = cfg.getClassMapping( oneToOne.getReferencedEntityName() );
+		PersistentClass pc = md.getEntityBinding(oneToOne.getReferencedEntityName());
 		String referencedPropertyName = oneToOne.getReferencedPropertyName();
 		if ( referencedPropertyName != null )
 			return referencedPropertyName;

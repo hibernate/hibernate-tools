@@ -1,15 +1,15 @@
 package org.hibernate.tool.ant;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.cfg.JPAConfiguration;
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 
 public class JPAConfigurationTask extends ConfigurationTask {
 	
@@ -22,46 +22,20 @@ public class JPAConfigurationTask extends ConfigurationTask {
 	protected Configuration createConfiguration() {
 		try {
 			Map<Object, Object> overrides = new HashMap<Object, Object>();
-			Properties p = getProperties();
-			
+			Properties p = getProperties();	
 			if(p!=null) {
 				overrides.putAll( p );
 			}
-
-			Class<?> hibernatePersistanceProviderClass = ReflectHelper.classForName("org.hibernate.jpa.HibernatePersistenceProvider", JPAConfigurationTask.class);
-			Object hibernatePersistanceProvider = hibernatePersistanceProviderClass.newInstance();
-			
-			Method getEntityManagerFactoryBuilderOrNull = hibernatePersistanceProviderClass.getDeclaredMethod(
-					"getEntityManagerFactoryBuilderOrNull", 
-					new Class[] { String.class, Map.class });
-			getEntityManagerFactoryBuilderOrNull.setAccessible(true);
-			Object entityManagerFactoryBuilder = 
-					getEntityManagerFactoryBuilderOrNull.invoke(
-							hibernatePersistanceProvider, 
-							new Object[] { persistenceUnit, overrides});
-			
-			if (entityManagerFactoryBuilder == null) {
+			EntityManagerFactoryBuilderImpl entityManagerFactoryBuilderImpl = 
+					createEntityManagerFactoryBuilder(persistenceUnit, overrides);
+			if (entityManagerFactoryBuilderImpl == null) {
 				throw new BuildException(
 						"Persistence unit not found: '" + 
 						persistenceUnit + 
 						"'.");
 			}
-			
-			Method build =
-					entityManagerFactoryBuilder.getClass().getMethod(
-							"build", new Class[0]);
-			build.invoke(entityManagerFactoryBuilder, (Object[])null);
-			
-			Method getHibernateConfiguration = 
-					entityManagerFactoryBuilder.getClass().getMethod(
-							"getHibernateConfiguration", new Class[0]);
-			return (Configuration)getHibernateConfiguration.invoke(
-							entityManagerFactoryBuilder, (Object[])null);
-			
+			return new JPAConfiguration(entityManagerFactoryBuilderImpl);
 		} 
-		catch(HibernateException he) {
-			throw new BuildException(he);
-		}
 		catch(BuildException be) {
 			throw be;
 		}
@@ -100,5 +74,23 @@ public class JPAConfigurationTask extends ConfigurationTask {
 		throw new BuildException("<" + getTaskName() + "> currently only support autodiscovery from META-INF/persistence.xml. Thus setting the " + param + " attribute is not allowed");
 	}
 	
+	
+	private static class PersistenceProvider extends HibernatePersistenceProvider {
+		public EntityManagerFactoryBuilderImpl getEntityManagerFactoryBuilder(
+				String persistenceUnit, 
+				Map<Object, Object> properties) {
+			return (EntityManagerFactoryBuilderImpl)getEntityManagerFactoryBuilderOrNull(
+					persistenceUnit, 
+					properties);
+		}
+	}
+
+	private EntityManagerFactoryBuilderImpl createEntityManagerFactoryBuilder(
+			final String persistenceUnit, 
+			final Map<Object, Object> properties) {
+		return new PersistenceProvider().getEntityManagerFactoryBuilder(
+				persistenceUnit, 
+				properties);
+	}
 	
 }

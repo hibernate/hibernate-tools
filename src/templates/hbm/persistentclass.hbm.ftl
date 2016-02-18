@@ -9,10 +9,10 @@
 <#if c2h.needsTable(clazz)>
     table="${clazz.table.quotedName}"
 </#if>
-<#if clazz.table.schema?exists>
+<#if !c2h.isSubclass(clazz) && clazz.table.schema?exists>
     schema="${clazz.table.quotedSchema}"
 </#if>
-<#if clazz.table.catalog?exists>
+<#if !c2h.isSubclass(clazz) && clazz.table.catalog?exists>
     catalog="${clazz.table.catalog}"
 </#if>
 <#if !clazz.mutable>
@@ -65,6 +65,24 @@
 <#if clazz.table.comment?exists  && clazz.table.comment?trim?length!=0>
  <comment>${clazz.table.comment}</comment>
 </#if>
+<#foreach join in clazz.joinIterator>
+ <join
+ <#if join.table.name?exists>
+     table="${join.table.name}"
+ </#if>>
+ <#if join.table.comment?exists  && join.table.comment?trim?length!=0>
+   <comment>${comment}</comment>
+ </#if>
+   <key>
+ <#foreach column in join.key.columnIterator>
+  <#include "column.hbm.ftl">
+ </#foreach>
+   </key>
+ <#foreach property in join.propertyIterator>
+  <#include "${c2h.getTag(property)}.hbm.ftl"/>
+ </#foreach>
+  </join>
+</#foreach>
 <#-- TODO: move this to id.hbm.ftl -->
 <#if !c2h.isSubclass(clazz)>
  <#if clazz.hasIdentifierProperty()>

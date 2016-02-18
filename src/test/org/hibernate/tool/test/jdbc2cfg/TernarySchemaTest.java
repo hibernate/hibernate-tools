@@ -9,10 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
@@ -22,6 +18,9 @@ import org.hibernate.mapping.Set;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * 
@@ -91,14 +90,14 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 		
 	}
 
-	private void assertMultiSchema(Configuration cfg) {
+	private void assertMultiSchema(JDBCMetaDataConfiguration cfg) {
 		assertHasNext("There should be three tables!", 5, cfg
-				.getTableMappings());
+				.getMetadata().getEntityBindings().iterator());
 
-		final PersistentClass role = cfg.getClassMapping("Role");
-		PersistentClass userroles = cfg.getClassMapping("Userroles");
-		PersistentClass user = cfg.getClassMapping("User");
-		PersistentClass plainRole = cfg.getClassMapping("Plainrole");
+		final PersistentClass role = cfg.getMetadata().getEntityBinding("Role");
+		PersistentClass userroles = cfg.getMetadata().getEntityBinding("Userroles");
+		PersistentClass user = cfg.getMetadata().getEntityBinding("User");
+		PersistentClass plainRole = cfg.getMetadata().getEntityBinding("Plainrole");
 		
 
 		Property property = role.getProperty("users");
@@ -139,7 +138,7 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 		
 		assertEquals(3, getOutputDir().listFiles().length);
 		
-		Configuration configuration = new Configuration()
+		JDBCMetaDataConfiguration configuration = (JDBCMetaDataConfiguration)new JDBCMetaDataConfiguration()
 		    .addFile( new File(getOutputDir(), "Role.hbm.xml") )
 		    .addFile( new File(getOutputDir(), "User.hbm.xml") )
 		    .addFile( new File(getOutputDir(), "Plainrole.hbm.xml"));

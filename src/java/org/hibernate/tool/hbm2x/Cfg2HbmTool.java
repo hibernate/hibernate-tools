@@ -9,12 +9,16 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.hibernate.FetchMode;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.Environment;
 import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryCollectionReturn;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryJoinReturn;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryRootReturn;
+import org.hibernate.engine.spi.FilterDefinition;
+import org.hibernate.engine.spi.NamedQueryDefinition;
+import org.hibernate.engine.spi.NamedSQLQueryDefinition;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;
@@ -86,20 +90,42 @@ public class Cfg2HbmTool {
 	 * @param properties
 	 * @return
 	 */
-	static Properties getFilteredIdentifierGeneratorProperties(Properties properties) {
+	static Properties getFilteredIdentifierGeneratorProperties(Properties properties, Properties environmentProperties) {
 		if (properties != null){
 			Properties fProp = new Properties();
 			Iterator<?> itr = properties.keySet().iterator();
 			while (itr.hasNext() ) {
 				String key = (String) itr.next();
-				if (! (key.startsWith("target_") || key.equals(PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER)))
+				if ("schema".equals(key)) {
+					String schema = properties.getProperty(key);
+					if (!isDefaultSchema(schema, environmentProperties)) {
+						fProp.put(key, schema);
+					} 
+				} else if ("catalog".equals(key)) {
+					String catalog = properties.getProperty(key);
+					if (!isDefaultCatalog(catalog, environmentProperties)) {
+						fProp.put(key, catalog);
+					}
+				} else if (! (key.startsWith("target_") 
+						|| key.equals(PersistentIdentifierGenerator.IDENTIFIER_NORMALIZER))) {
 					fProp.put(key, properties.get(key));
+				}
 			}
 			return fProp;
 		}
 		return null;
 	}
 	
+	static private boolean isDefaultSchema(String schema, Properties properties) {
+		String defaultSchema = properties.getProperty(Environment.DEFAULT_SCHEMA);
+		return defaultSchema == null ? schema == null : defaultSchema.equals(schema);
+	}
+
+	static private boolean isDefaultCatalog(String catalog, Properties properties) {
+		String defaultCatalog = properties.getProperty(Environment.DEFAULT_CATALOG);
+		return defaultCatalog == null ? catalog == null : defaultCatalog.equals(catalog);
+	}
+
 	public String getTag(PersistentClass pc) {
 		return (String) pc.accept(HBMTagForPersistentClassVisitor.INSTANCE);
 	}
@@ -153,17 +179,17 @@ public class Cfg2HbmTool {
 		Properties val = this.getIdentifierGeneratorProperties(property);
 		return (val==null) ? false : true;
 	}
-
+	
 	public Properties getIdentifierGeneratorProperties(Property property) {
 		return ( (SimpleValue) property.getValue() ).getIdentifierGeneratorProperties();
 	}
-
+	
 	/**
 	 * @param property
 	 * @return
 	 */
-	public Set<?> getFilteredIdentifierGeneratorKeySet(Property property) {
-		return getFilteredIdentifierGeneratorProperties(this.getIdentifierGeneratorProperties(property)).keySet();
+	public Set<?> getFilteredIdentifierGeneratorKeySet(Property property, Properties props) {
+		return getFilteredIdentifierGeneratorProperties(this.getIdentifierGeneratorProperties(property), props).keySet();
 	}
 
     public boolean isOneToMany(Property property) {
@@ -236,13 +262,13 @@ public class Cfg2HbmTool {
 		return false;
 	}
 
-    public boolean isNamedQueries(Configuration cfg) {
-		Map<?,?> nqry = cfg.getNamedQueries();
+    public boolean isNamedQueries(Metadata md) {
+		java.util.Collection<NamedQueryDefinition> nqry = md.getNamedQueryDefinitions();
 		return nqry == null || nqry.isEmpty() ? false : true;
 	}
 
-	public boolean isNamedSQLQueries(Configuration cfg) {
-		Map<?,?> nsqlqry = cfg.getNamedSQLQueries();
+	public boolean isNamedSQLQueries(Metadata md) {
+		java.util.Collection<NamedSQLQueryDefinition> nsqlqry = md.getNamedNativeQueryDefinitions();
 		return nsqlqry == null || nsqlqry.isEmpty() ? false : true;
 	}
 
@@ -285,8 +311,8 @@ public class Cfg2HbmTool {
 		return sqlret instanceof NativeSQLQueryJoinReturn;
 	}
 
-	public boolean isFilterDefinitions(Configuration cfg) {
-		Map<?,?> filterdefs = cfg.getFilterDefinitions();
+	public boolean isFilterDefinitions(Metadata md) {
+		Map<String, FilterDefinition> filterdefs = md.getFilterDefinitions();
 		return filterdefs == null || filterdefs.isEmpty() ? false : true;
 	}
 
@@ -386,8 +412,8 @@ public class Cfg2HbmTool {
 		}
 	}
 
-	public boolean isImportData(Configuration cfg) {
-		return !(cfg.getImports().isEmpty());
+	public boolean isImportData(Metadata md) {
+		return !(md.getImports().isEmpty());
 	}
 
  	public boolean needsDiscriminatorElement(PersistentClass clazz) {

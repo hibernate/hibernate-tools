@@ -44,7 +44,7 @@ public class AutoQuoteTest extends JDBCMetaDataBinderTestCase {
 		
 		assertEquals(2, table.getColumnSpan());
 		
-		PersistentClass classMapping = cfg.getClassMapping("Worklogs");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Worklogs");
 		assertNotNull(classMapping);
 		Property property = classMapping.getProperty("usErs");
 		assertNotNull(property);

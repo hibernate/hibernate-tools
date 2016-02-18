@@ -3,12 +3,13 @@
  */
 package org.hibernate.tool.hbm2x;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -16,6 +17,8 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author max and david
@@ -32,8 +35,9 @@ public class ConfigurationNavigator {
 	public void export(Configuration cfg, ConfigurationVisitor exporter) {
 
 		Map<String, Component> components = new HashMap<String, Component>();
-		
-		for (Iterator<PersistentClass> classes = cfg.getClassMappings(); classes.hasNext(); ) {
+		Metadata md = getMetadata(cfg);
+
+		for (Iterator<PersistentClass> classes = md.getEntityBindings().iterator(); classes.hasNext(); ) {
 		    if(exporter.startMapping(cfg) ) {
 		        PersistentClass clazz = classes.next();
 		        collectComponents(components,clazz);
@@ -117,6 +121,27 @@ public class ConfigurationNavigator {
 		collectComponents( 
 				components, 
 				new ComponentPOJOClass(comp, new Cfg2JavaTool()).getAllPropertiesIterator());		
+	}
+	
+	private Metadata getMetadata(Configuration configuration) {
+		Metadata result = null;
+		try {
+			Field metadataSourcesField = 
+					Configuration.class.getDeclaredField("metadataSources");
+			metadataSourcesField.setAccessible(true);
+			MetadataSources metadataSources = 
+					(MetadataSources) metadataSourcesField.get(configuration);
+			result = metadataSources.buildMetadata();
+		} catch (NoSuchFieldException | 
+				SecurityException | 
+				IllegalArgumentException | 
+				IllegalAccessException e) {
+			// This should in principle never happen, 
+			// maybe only some day when the metadataSources field 
+			// is removed from the Configuration class.
+			throw new RuntimeException(e);
+		}
+		return result;
 	}
 
 }

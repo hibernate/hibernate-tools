@@ -19,15 +19,17 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml;
 import java.io.File;
 import java.util.Iterator;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author Dmitry Geraskov
@@ -66,8 +68,8 @@ public class BackrefTest extends NonReflectiveTestCase {
 	}
 	
 	public void testBackrefPresent() {
-		Configuration config = getCfg();
-		PersistentClass pc = config.getClassMapping("org.hibernate.tool.hbm2x.hbm2hbmxml.CarPart");
+		Metadata md = MetadataHelper.getMetadata(getCfg());
+		PersistentClass pc = md.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.CarPart");
 		Iterator<?> iterator = pc.getPropertyIterator();
 		boolean hasBackrefs = false;
 		while (iterator.hasNext() && !hasBackrefs) {
@@ -78,11 +80,8 @@ public class BackrefTest extends NonReflectiveTestCase {
 	
 	public void testReadable() {
         Configuration cfg = new Configuration();
-
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Car.hbm.xml"));
-        cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "CarPart.hbm.xml"));
-        
-        cfg.buildMappings();
+        cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "CarPart.hbm.xml"));        
     }
 
 	protected String getBaseForMappings() {

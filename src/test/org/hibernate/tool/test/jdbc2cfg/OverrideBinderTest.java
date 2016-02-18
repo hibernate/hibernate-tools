@@ -124,7 +124,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		configuration.setReverseEngineeringStrategy(ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
 		
-		Iterator<?> tableMappings = configuration.getTableMappings();
+		Iterator<Table> tableMappings = configuration.getMetadata().collectTableMappings().iterator();
 		Table t = (Table) tableMappings.next();
 		assertEquals(t.getName(), "DUMMY");
 		assertFalse(tableMappings.hasNext());
@@ -147,7 +147,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertNull(repository.columnToHibernateTypeName(new TableIdentifier("ORDERS"), "CUSTID",0,0,0,0, false, false));
 		assertEquals("string", repository.columnToHibernateTypeName(new TableIdentifier(null, null, "ORDERS"), "NAME",0,0,0,0, false, false));
 		
-		PersistentClass classMapping = cfg.getClassMapping("Orders");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Orders");
 		
 		Property property = classMapping.getProperty("completed");		
 		assertEquals("boolean because of not null", "boolean", ((SimpleValue)property.getValue()).getTypeName());
@@ -155,7 +155,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		property = classMapping.getProperty("verified");
 		assertEquals("java.lang.Boolean because of null","java.lang.Boolean", ((SimpleValue)property.getValue()).getTypeName());
 		
-		classMapping = cfg.getClassMapping("MiscTypes");
+		classMapping = cfg.getMetadata().getEntityBinding("MiscTypes");
 		
 		property = classMapping.getIdentifierProperty();
 		
@@ -175,7 +175,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testMetaAttributeMappings() {
-		PersistentClass classMapping = cfg.getClassMapping( "Orders" );
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding( "Orders" );
 		assertEquals("order table value", classMapping.getMetaAttribute( "order-meta" ).getValue());
 		
 		Property property = classMapping.getProperty("orderName");
@@ -215,7 +215,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertFalse(repository.excludeColumn(ordersTable, "CUSTID"));
 		
 		// applied
-		PersistentClass classMapping = cfg.getClassMapping("Orders");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Orders");
 		SimpleValue sv = (SimpleValue) classMapping.getIdentifier();
 		assertEquals("CustomOID", ((Component)sv).getComponentClassName());
 		
@@ -224,7 +224,7 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		Property identifierProperty = classMapping.getIdentifierProperty();
 		assertEquals("customOrderId", identifierProperty.getName());
 		
-		classMapping = cfg.getClassMapping("MiscTypes");
+		classMapping = cfg.getMetadata().getEntityBinding("MiscTypes");
 		sv = (SimpleValue) classMapping.getIdentifier(); 
 		assertEquals("sequence", sv.getIdentifierGeneratorStrategy()); // will fail if default schema is not set since then there is no match in the override binder		
 		
@@ -263,11 +263,10 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public Table findTable(String name) {
-		Iterator<?> tableIter = cfg.getTableMappings();
-		
+		Iterator<Table> tableIter = cfg.getMetadata().collectTableMappings().iterator();
 		Table table = null;
 		while(tableIter.hasNext() ) {
-			table = (Table) tableIter.next();
+			table = tableIter.next();
 			if(table.getName().equals(name) ) {
 				return table;
 			}
@@ -384,10 +383,10 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), identifier("Customer") );
 		
-		PersistentClass classMapping = cfg.getClassMapping("Orders");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Orders");
 		classMapping.getProperty("customer");
 		
-		classMapping = cfg.getClassMapping("Customer");
+		classMapping = cfg.getMetadata().getEntityBinding("Customer");
 		classMapping.getProperty("orderses");
 			
 	}
@@ -402,18 +401,18 @@ public class OverrideBinderTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(2, fk.getReferencedColumns().size());
 		assertEquals("child_to_parent", fk.getName());
 		
-		PersistentClass classMapping = cfg.getClassMapping("Children");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("Children");
 		Property property = classMapping.getProperty("propertyParent");
 		assertEquals(2,property.getColumnSpan());
 		
-		classMapping = cfg.getClassMapping("Parent");
+		classMapping = cfg.getMetadata().getEntityBinding("Parent");
 		property = classMapping.getProperty("propertyChildren");	
 			
 	}
 		
 	public void testTypes() {
 		
-		PersistentClass classMapping = cfg.getClassMapping("MiscTypes");
+		PersistentClass classMapping = cfg.getMetadata().getEntityBinding("MiscTypes");
 		
 		
 		assertEquals("SomeUserType", getPropertyTypeName(classMapping.getProperty("name") ) );
