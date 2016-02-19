@@ -219,8 +219,10 @@ public abstract class BuildFileTestCase extends BaseTestCase {
         File antfile = createBaseFile( filename);
 		    project.setUserProperty( "ant.file" , antfile.getAbsolutePath() );
         project.setProperty("basedir", antfile.getParentFile().getAbsolutePath()); // overriding to make Maven and Ant test runs the same
-        project.addBuildListener(new AntTestListener(logLevel) );        
-        ProjectHelper.configureProject(project, createBaseFile(filename) );
+        project.addBuildListener(new AntTestListener(logLevel) );      
+        ProjectHelper helper = ProjectHelper.getProjectHelper();
+        project.addReference("ant.projectHelper", helper);
+        helper.parse(project, createBaseFile(filename));
     }
 
     /**
