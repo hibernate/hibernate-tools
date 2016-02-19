@@ -1,6 +1,8 @@
 package org.hibernate.tool.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -11,7 +13,10 @@ import org.hibernate.cfg.Configuration;
 public class MetadataHelper {
 	
 	public static Metadata getMetadata(Configuration configuration) {
-		Metadata result = getMetadataFromField(configuration);
+		Metadata result = getMetadataFromMethod(configuration);
+		if (result == null) {
+			result = getMetadataFromField(configuration);
+		}
 		if (result == null) {
 			result = buildFromMetadataSources(configuration);
 		}
@@ -58,6 +63,24 @@ public class MetadataHelper {
 		return result;
 	}
 	
+	private static Metadata getMetadataFromMethod(Configuration configuration) {
+		Metadata result = null;
+		Method metadataMethod = getMethod("getMetadata", configuration);
+		if (metadataMethod != null) {
+			try {
+				metadataMethod.setAccessible(true);
+				result = (Metadata)metadataMethod.invoke(
+						configuration, 
+						new Object[] {});
+			} catch (InvocationTargetException | 
+					IllegalAccessException | 
+					IllegalArgumentException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return result;
+	}
+	
 	private static Field getField(String fieldName, Object target) {
 		Field result = null;
 		Class<?> clazz = target.getClass();
@@ -72,6 +95,17 @@ public class MetadataHelper {
 			} catch (SecurityException e) {
 				throw new RuntimeException(e);
 			}
+		}
+		return result;
+	}
+	
+	private static Method getMethod(String methodName, Object target) {
+		Method result = null;
+		Class<?> clazz = target.getClass();
+		try {
+			result = clazz.getMethod(methodName, new Class[] {});
+		} catch (NoSuchMethodException | SecurityException e1) {
+			// ignore;
 		}
 		return result;
 	}
