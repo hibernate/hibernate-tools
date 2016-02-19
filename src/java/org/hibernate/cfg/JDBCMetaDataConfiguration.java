@@ -48,34 +48,63 @@ public class JDBCMetaDataConfiguration extends Configuration {
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	private StandardServiceRegistry serviceRegistry = null;
+	
+	private InFlightMetadataCollectorImpl metadataCollector;
+	private ClassLoaderAccess classLoaderAccess = null;
+	private MetadataBuildingOptions metadataBuildingOptions = null;
+	private MetadataBuildingContext metadataBuildingContext = null;
 	private Metadata metadata = null;
-	private final MetadataBuildingContext metadataBuildingContext;
-	private final InFlightMetadataCollectorImpl metadataCollector;
     
-	public JDBCMetaDataConfiguration(){
-		final MetadataBuildingOptions options = new MetadataBuildingOptionsImpl( getServiceRegistry() );
-		
-		final BasicTypeRegistry basicTypeRegistry = handleTypes( options );
-
-		metadataCollector = new InFlightMetadataCollectorImpl(
-				options,
-				new TypeResolver( basicTypeRegistry, new TypeFactory() )
-		);
-
-		final ClassLoaderService classLoaderService = options.getServiceRegistry().getService( ClassLoaderService.class );
-
-		final ClassLoaderAccess classLoaderAccess = new ClassLoaderAccessImpl(
-				options.getTempClassLoader(),
-				classLoaderService
-		);
-
-		metadataBuildingContext = new MetadataBuildingContextRootImpl(
-				options,
-				classLoaderAccess,
-				metadataCollector
-		);
-		
-		metadata = metadataCollector.buildMetadataInstance(metadataBuildingContext);
+	public Metadata getMetadata() {
+		if (metadata == null) {
+			metadata = getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+		}
+		return metadata;
+	}
+	
+	private MetadataBuildingOptions getMetadataBuildingOptions() {
+		if (metadataBuildingOptions == null) {
+			metadataBuildingOptions = 
+					new MetadataBuildingOptionsImpl( getServiceRegistry() );
+		}
+		return metadataBuildingOptions;
+	}
+	
+	private ClassLoaderAccess getClassLoaderAccess() {
+		if (classLoaderAccess == null) {
+			MetadataBuildingOptions options = getMetadataBuildingOptions();		
+			ClassLoaderService classLoaderService = 
+					options.getServiceRegistry().getService( 
+							ClassLoaderService.class );
+			classLoaderAccess = new ClassLoaderAccessImpl(
+					options.getTempClassLoader(),
+					classLoaderService
+			);			
+		}
+		return classLoaderAccess;
+	}
+	
+	private InFlightMetadataCollectorImpl getMetadataCollector() {
+		if (metadataCollector == null) {
+			MetadataBuildingOptions options = getMetadataBuildingOptions();		
+			BasicTypeRegistry basicTypeRegistry = handleTypes( options );
+			metadataCollector = 
+					new InFlightMetadataCollectorImpl(
+					options,
+					new TypeResolver( basicTypeRegistry, new TypeFactory() )
+			);			
+		}
+		return metadataCollector;
+	}
+	
+	private MetadataBuildingContext getMetadataBuildingContext() {
+		if (metadataBuildingContext == null) {
+			metadataBuildingContext = new MetadataBuildingContextRootImpl(
+					getMetadataBuildingOptions(), 
+					getClassLoaderAccess(), 
+					getMetadataCollector());					
+		}
+		return metadataBuildingContext;
 	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
@@ -87,26 +116,22 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		return serviceRegistry;
 	}
 	
-	public Metadata getMetadata() {
-		return metadata;
-	}
-	
 	public void readFromJDBC() {
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
 				getProperties(), 
-				metadataBuildingContext, 
+				getMetadataBuildingContext(), 
 				getReverseEngineeringStrategy(), 
 				preferBasicCompositeIds());
 		binder.readFromDatabase(
 				null, 
 				null, 
-				buildMapping(metadata));		
+				buildMapping(getMetadata()));		
 	}
 	
 	@Override 
 	public SessionFactory buildSessionFactory() {
-		return metadata.buildSessionFactory();
+		return getMetadata().buildSessionFactory();
 	}
 
 	static private Mapping buildMapping(final Metadata metadata) {
