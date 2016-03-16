@@ -50,9 +50,9 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>5.0.8.Final</hibernateversion>
+		<hibernateversion>5.0.9.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
-		<hibernateCommonsAnnotationsVersion>5.0.0.Final</hibernateCommonsAnnotationsVersion>
+		<hibernateCommonsAnnotationsVersion>5.0.1.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Default settings for Database connection; to be overridden in db specific profiles -->
