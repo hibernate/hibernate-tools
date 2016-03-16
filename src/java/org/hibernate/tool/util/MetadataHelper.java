@@ -23,15 +23,7 @@ public class MetadataHelper {
 		return result;
 	}
 	
-	private static Metadata buildFromMetadataSources(Configuration configuration) {
-		MetadataSources metadataSources = getMetadataSourcesFromField(configuration);
-		StandardServiceRegistryBuilder builder = configuration.getStandardServiceRegistryBuilder();
-		builder.applySettings(configuration.getProperties());
-		StandardServiceRegistry serviceRegistry = builder.build();
-		return metadataSources.buildMetadata(serviceRegistry);
-	}
-	
-	private static MetadataSources getMetadataSourcesFromField(Configuration configuration) {
+	public static MetadataSources getMetadataSources(Configuration configuration) {
 		MetadataSources result = null;
 		Field metadataSourcesField = getField("metadataSources", configuration);
 		if (metadataSourcesField != null) {
@@ -47,6 +39,14 @@ public class MetadataHelper {
 			result = new MetadataSources();
 		}
 		return result;
+	}
+	
+	private static Metadata buildFromMetadataSources(Configuration configuration) {
+		MetadataSources metadataSources = getMetadataSources(configuration);
+		StandardServiceRegistryBuilder builder = configuration.getStandardServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		StandardServiceRegistry serviceRegistry = builder.build();
+		return metadataSources.buildMetadata(serviceRegistry);
 	}
 	
 	private static Metadata getMetadataFromField(Configuration configuration) {
