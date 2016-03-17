@@ -18,10 +18,10 @@ class CompletionHelper {
     private CompletionHelper() {
     }
     
-    public static String getCanonicalPath(List qts, String name) {
-        Map alias2Type = new HashMap();
-        for (Iterator iter = qts.iterator(); iter.hasNext();) {
-			EntityNameReference qt = (EntityNameReference) iter.next();
+    public static String getCanonicalPath(List<EntityNameReference> qts, String name) {
+        Map<String, String> alias2Type = new HashMap<String, String>();
+        for (Iterator<EntityNameReference> iter = qts.iterator(); iter.hasNext();) {
+			EntityNameReference qt = iter.next();
             alias2Type.put(qt.getAlias(), qt.getEntityName());
         }
         if (qts.size() == 1) { 
@@ -33,11 +33,11 @@ class CompletionHelper {
                 return visible.getEntityName() + "/" + name;
             }
         }
-        return getCanonicalPath(new HashSet(), alias2Type, name);
+        return getCanonicalPath(new HashSet<String>(), alias2Type, name);
     }
     
     
-    private static String getCanonicalPath(Set resolved, Map alias2Type, String name) {
+    private static String getCanonicalPath(Set<String> resolved, Map<String, String> alias2Type, String name) {
         if (resolved.contains(name)) {
             // To prevent a stack overflow
             return name;
@@ -60,7 +60,7 @@ class CompletionHelper {
         }
     }
     
-    private static boolean isAliasNown(Map alias2Type, String alias) {
+    private static boolean isAliasNown(Map<String, String> alias2Type, String alias) {
         if (alias2Type.containsKey(alias)) {
             return true;
         }
