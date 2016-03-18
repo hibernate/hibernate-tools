@@ -174,9 +174,9 @@ class ConfigurationCompletion {
         while (cmd != null){
         	EntityPOJOClass pc = new EntityPOJOClass(cmd, new Cfg2JavaTool()); // TODO: we should extract the needed functionallity from this hbm2java class.
             
-        	Iterator allPropertiesIterator = pc.getAllPropertiesIterator();
+        	Iterator<Property> allPropertiesIterator = pc.getAllPropertiesIterator();
             while ( allPropertiesIterator.hasNext() ) {
-    			Property property = (Property) allPropertiesIterator.next();
+    			Property property = allPropertiesIterator.next();
     			String candidate = property.getName();
     		    if (prefix.length() == 0 || candidate.toLowerCase().startsWith(prefix.toLowerCase())) {
     		    	HQLCompletionProposal proposal = createStartWithCompletionProposal( prefix, cursorPosition, HQLCompletionProposal.PROPERTY, candidate );
@@ -218,14 +218,14 @@ class ConfigurationCompletion {
 		}	
 	}
 
-	public String getCanonicalPath(List qts, String name) {
-		Map alias2Type = new HashMap();
-        for (Iterator iter = qts.iterator(); iter.hasNext();) {
-			EntityNameReference qt = (EntityNameReference) iter.next();
+	public String getCanonicalPath(List<EntityNameReference> qts, String name) {
+		Map<String, String> alias2Type = new HashMap<String, String>();
+        for (Iterator<EntityNameReference> iter = qts.iterator(); iter.hasNext();) {
+			EntityNameReference qt = iter.next();
             alias2Type.put(qt.getAlias(), qt.getEntityName());
         }
         if (qts.size() == 1) { 
-            EntityNameReference visible = (EntityNameReference) qts.get(0);
+            EntityNameReference visible = qts.get(0);
             String alias = visible.getAlias();
             if (name.equals(alias)) {
                 return visible.getEntityName();
@@ -233,10 +233,10 @@ class ConfigurationCompletion {
                 return visible.getEntityName() + "/" + name;
             }
         }
-        return getCanonicalPath(new HashSet(), alias2Type, name);		
+        return getCanonicalPath(new HashSet<String>(), alias2Type, name);		
 	}
 	
-	private String getCanonicalPath(Set resolved, Map alias2Type, String name) {
+	private String getCanonicalPath(Set<String> resolved, Map<String, String> alias2Type, String name) {
         if (resolved.contains(name)) {
             // To prevent a stack overflow
             return name;
@@ -259,7 +259,7 @@ class ConfigurationCompletion {
         }
     }
 	
-	private static boolean isAliasKnown(Map alias2Type, String alias) {
+	private static boolean isAliasKnown(Map<String, String> alias2Type, String alias) {
         if (alias2Type.containsKey(alias)) {
             return true;
         }
@@ -301,15 +301,13 @@ class ConfigurationCompletion {
         if (idx != -1) {
             attributeName = attributeName.substring(0, idx);
         }
-        Iterator names = t.getPropertyIterator();
-        int i = 0;
+        Iterator<?> names = t.getPropertyIterator();
         while ( names.hasNext() ) {
 			Property element = (Property) names.next();
 			String name = element.getName();
 			if (attributeName.equals(name)) {
                 return element.getValue();
             }
-            i++;
         }
         return null;
     }
@@ -318,8 +316,7 @@ class ConfigurationCompletion {
         if (t == null) {
             return;
         }
-        Iterator props = t.getPropertyIterator();
-        int i = 0;
+        Iterator<?> props = t.getPropertyIterator();
         while ( props.hasNext() ) {
 			Property element = (Property) props.next();			
 			String candidate = element.getName();
@@ -330,7 +327,6 @@ class ConfigurationCompletion {
 		    	proposal.setProperty(element);
 				hcc.accept( proposal);				               
             }
-            i++;
         }
     }
 	
