@@ -1,7 +1,5 @@
 package org.hibernate.tool.hbm2x.visitor;
 
-import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
@@ -16,7 +14,6 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.CompositeCustomType;
 import org.hibernate.type.CustomType;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
 
 public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 
@@ -64,10 +61,10 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 		return value.getAssociatedClass().getClassName();
 	}
 	
-	private String toName(Class c) {
+	private String toName(Class<?> c) {
 
 		if ( c.isArray() ) {
-			Class a = c.getComponentType();
+			Class<?> a = c.getComponentType();
 			
 			return a.getName() + "[]";
 		}
