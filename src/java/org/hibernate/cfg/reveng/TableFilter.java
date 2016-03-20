@@ -73,7 +73,7 @@ public class TableFilter {
 	private Matcher catalogMatcher;
 	private Matcher schemaMatcher;
 	private Matcher nameMatcher;
-	private Map metaAttributes;
+	private Map<?,?> metaAttributes;
 
 	
 	
@@ -147,11 +147,11 @@ public class TableFilter {
 		return exclude;
 	}
 
-	public Map getMetaAttributes(TableIdentifier identifier) {
+	public Map<?,?> getMetaAttributes(TableIdentifier identifier) {
 		return isRelevantFor(identifier) ? metaAttributes : null;	
 	}
 	
-	public void setMetaAttributes(Map metaAttributes) {
+	public void setMetaAttributes(Map<?,?> metaAttributes) {
 		this.metaAttributes = metaAttributes;
 	}
 }
