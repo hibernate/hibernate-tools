@@ -5,9 +5,9 @@ import java.util.Set;
 
 final public class ReverseEngineeringStrategyUtil {
 
-	private static Set RESERVED_KEYWORDS;
+	private static Set<String> RESERVED_KEYWORDS;
 	static {
-		RESERVED_KEYWORDS = new HashSet();
+		RESERVED_KEYWORDS = new HashSet<String>();
 		
 		RESERVED_KEYWORDS.add( "abstract" );
 		RESERVED_KEYWORDS.add( "continue" );
