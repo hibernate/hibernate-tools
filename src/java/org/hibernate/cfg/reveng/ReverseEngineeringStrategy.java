@@ -141,13 +141,13 @@ public interface ReverseEngineeringStrategy {
 	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns);
 
 	/** Should this foreignkey be excluded as a many-to-one */
-	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns);
+	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns);
 	
 	/** is the collection inverse or not ? */
-	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns);
+	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns);
 	
 	/** is the collection lazy or not ? */
-	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns);
+	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns);
 	
     /**
      * Return a collection role name for a Collection based on the foreignkey.
@@ -156,7 +156,7 @@ public interface ReverseEngineeringStrategy {
      * @param uniqueReference true if there is no other references to the same table
      * @return
      */
-    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference);
+    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference);
 	
     /**
      * 
@@ -165,7 +165,7 @@ public interface ReverseEngineeringStrategy {
      * @param uniqueReference true if there is no other references to the same table
      * @return
      */
-    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference);
+    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference);
 
     /**
      * Used to rename the inverse one-to-one properties.
@@ -175,7 +175,7 @@ public interface ReverseEngineeringStrategy {
      * @param uniqueReference true if there is no other references to the same table
      * @return null if use defaults or non-empty String with a specific name 
      */
-    public String foreignKeyToInverseEntityName(String keyname, TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference);
+    public String foreignKeyToInverseEntityName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference);
     
 	/**
 	 * @param table
