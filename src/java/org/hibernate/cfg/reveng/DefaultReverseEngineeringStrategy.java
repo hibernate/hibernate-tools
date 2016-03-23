@@ -61,7 +61,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 	 * Does some crude english pluralization
 	 * TODO: are the from/to names correct ?
 	 */
-    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
+    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference) {
 		String propertyName = Introspector.decapitalize( StringHelper.unqualify( getRoot().tableToClassName(fromTable) ) );
 		propertyName = pluralize( propertyName );
 		
@@ -82,14 +82,14 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 	}
 
 	public String foreignKeyToInverseEntityName(String keyname,
-			TableIdentifier fromTable, List fromColumnNames,
-			TableIdentifier referencedTable, List referencedColumnNames,
+			TableIdentifier fromTable, List<Column> fromColumnNames,
+			TableIdentifier referencedTable, List<Column> referencedColumnNames,
 			boolean uniqueReference) {		
 		return foreignKeyToEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
 	}
 	
 	
-    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference) {
+    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<Column> fromColumnNames, TableIdentifier referencedTable, List<Column> referencedColumnNames, boolean uniqueReference) {
         String propertyName = Introspector.decapitalize( StringHelper.unqualify( getRoot().tableToClassName(referencedTable) ) );
         
         if(!uniqueReference) {
@@ -208,11 +208,11 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return !settings.createCollectionForForeignKey();		
 	}
 
-	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
+	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
 		return !settings.createManyToOneForForeignKey();
 	}
 
-	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
+	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
 		Table fkTable = getRuntimeInfo().getTable(foreignKeyTable);
 		if(fkTable==null) {
 			return true; // we don't know better
@@ -231,7 +231,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return true;
 	}
 
-	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
+	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
 		return true;
 	}
 
@@ -242,8 +242,8 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 	public boolean isOneToOne(ForeignKey foreignKey) {
 		if(settings.getDetectOneToOne()) {
 			// add support for non-PK associations
-			List fkColumns = foreignKey.getColumns();
-			List pkForeignTableColumns = null;
+			List<Column> fkColumns = foreignKey.getColumns();
+			List<Column> pkForeignTableColumns = null;
 			
 			if (foreignKey.getTable().hasPrimaryKey())
 				pkForeignTableColumns = foreignKey.getTable().getPrimaryKey().getColumns();
@@ -252,7 +252,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 				fkColumns != null && pkForeignTableColumns != null
 				&& fkColumns.size() == pkForeignTableColumns.size();
 
-			Iterator columns = foreignKey.getColumnIterator();
+			Iterator<Column> columns = foreignKey.getColumnIterator();
 			while (equals && columns.hasNext()) {
 				Column fkColumn = (Column) columns.next();
 				equals = equals && pkForeignTableColumns.contains(fkColumn);
@@ -273,8 +273,8 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 			if ( pk==null || pk.getColumns().size() != table.getColumnSpan() )
 				return false;
 			
-			Iterator foreignKeyIterator = table.getForeignKeyIterator();
-			List foreignKeys = new ArrayList();
+			Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
+			List<ForeignKey> foreignKeys = new ArrayList<ForeignKey>();
 			
 			// if we have more than 2 fk, means we have more than 2 table implied
 			// in this table --> cannot be a simple many-to-many
@@ -290,8 +290,8 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 			}
 			
 			// tests that all columns are implied in the fks
-			Set columns = new HashSet();
-			Iterator columnIterator = table.getColumnIterator();
+			Set<Column> columns = new HashSet<Column>();
+			Iterator<?> columnIterator = table.getColumnIterator();
 			while ( columnIterator.hasNext() ) {
 				Column column = (Column) columnIterator.next();
 				columns.add(column);
