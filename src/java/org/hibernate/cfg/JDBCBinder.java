@@ -56,6 +56,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
@@ -873,7 +874,11 @@ public class JDBCBinder {
 		// TODO: this method mutates the column if the types does not match...not good.
 		// maybe we should copy the column instead before calling this method.
 		Integer sqlTypeCode = column.getSqlTypeCode();
-		String location = "Table: " + Table.qualify(table.getCatalog(), table.getSchema(), table.getQuotedName() ) + " column: " + column.getQuotedName();
+		String location = 
+				"Table: " + 
+				TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getQuotedName() ) + 
+				" column: " + 
+				column.getQuotedName();
 		if(sqlTypeCode==null) {
 			throw new JDBCBinderException("sqltype is null for " + location);
 		}

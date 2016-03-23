@@ -9,6 +9,7 @@ import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public class BasicColumnProcessor {
 			Table table, 
 			ProgressListener progress) {
 		
-		String qualify = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() );
+		String qualify = TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getName() );
 		Iterator<?> columnIterator = null;
 		
 		try {

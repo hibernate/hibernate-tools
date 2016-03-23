@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
-import org.hibernate.cfg.reveng.dialect.ResultSetIterator;
-import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 
 /**
  * @author Dmitry Geraskov
@@ -47,7 +45,7 @@ public class HSQLMetaDataDialect extends JDBCMetaDataDialect {
 					Map element = new HashMap();
 					protected Object convertRow(ResultSet tableRs) throws SQLException{
 						String table = tableRs.getString("TABLE_NAME");
-						String fullTableName = Table.qualify(quote(cat), quote(sc), quote(table));
+						String fullTableName = TableNameQualifier.qualify(quote(cat), quote(sc), quote(table));
 						
 						String sql ="SELECT * FROM " + fullTableName + " WHERE 0>1"; // can't use FALSE constant since it would not work with older HSQL versions. (JBIDE-5957)
 						boolean isAutoIncrement = false;

@@ -1,13 +1,13 @@
 package org.hibernate.cfg.reveng.dialect;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 
 /**
  * MetaData dialect that uses standard JDBC for reading metadata.
@@ -75,11 +75,11 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 					return element;					
 				}
 				protected Throwable handleSQLException(SQLException e) {
-					throw getSQLExceptionConverter().convert(e, "Exception while getting index info for " + Table.qualify(catalog, schema, table), null);
+					throw getSQLExceptionConverter().convert(e, "Exception while getting index info for " + TableNameQualifier.qualify(catalog, schema, table), null);
 				}
 			};
 		} catch (SQLException e) {
-			throw getSQLExceptionConverter().convert(e, "Exception while getting index info for " + Table.qualify(xcatalog, xschema, xtable), null);
+			throw getSQLExceptionConverter().convert(e, "Exception while getting index info for " + TableNameQualifier.qualify(xcatalog, xschema, xtable), null);
 		} 		
 	}
 
@@ -115,11 +115,11 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 					return element;					
 				}
 				protected Throwable handleSQLException(SQLException e) {
-					throw getSQLExceptionConverter().convert(e, "Error while reading column meta data for " + Table.qualify(catalog, schema, table), null);
+					throw getSQLExceptionConverter().convert(e, "Error while reading column meta data for " + TableNameQualifier.qualify(catalog, schema, table), null);
 				}
 			};
 		} catch (SQLException e) {
-			throw getSQLExceptionConverter().convert(e, "Error while reading column meta data for " + Table.qualify(xcatalog, xschema, xtable), null);
+			throw getSQLExceptionConverter().convert(e, "Error while reading column meta data for " + TableNameQualifier.qualify(xcatalog, xschema, xtable), null);
 		}	
 	}
 
@@ -144,11 +144,11 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 					return element;					
 				}
 				protected Throwable handleSQLException(SQLException e) {
-					throw getSQLExceptionConverter().convert(e, "Error while reading primary key meta data for " + Table.qualify(catalog, schema, table), null);
+					throw getSQLExceptionConverter().convert(e, "Error while reading primary key meta data for " + TableNameQualifier.qualify(catalog, schema, table), null);
 				}
 			};
 		} catch (SQLException e) {
-			throw getSQLExceptionConverter().convert(e, "Error while reading primary key meta data for " + Table.qualify(xcatalog, xschema, xtable), null);
+			throw getSQLExceptionConverter().convert(e, "Error while reading primary key meta data for " + TableNameQualifier.qualify(xcatalog, xschema, xtable), null);
 		}	
 	}
 
@@ -170,11 +170,11 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 					return element;					
 				}
 				protected Throwable handleSQLException(SQLException e) {
-					throw getSQLExceptionConverter().convert(e, "Error while reading exported keys meta data for " + Table.qualify(catalog, schema, table), null);
+					throw getSQLExceptionConverter().convert(e, "Error while reading exported keys meta data for " + TableNameQualifier.qualify(catalog, schema, table), null);
 				}
 			};
 		} catch (SQLException e) {
-			throw getSQLExceptionConverter().convert(e, "Error while reading exported keys meta data for " + Table.qualify(xcatalog, xschema, xtable), null);
+			throw getSQLExceptionConverter().convert(e, "Error while reading exported keys meta data for " + TableNameQualifier.qualify(xcatalog, xschema, xtable), null);
 		}	
 	}
 	

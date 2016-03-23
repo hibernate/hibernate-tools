@@ -20,6 +20,7 @@ import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.tool.xml.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -309,7 +310,7 @@ public class OverrideRepository  {
 				String location = "";
 				String info = " t:" + JDBCToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
 				if(table!=null) {
-					location = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName;
+					location = TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName;
 				} else {
 
 					location += " Column: " + columnName + info;

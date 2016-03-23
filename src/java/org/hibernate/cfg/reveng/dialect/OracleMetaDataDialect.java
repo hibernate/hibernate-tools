@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 
 /**
  * Oracle Specialised MetaData dialect that uses standard JDBC and querys on the
@@ -293,7 +294,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					throw getSQLExceptionConverter().convert(
 							e,
 							"Exception while getting index info for "
-									+ Table.qualify(catalog, schema, table),
+									+ TableNameQualifier.qualify(catalog, schema, table),
 							null);
 				}
 			};
@@ -301,7 +302,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			throw getSQLExceptionConverter().convert(
 					e,
 					"Exception while getting index info for "
-							+ Table.qualify(catalog, schema, table), null);
+							+ TableNameQualifier.qualify(catalog, schema, table), null);
 		}
 	}
 
@@ -339,7 +340,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					throw getSQLExceptionConverter().convert(
 							e,
 							"Error while reading column meta data for "
-									+ Table.qualify(catalog, schema, table),
+									+ TableNameQualifier.qualify(catalog, schema, table),
 							null);
 				}
 			};
@@ -347,7 +348,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			throw getSQLExceptionConverter().convert(
 					e,
 					"Error while reading column meta data for "
-							+ Table.qualify(catalog, schema, table), null);
+							+ TableNameQualifier.qualify(catalog, schema, table), null);
 		}
 	}
 
@@ -382,7 +383,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					throw getSQLExceptionConverter().convert(
 							e,
 							"Error while reading primary key meta data for "
-									+ Table.qualify(catalog, schema, table),
+									+ TableNameQualifier.qualify(catalog, schema, table),
 							null);
 				}
 			};
@@ -390,7 +391,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			throw getSQLExceptionConverter().convert(
 					e,
 					"Error while reading primary key meta data for "
-							+ Table.qualify(catalog, schema, table), null);
+							+ TableNameQualifier.qualify(catalog, schema, table), null);
 		}
 	}
 
@@ -429,7 +430,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					throw getSQLExceptionConverter().convert(
 							e,
 							"Error while reading exported keys meta data for "
-									+ Table.qualify(catalog, schema, table),
+									+ TableNameQualifier.qualify(catalog, schema, table),
 							null);
 				}
 			};
@@ -437,7 +438,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			throw getSQLExceptionConverter().convert(
 					e,
 					"Error while reading exported keys meta data for "
-							+ Table.qualify(catalog, schema, table), null);
+							+ TableNameQualifier.qualify(catalog, schema, table), null);
 		}
 	}	
 	

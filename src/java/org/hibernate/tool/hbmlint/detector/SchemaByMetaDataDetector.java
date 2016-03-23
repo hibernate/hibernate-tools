@@ -34,6 +34,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
+import org.hibernate.tool.util.TableNameQualifier;
 
 public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
@@ -145,7 +146,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			if ( list.isEmpty() ) {
 				pc.reportIssue( new Issue( "SCHEMA_TABLE_MISSING",
 						Issue.HIGH_PRIORITY, "Missing table "
-								+ Table.qualify( table.getCatalog(), table
+								+ TableNameQualifier.qualify( table.getCatalog(), table
 										.getSchema(), table.getName() ) ) );
 				return;
 			}
@@ -154,7 +155,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 						Issue.NORMAL_PRIORITY, "Found "
 								+ list.size()
 								+ " tables for "
-								+ Table.qualify( table.getCatalog(), table
+								+ TableNameQualifier.qualify( table.getCatalog(), table
 										.getSchema(), table.getName() ) ) );
 				return;
 			}
@@ -169,7 +170,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	}
 
 	String table(Table t) {
-		return Table.qualify( t.getCatalog(), t.getSchema(), t.getName() );
+		return TableNameQualifier.qualify( t.getCatalog(), t.getSchema(), t.getName() );
 	}
 	
 	public void visit(
