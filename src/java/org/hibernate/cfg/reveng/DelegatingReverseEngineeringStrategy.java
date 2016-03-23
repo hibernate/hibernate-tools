@@ -33,11 +33,11 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?false:delegate.excludeColumn(identifier, columnName);
 	}
 
-	public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
+	public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference) {
 		return delegate==null?null:delegate.foreignKeyToCollectionName(keyname, fromTable, fromColumns, referencedTable, referencedColumns, uniqueReference);
 	}
 
-	public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference) {
+	public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<Column> fromColumnNames, TableIdentifier referencedTable, List<Column> referencedColumnNames, boolean uniqueReference) {
 		return delegate==null?null:delegate.foreignKeyToEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
 	}
 
@@ -97,15 +97,15 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 		return delegate==null?false:delegate.excludeForeignKeyAsCollection(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
 	}
 
-	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
+	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
 		return delegate==null?false:delegate.excludeForeignKeyAsManytoOne(keyname, fromTable, fromColumns, referencedTable, referencedColumns);
 	}
 
-	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
+	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
 		return delegate==null?true:delegate.isForeignKeyCollectionInverse(name, foreignKeyTable, columns, foreignKeyReferencedTable, referencedColumns);
 	}
 
-	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
+	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
 		return delegate==null?true:delegate.isForeignKeyCollectionLazy(name, foreignKeyTable, columns, foreignKeyReferencedTable, referencedColumns);
 	}
 
@@ -150,8 +150,8 @@ public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringS
 	}
 	
 	public String foreignKeyToInverseEntityName(String keyname,
-			TableIdentifier fromTable, List fromColumnNames,
-			TableIdentifier referencedTable, List referencedColumnNames,
+			TableIdentifier fromTable, List<Column> fromColumnNames,
+			TableIdentifier referencedTable, List<Column> referencedColumnNames,
 			boolean uniqueReference) {
 		return delegate==null?null:delegate.foreignKeyToInverseEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
 	}	
