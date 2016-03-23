@@ -10,14 +10,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.internal.util.StringHelper;
+import org.hibernate.tool.util.TableNameQualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStrategy {
 
@@ -111,7 +112,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		if(log.isDebugEnabled()) {
 			String info = " t:" + JDBCToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
 			if(table!=null) {
-				location = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName + info;
+				location = TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName + info;
 			} else {
 				
 				location += " Column: " + columnName + info;

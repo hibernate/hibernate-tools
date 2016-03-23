@@ -13,6 +13,7 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +68,7 @@ public class ForeignKeyProcessor {
 				
 				if(fkTable==null) {
 					//	filter out stuff we don't have tables for!
-					log.debug("Foreign key " + fkName + " references unknown or filtered table " + Table.qualify(fkCatalog, fkSchema, fkTableName) );
+					log.debug("Foreign key " + fkName + " references unknown or filtered table " + TableNameQualifier.qualify(fkCatalog, fkSchema, fkTableName) );
 					continue;
 				} else {
 					log.debug("Foreign key " + fkName);

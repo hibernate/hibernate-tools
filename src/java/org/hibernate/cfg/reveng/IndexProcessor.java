@@ -14,6 +14,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Index;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
+import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,7 +98,7 @@ public class IndexProcessor {
 			}
 		} 
 		catch (JDBCException t) {
-			log.warn("Exception while trying to get indexinfo on " + Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) +  "=" + t.getMessage() );
+			log.warn("Exception while trying to get indexinfo on " + TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getName() ) +  "=" + t.getMessage() );
 			// Bug #604761 Oracle getIndexInfo() needs major grants And other dbs sucks too ;)
 			// http://sourceforge.net/tracker/index.php?func=detail&aid=604761&group_id=36044&atid=415990				
 		} 

@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
-import org.hibernate.mapping.Table;
 import org.hibernate.internal.util.StringHelper;
+import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.TableNameQualifier;
 
 public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 
@@ -30,7 +31,7 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 			String catalog, 
 			String name) {
 		
-        String key = Table.qualify(quote(catalog), quote(schema), quote(name));
+        String key = TableNameQualifier.qualify(quote(catalog), quote(schema), quote(name));
 		Table table = (Table) tables.get(key);
 		
 		if (table == null) {
@@ -57,7 +58,7 @@ public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {
 	}
 
 	public Table getTable(String schema, String catalog, String name) {
-        String key = Table.qualify(quote(catalog), quote(schema), quote(name));
+        String key = TableNameQualifier.qualify(quote(catalog), quote(schema), quote(name));
 		return (Table) tables.get(key);
 	}
 
