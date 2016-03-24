@@ -29,15 +29,15 @@ public class PrimaryKeyProcessor {
 			DatabaseCollector dbs, 
 			Table table) {
 				
-		List columns = new ArrayList();
+		List<Object[]> columns = new ArrayList<Object[]>();
 		PrimaryKey key = null;
 		Iterator<Map<String, Object>> primaryKeyIterator = null;
 		try {
-			Map primaryKeyRs = null;	
+			Map<String, Object> primaryKeyRs = null;	
 			primaryKeyIterator = metaDataDialect.getPrimaryKeys(getCatalogForDBLookup(table.getCatalog(), defaultCatalog), getSchemaForDBLookup(table.getSchema(), defaultSchema), table.getName() );		
 		
 			while (primaryKeyIterator.hasNext() ) {
-				primaryKeyRs = (Map) primaryKeyIterator.next();
+				primaryKeyRs = primaryKeyIterator.next();
 				
 				/*String ownCatalog = primaryKeyRs.getString("TABLE_CAT");
 				 String ownSchema = primaryKeyRs.getString("TABLE_SCHEM");
@@ -75,29 +75,20 @@ public class PrimaryKeyProcessor {
 		}
 	      
 	      // sort the columns accoring to the key_seq.
-	      Collections.sort(columns,new Comparator() {
-			public boolean equals(Object obj) {
-				return super.equals(obj);
-			}
-
-			public int compare(Object o1, Object o2) {
-				Short left = (Short) ( (Object[]) o1)[0];
-				Short right = (Short) ( (Object[]) o2)[0];
+	      Collections.sort(columns,new Comparator<Object[]>() {
+			public int compare(Object[] o1, Object[] o2) {
+				Short left = (Short)o1[0];
+				Short right = (Short)o2[0];
 				return left.compareTo(right);
-			}
-			
-			public int hashCode() {
-				return super.hashCode();
 			}
 	      });
 	      
-	      List t = new ArrayList(columns.size());
-	      Iterator cols = columns.iterator();
+	      List<String> t = new ArrayList<String>(columns.size());
+	      Iterator<?> cols = columns.iterator();
 	      while (cols.hasNext() ) {
 			Object[] element = (Object[]) cols.next();
-			t.add(element[1]);
+			t.add((String)element[1]);
 	      }
-	      columns = t;
 	      
 	      if(key==null) {
 	      	log.warn("The JDBC driver didn't report any primary key columns in " + table.getName() + ". Asking rev.eng. strategy" );
@@ -109,21 +100,21 @@ public class PrimaryKeyProcessor {
 	      			throw new JDBCBinderException(table + " already has a primary key!"); //TODO: ignore ?
 	      		}
 	      		table.setPrimaryKey(key);
-	      		columns = new ArrayList(userPrimaryKey);
+	      		t = new ArrayList<String>(userPrimaryKey);
 	      	} else {
 	      		log.warn("Rev.eng. strategy did not report any primary key columns for " + table.getName());
 	      	}	      	
 	      }
 
-	      Iterator suggestedPrimaryKeyStrategyName = metaDataDialect.getSuggestedPrimaryKeyStrategyName( getCatalogForDBLookup(table.getCatalog(), defaultCatalog), getSchemaForDBLookup(table.getSchema(), defaultSchema), table.getName() );
+	      Iterator<Map<String, Object>> suggestedPrimaryKeyStrategyName = metaDataDialect.getSuggestedPrimaryKeyStrategyName( getCatalogForDBLookup(table.getCatalog(), defaultCatalog), getSchemaForDBLookup(table.getSchema(), defaultSchema), table.getName() );
 	      try {
-	      if(suggestedPrimaryKeyStrategyName.hasNext()) {
-	    	  Map m = (Map) suggestedPrimaryKeyStrategyName.next();
-	    	  String suggestion = (String) m.get( "HIBERNATE_STRATEGY" );
-	    	  if(suggestion!=null) {
-	    		  dbs.addSuggestedIdentifierStrategy( table.getCatalog(), table.getSchema(), table.getName(), suggestion );
-	    	  }
-	      }
+		      if(suggestedPrimaryKeyStrategyName.hasNext()) {
+		    	  Map<String, Object> m = suggestedPrimaryKeyStrategyName.next();
+		    	  String suggestion = (String) m.get( "HIBERNATE_STRATEGY" );
+		    	  if(suggestion!=null) {
+		    		  dbs.addSuggestedIdentifierStrategy( table.getCatalog(), table.getSchema(), table.getName(), suggestion );
+		    	  }
+		      }
 	      } finally {
 	    	  if(suggestedPrimaryKeyStrategyName!=null) {
 					try {
@@ -135,7 +126,7 @@ public class PrimaryKeyProcessor {
 	      }
 	      	      
 	      if(key!=null) {
-	    	  cols = columns.iterator();
+	    	  cols = t.iterator();
 	    	  while (cols.hasNext() ) {
 	    		  String name = (String) cols.next();
 	    		  // should get column from table if it already exists!
