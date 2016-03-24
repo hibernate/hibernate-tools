@@ -38,7 +38,7 @@ public interface MetaDataDialect {
 	 * Close the iterator.
 	 * @param iterator an iterator returned from one of methods on this dialect
 	 */
-	void close(Iterator iterator);
+	void close(Iterator<?> iterator);
 
 	/** 
 	 * Return iterator over the indexes that mathces catalog, schema and table
