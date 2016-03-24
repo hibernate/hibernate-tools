@@ -109,7 +109,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			failOnDelegateAccess = b;			
 		}
 
-		public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String name) {
+		public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String name) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {

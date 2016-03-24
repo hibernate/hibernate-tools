@@ -13,7 +13,7 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 	 * Based on info from http://dev.mysql.com/doc/refman/5.0/en/show-table-status.html
 	 * Should work on pre-mysql 5 too since it uses the "old" SHOW TABLE command instead of SELECT from infotable.
 	 */
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 		String sql = null;
 			try {			
 				catalog = caseForSearch( catalog );

@@ -98,11 +98,11 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}
 	}
 
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
-		List cached = (List) cachedPrimaryKeyStrategyName.get( sk );
+		List<Map<String, Object>> cached = (List) cachedPrimaryKeyStrategyName.get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedPrimaryKeyStrategyName, sk, cached, delegate.getSuggestedPrimaryKeyStrategyName( catalog, schema, table ));
 		} else {
 			return cached.iterator();

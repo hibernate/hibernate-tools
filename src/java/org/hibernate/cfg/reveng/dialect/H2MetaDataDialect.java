@@ -49,7 +49,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 		}
 	}
 	
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 			try {			
 				catalog = caseForSearch( catalog );
 				schema = caseForSearch( schema );
