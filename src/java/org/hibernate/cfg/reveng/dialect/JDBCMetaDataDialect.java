@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
 
 /**
@@ -29,7 +28,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 				protected Map<String, Object> convertRow(ResultSet tableResultSet) throws SQLException {
 					element.clear();
 					putTablePart( element, tableResultSet );
@@ -64,7 +63,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
@@ -83,7 +82,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		} 		
 	}
 
-	protected void putTablePart(Map element, ResultSet tableRs) throws SQLException {
+	protected void putTablePart(Map<String, Object> element, ResultSet tableRs) throws SQLException {
 		element.put("TABLE_NAME", tableRs.getString("TABLE_NAME"));
 		element.put("TABLE_SCHEM", tableRs.getString("TABLE_SCHEM"));
 		element.put("TABLE_CAT", tableRs.getString("TABLE_CAT"));
@@ -101,7 +100,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
@@ -134,7 +133,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
@@ -163,7 +162,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putExportedKeysPart( element, rs );					
@@ -178,7 +177,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		}	
 	}
 	
-	protected void putExportedKeysPart(Map element, ResultSet rs) throws SQLException {
+	protected void putExportedKeysPart(Map<String, Object> element, ResultSet rs) throws SQLException {
 		element.put( "PKTABLE_NAME", rs.getString("PKTABLE_NAME"));
 		element.put( "PKTABLE_SCHEM", rs.getString("PKTABLE_SCHEM"));
 		element.put( "PKTABLE_CAT", rs.getString("PKTABLE_CAT"));
