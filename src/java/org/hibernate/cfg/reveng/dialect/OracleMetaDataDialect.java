@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
 
 /**
@@ -224,7 +223,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(null, tableRs,
 					getSQLExceptionConverter()) {
 
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 
 				
 				protected Map<String, Object> convertRow(ResultSet tableResultSet)
@@ -273,7 +272,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(null, indexRs,
 					getSQLExceptionConverter()) {
 
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 
 				
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
@@ -318,7 +317,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(null, columnRs,
 					getSQLExceptionConverter()) {
 
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 
 				
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
@@ -365,7 +364,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(null, pkeyRs,
 					getSQLExceptionConverter()) {
 
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 
 				
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
@@ -408,7 +407,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(null, pExportRs,
 					getSQLExceptionConverter()) {
 
-				Map element = new HashMap();
+				Map<String, Object> element = new HashMap<String, Object>();
 
 				
 				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
