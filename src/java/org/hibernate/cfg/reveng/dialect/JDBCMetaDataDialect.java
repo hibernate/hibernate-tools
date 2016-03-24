@@ -89,7 +89,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		element.put("TABLE_CAT", tableRs.getString("TABLE_CAT"));
 	}
 
-	public Iterator getColumns(final String xcatalog, final String xschema, final String xtable, String xcolumn) {
+	public Iterator<Map<String, Object>> getColumns(final String xcatalog, final String xschema, final String xtable, String xcolumn) {
 		try {			  
 			final String catalog = caseForSearch( xcatalog );
 			final String schema = caseForSearch( xschema );

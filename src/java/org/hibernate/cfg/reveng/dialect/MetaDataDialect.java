@@ -59,7 +59,7 @@ public interface MetaDataDialect {
 	 * @param column name or null
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "DATA_TYPE", "TYPE_NAME", "COLUMN_NAME", "NULLABLE", "COLUMN_SIZE", "DECIMAL_DIGITS"
 	 */
-	Iterator getColumns(String catalog, String schema, String table, String column);
+	Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column);
 
 	/**
 	 * Return iterator over the columns that mathces catalog, schema and table

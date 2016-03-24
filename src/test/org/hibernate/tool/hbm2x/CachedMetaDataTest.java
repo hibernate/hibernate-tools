@@ -57,7 +57,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			delegate.configure(info);			
 		}
 		
-		public Iterator getColumns(String catalog, String schema, String table, String column) {
+		public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {
