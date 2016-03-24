@@ -11,12 +11,12 @@ import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 public class CachedMetaDataDialect implements MetaDataDialect {
 	
 	MetaDataDialect delegate;
-	private Map cachedTables = new HashMap();
-	private Map cachedColumns = new HashMap();
-	private Map cachedExportedKeys = new HashMap();
-	private Map cachedPrimaryKeys = new HashMap();
-	private Map cachedIndexInfo = new HashMap();
-	private Map cachedPrimaryKeyStrategyName = new HashMap();
+	private Map<StringKey, List<Map<String, Object>>> cachedTables = new HashMap<StringKey, List<Map<String, Object>>>();
+	private Map<StringKey, List<Map<String, Object>>> cachedColumns = new HashMap<StringKey, List<Map<String, Object>>>();
+	private Map<StringKey, List<Map<String, Object>>> cachedExportedKeys = new HashMap<StringKey, List<Map<String, Object>>>();
+	private Map<StringKey, List<Map<String, Object>>> cachedPrimaryKeys = new HashMap<StringKey, List<Map<String, Object>>>();
+	private Map<StringKey, List<Map<String, Object>>> cachedIndexInfo = new HashMap<StringKey, List<Map<String, Object>>>();
+	private Map<StringKey, List<Map<String, Object>>> cachedPrimaryKeyStrategyName = new HashMap<StringKey, List<Map<String, Object>>>();
 
 	public CachedMetaDataDialect(MetaDataDialect realMetaData) {
 		this.delegate = realMetaData;
@@ -45,9 +45,9 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table, column });
-		List cached = (List) cachedColumns.get( sk );
+		List<Map<String, Object>> cached = cachedColumns.get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedColumns, sk, cached, delegate.getColumns( catalog, schema, table, column ));
 		} else {
 			return cached.iterator();
@@ -56,9 +56,9 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getExportedKeys(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
-		List cached = (List) cachedExportedKeys.get( sk );
+		List<Map<String, Object>> cached = cachedExportedKeys.get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedExportedKeys, sk, cached, delegate.getExportedKeys( catalog, schema, table ));
 		} else {
 			return cached.iterator();
@@ -67,9 +67,9 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getIndexInfo(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
-		List cached = (List) cachedIndexInfo.get( sk );
+		List<Map<String, Object>> cached = cachedIndexInfo.get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedIndexInfo, sk, cached, delegate.getIndexInfo( catalog, schema, table ));
 		} else {
 			return cached.iterator();
@@ -78,7 +78,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getPrimaryKeys(String catalog, String schema, String name) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, name });
-		List<Map<String, Object>> cached = (List) cachedPrimaryKeys .get( sk );
+		List<Map<String, Object>> cached = cachedPrimaryKeys .get( sk );
 		if(cached==null) {
 			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedPrimaryKeys, sk, cached, delegate.getPrimaryKeys( catalog, schema, name ));
@@ -89,9 +89,9 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
-		List cached = (List) cachedTables.get( sk );
+		List<Map<String, Object>> cached = cachedTables.get( sk );
 		if(cached==null) {
-			cached = new ArrayList();
+			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedTables, sk, cached, delegate.getTables( catalog, schema, table ));
 		} else {
 			return cached.iterator();
@@ -100,7 +100,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
-		List<Map<String, Object>> cached = (List) cachedPrimaryKeyStrategyName.get( sk );
+		List<Map<String, Object>> cached = cachedPrimaryKeyStrategyName.get( sk );
 		if(cached==null) {
 			cached = new ArrayList<Map<String, Object>>();
 			return new CachedIterator(this, cachedPrimaryKeyStrategyName, sk, cached, delegate.getSuggestedPrimaryKeyStrategyName( catalog, schema, table ));
@@ -159,14 +159,14 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}
 	}
 	
-	private static class CachedIterator implements Iterator {
+	private static class CachedIterator implements Iterator<Map<String, Object>> {
 
-		private List cache; 
+		private List<Map<String, Object>> cache; 
 		private StringKey target;
-		private Map destination;
-		private Iterator realIterator;
+		private Map<StringKey, List<Map<String, Object>>> destination;
+		private Iterator<Map<String, Object>> realIterator;
 		final CachedMetaDataDialect owner;
-		public CachedIterator(CachedMetaDataDialect owner, Map destination, StringKey sk, List cache, Iterator<Map<String, Object>> realIterator) {
+		public CachedIterator(CachedMetaDataDialect owner, Map<StringKey, List<Map<String, Object>>> destination, StringKey sk, List<Map<String, Object>> cache, Iterator<Map<String, Object>> realIterator) {
 			this.owner = owner;
 			this.destination = destination;
 			this.target = sk;
@@ -182,9 +182,9 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 			return realIterator.hasNext();
 		}
 
-		public Object next() {
-			Map map = (Map) realIterator.next();
-			cache.add(new HashMap(map)); // need to copy since MetaDataDialect might reuse it.
+		public Map<String, Object> next() {
+			Map<String, Object> map = realIterator.next();
+			cache.add(new HashMap<String, Object>(map)); // need to copy since MetaDataDialect might reuse it.
 			return map;
 		}
 
