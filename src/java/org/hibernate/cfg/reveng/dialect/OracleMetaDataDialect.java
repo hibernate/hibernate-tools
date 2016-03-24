@@ -306,7 +306,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		}
 	}
 
-	public Iterator getColumns(final String catalog, final String schema,
+	public Iterator<Map<String, Object>> getColumns(final String catalog, final String schema,
 			final String table, String column) {
 		
 		try {

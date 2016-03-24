@@ -43,7 +43,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 
 	
 
-	public Iterator getColumns(String catalog, String schema, String table, String column) {
+	public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table, column });
 		List cached = (List) cachedColumns.get( sk );
 		if(cached==null) {
