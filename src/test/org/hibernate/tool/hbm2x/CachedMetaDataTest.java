@@ -49,7 +49,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			delegate.close();
 		}
 
-		public void close(Iterator iterator) {
+		public void close(Iterator<?> iterator) {
 			delegate.close( iterator );
 		}
 

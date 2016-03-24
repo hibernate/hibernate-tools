@@ -127,7 +127,7 @@ public abstract class AbstractMetaDataDialect implements MetaDataDialect {
 		return info;
 	}
 	
-	public void close(Iterator iterator) {
+	public void close(Iterator<?> iterator) {
 		if(iterator instanceof ResultSetIterator) {
 			((ResultSetIterator)iterator).close();
 		}

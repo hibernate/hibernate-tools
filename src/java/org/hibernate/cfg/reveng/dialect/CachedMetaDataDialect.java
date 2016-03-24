@@ -30,7 +30,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
         delegate.configure(info);       
     }
 	
-	public void close(Iterator iterator) {
+	public void close(Iterator<?> iterator) {
 		if(iterator instanceof CachedIterator) {
 			CachedIterator ci = (CachedIterator) iterator;
 			if(ci.getOwner()==this) {
