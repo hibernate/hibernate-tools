@@ -227,7 +227,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 				Map element = new HashMap();
 
 				
-				protected Object convertRow(ResultSet tableResultSet)
+				protected Map<String, Object> convertRow(ResultSet tableResultSet)
 						throws SQLException {
 					element.clear();
 					element.put("TABLE_NAME", tableResultSet.getString(1));
@@ -276,7 +276,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 				Map element = new HashMap();
 
 				
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					element.put("COLUMN_NAME", rs.getString(1));
 					element.put("TYPE", new Short((short) 1)); // CLUSTERED
@@ -321,7 +321,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 				Map element = new HashMap();
 
 				
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					element.put("COLUMN_NAME", rs.getString(1));
 					element.put("TABLE_SCHEM", rs.getString(2));
@@ -368,7 +368,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 				Map element = new HashMap();
 
 				
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					element.put("TABLE_NAME", rs.getString(1));
 					element.put("COLUMN_NAME", rs.getString(2));
@@ -411,7 +411,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 				Map element = new HashMap();
 
 				
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					element.put("PKTABLE_NAME", rs.getString(1));
 					element.put("PKTABLE_SCHEM", rs.getString(2));

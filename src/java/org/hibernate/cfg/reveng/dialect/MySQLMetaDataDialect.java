@@ -30,7 +30,7 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
 					Map element = new HashMap();
-					protected Object convertRow(ResultSet tableRs) throws SQLException {
+					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						element.put("TABLE_NAME", tableRs.getString("NAME"));
 						element.put("TABLE_SCHEM", sc);

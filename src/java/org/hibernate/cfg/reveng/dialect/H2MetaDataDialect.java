@@ -80,7 +80,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
 					Map element = new HashMap();
-					protected Object convertRow(ResultSet tableRs) throws SQLException {
+					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						putTablePart( element, tableRs );
 						String string = tableRs.getString("COLUMN_DEFAULT");
