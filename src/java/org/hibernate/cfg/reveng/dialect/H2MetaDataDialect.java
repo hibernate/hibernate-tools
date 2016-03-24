@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.tool.util.ReflectHelper;
 
 
 /**
@@ -24,7 +24,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 	public H2MetaDataDialect() {
 		super();
 		try {
-			Class constants = ReflectHelper.classForName( "org.h2.engine.Constants" );
+			Class<?> constants = ReflectHelper.classForName( "org.h2.engine.Constants" );
 			Integer build = (Integer)constants.getDeclaredField( "BUILD_ID" ).get( null );
 			if ( build.intValue() < 55 ) {
 				understandsCatalogName = false;
@@ -35,14 +35,14 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
         }
 	}
 
-	protected void putTablePart(Map element, ResultSet tableRs) throws SQLException {		
+	protected void putTablePart(Map<String, Object> element, ResultSet tableRs) throws SQLException {		
 		super.putTablePart( element, tableRs );
 		if ( !understandsCatalogName ) {
 			element.put( "TABLE_CAT", null );
 		}
 	}
 	
-	protected void putExportedKeysPart(Map element, ResultSet rs) throws SQLException {		
+	protected void putExportedKeysPart(Map<String, Object> element, ResultSet rs) throws SQLException {		
 		super.putExportedKeysPart( element, rs );
 		if ( !understandsCatalogName ) {
 			element.put( "PKTABLE_CAT", null );
@@ -79,7 +79,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 				
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
-					Map element = new HashMap();
+					Map<String, Object> element = new HashMap<String, Object>();
 					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						putTablePart( element, tableRs );
