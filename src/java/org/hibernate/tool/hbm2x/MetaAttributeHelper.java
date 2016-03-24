@@ -2,7 +2,6 @@ package org.hibernate.tool.hbm2x;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.collections.MultiMap;
 import org.hibernate.mapping.MetaAttribute;
@@ -75,10 +74,10 @@ public final class MetaAttributeHelper {
      * @param destination
      * @param specific
      */
-     public static void copyMultiMap(MultiMap destination, Map<Object ,Collection<?>> specific) {
+     public static void copyMultiMap(MultiMap destination, MultiMap specific) {
         for (Iterator<?> keyIterator = specific.keySet().iterator(); keyIterator.hasNext(); ) {
             Object key = keyIterator.next();
-            Collection<?> c = specific.get(key);
+            Collection<?> c = (Collection<?>)specific.get(key);
             for (Iterator<?> valueIterator = c.iterator(); valueIterator.hasNext(); ) 
                 destination.put(key, valueIterator.next() );
         }
