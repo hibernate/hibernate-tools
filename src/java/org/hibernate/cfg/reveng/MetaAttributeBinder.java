@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Element;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.tool.hbm2x.MetaAttributeHelper;
@@ -23,22 +22,18 @@ public class MetaAttributeBinder {
 	 * @return a MultiMap with all values from local and extra values
 	 * from inherited
 	 */
-	public static MultiMap mergeMetaMaps(Map specific, Map general) {
-		MultiHashMap result = new MultiHashMap();
+	public static MultiMap mergeMetaMaps(MultiMap specific, MultiMap general) {
+		MultiValueMap result = new MultiValueMap();
 		MetaAttributeHelper.copyMultiMap(result, specific);
 		
 		if (general != null) {
-			for (Iterator iter = general.keySet().iterator();
-				iter.hasNext();
-				) {
-				String key = (String) iter.next();
+			for (Iterator<?> iter = general.keySet().iterator();iter.hasNext();) {
+				Object key = iter.next();
 	
 				if (!specific.containsKey(key) ) {
 					// inheriting a meta attribute only if it is inheritable
-					Collection ml = (Collection) general.get(key);
-					for (Iterator iterator = ml.iterator();
-						iterator.hasNext();
-						) {
+					Collection<?> ml = (Collection<?>)general.get(key);
+					for (Iterator<?> iterator = ml.iterator(); iterator.hasNext();) {
 						SimpleMetaAttribute element = (SimpleMetaAttribute) iterator.next();
 						if (element.inheritable) {
 							result.put(key, element);
@@ -52,9 +47,9 @@ public class MetaAttributeBinder {
 	
 	}
 
-	public static MetaAttribute toRealMetaAttribute(String name, List values) {
+	public static MetaAttribute toRealMetaAttribute(String name, List<?> values) {
 		MetaAttribute attribute = new MetaAttribute(name);
-		for (Iterator iter = values.iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = values.iterator(); iter.hasNext();) {
 			SimpleMetaAttribute element = (SimpleMetaAttribute) iter.next();
 			attribute.addValue(element.value);
 		}
@@ -83,12 +78,14 @@ public class MetaAttributeBinder {
 	 * @return MultiMap
 	 */
 	 protected static MultiMap loadMetaMap(Element element) {
-		MultiMap result = new MultiHashMap();
-		List metaAttributeList = new ArrayList();
-		metaAttributeList.addAll(element.elements("meta") );
+		MultiMap result = new MultiValueMap();
+		List<Element> metaAttributeList = new ArrayList<Element>();
+		for (Object obj : element.elements("meta")) {
+			metaAttributeList.add((Element)obj);
+		}
 
-		for (Iterator iter = metaAttributeList.iterator(); iter.hasNext();) {
-			Element metaAttrib = (Element) iter.next();
+		for (Iterator<Element> iter = metaAttributeList.iterator(); iter.hasNext();) {
+			Element metaAttrib = iter.next();
 			// does not use getTextNormalize() or getTextTrim() as that would remove the formatting in new lines in items like description for javadocs.
 			String attribute = metaAttrib.attributeValue("attribute");
 			String value = metaAttrib.getText();
