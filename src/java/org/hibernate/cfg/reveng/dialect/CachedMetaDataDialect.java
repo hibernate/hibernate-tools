@@ -65,7 +65,7 @@ public class CachedMetaDataDialect implements MetaDataDialect {
 		}		
 	}
 
-	public Iterator getIndexInfo(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getIndexInfo(String catalog, String schema, String table) {
 		StringKey sk = new StringKey(new String[] { catalog, schema, table });
 		List cached = (List) cachedIndexInfo.get( sk );
 		if(cached==null) {
