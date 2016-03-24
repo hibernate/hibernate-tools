@@ -14,7 +14,6 @@ import java.util.Map;
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.exception.spi.SQLExceptionConverter;
-import org.hibernate.internal.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -180,13 +179,13 @@ public abstract class AbstractMetaDataDialect implements MetaDataDialect {
 		return str == null ? null : str.toLowerCase(Locale.ENGLISH);
 	}
 	
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
-		Map m = new HashMap();
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
+		Map<String, Object> m = new HashMap<String, Object>();
 		m.put( "TABLE_CAT", catalog );
 		m.put( "TABLE_SCHEMA", schema );
 		m.put( "TABLE_NAME", table );
 		m.put( "HIBERNATE_STRATEGY", null );
-		List l = new ArrayList();
+		List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
 		l.add(m);
 		return l.iterator();
 	}

@@ -28,7 +28,7 @@ public class HSQLMetaDataDialect extends JDBCMetaDataDialect {
 		}		
 	}
 	   
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table) {
 		String sql = null;
 			try {			
 				catalog = caseForSearch( catalog );

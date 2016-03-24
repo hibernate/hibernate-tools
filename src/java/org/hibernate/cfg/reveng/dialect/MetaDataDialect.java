@@ -103,7 +103,7 @@ public interface MetaDataDialect {
 	 * @param name
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "HIBERNATE_STRATEGY" (null if no possible to determine strategy, otherwise return hibernate identifier strategy name/classname)
 	 */
-	public Iterator getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table);
+	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table);
 
 	
 }
