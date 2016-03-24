@@ -262,7 +262,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		}
 	}
 	
-	public Iterator getIndexInfo(final String catalog, final String schema,
+	public Iterator<Map<String, Object>> getIndexInfo(final String catalog, final String schema,
 			final String table) {
 		try {
 			log.debug("getIndexInfo(" + catalog + "." + schema + "." + table + ")");

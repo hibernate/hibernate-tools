@@ -73,7 +73,7 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			}
 		}
 
-		public Iterator getIndexInfo(String catalog, String schema, String table) {
+		public Iterator<Map<String, Object>> getIndexInfo(String catalog, String schema, String table) {
 			if(failOnDelegateAccess) {
 				throw new IllegalStateException("delegate not accessible");
 			} else {

@@ -48,7 +48,7 @@ public interface MetaDataDialect {
 	 * @param table name or null 
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "INDEX_NAME", "COLUMN_NAME", "NON_UNIQUE", "TYPE" keys. 
 	 */
-	Iterator getIndexInfo(String catalog, String schema, String table);
+	Iterator<Map<String, Object>> getIndexInfo(String catalog, String schema, String table);
 
 	/**
 	 * Return iterator over the columns that mathces catalog, schema and table
