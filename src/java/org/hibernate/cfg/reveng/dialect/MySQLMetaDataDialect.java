@@ -29,7 +29,7 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 				final String cat = catalog;
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
-					Map element = new HashMap();
+					Map<String, Object> element = new HashMap<String, Object>();
 					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						element.put("TABLE_NAME", tableRs.getString("NAME"));
