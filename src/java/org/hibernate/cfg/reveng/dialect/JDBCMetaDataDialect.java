@@ -30,7 +30,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
 				Map element = new HashMap();
-				protected Object convertRow(ResultSet tableResultSet) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet tableResultSet) throws SQLException {
 					element.clear();
 					putTablePart( element, tableResultSet );
 					element.put("TABLE_TYPE", tableResultSet.getString("TABLE_TYPE"));
@@ -65,7 +65,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
 				Map element = new HashMap();
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
 					element.put("INDEX_NAME", rs.getString("INDEX_NAME"));
@@ -102,7 +102,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
 				Map element = new HashMap();
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
 					element.put("DATA_TYPE", new Integer(rs.getInt("DATA_TYPE")));
@@ -135,7 +135,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
 				Map element = new HashMap();
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putTablePart(element, rs);
 					element.put("COLUMN_NAME", rs.getString("COLUMN_NAME"));
@@ -164,7 +164,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
 				
 				Map element = new HashMap();
-				protected Object convertRow(ResultSet rs) throws SQLException {
+				protected Map<String, Object> convertRow(ResultSet rs) throws SQLException {
 					element.clear();
 					putExportedKeysPart( element, rs );					
 					return element;					

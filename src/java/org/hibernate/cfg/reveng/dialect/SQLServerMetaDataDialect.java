@@ -36,7 +36,7 @@ public class SQLServerMetaDataDialect extends JDBCMetaDataDialect {
 				return new ResultSetIterator(statement.executeQuery(), getSQLExceptionConverter()) {
 					
 					Map element = new HashMap();
-					protected Object convertRow(ResultSet tableRs) throws SQLException {
+					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						element.put("TABLE_NAME", tableRs.getString("table_name"));
 						element.put("TABLE_SCHEM", sc);

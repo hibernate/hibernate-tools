@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.hibernate.exception.spi.SQLExceptionConverter;
@@ -12,7 +13,7 @@ import org.hibernate.exception.spi.SQLExceptionConverter;
 /**
  * Iterator over a resultset; intended usage only for metadata reading.  
  */
-public abstract class ResultSetIterator implements Iterator {
+public abstract class ResultSetIterator implements Iterator<Map<String, Object>> {
 
 	private ResultSet rs;
 
@@ -50,7 +51,7 @@ public abstract class ResultSetIterator implements Iterator {
 	}
 
 	
-	public Object next() {
+	public Map<String, Object> next() {
 		try {
 			advance();
 			if ( endOfRows ) {
@@ -67,7 +68,7 @@ public abstract class ResultSetIterator implements Iterator {
 	}
 
 	abstract protected Throwable handleSQLException(SQLException e);
-	abstract protected Object convertRow(ResultSet rs) throws SQLException;
+	abstract protected Map<String, Object> convertRow(ResultSet rs) throws SQLException;
 
 	public void remove() {
 		throw new UnsupportedOperationException(
