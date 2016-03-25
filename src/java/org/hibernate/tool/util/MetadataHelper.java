@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 public class MetadataHelper {
@@ -21,22 +23,30 @@ public class MetadataHelper {
 		return result;
 	}
 	
-	private static Metadata buildFromMetadataSources(Configuration configuration) {
-		MetadataSources metadataSources = null;
+	public static MetadataSources getMetadataSources(Configuration configuration) {
+		MetadataSources result = null;
 		Field metadataSourcesField = getField("metadataSources", configuration);
 		if (metadataSourcesField != null) {
 			try {
 				metadataSourcesField.setAccessible(true);
-				metadataSources = 
+				result = 
 						(MetadataSources)metadataSourcesField.get(configuration);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		if (metadataSources == null) {
-			metadataSources = new MetadataSources();
+		if (result == null) {
+			result = new MetadataSources();
 		}
-		return metadataSources.buildMetadata();
+		return result;
+	}
+	
+	private static Metadata buildFromMetadataSources(Configuration configuration) {
+		MetadataSources metadataSources = getMetadataSources(configuration);
+		StandardServiceRegistryBuilder builder = configuration.getStandardServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+		StandardServiceRegistry serviceRegistry = builder.build();
+		return metadataSources.buildMetadata(serviceRegistry);
 	}
 	
 	private static Metadata getMetadataFromField(Configuration configuration) {

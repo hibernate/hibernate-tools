@@ -13,9 +13,9 @@ public class JPAConfiguration extends Configuration {
 	private Metadata metadata = null;
 	
 	public JPAConfiguration(EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder) {
-		metadata = entityManagerFactoryBuilder.getMetadata();
 		EntityManagerFactory entityManagerFactory = 
 				entityManagerFactoryBuilder.build();
+		metadata = entityManagerFactoryBuilder.getMetadata();
 		properties.putAll(entityManagerFactory.getProperties());
 	}
 	
