@@ -287,15 +287,21 @@ public class JDBCBinder {
         boolean isUnique = isUniqueReference(fk);
         String propertyName = null;
         if(inverseProperty) {
-            propertyName = revengStrategy.foreignKeyToInverseEntityName(fk.getName(),
-                    TableIdentifier.create(fk.getReferencedTable()), fk
-                            .getReferencedColumns(), TableIdentifier
-                            .create(targetTable), fk.getColumns(), isUnique);
+            propertyName = revengStrategy.foreignKeyToInverseEntityName(
+        		fk.getName(),
+                TableIdentifier.create(fk.getReferencedTable()), 
+                fk.getReferencedColumns(), 
+                TableIdentifier.create(targetTable), 
+                fk.getColumns(), 
+                isUnique);
         } else {
-                propertyName = revengStrategy.foreignKeyToEntityName(fk.getName(),
-                        TableIdentifier.create(fk.getReferencedTable()), fk
-                                .getReferencedColumns(), TableIdentifier
-                                .create(targetTable), fk.getColumns(), isUnique);
+            propertyName = revengStrategy.foreignKeyToEntityName(
+        		fk.getName(),
+                TableIdentifier.create(fk.getReferencedTable()), 
+                fk.getReferencedColumns(), 
+                TableIdentifier.create(targetTable), 
+                fk.getColumns(), 
+                isUnique);
         }
 
         Iterator<Column> columns = fk.getColumnIterator();
@@ -552,12 +558,12 @@ public class JDBCBinder {
 		if(toForeignKey==null) {
 
 			collectionRole = revengStrategy.foreignKeyToCollectionName(
-					fromForeignKey.getName(),
-					foreignKeyTable,
-					fromForeignKey.getColumns(),
-					foreignKeyReferencedTable,
-					fromForeignKey.getReferencedColumns(),
-					uniqueReference
+				fromForeignKey.getName(),
+				foreignKeyTable,
+				fromForeignKey.getColumns(),
+				foreignKeyReferencedTable,
+				fromForeignKey.getReferencedColumns(),
+				uniqueReference
 			);
 
 			tableToClassName = revengStrategy.tableToClassName( foreignKeyTable );
@@ -569,17 +575,19 @@ public class JDBCBinder {
 			tableToClassName = revengStrategy.tableToClassName( foreignKeyReferencedTable );
 		}
 
-		collectionInverse = revengStrategy.isForeignKeyCollectionInverse(targetKey.getName(),
-				foreignKeyTable,
-				targetKey.getColumns(),
-				foreignKeyReferencedTable,
-				targetKey.getReferencedColumns());
+		collectionInverse = revengStrategy.isForeignKeyCollectionInverse(
+			targetKey.getName(),
+			foreignKeyTable,
+			targetKey.getColumns(),
+			foreignKeyReferencedTable,
+			targetKey.getReferencedColumns());
 
-		collectionLazy = revengStrategy.isForeignKeyCollectionLazy(targetKey.getName(),
-				foreignKeyTable,
-				targetKey.getColumns(),
-				foreignKeyReferencedTable,
-				targetKey.getReferencedColumns());
+		collectionLazy = revengStrategy.isForeignKeyCollectionLazy(
+			targetKey.getName(),
+			foreignKeyTable,
+			targetKey.getColumns(),
+			foreignKeyReferencedTable,
+			targetKey.getReferencedColumns());
 
 		collectionRole = BinderUtils.makeUnique(rc,collectionRole);
 

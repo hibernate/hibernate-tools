@@ -61,7 +61,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 	 * Does some crude english pluralization
 	 * TODO: are the from/to names correct ?
 	 */
-    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns, boolean uniqueReference) {
+    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<?> fromColumns, TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference) {
 		String propertyName = Introspector.decapitalize( StringHelper.unqualify( getRoot().tableToClassName(fromTable) ) );
 		propertyName = pluralize( propertyName );
 		
@@ -82,14 +82,14 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 	}
 
 	public String foreignKeyToInverseEntityName(String keyname,
-			TableIdentifier fromTable, List<Column> fromColumnNames,
-			TableIdentifier referencedTable, List<Column> referencedColumnNames,
+			TableIdentifier fromTable, List<?> fromColumnNames,
+			TableIdentifier referencedTable, List<?> referencedColumnNames,
 			boolean uniqueReference) {		
 		return foreignKeyToEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
 	}
 	
 	
-    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<Column> fromColumnNames, TableIdentifier referencedTable, List<Column> referencedColumnNames, boolean uniqueReference) {
+    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumnNames, TableIdentifier referencedTable, List<?> referencedColumnNames, boolean uniqueReference) {
         String propertyName = Introspector.decapitalize( StringHelper.unqualify( getRoot().tableToClassName(referencedTable) ) );
         
         if(!uniqueReference) {
@@ -208,11 +208,11 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return !settings.createCollectionForForeignKey();		
 	}
 
-	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
+	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<?> fromColumns, TableIdentifier referencedTable, List<?> referencedColumns) {
 		return !settings.createManyToOneForForeignKey();
 	}
 
-	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
+	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<?> columns, TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns) {
 		Table fkTable = getRuntimeInfo().getTable(foreignKeyTable);
 		if(fkTable==null) {
 			return true; // we don't know better
@@ -231,7 +231,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		return true;
 	}
 
-	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<Column> columns, TableIdentifier foreignKeyReferencedTable, List<Column> referencedColumns) {
+	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<?> columns, TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns) {
 		return true;
 	}
 
