@@ -61,7 +61,7 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		assertFileAndExists( file );
 		long before = file.lastModified();	
 				
-		JavaFormatter formatter = new JavaFormatter(new HashMap());
+		JavaFormatter formatter = new JavaFormatter(new HashMap<Object, Object>());
 		assertFalse("formatting should fail when using zero settings", formatter.formatFile( file ));
 		
 		assertTrue( before==file.lastModified() );
