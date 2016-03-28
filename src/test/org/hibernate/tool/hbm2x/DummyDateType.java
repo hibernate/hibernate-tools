@@ -16,7 +16,7 @@ public class DummyDateType implements UserType {
 		return new int[]{Types.DATE};
 	}
 
-	public Class returnedClass() {
+	public Class<?> returnedClass() {
 		return java.sql.Date.class;
 	}
 
