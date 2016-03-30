@@ -64,7 +64,7 @@ public class IndexTest extends JDBCMetaDataBinderTestCase {
 		assertEqualIdentifiers("withIndex", table.getName() );
 		
 		assertNull("there should be no pk", table.getPrimaryKey() );
-		Iterator iterator = table.getIndexIterator();
+		Iterator<Index> iterator = table.getIndexIterator();
 	
 		
 		int cnt=0;
@@ -82,9 +82,9 @@ public class IndexTest extends JDBCMetaDataBinderTestCase {
 		assertEquals(2, index.getColumnSpan() );
 		
 		assertSame(index.getTable(), table);
-		Iterator cols = index.getColumnIterator();
-		Column col1 = (Column) cols.next();
-		Column col2 = (Column) cols.next();
+		Iterator<Column> cols = index.getColumnIterator();
+		Column col1 = cols.next();
+		Column col2 = cols.next();
 		
 		assertEqualIdentifiers("first", col1.getName() );
 		assertEqualIdentifiers("third", col2.getName() );
