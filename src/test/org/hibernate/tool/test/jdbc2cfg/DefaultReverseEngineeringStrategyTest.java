@@ -107,10 +107,10 @@ public class DefaultReverseEngineeringStrategyTest extends TestCase {
     	
     	String fkName = "something";
 		TableIdentifier fromTable = new TableIdentifier("company");
-		List fromColumns = new ArrayList();
+		List<Column> fromColumns = new ArrayList<Column>();
 		
 		TableIdentifier toTable = new TableIdentifier("address");
-		List toColumns = new ArrayList();
+		List<Column> toColumns = new ArrayList<Column>();
 		
 		assertEquals("address", rns.foreignKeyToEntityName(fkName, fromTable, fromColumns, toTable, toColumns, true) );
 		assertEquals("companies", rns.foreignKeyToCollectionName(fkName, fromTable, fromColumns, toTable, toColumns, true) );
