@@ -34,14 +34,14 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 	static final int TABLECOUNT = 200;
 	static final int COLCOUNT = 10;
 	
-	List createSQL = new ArrayList();
-	List dropSQL = new ArrayList();
+	List<String> createSQL = new ArrayList<String>();
+	List<String> dropSQL = new ArrayList<String>();
 
 	/**
 	 * @return
 	 */
 	protected String[] getDropSQL() {
-		return (String[]) dropSQL.toArray(new String[dropSQL.size()]);
+		return dropSQL.toArray(new String[dropSQL.size()]);
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 		};
 		
 		
-		dropSQL = new ArrayList(TABLECOUNT);
-		createSQL = new ArrayList(TABLECOUNT);
+		dropSQL = new ArrayList<String>(TABLECOUNT);
+		createSQL = new ArrayList<String>(TABLECOUNT);
 		Table lastTable = null;
 //		Mappings mappings = cfg.createMappings();
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
