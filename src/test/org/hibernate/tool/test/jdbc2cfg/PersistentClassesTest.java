@@ -144,7 +144,6 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
      * @param itemid TODO
      * @return
      */
-    @SuppressWarnings("unchecked")
 	private Item addItem(Orders m, int itemid, String name) {
         Item item = new Item();
         item.setChildId(new Long(itemid) );
