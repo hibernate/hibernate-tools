@@ -5,7 +5,6 @@
 package org.hibernate.tool.hbm2x;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.hibernate.tool.hbm2x.pojo.ImportContext;
 import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
 import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.test.TestHelper;
 
 /**
  * @author max
