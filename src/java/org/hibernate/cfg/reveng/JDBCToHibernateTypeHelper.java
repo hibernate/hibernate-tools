@@ -23,7 +23,7 @@ public final class JDBCToHibernateTypeHelper {
 	}
 	
    /** The Map containing the preferred conversion type values. */
-   private static final Map PREFERRED_HIBERNATETYPE_FOR_SQLTYPE = new HashMap();
+   private static final Map<Integer, String[]> PREFERRED_HIBERNATETYPE_FOR_SQLTYPE = new HashMap<Integer, String[]>();
 
    static {
       PREFERRED_HIBERNATETYPE_FOR_SQLTYPE.put(new Integer(Types.TINYINT), new String[] { "byte", Byte.class.getName()} );
@@ -98,8 +98,8 @@ public final class JDBCToHibernateTypeHelper {
 	   }
 	}
    
-   static Map jdbcTypes; // Name to value
-   static Map jdbcTypeValues; // value to Name
+   static Map<String, Integer> jdbcTypes; // Name to value
+   static Map<Integer, String> jdbcTypeValues; // value to Name
    
    public static String[] getJDBCTypes() {
 	   checkTypes();
@@ -127,13 +127,13 @@ public final class JDBCToHibernateTypeHelper {
 
    private static void checkTypes() {
 	   if(jdbcTypes==null) {
-		   jdbcTypes = new HashMap();
+		   jdbcTypes = new HashMap<String, Integer>();
 		   Field[] fields = Types.class.getFields();
 		   for (int i = 0; i < fields.length; i++) {
 			   Field field = fields[i];
 			   if(Modifier.isStatic(field.getModifiers() ) ) {
 				   try {
-					   jdbcTypes.put(field.getName(), field.get(Types.class) );
+					   jdbcTypes.put(field.getName(), (Integer)field.get(Types.class) );
 				   } 
 				   catch (IllegalArgumentException e) {
 					   // ignore						
@@ -148,13 +148,13 @@ public final class JDBCToHibernateTypeHelper {
    
     public static String getJDBCTypeName(int value) {
 		if(jdbcTypeValues==null) {
-			jdbcTypeValues = new HashMap();
+			jdbcTypeValues = new HashMap<Integer, String>();
 			Field[] fields = Types.class.getFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
 				if(Modifier.isStatic(field.getModifiers() ) ) {
 					try {
-						jdbcTypeValues.put(field.get(Types.class), field.getName() );
+						jdbcTypeValues.put((Integer)field.get(Types.class), field.getName() );
 					} 
 					catch (IllegalArgumentException e) {
 						// ignore						
