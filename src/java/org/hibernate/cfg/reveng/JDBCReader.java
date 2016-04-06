@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
@@ -43,28 +44,28 @@ public class JDBCReader {
 		}
 	}
 		
-	public List readDatabaseSchema(DatabaseCollector dbs, String catalog, String schema, ProgressListener progress) {
+	public List<Table> readDatabaseSchema(DatabaseCollector dbs, String catalog, String schema, ProgressListener progress) {
 		try {
 			ReverseEngineeringRuntimeInfo info = new ReverseEngineeringRuntimeInfo(provider, sec, dbs);
 			getMetaDataDialect().configure(info);
 			revengStrategy.configure(info);
 			
-			Set hasIndices = new HashSet();
+			Set<Table> hasIndices = new HashSet<Table>();
 			
-			List schemaSelectors = revengStrategy.getSchemaSelections();
-			List foundTables = new ArrayList();
+			List<SchemaSelection> schemaSelectors = revengStrategy.getSchemaSelections();
+			List<Table> foundTables = new ArrayList<Table>();
 			if(schemaSelectors==null) {
 				foundTables.addAll(TableProcessor.processTables(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, dbs, new SchemaSelection(catalog, schema), hasIndices, progress));
 			} else {
-				for (Iterator iter = schemaSelectors.iterator(); iter.hasNext();) {
-					SchemaSelection selection = (SchemaSelection) iter.next();
+				for (Iterator<SchemaSelection> iter = schemaSelectors.iterator(); iter.hasNext();) {
+					SchemaSelection selection = iter.next();
 					foundTables.addAll(TableProcessor.processTables(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, dbs, selection, hasIndices, progress));
 				}
 			}
 			
-			Iterator tables = foundTables.iterator(); // not dbs.iterateTables() to avoid "double-read" of columns etc.
+			Iterator<Table> tables = foundTables.iterator(); // not dbs.iterateTables() to avoid "double-read" of columns etc.
 			while ( tables.hasNext() ) {
-				Table table = (Table) tables.next();
+				Table table = tables.next();
 				BasicColumnProcessor.processBasicColumns(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, table, progress);
 				PrimaryKeyProcessor.processPrimaryKey(getMetaDataDialect(), revengStrategy, defaultSchema, defaultCatalog, dbs, table);
 				if(hasIndices.contains(table)) {
@@ -91,7 +92,7 @@ public class JDBCReader {
 	 * @param tables
 	 * @return
 	 */
-	private Map<String, List<ForeignKey>> resolveForeignKeys(DatabaseCollector dbs, Iterator tables, ProgressListener progress) {
+	private Map<String, List<ForeignKey>> resolveForeignKeys(DatabaseCollector dbs, Iterator<Table> tables, ProgressListener progress) {
 		List<ForeignKeysInfo> fks = new ArrayList<ForeignKeysInfo>();
 		while ( tables.hasNext() ) {
 			Table table = (Table) tables.next();
@@ -106,47 +107,28 @@ public class JDBCReader {
 		Map<String, List<ForeignKey>> oneToManyCandidates = new HashMap<String, List<ForeignKey>>();			
 		for (Iterator<ForeignKeysInfo> iter = fks.iterator(); iter.hasNext();) {
 			ForeignKeysInfo element = iter.next();
-			Map map = element.process( revengStrategy ); // the actual foreignkey is created here.
+			Map<String, List<ForeignKey>> map = element.process( revengStrategy ); // the actual foreignkey is created here.
 			mergeMultiMap( oneToManyCandidates, map );
 		}
 		return oneToManyCandidates;
 	}
 	
-	private boolean safeEquals(Object value, Object tf) {
-		if(value==tf) return true;
-		if(value==null) return false;
-		return value.equals(tf);
-	}
-
-
-	private String quote(String columnName) {
-		   if(columnName==null) return columnName;
-		   if(getMetaDataDialect().needQuote(columnName)) {
-			   if(columnName.length()>1 && columnName.charAt(0)=='`' && columnName.charAt(columnName.length()-1)=='`') {
-				   return columnName; // avoid double quoting
-			   }
-			   return "`" + columnName + "`";
-		   } else {
-			   return columnName;
-		   }		
-	}
-
 	public MetaDataDialect getMetaDataDialect() {
 		return metadataDialect;
 	}
 	
-	    private void mergeMultiMap(Map dest, Map src) {
-	    	Iterator items = src.entrySet().iterator();
+	    private void mergeMultiMap(Map<String, List<ForeignKey>> dest, Map<String, List<ForeignKey>> src) {
+	    	Iterator<Entry<String, List<ForeignKey>>> items = src.entrySet().iterator();
 	    	
 	    	while ( items.hasNext() ) {
-	    		Map.Entry element = (Map.Entry) items.next();
+	    		Entry<String, List<ForeignKey>> element = items.next();
 	    		
-	    		List existing = (List) dest.get( element.getKey() );
+	    		List<ForeignKey> existing = dest.get( element.getKey() );
 	    		if(existing == null) {
 	    			dest.put( element.getKey(), element.getValue() );
 	    		} 
 	    		else {
-	    			existing.addAll( (List)element.getValue() );
+	    			existing.addAll(element.getValue());
 	    		}			
 	    	}
 	    	
@@ -157,12 +139,12 @@ public class JDBCReader {
 			}
 		}
 		
-		public List readDatabaseSchema(DatabaseCollector dbs, String catalog, String schema) {
+		public List<Table> readDatabaseSchema(DatabaseCollector dbs, String catalog, String schema) {
 			return readDatabaseSchema(dbs, catalog, schema, new NoopProgressListener());
 		}
 				
-		public Set readSequences(String sql) {
-			Set sequences = new HashSet();
+		public Set<String> readSequences(String sql) {
+			Set<String> sequences = new HashSet<String>();
 			if (sql!=null) {
 				Connection connection = null;
 				try {
