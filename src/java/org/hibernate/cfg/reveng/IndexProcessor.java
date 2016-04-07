@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hibernate.JDBCException;
 import org.hibernate.cfg.JDBCBinderException;
@@ -28,17 +29,17 @@ public class IndexProcessor {
 			String defaultCatalog, 
 			Table table) {
 		
-		Map indexes = new HashMap(); // indexname (String) -> Index
-		Map uniquekeys = new HashMap(); // name (String) -> UniqueKey
-		Map uniqueColumns = new HashMap(); // Column -> List<Index>
+		Map<String, Index> indexes = new HashMap<String, Index>(); // indexname (String) -> Index
+		Map<String, UniqueKey> uniquekeys = new HashMap<String, UniqueKey>(); // name (String) -> UniqueKey
+		Map<Column, List<UniqueKey>> uniqueColumns = new HashMap<Column, List<UniqueKey>>(); // Column -> List<Index>
 		
-		Iterator<?> indexIterator = null;
+		Iterator<Map<String, Object>> indexIterator = null;
 		try {
 			Map<String,Object> indexRs = null;	
 			indexIterator = metaDataDialect.getIndexInfo(getCatalogForDBLookup(table.getCatalog(), defaultCatalog), getSchemaForDBLookup(table.getSchema(), defaultSchema), table.getName());
 			
 			while (indexIterator.hasNext() ) {
-				indexRs = (Map) indexIterator.next();
+				indexRs = indexIterator.next();
 				String indexName = (String) indexRs.get("INDEX_NAME");
 				String columnName = (String) indexRs.get("COLUMN_NAME");
 				boolean unique = !((Boolean)indexRs.get("NON_UNIQUE")).booleanValue();
@@ -46,7 +47,7 @@ public class IndexProcessor {
 				if (columnName != null || indexName != null) { // both can be non-null with statistical indexs which we don't have any use for.
 					
 					if(unique) {
-						UniqueKey key = (UniqueKey) uniquekeys.get(indexName);
+						UniqueKey key = uniquekeys.get(indexName);
 						if (key==null) {
 							key = new UniqueKey();
 							key.setName(indexName);
@@ -63,16 +64,16 @@ public class IndexProcessor {
 						
 						if (unique && key.getColumnSpan()==1) {
 							// make list of columns that has the chance of being unique
-							List l = (List) uniqueColumns.get(column);
+							List<UniqueKey> l = uniqueColumns.get(column);
 							if (l == null) {
-								l = new ArrayList();
+								l = new ArrayList<UniqueKey>();
 								uniqueColumns.put(column, l);
 							}
 							l.add(key);
 						}
 					} 
 					else {
-						Index index = (Index) indexes.get(indexName);
+						Index index = indexes.get(indexName);
 						if(index==null) {
 							index = new Index();
 							index.setName(indexName);
@@ -113,13 +114,13 @@ public class IndexProcessor {
 		}
 		
 		// mark columns that are unique TODO: multiple columns are not unique on their own.
-		Iterator iterator = uniqueColumns.entrySet().iterator();
-		while (iterator.hasNext() ) {
-			Map.Entry entry = (Map.Entry) iterator.next();
-			Column col = (Column) entry.getKey();
-			Iterator keys = ( (List)entry.getValue() ).iterator();
+		Iterator<Entry<Column, List<UniqueKey>>> uniqueColumnIterator = uniqueColumns.entrySet().iterator();
+		while (uniqueColumnIterator.hasNext() ) {
+			Entry<Column, List<UniqueKey>> entry = uniqueColumnIterator.next();
+			Column col = entry.getKey();
+			Iterator<UniqueKey> keys = entry.getValue().iterator();
 			 while (keys.hasNext() ) {
-				UniqueKey key = (UniqueKey) keys.next();
+				UniqueKey key = keys.next();
 			
 				if(key.getColumnSpan()==1) {
 					col.setUnique(true);
@@ -127,7 +128,7 @@ public class IndexProcessor {
 			}
 		}
 		
-		iterator = uniquekeys.entrySet().iterator();
+		Iterator<Entry<String, UniqueKey>> iterator = uniquekeys.entrySet().iterator();
 		while(iterator.hasNext()) {
 			// if keyset has no overlaps with primary key (table.getPrimaryKey())
 			// if only key matches then mark as setNaturalId(true);
