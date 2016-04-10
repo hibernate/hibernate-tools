@@ -28,12 +28,11 @@ import org.hibernate.cfg.Configuration;
  */
 public class ConfigurationTask extends Task {
 
-	private List fileSets = new ArrayList();
+	private List<FileSet> fileSets = new ArrayList<FileSet>();
 	private Configuration cfg;
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
-	private String namingStrategy;
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -50,7 +49,6 @@ public class ConfigurationTask extends Task {
 		if(cfg==null) {
 			cfg = createConfiguration();
 			doConfiguration(cfg);
-			cfg.buildMappings(); // needed otherwise not all assocations are made!
 		}
 		return cfg;
 	}
@@ -172,10 +170,10 @@ public class ConfigurationTask extends Task {
 
 	private File[] getFiles() {
 
-		List files = new LinkedList();
-		for ( Iterator i = fileSets.iterator(); i.hasNext(); ) {
+		List<File> files = new LinkedList<File>();
+		for ( Iterator<FileSet> i = fileSets.iterator(); i.hasNext(); ) {
 
-			FileSet fs = (FileSet) i.next();
+			FileSet fs = i.next();
 			DirectoryScanner ds = fs.getDirectoryScanner( getProject() );
 
 			String[] dsFiles = ds.getIncludedFiles();
@@ -211,6 +209,5 @@ public class ConfigurationTask extends Task {
 	}
 	
 	public void setNamingStrategy(String namingStrategy) {
-		this.namingStrategy = namingStrategy;
 	}
 }
