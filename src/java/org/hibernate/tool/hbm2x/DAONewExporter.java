@@ -2,6 +2,7 @@ package org.hibernate.tool.hbm2x;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +82,7 @@ public class DAONewExporter extends GenericExporter {
      * Override to avoid overwriting the existing files
      * In the final version this should be moved to GenericExporter 
      */
-    protected void exportPOJO(Map additionalContext, POJOClass element)
+	protected void exportPOJO(Map<String, Object> additionalContext, POJOClass element) 
     {
         String filename = resolveFilename(element);
         File file = new File(getOutputDirectory(), filename);
@@ -107,7 +108,7 @@ public class DAONewExporter extends GenericExporter {
      * @param paramValues map with key-value pairs for parameter values
      * @return string where parameters are replaced with their values
      */
-    public String replaceParameters(String pattern, Map paramValues) {
+    public String replaceParameters(String pattern, Properties paramValues) {
         Matcher matcher = Pattern.compile("\\{(.*?)\\}").matcher(pattern);
         String output = pattern;
         while (matcher.find()) {
