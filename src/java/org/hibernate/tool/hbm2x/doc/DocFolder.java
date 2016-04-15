@@ -29,7 +29,7 @@ public class DocFolder {
     /**
      * Holds a list with the folders that are between this folder and root.
      */
-    private List pathFolders = new ArrayList();
+    private List<DocFolder> pathFolders = new ArrayList<DocFolder>();
 
     /**
      * Constructor for the root folder.
@@ -122,7 +122,7 @@ public class DocFolder {
      * 
      * @return a list with the folders from root.
      */
-    public List getPathFolders() {
+    public List<DocFolder> getPathFolders() {
         return pathFolders;
     }
 
