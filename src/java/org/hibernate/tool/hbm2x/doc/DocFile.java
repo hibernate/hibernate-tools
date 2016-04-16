@@ -86,7 +86,7 @@ public class DocFile {
      * 
      * @return a list with the folders from root.
      */
-    public List getPathFolders() {
+    public List<DocFolder> getPathFolders() {
 
         return parentFolder.getPathFolders();
     }
@@ -103,7 +103,7 @@ public class DocFile {
 
         StringBuffer result = new StringBuffer();
 
-        List folders = getPathFolders();
+        List<DocFolder> folders = getPathFolders();
 
         int index = folders.indexOf(folder);
 
@@ -132,7 +132,7 @@ public class DocFile {
      */
     public String buildRefTo(DocFile target) {
 
-        List tgtFileFolders = target.getPathFolders();
+        List<DocFolder> tgtFileFolders = target.getPathFolders();
 
         StringBuffer ref = new StringBuffer();
 
