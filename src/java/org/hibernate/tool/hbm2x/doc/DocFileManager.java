@@ -104,33 +104,33 @@ public class DocFileManager {
      * Map with the doc files for the tables. The keys are the Table objects and
      * the values are the DocFile instances.
      */
-    private Map tableDocFiles = new HashMap();
+    private Map<Table, DocFile> tableDocFiles = new HashMap<Table, DocFile>();
     
     /**
      * Map with the DocFile for classes. The keys are the POJOClass objects and 
      * the values are the DocFile instances.
      */
-    private Map entityDocFiles = new HashMap();
+    private Map<POJOClass, DocFile> entityDocFiles = new HashMap<POJOClass, DocFile>();
 
     /**
      * Map with the schema summary DocFiles keyed by Schema FQN.
      */
-    private Map schemaSummaryDocFiles = new HashMap();
+    private Map<String, DocFile> schemaSummaryDocFiles = new HashMap<String, DocFile>();
     
     /**
      * Map with the package summary DocFiles keyed by package name
      */
-    private Map packageSummaryDocFiles = new HashMap();
+    private Map<String, DocFile> packageSummaryDocFiles = new HashMap<String, DocFile>();
 
     /**
      * Map with the schema table lists DocFiles keyed by Schema FQN.
      */
-    private Map schemaTableListDocFiles = new HashMap();
+    private Map<String, DocFile> schemaTableListDocFiles = new HashMap<String, DocFile>();
     
     /**
      * Map with package class lists DocFiles keyed by package name
      */
-    private Map packageEntityListDocFile = new HashMap();
+    private Map<String, DocFile> packageEntityListDocFile = new HashMap<String, DocFile>();
 
     public DocFolder getRootDocFolder() {
 		return rootDocFolder;
@@ -176,12 +176,12 @@ public class DocFileManager {
 
         allTablesDocFile = new DocFile("alltables.html", rootTablesDocFolder);
 
-        Map schemaFolders = new HashMap();
+        Map<String, DocFolder> schemaFolders = new HashMap<String, DocFolder>();
         
-        Iterator packages = docHelper.getPackages().iterator();
+        Iterator<String> packages = docHelper.getPackages().iterator();
 
         while(packages.hasNext()){
-        	String packageName = (String)packages.next();
+        	String packageName = packages.next();
         	DocFolder packageFolder = null;
         	DocFolder theRoot = rootEntitiesDocFolder;
         	if(!packageName.equals(DocHelper.DEFAULT_NO_PACKAGE)){
@@ -202,9 +202,9 @@ public class DocFileManager {
         		packageFolder = rootEntitiesDocFolder;
         	}
         	
-        	Iterator classes = docHelper.getClasses(packageName).iterator();
+        	Iterator<POJOClass> classes = docHelper.getClasses(packageName).iterator();
         	while(classes.hasNext()){
-        		POJOClass pc = (POJOClass)classes.next();
+        		POJOClass pc = classes.next();
         		String classFileName = pc.getDeclarationName();        		
         		classFileName = classFileName + ".html";
         		DocFile classDocFile = new DocFile(classFileName, packageFolder);        		
@@ -212,9 +212,9 @@ public class DocFileManager {
         	}        	
         }
 
-        Iterator schemas = docHelper.getSchemas().iterator();
+        Iterator<String> schemas = docHelper.getSchemas().iterator();
         while (schemas.hasNext() ) {
-            String schemaName = (String) schemas.next();
+            String schemaName = schemas.next();
             DocFolder schemaFolder = new DocFolder(schemaName,
                     rootTablesDocFolder);
             schemaFolders.put(schemaName, schemaFolder);
@@ -224,7 +224,7 @@ public class DocFileManager {
             DocFile tableListDocFile = new DocFile("tables.html", schemaFolder);
             schemaTableListDocFiles.put(schemaName, tableListDocFile);
 
-            Iterator tables = docHelper.getTables(schemaName).iterator();
+            Iterator<Table> tables = docHelper.getTables(schemaName).iterator();
 
             while (tables.hasNext() ) {
                 Table table = (Table) tables.next();
@@ -336,7 +336,7 @@ public class DocFileManager {
      * @return DocFile for classes.html
      */
     public DocFile getPackageEntityListDocFile(String packageName){
-    	return (DocFile)packageEntityListDocFile.get(packageName);
+    	return packageEntityListDocFile.get(packageName);
     	
     }
 
@@ -375,8 +375,7 @@ public class DocFileManager {
      * @return the DocFile.
      */
     public DocFile getTableDocFile(Table table) {
-        DocFile docFile = (DocFile) tableDocFiles.get(table);
-		return docFile;
+        return tableDocFiles.get(table);
     }
     
     
@@ -392,13 +391,13 @@ public class DocFileManager {
     	String pojoClassQualifiedDeclarationName ;
     	//TODO Can we implement equals method in BasicPOJO to avoid this loop?
     	if(df == null){
-    		Iterator itr = entityDocFiles.keySet().iterator();
+    		Iterator<POJOClass> itr = entityDocFiles.keySet().iterator();
     		while(itr.hasNext()){
-    			POJOClass pojoClass = (POJOClass)itr.next();
+    			POJOClass pojoClass = itr.next();
     			pojoClassQualifiedDeclarationName = pojoClass.getQualifiedDeclarationName();
     			
     			if( pcQualifiedDeclarationName.equals(pojoClassQualifiedDeclarationName )){
-    				df = (DocFile)entityDocFiles.get(pojoClass);
+    				df = entityDocFiles.get(pojoClass);
     				break;
     			}
     		}
@@ -415,7 +414,7 @@ public class DocFileManager {
      * @return DocFile
      */
     public DocFile getEntityDocFile(POJOClass pc){
-    	return (DocFile) entityDocFiles.get(pc);
+    	return entityDocFiles.get(pc);
     }
 
     /**
@@ -426,7 +425,7 @@ public class DocFileManager {
      * @return the DocFile.
      */
     public DocFile getSchemaSummaryDocFile(String schemaName) {
-        return (DocFile) schemaSummaryDocFiles.get(schemaName);
+        return schemaSummaryDocFiles.get(schemaName);
     }
     
     /**
@@ -435,7 +434,7 @@ public class DocFileManager {
      * @return DocFile
      */
     public DocFile getPackageSummaryDocFile(String packageName){
-    	return (DocFile) packageSummaryDocFiles.get(packageName);
+    	return packageSummaryDocFiles.get(packageName);
     }
 
     /**
@@ -446,7 +445,7 @@ public class DocFileManager {
      * @return the DocFile.
      */
     public DocFile getSchemaTableListDocFile(String schemaName) {
-        return (DocFile) schemaTableListDocFiles.get(schemaName);
+        return schemaTableListDocFiles.get(schemaName);
     }
 
     /**
