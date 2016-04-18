@@ -10,14 +10,14 @@ import org.hibernate.internal.util.StringHelper;
 
 public class ImportContextImpl implements ImportContext {
 
-	Set imports = new TreeSet();
-	Set staticImports = new TreeSet();
-	Map simpleNames = new HashMap();
+	Set<String> imports = new TreeSet<String>();
+	Set<String> staticImports = new TreeSet<String>();
+	Map<String, String> simpleNames = new HashMap<String, String>();
 	
 	String basePackage = "";
 
 	// TODO: share this somehow, redundant from Cfg2JavaTool
-	private static final Map PRIMITIVES = new HashMap();
+	private static final Map<String, String> PRIMITIVES = new HashMap<String, String>();
 	static {
 		PRIMITIVES.put( "char", "Character" );
 
@@ -130,8 +130,8 @@ public class ImportContextImpl implements ImportContext {
 	public String generateImports() {
 		StringBuffer buf = new StringBuffer();
 		
-		for ( Iterator imps = imports.iterator(); imps.hasNext(); ) {
-				String next = (String) imps.next();
+		for ( Iterator<String> imps = imports.iterator(); imps.hasNext(); ) {
+				String next = imps.next();
 				if(isPrimitive(next) || inDefaultPackage(next) || inJavaLang(next) || inSamePackage(next)) {
 					// dont add automatically "imported" stuff
 				} else {
