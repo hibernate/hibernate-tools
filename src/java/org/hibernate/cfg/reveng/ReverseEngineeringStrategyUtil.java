@@ -143,7 +143,7 @@ final public class ReverseEngineeringStrategyUtil {
 				}
 				break;
 			case 'h':
-				if (prev == 'c' || prev == 's'){
+				if (prev != null && (prev == 'c' || prev == 's')){
 					singular += "es";
 					break;
 				}
