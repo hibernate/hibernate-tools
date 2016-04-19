@@ -4,6 +4,8 @@
  */
 package org.hibernate.tool.hbm2x;
 
+import java.io.ObjectStreamClass;
+
 /**
  * Exception to use in Exporters.
  * @author max
@@ -11,6 +13,9 @@ package org.hibernate.tool.hbm2x;
  */
 public class ExporterException extends RuntimeException {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(ExporterException.class).getSerialVersionUID();
+	
 	public ExporterException() {
 		super();
 	}
