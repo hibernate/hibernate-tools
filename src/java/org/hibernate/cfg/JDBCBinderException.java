@@ -4,6 +4,8 @@
  */
 package org.hibernate.cfg;
 
+import java.io.ObjectStreamClass;
+
 import org.hibernate.HibernateException;
 
 /**
@@ -12,6 +14,9 @@ import org.hibernate.HibernateException;
  */
 public class JDBCBinderException extends HibernateException {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(JDBCBinderException.class).getSerialVersionUID();
+	
 	/**
 	 * @param string
 	 * @param root
