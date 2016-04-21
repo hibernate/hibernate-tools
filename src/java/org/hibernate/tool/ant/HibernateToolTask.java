@@ -17,7 +17,8 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PropertySet;
-import org.hibernate.MappingNotFoundException;
+import org.hibernate.boot.MappingNotFoundException;
+import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
 
@@ -232,21 +233,13 @@ public class HibernateToolTask extends Task {
 		
 		if(re instanceof MappingNotFoundException) {
 			MappingNotFoundException mnf = (MappingNotFoundException)re;
-			if("resource".equals(mnf.getType())) {
-				return "A " + mnf.getType() + " located at " + mnf.getPath() + " was not found.\n" +
-						"Check the following:\n" +
-						"\n" +
-						"1) Is the spelling/casing correct ?\n" +
-						"2)	Is " + mnf.getPath() + " available via the classpath ?\n" +
-						"3) Does it actually exist ?\n";						
-			} else {
-				return "A " + mnf.getType() + " located at " + mnf.getPath() + " was not found.\n" +
+			Origin origin = mnf.getOrigin();
+			return "A " + origin.getType() + " located at " + origin.getName() + " was not found.\n" +
 				"Check the following:\n" +
 				"\n" +
 				"1) Is the spelling/casing correct ?\n" +
-				"2)	Do you permission to access " + mnf.getPath() + " ?\n" +
-				"3) Does it actually exist ?\n";	
-			}
+				"2)	Is " + mnf.getOrigin().getName() + " available via the classpath ?\n" +
+				"3) Does it actually exist ?\n";						
 		}
 
 		if(re instanceof ClassNotFoundException || re instanceof NoClassDefFoundError) {
