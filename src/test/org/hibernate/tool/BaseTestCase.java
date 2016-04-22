@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +41,10 @@ public abstract class BaseTestCase extends TestCase {
 	
 		private final File sourceDir;
 		private final File outputDir;
-		private final List<?> jars;
+		private final List<String> jars;
 		private URLClassLoader ucl;
 	
-		public ExecuteContext(File sourceDir, File outputDir, List<?> jars) {
+		public ExecuteContext(File sourceDir, File outputDir, List<String> jars) {
 			this.sourceDir = sourceDir;
 			this.outputDir = outputDir;
 			this.jars = jars;
@@ -55,7 +55,7 @@ public abstract class BaseTestCase extends TestCase {
 			TestHelper.compile(
 					sourceDir, 
 					outputDir, 
-					TestHelper.visitAllFiles( sourceDir, Collections.emptyList() ), 
+					TestHelper.visitAllFiles( sourceDir, new ArrayList<String>() ), 
 					"1.5",
 					TestHelper.buildClasspath( jars )
 			);
