@@ -20,11 +20,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jdt.internal.compiler.batch.Main;
+import org.hibernate.internal.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.eclipse.jdt.internal.compiler.batch.Main;
-import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.internal.util.StringHelper;
 import org.xml.sax.SAXException;
 
 /**
@@ -47,7 +46,7 @@ public final class TestHelper {
 	 */
 	public static boolean compile(File srcdir, File outputdir) {
 
-		List files = visitAllFiles( srcdir, new ArrayList() );
+		List<String> files = visitAllFiles( srcdir, new ArrayList<String>() );
 
 		return compile( srcdir, outputdir, files );
 
@@ -59,7 +58,7 @@ public final class TestHelper {
 	 * @param srcFiles
 	 * @return
 	 */
-	public static boolean compile(File srcdir, File outputdir, List srcFiles) {
+	public static boolean compile(File srcdir, File outputdir, List<String> srcFiles) {
 		return compile( srcdir, outputdir, srcFiles, "1.4", "" );
 	}
 
@@ -74,8 +73,8 @@ public final class TestHelper {
 	 * @param classPath
 	 * @return
 	 */
-	public static boolean compile(File srcdir, File outputdir, List srcFiles, String jdktarget, String classPath) {
-		List togglesList = new ArrayList();
+	public static boolean compile(File srcdir, File outputdir, List<String> srcFiles, String jdktarget, String classPath) {
+		List<String> togglesList = new ArrayList<String>();
 		togglesList.add( "-" + jdktarget ); // put this here so DAOs compile
 		togglesList.add( "-noExit" );
 		//togglesList.add( "-noWarn" );
@@ -90,10 +89,8 @@ public final class TestHelper {
 			togglesList.add( classPath );
 		}
 
-		String[] toggles = (String[]) togglesList
-				.toArray( new String[togglesList.size()] );
-		String[] strings = (String[]) srcFiles.toArray( new String[srcFiles
-				.size()] );
+		String[] toggles = togglesList.toArray( new String[togglesList.size()] );
+		String[] strings = srcFiles.toArray( new String[srcFiles.size()] );
 		String[] arguments = new String[toggles.length + strings.length];
 		System.arraycopy( toggles, 0, arguments, 0, toggles.length );
 		System
@@ -103,8 +100,12 @@ public final class TestHelper {
 		StringWriter out = new StringWriter();
 		StringWriter err = new StringWriter();
 
-		Main main = new Main( new PrintWriter( out ), new PrintWriter( err ),
-				false );
+		Main main = new Main( 
+				new PrintWriter( out ), 
+				new PrintWriter( err ),
+				false, 
+				null, 
+				null);
 		main.compile( arguments );
 		if ( main.globalErrorsCount > 0 ) {
 			throw new RuntimeException( out.toString() + err.toString() );
@@ -137,7 +138,7 @@ public final class TestHelper {
 	 * @return
 	 */
 
-	public static List visitAllFiles(File dir, List files, String ext) {
+	public static List<String> visitAllFiles(File dir, List<String> files, String ext) {
 		if ( dir.isDirectory() ) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
@@ -153,7 +154,7 @@ public final class TestHelper {
 		return files;
 	}
 
-	public static List visitAllFiles(File dir, List file) {
+	public static List<String> visitAllFiles(File dir, List<String> file) {
 		return visitAllFiles( dir, file, ".java" );
 	}
 
@@ -207,8 +208,8 @@ public final class TestHelper {
 		return db;
 	}
 
-	private static List buildClasspathFiles(List jars) {
-		List classpath = new ArrayList();
+	private static List<File> buildClasspathFiles(List<String> jars) {
+		List<File> classpath = new ArrayList<File>();
 		String dir = System.getProperty("org.hibernate.tool.test.libdir", "lib" + File.separator + "testlibs");
 		if(dir==null) {
 			throw new IllegalStateException("System property org.hibernate.tool.test.libdir must be set to run tests that compile with a custom classpath");
@@ -216,9 +217,9 @@ public final class TestHelper {
 		
 		File libdir = new File(dir);
 		
-		Iterator iterator = jars.iterator();
+		Iterator<String> iterator = jars.iterator();
 		while ( iterator.hasNext() ) {
-			String jar = (String) iterator.next();
+			String jar = iterator.next();
 			File f = new File(libdir, jar);
 			if(!f.exists()) {
 				throw new IllegalStateException(f + " not found. Check if system property org.hibernate.tool.test.libdir is set correctly.");
@@ -229,13 +230,13 @@ public final class TestHelper {
 		return classpath;
 	}
 
-	public static String buildClasspath(List jars) {
-		List files = buildClasspathFiles(jars);
+	public static String buildClasspath(List<String> jars) {
+		List<File> files = buildClasspathFiles(jars);
 		StringBuffer classpath = new StringBuffer();
 		
-		Iterator iterator = files.iterator();
+		Iterator<File> iterator = files.iterator();
 		while (iterator.hasNext()) {
-			File f = (File) iterator.next();
+			File f = iterator.next();
 			classpath.append(f);
 			if(iterator.hasNext()) {
 				classpath.append(File.pathSeparatorChar);
@@ -245,17 +246,17 @@ public final class TestHelper {
 		return classpath.toString();
 	}
 	
-	public static URL[] buildClasspathURLS(List jars, File outputDir) throws MalformedURLException {
-		List files = buildClasspathFiles(jars);
-		List classpath = new ArrayList();
+	public static URL[] buildClasspathURLS(List<String> jars, File outputDir) throws MalformedURLException {
+		List<File> files = buildClasspathFiles(jars);
+		List<URL> classpath = new ArrayList<URL>();
 		
 		if(outputDir!=null) {
-			classpath.add(outputDir.toURL());
+			classpath.add(outputDir.toURI().toURL());
 		}
-		Iterator iterator = files.iterator();
+		Iterator<File> iterator = files.iterator();
 		while (iterator.hasNext()) {
-			File f = (File) iterator.next();
-			classpath.add(f.toURL());			
+			File f = iterator.next();
+			classpath.add(f.toURI().toURL());			
 		}
 		
 		return (URL[]) classpath.toArray(new URL[classpath.size()]);
