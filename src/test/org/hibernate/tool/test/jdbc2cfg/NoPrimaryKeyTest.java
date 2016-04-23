@@ -8,6 +8,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+import org.hibernate.tool.util.MetadataHelper;
 
 
 
@@ -34,7 +35,7 @@ public class NoPrimaryKeyTest extends JDBCMetaDataBinderTestCase {
 	}
 	
 	public void testMe() throws Exception {
-		cfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 	}
 	
 	public static Test suite() {
