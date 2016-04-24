@@ -8,13 +8,18 @@ import java.util.Iterator;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.Oracle9Dialect;
+import org.hibernate.dialect.Oracle10gDialect;
+import org.hibernate.dialect.Oracle12cDialect;
+import org.hibernate.dialect.Oracle8iDialect;
+import org.hibernate.dialect.Oracle9iDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+import org.hibernate.tool.util.MetadataHelper;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -108,7 +113,10 @@ public class OracleCompositeIdOrderTest extends JDBCMetaDataBinderTestCase {
     }
      
      public boolean appliesTo(Dialect dialect) {
- 		return dialect instanceof Oracle9Dialect;
+ 		return dialect instanceof Oracle8iDialect || 
+ 			   dialect instanceof Oracle9iDialect ||
+ 			   dialect instanceof Oracle10gDialect ||
+ 			   dialect instanceof Oracle12cDialect;
  	}
  	
      
@@ -128,12 +136,12 @@ public class OracleCompositeIdOrderTest extends JDBCMetaDataBinderTestCase {
         assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "SCHEDULE_KEY");
         assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "REQUEST_KEY");
         
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
         
         PersistentClass course = cfg.getMetadata().getEntityBinding(toClassName(identifier("Course") ) );
         
         assertEquals(2,course.getIdentifier().getColumnSpan() );
-        Iterator columnIterator = course.getIdentifier().getColumnIterator();
+        Iterator<Selectable> columnIterator = course.getIdentifier().getColumnIterator();
         assertEquals(((Column)(columnIterator.next())).getName(), "SCHEDULE_KEY");
         assertEquals(((Column)(columnIterator.next())).getName(), "REQUEST_KEY");
         
