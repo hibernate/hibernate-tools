@@ -33,11 +33,11 @@ public class Product {
 
     private BigDecimal price;
 
-    private Set stores;
+    private Set<Store> stores;
 
     private ProductOwner owner;
 
-	private Set otherOwners;
+	private Set<ProductOwner> otherOwners;
 
     public Product() {
     }
@@ -74,11 +74,11 @@ public class Product {
         this.price = price;
     }
 
-    public Set getStores() {
+    public Set<Store> getStores() {
         return stores;
     }
 
-    public void setStores(Set stores) {
+    public void setStores(Set<Store> stores) {
         this.stores = stores;
     }
 
@@ -90,11 +90,11 @@ public class Product {
         return owner;
     }
     
-    public Set getOtherOwners() {
+    public Set<ProductOwner> getOtherOwners() {
     	return otherOwners;
     }
 
-    public void setOtherOwners(Set otherOwners) {
+    public void setOtherOwners(Set<ProductOwner> otherOwners) {
 		this.otherOwners = otherOwners;
 	}
  }
