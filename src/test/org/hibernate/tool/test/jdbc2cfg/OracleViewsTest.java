@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.Oracle9Dialect;
+import org.hibernate.dialect.Oracle10gDialect;
+import org.hibernate.dialect.Oracle12cDialect;
+import org.hibernate.dialect.Oracle8iDialect;
+import org.hibernate.dialect.Oracle9iDialect;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
@@ -54,7 +57,10 @@ public class OracleViewsTest extends JDBCMetaDataBinderTestCase {
 	}
 
 	public boolean appliesTo(Dialect dialect) {
-		return dialect instanceof Oracle9Dialect;
+ 		return dialect instanceof Oracle8iDialect || 
+  			   dialect instanceof Oracle9iDialect ||
+  			   dialect instanceof Oracle10gDialect ||
+  			   dialect instanceof Oracle12cDialect;
 	}
 	
 	protected void configure(JDBCMetaDataConfiguration configuration) {
