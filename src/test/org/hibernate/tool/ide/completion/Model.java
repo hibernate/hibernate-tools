@@ -21,6 +21,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author leon
@@ -39,7 +40,7 @@ public class Model {
                 addInputStream(Model.class.getResourceAsStream("ProductOwnerAddress.hbm.xml")).
                 addInputStream(Model.class.getResourceAsStream("City.hbm.xml")).
         		addInputStream(Model.class.getResourceAsStream("StoreCity.hbm.xml"));
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
         return cfg;
     }
     
