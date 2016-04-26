@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class Group {
 	private String name;
-	private Set users = new HashSet();
+	private Set<User> users = new HashSet<User>();
 	Group() {}
 	public Group(String n) {
 		name = n;
@@ -20,10 +20,10 @@ public class Group {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set getUsers() {
+	public Set<User> getUsers() {
 		return users;
 	}
-	public void setUsers(Set users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 	public void addUser(User user) {
