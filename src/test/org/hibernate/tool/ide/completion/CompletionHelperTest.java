@@ -31,7 +31,7 @@ public class CompletionHelperTest extends TestCase {
     }
 
     public void testGetCanonicalPath() {
-        List qts = new ArrayList();
+        List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.descriptions", "descr"));
         qts.add(new EntityNameReference("descr.name", "n"));
@@ -49,7 +49,7 @@ public class CompletionHelperTest extends TestCase {
     }
 
     public void testStackOverflowInGetCanonicalPath() {
-        List qts = new ArrayList();
+        List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.stores", "store"));
         qts.add(new EntityNameReference("store.articles", "art"));
