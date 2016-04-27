@@ -18,6 +18,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -108,12 +109,12 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 
 	public void testBuildMappings() {
 		
-		localCfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 	}
 	
 	public void testGenerateAndReadable() {
 		
-		cfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter(cfg, getOutputDir());
 		hme.start();		
@@ -135,7 +136,7 @@ public class ManyToManyTest extends JDBCMetaDataBinderTestCase {
 		    .addFile( new File(getOutputDir(), "Project.hbm.xml") )
 			.addFile( new File(getOutputDir(), "WorksOnContext.hbm.xml") );
 		
-		configuration.buildMappings();
+		MetadataHelper.getMetadata(configuration);
 		
 	}
 	
