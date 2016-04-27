@@ -28,6 +28,7 @@ import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.test.TestHelper;
+import org.hibernate.tool.util.MetadataHelper;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -174,13 +175,13 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testBuildMappings() {
 		
-		localCfg.buildMappings();
+		MetadataHelper.getMetadata(localCfg);
 		
 	}
 	
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		
-		cfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter(cfg, getOutputDir());
 		hme.start();		
@@ -201,15 +202,15 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		exporter.getProperties().setProperty("jdk5", "false");
 		exporter.start();		
 		
-		ArrayList list = new ArrayList();
-		List jars = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
+		List<String> jars = new ArrayList<String>();
 		//addAnnotationJars(jars);
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
 				TestHelper.buildClasspath( jars )
 		);
         
-		URL[] urls = new URL[] { getOutputDir().toURL() };
+		URL[] urls = new URL[] { getOutputDir().toURI().toURL() };
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
 		try {
@@ -235,7 +236,7 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		
-		cfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 		POJOExporter exporter = new POJOExporter(cfg, getOutputDir() );
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
@@ -250,8 +251,8 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		assertFileAndExists( new File(getOutputDir(), "MultiPerson.java") );
 		
 		assertEquals(9, getOutputDir().listFiles().length);
-		ArrayList list = new ArrayList();
-		List jars = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
+		List<String> jars = new ArrayList<String>();
 		
 		
 		jars.add( "hibernate-core-5.0.0.CR2.jar" );
@@ -261,37 +262,37 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
 				TestHelper.buildClasspath( jars )
 		); 
-        URL[] urls = new URL[] { getOutputDir().toURL() };
+        URL[] urls = new URL[] { getOutputDir().toURI().toURL() };
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
-        Class personClass = ucl.loadClass("Person");
-        Class multiPersonClass = ucl.loadClass("MultiPerson");
-        Class addressMultiPerson = ucl.loadClass("AddressMultiPerson");
-        Class addressMultiPersonId = ucl.loadClass("AddressMultiPersonId");
-        Class addressPerson = ucl.loadClass("AddressPerson");
-        Class multiPersonIdClass = ucl.loadClass("MultiPersonId");
-        Class middleClass = ucl.loadClass("MiddleTable");
-        Class rightClass = ucl.loadClass("LeftTable");
-        Class leftClass = ucl.loadClass("RightTable");
+        Class<?> personClass = ucl.loadClass("Person");
+        Class<?> multiPersonClass = ucl.loadClass("MultiPerson");
+        Class<?> addressMultiPerson = ucl.loadClass("AddressMultiPerson");
+        Class<?> addressMultiPersonId = ucl.loadClass("AddressMultiPersonId");
+        Class<?> addressPerson = ucl.loadClass("AddressPerson");
+        Class<?> multiPersonIdClass = ucl.loadClass("MultiPersonId");
+        Class<?> middleClass = ucl.loadClass("MiddleTable");
+        Class<?> rightClass = ucl.loadClass("LeftTable");
+        Class<?> leftClass = ucl.loadClass("RightTable");
         try {
-        Thread.currentThread().setContextClassLoader(ucl);
-		
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
-		
-		MetadataSources mds = new MetadataSources(serviceRegistry);
-		mds.addAnnotatedClass(personClass)
-			.addAnnotatedClass(multiPersonClass)
-			.addAnnotatedClass(addressMultiPerson)
-			.addAnnotatedClass(addressMultiPersonId)
-			.addAnnotatedClass(addressPerson)
-			.addAnnotatedClass(multiPersonIdClass)
-			.addAnnotatedClass(middleClass)
-			.addAnnotatedClass(rightClass)
-			.addAnnotatedClass(leftClass);
-		Metadata metadata = mds.buildMetadata();
-		
-		new SchemaValidator(serviceRegistry, (MetadataImplementor) metadata).validate();
+	        Thread.currentThread().setContextClassLoader(ucl);
+			
+			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+			ServiceRegistry serviceRegistry = builder.build();
+			
+			MetadataSources mds = new MetadataSources(serviceRegistry);
+			mds.addAnnotatedClass(personClass)
+				.addAnnotatedClass(multiPersonClass)
+				.addAnnotatedClass(addressMultiPerson)
+				.addAnnotatedClass(addressMultiPersonId)
+				.addAnnotatedClass(addressPerson)
+				.addAnnotatedClass(multiPersonIdClass)
+				.addAnnotatedClass(middleClass)
+				.addAnnotatedClass(rightClass)
+				.addAnnotatedClass(leftClass);
+			Metadata metadata = mds.buildMetadata();
+			
+			new SchemaValidator(serviceRegistry, (MetadataImplementor) metadata).validate();
         } finally {
         	Thread.currentThread().setContextClassLoader(oldLoader);
         }
