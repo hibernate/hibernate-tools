@@ -18,6 +18,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
+import org.hibernate.tool.util.MetadataHelper;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -95,9 +96,13 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 				.getMetadata().getEntityBindings().iterator());
 
 		final PersistentClass role = cfg.getMetadata().getEntityBinding("Role");
+		assertNotNull(role);
 		PersistentClass userroles = cfg.getMetadata().getEntityBinding("Userroles");
+		assertNotNull(userroles);
 		PersistentClass user = cfg.getMetadata().getEntityBinding("User");
+		assertNotNull(user);
 		PersistentClass plainRole = cfg.getMetadata().getEntityBinding("Plainrole");
+		assertNotNull(plainRole);
 		
 
 		Property property = role.getProperty("users");
@@ -126,8 +131,7 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 	
 	public void testGeneration() {
 		
-	
-		cfg.buildMappings();
+		MetadataHelper.getMetadata(cfg);
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter(cfg, getOutputDir());
 		hme.start();		
@@ -143,7 +147,7 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 		    .addFile( new File(getOutputDir(), "User.hbm.xml") )
 		    .addFile( new File(getOutputDir(), "Plainrole.hbm.xml"));
 		
-		configuration.buildMappings();
+		MetadataHelper.getMetadata(configuration);
 		
 		assertMultiSchema(configuration);
 	}
@@ -152,8 +156,8 @@ public class TernarySchemaTest extends JDBCMetaDataBinderTestCase {
 		
 		super.configure(configuration);
 		 DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
-			 public List getSchemaSelections() {
-				 List selections = new ArrayList();
+			 public List<SchemaSelection> getSchemaSelections() {
+				 List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
 				 selections.add(new SchemaSelection(null, "PUBLIC"));
 				 selections.add(new SchemaSelection(null, "otherschema"));
 				 selections.add(new SchemaSelection(null, "thirdschema"));
