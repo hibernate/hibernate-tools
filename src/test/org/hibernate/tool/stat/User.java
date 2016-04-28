@@ -10,7 +10,7 @@ import java.util.Set;
 public class User {
 	private String name;
 	private String password;
-	private Set session = new HashSet();
+	private Set<SessionAttribute> session = new HashSet<SessionAttribute>();
 	User() {}
 	public User(String n, String pw) {
 		name=n;
@@ -28,10 +28,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Set getSession() {
+	public Set<SessionAttribute> getSession() {
 		return session;
 	}
-	public void setSession(Set session) {
+	public void setSession(Set<SessionAttribute> session) {
 		this.session = session;
 	}
 }
