@@ -1,9 +1,11 @@
 package org.hibernate.tool.hbm2x;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -36,8 +38,8 @@ public class ProxiesTest extends NonReflectiveTestCase {
 	
 	public void testProxies() {
 		Cfg2JavaTool c2j = new Cfg2JavaTool();
-
-		PersistentClass classMapping = getCfg().getClassMapping( "proxies.ClassA" );
+		Metadata metadata = MetadataHelper.getMetadata(getCfg());
+		PersistentClass classMapping = metadata.getEntityBinding("proxies.ClassA");
 		Property property = classMapping.getProperty("myClassB");
 		
 		EntityPOJOClass pj = new EntityPOJOClass(classMapping, c2j);

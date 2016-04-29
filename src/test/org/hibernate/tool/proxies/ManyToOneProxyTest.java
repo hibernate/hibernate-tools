@@ -1,15 +1,14 @@
 package org.hibernate.tool.proxies;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.Settings;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.NonReflectiveTestCase;
 
@@ -23,33 +22,32 @@ public class ManyToOneProxyTest extends NonReflectiveTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		buildSessionFactory();
+		if (getSessions() == null) {
+			buildSessionFactory();
+		}
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		Statement statement = null;
 		Connection con = null;
-		Settings settings = null;
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 			.applySettings( getConfiguration().getProperties() )
 			.build();
-    	
-        try {
-        	settings = getConfiguration().buildSettings(serviceRegistry);
-        	con = serviceRegistry.getService(JdbcServices.class).getConnectionProvider().getConnection();
-        	statement = con.createStatement();
-        	statement.execute("drop table ClassA");
-        	statement.execute("drop table ClassC");
-        	statement.execute("drop table ClassB");
-        	con.commit();
-        } catch (SQLException e) {
-        	System.err.println(e);
-        } finally {
-        	if (statement!=null) statement.close();
-        	serviceRegistry.getService(JdbcServices.class).getConnectionProvider().closeConnection(con);
-        }
-        
+		ConnectionProvider connectionProvider = 
+				serviceRegistry.getService(ConnectionProvider.class);
+		try {
+			con = connectionProvider.getConnection();
+			statement = con.createStatement();
+			statement.execute("drop table ClassA");
+			statement.execute("drop table ClassC");
+			statement.execute("drop table ClassB");
+			con.commit();
+		} finally {
+			if (statement!=null) statement.close();
+			connectionProvider.closeConnection(con);
+		}
+		
 		super.tearDown();
 	}
 
@@ -119,6 +117,13 @@ public class ManyToOneProxyTest extends NonReflectiveTestCase {
 		}
 	}
 	
+	@Override
+	protected void customiseConfiguration(Configuration cfg) {
+		cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
+		
+		super.customiseConfiguration(cfg);
+	}
+
 	protected String getBaseForMappings() {
 		return "org/hibernate/tool/proxies/";
 	}
