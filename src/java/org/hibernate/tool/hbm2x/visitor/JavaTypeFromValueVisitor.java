@@ -63,7 +63,7 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 	private Object acceptToOne(ToOne value) {
 		if (preferProxies) {
 			String referencedEntityName = value.getReferencedEntityName();
-			PersistentClass referencedEntity = value.getMappings().getClass(referencedEntityName);
+			PersistentClass referencedEntity = value.getMetadata().getEntityBinding(referencedEntityName);
 			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
 				return referencedEntity.getProxyInterfaceName();
 			}
