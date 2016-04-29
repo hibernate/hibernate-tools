@@ -1,15 +1,13 @@
 package org.hibernate.tool.proxies;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Settings;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.NonReflectiveTestCase;
 
@@ -23,32 +21,39 @@ public class EqualProxyTest extends NonReflectiveTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		buildSessionFactory();
+		if (getSessions() == null) {
+			buildSessionFactory();
+		}
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		Statement statement = null;
 		Connection con = null;
-		Settings settings = null;
-		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(getConfiguration().getProperties()).build();
-
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+			.applySettings( getConfiguration().getProperties() )
+			.build();
+		ConnectionProvider connectionProvider = 
+				serviceRegistry.getService(ConnectionProvider.class);
 		try {
-			settings = getConfiguration().buildSettings(serviceRegistry);
-			con = serviceRegistry.getService(JdbcServices.class).getConnectionProvider().getConnection();
+			con = connectionProvider.getConnection();
 			statement = con.createStatement();
 			statement.execute("drop table EqualBean");
 			statement.execute("drop table EqualBean2");
 			con.commit();
-		} catch (SQLException e) {
-			System.err.println(e);
 		} finally {
-			if (statement != null)
-				statement.close();
-			serviceRegistry.getService(JdbcServices.class).getConnectionProvider().closeConnection(con);
+			if (statement!=null) statement.close();
+			connectionProvider.closeConnection(con);
 		}
-
+		
 		super.tearDown();
+	}
+	
+	@Override
+	protected void customiseConfiguration(Configuration cfg) {
+		cfg.setProperty(Environment.HBM2DDL_AUTO, "update");
+		
+		super.customiseConfiguration(cfg);
 	}
 
 	@Override
