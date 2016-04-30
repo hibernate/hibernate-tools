@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -73,7 +74,7 @@ public class SetElementTest extends NonReflectiveTestCase {
 
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + mappingFile));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	public void testKey() throws DocumentException {
@@ -85,7 +86,7 @@ public class SetElementTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/key");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one key element", 1, list.size());
 		Element node = (Element) list.get(0);
 		if (node.attribute( "column" ) != null){//implied attribute
@@ -105,7 +106,7 @@ public class SetElementTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one set element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "name" ).getText(),"searchResults");
