@@ -23,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * this test should be fixed to have a proper model. currently a mix of subclass/joinedsubclass is in play.
@@ -65,7 +66,7 @@ public class InheritanceTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Human.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Animal.hbm.xml"));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	// TODO Re-enable this test: HBX-1247
@@ -94,7 +95,7 @@ public class InheritanceTest extends NonReflectiveTestCase {
 
 		Document document = xmlReader.read(outputXml);
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/discriminator");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one discriminator element", 1, list.size());
 			
 		Element node = (Element) list.get(0);
