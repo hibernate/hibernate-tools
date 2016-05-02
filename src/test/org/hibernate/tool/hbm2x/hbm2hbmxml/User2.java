@@ -5,7 +5,7 @@ import java.util.List;
 
 public class User2 {
 	private String name;
-	private List groups = new ArrayList();
+	private List<Group2> groups = new ArrayList<Group2>();
 	
 	User2() {}
 	
@@ -22,11 +22,11 @@ public class User2 {
 		this.name = name;
 	}
 
-	public List getGroups() {
+	public List<Group2> getGroups() {
 		return groups;
 	}
 	
-	void setGroups(List groups) {
+	void setGroups(List<Group2> groups) {
 		this.groups = groups;
 	}
 	
