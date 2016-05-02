@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 public class Search {
 	private String searchString;
-	private SortedSet searchResults = new TreeSet();
+	private SortedSet<String> searchResults = new TreeSet<String>();
 	
 	Search() {}
 	
@@ -14,10 +14,10 @@ public class Search {
 		searchString = string;
 	}
 	
-	public SortedSet getSearchResults() {
+	public SortedSet<String> getSearchResults() {
 		return searchResults;
 	}
-	public void setSearchResults(SortedSet searchResults) {
+	public void setSearchResults(SortedSet<String> searchResults) {
 		this.searchResults = searchResults;
 	}
 	public String getSearchString() {
