@@ -12,7 +12,7 @@ public class PropertySet {
 	private Long id;
 	private String name;
 	private PropertyValue someSpecificProperty;
-	private Map generalProperties = new HashMap();
+	private Map<Object, Object> generalProperties = new HashMap<Object, Object>();
 
 	public PropertySet() {
 	}
@@ -45,11 +45,11 @@ public class PropertySet {
 		this.someSpecificProperty = someSpecificProperty;
 	}
 
-	public Map getGeneralProperties() {
+	public Map<Object, Object> getGeneralProperties() {
 		return generalProperties;
 	}
 
-	public void setGeneralProperties(Map generalProperties) {
+	public void setGeneralProperties(Map<Object, Object> generalProperties) {
 		this.generalProperties = generalProperties;
 	}
 }
