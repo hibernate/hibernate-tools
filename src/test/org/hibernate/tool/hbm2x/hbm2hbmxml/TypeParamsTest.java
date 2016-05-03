@@ -36,6 +36,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -75,7 +76,7 @@ public class TypeParamsTest extends NonReflectiveTestCase {
 	public void testReadable() {
         Configuration cfg = new Configuration();
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Order.hbm.xml"));
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	public void testTypeParamsElements() throws DocumentException {
@@ -87,7 +88,7 @@ public class TypeParamsTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one property element", 2, list.size());
 		Element statusElement = (Element) list.get(0);
 		Element nameElement = (Element) list.get(1);
@@ -104,13 +105,13 @@ public class TypeParamsTest extends NonReflectiveTestCase {
 		list =  ((Element) list.get(0)).elements("param");		
 		assertEquals("Expected to get 5 params elements", list.size(), 5);
 		
-		Map params = new HashMap();
+		Map<String, String> params = new HashMap<String, String>();
 		for (int i = 0; i < list.size(); i++) {
 			Element param = (Element) list.get(i);
 			params.put(param.attribute( "name" ).getText(), param.getText());
 		}
 		
-		Set set = params.entrySet();
+		Set<Entry<String, String>> set = params.entrySet();
 		assertEquals("Expected to get 5 different params elements", set.size(), 5);
 		
 		assertTrue("Can't find 'catalog' param", 
@@ -142,7 +143,7 @@ public class TypeParamsTest extends NonReflectiveTestCase {
 
 }
 
-class TestEntry implements Entry{
+class TestEntry implements Entry<Object, Object>{
 	
 	private Object key;
 	
@@ -182,7 +183,7 @@ class TestEntry implements Entry{
 			return false;
 		}
 		
-		Entry other = (Entry) obj;		
+		Entry<?,?> other = (Entry<?,?>)obj;		
 		if (key == null) {
 			if (other.getKey() != null)
 				return false;
