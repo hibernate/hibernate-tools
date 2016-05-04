@@ -92,7 +92,7 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/any");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one any element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "name" ).getText(),"someSpecificProperty");
@@ -140,7 +140,7 @@ public class MapAndAnyTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/map");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one any element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "name" ).getText(),"generalProperties");
