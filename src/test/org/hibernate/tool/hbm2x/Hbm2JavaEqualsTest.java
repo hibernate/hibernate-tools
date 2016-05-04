@@ -17,9 +17,9 @@ import org.hibernate.tool.test.TestHelper;
 public class Hbm2JavaEqualsTest extends NonReflectiveTestCase {
 	
 	private static final String TEST_ENTITY_HBM_XML = 
-			"<hibernate-mapping package='org.hibernate.tool.hbm2x'>    "+
-	        "  <class name='UnProxiedTestEntity'>                      "+
-		    "    <id name='id' type='int'>                             "+
+            "<hibernate-mapping package='org.hibernate.tool.hbm2x'>    "+
+            "  <class name='UnProxiedTestEntity'>                      "+
+            "    <id name='id' type='int'>                             "+
 		    "      <meta attribute='use-in-equals'>true</meta>         "+
 		    "    </id>                                                 "+
 	        "  </class>                                                "+
@@ -48,14 +48,13 @@ public class Hbm2JavaEqualsTest extends NonReflectiveTestCase {
 		// export class ProxiedTestEntity.java and UnProxiedTestEntity
 		MetadataSources mds = new MetadataSources();
 		mds.addInputStream(new ByteArrayInputStream(TEST_ENTITY_HBM_XML.getBytes()));
-		setCfg(new Configuration(mds));
 		new POJOExporter(new Configuration(mds), getOutputDir()).start();
 		// copy interface EntityProxy.java
 		File file = new File(getOutputDir(), "org/hibernate/tool/hbm2x/TestEntityProxy.java");
 		FileWriter writer = new FileWriter(file);
 		writer.write(TEST_ENTITY_PROXY_JAVA);
 		writer.close();
-		// compile both files
+		// compile the source files
 		TestHelper.compile(getOutputDir(), getOutputDir());
 	}	
 	
