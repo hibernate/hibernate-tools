@@ -1,8 +1,10 @@
-<#if pojo.needsEqualsHashCode() && !clazz.superclass?exists>   public boolean equals(Object other) {
+<#if pojo.needsEqualsHashCode() && !clazz.superclass?exists>
+<#assign classNameToCastTo><#if clazz.getProxyInterfaceName?exists>${clazz.getProxyInterfaceName()}<#else>${pojo.getDeclarationName()}</#if></#assign>
+   public boolean equals(Object other) {
          if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof ${pojo.getDeclarationName()}) ) return false;
-		 ${pojo.getDeclarationName()} castOther = ( ${pojo.getDeclarationName()} ) other; 
+		 if ( !(other instanceof ${classNameToCastTo}) ) return false;
+		 ${classNameToCastTo} castOther = ( ${classNameToCastTo} ) other; 
          
 		 return ${pojo.generateEquals("this", "castOther", jdk5)};
    }
