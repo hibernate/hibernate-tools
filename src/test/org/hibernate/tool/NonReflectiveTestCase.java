@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;
@@ -47,10 +48,15 @@ public abstract class NonReflectiveTestCase extends BaseTestCase {
 		MetadataSources mds = new MetadataSources();
 		addMappings(files, mds);
 		cfg = new Configuration(mds);
+		customiseConfiguration(cfg);
 		md = mds.buildMetadata();		
 		setDialect( Dialect.getDialect() );
 	}
 	
+	protected void customiseConfiguration(Configuration cfg2) {
+		
+	}
+
 	public String getCacheConcurrencyStrategy() {
 		return "nonstrict-read-write";
 	}
