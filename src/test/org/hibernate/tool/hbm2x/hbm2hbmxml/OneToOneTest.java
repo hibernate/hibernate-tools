@@ -23,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 
 
@@ -60,8 +61,7 @@ public class OneToOneTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Person.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Address.hbm.xml"));
         
-        cfg.buildMappings();
-                
+        MetadataHelper.getMetadata(cfg);
         
     }
 	
@@ -69,7 +69,7 @@ public class OneToOneTest extends NonReflectiveTestCase {
 		Document document = getXMLDocument(getBaseForMappings() + "Person.hbm.xml");		
 	
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/one-to-one");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one-to-one element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "name" ).getText(),"address");
