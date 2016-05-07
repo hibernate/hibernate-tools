@@ -23,6 +23,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 public class ManyToManyTest extends NonReflectiveTestCase {
 
@@ -58,7 +59,7 @@ public class ManyToManyTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "User.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Group.hbm.xml"));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
 
     }
 
@@ -71,7 +72,7 @@ public class ManyToManyTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/many-to-many");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one many-to-many element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "entity-name" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.Group");
@@ -93,7 +94,7 @@ public class ManyToManyTest extends NonReflectiveTestCase {
 				Document document = xmlReader.read(outputXml);
 
 				XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-		 		List list = xpath.selectNodes(document);
+		 		List<?> list = xpath.selectNodes(document);
 				assertEquals("Expected to get one class element", 1, list.size());
 		 		Element node = (Element) list.get(0);
 
@@ -124,7 +125,7 @@ public class ManyToManyTest extends NonReflectiveTestCase {
 					try {
 						document = xmlReader.read(outputXml);
 						XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-						List list = xpath.selectNodes(document);
+						List<?> list = xpath.selectNodes(document);
 						assertEquals("Expected to get one set element", 1, list.size());
 						Element node = (Element) list.get(0);
 						assertEquals(node.attribute( "table" ).getText(),"UserGroup");
