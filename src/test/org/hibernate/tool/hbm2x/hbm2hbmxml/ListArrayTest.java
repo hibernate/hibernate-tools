@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -75,7 +76,7 @@ public class ListArrayTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Fee.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Glarch.hbm.xml"));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	public void testListNode() throws DocumentException {
