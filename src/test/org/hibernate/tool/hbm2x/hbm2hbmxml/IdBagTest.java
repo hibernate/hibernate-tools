@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -71,7 +72,7 @@ public class IdBagTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "User2.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Group2.hbm.xml"));
         
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
         
     }
 	
@@ -85,7 +86,7 @@ public class IdBagTest extends NonReflectiveTestCase {
 		try {
 			document = xmlReader.read(outputXml);
 			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/idbag");
-			List list = xpath.selectNodes(document);
+			List<?> list = xpath.selectNodes(document);
 			assertEquals("Expected to get one idbag element", 1, list.size());
 			Element node = (Element) list.get(0);
 			assertEquals(node.attribute( "table" ).getText(),"`UserGroups`");
@@ -104,7 +105,7 @@ public class IdBagTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);	
 		
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/idbag/collection-id");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one collection-id element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "column" ).getText(),"userGroupId");
