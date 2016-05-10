@@ -135,7 +135,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);		
 	
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/meta");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one meta element", 2, list.size());
 		Node node = (Node) list.get(0);
 		assertEquals(node.getText(),"Basic");
@@ -169,7 +169,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);		
 	
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one set element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals("delete, update", node.attributeValue("cascade"));
@@ -208,7 +208,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 	
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/comment");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get no comment element", list.size(), 0);
 		
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property/column/comment");
@@ -294,7 +294,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and it has no arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertTrue("Expected to get one generator element", list.size() == 1);
 		Attribute genAtt = ( (Element)list.get(0) ).attribute("class");
 		assertEquals("Unexpected generator class name", "assigned", genAtt.getStringValue() );
@@ -317,7 +317,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertTrue("Expected to get one generator element", list.size() == 1);
 		Attribute genAtt = ( (Element)list.get(0) ).attribute("class");
 		assertEquals("Unexpected generator class name", "org.hibernate.id.TableHiLoGenerator", genAtt.getStringValue() );
@@ -358,7 +358,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/query");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get correct number of query elements", 2, list.size() );
 		
 		Attribute genAtt = ( (Element)list.get(0) ).attribute("name");
@@ -392,7 +392,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get correct number of query elements", 6, list.size() );
 
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_1\"]");
@@ -416,7 +416,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_2\"]");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		
 		Element node = (Element)list.get(0);
 		assertNotNull("Expected sql-query named 'test_sqlquery_2' not to be null", node);
@@ -450,7 +450,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_3\"]");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		
 		Element node = (Element)list.get(0);
 		assertNotNull("Expected sql-query named 'test_sqlquery_3' not to be null", node);
@@ -479,7 +479,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_4\"]");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		
 		Element node = (Element)list.get(0);
 		assertNotNull("Expected sql-query named 'test_sqlquery_4' not to be null", node);
@@ -507,7 +507,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_5\"]");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		
 		Element node = (Element)list.get(0);
 		assertNotNull("Expected sql-query named 'test_sqlquery_5' not to be null", node);
@@ -535,7 +535,7 @@ public class Hbm2HbmXmlTest extends NonReflectiveTestCase {
 		
 		// Validate the Generator and that it does have arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_6\"]");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		
 		Element node = (Element)list.get(0);
 		assertNotNull("Expected sql-query named 'test_sqlquery_6' not to be null", node);
