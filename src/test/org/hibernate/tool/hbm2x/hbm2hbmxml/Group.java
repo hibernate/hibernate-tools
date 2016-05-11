@@ -1,17 +1,21 @@
 //$Id: Group.java 7085 2005-06-08 17:59:47Z oneovthafew $
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Group implements Serializable {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(Group.class).getSerialVersionUID();
+	
 	private String org;
 	private String name;
 	private String description;
 
-	private Set users = new HashSet();
+	private Set<User> users = new HashSet<User>();
 	
 	public Group(String name, String org) {
 		this.org = org;
@@ -37,11 +41,11 @@ public class Group implements Serializable {
 		this.org = org;
 	}
 
-	public Set getUsers() {
+	public Set<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Set users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
