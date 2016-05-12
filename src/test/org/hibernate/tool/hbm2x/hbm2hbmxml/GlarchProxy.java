@@ -2,7 +2,6 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface GlarchProxy {
 	
@@ -19,17 +18,17 @@ public interface GlarchProxy {
 	public short getOrder();
 	public void setOrder(short order);
 	
-	public List getStrings();
-	public void setStrings(List strings);
+	public List<Object> getStrings();
+	public void setStrings(List<Object> strings);
 	
-	public Map getDynaBean();
-	public void setDynaBean(Map bean);
+	public Map<Object, Object> getDynaBean();
+	public void setDynaBean(Map<Object, Object> bean);
 	
-	public Map getStringSets();
-	public void setStringSets(Map stringSets);
+	public Map<Object, Object> getStringSets();
+	public void setStringSets(Map<Object, Object> stringSets);
 	
-	public List getFooComponents();
-	public void setFooComponents(List fooComponents);
+	public List<Object> getFooComponents();
+	public void setFooComponents(List<Object> fooComponents);
 	
 	public GlarchProxy[] getProxyArray();
 	public void setProxyArray(GlarchProxy[] proxyArray);

@@ -1,11 +1,11 @@
 //$Id$
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.CallbackException;
 import org.hibernate.Session;
@@ -13,14 +13,17 @@ import org.hibernate.classic.Lifecycle;
 
 public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(Glarch.class).getSerialVersionUID();
+	
 	private int version;
 	private GlarchProxy next;
 	private short order;
-	private List strings;
-	private Map stringSets;
-	private List fooComponents;
+	private List<Object> strings;
+	private Map<Object,Object> stringSets;
+	private List<Object> fooComponents;
 	private GlarchProxy[] proxyArray;
-	private transient Map dynaBean;
+	private transient Map<Object, Object> dynaBean;
 	private String immutable;
 	private int derivedVersion;
 	private Object any;
@@ -56,27 +59,27 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 		this.order = order;
 	}
 
-	public List getStrings() {
+	public List<Object> getStrings() {
 		return strings;
 	}
 
-	public void setStrings(List strings) {
+	public void setStrings(List<Object> strings) {
 		this.strings = strings;
 	}
 
-	public Map getStringSets() {
+	public Map<Object, Object> getStringSets() {
 		return stringSets;
 	}
 
-	public void setStringSets(Map stringSets) {
+	public void setStringSets(Map<Object, Object> stringSets) {
 		this.stringSets = stringSets;
 	}
 
-	public List getFooComponents() {
+	public List<Object> getFooComponents() {
 		return fooComponents;
 	}
 
-	public void setFooComponents(List fooComponents) {
+	public void setFooComponents(List<Object> fooComponents) {
 		this.fooComponents = fooComponents;
 	}
 
@@ -96,7 +99,7 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 	}
 
 	public boolean onSave(Session s) throws CallbackException {
-		dynaBean = new HashMap();
+		dynaBean = new HashMap<Object, Object>();
 		dynaBean.put("foo", "foo");
 		dynaBean.put("bar", new Integer(66));
 		immutable="never changes!";
@@ -119,7 +122,7 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 	 * Returns the dynaBean.
 	 * @return DynaBean
 	 */
-	public Map getDynaBean() {
+	public Map<Object, Object> getDynaBean() {
 		return dynaBean;
 	}
 
@@ -127,7 +130,7 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 	 * Sets the dynaBean.
 	 * @param dynaBean The dynaBean to set
 	 */
-	public void setDynaBean(Map dynaBean) {
+	public void setDynaBean(Map<Object, Object> dynaBean) {
 		this.dynaBean = dynaBean;
 	}
 
