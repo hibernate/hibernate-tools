@@ -1,10 +1,14 @@
 //$Id$
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
-import java.util.Set;
 
 public class Fee implements Serializable {
+
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(Fee.class).getSerialVersionUID();
+		
 	public Fee anotherFee;
 	public String fi;
 	public String key;
