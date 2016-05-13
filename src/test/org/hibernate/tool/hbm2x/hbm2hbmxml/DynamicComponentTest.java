@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -75,7 +76,7 @@ public class DynamicComponentTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Fee.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Glarch.hbm.xml"));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	public void testClassProxy() throws DocumentException {
@@ -87,7 +88,7 @@ public class DynamicComponentTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one class element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "proxy" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.GlarchProxy");
@@ -102,7 +103,7 @@ public class DynamicComponentTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(outputXml);
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/dynamic-component");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one dynamic-component element", 1, list.size());
 		Element node = (Element) list.get(0);
 		assertEquals(node.attribute( "name" ).getText(),"dynaBean");
