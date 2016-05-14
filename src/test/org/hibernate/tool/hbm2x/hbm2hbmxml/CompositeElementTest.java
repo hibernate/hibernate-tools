@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dmitry Geraskov
@@ -75,7 +76,7 @@ public class CompositeElementTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Fee.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Glarch.hbm.xml"));
 
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	public void testCompositeElementNode() throws DocumentException {
@@ -88,7 +89,7 @@ public class CompositeElementTest extends NonReflectiveTestCase {
 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/list");
 		Element node = (Element) xpath.selectNodes(document).get(1); //second list
-		List list = node.elements("composite-element");
+		List<?> list = node.elements("composite-element");
 		assertEquals("Expected to get one composite-element element", 1, list.size());
 		node = (Element) list.get(0);
 		assertEquals("Expected to get two property element", 2, node.elements("property").size());
