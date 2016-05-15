@@ -11,7 +11,7 @@ import java.util.Iterator;
  */
 public class ComplexPropertyValue implements PropertyValue {
 	private Long id;
-	private Map subProperties = new HashMap();
+	private Map<Object, Object> subProperties = new HashMap<Object, Object>();
 
 	public Long getId() {
 		return id;
@@ -21,11 +21,11 @@ public class ComplexPropertyValue implements PropertyValue {
 		this.id = id;
 	}
 
-	public Map getSubProperties() {
+	public Map<Object, Object> getSubProperties() {
 		return subProperties;
 	}
 
-	public void setSubProperties(Map subProperties) {
+	public void setSubProperties(Map<Object, Object> subProperties) {
 		this.subProperties = subProperties;
 	}
 
@@ -35,7 +35,7 @@ public class ComplexPropertyValue implements PropertyValue {
 
 	private String keyString() {
 		StringBuffer buff = new StringBuffer();
-		Iterator itr = subProperties.keySet().iterator();
+		Iterator<Object> itr = subProperties.keySet().iterator();
 		while ( itr.hasNext() ) {
 			buff.append( itr.next() );
 			if ( itr.hasNext() ) {
