@@ -1,10 +1,15 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
+
 /**
  * @author Paco Hern�ndez
  */
 public abstract class CarPart implements java.io.Serializable {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(CarPart.class).getSerialVersionUID();
+		
 	private long id;
 	private String partName;
 
