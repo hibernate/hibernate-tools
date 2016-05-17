@@ -10,7 +10,7 @@ import java.util.Set;
 public class Car implements java.io.Serializable {
 
 	private static final long serialVersionUID = 
-			ObjectStreamClass.lookup(CarPart.class).getSerialVersionUID();
+			ObjectStreamClass.lookup(Car.class).getSerialVersionUID();
 		
 	private long id;
 	private String model;

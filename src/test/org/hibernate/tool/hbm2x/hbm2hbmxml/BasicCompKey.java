@@ -4,6 +4,8 @@
  */
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
+
 /**
  * Testing class for cfg2hbm generating hbms.
  * 
@@ -11,6 +13,9 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml;
  */
 public class BasicCompKey implements java.io.Serializable {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(BasicCompKey.class).getSerialVersionUID();
+		
     // Fields
     private java.lang.String customerId;
     private java.lang.Integer orderNumber;
