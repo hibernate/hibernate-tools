@@ -1,5 +1,6 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,9 +9,12 @@ import java.util.Set;
  */
 public class Car implements java.io.Serializable {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(CarPart.class).getSerialVersionUID();
+		
 	private long id;
 	private String model;
-	private Set carParts = new HashSet();
+	private Set<CarPart> carParts = new HashSet<CarPart>();
 	
 	/**
 	 * @return Returns the id.
@@ -36,10 +40,10 @@ public class Car implements java.io.Serializable {
 	public void setModel(String model) {
 		this.model = model;
 	}
-	public Set getCarParts() {
+	public Set<CarPart> getCarParts() {
 		return carParts;
 	}
-	public void setCarParts(Set carParts) {
+	public void setCarParts(Set<CarPart> carParts) {
 		this.carParts = carParts;
 	}
 }
