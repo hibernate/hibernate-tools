@@ -17,11 +17,7 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -30,11 +26,13 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Backref;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author Dmitry Geraskov
@@ -81,7 +79,7 @@ public class AbstractTest extends NonReflectiveTestCase {
 		try {
 				document = xmlReader.read(outputXml);
 				XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-				List list = xpath.selectNodes(document);
+				List<?> list = xpath.selectNodes(document);
 				assertEquals("Expected to get one class element", 1, list.size());
 				Element node = (Element) list.get(0);
 				assertNotNull("Abstract attrinute was not exported.", node.attribute( "abstract" ));
@@ -97,7 +95,7 @@ public class AbstractTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "Car.hbm.xml"));
         cfg.addFile(new File(getOutputDir(), getBaseForMappings() + "CarPart.hbm.xml"));
         
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
     }
 
 	protected String getBaseForMappings() {
