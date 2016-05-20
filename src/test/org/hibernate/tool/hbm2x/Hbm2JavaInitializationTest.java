@@ -4,11 +4,7 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
 import org.hibernate.tool.NonReflectiveTestCase;
-import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 /**
  * @author max
