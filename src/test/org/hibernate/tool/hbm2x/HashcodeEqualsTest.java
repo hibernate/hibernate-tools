@@ -63,7 +63,7 @@ public class HashcodeEqualsTest extends NonReflectiveTestCase {
 		File file = new File( "compilable" );
 		file.mkdir();
 
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		TestHelper.compile( getOutputDir(), file, TestHelper.visitAllFiles(
 				getOutputDir(), list ) );
 
