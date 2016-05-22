@@ -46,7 +46,7 @@ public class Hbm2DaoTest extends NonReflectiveTestCase {
 		
 		generateComparator();
 		
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", "" );
 		
 		TestHelper.deleteDir(file);
