@@ -7,6 +7,7 @@ package org.hibernate.tool.hbm2x;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -16,15 +17,14 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.internal.util.xml.DTDEntityResolver;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.test.TestHelper;
+import org.hibernate.tool.xml.DTDEntityResolver;
 
 /**
  * @author max
@@ -110,7 +110,11 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 		
 		// Validate the Generator and it has no arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-configuration/session-factory/mapping");
-		Element[] elements = (Element[]) xpath.selectNodes(document).toArray(new Element[0]);
+		List<?> list = xpath.selectNodes(document);
+		Element[] elements = new Element[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			elements[i] = (Element)list.get(i);
+		}
 		assertEquals(2,elements.length);
 		
 		for (int i = 0; i < elements.length; i++) {
@@ -138,7 +142,11 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 		
 		// Validate the Generator and it has no arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-configuration/session-factory/mapping");
-		Element[] elements = (Element[]) xpath.selectNodes(document).toArray(new Element[0]);
+		List<?> list = xpath.selectNodes(document);
+		Element[] elements = new Element[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			elements[i] = (Element)list.get(i);
+		}
 		assertEquals(2, elements.length);
 		
 		for (int i = 0; i < elements.length; i++) {
