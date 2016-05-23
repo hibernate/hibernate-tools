@@ -70,8 +70,8 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		File file = new File("ejb3compilable");
 		file.mkdir();
 
-		ArrayList list = new ArrayList();
-		List jars = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
+		List<String> jars = new ArrayList<String>();
 		jars.add("hibernate-jpa-2.1-api-1.0.0.Final.jar");
 		jars.add("hibernate-core-5.0.0.CR2.jar");
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars));
@@ -167,20 +167,20 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		assertEquals("@javax.persistence.OneToMany", builder.getResult());
 
 		builder = AnnotationBuilder.createAnnotation("abc");
-		ArrayList list = new ArrayList();
+		ArrayList<Object> list = new ArrayList<Object>();
 		list.add(new Integer(42));
 		list.add( new String("xxx") );
 		builder.addQuotedAttributes( "it", list.iterator() );
 		
 		assertEquals("@abc(it={\"42\", \"xxx\"})", builder.getResult());		
 	
-		List columns = new ArrayList();
+		List<String> columns = new ArrayList<String>();
 		columns.add("first");
 		columns.add("second");
 		
 		AnnotationBuilder constraint = AnnotationBuilder.createAnnotation( "UniqueConstraint" );
-		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<Object>(columns.iterator()) {
-			public String transform(Object object) {					
+		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<String>(columns.iterator()) {
+			public String transform(String object) {					
 				return object.toString();
 			}
 		});
