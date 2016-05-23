@@ -42,7 +42,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		File file = new File( "compilable" );
 		file.mkdir();
 
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		list.add( new File( "src/testoutputdependent/ConstructorUsage.java" )
 				.getAbsolutePath() );		
 		TestHelper.compile( getOutputDir(), file, TestHelper.visitAllFiles(
@@ -68,14 +68,14 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		POJOClass company = c2j.getPOJOClass(getMetadata().getEntityBinding("Company"));
 		
-		List all = company.getPropertyClosureForFullConstructor();
+		List<?> all = company.getPropertyClosureForFullConstructor();
 		assertNoDuplicates(all);
 		assertEquals(3, all.size());
 		
-		List superCons = company.getPropertyClosureForSuperclassFullConstructor();
+		List<?> superCons = company.getPropertyClosureForSuperclassFullConstructor();
 		assertEquals("company is a base class, should not have superclass cons",0, superCons.size());
 		
-		List subCons = company.getPropertiesForFullConstructor();
+		List<?> subCons = company.getPropertiesForFullConstructor();
 		assertNoDuplicates(subCons);
 		assertEquals(3, subCons.size());
 		
@@ -83,26 +83,26 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		POJOClass bigCompany = c2j.getPOJOClass(getMetadata().getEntityBinding("BigCompany"));
 		
-		List bigsuperCons = bigCompany.getPropertyClosureForSuperclassFullConstructor();
+		List<?> bigsuperCons = bigCompany.getPropertyClosureForSuperclassFullConstructor();
 		assertNoDuplicates(bigsuperCons);
 		//assertEquals(3, bigsuperCons.size());
 		
-		List bigsubCons = bigCompany.getPropertiesForFullConstructor();
+		List<?> bigsubCons = bigCompany.getPropertiesForFullConstructor();
 		
 		assertEquals(1, bigsubCons.size());
 		
 		assertNoOverlap(bigsuperCons, bigsubCons);
 		
-		List bigall = bigCompany.getPropertyClosureForFullConstructor();
+		List<?> bigall = bigCompany.getPropertyClosureForFullConstructor();
 		assertNoDuplicates(bigall);
 		assertEquals(4, bigall.size());
 		
 		PersistentClass classMapping = getMetadata().getEntityBinding("Person");
 		POJOClass person = c2j.getPOJOClass(classMapping);
-		List propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
+		List<?> propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
 		assertEquals(2,propertiesForMinimalConstructor.size());
 		assertFalse(propertiesForMinimalConstructor.contains(classMapping.getIdentifierProperty()));
-		List propertiesForFullConstructor = person.getPropertiesForFullConstructor();
+		List<?> propertiesForFullConstructor = person.getPropertiesForFullConstructor();
 		assertEquals(2,propertiesForFullConstructor.size());
 		assertFalse(propertiesForFullConstructor.contains(classMapping.getIdentifierProperty()));
 		
@@ -117,25 +117,25 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 	public void testMinimal() {
 		POJOClass bp = new EntityPOJOClass(getMetadata().getEntityBinding("BrandProduct"), new Cfg2JavaTool());
 		
-		List propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
+		List<?> propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
 		
 		assertEquals(1,propertiesForMinimalConstructor.size());
 		
-		List propertiesForFullConstructor = bp.getPropertiesForFullConstructor();
+		List<?> propertiesForFullConstructor = bp.getPropertiesForFullConstructor();
 		
 		assertEquals(2, propertiesForFullConstructor.size());		
 	}
 	
-	private void assertNoDuplicates(List bigall) {
-		Set set = new HashSet();
+	private void assertNoDuplicates(List<?> bigall) {
+		Set<Object> set = new HashSet<Object>();
 		set.addAll(bigall);
 		
 		assertEquals("list had duplicates!",set.size(),bigall.size());
 		
 	}
 
-	private void assertNoOverlap(List first, List second) {
-		Set set = new HashSet();
+	private void assertNoOverlap(List<?> first, List<?> second) {
+		Set<Object> set = new HashSet<Object>();
 		set.addAll(first);
 		set.addAll(second);
 		
