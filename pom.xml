@@ -50,7 +50,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>6.0.0-SNAPSHOT</hibernateversion>
+		<hibernateversion>5.2.0-SNAPSHOT</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>5.0.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -86,12 +86,6 @@
 			<version>${hibernateCommonsAnnotationsVersion}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernateversion}</version>
-			<scope>compile</scope>
-		</dependency>		
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
@@ -813,5 +807,5 @@
 
 	</profiles>
 
-	<version>6.0.0-SNAPSHOT</version>
+	<version>5.2.0-SNAPSHOT</version>
 </project>

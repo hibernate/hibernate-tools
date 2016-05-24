@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 /*
  * Just used for testing classpath loading for ant tasks!
@@ -32,12 +32,12 @@ public class AnyKindOfUserType implements UserType {
 		return x.hashCode();
 	}
 
-	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner)
+	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
 		return new Integer(rs.getInt(names[0]) );
 	}
 
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session)
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
 			throws HibernateException, SQLException {
 		st.setInt(index, ( (Integer)value).intValue() );
 
@@ -63,7 +63,5 @@ public class AnyKindOfUserType implements UserType {
 	public boolean isMutable() {
 		return false;
 	}
-
-
 
 }
