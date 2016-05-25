@@ -1,5 +1,7 @@
 package org.hibernate.tool.ide.completion;
 
+import java.io.ObjectStreamClass;
+
 /**
  * Exception that can be thrown when the lexer encounters errors (such as syntax errors etc.)
  * 
@@ -8,6 +10,9 @@ package org.hibernate.tool.ide.completion;
  */
 public class SimpleLexerException extends RuntimeException {
 
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(SimpleLexerException.class).getSerialVersionUID();
+	
 	public SimpleLexerException() {
 		super();
 	}
