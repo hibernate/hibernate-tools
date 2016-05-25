@@ -9,7 +9,7 @@ import java.util.Set;
 public class Group implements Serializable {
 
 	private static final long serialVersionUID = 
-			ObjectStreamClass.lookup(User.class).getSerialVersionUID();
+			ObjectStreamClass.lookup(Group.class).getSerialVersionUID();
 	
 	private String org;
 	private String name;
