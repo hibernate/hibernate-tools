@@ -69,7 +69,7 @@ public interface POJOClass extends ImportContext {
 	public String generateAnnIdGenerator();
 	public String generateAnnTableUniqueConstraint();
 	public String generateBasicAnnotation(Property property);
-	public Iterator getAllPropertiesIterator();
+	public Iterator<Property> getAllPropertiesIterator();
 
 	public String getPackageName();
 	public String getShortName();

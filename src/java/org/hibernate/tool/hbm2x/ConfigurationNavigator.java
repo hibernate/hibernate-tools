@@ -79,18 +79,18 @@ public class ConfigurationNavigator {
 	 * @param clazz
 	 */
 	public static void collectComponents(Map<String, Component> components, PersistentClass clazz) {
-		Iterator<?> iter = new Cfg2JavaTool().getPOJOClass(clazz).getAllPropertiesIterator();
+		Iterator<Property> iter = new Cfg2JavaTool().getPOJOClass(clazz).getAllPropertiesIterator();
 		collectComponents( components, iter );		
 	}
 
 	public static void collectComponents(Map<String, Component> components, POJOClass clazz) {
-		Iterator<?> iter = clazz.getAllPropertiesIterator();
+		Iterator<Property> iter = clazz.getAllPropertiesIterator();
 		collectComponents( components, iter );		
 	}
 	
-	private static void collectComponents(Map<String, Component> components, Iterator<?> iter) {
+	private static void collectComponents(Map<String, Component> components, Iterator<Property> iter) {
 		while(iter.hasNext()) {
-			Property property = (Property) iter.next();
+			Property property = iter.next();
 			if (!"embedded".equals(property.getPropertyAccessorName()) && // HBX-267, embedded property for <properties> should not be generated as component. 
 				property.getValue() instanceof Component) {
 				Component comp = (Component) property.getValue();
