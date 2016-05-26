@@ -536,8 +536,8 @@ public final class DocHelper {
 
 	private List<Property> getAllProperties(POJOClass pojoClass) {
 		List<Property> properties = new ArrayList<Property>();
-		for (Iterator<?> iterator = pojoClass.getAllPropertiesIterator(); iterator.hasNext();)
-			properties.add((Property)iterator.next());
+		for (Iterator<Property> iterator = pojoClass.getAllPropertiesIterator(); iterator.hasNext();)
+			properties.add(iterator.next());
 		return properties;
 	}
 	

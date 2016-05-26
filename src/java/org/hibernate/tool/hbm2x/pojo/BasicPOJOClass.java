@@ -290,7 +290,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public boolean needsEqualsHashCode() {
-		Iterator<?> iter = getAllPropertiesIterator();
+		Iterator<Property> iter = getAllPropertiesIterator();
 		return needsEqualsHashCode( iter );
 	}
 

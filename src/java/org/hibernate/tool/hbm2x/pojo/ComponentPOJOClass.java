@@ -71,7 +71,8 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		}
 	}
 	
-	public Iterator getAllPropertiesIterator() {
+	@SuppressWarnings("unchecked")
+	public Iterator<Property> getAllPropertiesIterator() {
 		return clazz.getPropertyIterator();
 	}
 
@@ -110,7 +111,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	public List getPropertiesForFullConstructor() {
 		List res = new ArrayList();
 		
-		Iterator iter = getAllPropertiesIterator();
+		Iterator<Property> iter = getAllPropertiesIterator();
 		while(iter.hasNext()) {
 			res.add(iter.next());
 		}
@@ -127,7 +128,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	
 	public List getPropertiesForMinimalConstructor() {
 		List res = new ArrayList();
-		Iterator iter = getAllPropertiesIterator();
+		Iterator<Property> iter = getAllPropertiesIterator();
 		while(iter.hasNext()) {
 			Property prop = (Property)iter.next();
 			if(isRequiredInConstructor(prop)) {
