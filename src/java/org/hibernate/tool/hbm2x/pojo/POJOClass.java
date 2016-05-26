@@ -75,7 +75,7 @@ public interface POJOClass extends ImportContext {
 	public String getShortName();
 
 	public Iterator<Property> getToStringPropertiesIterator();
-	public Iterator getEqualsHashCodePropertiesIterator();
+	public Iterator<Property> getEqualsHashCodePropertiesIterator();
 	
 	public boolean needsToString();
 	
