@@ -428,12 +428,12 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		POJOClass pjc = c2j.getPOJOClass((Component) pc.getProperty("addressComponent").getValue());
 		 
 		assertTrue( pjc.needsEqualsHashCode() );
-		Iterator<?> iter = pjc.getEqualsHashCodePropertiesIterator();
+		Iterator<Property> iter = pjc.getEqualsHashCodePropertiesIterator();
 
 		// in HelloWorld.hbm.xml there're 2 Properties for toString
-		assertEquals( "streetAddress1", ((Property) iter.next() ).getName() );
-		assertEquals( "city", ((Property) iter.next() ).getName() );
-		assertEquals( "verified", ((Property) iter.next() ).getName() );
+		assertEquals( "streetAddress1",  iter.next().getName() );
+		assertEquals( "city", iter.next().getName() );
+		assertEquals( "verified", iter.next().getName() );
 		assertFalse( iter.hasNext() );
 
 	}
