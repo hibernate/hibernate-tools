@@ -335,11 +335,11 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		PersistentClass pc = getMetadata().getEntityBinding( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
 		assertTrue( pjc.needsToString() );
-		Iterator<?> iter = pjc.getToStringPropertiesIterator();
+		Iterator<Property> iter = pjc.getToStringPropertiesIterator();
 
 		// in HelloWorld.hbm.xml there're 2 Properties for toString
-		assertEquals( "id", ((Property) iter.next() ).getName() );
-		assertEquals( "hello", ((Property) iter.next() ).getName() );
+		assertEquals( "id", (iter.next() ).getName() );
+		assertEquals( "hello", (iter.next() ).getName() );
 		assertFalse( iter.hasNext() );
 
 		pc = getMetadata().getEntityBinding( "org.hibernate.tool.hbm2x.Order" );
@@ -354,7 +354,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		iter = cc.getToStringPropertiesIterator();
 		
 		// in Customer.hbm.xml there's 1 Property for toString
-		assertEquals( "city", ((Property) iter.next() ).getName() );
+		assertEquals( "city", (iter.next() ).getName() );
 		assertFalse( iter.hasNext() );
 	}
 	
