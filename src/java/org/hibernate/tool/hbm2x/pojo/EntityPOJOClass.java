@@ -245,11 +245,11 @@ public class EntityPOJOClass extends BasicPOJOClass {
 					else if ( "sequence".equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
 							.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "SEQUENCE" ) )
-						    .addQuotedAttribute( "generator", "generator" );
+						    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
 
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
-							.addQuotedAttribute( "name", "generator" ) // TODO: shouldn't this be unique, e.g. entityName + sequenceName (or just sequencename) ?
+							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
 							.addQuotedAttribute( "sequenceName", properties.getProperty( org.hibernate.id.SequenceGenerator.SEQUENCE, null ) );
 							//	TODO HA does not support initialValue and allocationSize
 						wholeString.append( builder.getResult() );
