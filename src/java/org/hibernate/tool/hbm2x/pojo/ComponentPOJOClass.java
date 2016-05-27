@@ -122,7 +122,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return getPropertiesForFullConstructor();
 	}
 	
-	public List getPropertyClosureForSuperclassFullConstructor() {
+	public List<Property> getPropertyClosureForSuperclassFullConstructor() {
 		return CollectionHelper.EMPTY_LIST;
 	}
 	
