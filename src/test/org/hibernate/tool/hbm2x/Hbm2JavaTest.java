@@ -320,7 +320,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 
 		PersistentClass uni = getMetadata().getEntityBinding( "HelloUniverse" );
 		pjc = c2j.getPOJOClass(uni);
-		List<?> local = pjc.getPropertyClosureForFullConstructor();
+		List<Property> local = pjc.getPropertyClosureForFullConstructor();
 		assertEquals( 6, local.size() );
 
 		for(int i=0;i<wl.size();i++) {
