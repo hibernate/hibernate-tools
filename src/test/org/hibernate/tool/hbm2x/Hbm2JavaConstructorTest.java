@@ -100,7 +100,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		PersistentClass classMapping = getMetadata().getEntityBinding("Person");
 		POJOClass person = c2j.getPOJOClass(classMapping);
-		List<?> propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
+		List<Property> propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
 		assertEquals(2,propertiesForMinimalConstructor.size());
 		assertFalse(propertiesForMinimalConstructor.contains(classMapping.getIdentifierProperty()));
 		List<Property> propertiesForFullConstructor = person.getPropertiesForFullConstructor();
@@ -118,7 +118,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 	public void testMinimal() {
 		POJOClass bp = new EntityPOJOClass(getMetadata().getEntityBinding("BrandProduct"), new Cfg2JavaTool());
 		
-		List<?> propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
+		List<Property> propertiesForMinimalConstructor = bp.getPropertiesForMinimalConstructor();
 		
 		assertEquals(1,propertiesForMinimalConstructor.size());
 		
