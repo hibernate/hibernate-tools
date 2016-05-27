@@ -138,7 +138,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return res;
 	}
 
-	public List getPropertyClosureForMinimalConstructor() {
+	public List<Property> getPropertyClosureForMinimalConstructor() {
 		return getPropertiesForMinimalConstructor();
 	}
 

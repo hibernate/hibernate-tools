@@ -843,7 +843,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	public boolean needsMinimalConstructor() {
-		List<?> propClosure = getPropertyClosureForMinimalConstructor();
+		List<Property> propClosure = getPropertyClosureForMinimalConstructor();
 		if(propClosure.isEmpty()) return false; // minimal=default
 		if(propClosure.equals(getPropertyClosureForFullConstructor())) return false; // minimal=full
 		return true;
