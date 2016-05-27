@@ -126,8 +126,8 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return CollectionHelper.EMPTY_LIST;
 	}
 	
-	public List getPropertiesForMinimalConstructor() {
-		List res = new ArrayList();
+	public List<Property> getPropertiesForMinimalConstructor() {
+		List<Property> res = new ArrayList<Property>();
 		Iterator<Property> iter = getAllPropertiesIterator();
 		while(iter.hasNext()) {
 			Property prop = (Property)iter.next();
