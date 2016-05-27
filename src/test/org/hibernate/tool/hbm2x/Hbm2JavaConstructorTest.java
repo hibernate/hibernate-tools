@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
@@ -75,7 +76,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		List<?> superCons = company.getPropertyClosureForSuperclassFullConstructor();
 		assertEquals("company is a base class, should not have superclass cons",0, superCons.size());
 		
-		List<?> subCons = company.getPropertiesForFullConstructor();
+		List<Property> subCons = company.getPropertiesForFullConstructor();
 		assertNoDuplicates(subCons);
 		assertEquals(3, subCons.size());
 		
@@ -87,7 +88,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		assertNoDuplicates(bigsuperCons);
 		//assertEquals(3, bigsuperCons.size());
 		
-		List<?> bigsubCons = bigCompany.getPropertiesForFullConstructor();
+		List<Property> bigsubCons = bigCompany.getPropertiesForFullConstructor();
 		
 		assertEquals(1, bigsubCons.size());
 		
@@ -102,7 +103,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		List<?> propertiesForMinimalConstructor = person.getPropertiesForMinimalConstructor();
 		assertEquals(2,propertiesForMinimalConstructor.size());
 		assertFalse(propertiesForMinimalConstructor.contains(classMapping.getIdentifierProperty()));
-		List<?> propertiesForFullConstructor = person.getPropertiesForFullConstructor();
+		List<Property> propertiesForFullConstructor = person.getPropertiesForFullConstructor();
 		assertEquals(2,propertiesForFullConstructor.size());
 		assertFalse(propertiesForFullConstructor.contains(classMapping.getIdentifierProperty()));
 		
@@ -121,7 +122,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		assertEquals(1,propertiesForMinimalConstructor.size());
 		
-		List<?> propertiesForFullConstructor = bp.getPropertiesForFullConstructor();
+		List<Property> propertiesForFullConstructor = bp.getPropertiesForFullConstructor();
 		
 		assertEquals(2, propertiesForFullConstructor.size());		
 	}

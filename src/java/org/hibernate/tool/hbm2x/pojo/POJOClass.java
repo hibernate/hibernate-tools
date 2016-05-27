@@ -88,7 +88,7 @@ public interface POJOClass extends ImportContext {
 	
 	public boolean isSubclass();
 
-	public List getPropertiesForFullConstructor();
+	public List<Property> getPropertiesForFullConstructor();
 	public List getPropertyClosureForFullConstructor();
 	public List getPropertyClosureForSuperclassFullConstructor();
 	
