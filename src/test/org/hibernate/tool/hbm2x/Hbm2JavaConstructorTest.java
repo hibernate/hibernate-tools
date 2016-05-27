@@ -73,7 +73,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		assertNoDuplicates(all);
 		assertEquals(3, all.size());
 		
-		List<?> superCons = company.getPropertyClosureForSuperclassFullConstructor();
+		List<Property> superCons = company.getPropertyClosureForSuperclassFullConstructor();
 		assertEquals("company is a base class, should not have superclass cons",0, superCons.size());
 		
 		List<Property> subCons = company.getPropertiesForFullConstructor();
@@ -84,7 +84,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		POJOClass bigCompany = c2j.getPOJOClass(getMetadata().getEntityBinding("BigCompany"));
 		
-		List<?> bigsuperCons = bigCompany.getPropertyClosureForSuperclassFullConstructor();
+		List<Property> bigsuperCons = bigCompany.getPropertyClosureForSuperclassFullConstructor();
 		assertNoDuplicates(bigsuperCons);
 		//assertEquals(3, bigsuperCons.size());
 		
