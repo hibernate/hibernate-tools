@@ -108,8 +108,8 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return false;
 	}
 	
-	public List getPropertiesForFullConstructor() {
-		List res = new ArrayList();
+	public List<Property> getPropertiesForFullConstructor() {
+		List<Property> res = new ArrayList<Property>();
 		
 		Iterator<Property> iter = getAllPropertiesIterator();
 		while(iter.hasNext()) {
