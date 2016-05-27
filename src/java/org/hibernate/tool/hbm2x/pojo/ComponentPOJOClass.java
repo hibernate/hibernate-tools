@@ -118,7 +118,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 		return res;
 	}
 	
-	public List getPropertyClosureForFullConstructor() {
+	public List<Property> getPropertyClosureForFullConstructor() {
 		return getPropertiesForFullConstructor();
 	}
 	

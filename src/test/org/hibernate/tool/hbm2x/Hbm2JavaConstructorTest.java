@@ -69,7 +69,7 @@ public class Hbm2JavaConstructorTest extends NonReflectiveTestCase {
 		
 		POJOClass company = c2j.getPOJOClass(getMetadata().getEntityBinding("Company"));
 		
-		List<?> all = company.getPropertyClosureForFullConstructor();
+		List<Property> all = company.getPropertyClosureForFullConstructor();
 		assertNoDuplicates(all);
 		assertEquals(3, all.size());
 		
