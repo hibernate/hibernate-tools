@@ -315,7 +315,7 @@ public class Hbm2JavaTest extends NonReflectiveTestCase {
 		PersistentClass pc = getMetadata().getEntityBinding( "HelloWorld" );
 		POJOClass pjc = c2j.getPOJOClass(pc);
 		
-		List<?> wl = pjc.getPropertiesForFullConstructor();
+		List<Property> wl = pjc.getPropertiesForFullConstructor();
 		assertEquals( 3, wl.size() );
 
 		PersistentClass uni = getMetadata().getEntityBinding( "HelloUniverse" );
