@@ -96,7 +96,7 @@ public interface POJOClass extends ImportContext {
 	public boolean needsFullConstructor();
 	public List<Property> getPropertiesForMinimalConstructor();
 	public List<Property> getPropertyClosureForMinimalConstructor();
-	public List getPropertyClosureForSuperclassMinimalConstructor();
+	public List<Property> getPropertyClosureForSuperclassMinimalConstructor();
 	
 	public POJOClass getSuperClass();
 	
