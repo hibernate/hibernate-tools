@@ -2,13 +2,13 @@ package org.hibernate.tool.hbm2x.pojo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
-import org.hibernate.internal.util.collections.CollectionHelper;
 
 public class ComponentPOJOClass extends BasicPOJOClass {
 
@@ -43,12 +43,14 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 	    
 	public String getImplements() {
-		List interfaces = new ArrayList();
+		List<String> interfaces = new ArrayList<String>();
 
 		//	implement proxy, but NOT if the proxy is the class it self!
 		if ( !isInterface() ) {
 			if ( clazz.getMetaAttribute( IMPLEMENTS ) != null ) {
-				interfaces.addAll( clazz.getMetaAttribute( IMPLEMENTS ).getValues() );
+				for (Object value : clazz.getMetaAttribute(IMPLEMENTS).getValues()) {
+					interfaces.add((String)value);
+				}
 			}
 			interfaces.add( Serializable.class.getName() ); // TODO: is this "nice" ? shouldn't it be a user choice ?
 		}
@@ -59,7 +61,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 		if ( interfaces.size() > 0 ) {
 			StringBuffer sbuf = new StringBuffer();
-			for ( Iterator iter = interfaces.iterator(); iter.hasNext() ; ) {
+			for ( Iterator<String> iter = interfaces.iterator(); iter.hasNext() ; ) {
 				//sbuf.append(JavaTool.shortenType(iter.next().toString(), pc.getImports() ) );
 				sbuf.append( iter.next() );
 				if ( iter.hasNext() ) sbuf.append( "," );
@@ -123,7 +125,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 	
 	public List<Property> getPropertyClosureForSuperclassFullConstructor() {
-		return CollectionHelper.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 	
 	public List<Property> getPropertiesForMinimalConstructor() {
@@ -143,7 +145,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 	}
 
 	public List<Property> getPropertyClosureForSuperclassMinimalConstructor() {
-		return CollectionHelper.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	/* 
