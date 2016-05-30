@@ -30,7 +30,7 @@ public class OverrideRepository  {
 
 	final private static Logger log = LoggerFactory.getLogger( OverrideRepository.class );
 
-	final private Map typeMappings; // from sqltypes to list of SQLTypeMapping
+	final private Map<TypeMappingKey, List<SQLTypeMapping>> typeMappings; // from sqltypes to list of SQLTypeMapping
 
 	final private List tableFilters;
 
@@ -78,7 +78,7 @@ public class OverrideRepository  {
 	public OverrideRepository() {
 		//this.defaultCatalog = null;
 		//this.defaultSchema = null;
-		typeMappings = new HashMap();
+		typeMappings = new HashMap<TypeMappingKey, List<SQLTypeMapping>>();
 		tableFilters = new ArrayList();
 		tables = new ArrayList();
 		foreignKeys = new HashMap();
@@ -165,10 +165,10 @@ public class OverrideRepository  {
 	}
 
 	private String getPreferredHibernateType(int sqlType, int length, int precision, int scale, boolean nullable) {
-		List l = (List) typeMappings.get(new TypeMappingKey(sqlType,length) );
+		List<SQLTypeMapping> l = typeMappings.get(new TypeMappingKey(sqlType,length) );
 
 		if(l == null) { // if no precise length match found, then try to find matching unknown length matches
-			l = (List) typeMappings.get(new TypeMappingKey(sqlType,SQLTypeMapping.UNKNOWN_LENGTH) );
+			l = typeMappings.get(new TypeMappingKey(sqlType,SQLTypeMapping.UNKNOWN_LENGTH) );
 		}
 		return scanForMatch( sqlType, length, precision, scale, nullable, l );
 	}
@@ -189,9 +189,9 @@ public class OverrideRepository  {
 
 	public OverrideRepository addTypeMapping(SQLTypeMapping sqltype) {
 		TypeMappingKey key = new TypeMappingKey(sqltype);
-		List list = (List) typeMappings.get(key);
+		List<SQLTypeMapping> list = typeMappings.get(key);
 		if(list==null) {
-			list = new ArrayList();
+			list = new ArrayList<SQLTypeMapping>();
 			typeMappings.put(key, list);
 		}
 		list.add(sqltype);
