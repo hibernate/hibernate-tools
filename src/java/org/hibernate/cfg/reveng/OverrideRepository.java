@@ -32,7 +32,7 @@ public class OverrideRepository  {
 
 	final private Map<TypeMappingKey, List<SQLTypeMapping>> typeMappings; // from sqltypes to list of SQLTypeMapping
 
-	final private List tableFilters;
+	final private List<TableFilter> tableFilters;
 
 	final private List tables;
 	final private Map foreignKeys; // key: TableIdentifier element: List of foreignkeys that references the Table
@@ -79,7 +79,7 @@ public class OverrideRepository  {
 		//this.defaultCatalog = null;
 		//this.defaultSchema = null;
 		typeMappings = new HashMap<TypeMappingKey, List<SQLTypeMapping>>();
-		tableFilters = new ArrayList();
+		tableFilters = new ArrayList<TableFilter>();
 		tables = new ArrayList();
 		foreignKeys = new HashMap();
 		typeForColumn = new HashMap();
@@ -232,9 +232,9 @@ public class OverrideRepository  {
 	}
 
 	protected String getPackageName(TableIdentifier identifier) {
-		Iterator iterator = tableFilters.iterator();
+		Iterator<TableFilter> iterator = tableFilters.iterator();
 		while(iterator.hasNext() ) {
-			TableFilter tf = (TableFilter) iterator.next();
+			TableFilter tf = iterator.next();
 			String value = tf.getPackage(identifier);
 			if(value!=null) {
 				return value;
@@ -244,11 +244,11 @@ public class OverrideRepository  {
 	}
 
 	protected boolean excludeTable(TableIdentifier identifier) {
-		Iterator iterator = tableFilters.iterator();
+		Iterator<TableFilter> iterator = tableFilters.iterator();
 		boolean hasInclude = false;
 
 		while(iterator.hasNext() ) {
-			TableFilter tf = (TableFilter) iterator.next();
+			TableFilter tf = iterator.next();
 			Boolean value = tf.exclude(identifier);
 			if(value!=null) {
 				return value.booleanValue();
@@ -526,9 +526,9 @@ public class OverrideRepository  {
 	}
 
 	private Map findGeneralAttributes(TableIdentifier identifier) {
-		Iterator iterator = tableFilters.iterator();
+		Iterator<TableFilter> iterator = tableFilters.iterator();
 		while(iterator.hasNext() ) {
-			TableFilter tf = (TableFilter) iterator.next();
+			TableFilter tf = iterator.next();
 			Map value = tf.getMetaAttributes(identifier);
 			if(value!=null) {
 				return value;
