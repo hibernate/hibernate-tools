@@ -34,7 +34,7 @@ public class OverrideRepository  {
 
 	final private List<TableFilter> tableFilters;
 
-	final private List tables;
+	final private List<Table> tables;
 	final private Map foreignKeys; // key: TableIdentifier element: List of foreignkeys that references the Table
 
 	final private Map typeForColumn;
@@ -80,7 +80,7 @@ public class OverrideRepository  {
 		//this.defaultSchema = null;
 		typeMappings = new HashMap<TypeMappingKey, List<SQLTypeMapping>>();
 		tableFilters = new ArrayList<TableFilter>();
-		tables = new ArrayList();
+		tables = new ArrayList<Table>();
 		foreignKeys = new HashMap();
 		typeForColumn = new HashMap();
 		propertyNameForColumn = new HashMap();
