@@ -35,7 +35,7 @@ public class OverrideRepository  {
 	final private List<TableFilter> tableFilters;
 
 	final private List<Table> tables;
-	final private Map foreignKeys; // key: TableIdentifier element: List of foreignkeys that references the Table
+	final private Map<TableIdentifier, List<ForeignKey>> foreignKeys; // key: TableIdentifier element: List of foreignkeys that references the Table
 
 	final private Map typeForColumn;
 
@@ -81,7 +81,7 @@ public class OverrideRepository  {
 		typeMappings = new HashMap<TypeMappingKey, List<SQLTypeMapping>>();
 		tableFilters = new ArrayList<TableFilter>();
 		tables = new ArrayList<Table>();
-		foreignKeys = new HashMap();
+		foreignKeys = new HashMap<TableIdentifier, List<ForeignKey>>();
 		typeForColumn = new HashMap();
 		propertyNameForColumn = new HashMap();
 		identifierStrategyForTable = new HashMap();
@@ -361,7 +361,7 @@ public class OverrideRepository  {
 			}
 
 			public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
-				List<ForeignKey> list = (List<ForeignKey>) foreignKeys.get(referencedTable);
+				List<ForeignKey> list = foreignKeys.get(referencedTable);
 				if(list==null) {
 					return super.getForeignKeys(referencedTable);
 				} else {
@@ -561,9 +561,9 @@ public class OverrideRepository  {
 		while ( fkIter.hasNext() ) {
 			ForeignKey fk = (ForeignKey) fkIter.next();
 			TableIdentifier identifier = TableIdentifier.create(fk.getReferencedTable());
-			List existing = (List) foreignKeys.get(identifier);
+			List<ForeignKey> existing = foreignKeys.get(identifier);
 			if(existing==null) {
-				existing = new ArrayList();
+				existing = new ArrayList<ForeignKey>();
 				foreignKeys.put(identifier, existing);
 			}
 			existing.add( fk );
