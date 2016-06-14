@@ -37,7 +37,7 @@ public class OverrideRepository  {
 	final private List<Table> tables;
 	final private Map<TableIdentifier, List<ForeignKey>> foreignKeys; // key: TableIdentifier element: List of foreignkeys that references the Table
 
-	final private Map typeForColumn;
+	final private Map<TableColumnKey, String> typeForColumn;
 
 	final private Map propertyNameForColumn;
 
@@ -82,7 +82,7 @@ public class OverrideRepository  {
 		tableFilters = new ArrayList<TableFilter>();
 		tables = new ArrayList<Table>();
 		foreignKeys = new HashMap<TableIdentifier, List<ForeignKey>>();
-		typeForColumn = new HashMap();
+		typeForColumn = new HashMap<TableColumnKey, String>();
 		propertyNameForColumn = new HashMap();
 		identifierStrategyForTable = new HashMap();
 		identifierPropertiesForTable = new HashMap();
@@ -316,7 +316,7 @@ public class OverrideRepository  {
 					location += " Column: " + columnName + info;
 				}
 				if(table!=null && columnName!=null) {
-					result = (String) typeForColumn.get(new TableColumnKey(table, columnName));
+					result = typeForColumn.get(new TableColumnKey(table, columnName));
 					if(result!=null) {
 						log.debug("explicit column mapping found for [" + location + "] to [" + result + "]");
 						return result;
