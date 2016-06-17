@@ -43,7 +43,7 @@ public class OverrideRepository  {
 
 	final private Map<TableIdentifier, String> identifierStrategyForTable;
 
-	final private Map identifierPropertiesForTable;
+	final private Map<TableIdentifier, Properties> identifierPropertiesForTable;
 
 	final private Map primaryKeyColumnsForTable;
 
@@ -85,7 +85,7 @@ public class OverrideRepository  {
 		typeForColumn = new HashMap<TableColumnKey, String>();
 		propertyNameForColumn = new HashMap<TableColumnKey, String>();
 		identifierStrategyForTable = new HashMap<TableIdentifier, String>();
-		identifierPropertiesForTable = new HashMap();
+		identifierPropertiesForTable = new HashMap<TableIdentifier, Properties>();
 		primaryKeyColumnsForTable = new HashMap();
 		propertyNameForPrimaryKey = new HashMap();
 		tableToClassName = new HashMap();
@@ -398,7 +398,7 @@ public class OverrideRepository  {
 			}
 
 			public Properties getTableIdentifierProperties(TableIdentifier tableIdentifier) {
-				Properties result = (Properties) identifierPropertiesForTable.get(tableIdentifier);
+				Properties result = identifierPropertiesForTable.get(tableIdentifier);
 				if(result==null) {
 					return super.getTableIdentifierProperties( tableIdentifier );
 				} else {
