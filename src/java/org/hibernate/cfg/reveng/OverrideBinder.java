@@ -149,7 +149,7 @@ public final class OverrideBinder {
 			repository.addTableIdentifierStrategy(table, identifierClass, params);
 		}
 		
-		List<?> boundColumnNames = bindColumns(identifier.elements("key-column"), table, repository);
+		List<String> boundColumnNames = bindColumns(identifier.elements("key-column"), table, repository);
 		
 		repository.addPrimaryKeyNamesForTable(table, boundColumnNames, propertyName, compositeIdName);
 		
