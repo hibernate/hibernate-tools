@@ -45,7 +45,7 @@ public class OverrideRepository  {
 
 	final private Map<TableIdentifier, Properties> identifierPropertiesForTable;
 
-	final private Map primaryKeyColumnsForTable;
+	final private Map<TableIdentifier, List<String>> primaryKeyColumnsForTable;
 
 	final private Set excludedColumns;
 
@@ -86,7 +86,7 @@ public class OverrideRepository  {
 		propertyNameForColumn = new HashMap<TableColumnKey, String>();
 		identifierStrategyForTable = new HashMap<TableIdentifier, String>();
 		identifierPropertiesForTable = new HashMap<TableIdentifier, Properties>();
-		primaryKeyColumnsForTable = new HashMap();
+		primaryKeyColumnsForTable = new HashMap<TableIdentifier, List<String>>();
 		propertyNameForPrimaryKey = new HashMap();
 		tableToClassName = new HashMap();
 		excludedColumns = new HashSet();
@@ -406,8 +406,8 @@ public class OverrideRepository  {
 				}
 			}
 
-			public List getPrimaryKeyColumnNames(TableIdentifier tableIdentifier) {
-				List result = (List) primaryKeyColumnsForTable.get(tableIdentifier);
+			public List<String> getPrimaryKeyColumnNames(TableIdentifier tableIdentifier) {
+				List<String> result = primaryKeyColumnsForTable.get(tableIdentifier);
 				if(result==null) {
 					return super.getPrimaryKeyColumnNames(tableIdentifier);
 				} else {
@@ -639,7 +639,7 @@ public class OverrideRepository  {
 		}
 	}
 
-	public void addPrimaryKeyNamesForTable(Table table, List boundColumnNames, String propertyName, String compositeIdName) {
+	public void addPrimaryKeyNamesForTable(Table table, List<String> boundColumnNames, String propertyName, String compositeIdName) {
 		TableIdentifier tableIdentifier = TableIdentifier.create(table);
 		if(boundColumnNames!=null && !boundColumnNames.isEmpty()) {
 			primaryKeyColumnsForTable.put(tableIdentifier, boundColumnNames);
