@@ -47,7 +47,7 @@ public class OverrideRepository  {
 
 	final private Map<TableIdentifier, List<String>> primaryKeyColumnsForTable;
 
-	final private Set excludedColumns;
+	final private Set<TableColumnKey> excludedColumns;
 
 	final private Map tableToClassName;
 
@@ -89,7 +89,7 @@ public class OverrideRepository  {
 		primaryKeyColumnsForTable = new HashMap<TableIdentifier, List<String>>();
 		propertyNameForPrimaryKey = new HashMap();
 		tableToClassName = new HashMap();
-		excludedColumns = new HashSet();
+		excludedColumns = new HashSet<TableColumnKey>();
 		schemaSelections = new ArrayList();
 		compositeIdNameForTable = new HashMap();
 		foreignKeyToOneName = new HashMap();
