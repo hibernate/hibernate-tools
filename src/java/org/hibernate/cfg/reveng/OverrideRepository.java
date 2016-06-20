@@ -49,7 +49,7 @@ public class OverrideRepository  {
 
 	final private Set<TableColumnKey> excludedColumns;
 
-	final private Map tableToClassName;
+	final private Map<TableIdentifier, String> tableToClassName;
 
 	final private List<SchemaSelection> schemaSelections;
 
@@ -88,7 +88,7 @@ public class OverrideRepository  {
 		identifierPropertiesForTable = new HashMap<TableIdentifier, Properties>();
 		primaryKeyColumnsForTable = new HashMap<TableIdentifier, List<String>>();
 		propertyNameForPrimaryKey = new HashMap();
-		tableToClassName = new HashMap();
+		tableToClassName = new HashMap<TableIdentifier, String>();
 		excludedColumns = new HashSet<TableColumnKey>();
 		schemaSelections = new ArrayList();
 		compositeIdNameForTable = new HashMap();
@@ -334,7 +334,7 @@ public class OverrideRepository  {
 			}
 
 			public String tableToClassName(TableIdentifier tableIdentifier) {
-				String className = (String) tableToClassName.get(tableIdentifier);
+				String className = tableToClassName.get(tableIdentifier);
 
 				if(className!=null) {
 					 if(className.indexOf( "." )>=0) {
