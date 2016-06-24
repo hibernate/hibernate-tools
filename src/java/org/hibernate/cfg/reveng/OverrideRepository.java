@@ -55,7 +55,7 @@ public class OverrideRepository  {
 
 	final private Map<TableIdentifier, String> propertyNameForPrimaryKey;
 
-	final private Map compositeIdNameForTable;
+	final private Map<TableIdentifier, String> compositeIdNameForTable;
 
 	final private Map foreignKeyToOneName;
 
@@ -91,7 +91,7 @@ public class OverrideRepository  {
 		tableToClassName = new HashMap<TableIdentifier, String>();
 		excludedColumns = new HashSet<TableColumnKey>();
 		schemaSelections = new ArrayList();
-		compositeIdNameForTable = new HashMap();
+		compositeIdNameForTable = new HashMap<TableIdentifier, String>();
 		foreignKeyToOneName = new HashMap();
 		foreignKeyToInverseName = new HashMap();
 		foreignKeyInverseExclude = new HashMap();
@@ -290,7 +290,7 @@ public class OverrideRepository  {
 			}
 
 			public String tableToCompositeIdName(TableIdentifier identifier) {
-				String result = (String) compositeIdNameForTable.get(identifier);
+				String result = compositeIdNameForTable.get(identifier);
 				if(result==null) {
 					return super.tableToCompositeIdName(identifier);
 				} else {
