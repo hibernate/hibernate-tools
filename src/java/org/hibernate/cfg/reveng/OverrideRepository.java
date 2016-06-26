@@ -90,7 +90,7 @@ public class OverrideRepository  {
 		propertyNameForPrimaryKey = new HashMap<TableIdentifier, String>();
 		tableToClassName = new HashMap<TableIdentifier, String>();
 		excludedColumns = new HashSet<TableColumnKey>();
-		schemaSelections = new ArrayList();
+		schemaSelections = new ArrayList<SchemaSelection>();
 		compositeIdNameForTable = new HashMap<TableIdentifier, String>();
 		foreignKeyToOneName = new HashMap<String, String>();
 		foreignKeyToInverseName = new HashMap();
