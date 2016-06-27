@@ -59,7 +59,7 @@ public class OverrideRepository  {
 
 	final private Map<String, String> foreignKeyToOneName;
 
-	final private Map foreignKeyToInverseName;
+	final private Map<String, String> foreignKeyToInverseName;
 
 	final private Map foreignKeyInverseExclude;
 
@@ -93,7 +93,7 @@ public class OverrideRepository  {
 		schemaSelections = new ArrayList<SchemaSelection>();
 		compositeIdNameForTable = new HashMap<TableIdentifier, String>();
 		foreignKeyToOneName = new HashMap<String, String>();
-		foreignKeyToInverseName = new HashMap();
+		foreignKeyToInverseName = new HashMap<String, String>();
 		foreignKeyInverseExclude = new HashMap();
 		foreignKeyToOneExclude = new HashMap();
 		tableMetaAttributes = new HashMap();
@@ -430,7 +430,7 @@ public class OverrideRepository  {
 					TableIdentifier referencedTable,
 					List referencedColumnNames, boolean uniqueReference) {
 
-				String property = (String) foreignKeyToInverseName.get(keyname);
+				String property = foreignKeyToInverseName.get(keyname);
 				if(property==null) {
 					return super.foreignKeyToInverseEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
 				} else {
@@ -439,7 +439,7 @@ public class OverrideRepository  {
 			}
 
 			public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
-				String property = (String) foreignKeyToInverseName.get(keyname);
+				String property = foreignKeyToInverseName.get(keyname);
 				if(property==null) {
 					return super.foreignKeyToCollectionName(keyname, fromTable, fromColumns, referencedTable, referencedColumns, uniqueReference);
 				} else {
