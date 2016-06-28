@@ -63,7 +63,7 @@ public class OverrideRepository  {
 
 	final private Map<String, Boolean> foreignKeyInverseExclude;
 
-	final private Map foreignKeyToOneExclude;
+	final private Map<String, Boolean> foreignKeyToOneExclude;
 
 	final private Map foreignKeyToEntityInfo;
 	final private Map foreignKeyToInverseEntityInfo;
@@ -95,7 +95,7 @@ public class OverrideRepository  {
 		foreignKeyToOneName = new HashMap<String, String>();
 		foreignKeyToInverseName = new HashMap<String, String>();
 		foreignKeyInverseExclude = new HashMap<String, Boolean>();
-		foreignKeyToOneExclude = new HashMap();
+		foreignKeyToOneExclude = new HashMap<String, Boolean>();
 		tableMetaAttributes = new HashMap();
 		columnMetaAttributes = new HashMap();
 		foreignKeyToEntityInfo = new HashMap();
