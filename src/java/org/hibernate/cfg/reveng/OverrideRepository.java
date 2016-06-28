@@ -61,7 +61,7 @@ public class OverrideRepository  {
 
 	final private Map<String, String> foreignKeyToInverseName;
 
-	final private Map foreignKeyInverseExclude;
+	final private Map<String, Boolean> foreignKeyInverseExclude;
 
 	final private Map foreignKeyToOneExclude;
 
@@ -94,7 +94,7 @@ public class OverrideRepository  {
 		compositeIdNameForTable = new HashMap<TableIdentifier, String>();
 		foreignKeyToOneName = new HashMap<String, String>();
 		foreignKeyToInverseName = new HashMap<String, String>();
-		foreignKeyInverseExclude = new HashMap();
+		foreignKeyInverseExclude = new HashMap<String, Boolean>();
 		foreignKeyToOneExclude = new HashMap();
 		tableMetaAttributes = new HashMap();
 		columnMetaAttributes = new HashMap();
@@ -448,7 +448,7 @@ public class OverrideRepository  {
 			}
 
 			public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
-				Boolean bool = (Boolean) foreignKeyInverseExclude.get(keyname);
+				Boolean bool = foreignKeyInverseExclude.get(keyname);
 				if(bool!=null) {
 					return bool.booleanValue();
 				} else {
