@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.tool.xml.XMLHelper;
@@ -537,14 +539,14 @@ public class OverrideRepository  {
 		return null;
 	}
 
-	private Map toMetaAttributes(Map value) {
-		Map result = new HashMap();
+	private Map<String, MetaAttribute> toMetaAttributes(Map<?,?> value) {
+		Map<String, MetaAttribute> result = new HashMap<String, MetaAttribute>();
 
-		Set set = value.entrySet();
-		for (Iterator iter = set.iterator(); iter.hasNext();) {
-			Map.Entry entry = (Map.Entry) iter.next();
+		Set<?> set = value.entrySet();
+		for (Iterator<?> iter = set.iterator(); iter.hasNext();) {
+			Entry<?, ?> entry = (Entry<?,?>)iter.next();
 			String name = (String) entry.getKey();
-			List values = (List) entry.getValue();
+			List<?> values = (List<?>) entry.getValue();
 
 			result.put(name, MetaAttributeBinder.toRealMetaAttribute(name, values));
 		}
