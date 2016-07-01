@@ -70,7 +70,7 @@ public class OverrideRepository  {
 	final private Map<String, AssociationInfo> foreignKeyToEntityInfo;
 	final private Map<String, AssociationInfo> foreignKeyToInverseEntityInfo;
 
-	final private Map tableMetaAttributes; // TI -> MultiMap of SimpleMetaAttributes
+	final private Map<TableIdentifier, MultiMap> tableMetaAttributes; // TI -> MultiMap of SimpleMetaAttributes
 
 	final private Map columnMetaAttributes;
 
@@ -98,7 +98,7 @@ public class OverrideRepository  {
 		foreignKeyToInverseName = new HashMap<String, String>();
 		foreignKeyInverseExclude = new HashMap<String, Boolean>();
 		foreignKeyToOneExclude = new HashMap<String, Boolean>();
-		tableMetaAttributes = new HashMap();
+		tableMetaAttributes = new HashMap<TableIdentifier, MultiMap>();
 		columnMetaAttributes = new HashMap();
 		foreignKeyToEntityInfo = new HashMap<String, AssociationInfo>();
 		foreignKeyToInverseEntityInfo = new HashMap<String, AssociationInfo>();
@@ -501,7 +501,7 @@ public class OverrideRepository  {
 
 	// TODO: optimize
 	protected Map tableToMetaAttributes(TableIdentifier identifier) {
-		Map specific = (Map) tableMetaAttributes.get( identifier );
+		Map specific = tableMetaAttributes.get( identifier );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
@@ -693,7 +693,7 @@ public class OverrideRepository  {
 
 	}
 
-	public void addMetaAttributeInfo(Table table, Map map) {
+	public void addMetaAttributeInfo(Table table, MultiMap map) {
 		if(map!=null && !map.isEmpty()) {
 			tableMetaAttributes.put(TableIdentifier.create(table), map);
 		}
