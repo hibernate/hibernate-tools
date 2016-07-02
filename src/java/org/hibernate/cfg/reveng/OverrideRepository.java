@@ -72,7 +72,7 @@ public class OverrideRepository  {
 
 	final private Map<TableIdentifier, MultiMap> tableMetaAttributes; // TI -> MultiMap of SimpleMetaAttributes
 
-	final private Map columnMetaAttributes;
+	final private Map<TableColumnKey, MultiMap> columnMetaAttributes;
 
 	//private String defaultCatalog;
 	//private String defaultSchema;
@@ -99,7 +99,7 @@ public class OverrideRepository  {
 		foreignKeyInverseExclude = new HashMap<String, Boolean>();
 		foreignKeyToOneExclude = new HashMap<String, Boolean>();
 		tableMetaAttributes = new HashMap<TableIdentifier, MultiMap>();
-		columnMetaAttributes = new HashMap();
+		columnMetaAttributes = new HashMap<TableColumnKey, MultiMap>();
 		foreignKeyToEntityInfo = new HashMap<String, AssociationInfo>();
 		foreignKeyToInverseEntityInfo = new HashMap<String, AssociationInfo>();
 	}
@@ -491,7 +491,7 @@ public class OverrideRepository  {
 	}
 
 	protected Map columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
-		Map specific = (Map) columnMetaAttributes.get( new TableColumnKey(tableIdentifier, column) );
+		MultiMap specific = columnMetaAttributes.get( new TableColumnKey(tableIdentifier, column) );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
