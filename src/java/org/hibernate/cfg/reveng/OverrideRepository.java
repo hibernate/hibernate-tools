@@ -175,11 +175,11 @@ public class OverrideRepository  {
 		return scanForMatch( sqlType, length, precision, scale, nullable, l );
 	}
 
-	private String scanForMatch(int sqlType, int length, int precision, int scale, boolean nullable, List l) {
+	private String scanForMatch(int sqlType, int length, int precision, int scale, boolean nullable, List<SQLTypeMapping> l) {
 		if(l!=null) {
-			Iterator iterator = l.iterator();
+			Iterator<SQLTypeMapping> iterator = l.iterator();
 			while (iterator.hasNext() ) {
-				SQLTypeMapping element = (SQLTypeMapping) iterator.next();
+				SQLTypeMapping element = iterator.next();
 				if(element.getJDBCType()!=sqlType) return null;
 				if(element.match(sqlType, length, precision, scale, nullable) ) {
 					return element.getHibernateType();
