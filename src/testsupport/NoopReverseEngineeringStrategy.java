@@ -157,7 +157,7 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return null;
 	}
 
-	public Map tableToMetaAttributes(TableIdentifier tableIdentifier) {
+	public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}

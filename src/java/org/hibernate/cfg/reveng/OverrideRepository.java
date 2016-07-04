@@ -279,7 +279,7 @@ public class OverrideRepository  {
 				return OverrideRepository.this.excludeTable(ti);
 			}
 
-			public Map tableToMetaAttributes(TableIdentifier tableIdentifier) {
+			public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
 				return OverrideRepository.this.tableToMetaAttributes(tableIdentifier);
 			}
 
@@ -500,7 +500,7 @@ public class OverrideRepository  {
 	}
 
 	// TODO: optimize
-	protected Map tableToMetaAttributes(TableIdentifier identifier) {
+	protected Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier identifier) {
 		Map specific = tableMetaAttributes.get( identifier );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
