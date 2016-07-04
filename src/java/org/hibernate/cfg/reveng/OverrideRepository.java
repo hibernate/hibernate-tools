@@ -283,7 +283,7 @@ public class OverrideRepository  {
 				return OverrideRepository.this.tableToMetaAttributes(tableIdentifier);
 			}
 
-			public Map columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
+			public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
 				return OverrideRepository.this.columnToMetaAttributes(tableIdentifier, column);
 			}
 
@@ -490,7 +490,7 @@ public class OverrideRepository  {
 		};
 	}
 
-	protected Map columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
+	protected Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
 		MultiMap specific = columnMetaAttributes.get( new TableColumnKey(tableIdentifier, column) );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);

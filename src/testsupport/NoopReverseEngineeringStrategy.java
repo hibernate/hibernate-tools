@@ -10,6 +10,7 @@ import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 
 /**
@@ -161,7 +162,7 @@ public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrateg
 		return null;
 	}
 
-	public Map columnToMetaAttributes(TableIdentifier identifier, String column) {
+	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column) {
 		// TODO Auto-generated method stub
 		return null;
 	}
