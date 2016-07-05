@@ -19,6 +19,7 @@ import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
@@ -417,7 +418,7 @@ public class OverrideRepository  {
 				}
 			}
 
-			public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference) {
+			public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumnNames, TableIdentifier referencedTable, List<?> referencedColumnNames, boolean uniqueReference) {
 				String property = foreignKeyToOneName.get(keyname);
 				if(property==null) {
 					return super.foreignKeyToEntityName(keyname, fromTable, fromColumnNames, referencedTable, referencedColumnNames, uniqueReference);
@@ -428,9 +429,9 @@ public class OverrideRepository  {
 
 
 			public String foreignKeyToInverseEntityName(String keyname,
-					TableIdentifier fromTable, List fromColumnNames,
+					TableIdentifier fromTable, List<?> fromColumnNames,
 					TableIdentifier referencedTable,
-					List referencedColumnNames, boolean uniqueReference) {
+					List<?> referencedColumnNames, boolean uniqueReference) {
 
 				String property = foreignKeyToInverseName.get(keyname);
 				if(property==null) {
@@ -440,7 +441,7 @@ public class OverrideRepository  {
 				}
 			}
 
-			public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
+			public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<?> fromColumns, TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference) {
 				String property = foreignKeyToInverseName.get(keyname);
 				if(property==null) {
 					return super.foreignKeyToCollectionName(keyname, fromTable, fromColumns, referencedTable, referencedColumns, uniqueReference);
@@ -449,7 +450,12 @@ public class OverrideRepository  {
 				}
 			}
 
-			public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
+			public boolean excludeForeignKeyAsCollection(
+					String keyname, 
+					TableIdentifier fromTable, 
+					List<Column> fromColumns, 
+					TableIdentifier referencedTable, 
+					List<Column> referencedColumns) {
 				Boolean bool = foreignKeyInverseExclude.get(keyname);
 				if(bool!=null) {
 					return bool.booleanValue();
@@ -459,7 +465,12 @@ public class OverrideRepository  {
 				}
 			}
 
-			public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
+			public boolean excludeForeignKeyAsManytoOne(
+					String keyname, 
+					TableIdentifier fromTable, 
+					List<?> fromColumns, TableIdentifier 
+					referencedTable, 
+					List<?> referencedColumns) {
 				Boolean bool = (Boolean) foreignKeyToOneExclude.get(keyname);
 				if(bool!=null) {
 					return bool.booleanValue();
@@ -501,11 +512,11 @@ public class OverrideRepository  {
 
 	// TODO: optimize
 	protected Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier identifier) {
-		Map specific = tableMetaAttributes.get( identifier );
+		MultiMap specific = tableMetaAttributes.get( identifier );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
-		Map general = findGeneralAttributes( identifier );
+		Map<?,?> general = findGeneralAttributes( identifier );
 		if(general!=null && !general.isEmpty()) {
 			return toMetaAttributes(general);
 		}
@@ -527,11 +538,11 @@ public class OverrideRepository  {
 		*/
 	}
 
-	private Map findGeneralAttributes(TableIdentifier identifier) {
+	private Map<?,?> findGeneralAttributes(TableIdentifier identifier) {
 		Iterator<TableFilter> iterator = tableFilters.iterator();
 		while(iterator.hasNext() ) {
 			TableFilter tf = iterator.next();
-			Map value = tf.getMetaAttributes(identifier);
+			Map<?,?> value = tf.getMetaAttributes(identifier);
 			if(value!=null) {
 				return value;
 			}
@@ -559,7 +570,7 @@ public class OverrideRepository  {
 	}
 
 	public void addTable(Table table, String wantedClassName) {
-		Iterator fkIter = table.getForeignKeyIterator();
+		Iterator<?> fkIter = table.getForeignKeyIterator();
 		while ( fkIter.hasNext() ) {
 			ForeignKey fk = (ForeignKey) fkIter.next();
 			TableIdentifier identifier = TableIdentifier.create(fk.getReferencedTable());
