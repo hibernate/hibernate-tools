@@ -21,175 +21,184 @@ import org.hibernate.mapping.Table;
 public class NoopReverseEngineeringStrategy implements ReverseEngineeringStrategy {
 
 	public String tableToClassName(TableIdentifier tableIdentifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String columnToPropertyName(TableIdentifier table, String column) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String foreignKeyToCollectionName(String keyname,
-			TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns, boolean uniqueReference) {
-		// TODO Auto-generated method stub
+	public String foreignKeyToCollectionName(
+			String keyname,
+			TableIdentifier fromTable, 
+			List<?> fromColumns, 
+			TableIdentifier referencedTable, 
+			List<?> referencedColumns, 
+			boolean uniqueReference) {
 		return null;
 	}
 
-	public String foreignKeyToEntityName(String keyname,
-			TableIdentifier fromTable, List fromColumnNames, TableIdentifier referencedTable, List referencedColumnNames, boolean uniqueReference) {
-		// TODO Auto-generated method stub
+	public String foreignKeyToEntityName(
+			String keyname,
+			TableIdentifier fromTable, 
+			List<?> fromColumnNames, 
+			TableIdentifier referencedTable, 
+			List<?> referencedColumnNames, 
+			boolean uniqueReference) {
 		return null;
 	}
 
 	public boolean excludeTable(TableIdentifier ti) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public String columnToHibernateTypeName(TableIdentifier table, String columnName, int sqlType, int length, int precision, int scale, boolean nullable, boolean generatedIdentifier) {
-		// TODO Auto-generated method stub
+	public String columnToHibernateTypeName(
+			TableIdentifier table, 
+			String columnName, 
+			int sqlType, 
+			int length, 
+			int precision, 
+			int scale, 
+			boolean nullable, 
+			boolean generatedIdentifier) {
 		return null;
 	}
 
 	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String columnToHibernateTypeName(TableIdentifier identifier, String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getTableIdentifierStrategyName(TableIdentifier identifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Properties getTableIdentifierProperties(TableIdentifier identifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String classNameToCompositeIdName(String className) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void configure(ReverseEngineeringRuntimeInfo runtimeInfo) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void configure(ReverseEngineeringRuntimeInfo runtimeInfo) {}
 
-	public void close() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void close() {}
 
 	public String getOptimisticLockColumnName(TableIdentifier identifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean useColumnForOptimisticLock(TableIdentifier identifier, String column) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean excludeColumn(TableIdentifier identifier, String columnName) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public List<SchemaSelection> getSchemaSelections() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String tableToIdentifierPropertyName(TableIdentifier tableIdentifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String tableToCompositeIdName(TableIdentifier identifier) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns, TableIdentifier referencedTable, List<Column> referencedColumns) {
-		// TODO Auto-generated method stub
+	public boolean excludeForeignKeyAsCollection(
+			String keyname, 
+			TableIdentifier fromTable, 
+			List<Column> fromColumns, 
+			TableIdentifier referencedTable, 
+			List<Column> referencedColumns) {
 		return false;
 	}
 
-	public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List fromColumns, TableIdentifier referencedTable, List referencedColumns) {
-		// TODO Auto-generated method stub
+	public boolean excludeForeignKeyAsManytoOne(
+			String keyname, 
+			TableIdentifier fromTable, 
+			List<?> fromColumns, 
+			TableIdentifier referencedTable, 
+			List<?> referencedColumns) {
 		return false;
 	}
 
-	public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
-		// TODO Auto-generated method stub
+	public boolean isForeignKeyCollectionInverse(
+			String name, TableIdentifier 
+			foreignKeyTable, 
+			List<?> columns, 
+			TableIdentifier foreignKeyReferencedTable, 
+			List<?> referencedColumns) {
 		return false;
 	}
 
-	public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List columns, TableIdentifier foreignKeyReferencedTable, List referencedColumns) {
-		// TODO Auto-generated method stub
+	public boolean isForeignKeyCollectionLazy(
+			String name, 
+			TableIdentifier foreignKeyTable, 
+			List<?> columns, 
+			TableIdentifier foreignKeyReferencedTable, 
+			List<?> referencedColumns) {
 		return false;
 	}
 
-	public void setSettings(ReverseEngineeringSettings settings) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setSettings(ReverseEngineeringSettings settings) {}
 
 	public boolean isManyToManyTable(Table table) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public String foreignKeyToManyToManyName(ForeignKey fromKey, TableIdentifier middleTable, ForeignKey toKey, boolean uniqueReference) {
-		// TODO Auto-generated method stub
+	public String foreignKeyToManyToManyName(
+			ForeignKey fromKey, 
+			TableIdentifier middleTable, 
+			ForeignKey toKey, 
+			boolean uniqueReference) {
 		return null;
 	}
 
-	public Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier) {
-		// TODO Auto-generated method stub
+	public Map<String,MetaAttribute> tableToMetaAttributes(
+			TableIdentifier tableIdentifier) {
 		return null;
 	}
 
-	public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column) {
-		// TODO Auto-generated method stub
+	public Map<String, MetaAttribute> columnToMetaAttributes(
+			TableIdentifier identifier, 
+			String column) {
 		return null;
 	}
 	
 	public boolean isOneToOne(ForeignKey foreignKey) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	
 	public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-	public String foreignKeyToInverseEntityName(String keyname,
-			TableIdentifier fromTable, List fromColumnNames,
-			TableIdentifier referencedTable, List referencedColumnNames,
+	public String foreignKeyToInverseEntityName(
+			String keyname,
+			TableIdentifier fromTable, 
+			List<?> fromColumnNames,
+			TableIdentifier referencedTable, 
+			List<?> referencedColumnNames,
 			boolean uniqueReference) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
 	public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
