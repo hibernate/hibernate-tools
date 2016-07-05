@@ -26,8 +26,9 @@ package org.hibernate.tool.xml;
 
 import java.io.InputStream;
 
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Environment;
 import org.hibernate.internal.CoreMessageLogger;
-import org.hibernate.internal.util.ConfigHelper;
 import org.jboss.logging.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -117,10 +118,39 @@ public class DTDEntityResolver implements EntityResolver {
 
 	private InputStream resolveInLocalNamespace(String path) {
 		try {
-			return ConfigHelper.getUserResourceAsStream( path );
+			return getUserResourceAsStream( path );
 		}
 		catch ( Throwable t ) {
 			return null;
 		}
 	}
+	
+	private InputStream getUserResourceAsStream(String resource) {
+		boolean hasLeadingSlash = resource.startsWith( "/" );
+		String stripped = hasLeadingSlash ? resource.substring( 1 ) : resource;
+
+		InputStream stream = null;
+
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if ( classLoader != null ) {
+			stream = classLoader.getResourceAsStream( resource );
+			if ( stream == null && hasLeadingSlash ) {
+				stream = classLoader.getResourceAsStream( stripped );
+			}
+		}
+
+		if ( stream == null ) {
+			stream = Environment.class.getClassLoader().getResourceAsStream( resource );
+		}
+		if ( stream == null && hasLeadingSlash ) {
+			stream = Environment.class.getClassLoader().getResourceAsStream( stripped );
+		}
+
+		if ( stream == null ) {
+			throw new HibernateException( resource + " not found" );
+		}
+
+		return stream;
+	}
+
 }
