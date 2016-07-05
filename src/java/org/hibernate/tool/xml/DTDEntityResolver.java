@@ -53,7 +53,7 @@ import org.xml.sax.InputSource;
  * @author Steve Ebersole
  * @author Hardy Ferentschik
  */
-final public class DTDEntityResolver implements EntityResolver {
+public class DTDEntityResolver implements EntityResolver {
 
 	private static final CoreMessageLogger LOG = Logger.getMessageLogger( CoreMessageLogger.class, DTDEntityResolver.class.getName() );
 
