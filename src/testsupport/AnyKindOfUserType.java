@@ -20,7 +20,7 @@ public class AnyKindOfUserType implements UserType {
 		return new int[] { Types.INTEGER };
 	}
 
-	public Class returnedClass() {
+	public Class<?> returnedClass() {
 		return Integer.class;
 	}
 
