@@ -41,7 +41,7 @@ public class ForeignKeysInfo {
 			
 			String className = revengStrategy.tableToClassName(TableIdentifier.create(referencedTable) );
 
-			ForeignKey key = fkTable.createForeignKey(fkName, columns, className, refColumns);			
+			ForeignKey key = fkTable.createForeignKey(fkName, columns, className, null, refColumns);			
 			key.setReferencedTable(referencedTable);
 
 			addToMultiMap(oneToManyCandidates, className, key);				

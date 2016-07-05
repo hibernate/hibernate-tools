@@ -186,7 +186,7 @@ public final class OverrideBinder {
 					foreignColumns.add(foreignColumn);
 				}
 								
-				ForeignKey key = table.createForeignKey(constraintName, localColumns, foreignTableName, foreignColumns);
+				ForeignKey key = table.createForeignKey(constraintName, localColumns, foreignTableName, null, foreignColumns);
 				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)				
 			}
 			
@@ -356,7 +356,7 @@ public final class OverrideBinder {
 					throw new MappingException("foreign-column is required when foreign-table is specified on " + column);
 				}
 				
-				ForeignKey key = table.createForeignKey(null, localColumns, foreignTableName, foreignColumns);
+				ForeignKey key = table.createForeignKey(null, localColumns, foreignTableName, null, foreignColumns);
 				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)
 			}
 			
