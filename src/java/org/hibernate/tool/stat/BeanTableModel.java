@@ -4,6 +4,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.ObjectStreamClass;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +13,22 @@ import javax.swing.table.AbstractTableModel;
 
 public class BeanTableModel extends AbstractTableModel {
 
-	protected List list;
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(BeanTableModel.class).getSerialVersionUID();
+	
+
+	protected List<PropertyDescriptor> list;
 
 	private BeanInfo beanInfo = null;
 
 	private PropertyDescriptor[] descriptors = null;
 	
-	public BeanTableModel(List list, Class beanClass) {
+	public BeanTableModel(List<PropertyDescriptor> list, Class<?> beanClass) {
 		this.list = list;
 		introspect( beanClass );
 	}
 
-	private void introspect(Class beanClass) {
+	private void introspect(Class<?> beanClass) {
 		try {
 			this.beanInfo = Introspector.getBeanInfo( beanClass,
 					Introspector.USE_ALL_BEANINFO );
@@ -34,7 +39,7 @@ public class BeanTableModel extends AbstractTableModel {
 			// ignore
 		}
 		
-		List v = new ArrayList(descriptors.length);
+		List<PropertyDescriptor> v = new ArrayList<PropertyDescriptor>(descriptors.length);
 		for (int i = 0; i < descriptors.length; i++) {
 			if(!descriptors[i].getName().equals("class")) {
 				v.add( descriptors[i] );
@@ -72,7 +77,7 @@ public class BeanTableModel extends AbstractTableModel {
 		Object bean = list.get( row );
 		Object result = null;
 		try {
-			result = descriptors[col].getReadMethod().invoke( bean, null );
+			result = descriptors[col].getReadMethod().invoke( bean, (Object[])null );
 		}
 		catch (InvocationTargetException ite) {
 			ite.printStackTrace();
@@ -95,11 +100,11 @@ public class BeanTableModel extends AbstractTableModel {
 		}
 	}
 
-	public Class getColumnClass(int c) {
+	public Class<?> getColumnClass(int c) {
 		if(isSingle()) {
 			return String.class;
 		} else {
-			Class propertyType = descriptors[c].getPropertyType();
+			Class<?> propertyType = descriptors[c].getPropertyType();
 
 			if(propertyType.isPrimitive()) {
 				return String.class; // to avoid jtable complain about null table renderer.
