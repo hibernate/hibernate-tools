@@ -19,9 +19,6 @@ public interface POJOClass extends ImportContext {
 	 * 
 	 * Returns "// default package" if no package declarition available.
 	 *  
-	 * @param cm
-	 * @param tool TODO
-	 * @return
 	 */
 	public String getPackageDeclaration();
 	
