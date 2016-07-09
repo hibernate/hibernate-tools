@@ -2,6 +2,8 @@ package org.hibernate.tool.stat;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.PropertyDescriptor;
+import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,21 +50,11 @@ public class StatisticsBrowser {
 		
 		JScrollPane treePane = new JScrollPane(tree);
 		
-		final JTable table = new JTable() {
-			public TableCellRenderer getDefaultRenderer(Class columnClass) {
-				TableCellRenderer defaultRenderer = super.getDefaultRenderer( columnClass );
-				
-				if(defaultRenderer==null) {
-					return super.getDefaultRenderer( Object.class );
-				} else {
-					return defaultRenderer;
-				}
-			}
-		};
+		final JTable table = new StatisticsBrowserTable();
 		
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground( table.getBackground() );
-		final BeanTableModel beanTableModel = new BeanTableModel(Collections.EMPTY_LIST, Object.class);
+		final BeanTableModel beanTableModel = new BeanTableModel(Collections.<PropertyDescriptor>emptyList(), Object.class);
 		table.setModel( beanTableModel );
 		
 		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treePane, tablePane);
@@ -74,19 +66,19 @@ public class StatisticsBrowser {
 		
 			public void valueChanged(TreeSelectionEvent e) {
 				Object lastPathComponent = e.getPath().getLastPathComponent();
-				List l = new ArrayList();
+				List<PropertyDescriptor> l = new ArrayList<PropertyDescriptor>();
 				if(statisticsTreeModel.isContainer( lastPathComponent )) {
 					int childCount = statisticsTreeModel.getChildCount( lastPathComponent );
 					
-					Class cl = Object.class;
+					Class<?> cl = Object.class;
 					for (int i = 0; i < childCount; i++) {
 						Object v = statisticsTreeModel.getChild( lastPathComponent, i );
 						if(v!=null) cl = v.getClass();
-						l.add(v);
+						l.add((PropertyDescriptor)v);
 					}
 					table.setModel( new BeanTableModel(l, cl) );	
 				} else {
-					l.add( lastPathComponent );
+					l.add((PropertyDescriptor) lastPathComponent );
 					table.setModel( new BeanTableModel(l, lastPathComponent.getClass()) );
 				}
 				
@@ -103,7 +95,21 @@ public class StatisticsBrowser {
 		main.setVisible(true);
 	}
 	
-	
+	final static class StatisticsBrowserTable extends JTable {
+		
+		private static final long serialVersionUID = 
+				ObjectStreamClass.lookup(StatisticsBrowserTable.class).getSerialVersionUID();		
+
+		public TableCellRenderer getDefaultRenderer(Class<?> columnClass) {
+			TableCellRenderer defaultRenderer = 
+					super.getDefaultRenderer( columnClass );		
+			if(defaultRenderer==null) {
+				return super.getDefaultRenderer( Object.class );
+			} else {
+				return defaultRenderer;
+			}
+		}
+	}
 	
 	
 
