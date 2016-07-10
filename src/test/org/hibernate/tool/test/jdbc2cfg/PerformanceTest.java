@@ -37,16 +37,10 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 	List<String> createSQL = new ArrayList<String>();
 	List<String> dropSQL = new ArrayList<String>();
 
-	/**
-	 * @return
-	 */
 	protected String[] getDropSQL() {
 		return dropSQL.toArray(new String[dropSQL.size()]);
 	}
 
-	/**
-	 * @return
-	 */
 	protected String[] getCreateSQL() {
 		
 		Dialect dia = cfg.getServiceRegistry().getService(JdbcServices.class).getDialect();
@@ -76,11 +70,9 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 		dropSQL = new ArrayList<String>(TABLECOUNT);
 		createSQL = new ArrayList<String>(TABLECOUNT);
 		Table lastTable = null;
-//		Mappings mappings = cfg.createMappings();
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
 			Table table = new Table("perftest" + tablecount);
 			Column col = new Column("id");
-			//FIXME
 			SimpleValue sv = new SimpleValue((MetadataImplementor) cfg.getMetadata(), table);
 			sv.setTypeName("string");
 			col.setValue(sv);			
@@ -91,7 +83,6 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 			
 			for(int colcount=0;colcount<COLCOUNT;colcount++) {
 				col = new Column("col"+tablecount+"_"+colcount);
-				//FIXME
 				sv = new SimpleValue((MetadataImplementor) cfg.getMetadata(), table);
 				sv.setTypeName("string");
 				col.setValue(sv);				
@@ -115,28 +106,19 @@ public class PerformanceTest extends JDBCMetaDataBinderTestCase {
 			
 			lastTable = table;
 			
-			
 		}
-		
-		
-		
 		return (String[]) createSQL.toArray(new String[createSQL.size()]);
 	}
 
 	
-	public void testBasic() throws SQLException {
-				
-		assertHasNext("There should be three tables!",TABLECOUNT, cfg.getMetadata().collectTableMappings().iterator() );
-		
+	public void testBasic() throws SQLException {				
+		assertHasNext(
+				"There should be three tables!",
+				TABLECOUNT, 
+				cfg.getMetadata().collectTableMappings().iterator());		
 		Table tab = (Table) cfg.getMetadata().collectTableMappings().iterator().next();
 		assertEquals(tab.getColumnSpan(), COLCOUNT+1);
-		
-		
 	}
-	
-    
- 
-	
 
 	public static Test suite() {
 		return new TestSuite(PerformanceTest.class);
