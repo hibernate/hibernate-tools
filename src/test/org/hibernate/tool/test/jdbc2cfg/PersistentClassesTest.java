@@ -139,11 +139,6 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
         sf.close();
 	}
 
-    /**
-     * @param m
-     * @param itemid TODO
-     * @return
-     */
 	private Item addItem(Orders m, int itemid, String name) {
         Item item = new Item();
         item.setChildId(new Long(itemid) );
