@@ -67,8 +67,7 @@ public interface ReverseEngineeringStrategy {
 
 	/**
 	 * Gets the user defined foreign keys.
-	 * @param referencedTable TODO
-	 * @param identifier 
+	 * @param referencedTable the table to get the foreign keys for
 	 * @return a list of ForeignKey's
 	 */
 	public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable);
