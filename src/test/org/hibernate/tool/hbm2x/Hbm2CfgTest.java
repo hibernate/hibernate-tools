@@ -57,7 +57,6 @@ public class Hbm2CfgTest extends NonReflectiveTestCase {
 	   
 
 	   srcCfg = new Configuration();
-	   // FIXME was Environment.TRANSACTION_MANAGER_STRATEGY, and this is possibly / probably not a correct substitution
 	   srcCfg.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   HibernateConfigurationExporter exp = new HibernateConfigurationExporter(srcCfg, getOutputDir());
 	   exp.start();
