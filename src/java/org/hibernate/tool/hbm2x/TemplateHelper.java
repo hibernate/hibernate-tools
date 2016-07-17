@@ -88,37 +88,6 @@ public class TemplateHelper {
     
     public class Templates {
     	    	
-    	/*public String get(String name) {
-    		StringWriter sw = new StringWriter();
-    		try {
-    			String usedName = getTemplateName(name);
-    			
-    			processTemplate(usedName, sw);
-    		} catch(ExporterException ee) {
-    			throw ee;
-    		}
-    		return sw.toString();
-    	}*/
-    	
-    	/*public void create(String templateName, String fileName) {
-    		Writer fw = null;
-    		try {
-    		fw = new BufferedWriter(new FileWriter(new File(getOutputDirectory(), fileName)));
-    		processTemplate(templateName, fw);
-    		} catch(IOException io) {
-    			throw new ExporterException("Problem when writing to " + fileName, io);
-    		} finally {
-    			if(fw!=null) {
-    				try {
-    					fw.flush();
-    					fw.close();
-    				} catch(IOException io ) {
-    					//TODO: warn
-    				}
-    			}
-    		}
-    	}*/
-    	
     	public void createFile(String content, String fileName) {
     		Writer fw = null;
     		try {
@@ -208,9 +177,6 @@ public class TemplateHelper {
 	    }
 	}
 	
-	   
-    
-
     public void setupContext() {
     	getContext().put("version", Version.getDefault());
         getContext().put("ctx", getContext() ); //TODO: I would like to remove this, but don't know another way to actually get the list possible "root" keys for debugging.
