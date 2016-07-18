@@ -12,6 +12,7 @@ import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -65,7 +66,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		tableSelector = new TableSelectorStrategy(
 				new DefaultReverseEngineeringStrategy() );
 		reader = JDBCReaderFactory.newJDBCReader( 
-				(Properties)builder.getSettings(),
+				Environment.getProperties(),
 				tableSelector, 
 				serviceRegistry);
 		dbc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
