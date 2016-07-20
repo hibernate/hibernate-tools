@@ -40,29 +40,17 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		exporter.start();
 	}
 
-	protected void tearDown() throws Exception {
-		// TODO Auto-generated method stub
-		super.tearDown();
-	}
-	
-
 	public void testFileExistence() {
 		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/Author.java") );
 		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/Article.java") );
 		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/Train.java") );
 		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/Passenger.java") );
 		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/TransportationPk.java") );
-//		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/GenericObject.java") );
-//		assertFileAndExists( new File(getOutputDir().getAbsolutePath() + "/org/hibernate/tool/hbm2x/GenericValue.java") );
 	}
 
 	public void testBasicComponent() {
 		assertEquals( "@Embeddable", findFirstString( "@Embeddable", new File( getOutputDir(),
 		"org/hibernate/tool/hbm2x/TransportationPk.java" ) ) );
-		
-	//	assertEquals( null, findFirstString( "@Column", new File( getOutputDir(),
-		//"org/hibernate/tool/hbm2x/TransportationPK.java" ) ) );
-
 	}
 
 	public void testCompile() {
@@ -207,11 +195,6 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 				"Article.hbm.xml",
 				"Train.hbm.xml",
 				"Passenger.hbm.xml"
-//				"GenericModel.hbm.xml",
-//				"Customer.hbm.xml",
-//				"Order.hbm.xml",
-//				"LineItem.hbm.xml",
-//				"Product.hbm.xml"
 		};
 	}
 
