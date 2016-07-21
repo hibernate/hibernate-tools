@@ -39,8 +39,7 @@ public final class TestHelper {
 	}
 
 	/**
-	 * @param inputdir
-	 *            TODO
+	 * @param srcdir
 	 * @param outputdir
 	 * @return
 	 */
@@ -77,9 +76,7 @@ public final class TestHelper {
 		List<String> togglesList = new ArrayList<String>();
 		togglesList.add( "-" + jdktarget ); // put this here so DAOs compile
 		togglesList.add( "-noExit" );
-		//togglesList.add( "-noWarn" );
-		//togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon,uselessTypeCheck" ); // TODO: unused private
-		togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon" ); // TODO: unused private
+		togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon" ); 
 		togglesList.add( "-sourcepath" );
 		togglesList.add( srcdir.getAbsolutePath() + File.separatorChar );
 		togglesList.add( "-d" );
