@@ -279,7 +279,7 @@ public class Cfg2JavaTool {
 			Property field = (Property)fields.next();
 			buf.append( getJavaTypeName( field, useGenerics, ic ) )
 					.append( " " )
-					.append( field.getName() );
+					.append( keyWordCheck(field.getName()) );
 			if ( fields.hasNext() ) {
 				buf.append( ", " );
 			}
@@ -297,7 +297,7 @@ public class Cfg2JavaTool {
 		StringBuffer buf = new StringBuffer();
 		while ( fields.hasNext() ) {
 			Property field = (Property)fields.next();
-			buf.append( field.getName() );
+			buf.append( keyWordCheck(field.getName()) );
 			if ( fields.hasNext() ) {
 				buf.append( ", " );
 			}
@@ -403,6 +403,13 @@ public class Cfg2JavaTool {
 	public String simplePluralize(String str) {
 		return ReverseEngineeringStrategyUtil.simplePluralize(str);
 	}
+	
+	public String keyWordCheck(String possibleKeyword) {
+		if(ReverseEngineeringStrategyUtil.isReservedJavaKeyword(possibleKeyword)) {
+			possibleKeyword = possibleKeyword + "_";
+		}
+		return possibleKeyword;
+	}	
 
 	public boolean isArray(String typeName) {
 		return typeName!=null && typeName.endsWith("[]");

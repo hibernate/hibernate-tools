@@ -8,11 +8,11 @@
 </#if>
     <#include "GetPropertyAnnotation.ftl"/>
     ${pojo.getPropertyGetModifiers(property)} ${pojo.getJavaTypeName(property, jdk5)} ${pojo.getGetterSignature(property)}() {
-        return this.${property.name};
+        return this.${c2j.keyWordCheck(property.name)};
     }
     
-    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}(${pojo.getJavaTypeName(property, jdk5)} ${property.name}) {
-        this.${property.name} = ${property.name};
+    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}(${pojo.getJavaTypeName(property, jdk5)} ${c2j.keyWordCheck(property.name)}) {
+        this.${c2j.keyWordCheck(property.name)} = ${c2j.keyWordCheck(property.name)};
     }
 </#if>
 </#foreach>
