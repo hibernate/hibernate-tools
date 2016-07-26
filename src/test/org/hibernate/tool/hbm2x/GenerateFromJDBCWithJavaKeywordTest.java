@@ -3,6 +3,10 @@ package org.hibernate.tool.hbm2x;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -75,12 +79,17 @@ public class GenerateFromJDBCWithJavaKeywordTest extends JDBCMetaDataBinderTestC
 		Assert.assertTrue(myReturn.exists());
 		File myReturnHistory = new File(getOutputDir(), "org/reveng/MyReturnHistory.java");
 		Assert.assertTrue(myReturnHistory.exists());
-		try {
-			TestHelper.compile(getOutputDir(), getOutputDir());
-			Assert.fail();
-		} catch (RuntimeException e) {
-			Assert.assertTrue(e.getMessage().contains("Syntax error on token \"return\""));
-		}
+		TestHelper.compile(getOutputDir(), getOutputDir());
+		URLClassLoader loader = new URLClassLoader(new URL[] { getOutputDir().toURI().toURL() } );
+		Class<?> returnClass = loader.loadClass("org.reveng.MyReturn");
+		Assert.assertNotNull(returnClass);
+		Class<?> returnHistoryClass = loader.loadClass("org.reveng.MyReturnHistory");
+		Assert.assertNotNull(returnHistoryClass);
+		Field returnField = returnHistoryClass.getField("return_");
+		Assert.assertNotNull(returnField);
+		Method returnSetter = returnHistoryClass.getMethod("setReturn", new Class[] { returnClass });
+		Assert.assertNotNull(returnSetter);
+		loader.close();
 	}
 	
 }
