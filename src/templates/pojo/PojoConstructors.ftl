@@ -9,7 +9,7 @@
         super(${c2j.asArgumentList(pojo.getPropertyClosureForSuperclassMinimalConstructor())});        
 </#if>
 <#foreach field in pojo.getPropertiesForMinimalConstructor()>
-        this.${field.name} = ${field.name};
+        this.${c2j.keyWordCheck(field.name)} = ${c2j.keyWordCheck(field.name)};
 </#foreach>
     }
 </#if>    
@@ -20,7 +20,7 @@
         super(${c2j.asArgumentList(pojo.getPropertyClosureForSuperclassFullConstructor())});        
 </#if>
 <#foreach field in pojo.getPropertiesForFullConstructor()> 
-       this.${field.name} = ${field.name};
+       this.${c2j.keyWordCheck(field.name)} = ${c2j.keyWordCheck(field.name)};
 </#foreach>
     }
 </#if>    
