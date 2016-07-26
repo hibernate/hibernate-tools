@@ -85,7 +85,7 @@ public class GenerateFromJDBCWithJavaKeywordTest extends JDBCMetaDataBinderTestC
 		Assert.assertNotNull(returnClass);
 		Class<?> returnHistoryClass = loader.loadClass("org.reveng.MyReturnHistory");
 		Assert.assertNotNull(returnHistoryClass);
-		Field returnField = returnHistoryClass.getField("return_");
+		Field returnField = returnHistoryClass.getDeclaredField("return_");
 		Assert.assertNotNull(returnField);
 		Method returnSetter = returnHistoryClass.getMethod("setReturn", new Class[] { returnClass });
 		Assert.assertNotNull(returnSetter);
