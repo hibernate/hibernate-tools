@@ -250,7 +250,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
 							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
-							.addQuotedAttribute( "sequenceName", properties.getProperty( org.hibernate.id.SequenceGenerator.SEQUENCE, null ) );
+							.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
 							//	TODO HA does not support initialValue and allocationSize
 						wholeString.append( builder.getResult() );
 					}
