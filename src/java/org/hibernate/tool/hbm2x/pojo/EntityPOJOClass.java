@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.id.MultipleHiLoPerTableGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
+import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.collections.JoinedIterator;
 import org.hibernate.mapping.Collection;
@@ -254,7 +254,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 							//	TODO HA does not support initialValue and allocationSize
 						wholeString.append( builder.getResult() );
 					}
-					else if ( MultipleHiLoPerTableGenerator.class.getName().equals( strategy ) ) {
+					else if ( TableGenerator.class.getName().equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
 						.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "TABLE" ) )
 					    .addQuotedAttribute( "generator", "generator" );
@@ -309,17 +309,17 @@ public class EntityPOJOClass extends BasicPOJOClass {
 		if ( ! isPropertyDefault( PersistentIdentifierGenerator.SCHEMA, properties ) ) {
 			builder.addQuotedAttribute( "schema", properties.getProperty( PersistentIdentifierGenerator.SCHEMA, "") );
 		}
-		if (! isPropertyDefault( MultipleHiLoPerTableGenerator.PK_VALUE_NAME, properties ) ) {
-			builder.addQuotedAttribute( "pkColumnValue", properties.getProperty( MultipleHiLoPerTableGenerator.PK_VALUE_NAME, "") );
+		if (! isPropertyDefault( TableGenerator.SEGMENT_VALUE_PARAM, properties ) ) {
+			builder.addQuotedAttribute( "pkColumnValue", properties.getProperty( TableGenerator.SEGMENT_VALUE_PARAM, "") );
 		}
-		if ( ! isPropertyDefault( MultipleHiLoPerTableGenerator.MAX_LO, properties, "50" ) ) {
-			builder.addAttribute( "allocationSize", properties.getProperty( MultipleHiLoPerTableGenerator.MAX_LO, "50" ) );
+		if ( ! isPropertyDefault( TableGenerator.INCREMENT_PARAM, properties, "50" ) ) {
+			builder.addAttribute( "allocationSize", properties.getProperty( TableGenerator.INCREMENT_PARAM, "50" ) );
 		}
-		if (! isPropertyDefault( MultipleHiLoPerTableGenerator.PK_COLUMN_NAME, properties ) ) {
-			builder.addQuotedAttribute( "pkColumnName", properties.getProperty( MultipleHiLoPerTableGenerator.PK_COLUMN_NAME, "") );
+		if (! isPropertyDefault( TableGenerator.SEGMENT_COLUMN_PARAM, properties ) ) {
+			builder.addQuotedAttribute( "pkColumnName", properties.getProperty( TableGenerator.SEGMENT_COLUMN_PARAM, "") );
 		}
-		if (! isPropertyDefault( MultipleHiLoPerTableGenerator.VALUE_COLUMN_NAME, properties ) ) {
-			builder.addQuotedAttribute( "valueColumnName", properties.getProperty( MultipleHiLoPerTableGenerator.VALUE_COLUMN_NAME, "") );
+		if (! isPropertyDefault( TableGenerator.VALUE_COLUMN_PARAM, properties ) ) {
+			builder.addQuotedAttribute( "valueColumnName", properties.getProperty( TableGenerator.VALUE_COLUMN_PARAM, "") );
 		}
 		wholeString.append( builder.getResult() + "\n    " );
 	}
