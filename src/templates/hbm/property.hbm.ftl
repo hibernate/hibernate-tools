@@ -28,7 +28,9 @@
   <#assign metaattributable=property>
   <#include "meta.hbm.ftl">
   <#foreach column in property.columnIterator>
+     <#if !column.isFormula()>
         <#include "column.hbm.ftl">
+     </#if>
   </#foreach>	
   <#if property.value.typeParameters?exists>
   <type name="${property.value.typeName}">
