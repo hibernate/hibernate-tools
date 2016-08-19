@@ -14,6 +14,7 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.NonReflectiveTestCase;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -51,7 +52,7 @@ public class OtherCfg2HbmTest extends NonReflectiveTestCase {
         cfg.addFile(new File(getOutputDir(), "org/hibernate/tool/hbm2x/Order.hbm.xml") );
         cfg.addFile(new File(getOutputDir(), "org/hibernate/tool/hbm2x/Product.hbm.xml") );        
         
-        cfg.buildMappings();
+        MetadataHelper.getMetadata(cfg);
         
     }
 	
@@ -71,7 +72,7 @@ public class OtherCfg2HbmTest extends NonReflectiveTestCase {
 		Document document = xmlReader.read(new File(getOutputDir(), "org/hibernate/tool/hbm2x/Product.hbm.xml"));
 		
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/version");
-		List list = xpath.selectNodes(document);
+		List<?> list = xpath.selectNodes(document);
 		assertEquals("Expected to get one version element", 1, list.size());			
 	}
 	
