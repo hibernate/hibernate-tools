@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -152,22 +151,16 @@ public abstract class BaseTestCase extends TestCase {
 		
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
-		Connection con = null;
-        try {		
-        	con = connectionProvider.getConnection();
-        	JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();		
-        	dialect.configure(
-        			ReverseEngineeringRuntimeInfo.createInstance(
-        					connectionProvider, jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
+    	JDBCMetaDataDialect dialect = new JDBCMetaDataDialect();		
+    	dialect.configure(
+    			ReverseEngineeringRuntimeInfo.createInstance(
+    					connectionProvider, jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), new DefaultDatabaseCollector(dialect)));
 		Iterator<Map<String,Object>> tables = dialect.getTables( 
 				properties.getProperty(AvailableSettings.DEFAULT_CATALOG),
 				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA),
 				null);
 		
 		assertHasNext( 0, tables );
-        } finally {
-        	connectionProvider.closeConnection(con);	
-        }
 		
 	}
 
