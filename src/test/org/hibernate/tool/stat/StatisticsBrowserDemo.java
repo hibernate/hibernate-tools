@@ -43,7 +43,7 @@ public class StatisticsBrowserDemo extends NonReflectiveTestCase {
 		}
 		s.flush();
 		s.clear();
-		s.createQuery( "from java.lang.Object" ).list();
+		s.createQuery( "from java.lang.Object" ).getResultList();
 		tx.commit();
 		s.close();
 	}

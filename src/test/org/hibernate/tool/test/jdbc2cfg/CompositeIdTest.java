@@ -238,11 +238,11 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         Session session = factory.openSession();
         
         executeDDL(getGenDataSQL(), false);
-        session.createQuery("from Lineitem").list();
-        List<?> list = session.createQuery("from Product").list();
+        session.createQuery("from Lineitem").getResultList();
+        List<?> list = session.createQuery("from Product").getResultList();
         assertEquals(2,list.size() );
         
-        list = session.createQuery(getCustomerOrderQuery()).list();
+        list = session.createQuery(getCustomerOrderQuery()).getResultList();
         assertTrue(list.size()>0);
         
         Class<?> productIdClass = ucl.loadClass("ProductId");

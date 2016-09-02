@@ -33,7 +33,7 @@ public class QueryExporter extends AbstractExporter {
 			for (Iterator<String> iter = queryStrings.iterator(); iter.hasNext();) {
 				String query = (String) iter.next();
 				
-				List<Object> list = session.createQuery(query).list();
+				List<Object> list = session.createQuery(query).getResultList();
 				
 				if(getFileName()!=null) {
 					PrintWriter pw = null;
