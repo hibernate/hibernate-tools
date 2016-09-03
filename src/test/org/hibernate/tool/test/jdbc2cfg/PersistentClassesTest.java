@@ -131,7 +131,7 @@ public class PersistentClassesTest extends JDBCMetaDataBinderTestCase {
         assertFalse(Hibernate.isInitialized(order) );
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
-        order = (Orders) session.createQuery("from " + PACKAGE_NAME + ".Orders").uniqueResult();
+        order = (Orders) session.createQuery("from " + PACKAGE_NAME + ".Orders").getSingleResult();
         
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
 		t.commit();
