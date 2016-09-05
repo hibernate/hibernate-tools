@@ -1,11 +1,15 @@
 //$Id$
 package org.hibernate.tool.hbm2x.hbm2hbmxml;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.Date;
 
 public class FooComponent implements Serializable {
 	
+	private static final long serialVersionUID = 
+			ObjectStreamClass.lookup(FooComponent.class).getSerialVersionUID();
+		
 	int count;
 	String name;
 	Date[] importantDates;
@@ -82,9 +86,11 @@ public class FooComponent implements Serializable {
 		this.subcomponent = subcomponent;
 	}
 	
+	@SuppressWarnings("unused")
 	private String getNull() {
 		return null;
 	}
+	@SuppressWarnings("unused")
 	private void setNull(String str) throws Exception {
 		if (str!=null) throw new Exception("null component property");
 	}
