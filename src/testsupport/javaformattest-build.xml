@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE project>
 <project name="javaformattest">
 	<property name="build.dir" location="../../target/javaformattest" />
 	<property name="hibernate-libs" location="../../lib/testlibs" />
