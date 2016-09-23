@@ -63,13 +63,6 @@ public class HibernateToolTask extends Task {
 		return (AnnotationConfigurationTask) configurationTask;			
 	}
 	
-	public JPAConfigurationTask createEjb3Configuration() {
-		log( "<ejb3configuration> is deprecated. Use <jpaconfiguration> instead.", Project.MSG_WARN);
-		checkConfiguration();
-		configurationTask = new JPAConfigurationTask();
-		return (JPAConfigurationTask) configurationTask;			
-	}	
-	
 	public JPAConfigurationTask createJpaConfiguration() {
 		checkConfiguration();
 		configurationTask = new JPAConfigurationTask();
