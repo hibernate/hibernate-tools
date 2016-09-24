@@ -186,7 +186,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		assertTrue(ejb3.exists());
 		assertEquals(null, TestHelper.findFirstString("drop", ejb3));
 		
-		assertTrue(getLog().indexOf("<ejb3configuration> is deprecated")>0);
+		assertFalse(getLog().indexOf("<ejb3configuration> is deprecated")>0);
 	}
 	
 	public void testJPABogusPUnit() {
