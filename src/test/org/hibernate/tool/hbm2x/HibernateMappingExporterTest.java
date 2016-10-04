@@ -1,8 +1,6 @@
 package org.hibernate.tool.hbm2x;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 
 import org.hibernate.cfg.PojoMetaDataConfiguration;
 import org.hibernate.mapping.Column;
@@ -39,13 +37,7 @@ public class HibernateMappingExporterTest {
 		Assert.assertFalse(fooHbmXml.exists());
 		exporter.start();
 		Assert.assertTrue(fooHbmXml.exists());
-		BufferedReader br = new BufferedReader(new FileReader(fooHbmXml));
-		 String line = null;
-		 while ((line = br.readLine()) != null) {
-		   System.out.println(line);
-		 }	
-		 br.close();
-		 Assert.assertTrue(fooHbmXml.delete());
+		Assert.assertTrue(fooHbmXml.delete());
 	}
 
 }
