@@ -24,7 +24,6 @@ import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.JDBCMetaDataBinderTestCase;
 import org.hibernate.tool.test.TestHelper;
-import org.hibernate.tool.xml.DTDEntityResolver;
 
 /**
  * @author max
@@ -158,7 +157,6 @@ public class GenerateFromJDBCTest extends JDBCMetaDataBinderTestCase {
 	
 	private SAXReader getSAXReader() {
     	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setEntityResolver(new DTDEntityResolver() );
     	xmlReader.setValidation(true);
     	return xmlReader;
     }

@@ -24,16 +24,12 @@
 package org.hibernate.tool.xml;
 
 import org.dom4j.io.SAXReader;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 
 public final class XMLHelper {
 
-	public static final EntityResolver DEFAULT_DTD_RESOLVER = new DTDEntityResolver();
-
 	public static SAXReader createSAXReader(ErrorHandler errorHandler) {
 		SAXReader saxReader = resolveSAXReader();
-		saxReader.setEntityResolver(DEFAULT_DTD_RESOLVER);
 		saxReader.setErrorHandler( errorHandler );
 		return saxReader;
 	}
