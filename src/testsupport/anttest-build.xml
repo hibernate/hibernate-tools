@@ -47,7 +47,7 @@
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
 		<hibernatetool destdir="${build.dir}/topdown">
 		
-			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy">
 				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
@@ -76,7 +76,7 @@
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
 		<hibernatetool destdir="${build.dir}/topdown">
 		
-			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy">
 				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
@@ -98,7 +98,7 @@
 		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" />
 		<hibernatetool destdir="${build.dir}/topdown">
 		
-			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" entityresolver="DummyEntityResolver">
+			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy">
 				<fileset dir="../test" id="id">
 					<include name="**/*TopDown.hbm.xml" />
 				</fileset>
@@ -341,7 +341,7 @@ create table BottomUp (
 		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
-			<jpaconfiguration persistenceunit="ejb3test" entityresolver="DummyEntityResolver" propertyfile="${test-classes}/jpaoverrides.properties"/>
+			<jpaconfiguration persistenceunit="ejb3test" propertyfile="${test-classes}/jpaoverrides.properties"/>
 			<classpath>
 				<path location="${build.dir}/ejb3/classes" />
 			</classpath>
