@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
    version="1.0">
    <persistence-unit name="ejb3test" transaction-type="RESOURCE_LOCAL">
-      <provider>org.hibernate.ejb.HibernatePersistence</provider>
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <properties>
          <property name="hibernate.ejb.cfgfile" value="/ejb3test-hibernate.cfg.xml"/>
          <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>

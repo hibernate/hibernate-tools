@@ -178,8 +178,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
 	
-	// TODO: HBX-1269 - solve the test error
-/*	public void testEJB3ConfigurationFailureExpected() {
+	public void testEJB3ConfigurationFailureExpected() {
 		executeTarget("testantejb3cfg");
 		File baseDir = new File(project.getProperty("build.dir"));
 		File ejb3 = new File(baseDir, "ejb3.sql");
@@ -187,9 +186,9 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		assertTrue(ejb3.exists());
 		assertEquals(null, TestHelper.findFirstString("drop", ejb3));
 		
-		assertTrue(getLog().indexOf("<ejb3configuration> is deprecated")>0);
+		assertFalse(getLog().indexOf("<ejb3configuration> is deprecated")>0);
 	}
-*/	
+	
 	public void testJPABogusPUnit() {
 		try {
 			executeTarget("jpa-boguspunit");
@@ -199,14 +198,13 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		}
 	}
 	
-	// TODO: HBX-1269 - solve the test error
-/*	public void testJPAPUnit() {
+	public void testJPAPUnit() {
 		executeTarget("jpa-punit");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 	}
-*/	
-	// TODO: HBX-1269 - solve the test failure
-/*	public void testJPAPropertyOveridesPUnit() {
+	
+
+	public void testJPAPropertyOveridesPUnit() {
 		try {
 			executeTarget("jpa-overrides");
 			fail("property overrides not accepted");
@@ -215,7 +213,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 			assertTrue(be.getMessage(), be.getMessage().indexOf("FAKEDialect")>0);			
 		}
 	}
-*/	
+	
 	public void testHbm2JavaConfiguration() {
 		executeTarget("testanthbm2java");
 		assertTrue(getLog(), checkLogWithoutExceptions());

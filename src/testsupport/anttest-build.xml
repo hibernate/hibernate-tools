@@ -251,7 +251,7 @@ create table BottomUp (
 		<copy file="${test-classes}/ejb3test-hibernate.cfg.xml" tofile="${build.dir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${build.dir}">
-			<ejb3configuration/>
+			<jpaconfiguration/>
 			<classpath>
 				<path location="${build.dir}/ejb3/classes" />
 			</classpath>
