@@ -1,6 +1,9 @@
 package org.hibernate.tool.hbm2x.query;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +15,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.schema.TargetType;
 
 public class QueryExporterTest extends NonReflectiveTestCase {
@@ -54,17 +58,16 @@ public class QueryExporterTest extends NonReflectiveTestCase {
 	
 	public void testQueryExporter() {		
 
-// TODO: HBX-1267 - solve the test failure
-//		QueryExporter exporter = new QueryExporter();
-//		exporter.setConfiguration(createConfiguration());
-//		exporter.setOutputDirectory( getOutputDir() );
-//		exporter.setFilename( FILE );
-//		List<String> queries = new ArrayList<String>();
-//		queries.add("from java.lang.Object");
-//		exporter.setQueries( queries );		
-//		exporter.start();
-//
-//		assertFileAndExists( new File(getOutputDir(), FILE ));		
+		QueryExporter exporter = new QueryExporter();
+		exporter.setConfiguration(createConfiguration());
+		exporter.setOutputDirectory( getOutputDir() );
+		exporter.setFilename( FILE );
+		List<String> queries = new ArrayList<String>();
+		queries.add("from java.lang.Object");
+		exporter.setQueries( queries );		
+		exporter.start();
+
+		assertFileAndExists( new File(getOutputDir(), FILE ));		
 	}
 	
 	protected void tearDown() throws Exception {
