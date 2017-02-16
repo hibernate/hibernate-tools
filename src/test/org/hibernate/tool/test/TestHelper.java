@@ -10,8 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -205,58 +205,17 @@ public final class TestHelper {
 		return db;
 	}
 
-	private static List<File> buildClasspathFiles(List<String> jars) {
-		List<File> classpath = new ArrayList<File>();
-		String dir = System.getProperty("org.hibernate.tool.test.libdir", "lib" + File.separator + "testlibs");
-		if(dir==null) {
-			throw new IllegalStateException("System property org.hibernate.tool.test.libdir must be set to run tests that compile with a custom classpath");
-		}
-		
-		File libdir = new File(dir);
-		
-		Iterator<String> iterator = jars.iterator();
-		while ( iterator.hasNext() ) {
-			String jar = iterator.next();
-			File f = new File(libdir, jar);
-			if(!f.exists()) {
-				throw new IllegalStateException(f + " not found. Check if system property org.hibernate.tool.test.libdir is set correctly.");
-			}
-			classpath.add(f);			
-		}
-		
-		return classpath;
-	}
-
-	public static String buildClasspath(List<String> jars) {
-		List<File> files = buildClasspathFiles(jars);
-		StringBuffer classpath = new StringBuffer();
-		
-		Iterator<File> iterator = files.iterator();
+	public static String buildClasspathFromFileList(List<File> jars) {
+		StringBuffer classpath = new StringBuffer();		
+		Iterator<File> iterator = jars.iterator();
 		while (iterator.hasNext()) {
 			File f = iterator.next();
 			classpath.append(f);
 			if(iterator.hasNext()) {
 				classpath.append(File.pathSeparatorChar);
 			}
-		}
-		
+		}		
 		return classpath.toString();
-	}
-	
-	public static URL[] buildClasspathURLS(List<String> jars, File outputDir) throws MalformedURLException {
-		List<File> files = buildClasspathFiles(jars);
-		List<URL> classpath = new ArrayList<URL>();
-		
-		if(outputDir!=null) {
-			classpath.add(outputDir.toURI().toURL());
-		}
-		Iterator<File> iterator = files.iterator();
-		while (iterator.hasNext()) {
-			File f = iterator.next();
-			classpath.add(f.toURI().toURL());			
-		}
-		
-		return (URL[]) classpath.toArray(new URL[classpath.size()]);
 	}
 	
 	static public String findFirstString(String string, File file) {
@@ -274,6 +233,18 @@ public final class TestHelper {
 			throw new RuntimeException("trouble with searching in " + file,e);
 	    }
 		return str;
+	}
+
+	static public File findJarFileFor(Class<?> clazz) {
+		File result = null;
+		CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
+		if (codeSource != null) {
+			URL url = codeSource.getLocation();
+			if (url != null) {
+				result = new File(url.getPath());
+			}
+		}
+		return result;
 	}
 
 }

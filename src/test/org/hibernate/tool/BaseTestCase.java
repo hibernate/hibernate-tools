@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -36,56 +32,6 @@ import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
 public abstract class BaseTestCase extends TestCase {
-
-	public static abstract class ExecuteContext {
-	
-		private final File sourceDir;
-		private final File outputDir;
-		private final List<String> jars;
-		private URLClassLoader ucl;
-	
-		public ExecuteContext(File sourceDir, File outputDir, List<String> jars) {
-			this.sourceDir = sourceDir;
-			this.outputDir = outputDir;
-			this.jars = jars;
-		}
-		
-		public void run() throws Exception {
-			
-			TestHelper.compile(
-					sourceDir, 
-					outputDir, 
-					TestHelper.visitAllFiles( sourceDir, new ArrayList<String>() ), 
-					"1.5",
-					TestHelper.buildClasspath( jars )
-			);
-
-			URL[] urls = TestHelper.buildClasspathURLS(jars, outputDir);
-			
-			Thread currentThread = null;
-			ClassLoader contextClassLoader = null;
-			
-			try {
-				currentThread = Thread.currentThread();
-				contextClassLoader = currentThread.getContextClassLoader();
-				ucl = new URLClassLoader( urls, contextClassLoader);
-				currentThread.setContextClassLoader( ucl );
-		
-				execute();
-			
-			} finally {
-				currentThread.setContextClassLoader( contextClassLoader );
-				TestHelper.deleteDir( outputDir );
-			}
-		}
-	
-		public URLClassLoader getUcl() {
-			return ucl;
-		}
-		
-		abstract protected void execute() throws Exception;
-		
-	}
 
 	protected static final Logger SKIP_LOG = LoggerFactory.getLogger("org.hibernate.tool.test.SKIPPED");
 	

@@ -8,13 +8,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Persistence;
+
+import org.hibernate.Version;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.hbm2x.pojo.AnnotationBuilder;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
-import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.pojo.IteratorTransformer;
+import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.test.TestHelper;
 
 /**
@@ -59,10 +62,10 @@ public class Hbm2JavaEjb3Test extends NonReflectiveTestCase {
 		file.mkdir();
 
 		ArrayList<String> list = new ArrayList<String>();
-		List<String> jars = new ArrayList<String>();
-		jars.add("hibernate-jpa-2.1-api-1.0.0.Final.jar");
-		jars.add("hibernate-core-5.0.0.CR2.jar");
-		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars));
+		List<File> jars = new ArrayList<File>();
+		jars.add(TestHelper.findJarFileFor(Persistence.class)); // for jpa api
+		jars.add(TestHelper.findJarFileFor(Version.class)); // for hibernate core
+		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspathFromFileList(jars));
 
 		TestHelper.deleteDir(file);
 	}
