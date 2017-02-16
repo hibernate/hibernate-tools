@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
+import javax.persistence.Persistence;
+
+import org.apache.commons.logging.Log;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.test.TestHelper;
 
@@ -46,11 +50,11 @@ public class Hbm2EJBDaoTest extends NonReflectiveTestCase {
 		file.mkdir();
 		
 		ArrayList<String> list = new ArrayList<String>();
-		List<String> jars = new ArrayList<String>();
-		jars.add("commons-logging-1.2.jar");
-		jars.add("hibernate-jpa-2.1-api-1.0.0.Final.jar");
-		jars.add("javaee-api-7.0.jar");
-		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspath(jars) );
+		List<File> jars = new ArrayList<File>();
+		jars.add(TestHelper.findJarFileFor(Log.class)); // for commons logging
+		jars.add(TestHelper.findJarFileFor(Persistence.class)); // for jpa api
+		jars.add(TestHelper.findJarFileFor(EJB.class)); // for javaee api
+		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspathFromFileList(jars) );
 		
 		
 		TestHelper.deleteDir(file);

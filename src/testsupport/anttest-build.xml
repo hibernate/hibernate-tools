@@ -3,30 +3,16 @@
 	<property name="target.dir" location="../../target"/>
 	<property name="test-classes" location="${target.dir}/test-classes"/>
 	<property file="${test-classes}/hibernate.properties" />
-	<property name="lib.dir" location="./lib"/>
-	<property name="testlibs.dir" location="${lib.dir}/testlibs"/>
-	<property name="jdbc.lib" location="${lib.dir}/jdbc/hsqldb.jar"/>
 	
 	<path id="tasks.classpath">
 		<pathelement path="${test-classes}" />
 		<pathelement path="${target.dir}/classes" />
-
-		<fileset dir="${build.dir}/../../lib/testlibs">
-			<include name="**/*.jar" />
-		</fileset>
-
-		<pathelement path="./lib/freemarker.jar" />
-		<pathelement path="${jdbc.lib}" />
 	</path>
 	
 	<path id="annlib">
-		<path location="${lib.dir}/freemarker.jar" />
-		<path location="${testlibs.dir}/hibernate-core-5.0.0.CR2.jar" />
-		<path location="${testlibs.dir}/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
 		<path location="${test-classes}" />
 		<path location="${target.dir}/classes" />
 		<path location="${target.dir}/test-classes" />
-		<path location="${jdbc.lib}" />
 	</path>
 
 
