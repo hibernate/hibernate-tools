@@ -2,11 +2,9 @@
 <!DOCTYPE project>
 <project name="javaformattest">
 	<property name="build.dir" location="../../target/javaformattest" />
-	<property name="hibernate-libs" location="../../lib/testlibs" />
 	<property name="target.dir" location="../../target"/>
 	<property name="test-classes" location="${target.dir}/test-classes"/>
 	<property file="${test-classes}/hibernate.properties" />
-	<property name="lib.dir" location="../../lib"/>
 	<property file="${test-classes}/hibernate.properties" />
 
 
@@ -14,17 +12,6 @@
 	<path id="tasks.classpath">
 		<pathelement path="${test-classes}" />
 		<pathelement path="${target.dir}/classes" />
-
-		<fileset dir="${hibernate-libs}">
-			<include name="**/*.jar" />
-		</fileset>
-
-		<pathelement path="${lib.dir}/freemarker.jar" />
-		
-		<fileset dir="${lib.dir}">
-			<include name="**/*eclipse*.jar" />
-		</fileset>
-		<pathelement path="${lib.dir}/jdbc/hsqldb.jar" />
 	</path>
 	
 	<target name="cleanup">

@@ -11,7 +11,10 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Persistence;
+
 import org.hibernate.MappingException;
+import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -202,11 +205,11 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		exporter.start();		
 		
 		ArrayList<String> list = new ArrayList<String>();
-		List<String> jars = new ArrayList<String>();
+		List<File> jars = new ArrayList<File>();
 		//addAnnotationJars(jars);
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
-				TestHelper.buildClasspath( jars )
+				TestHelper.buildClasspathFromFileList(jars)
 		);
         
 		URL[] urls = new URL[] { getOutputDir().toURI().toURL() };
@@ -251,15 +254,13 @@ public class OneToOneTest extends JDBCMetaDataBinderTestCase {
 		
 		assertEquals(9, getOutputDir().listFiles().length);
 		ArrayList<String> list = new ArrayList<String>();
-		List<String> jars = new ArrayList<String>();
 		
-		
-		jars.add( "hibernate-core-5.0.0.CR2.jar" );
-		jars.add( "hibernate-jpa-2.1-api-1.0.0.Final.jar");
-		
+		List<File> jars = new ArrayList<File>();
+		jars.add(TestHelper.findJarFileFor(Persistence.class)); // for jpa api
+		jars.add(TestHelper.findJarFileFor(Version.class)); // for hibernate core
 		TestHelper.compile(
 				getOutputDir(), getOutputDir(), TestHelper.visitAllFiles( getOutputDir(), list ), "1.5",
-				TestHelper.buildClasspath( jars )
+				TestHelper.buildClasspathFromFileList(jars)
 		); 
         URL[] urls = new URL[] { getOutputDir().toURI().toURL() };
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
