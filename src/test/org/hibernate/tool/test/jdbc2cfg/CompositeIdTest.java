@@ -5,6 +5,7 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -213,7 +214,15 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
         exporter.start();
         javaExp.start();
         
-        XMLPrettyPrinter.prettyPrintDirectory(outputdir,".hbm.xml", false);
+		File[] files = outputdir.listFiles( new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith( ".hbm.xml" );
+			}
+		} );
+		for (int i = 0; i < files.length; i++) {
+			XMLPrettyPrinter.prettyPrintFile(files[i]);
+		}
+        
         TestHelper.compile(outputdir, outputdir);
         
         URL[] urls = new URL[] { outputdir.toURI().toURL() };
