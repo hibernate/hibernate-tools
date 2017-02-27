@@ -234,7 +234,6 @@ public class CompositeIdTest extends JDBCMetaDataBinderTestCase {
 		for (int i = 0; i < files.length; i++) {
 			XMLPrettyPrinter.prettyPrintFile(files[i]);
 		}
-        
         TestHelper.compile(outputdir, outputdir);
         
         Configuration derived = new Configuration();
