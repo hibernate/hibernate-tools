@@ -31,7 +31,6 @@ public class Hbm2XAllTests {
 				.addTestSuite(Hbm2JavaBidirectionalIndexedCollectionMappingTest.class);
 		suite.addTestSuite(IncrementalSchemaReadingTest.class);
 		suite.addTestSuite(Hbm2JavaEjb3Test.class);
-		suite.addTestSuite(XMLPrettyPrinterTest.class);
 		suite.addTestSuite(GenericExporterTest.class);
 		suite.addTestSuite(Hbm2JavaTest.class);		
 		//$JUnit-END$
