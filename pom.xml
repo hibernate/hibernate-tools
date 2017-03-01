@@ -126,9 +126,9 @@
 			<version>2.3.23</version>
 		</dependency>
         <dependency>
-            <groupId>org.eclipse.tycho</groupId>
+            <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.9.1.v20130905-0837</version>
+            <version>3.12.2</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
