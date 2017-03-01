@@ -138,9 +138,9 @@
             <scope>compile</scope>
         </dependency>
 		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>text</artifactId>
-			<version>3.3.0-v20070606-0010</version>
+			<groupId>org.eclipse.text</groupId>
+			<artifactId>org.eclipse.text</artifactId>
+			<version>3.5.101</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
