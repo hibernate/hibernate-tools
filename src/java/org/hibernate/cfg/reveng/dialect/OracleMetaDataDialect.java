@@ -95,14 +95,15 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ "decode(a.nullable,'N',0,1) as NULLABLE, "
 			+ "decode(a.data_type, 'FLOAT',decode(a.data_precision,null, "
 			+ "a.data_length, a.data_precision), 'NUMBER', decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), a.data_length) as COLUMN_SIZE, "
+			+ "38, a.data_precision), a.data_length) as COLUMN_SIZE, "
 			+ "decode(a.data_type,'CHAR',1, 'DATE',91, 'FLOAT',6, "
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
 			+ "'RAW',-3, 'ROWID',1111, 'UROWID',1111, 'LONG RAW', -4, "
 			+ "'TIMESTAMP', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
 			+ "a.table_name as TABLE_NAME, a.data_type as TYPE_NAME, "
-			+ "decode(a.data_scale, null, 0 ,a.data_scale) as DECIMAL_DIGITS, b.comments "
+			+ "decode(a.data_scale, null, decode(a.data_type, 'NUMBER', "
+			+ "decode(a.data_precision, null, 38, 0), 0), a.data_scale) as DECIMAL_DIGITS, b.comments "
 			+ "from all_tab_columns a left join all_col_comments b on "
 			+ "(a.owner=b.owner and a.table_name=b.table_name and a.column_name=b.column_name) ";
 
