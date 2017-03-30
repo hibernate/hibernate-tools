@@ -66,11 +66,25 @@ public class VersionTest extends TestCase {
 		Element root = document.getDocumentElement();
 		NodeList nodes = root.getChildNodes();
 		Node versionNode = null;
+		Node parentNode = null;
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
+			if (parentNode == null && "parent".equals(node.getNodeName())) {
+				parentNode = node;
+			}
 			if ("version".equals(node.getNodeName())) {
 				versionNode = node;
 				break;
+			}
+		}
+		if (versionNode == null) {
+			nodes = parentNode.getChildNodes();
+			for (int i = 0; i < nodes.getLength(); i++) {
+				Node node = nodes.item(i);
+				if ("version".equals(node.getNodeName())) {
+					versionNode = node;
+					break;
+				}
 			}
 		}
 		return versionNode.getTextContent();		
