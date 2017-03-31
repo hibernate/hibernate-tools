@@ -12,8 +12,19 @@
 
     <artifactId>hibernate-tools-hsql-tests</artifactId>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>Hibernate Tools HSQL Tests Project</name>
-
+    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+    </dependencies>
+    
 </project>
