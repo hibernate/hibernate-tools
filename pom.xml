@@ -28,6 +28,7 @@
         <maven.install.skip>true</maven.install.skip>
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.3.3</hsqldb.version>
+        <h2.version>1.4.194</h2.version>
     </properties>
     
     <dependencyManagement>
@@ -42,6 +43,12 @@
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <version>${hsqldb.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

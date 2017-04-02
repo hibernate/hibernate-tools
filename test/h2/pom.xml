@@ -13,8 +13,17 @@
 
     <artifactId>hibernate-tools-h2-tests</artifactId>
 
-    <packaging>pom</packaging>
-
     <name>Hibernate Tools H2 Tests Project</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+    </dependencies>
+    
 </project>
