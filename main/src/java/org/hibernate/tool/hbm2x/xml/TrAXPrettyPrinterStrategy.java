@@ -28,20 +28,35 @@ public class TrAXPrettyPrinterStrategy extends AbstractXMLPrettyPrinterStrategy 
     }
 
     protected Transformer newTransformer(final Document document) throws TransformerConfigurationException {
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        //transformerFactory.setAttribute("indent-number", getIndent());
+        final TransformerFactory transformerFactory = newTransformerFactory();
+
         final Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, isOmitXmlDeclaration() ? "yes" : "no");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(getIndent()));
+        try {
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(getIndent()));
+        } catch (IllegalArgumentException ignored) {
+        }
 
         final DocumentType doctype = document.getDoctype();
         if (doctype != null) {
             transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
             transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
         }
+
         return transformer;
+    }
+
+    protected TransformerFactory newTransformerFactory() {
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        try {
+            transformerFactory.setAttribute("indent-number", getIndent());
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        return transformerFactory;
     }
 
     public int getIndent() {
