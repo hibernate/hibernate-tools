@@ -1,7 +1,7 @@
 package org.hibernate.tool.hbm2x.xml;
 
 public final class XMLPrettyPrinterStrategyFactory {
-    public static final String PROPERTY_STRATEGY_IMPL = "org.hibernate.tool.hbm2x.xml.XMLPrettyPrinterStrategy.impl";
+    public static final String PROPERTY_STRATEGY_IMPL = "org.hibernate.tool.hbm2x.xml.XMLPrettyPrinterStrategy";
 
     private static final XMLPrettyPrinterStrategy DEFAULT_STRATEGY = new TrAXPrettyPrinterStrategy();
 
