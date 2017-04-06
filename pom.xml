@@ -33,6 +33,12 @@
     
     <dependencyManagement>
         <dependencies>
+        	<dependency>
+        		<groupId>org.hibernate</groupId>
+        		<artifactId>hibernate-tools</artifactId>
+        		<version>${version}</version>
+        		<scope>test</scope>
+        	</dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
