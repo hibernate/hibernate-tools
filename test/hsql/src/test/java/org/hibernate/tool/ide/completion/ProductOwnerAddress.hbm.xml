@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.hibernate.tool.ide.completion">
+    
+    <class name="ProductOwnerAddress" table="hc_product_owner_address">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="street"/>
+        <property name="number"/>
+    </class>
+        
+</hibernate-mapping>

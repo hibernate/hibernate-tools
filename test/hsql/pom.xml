@@ -17,6 +17,10 @@
     <name>Hibernate Tools HSQL Tests Project</name>
     
     <dependencies>
+    	<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-tools</artifactId>
+    	</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
