@@ -29,16 +29,29 @@
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <h2.version>1.4.194</h2.version>
+        <hibernate-core.version>5.2.9.Final</hibernate-core.version>
+        <slf4j-log4j12.version>1.7.23</slf4j-log4j12.version>
     </properties>
     
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate-core.version}</version>
+            </dependency>
         	<dependency>
         		<groupId>org.hibernate</groupId>
         		<artifactId>hibernate-tools</artifactId>
         		<version>${version}</version>
         		<scope>test</scope>
         	</dependency>
+ 		    <dependency>
+			    <groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-log4j12</artifactId>
+			    <version>${slf4j-log4j12.version}</version>
+			    <scope>test</scope>
+		    </dependency> 
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

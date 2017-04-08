@@ -17,6 +17,15 @@
     <name>Hibernate Tools HSQL Tests Project</name>
     
     <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+  		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency> 
     	<dependency>
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools</artifactId>
