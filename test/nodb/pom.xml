@@ -16,4 +16,11 @@
 
     <name>Hibernate Tools No Database Tests Project</name>
 
+    <dependencies>
+    	<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-tools</artifactId>
+    	</dependency>
+    </dependencies>
+    
 </project>
