@@ -20,34 +20,34 @@ package org.hibernate.tool.ide.completion;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author leon
  */
-public class CompletionHelperTest extends TestCase {
-    
-    public CompletionHelperTest() {
-    }
-
+public class CompletionHelperTest {
+	
+    @Test
     public void testGetCanonicalPath() {
         List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.descriptions", "descr"));
         qts.add(new EntityNameReference("descr.name", "n"));
-        assertEquals("Invalid path", "Article/descriptions/name/locale", CompletionHelper.getCanonicalPath(qts, "n.locale"));
-        assertEquals("Invalid path", "Article/descriptions", CompletionHelper.getCanonicalPath(qts, "descr"));
+        Assert.assertEquals("Invalid path", "Article/descriptions/name/locale", CompletionHelper.getCanonicalPath(qts, "n.locale"));
+        Assert.assertEquals("Invalid path", "Article/descriptions", CompletionHelper.getCanonicalPath(qts, "descr"));
         //
         qts.clear();
         qts.add(new EntityNameReference("com.company.Clazz", "clz"));
         qts.add(new EntityNameReference("clz.attr", "a"));
-        assertEquals("Invalid path", "com.company.Clazz/attr", CompletionHelper.getCanonicalPath(qts, "a"));
+        Assert.assertEquals("Invalid path", "com.company.Clazz/attr", CompletionHelper.getCanonicalPath(qts, "a"));
         //
         qts.clear();
         qts.add(new EntityNameReference("Agga", "a"));
-        assertEquals("Invalid path", "Agga", CompletionHelper.getCanonicalPath(qts, "a"));
+        Assert.assertEquals("Invalid path", "Agga", CompletionHelper.getCanonicalPath(qts, "a"));
     }
 
+    @Test
     public void testStackOverflowInGetCanonicalPath() {
         List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
         qts.add(new EntityNameReference("Article", "art"));
