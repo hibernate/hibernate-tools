@@ -62,7 +62,7 @@ public class TemplateHelper {
         this.outputDirectory = outputDirectory;
         
         context = new SimpleHash(ObjectWrapper.BEANS_WRAPPER);
-    	freeMarkerEngine = new Configuration();
+    	freeMarkerEngine = new Configuration(Configuration.VERSION_2_3_0);
         
         List<TemplateLoader> loaders = new ArrayList<TemplateLoader>();
         
