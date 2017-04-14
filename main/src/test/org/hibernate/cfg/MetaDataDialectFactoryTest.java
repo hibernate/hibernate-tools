@@ -2,8 +2,6 @@ package org.hibernate.cfg;
 
 import java.util.Properties;
 
-import org.hibernate.cfg.JDBCBinderException;
-import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -13,7 +11,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MySQL5Dialect;
-import org.hibernate.dialect.MySQL5InnoDBDialect;
+import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle10gDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.Oracle9iDialect;
@@ -84,7 +82,7 @@ public class MetaDataDialectFactoryTest extends TestCase {
 				MetaDataDialectFactory.fromDialect(new Oracle10gDialect()));
 		assertSameClass(
 				MySQLMetaDataDialect.class, 
-				MetaDataDialectFactory.fromDialect(new MySQL5InnoDBDialect()));
+				MetaDataDialectFactory.fromDialect(new MySQLDialect()));
 		assertSameClass(
 				H2MetaDataDialect.class, 
 				MetaDataDialectFactory.fromDialect(new H2Dialect()));
@@ -109,7 +107,7 @@ public class MetaDataDialectFactoryTest extends TestCase {
 				MetaDataDialectFactory.fromDialectName(Oracle9iDialect.class.getName()));
 		assertSameClass(
 				MySQLMetaDataDialect.class, 
-				MetaDataDialectFactory.fromDialectName(MySQL5InnoDBDialect.class.getName()));
+				MetaDataDialectFactory.fromDialectName(MySQLDialect.class.getName()));
 		assertSameClass(
 				H2MetaDataDialect.class, 
 				MetaDataDialectFactory.fromDialectName(H2Dialect.class.getName()));
