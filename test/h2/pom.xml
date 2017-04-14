@@ -7,11 +7,11 @@
 
     <parent>
         <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-tools-itests-parent</artifactId>
+        <artifactId>hibernate-tools-tests-parent</artifactId>
         <version>6.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hibernate-tools-h2-tests</artifactId>
+    <artifactId>hibernate-tools-tests-h2</artifactId>
 
     <name>Hibernate Tools H2 Tests Project</name>
 
