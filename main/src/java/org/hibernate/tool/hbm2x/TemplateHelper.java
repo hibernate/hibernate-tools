@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.tool.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.hibernate.tool.Version;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
 import freemarker.template.SimpleDate;
 import freemarker.template.SimpleHash;
 import freemarker.template.Template;
@@ -61,7 +61,7 @@ public class TemplateHelper {
     public void init(File outputDirectory, String[] templatePaths) {
         this.outputDirectory = outputDirectory;
         
-        context = new SimpleHash(ObjectWrapper.BEANS_WRAPPER);
+        context = new SimpleHash(new BeansWrapperBuilder(Configuration.VERSION_2_3_0).build());
     	freeMarkerEngine = new Configuration(Configuration.VERSION_2_3_0);
         
         List<TemplateLoader> loaders = new ArrayList<TemplateLoader>();
