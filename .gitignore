@@ -7,6 +7,6 @@ reverseoutput
 .classpath
 .project
 .settings
-
+.DS_Store
 .idea
 *.iml

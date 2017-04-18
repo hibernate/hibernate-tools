@@ -96,6 +96,7 @@ public class MetaDataDialectFactoryTest {
 		
 	}
 
+	@Test
 	public void testFromDialectName() {
 		assertSameClass(
 				null, 

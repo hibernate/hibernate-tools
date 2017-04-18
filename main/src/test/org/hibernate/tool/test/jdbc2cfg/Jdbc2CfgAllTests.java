@@ -1,8 +1,6 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 
-import org.hibernate.cfg.MetaDataDialectFactoryTest;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -31,7 +29,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(AutoQuoteTest.suite());
 		suite.addTest(KeyPropertyCompositeIdTest.suite());
 		suite.addTest(IndexTest.suite());
-		suite.addTest(new TestSuite(MetaDataDialectFactoryTest.class));
 		//$JUnit-END$
 		return suite;
 	}
