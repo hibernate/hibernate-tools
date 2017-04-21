@@ -3,6 +3,7 @@ package org.hibernate.tools.test.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -61,6 +62,22 @@ public class JdbcUtil {
 			}
 			connection.commit();
 			statement.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static String toIdentifier(Object test, String string) {
+		Connection connection = CONNECTION_TABLE.get(test);
+		try {
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			if (databaseMetaData.storesLowerCaseIdentifiers()) {
+				return string.toLowerCase();
+			} else if (databaseMetaData.storesUpperCaseIdentifiers()) {
+				return string.toUpperCase();
+			} else {
+				return string;
+			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
