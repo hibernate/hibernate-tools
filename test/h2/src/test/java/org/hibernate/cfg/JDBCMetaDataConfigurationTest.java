@@ -45,5 +45,14 @@ public class JDBCMetaDataConfigurationTest {
 		Assert.assertNotNull("Withfaketimestamp", metadata.getEntityBinding("Withfaketimestamp"));
 		Assert.assertNotNull("Withversion", metadata.getEntityBinding("Withversion"));
 	}
+	
+	@Test
+	public void testGetTable() throws Exception {
+		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
+		Assert.assertNull(cfg.getTable(JdbcUtil.toIdentifier(this, "Withrealtimestamp")));
+		cfg = new JDBCMetaDataConfiguration();
+		cfg.readFromJDBC();
+		Assert.assertNotNull(cfg.getTable(JdbcUtil.toIdentifier(this, "Withrealtimestamp")));
+	}
 
 }
