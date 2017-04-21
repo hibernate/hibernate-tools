@@ -11,13 +11,12 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import junit.framework.ComparisonFailure;
 
 /**
  * @author max
@@ -56,10 +55,10 @@ public class BasicTest {
 
 	@Test
 	public void testBasic() throws SQLException {
-		assertHasNext(
+		JUnitUtil.assertIteratorContainsExactly(
 				"There should be three tables!", 
-				3, 
-				jmdcfg.getMetadata().getEntityBindings().iterator());
+				jmdcfg.getMetadata().getEntityBindings().iterator(),
+				3);
 		Table table = getTable(jmdcfg, JdbcUtil.toIdentifier(this, "basic"));
 		Assert.assertEquals(
 				JdbcUtil.toIdentifier(this, "basic"), 
@@ -102,22 +101,6 @@ public class BasicTest {
 			}
 		}
 		return null;
-	}
-
-	protected void assertHasNext(String reason, int expected, Iterator<?> iterator) {
-		int actual = 0;
-		Object last = null;
-		while (iterator.hasNext() && actual <= expected) {
-			last = iterator.next();
-			actual++;
-		}
-		if (actual < expected) {
-			throw new ComparisonFailure(reason == null ? "Expected were less" : reason, "" + expected, "" + actual);
-		}
-		if (actual > expected) {
-			throw new ComparisonFailure((reason == null ? "Expected were higher" : reason) + ", Last: " + last,
-					"" + expected, "" + actual);
-		}
 	}
 
 }
