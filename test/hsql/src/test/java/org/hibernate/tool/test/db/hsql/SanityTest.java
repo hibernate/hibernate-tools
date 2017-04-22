@@ -1,9 +1,9 @@
-package org.hibernate.tool.test;
+package org.hibernate.tool.test.db.hsql;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HsqlTest {
+public class SanityTest {
 	
 	@Test
 	public void testHsqlPresent() {
