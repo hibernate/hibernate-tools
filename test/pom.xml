@@ -18,10 +18,11 @@
     <name>Hibernate Tools Integration Tests Parent Project</name>
 
     <modules>
-        <module>utils</module>
-    	<module>nodb</module>
+    	<module>common</module>
         <module>h2</module>
         <module>hsql</module>
+    	<module>nodb</module>
+        <module>utils</module>
     </modules>
 
 </project>
