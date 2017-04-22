@@ -5,7 +5,6 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.Column;
@@ -59,7 +58,7 @@ public class BasicTest {
 				"There should be three tables!", 
 				jmdcfg.getMetadata().getEntityBindings().iterator(),
 				3);
-		Table table = getTable(jmdcfg, JdbcUtil.toIdentifier(this, "basic"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "basic"));
 		Assert.assertEquals(
 				JdbcUtil.toIdentifier(this, "basic"), 
 				JdbcUtil.toIdentifier(this, table.getName()));
@@ -78,7 +77,7 @@ public class BasicTest {
 
 	@Test
 	public void testScalePrecisionLength() {
-		Table table = getTable(jmdcfg, JdbcUtil.toIdentifier(this, "basic"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "basic"));
 		Column nameCol = table.getColumn(new Column(JdbcUtil.toIdentifier(this, "name")));
 		Assert.assertEquals(nameCol.getLength(), 20);
 		Assert.assertEquals(nameCol.getPrecision(), Column.DEFAULT_PRECISION);
@@ -87,20 +86,9 @@ public class BasicTest {
 
 	@Test
 	public void testCompositeKeys() {
-		Table table = getTable(jmdcfg, JdbcUtil.toIdentifier(this, "multikeyed"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "multikeyed"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
 		Assert.assertEquals(2, primaryKey.getColumnSpan());
-	}
-
-	private Table getTable(JDBCMetaDataConfiguration configuration, String tabName) {
-		Iterator<Table> iter = configuration.getMetadata().collectTableMappings().iterator();
-		while (iter.hasNext()) {
-			Table table = (Table) iter.next();
-			if (table.getName().equals(tabName)) {
-				return table;
-			}
-		}
-		return null;
 	}
 
 }
