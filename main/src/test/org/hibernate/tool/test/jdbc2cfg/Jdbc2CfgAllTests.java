@@ -24,7 +24,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(RevEngForeignKeyTests.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
 		suite.addTest(NoPrimaryKeyTest.suite());
-		suite.addTest(BasicTest.suite());
 		suite.addTest(VersioningTest.suite());
 		suite.addTest(AutoQuoteTest.suite());
 		suite.addTest(KeyPropertyCompositeIdTest.suite());
