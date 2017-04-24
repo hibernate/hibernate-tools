@@ -19,12 +19,10 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(SearchEscapeStringTest.suite());
 		suite.addTest(PerformanceTest.suite());
 		suite.addTest(ForeignKeysTest.suite());
-		suite.addTest(BasicMultiSchemaTest.suite());
 		suite.addTest(MetaDataTest.suite());
 		suite.addTest(RevEngForeignKeyTests.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
 		suite.addTest(NoPrimaryKeyTest.suite());
-		suite.addTest(VersioningTest.suite());
 		suite.addTest(KeyPropertyCompositeIdTest.suite());
 		suite.addTest(IndexTest.suite());
 		//$JUnit-END$
