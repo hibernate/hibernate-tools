@@ -5,7 +5,6 @@
 package org.hibernate.tool.test.jdbc2cfg;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -28,7 +27,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.hbm2x.XMLPrettyPrinter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -244,14 +242,6 @@ public class CompositeIdTest {
         Exporter javaExp = new POJOExporter(jmdcfg, testFolder);
         exporter.start();
         javaExp.start();      
-		File[] files = testFolder.listFiles( new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith( ".hbm.xml" );
-			}
-		} );
-		for (int i = 0; i < files.length; i++) {
-			XMLPrettyPrinter.prettyPrintFile(files[i]);
-		}        
         JavaUtil.compile(testFolder);        
         URL[] urls = new URL[] { testFolder.toURI().toURL() };
         URLClassLoader ucl = new URLClassLoader(
