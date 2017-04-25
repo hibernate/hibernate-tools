@@ -29,6 +29,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.hbm2x.XMLPrettyPrinter;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -146,7 +147,7 @@ public class CompositeIdTest {
     public void testMultiColumnForeignKeys() {
         Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "LineItem") );
         Assert.assertNotNull(table);
-        ForeignKey foreignKey = getForeignKey(
+        ForeignKey foreignKey = HibernateUtil.getForeignKey(
         		table, 
         		JdbcUtil.toIdentifier(this, "toCustomerOrder") );     
         Assert.assertNotNull(foreignKey);                
@@ -292,17 +293,6 @@ public class CompositeIdTest {
         factory.close();
         Thread.currentThread().setContextClassLoader(ucl.getParent() );        
     }
-	 
-	private ForeignKey getForeignKey(Table table, String fkName) {
-		Iterator<?> iter = table.getForeignKeyIterator();
-		while (iter.hasNext()) {
-			ForeignKey fk = (ForeignKey) iter.next();
-			if (fk.getName().equals(fkName)) {
-				return fk;
-			}
-		}
-		return null;
-	}
 	 
 }
      
