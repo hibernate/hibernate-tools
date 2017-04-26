@@ -15,7 +15,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(DefaultReverseEngineeringStrategyTest.suite());
 		suite.addTest(PersistentClassesTest.suite());
 		suite.addTest(OracleViewsTest.suite());
-		suite.addTest(CompositeIdTest.suite());
 		suite.addTest(SearchEscapeStringTest.suite());
 		suite.addTest(PerformanceTest.suite());
 		suite.addTest(ForeignKeysTest.suite());
@@ -23,7 +22,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(RevEngForeignKeyTests.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
 		suite.addTest(NoPrimaryKeyTest.suite());
-		suite.addTest(KeyPropertyCompositeIdTest.suite());
 		suite.addTest(IndexTest.suite());
 		//$JUnit-END$
 		return suite;
