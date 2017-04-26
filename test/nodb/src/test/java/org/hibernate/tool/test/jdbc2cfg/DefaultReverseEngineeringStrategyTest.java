@@ -19,6 +19,7 @@ import org.junit.Test;
 
 /**
  * @author max
+ * @author koen
  *
  */
 public class DefaultReverseEngineeringStrategyTest {
