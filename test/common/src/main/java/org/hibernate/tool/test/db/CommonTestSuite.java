@@ -6,6 +6,7 @@ import org.hibernate.tool.test.jdbc2cfg.BasicMultiSchemaTest;
 import org.hibernate.tool.test.jdbc2cfg.BasicTest;
 import org.hibernate.tool.test.jdbc2cfg.CompositeIdTest;
 import org.hibernate.tool.test.jdbc2cfg.ForeignKeysTest;
+import org.hibernate.tool.test.jdbc2cfg.IndexTest;
 import org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeIdTest;
 import org.hibernate.tool.test.jdbc2cfg.VersioningTest;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BasicMultiSchemaTest.class,
 	CompositeIdTest.class,
 	ForeignKeysTest.class,
+	IndexTest.class,
 	JDBCMetaDataConfigurationTest.class,
 	KeyPropertyCompositeIdTest.class,
 	VersioningTest.class
