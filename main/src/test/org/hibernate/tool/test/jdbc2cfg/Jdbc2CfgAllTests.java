@@ -16,7 +16,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(OracleViewsTest.suite());
 		suite.addTest(SearchEscapeStringTest.suite());
 		suite.addTest(PerformanceTest.suite());
-		suite.addTest(MetaDataTest.suite());
 		suite.addTest(RevEngForeignKeyTests.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
 		suite.addTest(NoPrimaryKeyTest.suite());
