@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.Properties;
 
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -24,6 +25,14 @@ public class JdbcUtilTest {
 	@After
 	public void tearDown() throws Exception {
 		clearConnectionTable();
+	}
+	
+	@Test
+	public void testGetConnectionProperties() throws Exception {
+		Properties properties = JdbcUtil.getConnectionProperties(getClass());
+		Assert.assertEquals("jdbc:h2:mem:test", properties.get("url"));
+		Assert.assertEquals("sa", properties.get("user"));
+		Assert.assertEquals("", properties.get("password"));
 	}
 	
 	@Test

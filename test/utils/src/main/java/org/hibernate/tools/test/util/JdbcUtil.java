@@ -14,10 +14,9 @@ public class JdbcUtil {
 	
 	static HashMap<Object, Connection> CONNECTION_TABLE = new HashMap<>();
 	
-	public static void establishJdbcConnection(Object test) {
+	public static Properties getConnectionProperties(Class<?> clazz) {
 		Properties properties = new Properties();
-		InputStream inputStream = test
-				.getClass()
+		InputStream inputStream = clazz
 				.getClassLoader()
 				.getResourceAsStream("hibernate.properties");
 		try {
@@ -25,14 +24,22 @@ public class JdbcUtil {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		String connectionUrl = properties.getProperty("hibernate.connection.url");
 		Properties connectionProperties = new Properties();
+		connectionProperties.put(
+				"url", 
+				properties.getProperty("hibernate.connection.url"));
 		connectionProperties.put(
 				"user", 
 				properties.getProperty("hibernate.connection.username"));
 		connectionProperties.put(
 				"password", 
 				properties.getProperty("hibernate.connection.password"));
+		return connectionProperties;
+	}
+	
+	public static void establishJdbcConnection(Object test) {
+		Properties connectionProperties = getConnectionProperties(test.getClass());
+		String connectionUrl = connectionProperties.getProperty("url");
 		try {
 			Connection connection = DriverManager
 					.getDriver(connectionUrl)
