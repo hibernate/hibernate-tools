@@ -18,7 +18,6 @@ public class Jdbc2CfgAllTests {
 		suite.addTest(PerformanceTest.suite());
 		suite.addTest(RevEngForeignKeyTests.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
-		suite.addTest(NoPrimaryKeyTest.suite());
 		//$JUnit-END$
 		return suite;
 	}
