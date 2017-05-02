@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+ <!-- a empty one is valid and means select everything without considering schema/catalog/table -->
+ <schema-selection/>
+ 
+ <!-- Only for something matching in schema OVRTEST -->
+ <schema-selection match-schema="OVRTEST"/>
+
+ <!-- Only for something matching in catalog UBERCATALOG and schema OVRTEST -->
+ <schema-selection match-catalog="UBERCATALOG" match-schema="OVRTEST"/>
+
+ <!-- .* is valid, will be translated into % -->
+ <schema-selection match-catalog="PUBLIC.*" match-schema="OVRTEST" match-table=".*"/> 
+
+</hibernate-reverse-engineering>
