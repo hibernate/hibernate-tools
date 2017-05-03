@@ -10,6 +10,7 @@ import org.hibernate.tool.test.jdbc2cfg.IndexTest;
 import org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeIdTest;
 import org.hibernate.tool.test.jdbc2cfg.MetaDataTest;
 import org.hibernate.tool.test.jdbc2cfg.NoPrimaryKeyTest;
+import org.hibernate.tool.test.jdbc2cfg.PerformanceTest;
 import org.hibernate.tool.test.jdbc2cfg.VersioningTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -27,6 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	KeyPropertyCompositeIdTest.class,
 	MetaDataTest.class,
 	NoPrimaryKeyTest.class,
+	PerformanceTest.class,
 	VersioningTest.class
 })
 public class CommonTestSuite {}
