@@ -17,6 +17,10 @@
 
 package org.hibernate.tool.ide.completion;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,13 +28,21 @@ import java.util.List;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.tools.test.util.JavaUtil;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * @author leon
+ * @author koen
  */
 public class ModelCompletionTest {
 
@@ -57,15 +69,54 @@ public class ModelCompletionTest {
 
 		public void completionFailure(String errorMessage) {}
 	}
+    
+    @ClassRule
+    public static TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private Configuration sf;
 	private ConfigurationCompletion cc;
-    
+	
+	private ClassLoader originalClassLoader = null;
+	
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		File folder = temporaryFolder.getRoot();
+		File originFolder = 
+			new File(ModelCompletionTest.class
+				.getClassLoader()
+				.getResource("org/hibernate/tool/ide/completion/resources")
+				.toURI())
+				.getParentFile();
+		File destinationFolder = new File(
+				folder, 
+				"org/hibernate/tool/ide/completion");
+		destinationFolder.mkdirs();
+		for (File f : originFolder.listFiles()) {
+			String fileName = f.getName();
+			if (fileName.endsWith(".java") || fileName.endsWith(".hbm.xml")) {
+				Files.copy(
+						f.toPath(), 
+						new File(destinationFolder, f.getName()).toPath());
+			}
+		}
+		JavaUtil.compile(temporaryFolder.getRoot());
+	}
+	
     @Before
     public void setUp() throws Exception {
-        sf = Model.buildConfiguration();        
+    	originalClassLoader = Thread.currentThread().getContextClassLoader();
+    	Thread.currentThread().setContextClassLoader(
+    			new URLClassLoader(
+    					new URL[] { temporaryFolder.getRoot().toURI().toURL() }, 
+    					originalClassLoader));
+        sf = buildConfiguration();        
     	Metadata md = MetadataHelper.getMetadata(sf);
     	cc = new ConfigurationCompletion(md);
+    }
+    
+    @After
+    public void tearDown() throws Exception {
+    	Thread.currentThread().setContextClassLoader(originalClassLoader);
     }
     
     @Test
@@ -599,5 +650,20 @@ public class ModelCompletionTest {
         int indexOf = str.indexOf("|");
 		return indexOf!=-1?indexOf:str.length();
     }
+    
+    private Configuration buildConfiguration() {
+    	Configuration cfg = new Configuration();
+        cfg.setProperty(Environment.DIALECT, HSQLDialect.class.getName());
+        cfg
+        	.addInputStream(getClass().getResourceAsStream("Product.hbm.xml"))
+        	.addInputStream(getClass().getResourceAsStream("Store.hbm.xml"))
+        	.addInputStream(getClass().getResourceAsStream("ProductOwnerAddress.hbm.xml"))
+        	.addInputStream(getClass().getResourceAsStream("City.hbm.xml"))
+        	.addInputStream(getClass().getResourceAsStream("StoreCity.hbm.xml"));
+        MetadataHelper.getMetadata(cfg);
+        return cfg;
+    }
+    
+
     
 }
