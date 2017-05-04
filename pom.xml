@@ -29,6 +29,7 @@
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <h2.version>1.4.194</h2.version>
+        <sqlserver.version>6.1.7.jre8-preview</sqlserver.version>
         <hibernate-core.version>5.2.9.Final</hibernate-core.version>
         <slf4j-log4j12.version>1.7.23</slf4j-log4j12.version>
     </properties>
@@ -51,7 +52,7 @@
         		<artifactId>hibernate-tools-tests-utils</artifactId>
         		<version>${version}</version>
         	</dependency>
-       	<dependency>
+       		<dependency>
         		<groupId>org.hibernate</groupId>
         		<artifactId>hibernate-tools-tests-common</artifactId>
         		<version>${version}</version>
@@ -80,6 +81,11 @@
                 <version>${h2.version}</version>
                 <scope>test</scope>
             </dependency>
+			<dependency>
+    			<groupId>com.microsoft.sqlserver</groupId>
+    			<artifactId>mssql-jdbc</artifactId>
+    			<version>${sqlserver.version}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 

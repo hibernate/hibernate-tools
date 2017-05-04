@@ -21,6 +21,7 @@
     	<module>common</module>
         <module>h2</module>
         <module>hsql</module>
+        <module>mssql</module>
     	<module>nodb</module>
         <module>utils</module>
     </modules>
