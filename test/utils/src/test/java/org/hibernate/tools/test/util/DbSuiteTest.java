@@ -1,6 +1,7 @@
 package org.hibernate.tools.test.util;
 
 import org.hibernate.tools.test.util.DbSuite.IgnoreIfDatabaseOffline;
+import org.hibernate.tools.test.util.DbSuite.SqlScriptRoot;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -21,6 +22,7 @@ public class DbSuiteTest {
 		}
 		@Override
 		public void run(RunNotifier notifier) {
+			sqlScriptRoot = System.getProperty(DbSuite.SQL_SCRIPT_ROOT);
 			notifier.fireTestStarted(getDescription());;
 		}		
 	}
@@ -36,7 +38,7 @@ public class DbSuiteTest {
 	    }
 	}
 	
-	private static class DummyTest {
+	public class DummyTest {
 		@Test
 		public void testDummy() {
 			Assert.assertTrue(true);
@@ -45,35 +47,47 @@ public class DbSuiteTest {
 	
 	@RunWith(DbSuite.class)
 	@SuiteClasses(DummyTest.class)
-	public static class FirstSuite {}
+	public class FirstSuite {}
 	
 	@RunWith(DbSuite.class)
 	@SuiteClasses(DummyTest.class)
 	@IgnoreIfDatabaseOffline(true)
-	public static class SecondSuite {}
+	public class SecondSuite {}
 
 	@RunWith(DbSuite.class)
 	@SuiteClasses(DummyTest.class)
 	@IgnoreIfDatabaseOffline(false)
-	public static class ThirdSuite {}
+	public class ThirdSuite {}
 	
-	private static class TestRunnerBuilder extends RunnerBuilder {
+	@RunWith(DbSuite.class)
+	@SuiteClasses(DummyTest.class)
+	@SqlScriptRoot("foo.bar")
+	public class FourthSuite {}
+	
+	private class TestRunnerBuilder extends RunnerBuilder {
 		@Override
-		public Runner runnerForClass(Class<?> testClass) throws Throwable {			// TODO Auto-generated method stub
+		public Runner runnerForClass(Class<?> testClass) throws Throwable {
 			return null;
 		}		
 	}
 	
 	private DbSuite dbSuite;
+	private String sqlScriptRoot = null;
 	
 	@Test
 	public void testDbSuiteConstruction() throws Exception {
 		dbSuite = new DbSuite(FirstSuite.class, new TestRunnerBuilder());
 		Assert.assertFalse(dbSuite.ignore);
+		Assert.assertNull(dbSuite.sqlScriptRoot);
 		dbSuite = new DbSuite(SecondSuite.class, new TestRunnerBuilder());
 		Assert.assertTrue(dbSuite.ignore);
+		Assert.assertNull(dbSuite.sqlScriptRoot);
 		dbSuite = new DbSuite(ThirdSuite.class, new TestRunnerBuilder());
 		Assert.assertFalse(dbSuite.ignore);
+		Assert.assertNull(dbSuite.sqlScriptRoot);
+		dbSuite = new DbSuite(FourthSuite.class, new TestRunnerBuilder());
+		Assert.assertFalse(dbSuite.ignore);
+		Assert.assertEquals("foo.bar", dbSuite.sqlScriptRoot);
 	}
 	
 	@Test
@@ -90,11 +104,21 @@ public class DbSuiteTest {
 		Assert.assertFalse(listener.isStarted);
 		Assert.assertTrue(listener.isIgnored);
 		dbSuite.ignore = false;
+		dbSuite.sqlScriptRoot = null;
 		listener.isStarted = false;
 		listener.isIgnored = false;
 		dbSuite.runChild(runner, notifier);
 		Assert.assertTrue(listener.isStarted);
 		Assert.assertFalse(listener.isIgnored);
+		Assert.assertNull(sqlScriptRoot);
+		dbSuite.ignore = false;
+		dbSuite.sqlScriptRoot = "foo.bar";
+		listener.isStarted = false;
+		listener.isIgnored = false;
+		dbSuite.runChild(runner, notifier);
+		Assert.assertTrue(listener.isStarted);
+		Assert.assertFalse(listener.isIgnored);
+		Assert.assertEquals("foo.bar", sqlScriptRoot);		
 	}
 	
 	
