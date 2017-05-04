@@ -39,7 +39,7 @@ public class JdbcUtil {
 	
 	public static void establishJdbcConnection(Object test) {
 		Properties connectionProperties = getConnectionProperties(test.getClass());
-		String connectionUrl = connectionProperties.getProperty("url");
+		String connectionUrl = (String)connectionProperties.remove("url");
 		try {
 			Connection connection = DriverManager
 					.getDriver(connectionUrl)
