@@ -46,12 +46,12 @@ public class PerformanceTest {
 		jmdcfg = new JDBCMetaDataConfiguration();
 		buildSQL();
 		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeDDL(this, createSQL);
+		JdbcUtil.executeSql(this, createSQL);
 	}
 	
 	@After
 	public void tearDown() {
-		JdbcUtil.executeDDL(this, dropSQL);
+		JdbcUtil.executeSql(this, dropSQL);
 		JdbcUtil.releaseJdbcConnection(this);
 	}
 

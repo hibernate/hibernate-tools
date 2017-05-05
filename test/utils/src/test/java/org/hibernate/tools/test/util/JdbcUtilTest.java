@@ -78,7 +78,7 @@ public class JdbcUtilTest {
 		String[] sqls = new String[] {
 				"CREATE TABLE FOO (BAR INT)"
 		};
-		JdbcUtil.executeDDL(this, sqls);
+		JdbcUtil.executeSql(this, sqls);
 		resultSet = connection
 				.getMetaData()
 				.getTables(null, null, "FOO", null);

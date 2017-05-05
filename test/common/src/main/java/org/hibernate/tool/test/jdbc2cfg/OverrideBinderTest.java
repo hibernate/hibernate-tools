@@ -74,7 +74,7 @@ public class OverrideBinderTest {
 	@Before
 	public void setUp() {
 		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeDDL(this, CREATE_SQL);
+		JdbcUtil.executeSql(this, CREATE_SQL);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
@@ -86,7 +86,7 @@ public class OverrideBinderTest {
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeDDL(this, DROP_SQL);
+		JdbcUtil.executeSql(this, DROP_SQL);
 		JdbcUtil.releaseJdbcConnection(this);
 	}
 

@@ -121,7 +121,7 @@ public class KeyPropertyCompositeIdTest {
 	@Before
 	public void setUp() {
 		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeDDL(this, CREATE_SQL);
+		JdbcUtil.executeSql(this, CREATE_SQL);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.setPreferBasicCompositeIds(false);
 		jmdcfg.readFromJDBC();
@@ -129,7 +129,7 @@ public class KeyPropertyCompositeIdTest {
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeDDL(this, DROP_SQL);
+		JdbcUtil.executeSql(this, DROP_SQL);
 		JdbcUtil.releaseJdbcConnection(this);
 	}
 
@@ -230,7 +230,7 @@ public class KeyPropertyCompositeIdTest {
 		Thread.currentThread().setContextClassLoader(ucl);
 		SessionFactory factory = derived.buildSessionFactory();
 		Session session = factory.openSession();
-		JdbcUtil.executeDDL(this, GENERATE_DATA_SQL);
+		JdbcUtil.executeSql(this, GENERATE_DATA_SQL);
 		session.createQuery("from Lineitem").getResultList();
 		List<?> list = session.createQuery("from Product").getResultList();
 		Assert.assertEquals(2, list.size());

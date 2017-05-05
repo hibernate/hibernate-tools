@@ -57,7 +57,7 @@ public class JdbcUtil {
 		}
 	}
 	
-	public static void executeDDL(Object test, String[] sqls) {
+	public static void executeSql(Object test, String[] sqls) {
 		try {
 			executeSql(CONNECTION_TABLE.get(test), sqls);
 		} catch (SQLException e) {

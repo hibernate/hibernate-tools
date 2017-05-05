@@ -26,12 +26,12 @@ public class JDBCMetaDataConfigurationTest {
 	@Before
 	public void setUp() {
 		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeDDL(this, CREATE_SQL);
+		JdbcUtil.executeSql(this, CREATE_SQL);
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeDDL(this, DROP_SQL);
+		JdbcUtil.executeSql(this, DROP_SQL);
 		JdbcUtil.releaseJdbcConnection(this);
 	}
 

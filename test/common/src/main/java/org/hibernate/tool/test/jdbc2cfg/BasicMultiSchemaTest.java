@@ -46,7 +46,7 @@ public class BasicMultiSchemaTest {
 	@Before
 	public void setUp() {
 		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeDDL(this, CREATE_SQL);
+		JdbcUtil.executeSql(this, CREATE_SQL);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.setProperty(Environment.DEFAULT_SCHEMA, "PUBLIC");
 		jmdcfg.readFromJDBC();
@@ -54,7 +54,7 @@ public class BasicMultiSchemaTest {
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeDDL(this, DROP_SQL);
+		JdbcUtil.executeSql(this, DROP_SQL);
 		JdbcUtil.releaseJdbcConnection(this);
 	}
 
