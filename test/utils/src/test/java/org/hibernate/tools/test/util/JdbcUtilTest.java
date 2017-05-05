@@ -1,35 +1,46 @@
 package org.hibernate.tools.test.util;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class JdbcUtilTest {
+	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
 	@Before
 	public void setUp() throws Exception {
 		clearConnectionTable();
+		createHibernateProperties("sa", "", "jdbc:h2:mem:test");
+		setUpClassLoader();
 	}
 	
 	@After
 	public void tearDown() throws Exception {
 		clearConnectionTable();
+		restoreClassLoader();
 	}
 	
 	@Test
 	public void testGetConnectionProperties() throws Exception {
-		Properties properties = JdbcUtil.getConnectionProperties(getClass());
+		Properties properties = JdbcUtil.getConnectionProperties();
 		Assert.assertEquals("jdbc:h2:mem:test", properties.get("url"));
 		Assert.assertEquals("sa", properties.get("user"));
 		Assert.assertEquals("", properties.get("password"));
@@ -92,11 +103,49 @@ public class JdbcUtilTest {
 		Assert.assertEquals("foo", JdbcUtil.toIdentifier(this, "Foo"));
 	}
 	
+	@Test
+	public void testIsDatabaseOnline() throws Exception {
+			Assert.assertTrue(JdbcUtil.isDatabaseOnline());
+			new File(temporaryFolder.getRoot(), "hibernate.properties").delete();
+			createHibernateProperties("foo", "bar", "jdbc:sqlserver://org.foo.bar:1433");
+			Assert.assertFalse(JdbcUtil.isDatabaseOnline());
+	}
+	
 	private void clearConnectionTable() throws Exception {
 		for (Connection c : JdbcUtil.CONNECTION_TABLE.values()) {
 			c.close();
 		}
 		JdbcUtil.CONNECTION_TABLE.clear();
+	}
+	
+	private void createHibernateProperties(
+			String user, 
+			String password, 
+			String url) 
+					throws Exception {
+		Properties properties = new Properties();
+		properties.put("hibernate.connection.username", user);
+		properties.put("hibernate.connection.password", password);
+		properties.put("hibernate.connection.url", url);
+		File outputFolder = temporaryFolder.getRoot(); 
+		File propertiesFile = new File(outputFolder, "hibernate.properties");
+		FileWriter writer = new FileWriter(propertiesFile);
+		properties.store(writer, null);
+		writer.close();
+	}
+	
+	private void setUpClassLoader() throws Exception {
+		ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(
+				new URLClassLoader(
+					new URL[] { temporaryFolder.getRoot().toURI().toURL() }, 
+					currentClassLoader));
+	}
+	
+	private void restoreClassLoader() {
+		URLClassLoader currentClassLoader = 
+				(URLClassLoader)Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(currentClassLoader.getParent());
 	}
 	
 	private static class MetaDataInvocationHandler implements InvocationHandler {

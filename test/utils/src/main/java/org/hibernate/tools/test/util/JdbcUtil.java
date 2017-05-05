@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -14,10 +15,11 @@ public class JdbcUtil {
 	
 	static HashMap<Object, Connection> CONNECTION_TABLE = new HashMap<>();
 	
-	public static Properties getConnectionProperties(Class<?> clazz) {
+	public static Properties getConnectionProperties() {
 		Properties properties = new Properties();
-		InputStream inputStream = clazz
-				.getClassLoader()
+		InputStream inputStream = Thread
+				.currentThread()
+				.getContextClassLoader()
 				.getResourceAsStream("hibernate.properties");
 		try {
 			properties.load(inputStream);
@@ -38,13 +40,8 @@ public class JdbcUtil {
 	}
 	
 	public static void establishJdbcConnection(Object test) {
-		Properties connectionProperties = getConnectionProperties(test.getClass());
-		String connectionUrl = (String)connectionProperties.remove("url");
 		try {
-			Connection connection = DriverManager
-					.getDriver(connectionUrl)
-					.connect(connectionUrl, connectionProperties);
-			CONNECTION_TABLE.put(test, connection);
+			CONNECTION_TABLE.put(test, createJdbcConnection());
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -61,14 +58,8 @@ public class JdbcUtil {
 	}
 	
 	public static void executeDDL(Object test, String[] sqls) {
-		Connection connection = CONNECTION_TABLE.get(test);
 		try {
-			Statement statement = connection.createStatement();
-			for (int i = 0; i < sqls.length; i++) {
-				statement.execute(sqls[i]);
-			}
-			connection.commit();
-			statement.close();
+			executeSql(CONNECTION_TABLE.get(test), sqls);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -88,6 +79,43 @@ public class JdbcUtil {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static boolean isDatabaseOnline() {
+		boolean result = false;
+		try {
+			Connection connection = createJdbcConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT 1 AS C");
+			if (resultSet.next()) {
+				result = resultSet.getInt("C") == 1;
+			}
+			connection.commit();
+			statement.close();
+			connection.close();
+		} catch (SQLException e) {
+			// this will happen when the database is offline
+		} 
+		return result;
+	}
+	
+	private static Connection createJdbcConnection() 
+			throws SQLException {
+		Properties connectionProperties = getConnectionProperties();
+		String connectionUrl = (String)connectionProperties.remove("url");
+		return DriverManager
+				.getDriver(connectionUrl)
+				.connect(connectionUrl, connectionProperties);	
+	}
+	
+	private static void executeSql(Connection connection, String[] sqls) 
+			throws SQLException {
+		Statement statement = connection.createStatement();
+		for (int i = 0; i < sqls.length; i++) {
+			statement.execute(sqls[i]);
+		}
+		connection.commit();
+		statement.close();		
 	}
 
 }
