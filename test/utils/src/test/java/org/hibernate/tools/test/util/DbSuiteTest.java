@@ -1,9 +1,18 @@
 package org.hibernate.tools.test.util;
 
-import org.hibernate.tools.test.util.DbSuite.IgnoreIfDatabaseOffline;
+import java.io.File;
+import java.io.FileWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Properties;
+
 import org.hibernate.tools.test.util.DbSuite.SqlScriptRoot;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
@@ -51,18 +60,8 @@ public class DbSuiteTest {
 	
 	@RunWith(DbSuite.class)
 	@SuiteClasses(DummyTest.class)
-	@IgnoreIfDatabaseOffline(true)
-	public class SecondSuite {}
-
-	@RunWith(DbSuite.class)
-	@SuiteClasses(DummyTest.class)
-	@IgnoreIfDatabaseOffline(false)
-	public class ThirdSuite {}
-	
-	@RunWith(DbSuite.class)
-	@SuiteClasses(DummyTest.class)
 	@SqlScriptRoot("foo.bar")
-	public class FourthSuite {}
+	public class SecondSuite {}
 	
 	private class TestRunnerBuilder extends RunnerBuilder {
 		@Override
@@ -74,20 +73,36 @@ public class DbSuiteTest {
 	private DbSuite dbSuite;
 	private String sqlScriptRoot = null;
 	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	
+	@Before
+	public void setUp() throws Exception {
+		createHibernateProperties("sa", "", "jdbc:h2:mem:test");
+		setUpClassLoader();
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		restoreClassLoader();
+	}
+	
 	@Test
 	public void testDbSuiteConstruction() throws Exception {
 		dbSuite = new DbSuite(FirstSuite.class, new TestRunnerBuilder());
-		Assert.assertFalse(dbSuite.ignore);
 		Assert.assertNull(dbSuite.sqlScriptRoot);
+		Assert.assertFalse(dbSuite.ignore);
 		dbSuite = new DbSuite(SecondSuite.class, new TestRunnerBuilder());
-		Assert.assertTrue(dbSuite.ignore);
-		Assert.assertNull(dbSuite.sqlScriptRoot);
-		dbSuite = new DbSuite(ThirdSuite.class, new TestRunnerBuilder());
-		Assert.assertFalse(dbSuite.ignore);
-		Assert.assertNull(dbSuite.sqlScriptRoot);
-		dbSuite = new DbSuite(FourthSuite.class, new TestRunnerBuilder());
-		Assert.assertFalse(dbSuite.ignore);
 		Assert.assertEquals("foo.bar", dbSuite.sqlScriptRoot);
+		Assert.assertFalse(dbSuite.ignore);
+		new File(temporaryFolder.getRoot(), "hibernate.properties").delete();
+		createHibernateProperties("foo", "bar", "jdbc:sqlserver://org.foo.bar:1433");
+		dbSuite = new DbSuite(FirstSuite.class, new TestRunnerBuilder());
+		Assert.assertNull(dbSuite.sqlScriptRoot);
+		Assert.assertTrue(dbSuite.ignore);
+		dbSuite = new DbSuite(SecondSuite.class, new TestRunnerBuilder());
+		Assert.assertEquals("foo.bar", dbSuite.sqlScriptRoot);
+		Assert.assertTrue(dbSuite.ignore);
 	}
 	
 	@Test
@@ -119,6 +134,36 @@ public class DbSuiteTest {
 		Assert.assertTrue(listener.isStarted);
 		Assert.assertFalse(listener.isIgnored);
 		Assert.assertEquals("foo.bar", sqlScriptRoot);		
+	}
+	
+	private void createHibernateProperties(
+			String user, 
+			String password, 
+			String url) 
+					throws Exception {
+		Properties properties = new Properties();
+		properties.put("hibernate.connection.username", user);
+		properties.put("hibernate.connection.password", password);
+		properties.put("hibernate.connection.url", url);
+		File outputFolder = temporaryFolder.getRoot(); 
+		File propertiesFile = new File(outputFolder, "hibernate.properties");
+		FileWriter writer = new FileWriter(propertiesFile);
+		properties.store(writer, null);
+		writer.close();
+	}
+	
+	private void setUpClassLoader() throws Exception {
+		ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(
+				new URLClassLoader(
+					new URL[] { temporaryFolder.getRoot().toURI().toURL() }, 
+					currentClassLoader));
+	}
+	
+	private void restoreClassLoader() {
+		URLClassLoader currentClassLoader = 
+				(URLClassLoader)Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(currentClassLoader.getParent());
 	}
 	
 	

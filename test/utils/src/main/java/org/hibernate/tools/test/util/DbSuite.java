@@ -19,13 +19,6 @@ public class DbSuite extends Suite {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     @Inherited
-    public @interface IgnoreIfDatabaseOffline {
-        public boolean value();
-    }
-    
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    @Inherited
     public @interface SqlScriptRoot {
         public String value();
     }
@@ -35,7 +28,7 @@ public class DbSuite extends Suite {
 	
 	public DbSuite(Class<?> klass, RunnerBuilder builder) throws InitializationError {
 		super(klass, builder);
-		setIgnoreIfDatabaseOffline(klass);
+		ignore = !JdbcUtil.isDatabaseOnline();
 		setSqlScriptRoot(klass);
 	}
 	
@@ -54,13 +47,6 @@ public class DbSuite extends Suite {
     		}
     	} else {
     		notifier.fireTestIgnored(getDescription());
-    	}
-    }
-    
-    private void setIgnoreIfDatabaseOffline(Class<?> klass) {
-    	IgnoreIfDatabaseOffline annotation = klass.getAnnotation(IgnoreIfDatabaseOffline.class);
-    	if (annotation != null) {
-    		ignore = annotation.value();
     	}
     }
     
