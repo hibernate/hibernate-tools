@@ -24,13 +24,13 @@ import org.junit.Test;
  */
 public class BasicTest {
 
-	private static final String[] CREATE_SQL = new String[] {
+	static final String[] CREATE_SQL = new String[] {
 			"create table basic ( a int not null, name varchar(20), primary key (a)  )",
 			"create table somecolumnsnopk ( pk varchar(25) not null, b char, c int not null, aBoolean boolean )",
 			"create table multikeyed ( orderid varchar(10), customerid varchar(10), name varchar(10), primary key(orderid, customerid) )" 
 		};
 
-	private static final String[] DROP_SQL = new String[] { 
+	static final String[] DROP_SQL = new String[] { 
 			"drop table basic", 
 			"drop table somecolumnsnopk",
 			"drop table multikeyed" 
@@ -40,16 +40,14 @@ public class BasicTest {
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
