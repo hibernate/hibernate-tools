@@ -21,14 +21,14 @@ import org.junit.Test;
  */
 public class AutoQuoteTest {
 
-	private static final String[] CREATE_SQL = new String[] {
+	static final String[] CREATE_SQL = new String[] {
 				"create table \"us-ers\" ( userid INTEGER NOT NULL, department VARCHAR(3), PRIMARY KEY (userid) )", 
 				"create table typ ( indexid INTEGER NOT NULL, text varchar(10) NOT NULL, korr INTEGER NOT NULL, PRIMARY KEY (indexid) )", 
-				"create table workLogs ( indexid INTEGER NOT NULL, loggedid INTEGER NOT NULL, userid INTEGER NOT NULL, typ INTEGER NOT NULL, PRIMARY KEY (indexid, userid), FOREIGN KEY (userid) REFERENCES \"us-ers\"(userid), FOREIGN KEY (typ) REFERENCES typ(indexid) )"
+				"create table worklogs ( indexid INTEGER NOT NULL, loggedid INTEGER NOT NULL, userid INTEGER NOT NULL, typ INTEGER NOT NULL, PRIMARY KEY (indexid, userid), FOREIGN KEY (userid) REFERENCES \"us-ers\"(userid), FOREIGN KEY (typ) REFERENCES typ(indexid) )"
 		};
 
-	private static final String[] DROP_SQL = new String[]  {
-				"drop table workLogs",
+	static final String[] DROP_SQL = new String[]  {
+				"drop table worklogs",
 				"drop table \"us-ers\"",
 				"drop table typ",
 		};
@@ -37,16 +37,14 @@ public class AutoQuoteTest {
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
