@@ -6,7 +6,6 @@ package org.hibernate.tool.test.jdbc2cfg;
 
 import java.sql.SQLException;
 
-import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -25,7 +24,7 @@ import org.junit.Test;
  */
 public class BasicMultiSchemaTest {
 
-	private static final String[] CREATE_SQL = new String[] {
+	static final String[] CREATE_SQL = new String[] {
 				"create table basic ( a int not null, name varchar(20), primary key (a)  )",
 				"create table somecolumnsnopk ( pk varchar(25) not null, b char, c int not null, aBoolean boolean )",
 				"create table multikeyed ( orderid varchar(10), customerid varchar(10), name varchar(10), primary key(orderid, customerid) )",
@@ -33,7 +32,7 @@ public class BasicMultiSchemaTest {
 				"create table otherschema.basic ( a int not null, name varchar(20), primary key (a)  )",
 			};
 
-	private static final String[] DROP_SQL = new String[]  {
+	static final String[] DROP_SQL = new String[]  {
 	        "drop table basic", 
 	        "drop table somecolumnsnopk",
 			"drop table multikeyed",
@@ -45,17 +44,14 @@ public class BasicMultiSchemaTest {
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);
 		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.setProperty(Environment.DEFAULT_SCHEMA, "PUBLIC");
 		jmdcfg.readFromJDBC();
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
