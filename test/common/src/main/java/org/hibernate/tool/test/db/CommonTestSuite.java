@@ -8,6 +8,7 @@ import org.hibernate.tool.test.jdbc2cfg.CompositeIdTest;
 import org.hibernate.tool.test.jdbc2cfg.ForeignKeysTest;
 import org.hibernate.tool.test.jdbc2cfg.IndexTest;
 import org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeIdTest;
+import org.hibernate.tool.test.jdbc2cfg.ManyToManyTest;
 import org.hibernate.tool.test.jdbc2cfg.MetaDataTest;
 import org.hibernate.tool.test.jdbc2cfg.NoPrimaryKeyTest;
 import org.hibernate.tool.test.jdbc2cfg.OverrideBinderTest;
@@ -27,6 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	IndexTest.class,
 	JDBCMetaDataConfigurationTest.class,
 	KeyPropertyCompositeIdTest.class,
+	ManyToManyTest.class,
 	MetaDataTest.class,
 	NoPrimaryKeyTest.class,
 	OverrideBinderTest.class,

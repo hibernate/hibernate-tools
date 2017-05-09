@@ -10,7 +10,6 @@ public class Jdbc2CfgAllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.hibernate.tool.test.jdbc2cfg");
 		//$JUnit-BEGIN$
-		suite.addTest(ManyToManyTest.suite());
 		suite.addTest(PersistentClassesTest.suite());
 		suite.addTest(OracleViewsTest.suite());
 		suite.addTest(SearchEscapeStringTest.suite());

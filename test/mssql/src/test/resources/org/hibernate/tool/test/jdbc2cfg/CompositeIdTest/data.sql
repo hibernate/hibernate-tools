@@ -1,0 +1,6 @@
+insert into htt.Product (productId, extraId, description, price, numberAvailable) values('PC', '0', 'My PC', 100.0, 23)
+insert into htt.Product (productId, extraId, description, price, numberAvailable) values('MS', '1', 'My Mouse', 101.0, 23)
+insert into htt.Customer (customerId, name, address) values('MAX', 'Max Rydahl Andersen', 'Neuchatel')
+insert into htt.CustomerOrder (customerId, orderNumber, orderDate) values ('MAX', 1, '2005-11-11')
+insert into htt.LineItem (customerIdref, orderNumber, productId, extraProdId, quantity) values ('MAX', 1, 'PC', '0', 10)
+insert into htt.LineItem (customerIdref, orderNumber, productId, extraProdId, quantity) values ('MAX', 1, 'MS', '1', 12)
