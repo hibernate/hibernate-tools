@@ -110,6 +110,10 @@ public class JdbcUtil {
 		executeSql(test, getSqls(test, "create.sql", "CREATE_SQL"));
 	}
 	
+	public static void populateDatabase(Object test) {
+		executeSql(test, getSqls(test, "data.sql", "DATA_SQL"));
+	}
+	
 	public static void dropDatabase(Object test) {
 		executeSql(test, getSqls(test, "drop.sql", "DROP_SQL"));
 		releaseJdbcConnection(test);
@@ -164,7 +168,7 @@ public class JdbcUtil {
 				.getResource(fullName);
 		if (url != null) {
 			result = new File(url.getFile());
-		}
+		} 
 		return result;
 	}
 	
