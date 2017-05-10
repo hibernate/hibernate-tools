@@ -30,6 +30,7 @@
         <hsqldb.version>2.3.3</hsqldb.version>
         <h2.version>1.4.194</h2.version>
         <sqlserver.version>6.1.7.jre8-preview</sqlserver.version>
+        <oracle.version>12.1.0.1</oracle.version>
         <hibernate-core.version>5.2.9.Final</hibernate-core.version>
         <slf4j-log4j12.version>1.7.23</slf4j-log4j12.version>
     </properties>
@@ -85,6 +86,11 @@
     			<groupId>com.microsoft.sqlserver</groupId>
     			<artifactId>mssql-jdbc</artifactId>
     			<version>${sqlserver.version}</version>
+			</dependency>
+			<dependency>
+    			<groupId>com.oracle.jdbc</groupId>
+    			<artifactId>ojdbc8</artifactId>
+    			<version>${oracle.version}</version>
 			</dependency>
         </dependencies>
     </dependencyManagement>

@@ -21,12 +21,13 @@
      	<profile>
        		<id>all</id>
       		<modules>
+         		<module>utils</module>
+    			<module>nodb</module>
     			<module>common</module>
         		<module>h2</module>
         		<module>hsql</module>
         		<module>mssql</module>
-    			<module>nodb</module>
-        		<module>utils</module>
+        		<module>oracle</module>
       		</modules>
       	</profile>
       	<profile>
@@ -35,10 +36,10 @@
       			<activeByDefault>true</activeByDefault>
       		</activation>
           	<modules>
+            	<module>utils</module>
+            	<module>nodb</module>
             	<module>common</module>
             	<module>h2</module>
-            	<module>nodb</module>
-            	<module>utils</module>
           	</modules> 
        	</profile>
 	</profiles>
