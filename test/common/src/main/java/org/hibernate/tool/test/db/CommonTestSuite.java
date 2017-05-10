@@ -13,6 +13,7 @@ import org.hibernate.tool.test.jdbc2cfg.MetaDataTest;
 import org.hibernate.tool.test.jdbc2cfg.NoPrimaryKeyTest;
 import org.hibernate.tool.test.jdbc2cfg.OverrideBinderTest;
 import org.hibernate.tool.test.jdbc2cfg.PerformanceTest;
+import org.hibernate.tool.test.jdbc2cfg.SearchEscapeStringTest;
 import org.hibernate.tool.test.jdbc2cfg.VersioningTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -33,6 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	NoPrimaryKeyTest.class,
 	OverrideBinderTest.class,
 	PerformanceTest.class,
+	SearchEscapeStringTest.class,
 	VersioningTest.class
 })
 public class CommonTestSuite {}
