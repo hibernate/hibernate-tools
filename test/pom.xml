@@ -28,6 +28,7 @@
         		<module>hsql</module>
         		<module>mssql</module>
         		<module>oracle</module>
+        		<module>mysql</module>
       		</modules>
       	</profile>
       	<profile>
