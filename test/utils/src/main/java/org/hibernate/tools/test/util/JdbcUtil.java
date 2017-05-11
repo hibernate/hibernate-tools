@@ -191,7 +191,9 @@ public class JdbcUtil {
 		for (int i = 0; i < sqls.length; i++) {
 			statement.execute(sqls[i]);
 		}
-		connection.commit();
+		if (!connection.getAutoCommit()) {
+			connection.commit();
+		}
 		statement.close();		
 	}
 
