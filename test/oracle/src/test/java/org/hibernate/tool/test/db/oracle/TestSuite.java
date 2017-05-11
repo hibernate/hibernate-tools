@@ -1,4 +1,4 @@
-package org.hibernate.tool.test.db.h2;
+package org.hibernate.tool.test.db.oracle;
 
 import org.hibernate.cfg.JDBCMetaDataConfigurationTest;
 import org.junit.runner.RunWith;
