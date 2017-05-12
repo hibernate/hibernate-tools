@@ -10,7 +10,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -91,16 +90,11 @@ public class JdbcUtil {
 		boolean result = false;
 		try {
 			Connection connection = createJdbcConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT 1 AS C");
-			if (resultSet.next()) {
-				result = resultSet.getInt("C") == 1;
-			}
+			result = connection.isValid(1);
 			connection.commit();
-			statement.close();
 			connection.close();
 		} catch (SQLException e) {
-			// this will happen when the database is offline
+			// this will happen when the connection cannot be created
 		} 
 		return result;
 	}
