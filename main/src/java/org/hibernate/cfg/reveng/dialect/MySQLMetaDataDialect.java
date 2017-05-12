@@ -55,5 +55,28 @@ public class MySQLMetaDataDialect extends JDBCMetaDataDialect {
 				throw getSQLExceptionConverter().convert(e, "Could not get list of suggested identity strategies from database. Probably a JDBC driver problem. ", sql);		         
 			} 		
 		}
+	
+	@Override
+	public Iterator<Map<String,Object>> getTables(
+			String xcatalog, 
+			String xschema, 
+			String xtable) {
+	     // MySql JDBC Driver doesn't like 'null' values for the table search pattern, use '%' instead
+		return super.getTables(xcatalog, xschema, xtable != null ? xtable : "%");
 	}
+
+	public Iterator<Map<String, Object>> getColumns(
+			String xcatalog, 
+			String xschema, 
+			String xtable, 
+			String xcolumn) {
+	     // MySql JDBC Driver doesn't like 'null' values for the table and column search patterns, use '%' instead
+		return super.getColumns(
+				xcatalog, 
+				xschema, 
+				xtable != null ? xtable : "%",
+				xcolumn != null ? xcolumn : "%");
+	}
+	
+}
 	
