@@ -36,9 +36,14 @@ public class TableProcessor {
 		  try {			  
 		     progress.startSubTask("Finding tables in " + schemaSelection);
 		     
-		     tableIterator = metaDataDialect.getTables(StringHelper.replace(schemaSelection.getMatchCatalog(),".*", "%"), 
-		    		                                        StringHelper.replace(schemaSelection.getMatchSchema(),".*", "%"), 
-		    		                                        StringHelper.replace(schemaSelection.getMatchTable(),".*", "%"));
+		     String matchCatalog = StringHelper.replace(schemaSelection.getMatchCatalog(),".*", "%");
+		     String matchSchema = StringHelper.replace(schemaSelection.getMatchSchema(),".*", "%");
+		     String matchTable = StringHelper.replace(schemaSelection.getMatchTable(),".*", "%");
+		     // Most JDBC drivers return all tables when 'null' is specified as the match table String
+		     // but some drivers (e.g. MySql) don't like the 'null' value and throw an exception.
+		     // So we use the "%" wildcard instead.
+		     matchTable = matchTable == null ? "%" : matchTable;
+		     tableIterator = metaDataDialect.getTables(matchCatalog, matchSchema, matchTable);
 		     String[] lastQualifier = null;
 		     String[] foundQualifier = new String[2];
 		     
