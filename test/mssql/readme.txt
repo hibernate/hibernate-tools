@@ -8,7 +8,7 @@ To do this on your own machine execute the following steps:
 
 2. Pull the Docker image of SQL Server: 'docker pull microsoft/mssql-server-linux'
 
-3. Start the database: 'docker run -d --name name_your_container -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@55w0rd' -p 1433:1433 microsoft/mssql-server-linux'. 
+3. Start the database: 'docker run -d --name MySQL -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@55w0rd' -p 1433:1433 microsoft/mssql-server-linux'. 
 
 4. Connect to the database using your favorite client (e.g. DBeaver: http://dbeaver.jkiss.org)
 hostname: localhost
