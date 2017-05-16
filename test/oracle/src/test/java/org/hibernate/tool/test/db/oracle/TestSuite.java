@@ -1,13 +1,18 @@
 package org.hibernate.tool.test.db.oracle;
 
+import org.hibernate.cfg.JDBCMetaDataConfigurationTest;
+import org.hibernate.tool.test.jdbc2cfg.AutoQuoteTest;
+import org.hibernate.tool.test.jdbc2cfg.BasicMultiSchemaTest;
+import org.hibernate.tool.test.jdbc2cfg.BasicTest;
 import org.hibernate.tools.test.util.DbSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(DbSuite.class)
 @SuiteClasses({ 
-	org.hibernate.cfg.JDBCMetaDataConfigurationTest.class,
-	org.hibernate.tool.test.jdbc2cfg.AutoQuoteTest.class,
-	org.hibernate.tool.test.jdbc2cfg.BasicTest.class
+	AutoQuoteTest.class,
+	BasicMultiSchemaTest.class,
+	BasicTest.class,
+	JDBCMetaDataConfigurationTest.class
 })
 public class TestSuite {}
