@@ -90,6 +90,7 @@ public class BasicMultiSchemaTest {
 
 	}
 
+	@Test
 	public void testScalePrecisionLength() {
 		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "basic" ) );
 		Column nameCol = table.getColumn( new Column( JdbcUtil.toIdentifier(this, "name" ) ) );
@@ -139,6 +140,7 @@ public class BasicMultiSchemaTest {
 	 * assertNotSame(table, foundTable); }
 	 */
 
+	@Test
 	public void testCompositeKeys() {
 		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "multikeyed"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
