@@ -28,7 +28,7 @@ create user HTT
        default tablespace USERS
        temporary tablespace TEMP
        quota unlimited on USERS;
-grant create session, create table to HTT;
+grant all privileges to HTT with admin option;
 
 6. You can now connect with username 'HTT' and password 'HTT' and verify the existence of the 'HTT' schema.
 If that is the case you are ready to run the tests. 
