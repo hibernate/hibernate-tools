@@ -25,15 +25,15 @@ import org.junit.Test;
 public class BasicTest {
 
 	static final String[] CREATE_SQL = new String[] {
-			"create table basic ( a int not null, name varchar(20), primary key (a)  )",
-			"create table somecolumnsnopk ( pk varchar(25) not null, b char, c int not null, aBoolean boolean )",
-			"create table multikeyed ( orderid varchar(10), customerid varchar(10), name varchar(10), primary key(orderid, customerid) )" 
+			"CREATE TABLE BASIC ( A INT NOT NULL, NAME VARCHAR(20), PRIMARY KEY (A)  )",
+			"CREATE TABLE SOMECOLUMNSNOPK ( PK VARCHAR(25) NOT NULL, B CHAR, C INT NOT NULL )",
+			"CREATE TABLE MULTIKEYED ( ORDERID VARCHAR(10), CUSTOMERID VARCHAR(10), NAME VARCHAR(10), PRIMARY KEY(ORDERID, CUSTOMERID) )"
 		};
 
 	static final String[] DROP_SQL = new String[] { 
-			"drop table basic", 
-			"drop table somecolumnsnopk",
-			"drop table multikeyed" 
+	        "DROP TABLE BASIC", 
+	        "DROP TABLE SOMECOLUMNSNOPK",
+			"DROP TABLE MULTIKEYED"
 		};
 
 	private JDBCMetaDataConfiguration jmdcfg = null;
@@ -56,14 +56,14 @@ public class BasicTest {
 				"There should be three tables!", 
 				jmdcfg.getMetadata().getEntityBindings().iterator(),
 				3);
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "basic"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "BASIC"));
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "basic"), 
+				JdbcUtil.toIdentifier(this, "BASIC"), 
 				JdbcUtil.toIdentifier(this, table.getName()));
 		Assert.assertEquals(2, table.getColumnSpan());
 		Column basicColumn = table.getColumn(0);
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "a"), 
+				JdbcUtil.toIdentifier(this, "A"), 
 				JdbcUtil.toIdentifier(this, basicColumn.getName()));
 		PrimaryKey key = table.getPrimaryKey();
 		Assert.assertNotNull("There should be a primary key!", key);
@@ -75,8 +75,8 @@ public class BasicTest {
 
 	@Test
 	public void testScalePrecisionLength() {
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "basic"));
-		Column nameCol = table.getColumn(new Column(JdbcUtil.toIdentifier(this, "name")));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "BASIC"));
+		Column nameCol = table.getColumn(new Column(JdbcUtil.toIdentifier(this, "NAME")));
 		Assert.assertEquals(nameCol.getLength(), 20);
 		Assert.assertEquals(nameCol.getPrecision(), Column.DEFAULT_PRECISION);
 		Assert.assertEquals(nameCol.getScale(), Column.DEFAULT_SCALE);
@@ -84,7 +84,7 @@ public class BasicTest {
 
 	@Test
 	public void testCompositeKeys() {
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "multikeyed"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MULTIKEYED"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
 		Assert.assertEquals(2, primaryKey.getColumnSpan());
 	}

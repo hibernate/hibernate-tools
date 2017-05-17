@@ -1,4 +1,5 @@
-drop table htt.basic 
-drop table htt.somecolumnsnopk
-drop table htt.multikeyed
-drop schema htt 
+DROP TABLE HTT.BASIC 
+DROP TABLE HTT.SOMECOLUMNSNOPK
+DROP TABLE HTT.MULTIKEYED
+DROP SCHEMA HTT
+ 
