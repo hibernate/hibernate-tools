@@ -1,13 +1,13 @@
-create schema htt
-create table htt.SimpleLineItem (lineItemId varchar(256) not null, customerOrderIdRef varchar(256), productId varchar(256) not null, extraId varchar(256) not null, quantity float, primary key (lineItemId))
-create table htt.Product (productId varchar(256) not null, extraId varchar(256) not null, description varchar(256) not null, price float, numberAvailable float, primary key (productId, extraId))
-create table htt.Customer (customerId varchar(256) not null, name varchar(256) not null, address varchar(256) not null, primary key (customerId))
-create table htt.SimpleCustomerOrder (customerOrderId varchar(256) not null, customerId varchar(256) not null, orderNumber float not null, orderDate date not null, primary key (customerOrderId))
-alter table htt.SimpleLineItem add constraint toSimpleCustomerOrder foreign key (customerOrderIdRef) references htt.SimpleCustomerOrder
-alter table htt.SimpleLineItem add constraint fromSimpletoProduct foreign key (productId, extraId) references htt.Product
-alter table htt.SimpleCustomerOrder add constraint fromSimpletoCustomer foreign key (customerId) references htt.Customer
-create table htt.LineItem (customerIdRef varchar(256) not null, orderNumber float not null, productId varchar(256) not null, extraProdId varchar(256) not null, quantity float, primary key (customerIdRef, orderNumber, productId, extraProdId))
-create table htt.CustomerOrder (customerId varchar(256) not null, orderNumber float not null, orderDate date not null, primary key (customerId, orderNumber))
-alter table htt.LineItem add constraint toCustomerOrder foreign key (customerIdRef, orderNumber) references htt.CustomerOrder
-alter table htt.LineItem add constraint toProduct foreign key (productId,extraProdId) references htt.Product
-alter table htt.CustomerOrder add constraint toCustomer foreign key (customerId) references htt.Customer 
+CREATE SCHEMA HTT
+CREATE TABLE HTT.SIMPLE_LINE_ITEM (LINE_ITEM_ID VARCHAR(256) NOT NULL, CUSTOMER_ORDER_ID_REF VARCHAR(256), PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_ID VARCHAR(256) NOT NULL, QUANTITY FLOAT, PRIMARY KEY (LINE_ITEM_ID))
+CREATE TABLE HTT.PRODUCT (PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_ID VARCHAR(256) NOT NULL, DESCRIPTION VARCHAR(256) NOT NULL, PRICE FLOAT, NUMBER_AVAILABLE FLOAT, PRIMARY KEY (PRODUCT_ID, EXTRA_ID))
+CREATE TABLE HTT.CUSTOMER (CUSTOMER_ID VARCHAR(256) NOT NULL, NAME VARCHAR(256) NOT NULL, ADDRESS VARCHAR(256) NOT NULL, PRIMARY KEY (CUSTOMER_ID))
+CREATE TABLE HTT.SIMPLE_CUSTOMER_ORDER (CUSTOMER_ORDER_ID VARCHAR(256) NOT NULL, CUSTOMER_ID VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, ORDER_DATE DATE NOT NULL, PRIMARY KEY (CUSTOMER_ORDER_ID))
+ALTER TABLE HTT.SIMPLE_LINE_ITEM ADD CONSTRAINT TO_SIMPLE_CUSTOMER_ORDER FOREIGN KEY (CUSTOMER_ORDER_ID_REF) REFERENCES HTT.SIMPLE_CUSTOMER_ORDER
+ALTER TABLE HTT.SIMPLE_LINE_ITEM ADD CONSTRAINT FROM_SIMPLE_TO_PRODUCT FOREIGN KEY (PRODUCT_ID,EXTRA_ID) REFERENCES HTT.PRODUCT
+ALTER TABLE HTT.SIMPLE_CUSTOMER_ORDER ADD CONSTRAINT FROM_SIMPLE_TO_CUSTOMER FOREIGN KEY (CUSTOMER_ID) REFERENCES HTT.CUSTOMER
+CREATE TABLE HTT.LINE_ITEM (CUSTOMER_ID_REF VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_PROD_ID VARCHAR(256) NOT NULL, QUANTITY FLOAT, PRIMARY KEY (CUSTOMER_ID_REF, ORDER_NUMBER, PRODUCT_ID, EXTRA_PROD_ID))
+CREATE TABLE HTT.CUSTOMER_ORDER (CUSTOMER_ID VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, ORDER_DATE DATE NOT NULL, PRIMARY KEY (CUSTOMER_ID, ORDER_NUMBER))                
+ALTER TABLE HTT.LINE_ITEM ADD CONSTRAINT TO_CUSTOMER_ORDER FOREIGN KEY (CUSTOMER_ID_REF, ORDER_NUMBER) REFERENCES HTT.CUSTOMER_ORDER
+ALTER TABLE HTT.LINE_ITEM ADD CONSTRAINT TO_PRODUCT FOREIGN KEY (PRODUCT_ID, EXTRA_PROD_ID) REFERENCES HTT.PRODUCT
+ALTER TABLE HTT.CUSTOMER_ORDER ADD CONSTRAINT TO_CUSTOMER FOREIGN KEY (CUSTOMER_ID) REFERENCES HTT.CUSTOMER                
