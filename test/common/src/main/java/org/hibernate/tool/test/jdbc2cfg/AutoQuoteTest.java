@@ -22,15 +22,15 @@ import org.junit.Test;
 public class AutoQuoteTest {
 
 	static final String[] CREATE_SQL = new String[] {
-				"create table \"us-ers\" ( userid INTEGER NOT NULL, department VARCHAR(3), PRIMARY KEY (userid) )", 
-				"create table typ ( indexid INTEGER NOT NULL, text varchar(10) NOT NULL, korr INTEGER NOT NULL, PRIMARY KEY (indexid) )", 
-				"create table worklogs ( indexid INTEGER NOT NULL, loggedid INTEGER NOT NULL, userid INTEGER NOT NULL, typ INTEGER NOT NULL, PRIMARY KEY (indexid, userid), FOREIGN KEY (userid) REFERENCES \"us-ers\"(userid), FOREIGN KEY (typ) REFERENCES typ(indexid) )"
+				"CREATE TABLE \"us-ers\" ( USERID INTEGER NOT NULL, DEPARTMENT VARCHAR(3), PRIMARY KEY (USERID) )", 
+				"CREATE TABLE TYP ( INDEXID INTEGER NOT NULL, TEXT VARCHAR(10) NOT NULL, KORR INTEGER NOT NULL, PRIMARY KEY (INDEXID) )", 
+				"CREATE TABLE WORKLOGS ( INDEXID INTEGER NOT NULL, LOGGEDID INTEGER NOT NULL, USERID INTEGER NOT NULL, TYP INTEGER NOT NULL, PRIMARY KEY (INDEXID, USERID), FOREIGN KEY (USERID) REFERENCES \"us-ers\"(USERID), FOREIGN KEY (TYP) REFERENCES TYP(INDEXID) )"
 		};
 
 	static final String[] DROP_SQL = new String[]  {
-				"drop table worklogs",
-				"drop table \"us-ers\"",
-				"drop table typ",
+				"DROP TABLE WORKLOGS",
+				"DROP TABLE \"us-ers\"",
+				"DROP TABLE TYP",
 		};
 	
 	private JDBCMetaDataConfiguration jmdcfg = null;

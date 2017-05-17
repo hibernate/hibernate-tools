@@ -1,4 +1,4 @@
-drop table htt.worklogs
-drop table htt.[us-ers]
-drop table htt.typ
-drop schema htt
+drop table HTT.WORKLOGS
+drop table HTT.[us-ers]
+drop table HTT.TYP
+drop schema HTT
