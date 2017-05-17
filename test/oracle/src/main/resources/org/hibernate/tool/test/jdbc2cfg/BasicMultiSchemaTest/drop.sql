@@ -1,5 +1,5 @@
-drop table basic
-drop table somecolumnsnopk
-drop table multikeyed
-drop table otherschema.basic
-drop user otherschema
+DROP TABLE BASIC
+DROP TABLE SOMECOLUMNSNOPK
+DROP TABLE MULTIKEYED
+DROP TABLE OTHERSCHEMA.BASIC
+DROP USER OTHERSCHEMA

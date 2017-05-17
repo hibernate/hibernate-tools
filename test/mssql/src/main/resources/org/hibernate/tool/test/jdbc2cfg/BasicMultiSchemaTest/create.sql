@@ -1,6 +1,6 @@
-create schema htt
-create table htt.basic ( a int not null, name varchar(20), primary key (a)  )
-create table htt.somecolumnsnopk ( pk varchar(25) not null, b char, c int not null, aBoolean bit )
-create table htt.multikeyed ( orderid varchar(10), customerid varchar(10), name varchar(10), primary key(orderid, customerid) )
-create schema otherschema
-create table otherschema.basic ( a int not null, name varchar(20), primary key (a)  )
+CREATE SCHEMA HTT
+CREATE TABLE HTT.BASIC ( A INT NOT NULL, NAME VARCHAR(20), PRIMARY KEY (A)  )
+CREATE TABLE HTT.SOMECOLUMNSNOPK ( PK VARCHAR(25) NOT NULL, B CHAR, C INT NOT NULL )
+CREATE TABLE HTT.MULTIKEYED ( ORDERID VARCHAR(10), CUSTOMERID VARCHAR(10), NAME VARCHAR(10), PRIMARY KEY(ORDERID, CUSTOMERID) )
+CREATE SCHEMA OTHERSCHEMA
+CREATE TABLE OTHERSCHEMA.BASIC ( A INT NOT NULL, name VARCHAR(20), PRIMARY KEY (A)  )
