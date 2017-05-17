@@ -1,5 +1,5 @@
-drop table htt.withversion 
-drop table htt.noversion 
-drop table htt.withrealtimestamp
-drop table htt.withfaketimestamp
-drop schema htt
+DROP TABLE HTT.WITH_VERSION 
+DROP TABLE HTT.NO_VERSION 
+DROP TABLE HTT.WITH_REAL_TIMESTAMP
+DROP TABLE HTT.WITH_FAKE_TIMESTAMP
+DROP SCHEMA HTT

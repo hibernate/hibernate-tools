@@ -1,5 +1,5 @@
-create schema htt
-create table htt.withversion (first int, second int, version int, name varchar(256), primary key (first))
-create table htt.noversion (first int, second int, name varchar(256), primary key (second))
-create table htt.withrealtimestamp (first int, second int, timestamp timestamp, name varchar(256), primary key (first))
-create table htt.withfaketimestamp (first int, second int, timestamp int, name varchar(256), primary key (first))
+CREATE SCHEMA HTT
+CREATE TABLE HTT.WITH_VERSION (FIRST INT, SECOND INT, VERSION INT, NAME VARCHAR(256), PRIMARY KEY (FIRST))
+CREATE TABLE HTT.NO_VERSION (FIRST INT, SECOND INT, NAME VARCHAR(256), PRIMARY KEY (SECOND))
+CREATE TABLE HTT.WITH_REAL_TIMESTAMP (FIRST INT, SECOND INT, TIMESTAMP TIMESTAMP, NAME VARCHAR(256), PRIMARY KEY (FIRST))
+CREATE TABLE HTT.WITH_FAKE_TIMESTAMP (FIRST INT, SECOND INT, TIMESTAMP INT, NAME VARCHAR(256), PRIMARY KEY (FIRST))

@@ -10,17 +10,17 @@ import org.junit.Test;
 public class JDBCMetaDataConfigurationTest {
 
 	static final String[] CREATE_SQL = new String[] {
-			"create table withVersion (first int, second int, version int, name varchar(256), primary key (first))",
-			"create table noVersion (first int, second int, name varchar(256), primary key (second))",
-			"create table withRealTimestamp (first int, second int, timestamp timestamp, name varchar(256), primary key (first))",
-			"create table withFakeTimestamp (first int, second int, timestamp int, name varchar(256), primary key (first))", 
+			"CREATE TABLE WITH_VERSION (FIRST INT, SECOND INT, VERSION INT, NAME VARCHAR(256), PRIMARY KEY (FIRST))",
+			"CREATE TABLE NO_VERSION (FIRST INT, SECOND INT, NAME VARCHAR(256), PRIMARY KEY (SECOND))",
+			"CREATE TABLE WITH_REAL_TIMESTAMP (FIRST INT, SECOND INT, TIMESTAMP TIMESTAMP, NAME VARCHAR(256), PRIMARY KEY (FIRST))",
+			"CREATE TABLE WITH_FAKE_TIMESTAMP (FIRST INT, SECOND INT, TIMESTAMP INT, NAME VARCHAR(256), PRIMARY KEY (FIRST))", 
 		};
 
 	static final String[] DROP_SQL = new String[] {
-			"drop table withVersion", 
-			"drop table noVersion", 
-			"drop table withRealTimestamp",
-			"drop table withFakeTimestamp" 
+			"DROP TABLE WITH_VERSION", 
+			"DROP TABLE NO_VERSION", 
+			"DROP TABLE WITH_REAL_TIMESTAMP",
+			"DROP TABLE WITH_FAKE_TIMESTAMP" 
 		};
 
 	@Before
@@ -38,19 +38,19 @@ public class JDBCMetaDataConfigurationTest {
 		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 		cfg.readFromJDBC();
 		Metadata metadata = cfg.getMetadata();
-		Assert.assertNotNull("Withrealtimestamp", metadata.getEntityBinding("Withrealtimestamp"));
-		Assert.assertNotNull("Noversion", metadata.getEntityBinding("Noversion"));
-		Assert.assertNotNull("Withfaketimestamp", metadata.getEntityBinding("Withfaketimestamp"));
-		Assert.assertNotNull("Withversion", metadata.getEntityBinding("Withversion"));
+		Assert.assertNotNull("WithRealTimestamp", metadata.getEntityBinding("WithRealTimestamp"));
+		Assert.assertNotNull("NoVersion", metadata.getEntityBinding("NoVersion"));
+		Assert.assertNotNull("WithFakeTimestamp", metadata.getEntityBinding("WithFakeTimestamp"));
+		Assert.assertNotNull("WithVersion", metadata.getEntityBinding("WithVersion"));
 	}
 	
 	@Test
 	public void testGetTable() throws Exception {
 		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-		Assert.assertNull(cfg.getTable(JdbcUtil.toIdentifier(this, "withrealtimestamp")));
+		Assert.assertNull(cfg.getTable(JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
 		cfg = new JDBCMetaDataConfiguration();
 		cfg.readFromJDBC();
-		Assert.assertNotNull(cfg.getTable(JdbcUtil.toIdentifier(this, "withrealtimestamp")));
+		Assert.assertNotNull(cfg.getTable(JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
 	}
 
 }
