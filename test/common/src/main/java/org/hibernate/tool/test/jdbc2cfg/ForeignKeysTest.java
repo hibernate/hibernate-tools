@@ -30,36 +30,31 @@ import org.junit.Test;
  */
 public class ForeignKeysTest {
 
-	private static final String[] CREATE_SQL = new String[] {
-				"create table master (id char not null, name varchar(20), primary key (id) )",					
-				"create table child  ( childid character not null, masterref character, primary key (childid), foreign key (masterref) references master(id) )",				
-				"create table connection  ( conid int, name varchar(50), masterref character, childref1 character, childref2 character, primary key(conid), " +
-				"    constraint con2master foreign key (masterref) references master(id)," +
-				"    constraint childref1 foreign key  (childref1) references child(childid), " +
-				"    constraint childref2 foreign key  (childref2) references child(childid))"
+	static final String[] CREATE_SQL = new String[] {
+				"CREATE TABLE MASTER (ID CHAR NOT NULL, NAME VARCHAR(20), PRIMARY KEY (ID))",					
+				"CREATE TABLE CHILD  (CHILDID CHARACTER NOT NULL, MASTERREF CHARACTER, PRIMARY KEY(CHILDID), FOREIGN KEY (MASTERREF) REFERENCES MASTER(ID))",				
+				"CREATE TABLE CONNECTION  (CONID INT, NAME VARCHAR(50), MASTERREF CHAR, CHILDREF1 CHARACTER, CHILDREF2 CHARACTER, PRIMARY KEY(CONID), CONSTRAINT CON2MASTER FOREIGN KEY (MASTERREF) REFERENCES MASTER(ID), CONSTRAINT CHILDREF1 FOREIGN KEY (CHILDREF1) REFERENCES CHILD(CHILDID), CONSTRAINT CHILDREF2 FOREIGN KEY (CHILDREF2) REFERENCES CHILD(CHILDID))"
 				// todo - link where pk is fk to something						
 		};
 
-	private static final String[] DROP_SQL = new String[] {
-				"drop table connection",				
-				"drop table child",
-				"drop table master",					
+	static final String[] DROP_SQL = new String[] {
+				"DROP TABLE CONNECTION",				
+				"DROP TABLE CHILD",
+				"DROP TABLE MASTER",					
 		};
 	
 	private JDBCMetaDataConfiguration jmdcfg = null;
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);;
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);;
 	}	
 	
 	@Test
