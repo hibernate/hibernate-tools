@@ -24,39 +24,37 @@ import org.junit.Test;
  */
 public class IndexTest {
 
-	private static final String[] CREATE_SQL = new String[] {
-				"create table withIndex (first int, second int, third int)",
-				"create index myIndex on withIndex(first,third)",
-				"create unique index otherIdx on withIndex(third)",
+	static final String[] CREATE_SQL = new String[] {
+				"CREATE TABLE WITH_INDEX (FIRST INT, SECOND INT, THIRD INT)",
+				"CREATE INDEX MY_INDEX ON WITH_INDEX(FIRST,THIRD)",
+				"CREATE UNIQUE INDEX OTHER_IDX on WITH_INDEX(THIRD)",
 		};
 
-	private static final String[] DROP_SQL = new String[] {
-				"drop index otherIdx",
-				"drop index myIndex",
-				"drop table withIndex",
+	static final String[] DROP_SQL = new String[] {
+				"DROP INDEX OTHER_IDX",
+				"DROP INDEX MY_INDEX",
+				"DROP TABLE WITH_INDEX",
 		};
 
 	private JDBCMetaDataConfiguration jmdcfg = null;
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 	}
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
 	public void testUniqueKey() {	
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "withIndex") );		
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "WITH_INDEX") );		
 		UniqueKey uniqueKey = table.getUniqueKey(
-				JdbcUtil.toIdentifier(this, "otherIdx") );
+				JdbcUtil.toIdentifier(this, "OTHER_IDX") );
 		Assert.assertNotNull(uniqueKey);
 		Assert.assertEquals(1, uniqueKey.getColumnSpan() );	
 		Column keyCol = uniqueKey.getColumn(0);
@@ -66,9 +64,9 @@ public class IndexTest {
 	
 	@Test
 	public void testWithIndex() {		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "withIndex"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "WITH_INDEX"));
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "withIndex"), 
+				JdbcUtil.toIdentifier(this, "WITH_INDEX"), 
 				JdbcUtil.toIdentifier(this, table.getName()));	
 		Assert.assertNull("there should be no pk", table.getPrimaryKey() );
 		Iterator<Index> iterator = table.getIndexIterator();
@@ -78,10 +76,10 @@ public class IndexTest {
 			cnt++;
 		}
 		Assert.assertEquals(1, cnt);	
-		Index index = table.getIndex(JdbcUtil.toIdentifier(this, "myIndex") );
+		Index index = table.getIndex(JdbcUtil.toIdentifier(this, "MY_INDEX") );
 		Assert.assertNotNull("No index ?", index);
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "myIndex"), 
+				JdbcUtil.toIdentifier(this, "MY_INDEX"), 
 				JdbcUtil.toIdentifier(this, index.getName()));	
 		Assert.assertEquals(2, index.getColumnSpan() );	
 		Assert.assertSame(index.getTable(), table);
@@ -89,10 +87,10 @@ public class IndexTest {
 		Column col1 = cols.next();
 		Column col2 = cols.next();	
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "first"), 
+				JdbcUtil.toIdentifier(this, "FIRST"), 
 				JdbcUtil.toIdentifier(this, col1.getName()));
 		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "third"), 
+				JdbcUtil.toIdentifier(this, "THIRD"), 
 				JdbcUtil.toIdentifier(this, col2.getName()));		
 		Column example = new Column();
 		example.setName(col2.getName() );
