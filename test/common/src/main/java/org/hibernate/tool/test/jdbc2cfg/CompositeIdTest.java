@@ -69,18 +69,12 @@ public class CompositeIdTest {
         };
 
 	static final String[] DROP_SQL = new String[]  {
-                "ALTER TABLE LINE_ITEM DROP CONSTRAINT TO_CUSTOMER_ORDER",
-                "ALTER TABLE LINE_ITEM DROP CONSTRAINT TO_PRODUCT",
-                "ALTER TABLE CUSTOMER_ORDER DROP CONSTRAINT TO_CUSTOMER",
-                "ALTER TABLE SIMPLE_LINE_ITEM DROP CONSTRAINT TO_SIMPLE_CUSTOMER_ORDER",
-                "ALTER TABLE SIMPLE_LINE_ITEM DROP CONSTRAINT FROM_SIMPLE_TO_PRODUCT",
-                "ALTER TABLE SIMPLE_CUSTOMER_ORDER DROP CONSTRAINT FROM_SIMPLE_TO_CUSTOMER",
-                "DROP TABLE SIMPLE_LINE_ITEM ",
-                "DROP TABLE PRODUCT ",
-                "DROP TABLE CUSTOMER ",
-                "DROP TABLE SIMPLE_CUSTOMER_ORDER ",
-                "DROP TABLE CUSTOMER_ORDER ",                
                 "DROP TABLE LINE_ITEM ",                           
+                "DROP TABLE SIMPLE_LINE_ITEM ",
+                "DROP TABLE CUSTOMER_ORDER ",                
+                "DROP TABLE SIMPLE_CUSTOMER_ORDER ",
+                "DROP TABLE PRODUCT ",
+                "DROP TABLE CUSTOMER "
         };
      
 	private JDBCMetaDataConfiguration jmdcfg = null;
