@@ -59,40 +59,40 @@ public class ForeignKeysTest {
 	
 	@Test
 	public void testMultiRefs() {		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "connection") );		
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CONNECTION") );		
 		ForeignKey foreignKey = HibernateUtil.getForeignKey(
 				table, 
-				JdbcUtil.toIdentifier(this, "con2master") );	
+				JdbcUtil.toIdentifier(this, "CON2MASTER") );	
 		Assert.assertNotNull(foreignKey);			
 		Assert.assertEquals(
 				jmdcfg.getReverseEngineeringStrategy().tableToClassName(
-						new TableIdentifier(null, null, "master")),
+						new TableIdentifier(null, null, "MASTER")),
 				foreignKey.getReferencedEntityName() );
         Assert.assertEquals(
-        		JdbcUtil.toIdentifier(this, "connection"), 
+        		JdbcUtil.toIdentifier(this, "CONNECTION"), 
         		foreignKey.getTable().getName() );	
 		Assert.assertEquals(
-				jmdcfg.getTable(JdbcUtil.toIdentifier(this, "master") ), 
+				jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MASTER") ), 
 				foreignKey.getReferencedTable() );
 		Assert.assertNotNull(
 				HibernateUtil.getForeignKey(
 						table, 
-						JdbcUtil.toIdentifier(this, "childref1") ) );
+						JdbcUtil.toIdentifier(this, "CHILDREF1") ) );
 		Assert.assertNotNull(
 				HibernateUtil.getForeignKey(
 						table, 
-						JdbcUtil.toIdentifier(this, "childref2") ) );
+						JdbcUtil.toIdentifier(this, "CHILDREF2") ) );
 		Assert.assertNull(
 				HibernateUtil.getForeignKey(
 						table, 
-						JdbcUtil.toIdentifier(this, "dummy") ) );
+						JdbcUtil.toIdentifier(this, "DUMMY") ) );
 		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeyIterator(), 3);
 	}
 	
 	@Test
 	public void testMasterChild() {		
-		Assert.assertNotNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "master")));
-		Table child = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "child") );	
+		Assert.assertNotNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MASTER")));
+		Table child = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CHILD") );	
 		Iterator<?> iterator = child.getForeignKeyIterator();		
 		ForeignKey fk = (ForeignKey) iterator.next();		
 		Assert.assertFalse("should only be one fk", iterator.hasNext() );	
@@ -100,7 +100,7 @@ public class ForeignKeysTest {
 		Assert.assertSame(
 				fk.getColumn(0), 
 				child.getColumn(
-						new Column(JdbcUtil.toIdentifier(this, "masterref"))));		
+						new Column(JdbcUtil.toIdentifier(this, "MASTERREF"))));		
 	}
 	
 	@Test
