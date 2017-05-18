@@ -31,9 +31,7 @@ public class IndexTest {
 		};
 
 	static final String[] DROP_SQL = new String[] {
-				"DROP INDEX OTHER_IDX",
-				"DROP INDEX MY_INDEX",
-				"DROP TABLE WITH_INDEX",
+				"DROP TABLE WITH_INDEX"
 		};
 
 	private JDBCMetaDataConfiguration jmdcfg = null;
