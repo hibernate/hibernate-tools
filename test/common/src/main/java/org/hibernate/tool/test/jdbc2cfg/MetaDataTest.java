@@ -54,14 +54,14 @@ public class MetaDataTest {
 				"There should be three tables!", 
 				jmdcfg.getMetadata().getEntityBindings().iterator(),
 				3);
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "basic" ) );
+		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "BASIC" ) );
 		Assert.assertEquals( 
-				JdbcUtil.toIdentifier(this, "basic"), 
+				JdbcUtil.toIdentifier(this, "BASIC"), 
 				JdbcUtil.toIdentifier(this, table.getName()));
 		Assert.assertEquals( 2, table.getColumnSpan() );
 		Column basicColumn = table.getColumn( 0 );
 		Assert.assertEquals( 
-				JdbcUtil.toIdentifier(this, "a"), 
+				JdbcUtil.toIdentifier(this, "A"), 
 				JdbcUtil.toIdentifier(this, basicColumn.getName()));
 		// TODO: we cannot call getSqlType(dialect,cfg) without a
 		// MappingassertEquals("INTEGER", basicColumn.getSqlType() ); // at
@@ -77,8 +77,8 @@ public class MetaDataTest {
 
 	@Test
 	public void testScalePrecisionLength() {
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "basic"));
-		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "name" ) ) );
+		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "BASIC"));
+		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "NAME" ) ) );
 		Assert.assertEquals( nameCol.getLength(), 20 );
 		Assert.assertEquals( nameCol.getPrecision(), Column.DEFAULT_PRECISION );
 		Assert.assertEquals( nameCol.getScale(), Column.DEFAULT_SCALE );
@@ -100,7 +100,7 @@ public class MetaDataTest {
 
 	@Test
 	public void testCompositeKeys() {
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "multikeyed"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MULTIKEYED"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
 		Assert.assertEquals( 2, primaryKey.getColumnSpan() );
 	}
