@@ -35,83 +35,32 @@ import org.junit.rules.TemporaryFolder;
 
 public class KeyPropertyCompositeIdTest {
 
-	private static final String[] CREATE_SQL = new String[] {
-            "create table SimpleLineItem (\r\n" +
-            "   lineItemId varchar(256) not null,\r\n" +
-            "   customerOrderIdRef varchar(256),\r\n" +
-            "   productId varchar(256) not null,\r\n" +
-            "   extraId varchar(256) not null,\r\n" +
-            "   quantity double,\r\n" + 
-            "   primary key (lineItemId)\r\n" + 
-            ")",
-            "create table Product (\r\n" + 
-            "   productId varchar(256) not null,\r\n" +                
-            "   extraId varchar(256) not null,\r\n" +
-            "   description varchar(256) not null,\r\n" + 
-            "   price double,\r\n" + 
-            "   numberAvailable double,\r\n" + 
-            "   primary key (productId, extraId)\r\n" + 
-            ")",
-            "create table Customer (\r\n" + 
-            "   customerId varchar(256) not null,\r\n" + 
-            "   name varchar(256) not null,\r\n" + 
-            "   address varchar(256) not null,\r\n" + 
-            "   primary key (customerId)\r\n" + 
-            ")",
-            "create table SimpleCustomerOrder (\r\n" + 
-            "   customerOrderId varchar(256) not null,\r\n" +
-            "   customerId varchar(256) not null,\r\n" + 
-            "   orderNumber double not null,\r\n" + 
-            "   orderDate date not null,\r\n" + 
-            "   primary key (customerOrderId)\r\n" + 
-            ")",
-            "alter table SimpleLineItem add constraint toSimpleCustomerOrder foreign key (customerOrderIdRef) references SimpleCustomerOrder",
-            "alter table SimpleLineItem add constraint fromSimpletoProduct foreign key (productId,extraId) references Product",
-            "alter table SimpleCustomerOrder add constraint fromSimpletoCustomer foreign key (customerId) references Customer",
-            "create table LineItem (\r\n" + 
-            "   customerIdRef varchar(256) not null,\r\n" + 
-            "   orderNumber double not null,\r\n" + 
-            "   productId varchar(256) not null,\r\n" +
-            "   extraProdId varchar(256) not null,\r\n" +
-            "   quantity double,\r\n" + 
-            "   primary key (customerIdRef, orderNumber, productId, extraProdId)\r\n" + 
-            ")",
-            
-            "create table CustomerOrder (\r\n" + 
-            "   customerId varchar(256) not null,\r\n" + 
-            "   orderNumber double not null,\r\n" + 
-            "   orderDate date not null,\r\n" + 
-            "   primary key (customerId, orderNumber)\r\n" + 
-            ")",
-            
-            "alter table LineItem add constraint toCustomerOrder foreign key (customerIdRef, orderNumber) references CustomerOrder",
-            "alter table LineItem add constraint toProduct foreign key (productId,extraProdId) references Product",
-            "alter table CustomerOrder add constraint toCustomer foreign key (customerId) references Customer",                
+	static final String[] CREATE_SQL = new String[] {
+            "CREATE TABLE CUSTOMER (CUSTOMER_ID VARCHAR(256) NOT NULL, NAME VARCHAR(256) NOT NULL, ADDRESS VARCHAR(256) NOT NULL, PRIMARY KEY (CUSTOMER_ID))",
+            "CREATE TABLE PRODUCT (PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_ID VARCHAR(256) NOT NULL, DESCRIPTION VARCHAR(256) NOT NULL, PRICE FLOAT, NUMBER_AVAILABLE FLOAT, PRIMARY KEY (PRODUCT_ID, EXTRA_ID))",
+            "CREATE TABLE SIMPLE_CUSTOMER_ORDER (CUSTOMER_ORDER_ID VARCHAR(256) NOT NULL, CUSTOMER_ID VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, ORDER_DATE DATE, PRIMARY KEY (CUSTOMER_ORDER_ID), FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMER(CUSTOMER_ID))",
+            "CREATE TABLE SIMPLE_LINE_ITEM ( LINE_ITEM_ID VARCHAR(256) NOT NULL, CUSTOMER_ORDER_ID_REF VARCHAR(256), PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_ID VARCHAR(256) NOT NULL, QUANTITY FLOAT, PRIMARY KEY (LINE_ITEM_ID), FOREIGN KEY (PRODUCT_ID,EXTRA_ID) REFERENCES PRODUCT(PRODUCT_ID,EXTRA_ID),  FOREIGN KEY (CUSTOMER_ORDER_ID_REF) REFERENCES SIMPLE_CUSTOMER_ORDER(CUSTOMER_ORDER_ID))",
+            "CREATE TABLE CUSTOMER_ORDER (CUSTOMER_ID VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, ORDER_DATE DATE, PRIMARY KEY (CUSTOMER_ID, ORDER_NUMBER), FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMER(CUSTOMER_ID))",
+            "CREATE TABLE LINE_ITEM (CUSTOMER_ID_REF VARCHAR(256) NOT NULL, ORDER_NUMBER FLOAT NOT NULL, PRODUCT_ID VARCHAR(256) NOT NULL, EXTRA_PROD_ID VARCHAR(256) NOT NULL, QUANTITY FLOAT, PRIMARY KEY (CUSTOMER_ID_REF, ORDER_NUMBER, PRODUCT_ID, EXTRA_PROD_ID), FOREIGN KEY (PRODUCT_ID,EXTRA_PROD_ID) REFERENCES PRODUCT(PRODUCT_ID,EXTRA_ID), CONSTRAINT TO_CUSTOMER_ORDER FOREIGN KEY (CUSTOMER_ID_REF, ORDER_NUMBER) REFERENCES CUSTOMER_ORDER(CUSTOMER_ID,ORDER_NUMBER))"
 		};
 
-	private static final String[] GENERATE_DATA_SQL = new String[]  {
-            "insert into PRODUCT (productId, extraId, description, price, numberAvailable) values('PC', '0', 'My PC', 100.0, 23)",
-            "insert into PRODUCT (productId, extraId, description, price, numberAvailable) values('MS', '1', 'My Mouse', 101.0, 23)",
-            "insert into CUSTOMER (customerId, name, address) values('MAX', 'Max Rydahl Andersen', 'Neuchatel')",
-            "insert into CUSTOMERORDER (customerId, orderNumber, orderDate) values ('MAX', 1, '2005-11-11')", 
-            "insert into LINEITEM (customerIdref, orderNumber, productId, extraProdId, quantity) values ('MAX', 1, 'PC', '0', 10)",
-            "insert into LINEITEM (customerIdref, orderNumber, productId, extraProdId, quantity) values ('MAX', 1, 'MS', '1', 12)",
+	static final String[] DATA_SQL = new String[]  {
+            "INSERT INTO PRODUCT (PRODUCT_ID, EXTRA_ID, DESCRIPTION, PRICE, NUMBER_AVAILABLE) VALUES('PC', '0', 'My PC', 100.0, 23)",
+            "INSERT INTO PRODUCT (PRODUCT_ID, EXTRA_ID, DESCRIPTION, PRICE, NUMBER_AVAILABLE) VALUES('MS', '1', 'My Mouse', 101.0, 23)",
+            "INSERT INTO CUSTOMER (CUSTOMER_ID, NAME, ADDRESS) VALUES('MAX', 'Max Rydahl Andersen', 'Neuchatel')",
+            "INSERT INTO CUSTOMER_ORDER (CUSTOMER_ID, ORDER_NUMBER, ORDER_DATE) VALUES ('MAX', 1, '2005-11-11')", 
+            "INSERT INTO LINE_ITEM (CUSTOMER_ID_REF, ORDER_NUMBER, PRODUCT_ID, EXTRA_PROD_ID, QUANTITY) VALUES ('MAX', 1, 'PC', '0', 10)",
+            "INSERT INTO LINE_ITEM (CUSTOMER_ID_REF, ORDER_NUMBER, PRODUCT_ID, EXTRA_PROD_ID, QUANTITY) VALUES ('MAX', 1, 'MS', '1', 12)",
     	};
 
-	private static final String[] DROP_SQL = new String[]  {
-            "alter table LINEITEM drop constraint toCustomerOrder",
-            "alter table LINEITEM drop constraint toProduct",
-            "alter table CustomerOrder drop constraint toCustomer",
-            "alter table SimpleLineItem drop constraint toSimpleCustomerOrder",
-            "alter table SimpleLineItem drop constraint fromSimpletoProduct",
-            "alter table SimpleCustomerOrder drop constraint fromSimpletoCustomer",
-            "drop table SimpleLineItem ",
-            "drop table Product ",
-            "drop table Customer ",
-            "drop table SimpleCustomerOrder ",
-            "drop table CustomerOrder ",                
-            "drop table LineItem ",                           
-    	};
+	static final String[] DROP_SQL = new String[]  {
+            "DROP TABLE LINE_ITEM ",                           
+            "DROP TABLE CUSTOMER_ORDER ",                
+            "DROP TABLE SIMPLE_LINE_ITEM ",
+            "DROP TABLE SIMPLE_CUSTOMER_ORDER ",
+            "DROP TABLE PRODUCT ",
+            "DROP TABLE CUSTOMER ",
+     	};
  
 	private JDBCMetaDataConfiguration jmdcfg = null;
 
@@ -120,8 +69,7 @@ public class KeyPropertyCompositeIdTest {
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);;
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.setPreferBasicCompositeIds(false);
 		jmdcfg.readFromJDBC();
@@ -129,39 +77,38 @@ public class KeyPropertyCompositeIdTest {
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);;
 	}
 
 	@Test
 	public void testMultiColumnForeignKeys() {
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "LineItem"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "LINE_ITEM"));
 		Assert.assertNotNull(table);
-		ForeignKey foreignKey = HibernateUtil.getForeignKey(table, JdbcUtil.toIdentifier(this, "toCustomerOrder"));
+		ForeignKey foreignKey = HibernateUtil.getForeignKey(table, JdbcUtil.toIdentifier(this, "TO_CUSTOMER_ORDER"));
 		Assert.assertNotNull(foreignKey);
 		Assert.assertEquals(
 				jmdcfg.getReverseEngineeringStrategy().tableToClassName(
-						new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CustomerOrder"))),
+						new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))),
 				foreignKey.getReferencedEntityName());
-		Assert.assertEquals(JdbcUtil.toIdentifier(this, "LineItem"), foreignKey.getTable().getName());
+		Assert.assertEquals(JdbcUtil.toIdentifier(this, "LINE_ITEM"), foreignKey.getTable().getName());
 		Assert.assertEquals(2, foreignKey.getColumnSpan());
-		Assert.assertEquals(foreignKey.getColumn(0).getName(), "CUSTOMERIDREF");
-		Assert.assertEquals(foreignKey.getColumn(1).getName(), "ORDERNUMBER");
-		Table tab = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CUSTOMERORDER"));
-		Assert.assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMERID");
-		Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDERNUMBER");
+		Assert.assertEquals(foreignKey.getColumn(0).getName(), "CUSTOMER_ID_REF");
+		Assert.assertEquals(foreignKey.getColumn(1).getName(), "ORDER_NUMBER");
+		Table tab = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"));
+		Assert.assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMER_ID");
+		Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");
 		PersistentClass lineMapping = jmdcfg.getMetadata().getEntityBinding(jmdcfg.getReverseEngineeringStrategy()
-				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "LineItem"))));
+				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "LINE_ITEM"))));
 		Assert.assertEquals(4, lineMapping.getIdentifier().getColumnSpan());
 		Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
-		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "CUSTOMERIDREF");
-		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "ORDERNUMBER");
+		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "CUSTOMER_ID_REF");
+		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "ORDER_NUMBER");
 	}
 
 	@Test
 	public void testPossibleKeyManyToOne() {
 		PersistentClass product = jmdcfg.getMetadata().getEntityBinding(jmdcfg.getReverseEngineeringStrategy()
-				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CustomerOrder"))));
+				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));
 		Property identifierProperty = product.getIdentifierProperty();
 		Assert.assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();
@@ -177,7 +124,7 @@ public class KeyPropertyCompositeIdTest {
 		Assert.assertEquals(
 				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
 						null, 
-						"ordernumber"),
+						"orderNumber"),
 				extraId.getName());
 		Assert.assertTrue(id.getValue() instanceof ManyToOne);
 		Assert.assertFalse(extraId.getValue() instanceof ManyToOne);
@@ -186,7 +133,7 @@ public class KeyPropertyCompositeIdTest {
 	@Test
 	public void testKeyProperty() {
 		PersistentClass product = jmdcfg.getMetadata().getEntityBinding(jmdcfg.getReverseEngineeringStrategy()
-				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "Product"))));
+				.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "PRODUCT"))));
 		Property identifierProperty = product.getIdentifierProperty();
 		Assert.assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();
@@ -197,12 +144,12 @@ public class KeyPropertyCompositeIdTest {
 		Assert.assertEquals(
 				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
 						null, 
-						"productid"),
+						"productId"),
 				id.getName());
 		Assert.assertEquals(
 				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
 						null, 
-						"extraid"),
+						"extraId"),
 				extraId.getName());
 		Assert.assertFalse(id.getValue() instanceof ManyToOne);
 		Assert.assertFalse(extraId.getValue() instanceof ManyToOne);
@@ -230,12 +177,12 @@ public class KeyPropertyCompositeIdTest {
 		Thread.currentThread().setContextClassLoader(ucl);
 		SessionFactory factory = derived.buildSessionFactory();
 		Session session = factory.openSession();
-		JdbcUtil.executeSql(this, GENERATE_DATA_SQL);
-		session.createQuery("from Lineitem").getResultList();
+		JdbcUtil.populateDatabase(this);;
+		session.createQuery("from LineItem").getResultList();
 		List<?> list = session.createQuery("from Product").getResultList();
 		Assert.assertEquals(2, list.size());
 		list = session
-				.createQuery("select li.id.customerorder.id from Lineitem as li")
+				.createQuery("select li.id.customerOrder.id from LineItem as li")
 				.getResultList();
 		Assert.assertTrue(list.size() > 0);
 		Class<?> productIdClass = ucl.loadClass("ProductId");
