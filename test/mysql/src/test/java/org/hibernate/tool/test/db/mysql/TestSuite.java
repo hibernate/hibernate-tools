@@ -8,6 +8,7 @@ import org.hibernate.tool.test.jdbc2cfg.CompositeIdTest;
 import org.hibernate.tool.test.jdbc2cfg.ForeignKeysTest;
 import org.hibernate.tool.test.jdbc2cfg.IndexTest;
 import org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeIdTest;
+import org.hibernate.tool.test.jdbc2cfg.ManyToManyTest;
 import org.hibernate.tools.test.util.DbSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -21,6 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ForeignKeysTest.class,
 	IndexTest.class,
 	KeyPropertyCompositeIdTest.class,
+	ManyToManyTest.class,
 	JDBCMetaDataConfigurationTest.class 
 })
 public class TestSuite {}
