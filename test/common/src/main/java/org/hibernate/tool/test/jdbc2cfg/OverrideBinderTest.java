@@ -45,27 +45,27 @@ public class OverrideBinderTest {
 	private static final String SCHEMA_REVENG_XML = "org/hibernate/tool/test/jdbc2cfg/schemaselection.reveng.xml";
 
 	private static final String[] CREATE_SQL = new String[] {
-				"create table dummy (id numeric(10,0) not null, primary key (id) )",
-				"create table defunct_table ( id numeric(10,0) not null, name varchar(20), shortname varchar(5), flag varchar(1), dumid numeric(10,0), primary key (id), foreign key (dumid) references dummy)",                
-                "create table misc_types ( id numeric(10,0) not null, name varchar(20), shortname varchar(5), flag varchar(1), primary key (id) )",
-                "create table inthemiddle ( miscid numeric(10,0), defunctid numeric(10,0), foreign key (miscid) references misc_types, foreign key (defunctid) references defunct_table )",
-                "create table customer ( custid varchar(10), name varchar(20) )",
-                "create table orders ( orderid varchar(10), name varchar(20),  custid varchar(10), completed numeric(1,0) not null, verified numeric(1) )",
-                "create table parent ( id varchar(10), name varchar(20))",
-                "create table children ( id varchar(10), parentid varchar(10), name varchar(20) )",
-                "create table excolumns (id varchar(12), name varchar(20), excolumn numeric(10,0) )"
+				"CREATE TABLE DUMMY (ID NUMERIC(10,0) NOT NULL, PRIMARY KEY (ID) )",
+				"CREATE TABLE DEFUNCT_TABLE ( ID NUMERIC(10,0) NOT NULL, NAME VARCHAR(20), SHORTNAME VARCHAR(5), FLAG VARCHAR(1), DUMID NUMERIC(10,0), PRIMARY KEY (ID), FOREIGN KEY (DUMID) REFERENCES DUMMY(ID))",                
+                "CREATE TABLE MISC_TYPES ( ID NUMERIC(10,0) NOT NULL, NAME VARCHAR(20), SHORTNAME VARCHAR(5), FLAG VARCHAR(1), PRIMARY KEY (ID) )",
+                "CREATE TABLE INTHEMIDDLE ( MISCID NUMERIC(10,0), DEFUNCTID NUMERIC(10,0), FOREIGN KEY (MISCID) REFERENCES MISC_TYPES(ID), FOREIGN KEY (DEFUNCTID) REFERENCES DEFUNCT_TABLE(ID) )",
+                "CREATE TABLE CUSTOMER ( CUSTID VARCHAR(10), NAME VARCHAR(20) )",
+                "CREATE TABLE ORDERS ( ORDERID VARCHAR(10), NAME VARCHAR(20),  CUSTID VARCHAR(10), COMPLETED NUMERIC(1,0) NOT NULL, VERIFIED NUMERIC(1) )",
+                "CREATE TABLE PARENT ( ID VARCHAR(10), NAME VARCHAR(20))",
+                "CREATE TABLE CHILDREN ( ID VARCHAR(10), PARENTID VARCHAR(10), NAME VARCHAR(20) )",
+                "CREATE TABLE EXCOLUMNS (ID VARCHAR(12), NAME VARCHAR(20), EXCOLUMN NUMERIC(10,0) )"
 		};
 	
 	private static final String[] DROP_SQL = new String[] {
-				"drop table excolumns",
-				"drop table parent",
-				"drop table children",
-				"drop table customer",
-				"drop table orders",
-				"drop table inthemiddle",
-				"drop table misc_types",
-				"drop table defunct_table",
-				"drop table dummy",
+				"DROP TABLE EXCOLUMNS",
+				"DROP TABLE PARENT",
+				"DROP TABLE CHILDREN",
+				"DROP TABLE CUSTOMER",
+				"DROP TABLE ORDERS",
+				"DROP TABLE INTHEMIDDLE",
+				"DROP TABLE MISC_TYPES",
+				"DROP TABLE DEFUNCT_TABLE",
+				"DROP TABLE DUMMY",
 				
 		};
 
