@@ -22,8 +22,8 @@ import org.junit.Test;
 public class NoPrimaryKeyTest {
 
 	private static final String[] CREATE_SQL = new String[] {
-				"CREATE TABLE G0 ( AN_ID VARCHAR(20), CONSTRAINT \"C0\" PRIMARY KEY (\"AN_ID\") )", 
-				"CREATE TABLE G1 ( AN_ID VARCHAR(20), CONSTRAINT \"C1\" FOREIGN KEY (\"AN_ID\") REFERENCES \"G0\")"
+				"CREATE TABLE G0 ( AN_ID VARCHAR(20), CONSTRAINT C0 PRIMARY KEY (AN_ID) )", 
+				"CREATE TABLE G1 ( AN_ID VARCHAR(20), CONSTRAINT C1 FOREIGN KEY (AN_ID) REFERENCES G0(AN_ID))"
 		};
 
 
