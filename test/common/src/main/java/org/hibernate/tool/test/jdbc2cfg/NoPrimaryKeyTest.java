@@ -29,7 +29,7 @@ public class NoPrimaryKeyTest {
 
 	private static final String[] DROP_SQL = new String[] {
 				"DROP TABLE G1",
-				"DROp TABLE G0"								
+				"DROP TABLE G0"								
 		};
 
 	
