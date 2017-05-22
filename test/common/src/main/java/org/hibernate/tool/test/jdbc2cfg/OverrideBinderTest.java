@@ -44,7 +44,7 @@ public class OverrideBinderTest {
 	private static final String DOC_REVENG_XML = "org/hibernate/tool/test/jdbc2cfg/docexample.reveng.xml";
 	private static final String SCHEMA_REVENG_XML = "org/hibernate/tool/test/jdbc2cfg/schemaselection.reveng.xml";
 
-	private static final String[] CREATE_SQL = new String[] {
+	static final String[] CREATE_SQL = new String[] {
 				"CREATE TABLE DUMMY (ID NUMERIC(10,0) NOT NULL, PRIMARY KEY (ID) )",
 				"CREATE TABLE DEFUNCT_TABLE ( ID NUMERIC(10,0) NOT NULL, NAME VARCHAR(20), SHORTNAME VARCHAR(5), FLAG VARCHAR(1), DUMID NUMERIC(10,0), PRIMARY KEY (ID), FOREIGN KEY (DUMID) REFERENCES DUMMY(ID))",                
                 "CREATE TABLE MISC_TYPES ( ID NUMERIC(10,0) NOT NULL, NAME VARCHAR(20), SHORTNAME VARCHAR(5), FLAG VARCHAR(1), PRIMARY KEY (ID) )",
@@ -56,7 +56,7 @@ public class OverrideBinderTest {
                 "CREATE TABLE EXCOLUMNS (ID VARCHAR(12), NAME VARCHAR(20), EXCOLUMN NUMERIC(10,0) )"
 		};
 	
-	private static final String[] DROP_SQL = new String[] {
+	static final String[] DROP_SQL = new String[] {
 				"DROP TABLE EXCOLUMNS",
 				"DROP TABLE PARENT",
 				"DROP TABLE CHILDREN",
@@ -73,8 +73,7 @@ public class OverrideBinderTest {
 
 	@Before
 	public void setUp() {
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, CREATE_SQL);
+		JdbcUtil.createDatabase(this);
 		jmdcfg = new JDBCMetaDataConfiguration();
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
@@ -86,8 +85,7 @@ public class OverrideBinderTest {
 
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, DROP_SQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
@@ -313,8 +311,8 @@ public class OverrideBinderTest {
 	@Test
 	public void testRevEngExclude() {
 		
-		Assert.assertNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "defunct_table") ) );
-		Table foundTable = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "inthemiddle") );
+		Assert.assertNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "DEFUNCT_TABLE") ) );
+		Table foundTable = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
 		Assert.assertNotNull(foundTable);
 		Iterator<?> fkiter = foundTable.getForeignKeyIterator();
 		ForeignKey fk1 = (ForeignKey) fkiter.next();
@@ -408,7 +406,7 @@ public class OverrideBinderTest {
 		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "NAME"));
 		Assert.assertTrue(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "EXCOLUMN"));
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "excolumns"));
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
 		Assert.assertNotNull(table);
 		
 		Assert.assertNotNull(table.getColumn(new Column("name")));
@@ -419,11 +417,11 @@ public class OverrideBinderTest {
 	@Test
 	public void testSimpleUserDefinedForeignKeys() {
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "Orders") );
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "ORDERS") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
-		Assert.assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "Customer") );
+		Assert.assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "CUSTOMER") );
 		
 		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Orders");
 		classMapping.getProperty("customer");
@@ -436,11 +434,11 @@ public class OverrideBinderTest {
 	@Test
 	public void testCompositeUserDefinedForeignKeys() {
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "Children") );
+		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CHILDREN") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
-		Assert.assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "Parent") );
+		Assert.assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "PARENT") );
 		Assert.assertEquals(2, fk.getReferencedColumns().size());
 		Assert.assertEquals("child_to_parent", fk.getName());
 		
