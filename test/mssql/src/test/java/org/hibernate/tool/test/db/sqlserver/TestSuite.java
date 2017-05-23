@@ -12,6 +12,7 @@ import org.hibernate.tool.test.jdbc2cfg.ManyToManyTest;
 import org.hibernate.tool.test.jdbc2cfg.MetaDataTest;
 import org.hibernate.tool.test.jdbc2cfg.NoPrimaryKeyTest;
 import org.hibernate.tool.test.jdbc2cfg.OverrideBinderTest;
+import org.hibernate.tool.test.jdbc2cfg.PerformanceTest;
 import org.hibernate.tools.test.util.DbSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -29,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	MetaDataTest.class,
 	NoPrimaryKeyTest.class,
 	OverrideBinderTest.class,
+	PerformanceTest.class,
 	JDBCMetaDataConfigurationTest.class
 })
 public class TestSuite {}
