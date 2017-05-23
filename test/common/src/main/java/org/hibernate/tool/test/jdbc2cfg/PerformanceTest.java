@@ -36,8 +36,8 @@ public class PerformanceTest {
 	private static final int TABLECOUNT = 200;
 	private static final int COLCOUNT = 10;
 	
-	private String[] createSQL = null;
-	private String[] dropSQL = null;
+	static String[] CREATE_SQL = null;
+	static String[] DROP_SQL = null;
 
 	private JDBCMetaDataConfiguration jmdcfg = null;
 
@@ -45,14 +45,12 @@ public class PerformanceTest {
 	public void setUp() {
 		jmdcfg = new JDBCMetaDataConfiguration();
 		buildSQL();
-		JdbcUtil.establishJdbcConnection(this);
-		JdbcUtil.executeSql(this, createSQL);
+		JdbcUtil.createDatabase(this);
 	}
 	
 	@After
 	public void tearDown() {
-		JdbcUtil.executeSql(this, dropSQL);
-		JdbcUtil.releaseJdbcConnection(this);
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
@@ -73,8 +71,8 @@ public class PerformanceTest {
 		ArrayList<String> createSQL = new ArrayList<String>(TABLECOUNT);
 		Table lastTable = null;
 		for(int tablecount=0;tablecount<TABLECOUNT;tablecount++) {
-			Table table = new Table("perftest" + tablecount);
-			Column col = new Column("id");
+			Table table = new Table("PERFTEST" + tablecount);
+			Column col = new Column("ID");
 			SimpleValue sv = new SimpleValue((MetadataImplementor) jmdcfg.getMetadata(), table);
 			sv.setTypeName("string");
 			col.setValue(sv);			
@@ -83,27 +81,27 @@ public class PerformanceTest {
 			pk.addColumn(col);
 			table.setPrimaryKey(pk);			
 			for(int colcount=0;colcount<COLCOUNT;colcount++) {
-				col = new Column("col"+tablecount+"_"+colcount);
+				col = new Column("COL"+tablecount+"_"+colcount);
 				sv = new SimpleValue((MetadataImplementor) jmdcfg.getMetadata(), table);
 				sv.setTypeName("string");
 				col.setValue(sv);				
 				table.addColumn(col);			
 			}
 			createSQL.add(table.sqlCreateString(dia, map, null, null) );
-			dropSQL.add(table.sqlDropString(dia, null, null) );			
+			dropSQL.add(table.sqlDropString(dia, null, null) );	
 			if(lastTable!=null) {
 				ForeignKey fk = new ForeignKey();
 				fk.setName(col.getName() + lastTable.getName() + table.getName() );
 				fk.addColumn(col);
 				fk.setTable(table);
 				fk.setReferencedTable(lastTable);
-				createSQL.add(fk.sqlCreateString( dia, map, null,null) );							
+				createSQL.add(fk.sqlCreateString( dia, map, null,null) );
 				dropSQL.add(0,fk.sqlDropString( dia, null,null) );
 			}			
 			lastTable = table;
 		}
-		this.createSQL = createSQL.toArray(new String[TABLECOUNT]);
-		this.dropSQL = dropSQL.toArray(new String[TABLECOUNT]);
+		CREATE_SQL = createSQL.toArray(new String[TABLECOUNT]);
+		DROP_SQL = dropSQL.toArray(new String[TABLECOUNT]);
 	}
 	
 	private static class DummyMapping implements Mapping {	
