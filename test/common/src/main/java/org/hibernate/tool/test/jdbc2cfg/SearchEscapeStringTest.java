@@ -23,13 +23,13 @@ import org.junit.Test;
 public class SearchEscapeStringTest {
 
 	static final String[] CREATE_SQL = new String[] { 
-			"create table b_tab ( a int not null, name varchar(20), primary key (a)  )",
-			"create table b2tab ( a int not null, name varchar(20), primary key (a)  )",
+			"CREATE TABLE B_TAB ( A INT NOT NULL, NAME VARCHAR(20), PRIMARY KEY (A)  )",
+			"CREATE TABLE B2TAB ( A INT NOT NULL, NAME VARCHAR(20), PRIMARY KEY (A)  )",
 	};
 
 	static final String[] DROP_SQL = new String[] { 
-		        "drop table b_tab", 
-		        "drop table b2tab",
+		        "DROP TABLE B_TAB", 
+		        "DROP TABLE B2TAB",
 	};
 
 	private JDBCMetaDataConfiguration jmdcfg = null;
@@ -54,8 +54,8 @@ public class SearchEscapeStringTest {
 				jmdcfg.getMetadata().collectTableMappings().iterator(),
 				2);
 
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "b_tab" ) );
-		Table table2 = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "b2tab" ) );
+		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "B_TAB" ) );
+		Table table2 = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "B2TAB" ) );
 
 		Assert.assertNotNull(table);
 		Assert.assertNotNull(table2);
