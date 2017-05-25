@@ -163,13 +163,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private static final String SQL_PK_NONE = SQL_PK_BASE + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA = SQL_PK_BASE
-			+ " and c.owner like ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? escape '\\' " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_TABLE = SQL_PK_BASE
-			+ " and c.table_name like ? " + SQL_PK_ORDER;
+			+ " and c.table_name like ? escape '\\' " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA_AND_TABLE = SQL_PK_BASE
-			+ " and c.owner like ? and c.table_name like ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? escape '\\' and c.table_name like ? escape '\\' " + SQL_PK_ORDER;
 
 	private PreparedStatement prepPkNone;
 
@@ -488,8 +488,14 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		}
 		
 	}
+	
+	private String escape(String str) {
+		return str.replace("_", "\\_");
+	}
 
-	private ResultSet getPrimaryKeysResultSet(final String schema, final String table) throws SQLException {
+	private ResultSet getPrimaryKeysResultSet(final String schem, final String tab) throws SQLException {
+		String schema = escape(schem);
+		String table = escape(tab);
 		if(prepPkNone==null) {
 			// Prepare primary key queries
 			log.debug("Preparing primary key queries...");
