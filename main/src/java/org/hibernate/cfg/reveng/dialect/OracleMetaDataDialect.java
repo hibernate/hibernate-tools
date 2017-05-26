@@ -100,7 +100,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
 			+ "'RAW',-3, 'ROWID',1111, 'UROWID',1111, 'LONG RAW', -4, "
-			+ "'TIMESTAMP', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
+			+ "'TIMESTAMP', 93, 'TIMESTAMP(6)', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
 			+ "a.table_name as TABLE_NAME, a.data_type as TYPE_NAME, "
 			+ "decode(a.data_scale, null, 0 ,a.data_scale) as DECIMAL_DIGITS, b.comments "
 			+ "from all_tab_columns a left join all_col_comments b on "
