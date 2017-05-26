@@ -1,7 +1,10 @@
 package org.hibernate.tools.test.util;
 
 import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -9,12 +12,20 @@ import javax.tools.ToolProvider;
 public class JavaUtil {
 	
 	public static void compile(File folder) {
+		compile(folder, null);
+	}
+	
+	public static void compile(File folder, List<String> classPath) {
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 		ArrayList<String> arguments = new ArrayList<String>();
 		arguments.add("-d");
 		arguments.add(folder.getAbsolutePath());
 		arguments.add("-sourcepath");
 		arguments.add(folder.getAbsolutePath());
+		if (classPath != null && !classPath.isEmpty()) {
+			arguments.add("-cp");
+			arguments.add(convertClassPath(classPath));
+		}
 		ArrayList<String> fileNames = new ArrayList<String>();
 		collectJavaFiles(folder, fileNames);
 		arguments.addAll(fileNames);
@@ -23,6 +34,18 @@ public class JavaUtil {
 				null, 
 				null, 
 				arguments.toArray(new String[arguments.size()]));
+	}
+	
+	public static String resolvePathToJarFileFor(Class<?> clazz) {
+		String result = null;
+		CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
+		if (codeSource != null) {
+			URL url = codeSource.getLocation();
+			if (url != null) {
+				result = url.getPath();
+			}
+		}
+		return result;
 	}
 	
 	private static void collectJavaFiles(File file, ArrayList<String> list) {
@@ -35,6 +58,15 @@ public class JavaUtil {
 				list.add(file.getAbsolutePath());
 			}
 		}
+	}
+	
+	private static String convertClassPath(List<String> paths) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < paths.size() - 1; i++) {
+			sb.append(paths.get(i)).append(File.pathSeparator);
+		}
+		sb.append(paths.get(paths.size() - 1));
+		return sb.toString();
 	}
 
 }
