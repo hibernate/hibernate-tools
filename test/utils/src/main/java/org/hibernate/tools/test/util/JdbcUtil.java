@@ -1,12 +1,9 @@
 package org.hibernate.tools.test.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.net.URL;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -101,73 +98,41 @@ public class JdbcUtil {
 	
 	public static void createDatabase(Object test) {
 		establishJdbcConnection(test);
-		executeSql(test, getSqls(test, "create.sql", "CREATE_SQL"));
+		executeSql(test, getSqls(test, "create.sql"));
 	}
 	
 	public static void populateDatabase(Object test) {
-		executeSql(test, getSqls(test, "data.sql", "DATA_SQL"));
+		executeSql(test, getSqls(test, "data.sql"));
 	}
 	
 	public static void dropDatabase(Object test) {
-		executeSql(test, getSqls(test, "drop.sql", "DROP_SQL"));
+		executeSql(test, getSqls(test, "drop.sql"));
 		releaseJdbcConnection(test);
 	}
 	
-	private static String[] getSqls(Object test, String scriptName, String fieldName) {
-		File createDatabaseScript = getSqlScript(test, scriptName);
-		String[] sqls = null;
-		if (createDatabaseScript != null && createDatabaseScript.exists()) {
-			sqls = getSqlsFromFile(createDatabaseScript);
-		} else {
-			sqls = getSqlsFromField(test, fieldName);
-		}
-		return sqls;
-	}
-	
-	private static String[] getSqlsFromField(Object test, String fieldName) {
-		String[] result = new String[] {};
-		try {
-			Field field = test.getClass().getDeclaredField(fieldName);
-			field.setAccessible(true);
-			result = (String[])field.get(null);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-		return result;
-	}
-	
-	private static String[] getSqlsFromFile(File file) {
-		ArrayList<String> sqls = new ArrayList<String>();
-		try {
-			FileReader fileReader = new FileReader(file);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line = null;
-			while ((line = bufferedReader.readLine()) != null) {
-				sqls.add(line);
+	private static String[] getSqls(Object test, String scriptName) {
+		String[] result = null;
+		String location = getSqlScriptsLocation(test) + scriptName;
+		InputStream inputStream = test.getClass().getResourceAsStream(location);
+		if (inputStream != null) {
+			BufferedReader bufferedReader = 
+					new BufferedReader(new InputStreamReader(inputStream));
+			try {
+				String line = null;
+				ArrayList<String> lines = new ArrayList<String>();
+				while ((line = bufferedReader.readLine()) != null) {
+					lines.add(line);
+				}
+				result = lines.toArray(new String[lines.size()]);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
-			bufferedReader.close();
-		} catch (IOException e) {
-			new RuntimeException(e);
 		}
-		return sqls.toArray(new String[sqls.size()]);
-	}
-	
-	private static File getSqlScript(Object test, String name) {
-		File result = null;
-		String fullName = 
-				getSqlScriptsLocation(test) + name;
-		URL url = Thread
-				.currentThread()
-				.getContextClassLoader()
-				.getResource(fullName);
-		if (url != null) {
-			result = new File(url.getFile());
-		} 
 		return result;
 	}
 	
 	private static String getSqlScriptsLocation(Object test) {
-		return test.getClass().getName().replace('.', '/') + '/';
+		return '/' + test.getClass().getPackage().getName().replace('.', '/') + '/';
 	}
 	
 	private static Connection createJdbcConnection() 

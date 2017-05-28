@@ -1,42 +1,26 @@
 package org.hibernate.tool.test.db;
 
-import org.hibernate.cfg.JDBCMetaDataConfigurationTest;
-import org.hibernate.tool.test.jdbc2cfg.AutoQuoteTest;
-import org.hibernate.tool.test.jdbc2cfg.BasicMultiSchemaTest;
-import org.hibernate.tool.test.jdbc2cfg.BasicTest;
-import org.hibernate.tool.test.jdbc2cfg.CompositeIdTest;
-import org.hibernate.tool.test.jdbc2cfg.ForeignKeysTest;
-import org.hibernate.tool.test.jdbc2cfg.IndexTest;
-import org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeIdTest;
-import org.hibernate.tool.test.jdbc2cfg.ManyToManyTest;
-import org.hibernate.tool.test.jdbc2cfg.MetaDataTest;
-import org.hibernate.tool.test.jdbc2cfg.NoPrimaryKeyTest;
-import org.hibernate.tool.test.jdbc2cfg.OneToOneTest;
-import org.hibernate.tool.test.jdbc2cfg.OverrideBinderTest;
-import org.hibernate.tool.test.jdbc2cfg.PerformanceTest;
-import org.hibernate.tool.test.jdbc2cfg.SearchEscapeStringTest;
-import org.hibernate.tool.test.jdbc2cfg.VersioningTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	AutoQuoteTest.class,
-	BasicTest.class,
-	BasicMultiSchemaTest.class,
-	CompositeIdTest.class,
-	ForeignKeysTest.class,
-	IndexTest.class,
-	JDBCMetaDataConfigurationTest.class,
-	KeyPropertyCompositeIdTest.class,
-	ManyToManyTest.class,
-	MetaDataTest.class,
-	NoPrimaryKeyTest.class,
-	OverrideBinderTest.class,
-	OneToOneTest.class,
-	PerformanceTest.class,
-	SearchEscapeStringTest.class,
-	VersioningTest.class
+	org.hibernate.tool.test.cfg.JDBCMetaDataConfiguration.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.AutoQuote.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.Basic.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.BasicMultiSchema.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.CompositeId.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.ForeignKeys.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.Index.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.KeyPropertyCompositeId.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.ManyToMany.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.MetaData.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.NoPrimaryKey.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.OneToOne.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.OverrideBinder.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.Performance.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.SearchEscapeString.TestCase.class,
+	org.hibernate.tool.test.jdbc2cfg.Versioning.TestCase.class
 })
 public class CommonTestSuite {}
