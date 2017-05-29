@@ -2,13 +2,14 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x;
+package org.hibernate.tool.hbm2x.CachedMetaData;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
@@ -22,20 +23,21 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tools.test.util.JdbcUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 
 
 /**
  * @author max
- *
+ * @author koen
  */
-public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
+public class TestCase {
 
-	protected void configure(JDBCMetaDataConfiguration configuration) {
-		super.configure( configuration );
-	}
-	
 	public class MockedMetaDataDialect implements MetaDataDialect {
 
 		MetaDataDialect delegate;
@@ -119,37 +121,51 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 		
 	}
 	
+	@Before
+	public void setUp() {
+		JdbcUtil.createDatabase(this);
+	}
+	
+	@After
+	public void tearDown() {
+		JdbcUtil.dropDatabase(this);
+	}
+	
+	@Test
 	public void testCachedDialect() {
-		
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
-		
-		Properties properties = cfg.getProperties();
-
-		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
-		
+		ServiceRegistry serviceRegistry = builder.build();		
+		Properties properties = jmdcfg.getProperties();
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
+				serviceRegistry.getService(JdbcServices.class).getDialect(), 
+				jmdcfg.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
-		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( properties, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
-		
-		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( dc, null, null );
-
-		validate( dc );		
-		
-		mock.setFailOnDelegateAccess(true);
-		
-		reader = JDBCReaderFactory.newJDBCReader( properties, new DefaultReverseEngineeringStrategy(), dialect, serviceRegistry );
-		
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( 
+				properties, 
+				new DefaultReverseEngineeringStrategy(), 
+				dialect, 
+				serviceRegistry );
+		DatabaseCollector dc = new DefaultDatabaseCollector(
+				reader.getMetaDataDialect());
+		reader.readDatabaseSchema( 
+				dc, 
+				properties.getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA) );
+		validate( dc );				
+		mock.setFailOnDelegateAccess(true);	
+		reader = JDBCReaderFactory.newJDBCReader( 
+				properties, 
+				new DefaultReverseEngineeringStrategy(), 
+				dialect, 
+				serviceRegistry );
 		dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( dc, null, null );
-
+		reader.readDatabaseSchema( 
+				dc, 
+				properties.getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA) );
 		validate(dc);
-		
-		
-		
-		
 	}
 
 	private void validate(DatabaseCollector dc) {
@@ -163,33 +179,20 @@ public class CachedMetaDataTest extends JDBCMetaDataBinderTestCase {
 			child = table;
 			master = iterator.next();
 		} else {
-			fail("Only tables named 'MASTER' and 'CHILD' should exist");
+			Assert.fail("Only tables named 'MASTER' and 'CHILD' should exist");
 		}
-		assertNotNull(child);
-		assertNotNull(master);
+		Assert.assertNotNull(child);
+		Assert.assertNotNull(master);
 		
 		iterator = dc.iterateTables();
-		assertNotNull(iterator.next());
-		assertNotNull(iterator.next());
-		assertFalse(iterator.hasNext());		
+		Assert.assertNotNull(iterator.next());
+		Assert.assertNotNull(iterator.next());
+		Assert.assertFalse(iterator.hasNext());		
 		
-		assertHasNext("should have recorded one foreignkey to child table", 1, child.getForeignKeyIterator() );
+		JUnitUtil.assertIteratorContainsExactly(
+				"should have recorded one foreignkey to child table",  
+				child.getForeignKeyIterator(),
+				1);
 	}
 
-	protected String[] getCreateSQL() {
-		
-		return new String[] {
-				"create table master ( id char not null, name varchar(20), primary key (id) )",
-				"create table child  ( childid char not null, masterref char, primary key (childid), foreign key (masterref) references master(id) )",				
-		};
-	}
-
-	protected String[] getDropSQL() {
-		
-		return new String[]  {
-				"drop table child",
-				"drop table master",				
-		};
-	}	
-	
 }

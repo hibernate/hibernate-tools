@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,
 	org.hibernate.tool.test.cfg.JDBCMetaDataConfiguration.TestCase.class,
 	org.hibernate.tool.test.jdbc2cfg.AutoQuote.TestCase.class,
 	org.hibernate.tool.test.jdbc2cfg.Basic.TestCase.class,

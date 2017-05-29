@@ -18,7 +18,6 @@ public class Hbm2XAllTests {
 		suite.addTestSuite(Hbm2DaoTest.class);
 		suite.addTestSuite(OtherCfg2HbmTest.class);
 		suite.addTestSuite(Hbm2JavaConstructorTest.class);
-		suite.addTestSuite(CachedMetaDataTest.class);
 		suite.addTestSuite(GenerateFromJDBCTest.class);
 		suite.addTestSuite(Hbm2JavaInitializationTest.class);
 		suite.addTestSuite(Hbm2HibernateDAOTest.class);
