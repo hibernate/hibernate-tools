@@ -21,6 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.jdbc2cfg.OneToOne.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Performance.TestCase.class,
+	org.hibernate.tool.jdbc2cfg.RevEngForeignKey.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.SearchEscapeString.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Versioning.TestCase.class
 })

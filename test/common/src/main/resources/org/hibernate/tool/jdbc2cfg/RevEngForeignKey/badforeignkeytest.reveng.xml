@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+<hibernate-reverse-engineering>
+
+	<table name="WORKS_ON">
+    <!-- defining a constraint that is already in the database -->
+     <foreign-key constraint-name="WORKSON_EMPLOYEE" foreign-table="EMPLOYEE">
+	    	<column-ref local-column="employee_id" foreign-column="id"/>
+	  </foreign-key> 
+	</table>
+
+</hibernate-reverse-engineering>
