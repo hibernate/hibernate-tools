@@ -7,6 +7,8 @@ import org.hibernate.mapping.Table;
 
 public class HibernateUtil {
 	
+	public static class Dialect extends org.hibernate.dialect.Dialect {}
+	
 	public static ForeignKey getForeignKey(Table table, String fkName) {
 		ForeignKey result = null;
 		Iterator<?> iter = table.getForeignKeyIterator();

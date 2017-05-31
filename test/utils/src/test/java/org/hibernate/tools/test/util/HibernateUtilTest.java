@@ -17,5 +17,10 @@ public class HibernateUtilTest {
 		Assert.assertNotNull(HibernateUtil.getForeignKey(table, "foo"));
 		Assert.assertNull(HibernateUtil.getForeignKey(table, "bar"));
 	}
+	
+	@Test
+	public void testDialectInstantiation() {
+		Assert.assertNotNull(new HibernateUtil.Dialect());
+	}
 
 }
