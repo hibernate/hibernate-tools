@@ -15,7 +15,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.ModelCompletion;
 
 import java.io.File;
 import java.net.URL;
@@ -30,6 +30,13 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.tool.ide.completion.ConfigurationCompletion;
+import org.hibernate.tool.ide.completion.EntityNameReference;
+import org.hibernate.tool.ide.completion.HQLAnalyzer;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.ide.completion.IHQLCodeAssist;
+import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.After;
@@ -44,7 +51,7 @@ import org.junit.rules.TemporaryFolder;
  * @author leon
  * @author koen
  */
-public class ModelCompletionTest {
+public class TestCase {
 
     private final class Collector implements IHQLCompletionRequestor {
 		private List<HQLCompletionProposal> proposals = new ArrayList<HQLCompletionProposal>();
@@ -82,14 +89,14 @@ public class ModelCompletionTest {
 	public static void beforeClass() throws Exception {
 		File folder = temporaryFolder.getRoot();
 		File originFolder = 
-			new File(ModelCompletionTest.class
+			new File(TestCase.class
 				.getClassLoader()
-				.getResource("org/hibernate/tool/ide/completion/resources")
+				.getResource("org/hibernate/tool/ide/completion/ModelCompletion/resources")
 				.toURI())
 				.getParentFile();
 		File destinationFolder = new File(
 				folder, 
-				"org/hibernate/tool/ide/completion");
+				"org/hibernate/tool/ide/completion/ModelCompletion");
 		destinationFolder.mkdirs();
 		for (File f : originFolder.listFiles()) {
 			String fileName = f.getName();
@@ -528,7 +535,7 @@ public class ModelCompletionTest {
     	Assert.assertEquals(caretPosition, proposal.getCompletionLocation());
     	Assert.assertEquals(caretPosition, proposal.getReplaceStart());
     	Assert.assertEquals(caretPosition, proposal.getReplaceEnd());
-    	Assert.assertEquals("org.hibernate.tool.ide.completion.Product", proposal.getEntityName());
+    	Assert.assertEquals("org.hibernate.tool.ide.completion.ModelCompletion.Product", proposal.getEntityName());
 			
     }
     
@@ -556,7 +563,7 @@ public class ModelCompletionTest {
 		Assert.assertEquals(caretPosition, proposal.getReplaceStart());
 		Assert.assertEquals(caretPosition, proposal.getReplaceEnd());
 		//TODO: keep a path/context assertEquals("Product", proposal.getShortEntityName());
-		Assert.assertEquals("org.hibernate.tool.ide.completion.Product", proposal.getEntityName());
+		Assert.assertEquals("org.hibernate.tool.ide.completion.ModelCompletion.Product", proposal.getEntityName());
 		Assert.assertEquals("version", proposal.getPropertyName());
 		Assert.assertNotNull(proposal.getProperty());
 		Assert.assertEquals(proposal.getPropertyName(), proposal.getProperty().getName());

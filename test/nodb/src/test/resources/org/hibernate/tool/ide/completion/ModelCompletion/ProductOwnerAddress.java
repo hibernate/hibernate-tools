@@ -15,22 +15,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.ModelCompletion;
 
 /**
  * @author leon
  */
-public class Store {
-
-    private Long id;
-
-    private String name;
-
-    private String name2;
+public class ProductOwnerAddress {
     
-    private StoreCity city;
-
-    public Store() {
+    private Long id;
+    
+    private String street;
+    
+    private String number;
+    
+    public ProductOwnerAddress() {
     }
 
     public Long getId() {
@@ -41,28 +39,20 @@ public class Store {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getStreet() {
+        return street;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public void setName2(String name2) {
-        this.name2 = name2;
+    public String getNumber() {
+        return number;
     }
 
-    public String getName2() {
-        return name2;
-    }
-
-    public StoreCity getCity() {
-        return city;
-    }
-
-    public void setCity(StoreCity city) {
-        this.city = city;
+    public void setNumber(String number) {
+        this.number = number;
     }
     
 }

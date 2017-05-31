@@ -14,22 +14,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.ModelCompletion;
 
 /**
- * @author leon
+ * @author Dmitry Geraskov
+ *
  */
-public class StoreCity {
-
-    private int number;
-
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
+public abstract class City {
+	
+	private Long id;
     
+    private String name;
+    
+    public City() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="org.hibernate.tool.ide.completion">
+<hibernate-mapping package="org.hibernate.tool.ide.completion.ModelCompletion">
     
-    <class name="City" table="hc_city" abstract="true">
+    <class name="ProductOwnerAddress" table="hc_product_owner_address">
         <id name="id">
             <generator class="native"/>
         </id>
-        <discriminator column="hc_city_type" type="string"/>
-        <property name="name"/>
+        <property name="street"/>
+        <property name="number"/>
     </class>
         
 </hibernate-mapping>

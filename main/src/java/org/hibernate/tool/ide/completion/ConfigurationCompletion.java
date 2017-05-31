@@ -22,13 +22,10 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 
 /**
- * Completion based on a Configuration.
- * package protected for now - not meant to be used externally.
- * 
  * @author Max Rydahl Andersen
  *
  */
-class ConfigurationCompletion {
+public class ConfigurationCompletion {
 
 	private final Metadata metadata;
 

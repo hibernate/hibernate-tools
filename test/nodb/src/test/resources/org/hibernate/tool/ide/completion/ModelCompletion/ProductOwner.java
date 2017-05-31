@@ -15,44 +15,55 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.ModelCompletion;
 
 /**
  * @author leon
  */
-public class ProductOwnerAddress {
+public class ProductOwner {
+
+    private String firstName;
+
+    private String lastName;
+
+    private ProductOwnerAddress address;
     
-    private Long id;
+    private StoreCity account;
     
-    private String street;
-    
-    private String number;
-    
-    public ProductOwnerAddress() {
+    public ProductOwner() {
     }
 
-    public Long getId() {
-        return id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getStreet() {
-        return street;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getNumber() {
-        return number;
+    public void setAddress(ProductOwnerAddress address) {
+        this.address = address;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public ProductOwnerAddress getAddress() {
+        return address;
     }
-    
+
+    public StoreCity getAccount() {
+        return account;
+    }
+
+    public void setAccount(StoreCity account) {
+        this.account = account;
+    }
+
+
 }
