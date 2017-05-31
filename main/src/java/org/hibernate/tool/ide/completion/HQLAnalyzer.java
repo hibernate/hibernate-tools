@@ -147,7 +147,7 @@ public class HQLAnalyzer {
         return entityReferences;
     }
 
-    protected SubQueryList getSubQueries(char[] query, int position) {
+    public SubQueryList getSubQueries(char[] query, int position) {
     	SimpleHQLLexer syntax = getLexer( query );
     	int numericId = -1;
         List<SubQuery> subQueries = new ArrayList<SubQuery>();
@@ -235,11 +235,11 @@ public class HQLAnalyzer {
         return buff.toString();
     }
 
-    static class SubQueryList {
+    public static class SubQueryList {
 
         int caretDepth;
 
-        List<SubQuery> subQueries;
+        public List<SubQuery> subQueries;
     }
 
     

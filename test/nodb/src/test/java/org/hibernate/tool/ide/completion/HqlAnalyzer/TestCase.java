@@ -15,18 +15,21 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.HqlAnalyzer;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.tool.ide.completion.EntityNameReference;
+import org.hibernate.tool.ide.completion.HQLAnalyzer;
+import org.hibernate.tool.ide.completion.SubQuery;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author leon
  */
-public class HqlAnalyzerTest {
+public class TestCase {
 	
     @Test
     public void testShouldShowTables() {
