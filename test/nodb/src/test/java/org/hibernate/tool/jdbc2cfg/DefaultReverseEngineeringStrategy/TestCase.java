@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.test.jdbc2cfg;
+package org.hibernate.tool.jdbc2cfg.DefaultReverseEngineeringStrategy;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author koen
  *
  */
-public class DefaultReverseEngineeringStrategyTest {
+public class TestCase {
 	
 	ReverseEngineeringStrategy rns = new DefaultReverseEngineeringStrategy();
 	
