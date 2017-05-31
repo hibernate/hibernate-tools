@@ -1,5 +1,6 @@
 package org.hibernate.tools.test.util;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.Assert;
@@ -31,6 +32,24 @@ public class JUnitUtilTest {
 		} catch (ComparisonFailure e) {
 			Assert.fail();
 		}
+	}
+	
+	@Test
+	public void testAssertIsNonEmptyFile() throws Exception {
+		String classResourceName = "/org/hibernate/tools/test/util/JUnitUtilTest.class";
+		File exists = new File(getClass().getResource(classResourceName).toURI());
+		try {
+			JUnitUtil.assertIsNonEmptyFile(exists);
+		} catch (Exception e) {
+			Assert.fail();
+		}
+		File doesNotExist = new File(exists.getAbsolutePath() + '_');
+		try {
+			JUnitUtil.assertIsNonEmptyFile(doesNotExist);
+			Assert.fail();
+		} catch (AssertionError e) {
+			Assert.assertTrue(e.getMessage().contains("does not exist"));
+		}		
 	}
 
 }
