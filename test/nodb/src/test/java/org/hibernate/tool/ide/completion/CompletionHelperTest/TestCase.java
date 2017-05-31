@@ -15,18 +15,20 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.hibernate.tool.ide.completion;
+package org.hibernate.tool.ide.completion.CompletionHelperTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.tool.ide.completion.CompletionHelper;
+import org.hibernate.tool.ide.completion.EntityNameReference;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author leon
  */
-public class CompletionHelperTest {
+public class TestCase {
 	
     @Test
     public void testGetCanonicalPath() {

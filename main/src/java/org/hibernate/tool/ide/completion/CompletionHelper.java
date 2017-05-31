@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Helper class for completion.
- * Package private, not to be used externally.
- *  
  * @author leon, max.andersen@jboss.com
  */
-class CompletionHelper {
+public class CompletionHelper {
     
     private CompletionHelper() {
     }
