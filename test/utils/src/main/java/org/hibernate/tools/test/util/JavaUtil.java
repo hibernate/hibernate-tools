@@ -12,22 +12,33 @@ import javax.tools.ToolProvider;
 public class JavaUtil {
 	
 	public static void compile(File folder) {
-		compile(folder, null);
+		compile(folder, (List<String>)null);
 	}
 	
 	public static void compile(File folder, List<String> classPath) {
+		compile(folder, folder, classPath);
+	}
+	
+	public static void compile(File sourceFolder, File destinationFolder) {
+		compile(sourceFolder, destinationFolder, null);
+	}
+	
+	public static void compile(
+			File sourceFolder, 
+			File destinationFolder, 
+			List<String> classPath) {
 		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
 		ArrayList<String> arguments = new ArrayList<String>();
 		arguments.add("-d");
-		arguments.add(folder.getAbsolutePath());
+		arguments.add(destinationFolder.getAbsolutePath());
 		arguments.add("-sourcepath");
-		arguments.add(folder.getAbsolutePath());
+		arguments.add(sourceFolder.getAbsolutePath());
 		if (classPath != null && !classPath.isEmpty()) {
 			arguments.add("-cp");
 			arguments.add(convertClassPath(classPath));
 		}
 		ArrayList<String> fileNames = new ArrayList<String>();
-		collectJavaFiles(folder, fileNames);
+		collectJavaFiles(sourceFolder, fileNames);
 		arguments.addAll(fileNames);
 		javaCompiler.run(
 				null, 
