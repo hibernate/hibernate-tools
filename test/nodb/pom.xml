@@ -29,6 +29,10 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
     </dependencies>
     
 </project>

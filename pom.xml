@@ -34,6 +34,7 @@
         <mysql.version>6.0.6</mysql.version>
         <hibernate-core.version>5.2.9.Final</hibernate-core.version>
         <slf4j-log4j12.version>1.7.23</slf4j-log4j12.version>
+        <jaxen.version>1.1.6</jaxen.version>
     </properties>
     
     <dependencyManagement>
@@ -59,6 +60,12 @@
         		<artifactId>hibernate-tools-tests-common</artifactId>
         		<version>${project.version}</version>
         	</dependency>
+ 	        <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
+                <scope>test</scope>
+		</dependency>
  		    <dependency>
 			    <groupId>org.slf4j</groupId>
 			    <artifactId>slf4j-log4j12</artifactId>
