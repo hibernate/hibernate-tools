@@ -36,7 +36,7 @@ public class MetaDataDialectFactory {
 		return mdd;
 	}
 
-	static MetaDataDialect fromClassName(String property) {
+	public static MetaDataDialect fromClassName(String property) {
 		if ( property != null ) {
 			try {
 				return (MetaDataDialect) ReflectHelper.classForName( property,
@@ -51,7 +51,7 @@ public class MetaDataDialectFactory {
 		}
 	}
 	
-	static MetaDataDialect fromDialect(Dialect dialect) {
+	public static MetaDataDialect fromDialect(Dialect dialect) {
 		if(dialect!=null) {  
 			if(dialect instanceof Oracle8iDialect) {
 				return new OracleMetaDataDialect();
@@ -68,7 +68,7 @@ public class MetaDataDialectFactory {
 		return null;
 	}
 	
-	static MetaDataDialect fromDialectName(String dialect) {
+	public static MetaDataDialect fromDialectName(String dialect) {
 		if (dialect.toLowerCase().contains("oracle")) {
 			return new OracleMetaDataDialect();
 		}
