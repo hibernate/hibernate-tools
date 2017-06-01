@@ -13,4 +13,15 @@ public class TestCase {
         Assert.assertEquals("hs", plural);
     }
 	
+	@Test
+	public void testPluralize(){
+		Assert.assertEquals("boxes", ReverseEngineeringStrategyUtil.simplePluralize("box"));
+		Assert.assertEquals("buses", ReverseEngineeringStrategyUtil.simplePluralize("bus"));
+		Assert.assertEquals("keys", ReverseEngineeringStrategyUtil.simplePluralize("key"));
+		Assert.assertEquals("countries", ReverseEngineeringStrategyUtil.simplePluralize("country"));
+		Assert.assertEquals("churches", ReverseEngineeringStrategyUtil.simplePluralize("church"));
+		Assert.assertEquals("bushes", ReverseEngineeringStrategyUtil.simplePluralize("bush"));
+		Assert.assertEquals("roofs", ReverseEngineeringStrategyUtil.simplePluralize("roof"));
+	}
+
 }
