@@ -1,7 +1,9 @@
-package org.hibernate.cfg;
+package org.hibernate.tool.cfg.MetaDataDialectFactoryTest;
 
 import java.util.Properties;
 
+import org.hibernate.cfg.JDBCBinderException;
+import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -18,7 +20,7 @@ import org.hibernate.dialect.Oracle9iDialect;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MetaDataDialectFactoryTest {
+public class TestCase {
 
 	private static class NoNameDialect extends Dialect {}
 	
