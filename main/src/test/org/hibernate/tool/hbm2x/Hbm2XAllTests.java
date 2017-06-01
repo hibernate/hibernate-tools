@@ -20,7 +20,6 @@ public class Hbm2XAllTests {
 		suite.addTestSuite(Hbm2HibernateDAOTest.class);
 		suite.addTestSuite(DefaultSchemaCatalogTest.class);
 		suite.addTestSuite(HashcodeEqualsTest.class);
-		suite.addTestSuite(JdbcHbm2JavaEjb3Test.class);
 		//suite.addTestSuite(DocExporterTest.class);
 		suite.addTestSuite(Hbm2EJBDaoTest.class);
 		suite
