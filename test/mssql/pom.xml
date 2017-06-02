@@ -26,10 +26,6 @@
         </dependency>
     	<dependency>
     		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-tools</artifactId>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools-tests-common</artifactId>
     	</dependency>
     </dependencies>

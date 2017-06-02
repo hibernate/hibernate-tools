@@ -17,14 +17,6 @@
     <name>Hibernate Tools HSQL Tests Project</name>
     
     <dependencies>
-  		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency> 
-    	<dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-tools</artifactId>
-    	</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -36,10 +28,6 @@
     	<dependency>
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools-tests-common</artifactId>
-    	</dependency>
-    	<dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-tools-tests-utils</artifactId>
     	</dependency>
     </dependencies>
     
