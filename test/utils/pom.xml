@@ -31,8 +31,8 @@
             <artifactId>mssql-jdbc</artifactId>
         </dependency>
         <dependency>
-        	<groupId>org.hibernate</groupId>
-        	<artifactId>hibernate-core</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools</artifactId>
         </dependency>
     </dependencies>
     
