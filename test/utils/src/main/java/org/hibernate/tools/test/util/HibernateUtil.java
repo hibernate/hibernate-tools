@@ -2,11 +2,10 @@ package org.hibernate.tools.test.util;
 
 import java.util.Iterator;
 
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.util.MetadataHelper;
 
 public class HibernateUtil {
 	
@@ -27,15 +26,12 @@ public class HibernateUtil {
 	
 	public static Configuration initializeConfiguration(Object test, String[] hbmXmlFiles) {
 		String resourcesLocation = '/' + test.getClass().getPackage().getName().replace(".", "/") + '/';
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.loadProperties(resourcesLocation + "hibernate.properties");
-		MetadataSources metadataSources = new MetadataSources(ssrb.build());
-		for (int i = 0; i < hbmXmlFiles.length; i++) {
-			metadataSources.addResource(resourcesLocation + hbmXmlFiles[i]);
-		}
-		Configuration configuration = new Configuration(metadataSources);
+		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-		metadataSources.buildMetadata();
+		for (int i = 0; i < hbmXmlFiles.length; i++) {
+			configuration.addResource(resourcesLocation + hbmXmlFiles[i]);
+		}
+		MetadataHelper.getMetadata(configuration);
 		return configuration;
 	}
 	 
