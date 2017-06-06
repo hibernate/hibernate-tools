@@ -248,6 +248,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 						    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
 
+                        // TODO: manage attributes schema + catalog added to @SequenceGenerator since JPA 2.0
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
 							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
 							.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
