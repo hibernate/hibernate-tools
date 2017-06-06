@@ -10,7 +10,6 @@ public class Cfg2HbmAllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(ListArrayTest.suite());
 		suite.addTest(CompositeElementTest.suite());
-		suite.addTest(MapAndAnyTest.suite());
 		suite.addTest(DynamicComponentTest.suite());
 		suite.addTest(IdBagTest.suite());
 		suite.addTest(Hbm2HbmXmlTest.suite());
