@@ -23,7 +23,7 @@ public class JavaFormatter {
 	public JavaFormatter(Map<Object, Object> settings) {
 		if(settings==null) {
 			// if no settings run with jdk 5 as default 
-			settings = new HashMap<Object, Object>();
+			settings = new HashMap<>();
 			settings.put( JavaCore.COMPILER_SOURCE, "1.5");
 			settings.put( JavaCore.COMPILER_COMPLIANCE, "1.5");
 			settings.put( JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.5");			
@@ -37,7 +37,6 @@ public class JavaFormatter {
 	 * Returns true if formatting went ok; returns false if the formatting could not finish because of errors in the input.
 	 *  
 	 * @param file
-	 * @param codeFormatter
 	 * @return
 	 */
 	public boolean formatFile(File file) throws ExporterException {
@@ -65,9 +64,7 @@ public class JavaFormatter {
 				}
 			}
 			return true;
-		} catch (IOException e) {
-			throw new ExporterException("Could not format " + file, e);
-		} catch (BadLocationException e) {			
+		} catch (IOException | BadLocationException e) {
 			throw new ExporterException("Could not format " + file, e);
 		}
 	}
