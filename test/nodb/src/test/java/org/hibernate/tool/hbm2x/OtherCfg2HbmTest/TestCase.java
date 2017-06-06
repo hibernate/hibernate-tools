@@ -12,8 +12,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -48,16 +46,8 @@ public class TestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		String resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.loadProperties(resourcesLocation + "hibernate.properties");
-		MetadataSources metadataSources = new MetadataSources(ssrb.build());
-		for (int i = 0; i < HBM_XML_FILES.length; i++) {
-			metadataSources.addResource(resourcesLocation + HBM_XML_FILES[i]);
-		}
-		Configuration configuration = new Configuration(metadataSources);
-		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-		metadataSources.buildMetadata();
+		Configuration configuration = 
+				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
 		exporterOutputDir.mkdir();		
 		Exporter hbmexporter = new HibernateMappingExporter(configuration, exporterOutputDir );	

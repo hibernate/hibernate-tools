@@ -48,15 +48,7 @@ public class TestCase {
 	public void setUp() {
 		outputDir = temporaryFolder.getRoot();
 		resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.loadProperties(resourcesLocation + "hibernate.properties");
-		MetadataSources metadataSources = new MetadataSources(ssrb.build());
-		for (int i = 0; i < HBM_XML_FILES.length; i++) {
-			metadataSources.addResource(resourcesLocation + HBM_XML_FILES[i]);
-		}
-		configuration = new Configuration(metadataSources);
-		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-		metadataSources.buildMetadata();
+		configuration = HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 	}
 
 	@Test
