@@ -19,7 +19,6 @@ public class Cfg2HbmAllTests {
 		suite.addTest(InheritanceTest.suite());
 		suite.addTest(SetElementTest.suite());
 		suite.addTest(BackrefTest.suite());
-		suite.addTest(Cfg2HbmToolTest.suite());
 		suite.addTest(AbstractTest.suite());
 		suite.addTest(TypeParamsTest.suite());
 		//$JUnit-END$
