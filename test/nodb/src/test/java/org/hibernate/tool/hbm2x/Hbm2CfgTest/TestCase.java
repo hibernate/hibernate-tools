@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x.Hbm2Cfg;
+package org.hibernate.tool.hbm2x.Hbm2CfgTest;
 
 import java.io.File;
 

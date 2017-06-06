@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x.Properties;
+package org.hibernate.tool.hbm2x.PropertiesTest;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -96,7 +96,7 @@ public class TestCase {
 	
 	@Test
 	public void testCompilable() throws Exception {
-		String propertiesUsageResourcePath = "/org/hibernate/tool/hbm2x/Properties/PropertiesUsage.java_";
+		String propertiesUsageResourcePath = "/org/hibernate/tool/hbm2x/PropertiesTest/PropertiesUsage.java_";
 		File propertiesUsageOrigin = new File(getClass().getResource(propertiesUsageResourcePath).toURI());
 		File propertiesUsageDestination = new File(exporterOutputDir, "properties/PropertiesUsage.java");
 		File targetDir = new File(temporaryFolder.getRoot(), "compilerOutput" );

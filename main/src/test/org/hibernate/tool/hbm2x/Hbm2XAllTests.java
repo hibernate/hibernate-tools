@@ -12,7 +12,6 @@ public class Hbm2XAllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.hibernate.tool.hbm2x");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(Hbm2DaoTest.class);
 		suite.addTestSuite(Hbm2JavaConstructorTest.class);
 		suite.addTestSuite(Hbm2JavaInitializationTest.class);
 		suite.addTestSuite(Hbm2HibernateDAOTest.class);
