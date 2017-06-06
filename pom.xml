@@ -252,10 +252,10 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<echo></echo>
 								<copy file="${project.build.directory}/test-classes/hibernate.properties" tofile="${project.build.directory}/test-classes/log4j.properties" />
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
