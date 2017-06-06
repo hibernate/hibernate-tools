@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="HelloWorld">
+    	<id name="id" type="string">
+    		<generator class="assigned"/>
+    	</id>
+		 
+		<property name="hello" type="string" length="5"/>
+
+		<property name="world" type="long"/>
+
+	</class>
+
+</hibernate-mapping>
