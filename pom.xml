@@ -19,7 +19,7 @@
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://hibernate.onjira.com/browse/HBX</url>
+		<url>https://hibernate.atlassian.net/projects/HBX</url>
 	</issueManagement>
 
 	<scm>
