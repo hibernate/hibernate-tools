@@ -522,7 +522,7 @@
 					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
 					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
 					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
-				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<db.dialect>org.hibernate.dialect.PostgreSQL82Dialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg01.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
@@ -538,7 +538,7 @@
 					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
 					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
 					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
-				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<db.dialect>org.hibernate.dialect.PostgreSQL82Dialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg03.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
