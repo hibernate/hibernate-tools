@@ -35,10 +35,14 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.ForeignKeyDirection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityPOJOClass extends BasicPOJOClass {
 
-	private PersistentClass clazz;
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private PersistentClass clazz;
 
 	public EntityPOJOClass(PersistentClass clazz, Cfg2JavaTool cfg) {
 		super(clazz, cfg);
@@ -440,8 +444,11 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			else if ( "all".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".ALL");
 			}
+			else {
+                log.warn("Cascade type '{]' unmanaged for javax.persistence.CascadeType", element);
+            }
 		}
-		return (String[]) types.toArray( new String[types.size()] );
+		return types.toArray( new String[types.size()] );
 	}
 
 	public String generateManyToOneAnnotation(Property property) {
