@@ -436,6 +436,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			else if ( "refresh".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".REFRESH");
 			}
+			// TODO: add CascadeType.DETACH since JPA 2.0
 			else if ( "all".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".ALL");
 			}
