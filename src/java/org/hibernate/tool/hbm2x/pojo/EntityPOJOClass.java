@@ -445,7 +445,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			else if ( "all".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".ALL");
 			}
-			else {
+			else if (!"none".equals( element )) {
                 log.warn("Cascade type '{}' unmanaged for javax.persistence.CascadeType", element);
             }
 		}
