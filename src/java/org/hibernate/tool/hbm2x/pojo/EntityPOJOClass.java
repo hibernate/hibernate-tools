@@ -251,13 +251,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 							.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "SEQUENCE" ) )
 						    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
+						idResult.append(" ");
 
                         // TODO: manage attributes schema + catalog added to @SequenceGenerator since JPA 2.0
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
 							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
 							.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
 							//	TODO HA does not support initialValue and allocationSize
-						wholeString.append( builder.getResult() );
+						idResult.append(builder.getResult());
 					}
 					else if ( TableGenerator.class.getName().equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
@@ -445,7 +446,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 				types.add(importType( "javax.persistence.CascadeType") + ".ALL");
 			}
 			else {
-                log.warn("Cascade type '{]' unmanaged for javax.persistence.CascadeType", element);
+                log.warn("Cascade type '{}' unmanaged for javax.persistence.CascadeType", element);
             }
 		}
 		return types.toArray( new String[types.size()] );
