@@ -14,7 +14,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.hibernate.tool.hbm2x.hbm2hbmxml.DynamicComponentTest;
+package org.hibernate.tool.hbm2x.hbm2hbmxml.CompositeElementTest;
 
 import java.io.File;
 import java.util.List;
@@ -69,10 +69,10 @@ public class TestCase {
 	public void testAllFilesExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				outputDir,  
-				"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Fee.hbm.xml") );
+				"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Fee.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				outputDir,  
-				"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Glarch.hbm.xml") );
+				"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Glarch.hbm.xml") );
 	}
 
 	@Test
@@ -83,41 +83,36 @@ public class TestCase {
         		HibernateUtil.Dialect.class.getName());
         cfg.addFile(new File(
         		outputDir, 
-        		"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Fee.hbm.xml"));
+        		"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Fee.hbm.xml"));
         cfg.addFile(new File(
         		outputDir, 
-        		"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Glarch.hbm.xml"));
+        		"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Glarch.hbm.xml"));
         Assert.assertNotNull(MetadataHelper.getMetadata(cfg));
     }
 
 	@Test
-	public void testClassProxy() throws DocumentException {
+	public void testCompositeElementNode() throws DocumentException {
 		File outputXml = new File(
-				outputDir,  
-				"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Glarch.hbm.xml");
-		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader = new SAXReader();
+        		outputDir, 
+        		"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Glarch.hbm.xml");
+        JUnitUtil.assertIsNonEmptyFile(outputXml);
+		SAXReader xmlReader =  new SAXReader();
 		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one class element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute("proxy").getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.DynamicComponentTest.GlarchProxy");
-	}
+		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/list");
+		Element node = (Element) xpath.selectNodes(document).get(1); //second list
+		List<?> list = node.elements("composite-element");
+		Assert.assertEquals("Expected to get one composite-element element", 1, list.size());
+		node = (Element) list.get(0);
+		Assert.assertEquals("Expected to get two property element", 2, node.elements("property").size());
 
-	@Test
-	public void testDynamicComponentNode() throws DocumentException {
-		File outputXml = new File(
-				outputDir,  
-				"org/hibernate/tool/hbm2x/hbm2hbmxml/DynamicComponentTest/Glarch.hbm.xml");
-		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader = new SAXReader();
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/dynamic-component");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one dynamic-component element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "name" ).getText(),"dynaBean");
+		node = node.element("many-to-one");
+		Assert.assertEquals(node.attribute( "name" ).getText(),"fee");
+		Assert.assertEquals(node.attribute( "cascade" ).getText(),"all");
+		//TODO: assertEquals(node.attribute( "outer-join" ).getText(),"true");
+		node = node.getParent();//composite-element
+		node = node.element("nested-composite-element");
+		Assert.assertEquals(node.attribute( "name" ).getText(),"subcomponent");
+		Assert.assertEquals(node.attribute( "class" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.CompositeElementTest.FooComponent");
 	}
 
 }
