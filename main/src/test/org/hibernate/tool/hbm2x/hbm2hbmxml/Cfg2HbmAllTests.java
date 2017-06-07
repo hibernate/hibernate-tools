@@ -8,7 +8,6 @@ public class Cfg2HbmAllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.hibernate.tool.cfg2hbm");
 		//$JUnit-BEGIN$
-		suite.addTest(ListArrayTest.suite());
 		suite.addTest(CompositeElementTest.suite());
 		suite.addTest(DynamicComponentTest.suite());
 		suite.addTest(IdBagTest.suite());
