@@ -21,7 +21,6 @@ public class Hbm2XAllTests {
 		suite.addTestSuite(Hbm2EJBDaoTest.class);
 		suite
 				.addTestSuite(Hbm2JavaBidirectionalIndexedCollectionMappingTest.class);
-		suite.addTestSuite(Hbm2JavaEjb3Test.class);
 		suite.addTestSuite(Hbm2JavaTest.class);		
 		//$JUnit-END$
 		
