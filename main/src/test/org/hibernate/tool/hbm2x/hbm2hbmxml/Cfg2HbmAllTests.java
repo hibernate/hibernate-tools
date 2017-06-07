@@ -9,7 +9,6 @@ public class Cfg2HbmAllTests {
 		TestSuite suite = new TestSuite("Test for org.hibernate.tool.cfg2hbm");
 		//$JUnit-BEGIN$
 		suite.addTest(CompositeElementTest.suite());
-		suite.addTest(DynamicComponentTest.suite());
 		suite.addTest(BackrefTest.suite());
 		suite.addTest(AbstractTest.suite());
 		//$JUnit-END$
