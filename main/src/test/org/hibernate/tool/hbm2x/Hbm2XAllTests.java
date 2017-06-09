@@ -17,8 +17,6 @@ public class Hbm2XAllTests {
 		suite.addTestSuite(HashcodeEqualsTest.class);
 		//suite.addTestSuite(DocExporterTest.class);
 		suite.addTestSuite(Hbm2EJBDaoTest.class);
-		suite
-				.addTestSuite(Hbm2JavaBidirectionalIndexedCollectionMappingTest.class);
 		//$JUnit-END$
 		
 		suite.addTestSuite(H2IdentityTest.class);
