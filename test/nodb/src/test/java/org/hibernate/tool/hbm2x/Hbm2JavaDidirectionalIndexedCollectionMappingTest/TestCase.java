@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x.Hbm2JavaDidirectionalIndexedCollectionMapping;
+package org.hibernate.tool.hbm2x.Hbm2JavaDidirectionalIndexedCollectionMappingTest;
 
 import java.io.File;
 
