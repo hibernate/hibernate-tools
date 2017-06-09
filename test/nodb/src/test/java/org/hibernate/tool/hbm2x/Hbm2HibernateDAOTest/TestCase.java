@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x.Hbm2HibernateDAO;
+package org.hibernate.tool.hbm2x.Hbm2HibernateDAOTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,10 +60,10 @@ public class TestCase {
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				outputDir, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/ArticleHome.java") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				outputDir, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/AuthorHome.java") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") );
 	}
 	
 	@Test
@@ -78,16 +78,16 @@ public class TestCase {
 		JavaUtil.compile(outputDir, compiled, jars);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/AuthorHome.class") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.class") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/Author.class") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/Author.class") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/ArticleHome.class") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.class") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
-				"org/hibernate/tool/hbm2x/Hbm2HibernateDAO/Article.class") );
+				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/Article.class") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"comparator/NoopComparator.class") );
@@ -97,10 +97,10 @@ public class TestCase {
 	public void testNoVelocityLeftOvers() {
 		Assert.assertNull(FileUtil.findFirstString(
 			"$",
-			new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAO/ArticleHome.java")));
+			new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java")));
         Assert.assertNull(FileUtil.findFirstString(
         		"$",
-        		new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAO/AuthorHome.java") ) );       
+        		new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );       
 	}
 
 }
