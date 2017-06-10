@@ -35,6 +35,7 @@
         <hibernate-core.version>5.2.9.Final</hibernate-core.version>
         <slf4j-log4j12.version>1.7.23</slf4j-log4j12.version>
         <jaxen.version>1.1.6</jaxen.version>
+        <javaee-api.version>7.0</javaee-api.version>
     </properties>
     
     <dependencyManagement>
@@ -44,21 +45,21 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate-core.version}</version>
             </dependency>
-        	<dependency>
-        		<groupId>org.hibernate</groupId>
-        		<artifactId>hibernate-tools</artifactId>
-        		<version>${project.version}</version>
-        	</dependency>
-        	<dependency>
-        		<groupId>org.hibernate</groupId>
-        		<artifactId>hibernate-tools-tests-utils</artifactId>
-        		<version>${project.version}</version>
-        	</dependency>
+        	    <dependency>
+        		    <groupId>org.hibernate</groupId>
+        		    <artifactId>hibernate-tools</artifactId>
+        		    <version>${project.version}</version>
+        	    </dependency>
+            	<dependency>
+        	        <groupId>org.hibernate</groupId>
+        		    <artifactId>hibernate-tools-tests-utils</artifactId>
+        		    <version>${project.version}</version>
+        	    </dependency>
        		<dependency>
-        		<groupId>org.hibernate</groupId>
-        		<artifactId>hibernate-tools-tests-common</artifactId>
-        		<version>${project.version}</version>
-        	</dependency>
+        		    <groupId>org.hibernate</groupId>
+        		    <artifactId>hibernate-tools-tests-common</artifactId>
+        		    <version>${project.version}</version>
+            	</dependency>
  	        <dependency>
                 <groupId>jaxen</groupId>
                 <artifactId>jaxen</artifactId>
@@ -90,16 +91,16 @@
                 <scope>test</scope>
             </dependency>
 			<dependency>
-    			<groupId>com.microsoft.sqlserver</groupId>
-    			<artifactId>mssql-jdbc</artifactId>
-    			<version>${sqlserver.version}</version>
-    			<scope>test</scope>
+    			    <groupId>com.microsoft.sqlserver</groupId>
+    			    <artifactId>mssql-jdbc</artifactId>
+    			    <version>${sqlserver.version}</version>
+    			    <scope>test</scope>
 			</dependency>
 			<dependency>
-    			<groupId>com.oracle.jdbc</groupId>
-    			<artifactId>ojdbc8</artifactId>
-    			<version>${oracle.version}</version>
-    			<scope>test</scope>
+    			    <groupId>com.oracle.jdbc</groupId>
+    			    <artifactId>ojdbc8</artifactId>
+    			    <version>${oracle.version}</version>
+    			    <scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>
@@ -107,6 +108,12 @@
 				<version>${mysql.version}</version>
 				<scope>test</scope>
 			</dependency>
+		    <dependency>
+   			    <groupId>javax</groupId>
+   			    <artifactId>javaee-api</artifactId>
+   			    <version>${javaee-api.version}</version>
+   			    <scope>test</scope>
+   		    </dependency>
         </dependencies>
     </dependencyManagement>
 
