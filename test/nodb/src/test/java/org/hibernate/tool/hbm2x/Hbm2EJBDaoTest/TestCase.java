@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x.Hbm2EJBDao;
+package org.hibernate.tool.hbm2x.Hbm2EJBDaoTest;
 
 import java.io.File;
 import java.io.IOException;
