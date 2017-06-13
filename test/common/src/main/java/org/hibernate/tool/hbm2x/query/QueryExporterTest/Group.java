@@ -1,5 +1,5 @@
 //$Id: Group.java 7085 2005-06-08 17:59:47Z oneovthafew $
-package org.hibernate.tool.hbm2x.query;
+package org.hibernate.tool.hbm2x.query.QueryExporterTest;
 
 import java.io.ObjectStreamClass;
 import java.io.Serializable;

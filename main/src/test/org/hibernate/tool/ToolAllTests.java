@@ -1,6 +1,5 @@
 package org.hibernate.tool;
 
-import org.hibernate.tool.hbm2x.query.QueryAllTests;
 import org.hibernate.tool.hbmlint.HbmLintAllTests;
 
 import junit.framework.Test;
@@ -14,7 +13,6 @@ public static Test suite() {
 	suite.addTest(org.hibernate.tool.ant.AntAllTests.suite() );
 	suite.addTest(org.hibernate.tool.test.jdbc2cfg.Jdbc2CfgAllTests.suite() );
 	suite.addTest(org.hibernate.tool.hbm2x.Hbm2XAllTests.suite() );
-	suite.addTest(QueryAllTests.suite() );
 	suite.addTest(HbmLintAllTests.suite() );
 	return suite;
 }}
