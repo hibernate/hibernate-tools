@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase.class,
 	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,
+	org.hibernate.tool.hbm2x.DefaultSchemaCatalog.TestCase.class,
 	org.hibernate.tool.hbm2x.GenerateFromJDBC.TestCase.class,
 	org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase.class,
 	org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase.class,

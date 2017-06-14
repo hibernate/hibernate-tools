@@ -2,7 +2,7 @@
  * Created on 2004-12-01
  *
  */
-package org.hibernate.tool.hbm2x;
+package org.hibernate.tool.hbm2x.DefaultSchemaCatalog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,95 +17,89 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+import org.hibernate.tools.test.util.JdbcUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 
 
 /**
  * @author max
- *
+ * @author koen
  */
-public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
+public class TestCase {
 	
-	
-	protected void configure(JDBCMetaDataConfiguration configuration) {
-		super.configure( configuration );
+	@Before
+	public void setUp() {
+		JdbcUtil.createDatabase(this);
 	}
 	
+	@After
+	public void tearDown() {
+		JdbcUtil.dropDatabase(this);
+	}
+	
+	@Test
 	public void testReadOnlySpecificSchema() {
-		
 		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
-		
 		List<Table> tables = getTables(configuration);
-		
-		assertEquals(2,tables.size());
-		
+		Assert.assertEquals(2,tables.size());	
 		Table catchild = (Table) tables.get(0);
-		Table catmaster = (Table) tables.get(1);
-		
+		Table catmaster = (Table) tables.get(1);	
 		if(catchild.getName().equals("CATMASTER")) {
 			catchild = (Table) tables.get(1);
 			catmaster = (Table) tables.get(0);
-		} 
-			
+		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		
-		assertEquals(new TableIdentifier(null, "OVRTEST", "CATMASTER"), masterid);
-		assertEquals(new TableIdentifier(null, "OVRTEST", "CATCHILD"), childid);
-		
+		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATMASTER"), masterid);
+		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATCHILD"), childid);	
 	}
 
-	public void testOverlapping() {
-		
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		
+	@Test
+	public void testOverlapping() {	
+		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();	
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
-		or.addSchemaSelection(new SchemaSelection(null, null));
+		or.addSchemaSelection(new SchemaSelection(null, null, "MASTER"));
+		or.addSchemaSelection(new SchemaSelection(null, null, "CHILD"));
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
-		
 		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
 		Iterator<Table> iter = configuration.getMetadata().collectTableMappings().iterator();
 		while(iter.hasNext()) {
 			Table element = iter.next();
 			boolean added = tables.add(TableIdentifier.create(element));
-			if(!added) fail("duplicate table found for " + element); 
+			if(!added) 
+				Assert.fail("duplicate table found for " + element); 
 		}
-		
-		assertEquals(4,tables.size());					
+		Assert.assertEquals(4,tables.size());					
 	}
 	
+	@Test
 	public void testUseDefault() {
-		
 		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
 		configuration.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		configuration.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		configuration.readFromJDBC();
-		
 		List<Table> tables = getTables(configuration);
-		
-		assertEquals(2,tables.size());
-		
+		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
-		
 		if(catchild.getName().equals("CATMASTER")) {
 			catchild = (Table) tables.get(1);
 			catmaster = (Table) tables.get(0);
-		} 
-			
+		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		
-		assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATMASTER"), masterid);
-		assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
+		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATMASTER"), masterid);
+		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
 	}
 
 	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
@@ -118,26 +112,4 @@ public class DefaultSchemaCatalogTest extends JDBCMetaDataBinderTestCase {
 		return list;
 	}
 
-	protected String[] getCreateSQL() {
-		
-		return new String[] {
-				"create schema ovrtest AUTHORIZATION DBA",
-				"create table ovrtest.catmaster ( id char not null, name varchar(20), primary key (id) )",
-				"create table ovrtest.catchild  ( childid char not null, masterref char, primary key (childid), foreign key (masterref) references catmaster(id) )",
-				"create table master ( id char not null, name varchar(20), primary key (id) )",
-				"create table child  ( childid char not null, masterref char, primary key (childid), foreign key (masterref) references master(id) )",				
-		};
-	}
-
-	protected String[] getDropSQL() {
-		
-		return new String[]  {
-				"drop table child",
-				"drop table master",
-				"drop table ovrtest.catchild",
-				"drop table ovrtest.catmaster",
-				"drop schema ovrtest"
-		};
-	}	
-	
 }

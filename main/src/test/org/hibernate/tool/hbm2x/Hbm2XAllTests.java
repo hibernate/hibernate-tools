@@ -11,10 +11,6 @@ public class Hbm2XAllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.hibernate.tool.hbm2x");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(DefaultSchemaCatalogTest.class);
-		//suite.addTestSuite(DocExporterTest.class);
-		//$JUnit-END$
 		
 		suite.addTestSuite(H2IdentityTest.class);
 		suite.addTestSuite(MySQLIdentityTest.class);
