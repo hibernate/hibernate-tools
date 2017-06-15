@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,
 	org.hibernate.tool.hbm2x.DefaultSchemaCatalog.TestCase.class,
 	org.hibernate.tool.hbm2x.GenerateFromJDBC.TestCase.class,
+	org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword.TestCase.class,
 	org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase.class,
 	org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase.class,
 	org.hibernate.tool.hbm2x.query.QueryExporterTest.TestCase.class,
