@@ -8,13 +8,15 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.tool.hbm2x;
+package org.hibernate.tool.hbm2x.DefaultDatabaseCollector;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
@@ -29,58 +31,58 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.JDBCMetaDataBinderTestCase;
+import org.hibernate.tools.test.util.JdbcUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Dmitry Geraskov
- *
+ * @author koen
  */
-public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
+public class TestCase {
+		
+	@Before
+	public void setUp() {
+		JdbcUtil.createDatabase(this);
+	}
 	
-	private static final String SCHEMA = "cat.cat";
-	private static final String QSCHEMA = quote(SCHEMA);
+	@After
+	public void tearDown() {
+		JdbcUtil.dropDatabase(this);
+	}
 	
-	private static final String TABLE1 = "cat.child";
-	private static final String QTABLE1 = quote(TABLE1);
-	
-	private static final String TABLE2 = "cat.master";
-	private static final String QTABLE2 = quote(TABLE2);
-	
+	@Test
 	public void testReadOnlySpecificSchema() {
-		
 		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		
 		OverrideRepository or = new OverrideRepository();
-		or.addSchemaSelection(new SchemaSelection(null, SCHEMA));
+		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
 		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 		configuration.readFromJDBC();
-		
 		List<Table> tables = getTables(configuration);
-		
-		assertEquals(2,tables.size());
-		
+		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
-		
-		if(catchild.getName().equals(TABLE2)) {
+		if(catchild.getName().equals("cat.master")) {
 			catchild = (Table) tables.get(1);
 			catmaster = (Table) tables.get(0);
 		} 
-			
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		
-		assertEquals(new TableIdentifier(null, SCHEMA, TABLE1), childid);
-		assertEquals(new TableIdentifier(null, SCHEMA, TABLE2), masterid);
+		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.child"), childid);
+		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.master"), masterid);
 	}
 	
+	@Test
 	public void testNeedQuote() {
+		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
+		cfg.readFromJDBC();
 		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
-				
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
-		assertTrue("The name must be quoted!", realMetaData.needQuote(SCHEMA));
-		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE1));
-		assertTrue("The name must be quoted!", realMetaData.needQuote(TABLE2));
+		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.cat"));
+		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
+		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
 	}
 	
 	/**
@@ -91,23 +93,25 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 	 * Because of this there are 2 opposite methods(and they are both failed as addTable uses quoted names
 	 * but getTable uses non-quoted names )
 	 */
+	@Test
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
+		Configuration cfg = new Configuration();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		ServiceRegistry serviceRegistry = builder.build();
-				
-		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
-		
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( cfg.getProperties(), new DefaultReverseEngineeringStrategy(), realMetaData, serviceRegistry );
-		
+		ServiceRegistry serviceRegistry = builder.build();	
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
+				serviceRegistry.getService(JdbcServices.class).getDialect(), 
+				cfg.getProperties() );
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( 
+				cfg.getProperties(), new DefaultReverseEngineeringStrategy(), 
+				realMetaData, serviceRegistry );
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( dc, null, SCHEMA );
-		
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, "PUBLIC", TABLE1));
-		assertNotNull("The table should be found", dc.getTable(SCHEMA, "PUBLIC", TABLE2));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), "PUBLIC", QTABLE1));
-		assertNull("Quoted names should not return the table", dc.getTable(quote(SCHEMA), "PUBLIC", QTABLE2));
-		
-		assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
+		reader.readDatabaseSchema( dc, null, "cat.cat" );
+		String defaultCatalog = cfg.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
+		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.master"));
+		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.child")));
+		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.master")));
+		Assert.assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
 	}
 	
 	private static String quote(String name) {
@@ -124,34 +128,4 @@ public class DefaultDatabaseCollectorTest extends JDBCMetaDataBinderTestCase {
 		return list;
 	}
 	
-   protected void tearDown() throws Exception {
-        executeDDL(getDropSQL(), false);
-    }
-
-	protected String[] getCreateSQL() {
-		return new String[] {
-				"create schema " + QSCHEMA + " AUTHORIZATION dba",
-				"create table "  + QSCHEMA + "." + QTABLE2 + " (" +
-						" id integer NOT NULL," + 
-						"  tt integer," + 
-						"  CONSTRAINT master_pk PRIMARY KEY (id)" +
-				")",
-				"create table " + QSCHEMA + "." + QTABLE1 + " (" +
-				" childid integer NOT NULL,\r\n" + 
-				" masterref integer,\r\n" + 
-				" CONSTRAINT child_pk PRIMARY KEY (childid),\r\n" + 
-				" CONSTRAINT masterref FOREIGN KEY (masterref) references "+ QSCHEMA + "." + QTABLE2 + "(id)" +
-				")",
-		};
-	}
-
-	protected String[] getDropSQL() {
-		
-		return new String[]  {
-				"drop table " + QSCHEMA + "." + QTABLE1,
-				"drop table " + QSCHEMA + "." + QTABLE2,
-				"drop schema " + QSCHEMA
-		};
-	}
-
 }

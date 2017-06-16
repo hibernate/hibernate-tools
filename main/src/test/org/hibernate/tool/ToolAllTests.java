@@ -12,7 +12,6 @@ public static Test suite() {
 	suite.addTestSuite(JDBCMetaDataBinderTestCase.class);
 	suite.addTest(org.hibernate.tool.ant.AntAllTests.suite() );
 	suite.addTest(org.hibernate.tool.test.jdbc2cfg.Jdbc2CfgAllTests.suite() );
-	suite.addTest(org.hibernate.tool.hbm2x.Hbm2XAllTests.suite() );
 	suite.addTest(HbmLintAllTests.suite() );
 	return suite;
 }}
