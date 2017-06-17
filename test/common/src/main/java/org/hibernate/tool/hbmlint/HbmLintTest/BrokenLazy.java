@@ -1,4 +1,4 @@
-package org.hibernate.tool.hbmlint;
+package org.hibernate.tool.hbmlint.HbmLintTest;
 
 public class BrokenLazy {
 

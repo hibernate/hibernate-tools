@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.hibernate.tool.hbmlint">
+<hibernate-mapping package="org.hibernate.tool.hbmlint.HbmLintTest">
 
     <!--  category has caching for collection but its target is not cached -->
     <class name="Category">

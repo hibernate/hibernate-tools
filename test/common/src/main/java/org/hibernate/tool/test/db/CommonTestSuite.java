@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase.class,
 	org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase.class,
 	org.hibernate.tool.hbm2x.query.QueryExporterTest.TestCase.class,
+	org.hibernate.tool.hbmlint.HbmLintTest.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.AutoQuote.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Basic.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.BasicMultiSchema.TestCase.class,

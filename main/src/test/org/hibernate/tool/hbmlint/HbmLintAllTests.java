@@ -9,7 +9,6 @@ public class HbmLintAllTests {
 		TestSuite suite = new TestSuite("Test for org.hibernate.tool.hbmlint");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SchemaAnalyzerTest.class);
-		suite.addTestSuite(HbmLintTest.class);
 		//$JUnit-END$
 		return suite;
 	}
