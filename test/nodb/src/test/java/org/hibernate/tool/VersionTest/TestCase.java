@@ -1,4 +1,4 @@
-package org.hibernate.tool;
+package org.hibernate.tool.VersionTest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,16 +12,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import junit.framework.TestCase;
-
-public class VersionTest extends TestCase {
+public class TestCase {
 	
+	@Test
 	public void testVersion() throws Exception {
 		Assert.assertEquals(
 				org.hibernate.tool.Version.VERSION,
