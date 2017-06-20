@@ -112,7 +112,7 @@ public class JdbcUtil {
 	
 	private static String[] getSqls(Object test, String scriptName) {
 		String[] result =  new String[] {};
-		String location = getSqlScriptsLocation(test) + scriptName;
+		String location = ResourceUtil.getResourcesLocation(test) + scriptName;
 		InputStream inputStream = test.getClass().getResourceAsStream(location);
 		if (inputStream != null) {
 			BufferedReader bufferedReader = 
@@ -129,10 +129,6 @@ public class JdbcUtil {
 			}
 		}
 		return result;
-	}
-	
-	private static String getSqlScriptsLocation(Object test) {
-		return '/' + test.getClass().getPackage().getName().replace('.', '/') + '/';
 	}
 	
 	private static Connection createJdbcConnection() 
