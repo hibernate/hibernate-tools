@@ -71,49 +71,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testHbm2DDLLogic() {
-		cleanupOutputDir();
-		File baseDir = new File(project.getProperty("build.dir"), "topdown");
-		File onlyCreate = new File(baseDir, "onlycreate.sql");
-		File onlyDrop = new File(baseDir, "onlydrop.sql");
-		File dropAndCreate = new File(baseDir, "dropandcreate.sql");
-		File update = new File(baseDir, "update.sql");
-		
-		assertFalse(onlyCreate.exists());
-		assertFalse(onlyDrop.exists());
-		assertFalse(dropAndCreate.exists());
-		assertFalse(update.exists());
-		
-		// allow to test creation of script file + delimiter 
-		// + non execution (test will fail if executed because of crappy delimiter)
-		executeTarget("testScriptCreation");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-		
-		assertTrue(onlyCreate.exists());
-		assertTrue(onlyDrop.exists());
-		assertTrue(dropAndCreate.exists());
-		assertTrue(update.exists());
-		
-		assertNotNull(TestHelper.findFirstString("drop", dropAndCreate));
-		assertNotNull(TestHelper.findFirstString("create", dropAndCreate));
-		assertNotNull(TestHelper.findFirstString("---", dropAndCreate));
-	
-		assertEquals(null, TestHelper.findFirstString("create", onlyDrop));
-		assertNotNull(TestHelper.findFirstString("drop", onlyDrop));
-				
-		assertEquals(null, TestHelper.findFirstString("drop", onlyCreate));
-		assertNotNull(TestHelper.findFirstString("create", onlyCreate));
-		assertNotNull(TestHelper.findFirstString("---", onlyCreate));
-
-		assertNotNull(TestHelper.findFirstString("create", update));
-		assertNotNull(TestHelper.findFirstString("---", update));
-		
-		onlyCreate.delete();
-		onlyDrop.delete();
-		dropAndCreate.delete();
-		update.delete();
-	}
-	
 	public void testHbm2DDLUpdateExecution() {
 		cleanupOutputDir();
 		File baseDir = new File(project.getProperty("build.dir"), "topdown");
