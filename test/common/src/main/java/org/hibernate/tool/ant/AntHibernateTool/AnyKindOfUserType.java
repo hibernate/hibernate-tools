@@ -1,4 +1,4 @@
-package org.hibernate.tool.ant.Hbm2DDLUpdateExecution;
+package org.hibernate.tool.ant.AntHibernateTool;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
