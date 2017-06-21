@@ -13,9 +13,7 @@
 		<hibernatetool destdir="${destinationDir}">
 		
 			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy">
-				<fileset dir="${resourcesDir}" id="id">
-					<include name="TopDown.hbm.xml" />
-				</fileset>
+				<fileset file="${resourcesDir}/TopDown.hbm.xml" />
 			</configuration>
 			
 			<hbm2java />
