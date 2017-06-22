@@ -21,4 +21,11 @@ The complete JDBC URL is: jdbc:mysql://localhost:3306
 
 create schema HTT;
 
+5bis. Increase the amount of connections. There are connection leaks in the tests that make the tests fail.
+Execute the following statement as the root user:
+
+SET GLOBAL MAX_CONNECTIONS = 1000;
+
+Note that this step should disappear when HBX-1404 is fixed.
+
 6. You are now ready to run the tests. Use the following URL to connect: 'jdbc:mysql://localhost:3306/htt' 
