@@ -118,4 +118,35 @@ public class TestCase {
 
 	}
 
+	@Test
+	public void testHbm2DDLExportExecution() throws Exception {
+
+		String[] resources = { "Hbm2DDLExportExecution.xml", "TopDown.hbm.xml" };		
+		ResourceUtil.createResources(this, resources, resourcesDir);
+		File buildFile = new File(resourcesDir, "Hbm2DDLExportExecution.xml");		
+		AntUtil.Project project = AntUtil.createProject(buildFile);
+		project.setProperty("destinationDir", destinationDir.getAbsolutePath());
+		project.setProperty("resourcesDir", resourcesDir.getAbsolutePath());
+
+		File export = new File(destinationDir, "export.sql");
+		File update = new File(destinationDir, "update.sql");
+		File onlydrop = new File(destinationDir, "onlydrop.sql");
+		
+		Assert.assertFalse(export.exists());
+		Assert.assertFalse(update.exists());
+		Assert.assertFalse(onlydrop.exists());
+
+		project.executeTarget("testantcfgExportExecuted");
+		
+		String log = AntUtil.getLog(project);
+		Assert.assertTrue(log, !log.contains("Exception"));
+		
+		Assert.assertTrue(export.exists());
+		Assert.assertTrue(update.exists());
+		Assert.assertNotNull(FileUtil.findFirstString("create", export));
+		// if export is executed, update should be empty
+		Assert.assertEquals(0, update.length());
+		
+	}
+
 }

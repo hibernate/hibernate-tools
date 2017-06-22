@@ -71,33 +71,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testHbm2DDLExportExecution() {
-		cleanupOutputDir();
-		File baseDir = new File(project.getProperty("build.dir"), "topdown");
-		File export = new File(baseDir, "export.sql");
-		File update = new File(baseDir, "update.sql");
-		File onlydrop = new File(baseDir, "onlydrop.sql");
-		
-		assertFalse(export.exists());
-		assertFalse(update.exists());
-		assertFalse(onlydrop.exists());
-
-		
-		executeTarget("testantcfgExportExecuted");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-		
-		assertTrue(export.exists());
-		assertTrue(update.exists());
-		
-		assertNotNull(TestHelper.findFirstString("create", export));
-		// if export is executed, update should be empty
-		assertEquals(0, update.length());
-		
-		export.delete();
-		update.delete();
-		onlydrop.delete();
-	}
-	
 	public void testJDBCConfiguration() {
 		executeTarget("testantjdbccfg");
 		assertTrue(getLog(), checkLogWithoutExceptions());

@@ -8,8 +8,6 @@
 			name="hibernatetool" 
 			classname="org.hibernate.tool.ant.HibernateToolTask" />
 
-		<echo message="executing target"></echo>
-		
 		<hibernatetool destdir="${destinationDir}">
 		
 			<configuration namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy">
