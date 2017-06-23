@@ -39,7 +39,8 @@ public class TestCase {
 	public void testHbm2DDLLogic() throws Exception {
 
 		String[] resources = { "Hbm2DDLLogic.xml", "TopDown.hbm.xml" };		
-		ResourceUtil.createResources(this, resources, resourcesDir);
+		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
+		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "Hbm2DDLLogic.xml");		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
 		project.setProperty("destinationDir", destinationDir.getAbsolutePath());
@@ -88,7 +89,8 @@ public class TestCase {
 	public void testHbm2DDLUpdateExecution() {
 
 		String[] resources = { "Hbm2DDLUpdateExecution.xml", "TopDown.hbm.xml" };		
-		ResourceUtil.createResources(this, resources, resourcesDir);
+		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
+		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "Hbm2DDLUpdateExecution.xml");
 		AntUtil.Project project = AntUtil.createProject(buildFile);
 		project.setProperty("destinationDir", destinationDir.getAbsolutePath());
@@ -121,8 +123,9 @@ public class TestCase {
 	@Test
 	public void testHbm2DDLExportExecution() throws Exception {
 
-		String[] resources = { "Hbm2DDLExportExecution.xml", "TopDown.hbm.xml" };		
-		ResourceUtil.createResources(this, resources, resourcesDir);
+		String[] resources = { "Hbm2DDLExportExecution.xml", "TopDown.hbm.xml" };	
+		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
+		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "Hbm2DDLExportExecution.xml");		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
 		project.setProperty("destinationDir", destinationDir.getAbsolutePath());

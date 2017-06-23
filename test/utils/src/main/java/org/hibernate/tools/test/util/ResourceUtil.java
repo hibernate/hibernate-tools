@@ -11,13 +11,13 @@ public class ResourceUtil {
 		return '/' + test.getClass().getPackage().getName().replace('.', '/') + '/';
 	}
 	
-	public static void createResources(Object test, String[] resources, File resourceDir) {
+	public static void createResources(Object test, String resourcesLocation, String[] resources, File resourceDir) {
 		try {
-			String resourcesLocation = getResourcesLocation(test);
 			for (String resource : resources) {
+				String resourceLocation = resourcesLocation == null ? resource : resourcesLocation + resource;
 				InputStream inputStream = test
 						.getClass()
-						.getResourceAsStream(resourcesLocation + resource); 
+						.getResourceAsStream(resourceLocation); 
 				File resourceFile = new File(resourceDir, resource);
 				Files.copy(inputStream, resourceFile.toPath());
 			}
