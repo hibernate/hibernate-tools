@@ -71,11 +71,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testJDBCConfiguration() {
-		executeTarget("testantjdbccfg");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
 	public void testAnnotationConfigurationFailureExpected() {
 		executeTarget("testantannotationcfg");
 		assertTrue(getLog(), checkLogWithoutExceptions());

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="JDBCConfigurationTest">
+
+	<target name="testJDBCConfiguration">
+
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask" />
+
+		<hibernatetool>
+			
+			<jdbcconfiguration 
+				propertyfile="${resourcesDir}/hibernate.properties" 
+				detectManyToMany="true" 
+				detectoptimisticlock="true"/>
+
+			<hbm2java destdir="${destinationDir}/no-template"/> 
+			
+	     	<hbm2java 
+	     		templatepath="${resourcesDir}/templates" 
+	     		destdir="${destinationDir}/with-template"/>
+			
+			<hbm2cfgxml destdir="${destinationDir}/cfgxml"/> 
+			
+		</hibernatetool>
+		
+	</target>
+
+</project>
