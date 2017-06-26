@@ -52,7 +52,7 @@ public class TestCase {
 		Assert.assertFalse(ejb3.exists());
 		
 		try {		
-			project.executeTarget("JPABogusPUnit");
+			project.executeTarget("testJPABogusPUnit");
 			Assert.fail("The Bogus unit was accepted");
 		} catch (BuildException e) {
 			String log = AntUtil.getLog(project);

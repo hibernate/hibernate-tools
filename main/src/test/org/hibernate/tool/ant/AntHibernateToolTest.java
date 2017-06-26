@@ -70,16 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testJPAPropertyOveridesPUnit() {
-		try {
-			executeTarget("jpa-overrides");
-			fail("property overrides not accepted");
-		} catch (BuildException be) {
-			// should happen
-			assertTrue(be.getMessage(), be.getMessage().indexOf("FAKEDialect")>0);			
-		}
-	}
-	
 	public void testHbm2JavaConfiguration() {
 		executeTarget("testanthbm2java");
 		assertTrue(getLog(), checkLogWithoutExceptions());

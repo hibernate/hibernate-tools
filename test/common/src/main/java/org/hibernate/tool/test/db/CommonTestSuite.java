@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.ant.EJB3Configuration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JPABogusPUnit.TestCase.class,
+	org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase.class,
 	org.hibernate.tool.ant.JPAPUnit.TestCase.class,
 	org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase.class,
 	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,

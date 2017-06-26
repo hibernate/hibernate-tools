@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="JPABogusPUnitTest">
+<project name="JPAPropertyOverridesPUnitTest">
 
-	<target name="testJPABogusPUnit">
+	<target name="testJPAPropertyOverridesPUnit">
 
 		<taskdef 
 			name="hibernatetool" 
-			classname="org.hibernate.tool.ant.HibernateToolTask" /> 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
 
 		<hibernatetool>
 			<jdbcconfiguration propertyfile="${resourcesDir}/hibernate.properties" />
@@ -17,16 +17,15 @@
 		<javac fork="true" srcdir="${destinationDir}/ejb3/src" destdir="${destinationDir}/ejb3/classes" />
 
 		<copy file="${resourcesDir}/persistence.xml" tofile="${destinationDir}/ejb3/classes/META-INF/persistence.xml" />
-		<copy file="${resourcesDir}/hibernate.cfg.xml" tofile="${destinationDir}/ejb3/classes/ejb3test-hibernate.cfg.xml" />
+		<copy file="${resourcesDir}/hibernate.cfg.xml" tofile="${destinationDir}/ejb3/classes/hibernate.cfg.xml" />
 
 		<hibernatetool destdir="${destinationDir}">
-			<jpaconfiguration persistenceunit="shouldnotbethere"/>
+			<jpaconfiguration persistenceunit="ejb3test" propertyfile="${resourcesDir}/jpaoverrides.properties"/>
 			<classpath>
-				<path location="${build.dir}/ejb3/classes" />
+				<path location="${destinationDir}/ejb3/classes" />
 			</classpath>
 			<hbm2ddl export="false" outputfilename="ejb3.sql" />
 		</hibernatetool>
-
 	</target>
 
 </project>

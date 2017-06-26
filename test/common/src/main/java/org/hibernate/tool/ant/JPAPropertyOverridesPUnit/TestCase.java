@@ -1,9 +1,9 @@
-package org.hibernate.tool.ant.JPAPUnit;
+package org.hibernate.tool.ant.JPAPropertyOverridesPUnit;
 
 import java.io.File;
 
+import org.apache.tools.ant.BuildException;
 import org.hibernate.tools.test.util.AntUtil;
-import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.After;
@@ -39,7 +39,7 @@ public class TestCase {
 	public void testJPAPUnit() {
 
 		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
-		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "persistence.xml"};
+		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "persistence.xml", "jpaoverrides.properties"};
 		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		ResourceUtil.createResources(this,  null, new String[] { "/hibernate.properties" }, resourcesDir);
@@ -51,10 +51,15 @@ public class TestCase {
 		File ejb3 = new File(destinationDir, "ejb3.sql");
 		Assert.assertFalse(ejb3.exists());
 		
-		project.executeTarget("testJPAPUnit");
+		try {		
+			project.executeTarget("testJPAPropertyOverridesPUnit");
+			Assert.fail("property overrides not accepted");
+		} catch (BuildException e) {
+			// should happen
+			Assert.assertTrue(e.getMessage().contains("FAKEDialect"));			
+		}
 
-		Assert.assertTrue(ejb3.exists());
-		Assert.assertNotNull(FileUtil.findFirstString("create", ejb3));
+		Assert.assertFalse(ejb3.exists());
 
 	}
 	
