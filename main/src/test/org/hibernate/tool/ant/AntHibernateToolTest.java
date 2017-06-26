@@ -6,13 +6,12 @@ package org.hibernate.tool.ant;
 
 import java.io.File;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
+import org.apache.tools.ant.BuildException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.tools.ant.BuildException;
-import org.hibernate.tool.test.TestHelper;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author max
@@ -71,15 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testJPABogusPUnit() {
-		try {
-			executeTarget("jpa-boguspunit");
-			fail("Bogus unit accepted");
-		} catch(BuildException be) {
-			assertTrue(getLog(), getLog().contains("Persistence unit not found: 'shouldnotbethere'"));
-		}
-	}
-	
 	public void testJPAPUnit() {
 		executeTarget("jpa-punit");
 		assertTrue(getLog(), checkLogWithoutExceptions());
