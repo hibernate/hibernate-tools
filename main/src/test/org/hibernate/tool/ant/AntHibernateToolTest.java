@@ -71,11 +71,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testAnnotationConfigurationFailureExpected() {
-		executeTarget("testantannotationcfg");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
 	public void testEJB3ConfigurationFailureExpected() {
 		executeTarget("testantejb3cfg");
 		File baseDir = new File(project.getProperty("build.dir"));

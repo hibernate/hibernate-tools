@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+	org.hibernate.tool.ant.AnnotationConfiguration.TestCase.class,
 	org.hibernate.tool.ant.AntHibernateTool.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
 	org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase.class,
