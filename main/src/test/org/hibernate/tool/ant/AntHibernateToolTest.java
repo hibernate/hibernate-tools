@@ -71,17 +71,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testEJB3ConfigurationFailureExpected() {
-		executeTarget("testantejb3cfg");
-		File baseDir = new File(project.getProperty("build.dir"));
-		File ejb3 = new File(baseDir, "ejb3.sql");
-		
-		assertTrue(ejb3.exists());
-		assertEquals(null, TestHelper.findFirstString("drop", ejb3));
-		
-		assertFalse(getLog().indexOf("<ejb3configuration> is deprecated")>0);
-	}
-	
 	public void testJPABogusPUnit() {
 		try {
 			executeTarget("jpa-boguspunit");

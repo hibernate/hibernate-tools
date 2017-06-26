@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="EJB3ConfigurationTest">
+
+	<target name="testEJB3Configuration">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask" />
+
+		<hibernatetool>
+			<jdbcconfiguration propertyfile="${resourcesDir}/hibernate.properties" />
+			<hbm2java ejb3="true" jdk5="true" destdir="${destinationDir}/ejb3/src" />
+		</hibernatetool>
+
+		<mkdir dir="${destinationDir}/ejb3/classes" />
+		<javac fork="true" srcdir="${destinationDir}/ejb3/src" destdir="${destinationDir}/ejb3/classes" />
+
+		<copy file="${resourcesDir}/persistence.xml" tofile="${destinationDir}/ejb3/classes/META-INF/persistence.xml" />
+		<copy file="${resourcesDir}/hibernate.cfg.xml" tofile="${destinationDir}/ejb3/classes/hibernate.cfg.xml" />
+
+		<hibernatetool destdir="${destinationDir}">
+			<jpaconfiguration/>
+			<classpath>
+				<path location="${destinationDir}/ejb3/classes" />
+			</classpath>
+			<hbm2ddl export="false" outputfilename="ejb3.sql" />
+		</hibernatetool>
+
+	</target>
+
+</project>
