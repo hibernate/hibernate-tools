@@ -70,12 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testJPAPUnit() {
-		executeTarget("jpa-punit");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
-
 	public void testJPAPropertyOveridesPUnit() {
 		try {
 			executeTarget("jpa-overrides");

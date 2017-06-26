@@ -1,9 +1,9 @@
-package org.hibernate.tool.ant.JPABogusPUnit;
+package org.hibernate.tool.ant.JPAPUnit;
 
 import java.io.File;
 
-import org.apache.tools.ant.BuildException;
 import org.hibernate.tools.test.util.AntUtil;
+import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.After;
@@ -36,7 +36,7 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testJPABogusPUnit() {
+	public void testJPAPUnit() {
 
 		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "persistence.xml"};
@@ -51,15 +51,10 @@ public class TestCase {
 		File ejb3 = new File(destinationDir, "ejb3.sql");
 		Assert.assertFalse(ejb3.exists());
 		
-		try {		
-			project.executeTarget("JPABogusPUnit");
-			Assert.fail("The Bogus unit was accepted");
-		} catch (BuildException e) {
-			String log = AntUtil.getLog(project);
-			Assert.assertTrue(log, log.contains("Persistence unit not found: 'shouldnotbethere'"));			
-		}
+		project.executeTarget("JPAPUnit");
 
-		Assert.assertFalse(ejb3.exists());
+		Assert.assertTrue(ejb3.exists());
+		Assert.assertNotNull(FileUtil.findFirstString("create", ejb3));
 
 	}
 	
