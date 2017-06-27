@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="Cfg2HbmWithPackageNameTest">
+
+	<target name="testCfg2HbmWithPackageName">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+
+		<hibernatetool>
+			
+			<jdbcconfiguration 
+				propertyfile="${resourcesDir}/hibernate.properties" 
+				packageName="foo.bar" />
+			
+			<hbm2hbmxml destdir="${destinationDir}" />
+			
+		</hibernatetool>
+		
+	</target>
+
+</project>
