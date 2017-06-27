@@ -70,11 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-    public void testCfg2HbmWithCustomReverseNamingStrategy() {
-        executeTarget("testantcfg2hbm2");
-        assertTrue(getLog(), checkLogWithoutExceptions());
-    }
-    
     public void testCfg2HbmWithInvalidReverseNamingStrategy() {
         expectSpecificBuildException("testantcfg2hbm3", 
                 "namingStrategy attribute should not be loaded", 

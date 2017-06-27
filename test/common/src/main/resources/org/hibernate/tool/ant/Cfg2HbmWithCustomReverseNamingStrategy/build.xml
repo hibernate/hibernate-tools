@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="Cfg2HbmWithCustomReverseNamingStrategyTest">
+
+	<target name="testCfg2HbmWithCustomReverseNamingStrategy">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+
+		<hibernatetool>
+			
+			<jdbcconfiguration 
+				propertyfile="${resourcesDir}/hibernate.properties" 
+				reversestrategy="org.hibernate.tool.ant.Cfg2HbmWithCustomReverseNamingStrategy.Strategy"/>
+			
+			<hbm2hbmxml destdir="${destinationDir}" />
+			
+		</hibernatetool>
+		
+	</target>
+
+</project>
