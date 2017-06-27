@@ -70,11 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testHbm2JavaEJB3Configuration() {
-		executeTarget("testantejb3hbm2java");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
     public void testCfg2HbmNoError() {
         executeTarget("testantcfg2hbm1");
         assertTrue(getLog(), checkLogWithoutExceptions());
