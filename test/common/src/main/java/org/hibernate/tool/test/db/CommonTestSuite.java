@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.ant.AnnotationConfiguration.TestCase.class,
 	org.hibernate.tool.ant.AntHibernateTool.TestCase.class,
 	org.hibernate.tool.ant.EJB3Configuration.TestCase.class,
+	org.hibernate.tool.ant.Hbm2JavaConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JPABogusPUnit.TestCase.class,
 	org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase.class,

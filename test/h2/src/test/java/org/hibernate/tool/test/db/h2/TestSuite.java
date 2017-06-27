@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(DbSuite.class)
 @SuiteClasses({ 
-	org.hibernate.tool.test.db.CommonTestSuite.class,
+	org.hibernate.tool.test.db.CommonTestSuite.class
 })
 public class TestSuite {}
