@@ -70,12 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-    public void testCfg2HbmWithInvalidReverseNamingStrategy() {
-        expectSpecificBuildException("testantcfg2hbm3", 
-                "namingStrategy attribute should not be loaded", 
-                "Could not create or find invalid.classname with one argument delegate constructor");
-    }
-    
     public void testCfg2HbmWithPackageName() {
         executeTarget("testantcfg2hbm4");
         assertTrue(getLog(), checkLogWithoutExceptions());
