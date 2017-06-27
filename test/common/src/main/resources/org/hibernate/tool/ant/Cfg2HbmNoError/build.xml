@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="Cfg2HbmNoErrorTest">
+
+	<target name="testCfg2HbmNoError">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+
+		<hibernatetool>
+			
+			<jdbcconfiguration propertyfile="${resourcesDir}/hibernate.properties" />
+			
+			<hbm2hbmxml destdir="${destinationDir}" />
+			
+		</hibernatetool>
+		
+	</target>
+
+</project>

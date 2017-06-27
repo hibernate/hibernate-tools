@@ -8,6 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	org.hibernate.tool.ant.AnnotationConfiguration.TestCase.class,
 	org.hibernate.tool.ant.AntHibernateTool.TestCase.class,
+	org.hibernate.tool.ant.Cfg2HbmNoError.TestCase.class,
 	org.hibernate.tool.ant.EJB3Configuration.TestCase.class,
 	org.hibernate.tool.ant.Hbm2JavaConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
