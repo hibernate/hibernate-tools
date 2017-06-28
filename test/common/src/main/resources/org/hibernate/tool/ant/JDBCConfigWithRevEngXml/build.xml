@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="JDBCConfigWithRevEngXmlTest">
+
+	<target name="testJDBCConfigWithRevEngXml">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+		
+		<hibernatetool destdir="${destinationDir}">
+			
+			<jdbcconfiguration 
+				propertyfile="${resourcesDir}/hibernate.properties" 
+				packagename="foo" 
+				revengfile="${resourcesDir}/hibernate.reveng.xml" />
+
+			<hbm2java />
+			
+		</hibernatetool>
+		
+	</target>
+
+</project>

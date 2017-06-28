@@ -16,6 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.ant.EJB3Configuration.TestCase.class,
 	org.hibernate.tool.ant.Hbm2JavaConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
+	org.hibernate.tool.ant.JDBCConfigWithRevEngXml.TestCase.class,
 	org.hibernate.tool.ant.JPABogusPUnit.TestCase.class,
 	org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase.class,
 	org.hibernate.tool.ant.JPAPUnit.TestCase.class,

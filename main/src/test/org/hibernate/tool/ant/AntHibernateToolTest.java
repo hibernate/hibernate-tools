@@ -70,11 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testJDBCConfigWithRevEngXml() {
-		executeTarget("testantjdbccfgoverrides");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
 	public void testProperties() {
 		executeTarget("testproperties");
 		assertTrue(getLog(), checkLogWithoutExceptions());
