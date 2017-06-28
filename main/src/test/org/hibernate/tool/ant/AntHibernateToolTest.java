@@ -70,12 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-    public void testCfg2HbmWithPackageNameAndReverseNamingStrategy() {
-        executeTarget("testantcfg2hbm5");
-        assertTrue(getLog(), checkLogWithoutExceptions());
-    }
-    
-  
 	public void testJDBCConfigWithRevEngXml() {
 		executeTarget("testantjdbccfgoverrides");
 		assertTrue(getLog(), checkLogWithoutExceptions());
