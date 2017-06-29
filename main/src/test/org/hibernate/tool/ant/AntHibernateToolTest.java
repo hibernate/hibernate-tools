@@ -70,11 +70,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testProperties() {
-		executeTarget("testproperties");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-	}
-	
 	public void testGenericExport() {
 		executeTarget("testgeneric");
 		assertTrue(getLog(), checkLogWithoutExceptions());
