@@ -14,6 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.ant.Cfg2HbmWithPackageName.TestCase.class,
 	org.hibernate.tool.ant.Cfg2HbmWithPackageNameAndReverseNamingStrategy.TestCase.class,
 	org.hibernate.tool.ant.EJB3Configuration.TestCase.class,
+	org.hibernate.tool.ant.GenericExport.TestCase.class,
 	org.hibernate.tool.ant.Hbm2JavaConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfigWithRevEngXml.TestCase.class,

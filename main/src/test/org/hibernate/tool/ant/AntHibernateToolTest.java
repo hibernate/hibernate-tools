@@ -19,11 +19,8 @@ import junit.framework.TestSuite;
  */
 public class AntHibernateToolTest extends BuildFileTestCase {
 
-
 	private static final Logger log = LoggerFactory.getLogger(AntHibernateToolTest.class);
 
-	private String property;
-	
 	public AntHibernateToolTest(String name) {
 		super(name);
 	}
@@ -70,15 +67,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testGenericExport() {
-		executeTarget("testgeneric");
-		assertTrue(getLog(), checkLogWithoutExceptions());
-		
-		property = project.getProperty("build.dir");
-		assertTrue(new File(property, "generic").exists());
-		assertTrue(new File(property, "generic/org/hibernate/tool/hbm2x/ant/TopDown.quote").exists());
-	}
-	
 	// TODO try to get this sorted out in Hibernate Core
 /*	public void testNoConnInfoExport() {
 		executeTarget("noconinfoexport");
