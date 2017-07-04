@@ -103,17 +103,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 	}
 	
 
-//  TODO Investigate why this method fails on HSQLDB	
-//	public void testQuery() {
-//		executeTarget("testquery");
-//		assertTrue(getLog(), checkLogWithoutExceptions());
-//		
-//		File baseDir = new File(project.getProperty("build.dir"), "querytest");
-//		
-//		assertTrue(new File(baseDir, "queryresult.txt").exists());
-//		
-//	}
-	
 	public void testHbmLint() {
 		executeTarget("testhbmlint");
 		assertTrue(getLog(), checkLogWithoutExceptions());
