@@ -67,21 +67,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	// TODO try to get this sorted out in Hibernate Core
-/*	public void testNoConnInfoExport() {
-		executeTarget("noconinfoexport");
-		File baseDir = new File(project.getProperty("build.dir"), "noconinfo");
-		File onlyCreate = new File(baseDir, "noconinfo.sql");
-		
-		assertTrue(onlyCreate.toString() + " should exist", onlyCreate.exists());
-		
-		assertTrue(onlyCreate.length()>0);
-		
-		assertNotNull(TestHelper.findFirstString("create", onlyCreate));
-		
-		
-	}
-*/
 	public void testNoExporters() {
 		try {
 		executeTarget("testnoexporters");

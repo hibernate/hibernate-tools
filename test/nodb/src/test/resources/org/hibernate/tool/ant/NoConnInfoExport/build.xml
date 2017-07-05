@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="NoConnInfoExportTest">
+
+	<target name="testNoConnInfoExport" description="hbm2ddl without connection info">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+		
+		<hibernatetool destdir="${destinationDir}">
+			
+			<configuration 
+					configurationfile="${resourcesDir}/hibernate.cfg.xml">
+				<fileset file="${resourcesDir}/TopDown.hbm.xml" />
+			</configuration>
+			
+			<hbm2ddl haltonerror="true" export="false" outputfilename="noconinfo.sql" />
+			
+		</hibernatetool>
+		
+	</target>
+	
+</project>
