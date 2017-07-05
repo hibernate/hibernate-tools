@@ -15,7 +15,7 @@
 				<fileset file="${resourcesDir}/TopDown.hbm.xml" />
 			</configuration>
 			
-			<hbm2ddl haltonerror="true" export="false" outputfilename="noconinfo.sql" />
+			<hbm2ddl haltonerror="true" export="false" outputfilename="noConnInfo.sql" />
 			
 		</hibernatetool>
 		

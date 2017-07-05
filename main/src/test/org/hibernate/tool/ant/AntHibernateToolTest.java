@@ -67,17 +67,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testNoExporters() {
-		try {
-		executeTarget("testnoexporters");
-		fail("should have failed with no exporters!");
-		} catch(BuildException be) {
-			// should happen!
-			assertTrue(be.getMessage().indexOf("No exporters specified")>=0);
-		}
-		
-	}
-	
 	public void testException() {
 		try {
 		executeTarget("testexceptions");
