@@ -87,15 +87,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		
 	}
 	
-	public void testNoConfig() {
-		try {
-			executeTarget("noconfig-shoulderror");
-		} catch(BuildException e) {
-			assertTrue(e.getMessage().indexOf("No configuration specified")>=0);
-		}
-		
-	}
-		
 	public static Test suite() {
 		return new TestSuite(AntHibernateToolTest.class);
 	}
