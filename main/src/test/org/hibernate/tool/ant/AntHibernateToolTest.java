@@ -67,16 +67,6 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		} while (!removed);
 	}
 
-	public void testException() {
-		try {
-		executeTarget("testexceptions");
-		fail("should have failed with an exception!");
-		} catch(BuildException be) {
-			// should happen!			
-		}
-	}
-	
-
 	public void testHbmLint() {
 		executeTarget("testhbmlint");
 		assertTrue(getLog(), checkLogWithoutExceptions());
