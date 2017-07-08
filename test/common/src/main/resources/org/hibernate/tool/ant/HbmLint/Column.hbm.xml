@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.hibernate.tool.hbm2x.hbm2hbmxml">
+<!-- 
+  This mapping demonstrates basic attributes of the mapping document
+
+     (1) Simple id and properties        
+     (2) Id generation with no arguments.
+-->
+    <class name="org.hibernate.mapping.Column">
+        <id name="name">
+        	<generator class="assigned"/>    		
+    	</id>
+    	
+    	<property name="length" 
+    		type="int">
+    		  
+    		</property>
+    			</class>
+
+</hibernate-mapping>

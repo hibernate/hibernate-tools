@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="HbmLintTest">
+
+	<target name="testHbmLint">
+		
+		<taskdef 
+			name="hibernatetool" 
+			classname="org.hibernate.tool.ant.HibernateToolTask"/>
+
+		<hibernatetool destdir="${destinationDir}">
+
+			<configuration 
+					propertyfile="${resourcesDir}/hibernate.properties" 
+					configurationfile="${resourcesDir}/hibernate.cfg.xml">
+				<fileset file="${resourcesDir}/SchemaIssues.hbm.xml"/>
+			</configuration>
+
+			<hbmlint/>
+
+		</hibernatetool>
+
+	</target>
+
+</project>
