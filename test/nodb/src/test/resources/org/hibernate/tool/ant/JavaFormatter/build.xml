@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE project>
+<project name="javaformattest">
+<!-- 	<property name="build.dir" location="../../target/javaformattest" />
+	<property name="target.dir" location="../../target"/>
+	<property name="test-classes" location="${target.dir}/test-classes"/>
+	<property file="${test-classes}/hibernate.properties" />
+	<property file="${test-classes}/hibernate.properties" /> 
+
+
+
+	<path id="tasks.classpath">
+		<pathelement path="${test-classes}" />
+		<pathelement path="${target.dir}/classes" />
+	</path> 
+	
+	<target name="cleanup">
+		<delete dir="${build.dir}"/>
+	</target> -->
+	
+	<target name="copyfiles">
+		
+		<copy todir="${destinationDir}">
+		  	<fileset dir="${resourcesDir}" includes="formatting/**/*"/>
+		</copy>
+			
+	</target>
+	
+
+	<target name="formatfiles">		
+
+		<taskdef 
+			name="javaformatter" 
+			classname="org.hibernate.tool.ant.JavaFormatterTask"/>
+				
+		<javaformatter> 
+		   <fileset dir="${destinationDir}">
+		   	   <include name="formatting/**/*"/>
+		   	</fileset>
+		</javaformatter>
+			
+	</target>
+	
+
+	<target name="configtest">	
+		
+		<taskdef 
+				name="javaformatter" 
+				classname="org.hibernate.tool.ant.JavaFormatterTask"/>
+				
+		<javaformatter configurationfile="${resourcesDir}/emptyconfig.properties"> 
+		   <fileset dir="${destinationDir}">
+		   	   <include name="formatting/**/*"/>
+		   	</fileset>
+		</javaformatter>
+				
+	</target>
+	
+
+	<target name="noconfigtest">		
+		
+			<taskdef 
+				name="javaformatter" 
+				classname="org.hibernate.tool.ant.JavaFormatterTask"/>
+					
+			<javaformatter> 
+			   <fileset dir="${destinationDir}">
+			   	   <include name="formatting/**/*"/>
+			   	</fileset>
+			</javaformatter>
+				
+	</target>
+		
+
+</project>
