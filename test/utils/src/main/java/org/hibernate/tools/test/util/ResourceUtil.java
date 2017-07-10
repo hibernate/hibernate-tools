@@ -19,6 +19,10 @@ public class ResourceUtil {
 						.getClass()
 						.getResourceAsStream(resourceLocation); 
 				File resourceFile = new File(resourceDir, resource);
+				File parent = resourceFile.getParentFile();
+				if (!parent.exists()) {
+					parent.mkdirs();
+				}
 				Files.copy(inputStream, resourceFile.toPath());
 			}
 		} catch (IOException e) {
