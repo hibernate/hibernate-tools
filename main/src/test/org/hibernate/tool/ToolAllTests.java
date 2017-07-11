@@ -1,7 +1,5 @@
 package org.hibernate.tool;
 
-import org.hibernate.tool.hbmlint.HbmLintAllTests;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -11,6 +9,5 @@ public static Test suite() {
 	TestSuite suite = new TestSuite("Test for org.hibernate.tool");
 	suite.addTestSuite(JDBCMetaDataBinderTestCase.class);
 	suite.addTest(org.hibernate.tool.test.jdbc2cfg.Jdbc2CfgAllTests.suite() );
-	suite.addTest(HbmLintAllTests.suite() );
 	return suite;
 }}
