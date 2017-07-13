@@ -52,6 +52,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.jdbc2cfg.PersistentClasses.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.RevEngForeignKey.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.SearchEscapeString.TestCase.class,
+	org.hibernate.tool.jdbc2cfg.TernarySchema.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Versioning.TestCase.class
 })
 public class CommonTestSuite {}
