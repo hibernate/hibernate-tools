@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 public class AnnotationBuilder {
 
 	String annotation;
-	LinkedHashMap<String, String[]> attributes = new LinkedHashMap<String, String[]>(); 
+	LinkedHashMap<String, String[]> attributes = new LinkedHashMap<>();
 	
 	public static AnnotationBuilder createAnnotation(String annotation) {
 		return new AnnotationBuilder(annotation);
@@ -96,7 +96,7 @@ public class AnnotationBuilder {
 	}
 
 	public void addQuotedAttributes(String name, Iterator<?> iterator) {
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		while ( iterator.hasNext() ) {
 			values.add(quote( iterator.next().toString() ));
 		}
@@ -104,7 +104,7 @@ public class AnnotationBuilder {
 	}
 
 	public void addAttributes(String name, Iterator<?> iterator) {
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		while ( iterator.hasNext() ) {
 			String element = iterator.next().toString();
 			values.add( element );
@@ -129,7 +129,7 @@ public class AnnotationBuilder {
 
 	public String getAttributeAsString(String name) {
 		StringBuffer buffer = new StringBuffer();
-		String[] object = (String[]) attributes.get( name );
+		String[] object = attributes.get( name );
 		if(object==null) {
 			return null;
 		} else {

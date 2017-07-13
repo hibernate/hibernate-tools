@@ -35,10 +35,14 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.type.ForeignKeyDirection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityPOJOClass extends BasicPOJOClass {
 
-	private PersistentClass clazz;
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
+
+    private PersistentClass clazz;
 
 	public EntityPOJOClass(PersistentClass clazz, Cfg2JavaTool cfg) {
 		super(clazz, cfg);
@@ -247,12 +251,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 							.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "SEQUENCE" ) )
 						    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
+						idResult.append(" ");
 
+                        // TODO: manage attributes schema + catalog added to @SequenceGenerator since JPA 2.0
 						builder.resetAnnotation( importType("javax.persistence.SequenceGenerator") )
 							.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" ) 
 							.addQuotedAttribute( "sequenceName", properties.getProperty(  org.hibernate.id.enhanced.SequenceStyleGenerator.SEQUENCE_PARAM, null ) );
 							//	TODO HA does not support initialValue and allocationSize
-						wholeString.append( builder.getResult() );
+						idResult.append(builder.getResult());
 					}
 					else if ( TableGenerator.class.getName().equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
@@ -435,11 +441,15 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			else if ( "refresh".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".REFRESH");
 			}
+			// TODO: add CascadeType.DETACH since JPA 2.0
 			else if ( "all".equals( element ) ) {
 				types.add(importType( "javax.persistence.CascadeType") + ".ALL");
 			}
+			else if (!"none".equals( element )) {
+                log.warn("Cascade type '{}' unmanaged for javax.persistence.CascadeType", element);
+            }
 		}
-		return (String[]) types.toArray( new String[types.size()] );
+		return types.toArray( new String[types.size()] );
 	}
 
 	public String generateManyToOneAnnotation(Property property) {

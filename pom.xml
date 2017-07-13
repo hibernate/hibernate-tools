@@ -19,7 +19,7 @@
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://hibernate.onjira.com/browse/HBX</url>
+		<url>https://hibernate.atlassian.net/projects/HBX</url>
 	</issueManagement>
 
 	<scm>
@@ -50,7 +50,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>5.2.9.Final</hibernateversion>
+		<hibernateversion>5.2.10.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>5.0.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -80,18 +80,18 @@
 			<version>${hibernateversion}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.common</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>${hibernateCommonsAnnotationsVersion}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>${hibernateJpaversion}</version>
-			<scope>compile</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.hibernate.common</groupId>-->
+			<!--<artifactId>hibernate-commons-annotations</artifactId>-->
+			<!--<version>${hibernateCommonsAnnotationsVersion}</version>-->
+			<!--<scope>compile</scope>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.hibernate.javax.persistence</groupId>-->
+			<!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+			<!--<version>${hibernateJpaversion}</version>-->
+			<!--<scope>compile</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -117,7 +117,7 @@
  		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.23</version>
+			<version>1.7.25</version>
 			<scope>test</scope>
 		</dependency> 
 		<dependency>
@@ -158,7 +158,7 @@
 	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-api</artifactId>
-		<version>1.7.23</version>
+		<version>1.7.25</version>
 	</dependency>
 	</dependencies>
 
@@ -252,10 +252,10 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<echo></echo>
 								<copy file="${project.build.directory}/test-classes/hibernate.properties" tofile="${project.build.directory}/test-classes/log4j.properties" />
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
@@ -522,7 +522,7 @@
 					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
 					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
 					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
-				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<db.dialect>org.hibernate.dialect.PostgreSQL82Dialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg01.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
@@ -538,7 +538,7 @@
 					<jdbc.driver.groupId>postgresql</jdbc.driver.groupId>
 					<jdbc.driver.artifactId>postgresql</jdbc.driver.artifactId>
 					<jdbc.driver.jdbc.driver.version>8.2-504.jdbc3</jdbc.driver.jdbc.driver.version>
-				<db.dialect>org.hibernate.dialect.PostgreSQLDialect</db.dialect>
+				<db.dialect>org.hibernate.dialect.PostgreSQL82Dialect</db.dialect>
 				<jdbc.driver>org.postgresql.Driver</jdbc.driver>
 				<jdbc.url>jdbc:postgresql://vmg03.mw.lab.eng.bos.redhat.com:5432:hibbrtru</jdbc.url>
 				<jdbc.user>hibbrtru</jdbc.user>
