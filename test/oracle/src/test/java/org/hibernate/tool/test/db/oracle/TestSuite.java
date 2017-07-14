@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(DbSuite.class)
 @SuiteClasses({ 
+	org.hibernate.tool.jdbc2cfg.CompositeIdOrder.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Views.TestCase.class,
 	org.hibernate.tool.test.db.CommonTestSuite.class 
 })
