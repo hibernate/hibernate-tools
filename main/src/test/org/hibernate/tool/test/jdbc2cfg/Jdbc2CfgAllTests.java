@@ -10,7 +10,6 @@ public class Jdbc2CfgAllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.hibernate.tool.test.jdbc2cfg");
 		//$JUnit-BEGIN$
-		suite.addTest(OracleViewsTest.suite());
 		suite.addTest(OracleCompositeIdOrderTest.suite());
 		//$JUnit-END$
 		return suite;
