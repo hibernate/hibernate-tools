@@ -112,7 +112,11 @@ public class PrimaryKeyProcessor {
 		    	  Map<String, Object> m = suggestedPrimaryKeyStrategyName.next();
 		    	  String suggestion = (String) m.get( "HIBERNATE_STRATEGY" );
 		    	  if(suggestion!=null) {
-		    		  dbs.addSuggestedIdentifierStrategy( table.getCatalog(), table.getSchema(), table.getName(), suggestion );
+		    		  dbs.addSuggestedIdentifierStrategy( 
+		    				  transformForModelLookup(table.getCatalog(), defaultCatalog), 
+		    				  transformForModelLookup(table.getSchema(), defaultSchema), 
+		    				  table.getName(), 
+		    				  suggestion );
 		    	  }
 		      }
 	      } finally {
@@ -140,6 +144,10 @@ public class PrimaryKeyProcessor {
 
 	private static String getCatalogForDBLookup(String catalog, String defaultCatalog) {
 		return catalog==null?defaultCatalog:catalog;			
+	}
+
+	private static String transformForModelLookup(String id, String defaultId) {
+		return id == null || id.equals(defaultId) ? null : id;			
 	}
 
 	private static String getSchemaForDBLookup(String schema, String defaultSchema) {
