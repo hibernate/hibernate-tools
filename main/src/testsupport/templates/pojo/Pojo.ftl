@@ -1,1 +1,0 @@
-/** Made by a template in your neighborhood */
