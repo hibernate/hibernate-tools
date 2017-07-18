@@ -7,20 +7,20 @@
      
 -->
 
-<hibernate-mapping package="org.hibernate.tool.stat">
+<hibernate-mapping package="org.hibernate.tool.stat.Statistics">
 	
-	<class name="Group" table="groups">
-	    <cache usage="read-write"/>
+	<class name="Group" table="GROUPS">
+<!-- 	    <cache usage="read-write"/> -->
 		<id name="name"/>
 		<set name="users" cascade="save-update">
-		    <cache usage="read-write"/>
+<!-- 		    <cache usage="read-write"/> -->
 			<key column="groupName"/>			
 			<one-to-many class="User"/>
 		</set>
 	</class>
 	
-	<class name="User" table="users">
-		<cache usage="read-write"/>
+	<class name="User" table="USERS">
+<!-- 		<cache usage="read-write"/> -->
 		<id name="name"/>
 		<property name="password"/>
 		<set name="session" cascade="persist,save-update,delete,delete-orphan">
@@ -29,7 +29,7 @@
 		</set>
 	</class>
 	
-	<class name="SessionAttribute" table="session_attributes">
+	<class name="SessionAttribute" table="SESSION_ATTRIBUTES">
 		<id name="id" access="field">
 			<generator class="native"/>
 		</id>
