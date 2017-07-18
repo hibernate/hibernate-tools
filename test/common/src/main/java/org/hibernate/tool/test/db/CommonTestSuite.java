@@ -25,6 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.ant.Properties.TestCase.class,
 	org.hibernate.tool.ant.Query.TestCase.class,
 	org.hibernate.tool.ant.SchemaExportWarning.TestCase.class,
+	org.hibernate.tool.cfg.DriverMetaData.TestCase.class,
 	org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase.class,
 	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,
 	org.hibernate.tool.hbm2x.DefaultDatabaseCollector.TestCase.class,

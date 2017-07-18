@@ -1,10 +1,16 @@
-package org.hibernate.tool.test;
+/*
+ * Created on 2004-11-23
+ *
+ */
+package org.hibernate.tool.cfg.DriverMetaData;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -12,36 +18,37 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.JDBCMetaDataBinderTestCase;
-
+import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tools.test.util.JdbcUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Various tests to validate the "sanity" of the jdbc drivers meta data implementation.
- * 
- * @author Max Rydahl Andersen
- *
+ * @author max
+ * @author koen
  */
-public class DriverMetaDataTest extends JDBCMetaDataBinderTestCase {
+public class TestCase {
 
-protected String[] getCreateSQL() {
-		
-	return new String[] {
-				"create table tab_master ( id char not null, name varchar(20), primary key (id) )",
-				"create table tab_child  ( childid character not null, masterref character, primary key (childid), foreign key (masterref) references tab_master(id) )",
-		};
+	private JDBCMetaDataConfiguration jmdcfg = null;
+
+	@Before
+	public void setUp() {
+		JdbcUtil.createDatabase(this);
+		jmdcfg = new JDBCMetaDataConfiguration();
+		jmdcfg.readFromJDBC();
 	}
 
-	protected String[] getDropSQL() {
-		
-		return new String[]  {				
-				"drop table tab_child",
-				"drop table tab_master",					
-		};
+	@After
+	public void tearDown() {
+		JdbcUtil.dropDatabase(this);
 	}
 
+	@Test
 	public void testExportedKeys() {	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
+		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);			
@@ -50,21 +57,21 @@ protected String[] getCreateSQL() {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));		
-		Properties properties = getConfiguration().getProperties();
+		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String,Object>> tables = 
 				dialect.getTables(
 						catalog, 
 						schema, 
-						identifier("tab_master") ); 		
+						"TAB_MASTER"); 		
 		boolean foundMaster = false;
 		while(tables.hasNext()) {
 			Map<?,?> map = (Map<?,?>) tables.next();		
 			String tableName = (String) map.get("TABLE_NAME");
 			String schemaName = (String) map.get("TABLE_SCHEM");
 	        String catalogName = (String) map.get("TABLE_CAT");        
-	        if(tableName.equals(identifier("tab_master"))) {
+	        if(tableName.equals("TAB_MASTER")) {
 				foundMaster = true;
 				Iterator<?> exportedKeys = 
 						dialect.getExportedKeys(
@@ -76,16 +83,17 @@ protected String[] getCreateSQL() {
 					exportedKeys.next();
 					cnt++;
 				}
-				assertEquals(1,cnt);
+				Assert.assertEquals(1,cnt);
 			}
-		}
-		
-		assertTrue(foundMaster);
+		}	
+		Assert.assertTrue(foundMaster);
 	}
 
-	public void testDataType() {		
-		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
+	@Test
+	public void testDataType() {	
+		MetaDataDialect dialect = MetaDataDialectFactory
+				.fromDialectName(jmdcfg.getProperty(AvailableSettings.DIALECT));
+		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);	
@@ -94,7 +102,7 @@ protected String[] getCreateSQL() {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));		
-		Properties properties = getConfiguration().getProperties();
+		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<?> tables = 
@@ -109,9 +117,10 @@ protected String[] getCreateSQL() {
 		}
 	}
 	
+	@Test
 	public void testCaseTest() {
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistry serviceRegistry = getConfiguration().getServiceRegistry();
+		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);
@@ -120,16 +129,16 @@ protected String[] getCreateSQL() {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));
-		Properties properties = getConfiguration().getProperties();
+		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String, Object>> tables = 
 				dialect.getTables(
 						catalog, 
 						schema, 
-						identifier( "TAB_MASTER"));		
-		assertHasNext( 1,	tables );
+						"TAB_MASTER");	
+		
+		JUnitUtil.assertIteratorContainsExactly(null, tables, 1);
 	}
 
-	
 }
