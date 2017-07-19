@@ -42,6 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	org.hibernate.tool.jdbc2cfg.BasicMultiSchema.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.CompositeId.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.ForeignKeys.TestCase.class,
+	org.hibernate.tool.jdbc2cfg.Identity.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Index.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.KeyPropertyCompositeId.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.ManyToMany.TestCase.class,
