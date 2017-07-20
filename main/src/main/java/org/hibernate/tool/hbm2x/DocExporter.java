@@ -180,7 +180,7 @@ public class DocExporter extends AbstractExporter {
 				exporter.setFilePattern( "entities/entitygraph.dot" );
 				exporter.setArtifactCollector( getArtifactCollector() );
 				exporter.setProperties( getProperties() );
-				exporter.setTemplatePath( getTemplatePaths() );
+				exporter.setTemplatePath( getTemplatePath() );
 				exporter.start();
 
 				exporter.setTemplateName( "dot/tablegraph.dot.ftl" );
