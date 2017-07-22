@@ -6,7 +6,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 /**
@@ -17,15 +16,6 @@ public class DAONewExporter extends GenericExporter {
 	
     // Store file pattern because it's declared private in GenericTemplateExporter
     protected String filePattern;
-
-    public DAONewExporter(Configuration cfg, File outputdir)
-    {
-        super(cfg, outputdir);
-    }
-
-    public DAONewExporter()
-    {
-    }
 
     protected void setupContext()
     {

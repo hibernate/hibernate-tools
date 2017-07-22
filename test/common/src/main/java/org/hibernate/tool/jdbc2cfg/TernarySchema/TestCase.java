@@ -74,10 +74,9 @@ public class TestCase {
 	public void testGeneration() {		
 		File outputFolder = temporaryFolder.getRoot();
 		MetadataHelper.getMetadata(jmdcfg);		
-		HibernateMappingExporter hme = 
-				new HibernateMappingExporter(
-						jmdcfg, 
-						outputFolder);
+		HibernateMappingExporter hme = new HibernateMappingExporter();
+		hme.setConfiguration(jmdcfg);
+		hme.setOutputDirectory(outputFolder);
 		hme.start();			
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );

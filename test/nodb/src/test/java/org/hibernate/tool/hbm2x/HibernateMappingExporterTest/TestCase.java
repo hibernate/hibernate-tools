@@ -38,7 +38,9 @@ public class TestCase {
 		configuration.addClass(persistentClass);	
 		final File outputDir = new File(temporaryFolder.getRoot(), "HibernateMappingExporterTest.testStart");
 		outputDir.mkdir();
-		HibernateMappingExporter exporter = new HibernateMappingExporter(configuration, outputDir);
+		HibernateMappingExporter exporter = new HibernateMappingExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		Assert.assertFalse(fooHbmXml.exists());
 		exporter.start();

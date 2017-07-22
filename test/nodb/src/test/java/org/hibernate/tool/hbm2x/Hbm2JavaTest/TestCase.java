@@ -70,7 +70,9 @@ public class TestCase {
 		metadata = MetadataHelper.getMetadata(configuration);
 		outputDir = new File(temporaryFolder.getRoot(), "generated");
 		outputDir.mkdir();
-		POJOExporter exporter = new POJOExporter(configuration, outputDir);
+		POJOExporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.start();
@@ -451,7 +453,9 @@ public class TestCase {
 	@Test
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
-		POJOExporter exporter = new POJOExporter( configuration, genericsSource );
+		POJOExporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.getProperties().setProperty("jdk5", "true");

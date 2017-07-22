@@ -62,7 +62,9 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateJava() throws Exception {	
-		POJOExporter exporter = new POJOExporter(jmdcfg, outputDir);		
+		POJOExporter exporter = new POJOExporter();		
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");
 		Assert.assertTrue(myReturn.exists());

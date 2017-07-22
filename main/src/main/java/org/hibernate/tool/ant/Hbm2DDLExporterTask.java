@@ -48,7 +48,9 @@ public class Hbm2DDLExporterTask extends ExporterTask {
 	}
 
 	protected Exporter createExporter() {
-		Hbm2DDLExporter exporter = new Hbm2DDLExporter(parent.getConfiguration(), parent.getDestDir());
+		Hbm2DDLExporter exporter = new Hbm2DDLExporter();
+		exporter.setConfiguration(parent.getConfiguration());
+		exporter.setOutputDirectory(parent.getDestDir());
 		return exporter;
 	}
 

@@ -65,9 +65,9 @@ public class TestCase {
 		configuration = 
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
-		hbmexporter = new HibernateMappingExporter(
-				configuration, 
-				outputDir);
+		hbmexporter = new HibernateMappingExporter();
+		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
 

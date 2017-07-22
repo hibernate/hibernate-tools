@@ -19,7 +19,10 @@ public class Hbm2DAOExporterTask extends Hbm2JavaExporterTask {
 	}
 	
 	protected Exporter createExporter() {
-		return new DAOExporter(parent.getConfiguration(), parent.getDestDir()) ;
+		Exporter result = new DAOExporter();
+		result.setConfiguration(parent.getConfiguration());
+		result.setOutputDirectory(parent.getDestDir());
+		return result;
 	}
 
 	public String getName() {

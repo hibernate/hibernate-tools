@@ -69,9 +69,9 @@ public class TestCase {
 		configuration = 
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
-		hbmexporter = new HibernateMappingExporter(
-				configuration, 
-				outputDir);
+		hbmexporter = new HibernateMappingExporter();
+		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
 	
@@ -112,8 +112,9 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setSchemaName("myschema");
 		hgs.setCatalogName("mycatalog");		
-		Exporter gsExporter = new HibernateMappingExporter(
-				configuration, outputDir);
+		Exporter gsExporter = new HibernateMappingExporter();
+		gsExporter.setConfiguration(configuration);
+		gsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gsExporter).setGlobalSettings(hgs);
 		gsExporter.start();
 		File outputXml = new File(
@@ -141,8 +142,9 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultAccess("field");
 		hgs.setDefaultCascade("save-update");
-		Exporter gbsExporter = new HibernateMappingExporter(
-				configuration, outputDir);
+		Exporter gbsExporter = new HibernateMappingExporter();
+		gbsExporter.setConfiguration(configuration);
+		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
@@ -256,8 +258,9 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultAccess("property");
 		hgs.setDefaultCascade("none");	
-		Exporter gbsExporter = new HibernateMappingExporter(
-				configuration, outputDir);
+		Exporter gbsExporter = new HibernateMappingExporter();
+		gbsExporter.setConfiguration(configuration);
+		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
@@ -286,9 +289,9 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultLazy(false);
 		hgs.setAutoImport(false);		
-		Exporter gbsExporter = new HibernateMappingExporter(
-				configuration, 
-				outputDir);
+		Exporter gbsExporter = new HibernateMappingExporter();
+		gbsExporter.setConfiguration(configuration);
+		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(

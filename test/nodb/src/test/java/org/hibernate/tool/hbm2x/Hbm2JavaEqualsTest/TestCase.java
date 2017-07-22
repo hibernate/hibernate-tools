@@ -12,6 +12,7 @@ import java.net.URLClassLoader;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -59,7 +60,10 @@ public class TestCase {
 		configuration.setProperty(
 				AvailableSettings.DIALECT, 
 				HibernateUtil.Dialect.class.getName());
-		new POJOExporter(configuration, outputDir).start();
+		Exporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
+		exporter.start();
 		// copy interface EntityProxy.java
 		File file = new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2JavaEquals/TestEntityProxy.java");
 		FileWriter writer = new FileWriter(file);

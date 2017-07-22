@@ -41,7 +41,10 @@ public class TestCase {
 	public void testExporter() {	
 		Configuration configuration = HibernateUtil
 				.initializeConfiguration(this, HBM_XML_FILES);
-		new HbmLintExporter(configuration, temporaryFolder.getRoot()).start();		
+		HbmLintExporter exporter = new HbmLintExporter();		
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(temporaryFolder.getRoot());
+		exporter.start();
 	}
 	
 	@Test

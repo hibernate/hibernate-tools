@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.doc.DocFile;
@@ -131,21 +130,6 @@ public class DocExporter extends AbstractExporter {
      */
     private DocFileManager docFileManager;
     
-    /**
-     * Creates a new object.
-     * 
-     * @param cfg hibernate configuration.
-     * @param outputdir the output directory.
-     * @param templatePaths the template paths.
-     */
-    public DocExporter(Configuration cfg, File outputdir) {
-        super(cfg, outputdir);
-    }
-
-    public DocExporter() {
- 
-	}
-
 	public void doStart() throws ExporterException {
         generateCommmonAndAssets();
         
@@ -175,7 +159,9 @@ public class DocExporter extends AbstractExporter {
 		
 		if(StringHelper.isNotEmpty( cmd )) {
 			try {
-				GenericExporter exporter = new GenericExporter(getConfiguration(), getOutputDirectory());
+				GenericExporter exporter = new GenericExporter();
+				exporter.setConfiguration(getConfiguration());
+				exporter.setOutputDirectory(getOutputDirectory());
 				exporter.setTemplateName( "dot/entitygraph.dot.ftl" );
 				exporter.setFilePattern( "entities/entitygraph.dot" );
 				exporter.setArtifactCollector( getArtifactCollector() );

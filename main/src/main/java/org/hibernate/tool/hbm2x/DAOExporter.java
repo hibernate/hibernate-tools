@@ -1,9 +1,7 @@
 package org.hibernate.tool.hbm2x;
 
-import java.io.File;
 import java.util.Map;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 public class DAOExporter extends POJOExporter {
@@ -13,12 +11,9 @@ public class DAOExporter extends POJOExporter {
     private String sessionFactoryName = "SessionFactory";
 
     public DAOExporter() {
+    		super();
     }
     
-    public DAOExporter(Configuration cfg, File outputdir) {
-        super(cfg, outputdir);        
-    }
-
     protected void init() {
     	super.init();
     	setTemplateName(DAO_DAOHOME_FTL);

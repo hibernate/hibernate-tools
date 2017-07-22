@@ -48,11 +48,6 @@ public class HibernateMappingExporter extends GenericExporter {
 		}
 	}
 	
-	public HibernateMappingExporter(Configuration cfg, File outputdir) {
-    	super(cfg, outputdir);    	
-    	init();
-    }
-    
 	protected void init() {
 		setTemplateName("hbm/hibernate-mapping.hbm.ftl");
     	setFilePattern("{package-name}/{class-name}.hbm.xml");    	

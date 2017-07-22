@@ -59,7 +59,9 @@ public class TestCase {
 		outputDir = new File(temporaryFolder.getRoot(), "generated");
 		outputDir.mkdir();
 		FileUtil.generateNoopComparator(outputDir);
-		POJOExporter exporter = new POJOExporter(configuration, outputDir);
+		POJOExporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");

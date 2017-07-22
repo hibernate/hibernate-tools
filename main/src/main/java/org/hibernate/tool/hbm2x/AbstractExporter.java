@@ -39,12 +39,6 @@ public abstract class AbstractExporter implements Exporter {
 	private Cfg2HbmTool c2h;
 	private Cfg2JavaTool c2j;
 
-	public AbstractExporter(Configuration cfg, File outputdir) {
-		this();
-		setConfiguration(cfg);
-		setOutputDirectory(outputdir);		
-	}
-
 	public AbstractExporter() {
 		c2h = new Cfg2HbmTool();
 		c2j = new Cfg2JavaTool();		

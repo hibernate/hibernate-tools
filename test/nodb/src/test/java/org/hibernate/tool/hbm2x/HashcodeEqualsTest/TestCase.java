@@ -43,7 +43,9 @@ public class TestCase {
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = new File(temporaryFolder.getRoot(), "generated");
 		outputDir.mkdir();
-		Exporter exporter = new POJOExporter(configuration, outputDir);
+		Exporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.start();
@@ -51,7 +53,9 @@ public class TestCase {
 
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
-		POJOExporter exporter = new POJOExporter(configuration, outputDir);
+		POJOExporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);

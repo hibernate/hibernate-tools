@@ -36,7 +36,9 @@ public class TestCase {
 		Configuration configuration = 
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
-		Exporter exporter = new POJOExporter(configuration, outputDir);
+		Exporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
 	

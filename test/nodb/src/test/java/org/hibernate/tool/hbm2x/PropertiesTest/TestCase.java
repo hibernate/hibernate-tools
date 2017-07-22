@@ -52,9 +52,13 @@ public class TestCase {
 		artifactCollector = new ArtifactCollector();
 		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
 		exporterOutputDir.mkdir();
-		Exporter exporter = new POJOExporter( configuration, exporterOutputDir);
+		Exporter exporter = new POJOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(exporterOutputDir);
 		exporter.setArtifactCollector(artifactCollector);
-		Exporter hbmexporter = new HibernateMappingExporter(configuration, exporterOutputDir);
+		Exporter hbmexporter = new HibernateMappingExporter();
+		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setOutputDirectory(exporterOutputDir);
 		hbmexporter.setArtifactCollector(artifactCollector);
 		exporter.start();
 		hbmexporter.start();

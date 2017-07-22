@@ -135,8 +135,12 @@ public class TestCase {
 	@Test
 	public void testGeneration() throws Exception {
 		final File testFolder = temporaryFolder.getRoot();
-		Exporter exporter = new HibernateMappingExporter(jmdcfg, testFolder);
-		Exporter javaExp = new POJOExporter(jmdcfg, testFolder);
+		Exporter exporter = new HibernateMappingExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(testFolder);
+		Exporter javaExp = new POJOExporter();
+		javaExp.setConfiguration(jmdcfg);
+		javaExp.setOutputDirectory(testFolder);
 		exporter.start();
 		javaExp.start();
 		JavaUtil.compile(testFolder);

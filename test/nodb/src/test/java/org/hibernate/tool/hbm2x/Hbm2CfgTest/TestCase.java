@@ -41,8 +41,9 @@ public class TestCase {
 		Configuration configuration = 
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
-		cfgexporter = new HibernateConfigurationExporter(
-				configuration, outputDir);
+		cfgexporter = new HibernateConfigurationExporter();
+		cfgexporter.setConfiguration(configuration);
+		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}
 	
@@ -54,7 +55,10 @@ public class TestCase {
 	   srcCfg.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   srcCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   new HibernateConfigurationExporter(srcCfg, outputDir).start();   
+	   HibernateConfigurationExporter exporter = new HibernateConfigurationExporter();
+	   exporter.setConfiguration(srcCfg);
+	   exporter.setOutputDirectory(outputDir);
+	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
 	   Assert.assertNull(
 			   FileUtil.findFirstString(
@@ -68,14 +72,19 @@ public class TestCase {
 	   srcCfg = new Configuration(); 
 	   srcCfg.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   new HibernateConfigurationExporter(srcCfg, outputDir).start();
+	   exporter = new HibernateConfigurationExporter();
+	   exporter.setConfiguration(srcCfg);
+	   exporter.setOutputDirectory(outputDir);
+	   exporter.start();
 	   Assert.assertNotNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   srcCfg = new Configuration();
 	   srcCfg.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   HibernateConfigurationExporter exp = new HibernateConfigurationExporter(srcCfg, outputDir);
-	   exp.start();
+	   exporter = new HibernateConfigurationExporter();
+	   exporter.setConfiguration(srcCfg);
+	   exporter.setOutputDirectory(outputDir);
+	   exporter.start();
 	   Assert.assertNull(
 			   FileUtil.findFirstString( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, file ));
 	}

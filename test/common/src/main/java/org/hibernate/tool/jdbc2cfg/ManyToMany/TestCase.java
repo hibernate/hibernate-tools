@@ -123,7 +123,9 @@ public class TestCase {
 		
 		Assert.assertNotNull(MetadataHelper.getMetadata(jmdcfg));
 		
-		HibernateMappingExporter hme = new HibernateMappingExporter(jmdcfg, outputDir);
+		HibernateMappingExporter hme = new HibernateMappingExporter();
+		hme.setConfiguration(jmdcfg);
+		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		
 		assertFileAndExists( new File(outputDir, "Employee.hbm.xml") );

@@ -42,7 +42,9 @@ public class TestCase {
 		jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 		outputDir = temporaryFolder.getRoot();
-		POJOExporter exporter = new POJOExporter(jmdcfg, outputDir);
+		POJOExporter exporter = new POJOExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");

@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
@@ -33,14 +32,6 @@ public class HibernateConfigurationExporter extends AbstractExporter {
 	private Writer output;
     private Properties customProperties = new Properties();
 
-	public HibernateConfigurationExporter(Configuration configuration, File outputdir) {
-		super(configuration, outputdir);
-	}
-
-	public HibernateConfigurationExporter() {
-		
-	}
-	
 	public Properties getCustomProperties() {
 		return customProperties;
 	}

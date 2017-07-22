@@ -4,10 +4,6 @@
  */
 package org.hibernate.tool.hbm2x;
 
-import java.io.File;
-
-import org.hibernate.cfg.Configuration;
-
 /**
  * @author max
  */
@@ -15,11 +11,6 @@ public class POJOExporter extends GenericExporter {
 
 	private static final String POJO_JAVACLASS_FTL = "pojo/Pojo.ftl";
 
-    public POJOExporter(Configuration cfg, File outputdir) {
-    	super(cfg, outputdir);    	
-    	init();
-    }
-    
 	protected void init() {
 		setTemplateName(POJO_JAVACLASS_FTL);
     	setFilePattern("{package-name}/{class-name}.java");    	

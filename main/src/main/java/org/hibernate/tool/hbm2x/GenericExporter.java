@@ -81,13 +81,6 @@ public class GenericExporter extends AbstractExporter {
 	private String forEach;
 	private Metadata metadata = null;
 	
-	public GenericExporter(Configuration cfg, File outputdir) {
-		super(cfg,outputdir);
-	}
-
-	public GenericExporter() {
-	}
-	
 	public String getTemplateName() {
 		return templateName;
 	}

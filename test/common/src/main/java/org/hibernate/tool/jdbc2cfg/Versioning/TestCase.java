@@ -64,7 +64,9 @@ public class TestCase {
 	@Test
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
-        Exporter exporter = new HibernateMappingExporter(jmdcfg, testFolder);		
+        Exporter exporter = new HibernateMappingExporter();		
+        exporter.setConfiguration(jmdcfg);
+        exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		MetadataSources derived = new MetadataSources();		
 		derived.addFile(new File(testFolder, "Withversion.hbm.xml") );

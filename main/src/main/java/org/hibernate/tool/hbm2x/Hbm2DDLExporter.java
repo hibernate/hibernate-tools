@@ -47,13 +47,6 @@ public class Hbm2DDLExporter extends AbstractExporter {
 	protected String outputFileName = null;
 	protected boolean haltOnError = false;
 
-	public Hbm2DDLExporter() {
-	}
-
-	public Hbm2DDLExporter(Configuration cfg, File outputdir) {
-		super(cfg, outputdir);
-	}
-
 	protected boolean setupBoolProperty(String property, boolean defaultVal) {
 		if (!getProperties().containsKey(property)) {
 			return defaultVal;

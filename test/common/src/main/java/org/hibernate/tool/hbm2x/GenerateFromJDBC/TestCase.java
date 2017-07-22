@@ -66,16 +66,22 @@ public class TestCase {
 
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
-		POJOExporter exporter = new POJOExporter(jmdcfg, outputDir);		
+		POJOExporter exporter = new POJOExporter();		
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
-		exporter = new POJOExporter(jmdcfg, outputDir);				
+		exporter = new POJOExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
 	}
 	
 	@Test
 	public void testGenerateMappings() {
-		Exporter exporter = new HibernateMappingExporter(jmdcfg, outputDir);		
+		Exporter exporter = new HibernateMappingExporter();	
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
 		File file = new File(outputDir, "GeneralHbmSettings.hbm.xml");
@@ -90,7 +96,9 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
-		Exporter exporter = new HibernateConfigurationExporter(jmdcfg, outputDir);
+		Exporter exporter = new HibernateConfigurationExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
 		SAXReader xmlReader =  new SAXReader();
@@ -114,7 +122,9 @@ public class TestCase {
 	@Test
 	public void testGenerateAnnotationCfgXml() throws DocumentException {
 		HibernateConfigurationExporter exporter = 
-				new HibernateConfigurationExporter(jmdcfg, outputDir);
+				new HibernateConfigurationExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
@@ -138,7 +148,9 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateDoc() {	
-		DocExporter exporter = new DocExporter(jmdcfg, outputDir);
+		DocExporter exporter = new DocExporter();
+		exporter.setConfiguration(jmdcfg);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));
 	}

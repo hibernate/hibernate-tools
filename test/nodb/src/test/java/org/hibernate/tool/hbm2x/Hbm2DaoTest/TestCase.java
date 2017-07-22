@@ -42,8 +42,12 @@ public class TestCase {
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = new File(temporaryFolder.getRoot(), "generated");
 		outputDir.mkdir();
-		POJOExporter javaExporter = new POJOExporter(configuration, outputDir);
-		POJOExporter exporter = new DAOExporter(configuration, outputDir);
+		POJOExporter javaExporter = new POJOExporter();
+		javaExporter.setConfiguration(configuration);
+		javaExporter.setOutputDirectory(outputDir);
+		POJOExporter exporter = new DAOExporter();
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();
