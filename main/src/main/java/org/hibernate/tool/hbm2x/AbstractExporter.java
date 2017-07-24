@@ -51,9 +51,20 @@ public abstract class AbstractExporter implements Exporter {
 	}
 
 	public void setConfiguration(Configuration cfg) {
-		metadata = MetadataHelper.getMetadata(cfg);
+		setMetadata(MetadataHelper.getMetadata(cfg));;
 		properties.putAll(cfg.getProperties());
 		configuration = cfg;
+	}
+	
+	public Metadata getMetadata() {
+		if (metadata == null) {
+			metadata = new MetadataSources().buildMetadata();
+		}
+		return metadata;
+	}
+	
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
 	}
 
 	public File getOutputDirectory() {
@@ -112,13 +123,6 @@ public abstract class AbstractExporter implements Exporter {
 	}
 	
 	abstract protected void doStart();
-	
-	protected Metadata getMetadata() {
-		if (metadata == null) {
-			metadata = new MetadataSources().buildMetadata();
-		}
-		return metadata;
-	}
 	
 	protected void cleanUpContext() {
 		if(getProperties()!=null) {

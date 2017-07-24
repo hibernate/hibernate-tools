@@ -6,6 +6,7 @@ package org.hibernate.tool.hbm2x;
 import java.io.File;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -20,6 +21,13 @@ public interface Exporter {
 	public void setConfiguration(Configuration cfg);
 
 	public Configuration getConfiguration();
+	
+	/** 
+	 * @param metadata An Hibernate {@link org.hibernate.boot.Metadata} or subclass instance that defines the hibernate meta model to be exported.
+	 */
+	public void setMetadata(Metadata metadata);
+
+	public Metadata getMetadata();
 	
 	/**
 	 * @param file basedirectory to be used for generated files.
