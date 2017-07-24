@@ -20,7 +20,9 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.HibernateException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -33,6 +35,7 @@ public class ConfigurationTask extends Task {
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
+	private Metadata metadata;
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -51,6 +54,14 @@ public class ConfigurationTask extends Task {
 			doConfiguration(cfg);
 		}
 		return cfg;
+	}
+	
+	public final Metadata getMetadata() {
+		if (metadata == null) {
+			Configuration configuration = getConfiguration();
+			metadata = MetadataHelper.getMetadata(configuration);
+		}
+		return metadata;
 	}
 
 	protected Configuration createConfiguration() {
