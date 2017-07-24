@@ -22,9 +22,11 @@ public class JPAConfigurationTask extends ConfigurationTask {
 	protected Configuration createConfiguration() {
 		try {
 			Map<Object, Object> overrides = new HashMap<Object, Object>();
-			Properties p = getProperties();	
+			Properties p = loadPropertiesFile();	
 			if(p!=null) {
 				overrides.putAll( p );
+			} else { 
+				p = new Properties();
 			}
 			EntityManagerFactoryBuilderImpl entityManagerFactoryBuilderImpl = 
 					createEntityManagerFactoryBuilder(persistenceUnit, overrides);
@@ -34,7 +36,10 @@ public class JPAConfigurationTask extends ConfigurationTask {
 						persistenceUnit + 
 						"'.");
 			}
-			return new JPAConfiguration(entityManagerFactoryBuilderImpl);
+			JPAConfiguration result = new JPAConfiguration(entityManagerFactoryBuilderImpl);
+			p.putAll(result.getProperties());
+			initProperties(p);
+			return result;
 		} 
 		catch(BuildException be) {
 			throw be;

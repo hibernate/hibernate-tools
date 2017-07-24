@@ -36,6 +36,7 @@ public class ConfigurationTask extends Task {
 	private File propertyFile;
 	protected String entityResolver;
 	private Metadata metadata;
+	private Properties properties;
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -62,6 +63,13 @@ public class ConfigurationTask extends Task {
 			metadata = MetadataHelper.getMetadata(configuration);
 		}
 		return metadata;
+	}
+	
+	public Properties getProperties() {
+		if (properties == null) {
+			getMetadata();
+		}
+		return properties;
 	}
 
 	protected Configuration createConfiguration() {
@@ -105,16 +113,21 @@ public class ConfigurationTask extends Task {
 		
 		if (configurationFile != null) configuration.configure( configurationFile );
 		addMappings(getFiles() );
-		Properties p = getProperties();
+		Properties p = loadPropertiesFile();
+		Properties overrides = new Properties();
 		if(p!=null) {		
-			Properties overrides = new Properties();
 			overrides.putAll(configuration.getProperties());
 			overrides.putAll(p);
 			configuration.setProperties(overrides);
 		}		
+		initProperties(overrides);
+	}
+	
+	protected void initProperties(Properties properties) {
+		this.properties = properties;
 	}
 
-	protected Properties getProperties() {
+	protected Properties loadPropertiesFile() {
 		if (propertyFile!=null) { 
 			Properties properties = new Properties(); // TODO: should we "inherit" from the ant projects properties ?
 			FileInputStream is = null;
