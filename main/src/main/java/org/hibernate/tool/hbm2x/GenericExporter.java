@@ -8,14 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Component;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
 
 
 public class GenericExporter extends AbstractExporter {
@@ -79,7 +75,6 @@ public class GenericExporter extends AbstractExporter {
 	private String templateName;
 	private String filePattern;
 	private String forEach;
-	private Metadata metadata = null;
 	
 	public String getTemplateName() {
 		return templateName;
@@ -176,24 +171,6 @@ public class GenericExporter extends AbstractExporter {
 	
 	public String getFilePattern() {
 		return filePattern;
-	}
-	
-	private Metadata getMetadata() {
-		if (metadata == null) {
-			metadata = buildMetadata();
-		}
-		return metadata;
-	}
-	
-	private Metadata buildMetadata() {
-		Metadata result = null;
-		Configuration configuration = getConfiguration();
-		if (configuration != null) {
-			result = MetadataHelper.getMetadata(getConfiguration());
-		} else {
-			result = new MetadataSources().buildMetadata();
-		}
-		return result;
 	}
 	
 }
