@@ -270,7 +270,8 @@ public class DocExporter extends AbstractExporter {
 			getProperties().setProperty( "jdk5", "true" );
 		}		
 		super.setupContext();
-		docHelper = new DocHelper( getConfiguration(), getCfg2JavaTool() );
+		Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+		docHelper = new DocHelper( metadata, getConfiguration().getProperties(), getCfg2JavaTool() );
         docFileManager = new DocFileManager(docHelper, getOutputDirectory() );
 
         getTemplateHelper().putInContext("dochelper", docHelper);

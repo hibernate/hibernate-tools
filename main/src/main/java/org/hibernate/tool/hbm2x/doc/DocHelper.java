@@ -13,7 +13,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Column;
@@ -27,7 +26,6 @@ import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.type.Type;
 
 /**
@@ -64,11 +62,6 @@ public final class DocHelper {
 	 * Name to use if there are no packages specified for any class
 	 */
 	public static final String DEFAULT_NO_PACKAGE = "All Entities";
-
-	/**
-	 * Hibernate Configuration.
-	 */
-	private Configuration cfg;
 
 	/**
 	 * Map with Tables keyed by Schema FQN. The keys are Strings and the values
@@ -126,19 +119,16 @@ public final class DocHelper {
 	 *            Hibernate configuration.
 	 */
 	@SuppressWarnings("unchecked")
-	public DocHelper(Configuration cfg, Cfg2JavaTool cfg2JavaTool) {
+	public DocHelper(Metadata metadata, Properties properties, Cfg2JavaTool cfg2JavaTool) {
 
 		super();
 
-		if (cfg == null) {
+		if (metadata == null) {
 			throw new IllegalArgumentException("Hibernate Configuration cannot be null");
 		}
 
-		this.cfg = cfg;
-
-		Properties properties = cfg.getProperties();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(cfg.getProperties());
+		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		dialect = jdbcServices.getDialect(); 
@@ -148,7 +138,6 @@ public final class DocHelper {
 			defaultSchema = DEFAULT_NO_SCHEMA_NAME;
 		}
 		
-		Metadata metadata = MetadataHelper.getMetadata(cfg);		
 		Iterator<Table> tablesIter = metadata.collectTableMappings().iterator();
 
 		while (tablesIter.hasNext()) {
@@ -253,15 +242,6 @@ public final class DocHelper {
 			classesByPackage.put(packageName, classList);
 		}
 		classList.add(pojoClazz);
-	}
-
-	/**
-	 * Returns the Hibernate Configuration.
-	 * 
-	 * @return the Hibernate Configuration.
-	 */
-	public Configuration getCfg() {
-		return cfg;
 	}
 
 	/**
