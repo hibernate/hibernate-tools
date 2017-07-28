@@ -73,7 +73,14 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 	}
 	
 	public Object accept(OneToMany value) {
-		return value.getAssociatedClass().getClassName();
+		PersistentClass associatedClass = value.getAssociatedClass();
+		if (preferProxies) {
+			if (associatedClass.getProxyInterfaceName() != null) {
+				return associatedClass.getProxyInterfaceName();
+			}
+		}
+		
+		return associatedClass.getClassName();
 	}
 	
 	private String toName(Class<?> c) {
