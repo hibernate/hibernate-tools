@@ -21,12 +21,10 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaExport.Action;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * Schema Export (.ddl) code generation. 
@@ -72,8 +70,7 @@ public class Hbm2DDLExporter extends AbstractExporter {
 	}
 
 	protected void doStart() {
-		final Configuration configuration = getConfiguration();
-		Metadata metadata = MetadataHelper.getMetadata(configuration);
+		Metadata metadata = getMetadata();
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		if (scriptToConsole) targetTypes.add(TargetType.STDOUT);
 		if (exportToDatabase) targetTypes.add(TargetType.DATABASE);
