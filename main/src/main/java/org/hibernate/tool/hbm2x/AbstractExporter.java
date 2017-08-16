@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
@@ -58,7 +57,7 @@ public abstract class AbstractExporter implements Exporter {
 	
 	public Metadata getMetadata() {
 		if (metadata == null) {
-			metadata = new MetadataSources().buildMetadata();
+			metadata = buildMetadata();
 		}
 		return metadata;
 	}
@@ -215,6 +214,10 @@ public abstract class AbstractExporter implements Exporter {
     		String packagename = StringHelper.qualifier(className); 	
     		return new File(getDirForPackage(baseDir, packagename), filename);
     }
+	
+	protected Metadata buildMetadata() {
+		return MetadataHelper.getMetadata(configuration);
+	}
 
     private File getDirForPackage(File baseDir, String packageName) {
         String p = packageName == null ? "" : packageName;   
