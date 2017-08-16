@@ -17,11 +17,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -75,8 +73,8 @@ public class HibernateConfigurationExporter extends AbstractExporter {
         boolean ejb3 = Boolean.valueOf((String)getProperties().get("ejb3")).booleanValue();
         
         Map<Object, Object> props = new TreeMap<Object, Object>();
-        if(getConfiguration()!=null) {
-            props.putAll(getConfiguration().getProperties() );
+        if (getProperties() != null) {
+        		props.putAll(getProperties());
         }
         if(customProperties!=null) {
             props.putAll(customProperties);             
@@ -107,9 +105,8 @@ public class HibernateConfigurationExporter extends AbstractExporter {
             }
         }
         
-		if(getConfiguration()!=null) {
-			Metadata md = MetadataHelper.getMetadata(getConfiguration());
-		    Iterator<PersistentClass> classMappings = md.getEntityBindings().iterator();
+		if(getMetadata()!=null) {
+		    Iterator<PersistentClass> classMappings = getMetadata().getEntityBindings().iterator();
 		    while (classMappings.hasNext() ) {
 		        PersistentClass element = classMappings.next();
 		        if(element instanceof RootClass) {
@@ -187,5 +184,5 @@ public class HibernateConfigurationExporter extends AbstractExporter {
 		}
 		return result.toString();
 	  }
-
+	
 }
