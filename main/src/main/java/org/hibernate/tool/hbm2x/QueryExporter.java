@@ -27,7 +27,7 @@ public class QueryExporter extends AbstractExporter {
 		SessionFactory sessionFactory = null;
 		Transaction transaction = null;
 		try {	
-			sessionFactory = getConfiguration().buildSessionFactory();
+			sessionFactory = buildMetadata().buildSessionFactory();
 			session = sessionFactory.openSession();
 			transaction = session.beginTransaction();
 			for (Iterator<String> iter = queryStrings.iterator(); iter.hasNext();) {
