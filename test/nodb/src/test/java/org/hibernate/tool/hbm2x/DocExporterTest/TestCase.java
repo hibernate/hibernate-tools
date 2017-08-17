@@ -53,8 +53,6 @@ public class TestCase {
 				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		DocExporter exporter = new DocExporter();
-		exporter.setConfiguration(configuration);
-		exporter.setOutputDirectory(outputDir);
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics
 		if(File.pathSeparator.equals(";")) { // to work around windows/jvm not seeming to respect executing just "dot"
@@ -68,6 +66,8 @@ public class TestCase {
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.setProperties( properties );
+		exporter.setConfiguration(configuration);
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
 	

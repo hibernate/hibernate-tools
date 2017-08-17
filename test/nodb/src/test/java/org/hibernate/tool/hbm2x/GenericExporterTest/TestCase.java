@@ -169,14 +169,14 @@ public class TestCase {
 	@Test
 	public void testPropertySet() throws FileNotFoundException, IOException {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
-		ge.setOutputDirectory(outputDir);
 		Properties p = new Properties();
 		p.setProperty("proptest", "A value");
 		p.setProperty( "refproperty", "proptest=${proptest}" );
 		p.setProperty("hibernatetool.booleanProperty", "true");
 		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.hbm2x.Cfg2JavaTool");
 		ge.setProperties(p);
+		ge.setConfiguration(configuration);
+		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.start();		

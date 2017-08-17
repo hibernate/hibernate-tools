@@ -18,7 +18,6 @@ import org.hibernate.tool.hbm2x.doc.DocFile;
 import org.hibernate.tool.hbm2x.doc.DocFileManager;
 import org.hibernate.tool.hbm2x.doc.DocHelper;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * Exporter implementation that creates Hibernate Documentation.
@@ -160,7 +159,7 @@ public class DocExporter extends AbstractExporter {
 		if(StringHelper.isNotEmpty( cmd )) {
 			try {
 				GenericExporter exporter = new GenericExporter();
-				exporter.setConfiguration(getConfiguration());
+				exporter.setMetadata(getMetadata());
 				exporter.setOutputDirectory(getOutputDirectory());
 				exporter.setTemplateName( "dot/entitygraph.dot.ftl" );
 				exporter.setFilePattern( "entities/entitygraph.dot" );
@@ -270,8 +269,8 @@ public class DocExporter extends AbstractExporter {
 			getProperties().setProperty( "jdk5", "true" );
 		}		
 		super.setupContext();
-		Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
-		docHelper = new DocHelper( metadata, getConfiguration().getProperties(), getCfg2JavaTool() );
+		Metadata metadata = getMetadata();
+		docHelper = new DocHelper( metadata, getProperties(), getCfg2JavaTool() );
         docFileManager = new DocFileManager(docHelper, getOutputDirectory() );
 
         getTemplateHelper().putInContext("dochelper", docHelper);
@@ -399,7 +398,7 @@ public class DocExporter extends AbstractExporter {
      * Generate one file per table with detail information.
      */
     public void generateTablesDetails() {
-    	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+    		Metadata metadata = getMetadata();
         Iterator<Table> tables = metadata.collectTableMappings().iterator();
         while (tables.hasNext() ) {
             Table table = tables.next();
