@@ -159,18 +159,18 @@ public class DocExporter extends AbstractExporter {
 		if(StringHelper.isNotEmpty( cmd )) {
 			try {
 				GenericExporter exporter = new GenericExporter();
+				exporter.getProperties().putAll( getProperties() );
+				exporter.setArtifactCollector( getArtifactCollector() );
 				exporter.setMetadata(getMetadata());
 				exporter.setOutputDirectory(getOutputDirectory());
+				exporter.setTemplatePath( getTemplatePath() );
+
 				exporter.setTemplateName( "dot/entitygraph.dot.ftl" );
 				exporter.setFilePattern( "entities/entitygraph.dot" );
-				exporter.setArtifactCollector( getArtifactCollector() );
-				exporter.setProperties( getProperties() );
-				exporter.setTemplatePath( getTemplatePath() );
 				exporter.start();
 
 				exporter.setTemplateName( "dot/tablegraph.dot.ftl" );
 				exporter.setFilePattern( "tables/tablegraph.dot" );
-				exporter.setProperties( getProperties() );
 				exporter.start();
 				
 				

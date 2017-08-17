@@ -91,7 +91,7 @@ public abstract class ExporterTask {
 		Properties prop = new Properties();
 		prop.putAll(parent.getProperties());
 		prop.putAll(properties);
-		exporter.setProperties(prop);
+		exporter.getProperties().putAll(prop);
 		exporter.setConfiguration( parent.getConfiguration() );
 		exporter.setOutputDirectory( getDestdir() );
 		exporter.setTemplatePath( getTemplatePath().list() );			

@@ -65,7 +65,7 @@ public class TestCase {
 		boolean dotSpecified = System.getProperties().containsKey("dot.executable");
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
-		exporter.setProperties( properties );
+		exporter.getProperties().putAll(properties);
 		exporter.setConfiguration(configuration);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();

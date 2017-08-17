@@ -74,11 +74,6 @@ public abstract class AbstractExporter implements Exporter {
 		return properties;
 	}
 	
-	public void setProperties(Properties properties) {
-		this.properties = properties;
-		
-	}
-
 	public void setTemplatePath(String[] templatePaths) {
 		this.templatePaths = templatePaths;
 	}

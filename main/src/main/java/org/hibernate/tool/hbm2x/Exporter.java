@@ -11,7 +11,7 @@ import org.hibernate.cfg.Configuration;
 
 /**
  * @author max and david
- *
+ * @author koen
  */
 public interface Exporter {
 		
@@ -40,13 +40,7 @@ public interface Exporter {
 	public void setTemplatePath(String[] templatePath);
 	
 	public String[] getTemplatePath();
-	
-	/**
-	 * 
-	 * @param properties set of properties to be used by exporter.
-	 */
-	public void setProperties(Properties properties);
-	
+		
 	public Properties getProperties();
 	
 	/**

@@ -174,7 +174,7 @@ public class TestCase {
 		p.setProperty( "refproperty", "proptest=${proptest}" );
 		p.setProperty("hibernatetool.booleanProperty", "true");
 		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.hbm2x.Cfg2JavaTool");
-		ge.setProperties(p);
+		ge.getProperties().putAll(p);
 		ge.setConfiguration(configuration);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
