@@ -45,10 +45,6 @@ public abstract class AbstractExporter implements Exporter {
 		c2j = new Cfg2JavaTool();		
 	}
 	
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
 	public void setConfiguration(Configuration cfg) {
 		setMetadata(MetadataHelper.getMetadata(cfg));;
 		properties.putAll(cfg.getProperties());

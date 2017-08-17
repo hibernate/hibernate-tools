@@ -20,8 +20,6 @@ public interface Exporter {
 	 */
 	public void setConfiguration(Configuration cfg);
 
-	public Configuration getConfiguration();
-	
 	/** 
 	 * @param metadata An Hibernate {@link org.hibernate.boot.Metadata} or subclass instance that defines the hibernate meta model to be exported.
 	 */
