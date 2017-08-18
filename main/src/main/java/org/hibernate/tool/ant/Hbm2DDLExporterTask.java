@@ -4,8 +4,10 @@
  */
 package org.hibernate.tool.ant;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -49,7 +51,9 @@ public class Hbm2DDLExporterTask extends ExporterTask {
 
 	protected Exporter createExporter() {
 		Hbm2DDLExporter exporter = new Hbm2DDLExporter();
-		exporter.setConfiguration(parent.getConfiguration());
+		Configuration configuration = parent.getConfiguration();
+		exporter.getProperties().putAll(configuration.getProperties());
+		exporter.setMetadata(MetadataHelper.getMetadata(configuration));
 		exporter.setOutputDirectory(parent.getDestDir());
 		return exporter;
 	}
