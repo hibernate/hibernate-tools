@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
@@ -28,12 +30,13 @@ public abstract class AbstractExporter implements Exporter {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private File outputdir;
-	private Configuration configuration;
 	private String[] templatePaths = new String[0];
 	private TemplateHelper vh;
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
 	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
+	private StandardServiceRegistry serviceRegistry = null;
 
 	private Iterator<Entry<Object, Object>> iterator;
 
@@ -46,9 +49,10 @@ public abstract class AbstractExporter implements Exporter {
 	}
 	
 	public void setConfiguration(Configuration cfg) {
-		setMetadata(MetadataHelper.getMetadata(cfg));;
+		setMetadata(MetadataHelper.getMetadata(cfg));
 		properties.putAll(cfg.getProperties());
-		configuration = cfg;
+		metadataSources = MetadataHelper.getMetadataSources(cfg);
+		serviceRegistry = cfg.getStandardServiceRegistryBuilder().build();
 	}
 	
 	public Metadata getMetadata() {
@@ -207,7 +211,7 @@ public abstract class AbstractExporter implements Exporter {
     }
 	
 	protected Metadata buildMetadata() {
-		return MetadataHelper.getMetadata(configuration);
+		return metadataSources.buildMetadata(serviceRegistry);
 	}
 
     private File getDirForPackage(File baseDir, String packageName) {
