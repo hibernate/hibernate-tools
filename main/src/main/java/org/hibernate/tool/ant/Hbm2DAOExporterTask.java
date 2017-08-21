@@ -1,7 +1,9 @@
 package org.hibernate.tool.ant;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author Dennis Byrne
@@ -20,7 +22,9 @@ public class Hbm2DAOExporterTask extends Hbm2JavaExporterTask {
 	
 	protected Exporter createExporter() {
 		Exporter result = new DAOExporter();
-		result.setConfiguration(parent.getConfiguration());
+		Configuration configuration = parent.getConfiguration();
+		result.getProperties().putAll(configuration.getProperties());
+		result.setMetadata(MetadataHelper.getMetadata(configuration));
 		result.setOutputDirectory(parent.getDestDir());
 		return result;
 	}
