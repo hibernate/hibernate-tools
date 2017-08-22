@@ -14,7 +14,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -47,17 +47,17 @@ public class TestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		artifactCollector = new ArtifactCollector();
 		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
 		exporterOutputDir.mkdir();
 		Exporter exporter = new POJOExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(exporterOutputDir);
 		exporter.setArtifactCollector(artifactCollector);
 		Exporter hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setMetadata(metadata);
 		hbmexporter.setOutputDirectory(exporterOutputDir);
 		hbmexporter.setArtifactCollector(artifactCollector);
 		exporter.start();
