@@ -2,6 +2,7 @@ package org.hibernate.tools.test.util;
 
 import java.util.Iterator;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -33,6 +34,11 @@ public class HibernateUtil {
 		}
 		MetadataHelper.getMetadata(configuration);
 		return configuration;
+	}
+	
+	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
+		Configuration configuration = initializeConfiguration(test, hbmXmlFiles);
+		return MetadataHelper.getMetadata(configuration);
 	}
 	 
 }
