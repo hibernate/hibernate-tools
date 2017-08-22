@@ -27,6 +27,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -45,18 +46,19 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private JDBCMetaDataConfiguration  jmdcfg = null;
+	private Metadata metadata = null;
 	private File outputDir = null;
 	
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
-		jmdcfg = new JDBCMetaDataConfiguration();
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		jmdcfg.setReverseEngineeringStrategy(configurableNamingStrategy);
 		jmdcfg.readFromJDBC();
+		metadata = MetadataHelper.getMetadata(jmdcfg);
 	}
 	
 	@After
@@ -67,11 +69,11 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		exporter = new POJOExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
@@ -80,7 +82,7 @@ public class TestCase {
 	@Test
 	public void testGenerateMappings() {
 		Exporter exporter = new HibernateMappingExporter();	
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
@@ -97,12 +99,12 @@ public class TestCase {
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
 		Exporter exporter = new HibernateConfigurationExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
 		SAXReader xmlReader =  new SAXReader();
-    	xmlReader.setValidation(true);
+      	xmlReader.setValidation(true);
 		Document document = xmlReader.read(new File(outputDir, "hibernate.cfg.xml"));
 		// Validate the Generator and it has no arguments 
 		XPath xpath = DocumentHelper.createXPath("//hibernate-configuration/session-factory/mapping");
@@ -123,7 +125,7 @@ public class TestCase {
 	public void testGenerateAnnotationCfgXml() throws DocumentException {
 		HibernateConfigurationExporter exporter = 
 				new HibernateConfigurationExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
@@ -149,7 +151,7 @@ public class TestCase {
 	@Test
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));
@@ -157,7 +159,7 @@ public class TestCase {
 	
 	@Test
 	public void testPackageNames() {
-		Iterator<PersistentClass> iter = jmdcfg.getMetadata().getEntityBindings().iterator();
+		Iterator<PersistentClass> iter = metadata.getEntityBindings().iterator();
 		while (iter.hasNext() ) {
 			PersistentClass element = iter.next();
 			Assert.assertEquals("org.reveng", StringHelper.qualifier(element.getClassName() ) );
