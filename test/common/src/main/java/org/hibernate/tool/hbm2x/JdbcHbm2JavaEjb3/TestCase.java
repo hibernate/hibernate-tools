@@ -12,6 +12,7 @@ import javax.persistence.Persistence;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -33,17 +34,16 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
 	private File outputDir = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
 		outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(MetadataHelper.getMetadata(jmdcfg));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
