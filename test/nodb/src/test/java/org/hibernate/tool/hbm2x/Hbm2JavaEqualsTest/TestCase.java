@@ -10,8 +10,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -54,14 +54,12 @@ public class TestCase {
 		// create output folder
 		outputDir = temporaryFolder.getRoot();		
 		// export class ProxiedTestEntity.java and UnProxiedTestEntity
-		MetadataSources mds = new MetadataSources();
+		StandardServiceRegistryBuilder ssb = new StandardServiceRegistryBuilder();
+		ssb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources mds = new MetadataSources(ssb.build());
 		mds.addInputStream(new ByteArrayInputStream(TEST_ENTITY_HBM_XML.getBytes()));
-		Configuration configuration = new Configuration(mds);
-		configuration.setProperty(
-				AvailableSettings.DIALECT, 
-				HibernateUtil.Dialect.class.getName());
 		Exporter exporter = new POJOExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(mds.buildMetadata());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		// copy interface EntityProxy.java
