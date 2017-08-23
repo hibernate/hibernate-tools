@@ -58,15 +58,15 @@ public class TestCase {
 	
 	private Exporter hbmexporter = null;
 	private File outputDir = null;
-	private Configuration configuration = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setMetadata(metadata);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -143,7 +143,6 @@ public class TestCase {
 
 	@Test
 	public void testMetaValueRead() throws Exception{
-		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		PersistentClass pc = metadata.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.MapAndAnyTest.Person");
 		Assert.assertNotNull(pc);
 		Property prop = pc.getProperty("data");
