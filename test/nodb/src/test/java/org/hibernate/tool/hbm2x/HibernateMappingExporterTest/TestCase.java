@@ -8,6 +8,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -39,7 +40,7 @@ public class TestCase {
 		final File outputDir = new File(temporaryFolder.getRoot(), "HibernateMappingExporterTest.testStart");
 		outputDir.mkdir();
 		HibernateMappingExporter exporter = new HibernateMappingExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(MetadataHelper.getMetadata(configuration));
 		exporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		Assert.assertFalse(fooHbmXml.exists());
