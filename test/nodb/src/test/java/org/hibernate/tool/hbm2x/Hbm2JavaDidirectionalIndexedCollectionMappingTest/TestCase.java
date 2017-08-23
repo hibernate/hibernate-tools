@@ -6,7 +6,7 @@ package org.hibernate.tool.hbm2x.Hbm2JavaDidirectionalIndexedCollectionMappingTe
 
 import java.io.File;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -33,11 +33,11 @@ public class TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		Exporter exporter = new POJOExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
