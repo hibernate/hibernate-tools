@@ -12,6 +12,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -46,12 +47,12 @@ public class TestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
 		exporterOutputDir.mkdir();		
 		Exporter hbmexporter = new HibernateMappingExporter();	
-		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setMetadata(metadata);
 		hbmexporter.setOutputDirectory(exporterOutputDir);
 		hbmexporter.start();		
 	}
