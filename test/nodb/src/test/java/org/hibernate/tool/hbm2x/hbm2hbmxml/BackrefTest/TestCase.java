@@ -48,17 +48,17 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private Configuration configuration = null;
+	private Metadata metadata = null;
 	private File outputDir = null;
 	private Exporter hbmexporter = null;
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setConfiguration(configuration);
+		hbmexporter.setMetadata(metadata);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -75,8 +75,7 @@ public class TestCase {
 	
 	@Test
 	public void testBackrefPresent() {
-		Metadata md = MetadataHelper.getMetadata(configuration);
-		PersistentClass pc = md.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest.CarPart");
+		PersistentClass pc = metadata.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest.CarPart");
 		Iterator<?> iterator = pc.getPropertyIterator();
 		boolean hasBackrefs = false;
 		while (iterator.hasNext() && !hasBackrefs) {
