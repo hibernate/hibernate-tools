@@ -5,9 +5,12 @@
 package org.hibernate.tool.hbm2x.Hbm2CfgTest;
 
 import java.io.File;
+import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tools.test.util.FileUtil;
@@ -38,25 +41,28 @@ public class TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		cfgexporter = new HibernateConfigurationExporter();
-		cfgexporter.setConfiguration(configuration);
+		cfgexporter.setMetadata(metadata);
 		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}
 	
 	@Test
 	public void testMagicPropertyHandling() {
-	   Configuration srcCfg = new Configuration();	   
-	   srcCfg.setProperty( "hibernate.basic", "aValue" );
-	   srcCfg.setProperty( Environment.SESSION_FACTORY_NAME, "shouldNotShowUp");
-	   srcCfg.setProperty( Environment.HBM2DDL_AUTO, "false");
-	   srcCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
-	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   HibernateConfigurationExporter exporter = new HibernateConfigurationExporter();
-	   exporter.setConfiguration(srcCfg);
+	   Properties properties = exporter.getProperties();
+	   properties.setProperty( "hibernate.basic", "aValue" );
+	   properties.setProperty( Environment.SESSION_FACTORY_NAME, "shouldNotShowUp");
+	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
+	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
+	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   StandardServiceRegistryBuilder ssb = new StandardServiceRegistryBuilder();
+	   ssb.applySettings(properties);   
+	   MetadataSources metadataSources = new MetadataSources(ssb.build());
+	   exporter.setMetadata(metadataSources.buildMetadata());
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
@@ -69,20 +75,26 @@ public class TestCase {
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   Assert.assertNull(
 			   FileUtil.findFirstString("hibernate.temp.use_jdbc_metadata_defaults", file ));
-	   srcCfg = new Configuration(); 
-	   srcCfg.setProperty( Environment.HBM2DDL_AUTO, "validator");   
-	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   exporter = new HibernateConfigurationExporter();
-	   exporter.setConfiguration(srcCfg);
+	   properties = exporter.getProperties();
+	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
+	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   ssb = new StandardServiceRegistryBuilder();
+	   ssb.applySettings(properties);   
+	   metadataSources = new MetadataSources(ssb.build());
+	   exporter.setMetadata(metadataSources.buildMetadata());
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNotNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
-	   srcCfg = new Configuration();
-	   srcCfg.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
-	   srcCfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   exporter = new HibernateConfigurationExporter();
-	   exporter.setConfiguration(srcCfg);
+	   properties = exporter.getProperties();
+	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
+	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   ssb = new StandardServiceRegistryBuilder();
+	   ssb.applySettings(properties);   
+	   metadataSources = new MetadataSources(ssb.build());
+	   exporter.setMetadata(metadataSources.buildMetadata());
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNull(
