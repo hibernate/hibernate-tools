@@ -6,6 +6,7 @@ package org.hibernate.tool.hbm2x.HashcodeEqualsTest;
 
 import java.io.File;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -35,16 +36,16 @@ public class TestCase {
 
 	private File outputDir = null;
 	private ArtifactCollector artifactCollector = null;
-	private Configuration configuration = null;
+	private Metadata metadata = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = new File(temporaryFolder.getRoot(), "generated");
 		outputDir.mkdir();
 		Exporter exporter = new POJOExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
@@ -54,7 +55,7 @@ public class TestCase {
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
 		POJOExporter exporter = new POJOExporter();
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new ArtifactCollector();
