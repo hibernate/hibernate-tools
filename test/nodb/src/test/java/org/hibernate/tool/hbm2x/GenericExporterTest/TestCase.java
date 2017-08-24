@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.tool.Version;
 import org.hibernate.tool.hbm2x.ExporterException;
 import org.hibernate.tool.hbm2x.GenericExporter;
@@ -38,7 +38,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private Configuration configuration = null;
+	private Metadata metadata = null;
 	private File outputDir = null;
 	private String resourcesLocation = null;
 	
@@ -46,13 +46,13 @@ public class TestCase {
 	public void setUp() {
 		outputDir = temporaryFolder.getRoot();
 		resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
-		configuration = HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 	}
 
 	@Test
 	public void testSingleFileGeneration() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-test.ftl"); 
 		ge.setFilePattern("generictest.txt");
@@ -71,7 +71,7 @@ public class TestCase {
 	@Test
 	public void testFreeMarkerSyntaxFailureExpected() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "freemarker.ftl");
 		ge.setFilePattern("{class-name}.ftltest");
@@ -86,7 +86,7 @@ public class TestCase {
 	@Test
 	public void testClassFileGeneration() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("generic{class-name}.txt");
@@ -98,7 +98,7 @@ public class TestCase {
 	@Test
 	public void testPackageFileGeneration() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
@@ -113,7 +113,7 @@ public class TestCase {
 	@Test
 	public void testForEachGeneration() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
@@ -139,7 +139,7 @@ public class TestCase {
 	@Test
 	public void testForEachWithExceptionGeneration() {
 		GenericExporter ge = new GenericExporter();
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-exception.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
@@ -175,7 +175,7 @@ public class TestCase {
 		p.setProperty("hibernatetool.booleanProperty", "true");
 		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.hbm2x.Cfg2JavaTool");
 		ge.getProperties().putAll(p);
-		ge.setConfiguration(configuration);
+		ge.setMetadata(metadata);
 		ge.setOutputDirectory(outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
