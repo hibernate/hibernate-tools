@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -39,10 +40,10 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
-
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+	private JDBCMetaDataConfiguration jmdcfg = null;
 
 	@Before
 	public void setUp() {
@@ -136,10 +137,10 @@ public class TestCase {
 	public void testGeneration() throws Exception {
 		final File testFolder = temporaryFolder.getRoot();
 		Exporter exporter = new HibernateMappingExporter();
-		exporter.setConfiguration(jmdcfg);
+		exporter.setMetadata(jmdcfg.getMetadata());
 		exporter.setOutputDirectory(testFolder);
 		Exporter javaExp = new POJOExporter();
-		javaExp.setConfiguration(jmdcfg);
+		javaExp.setMetadata(jmdcfg.getMetadata());
 		javaExp.setOutputDirectory(testFolder);
 		exporter.start();
 		javaExp.start();
