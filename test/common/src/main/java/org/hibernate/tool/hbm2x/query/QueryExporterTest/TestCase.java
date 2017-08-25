@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -57,7 +58,10 @@ public class TestCase {
 	@Test
 	public void testQueryExporter() {		
 		QueryExporter exporter = new QueryExporter();
-		exporter.setConfiguration(configuration);
+		MetadataSources metadataSources = new MetadataSources();
+		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
+		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setFilename("queryresult.txt");
 		List<String> queries = new ArrayList<String>();
