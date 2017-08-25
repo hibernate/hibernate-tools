@@ -1,7 +1,7 @@
 package org.hibernate.tool.hbmlint.HbmLintTest;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.Detector;
 import org.hibernate.tool.hbmlint.HbmLint;
@@ -39,10 +39,10 @@ public class TestCase {
 
 	@Test
 	public void testExporter() {	
-		Configuration configuration = HibernateUtil
-				.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = HibernateUtil
+				.initializeMetadata(this, HBM_XML_FILES);
 		HbmLintExporter exporter = new HbmLintExporter();		
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(temporaryFolder.getRoot());
 		exporter.start();
 	}
