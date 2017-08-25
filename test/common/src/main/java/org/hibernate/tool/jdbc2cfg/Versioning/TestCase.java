@@ -32,16 +32,17 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	@Before
 	public void setUp() {
-		JdbcUtil.createDatabase(this);;
-		jmdcfg = new JDBCMetaDataConfiguration();
+		JdbcUtil.createDatabase(this);
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
+		metadata = jmdcfg.getMetadata();
 	}
 
 	@After
@@ -51,11 +52,11 @@ public class TestCase {
 
 	@Test
 	public void testVersion() {		
-		PersistentClass cl = jmdcfg.getMetadata().getEntityBinding("WithVersion");		
+		PersistentClass cl = metadata.getEntityBinding("WithVersion");		
 		Property version = cl.getVersion();
 		Assert.assertNotNull(version);
 		Assert.assertEquals("version", version.getName());		
-		cl = jmdcfg.getMetadata().getEntityBinding("NoVersion");
+		cl = metadata.getEntityBinding("NoVersion");
 		Assert.assertNotNull(cl);
 		version = cl.getVersion();
 		Assert.assertNull(version);		
@@ -65,7 +66,7 @@ public class TestCase {
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
-        exporter.setConfiguration(jmdcfg);
+        exporter.setMetadata(metadata);
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		MetadataSources derived = new MetadataSources();		
