@@ -7,6 +7,7 @@ package org.hibernate.tool.jdbc2cfg.ManyToMany;
 import java.io.File;
 
 import org.hibernate.MappingException;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -29,7 +30,7 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -37,8 +38,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		jmdcfg.readFromJDBC();
+		metadata = jmdcfg.getMetadata();
 	}
 	
 	@After
@@ -83,14 +85,14 @@ public class TestCase {
 	@Test
 	public void testAutoCreation() {
 	    
-        Assert.assertNull("No middle class should be generated.", jmdcfg.getMetadata().getEntityBinding( "WorksOn" ));
+        Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
         
-        Assert.assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", jmdcfg.getMetadata().getEntityBinding( "WorksOnContext" ));
+        Assert.assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", metadata.getEntityBinding( "WorksOnContext" ));
         
-        PersistentClass projectClass = jmdcfg.getMetadata().getEntityBinding("Project");
+        PersistentClass projectClass = metadata.getEntityBinding("Project");
 		Assert.assertNotNull( projectClass );
 
-		PersistentClass employeeClass = jmdcfg.getMetadata().getEntityBinding("Employee");
+		PersistentClass employeeClass = metadata.getEntityBinding("Employee");
 		Assert.assertNotNull( employeeClass );
 				
 		assertPropertyNotExist( projectClass, "worksOns" );
@@ -105,14 +107,14 @@ public class TestCase {
 	@Test
 	public void testFalsePositive() {
 	    
-        Assert.assertNotNull("Middle class should be generated.", jmdcfg.getMetadata().getEntityBinding( "NonMiddle" ));
+        Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));
                 				
 		
 	}
 
 	@Test
 	public void testBuildMappings() {		
-		Assert.assertNotNull(MetadataHelper.getMetadata(jmdcfg));
+		Assert.assertNotNull(metadata);
 		
 	}
 	
@@ -121,10 +123,10 @@ public class TestCase {
 		
 		File outputDir = temporaryFolder.getRoot();
 		
-		Assert.assertNotNull(MetadataHelper.getMetadata(jmdcfg));
+		Assert.assertNotNull(metadata);
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setConfiguration(jmdcfg);
+		hme.setMetadata(metadata);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		
