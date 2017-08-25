@@ -28,7 +28,6 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -44,17 +43,18 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	private JDBCMetaDataConfiguration localCfg;
-
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		localCfg = new JDBCMetaDataConfiguration();       
+		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();       
         localCfg.setReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
         localCfg.readFromJDBC();
+        metadata = localCfg.getMetadata();
 	}
 	
 	@After
@@ -64,7 +64,7 @@ public class TestCase {
 
 	@Test
 	public void testOneToOneSingleColumnBiDirectional() {	
-		PersistentClass person = localCfg.getMetadata().getEntityBinding("Person");		
+		PersistentClass person = metadata.getEntityBinding("Person");		
 		Property addressProperty = person.getProperty("addressPerson");
 		Assert.assertNotNull(addressProperty);			
 		Assert.assertTrue(addressProperty.getValue() instanceof OneToOne);	
@@ -75,7 +75,7 @@ public class TestCase {
 		Assert.assertEquals(2, person.getPropertyClosureSpan());		
 		Assert.assertEquals("personId", person.getIdentifierProperty().getName());
 		Assert.assertFalse(oto.isConstrained());		
-		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressPerson");
+		PersistentClass addressPerson = metadata.getEntityBinding("AddressPerson");
 		Property personProperty = addressPerson.getProperty("person");
 		Assert.assertNotNull(personProperty);
 		Assert.assertTrue(personProperty.getValue() instanceof OneToOne);	
@@ -90,13 +90,13 @@ public class TestCase {
 	
 	@Test
 	public void testAddressWithForeignKeyGeneration() {
-		PersistentClass address = localCfg.getMetadata().getEntityBinding("AddressPerson");	
+		PersistentClass address = metadata.getEntityBinding("AddressPerson");	
 		Assert.assertEquals("foreign", ((SimpleValue)address.getIdentifier()).getIdentifierGeneratorStrategy());
 	}
 
 	@Test
 	public void testOneToOneMultiColumnBiDirectional() {
-		PersistentClass person = localCfg.getMetadata().getEntityBinding("MultiPerson");	
+		PersistentClass person = metadata.getEntityBinding("MultiPerson");	
 		Property addressProperty = person.getProperty("addressMultiPerson");
 		Assert.assertNotNull(addressProperty);		
 		Assert.assertTrue(addressProperty.getValue() instanceof OneToOne);
@@ -107,7 +107,7 @@ public class TestCase {
 		Assert.assertFalse(oto.isConstrained());
 		Assert.assertEquals(2, person.getPropertyClosureSpan());		
 		Assert.assertEquals("compositeid gives generic id name", "id", person.getIdentifierProperty().getName());
-		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressMultiPerson");
+		PersistentClass addressPerson = metadata.getEntityBinding("AddressMultiPerson");
 		Property personProperty = addressPerson.getProperty("multiPerson");
 		Assert.assertNotNull(personProperty);
 		Assert.assertTrue(personProperty.getValue() instanceof OneToOne);
@@ -122,15 +122,14 @@ public class TestCase {
 
 	@Test
 	public void testBuildMappings() {	
-		Assert.assertNotNull(MetadataHelper.getMetadata(localCfg));		
+		Assert.assertNotNull(metadata);		
 	}
 	
 	@Test
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
-		MetadataHelper.getMetadata(localCfg);
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setConfiguration(localCfg);
+		hme.setMetadata(metadata);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
@@ -142,7 +141,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		POJOExporter exporter = new POJOExporter();
-		exporter.setConfiguration(localCfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
@@ -174,9 +173,8 @@ public class TestCase {
 	@Test
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
-		MetadataHelper.getMetadata(localCfg);
 		POJOExporter exporter = new POJOExporter();
-		exporter.setConfiguration(localCfg);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
