@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
@@ -53,6 +54,10 @@ public abstract class AbstractExporter implements Exporter {
 		properties.putAll(cfg.getProperties());
 		metadataSources = MetadataHelper.getMetadataSources(cfg);
 		serviceRegistry = cfg.getStandardServiceRegistryBuilder().build();
+	}
+	
+	public void setMetadataSources(MetadataSources metadataSources) {
+		this.metadataSources = metadataSources;
 	}
 	
 	public Metadata getMetadata() {
@@ -211,7 +216,13 @@ public abstract class AbstractExporter implements Exporter {
     }
 	
 	protected Metadata buildMetadata() {
-		return metadataSources.buildMetadata(serviceRegistry);
+		StandardServiceRegistry sr = serviceRegistry;
+		if (sr == null) {
+			StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+			ssrb.applySettings(getProperties());
+			sr = ssrb.build();
+		}
+		return metadataSources.buildMetadata(sr);
 	}
 
     private File getDirForPackage(File baseDir, String packageName) {
