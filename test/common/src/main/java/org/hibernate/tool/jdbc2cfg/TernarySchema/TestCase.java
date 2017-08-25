@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
@@ -37,12 +38,12 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
+		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		 DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
 			 public List<SchemaSelection> getSchemaSelections() {
 				 List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
@@ -54,6 +55,7 @@ public class TestCase {
 		 };           
 	     jmdcfg.setReverseEngineeringStrategy(c);
 	     jmdcfg.readFromJDBC();
+	     metadata = jmdcfg.getMetadata();
 	}
 
 	@After
@@ -65,7 +67,7 @@ public class TestCase {
 	@Ignore 
 	@Test
 	public void testTernaryModel() throws SQLException {
-		assertMultiSchema(jmdcfg);	
+		assertMultiSchema(metadata);	
 	}
 
 	// TODO Investigate the ignored test: HBX-1410
@@ -73,9 +75,8 @@ public class TestCase {
 	@Test
 	public void testGeneration() {		
 		File outputFolder = temporaryFolder.getRoot();
-		MetadataHelper.getMetadata(jmdcfg);		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setConfiguration(jmdcfg);
+		hme.setMetadata(metadata);
 		hme.setOutputDirectory(outputFolder);
 		hme.start();			
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
@@ -87,21 +88,21 @@ public class TestCase {
 		    .addFile( new File(outputFolder, "User.hbm.xml") )
 		    .addFile( new File(outputFolder, "Plainrole.hbm.xml"));		
 		MetadataHelper.getMetadata(configuration);		
-		assertMultiSchema(configuration);
+		assertMultiSchema(metadata);
 	}
 	
-	private void assertMultiSchema(JDBCMetaDataConfiguration cfg) {
+	private void assertMultiSchema(Metadata metadata) {
 		JUnitUtil.assertIteratorContainsExactly(
 				"There should be five tables!", 
-				cfg.getMetadata().getEntityBindings().iterator(), 
+				metadata.getEntityBindings().iterator(), 
 				5);
-		final PersistentClass role = cfg.getMetadata().getEntityBinding("Role");
+		final PersistentClass role = metadata.getEntityBinding("Role");
 		Assert.assertNotNull(role);
-		PersistentClass userroles = cfg.getMetadata().getEntityBinding("Userroles");
+		PersistentClass userroles = metadata.getEntityBinding("Userroles");
 		Assert.assertNotNull(userroles);
-		PersistentClass user = cfg.getMetadata().getEntityBinding("User");
+		PersistentClass user = metadata.getEntityBinding("User");
 		Assert.assertNotNull(user);
-		PersistentClass plainRole = cfg.getMetadata().getEntityBinding("Plainrole");
+		PersistentClass plainRole = metadata.getEntityBinding("Plainrole");
 		Assert.assertNotNull(plainRole);
 		Property property = role.getProperty("users");
 		Assert.assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
