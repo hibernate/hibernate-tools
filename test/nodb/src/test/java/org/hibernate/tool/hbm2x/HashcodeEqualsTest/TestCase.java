@@ -7,7 +7,6 @@ package org.hibernate.tool.hbm2x.HashcodeEqualsTest;
 import java.io.File;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;

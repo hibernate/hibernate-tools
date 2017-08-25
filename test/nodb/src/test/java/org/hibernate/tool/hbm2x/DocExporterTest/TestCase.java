@@ -8,7 +8,8 @@ import java.util.Properties;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.DocExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -49,12 +50,13 @@ public class TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		outputDir = temporaryFolder.getRoot();
 		DocExporter exporter = new DocExporter();
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		if(File.pathSeparator.equals(";")) { // to work around windows/jvm not seeming to respect executing just "dot"
 			properties.put("dot.executable", System.getProperties().getProperty("dot.executable","dot.exe"));
 		} else {
@@ -66,7 +68,7 @@ public class TestCase {
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.getProperties().putAll(properties);
-		exporter.setConfiguration(configuration);
+		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
