@@ -11,7 +11,9 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PropertySet;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.tool.util.MetadataHelper;
 
 /**
  * @author max
@@ -91,8 +93,11 @@ public abstract class ExporterTask {
 		Properties prop = new Properties();
 		prop.putAll(parent.getProperties());
 		prop.putAll(properties);
+		Configuration configuration = parent.getConfiguration();
+		prop.putAll(configuration.getProperties());
 		exporter.getProperties().putAll(prop);
-		exporter.setConfiguration( parent.getConfiguration() );
+		exporter.setMetadata(MetadataHelper.getMetadata(configuration));
+		exporter.setMetadataSources(MetadataHelper.getMetadataSources(configuration));
 		exporter.setOutputDirectory( getDestdir() );
 		exporter.setTemplatePath( getTemplatePath().list() );			
 		return exporter;
