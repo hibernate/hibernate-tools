@@ -13,10 +13,11 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -69,13 +70,14 @@ public class TestCase {
 	
 	@Test
     public void testReadable() {
-        Configuration cfg = new Configuration();
-		cfg.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-        cfg.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
-        cfg.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
-        cfg.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
-        cfg.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );              
-        Assert.assertNotNull(MetadataHelper.getMetadata(cfg));      
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+        MetadataSources metadataSources = new MetadataSources(ssrb.build());
+        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
+        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
+        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
+        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );              
+        Assert.assertNotNull(metadataSources.buildMetadata());      
     }
 	
 	@Test
