@@ -10,20 +10,23 @@ import org.hibernate.tool.util.MetadataHelper;
 
 public class HQLCodeAssist implements IHQLCodeAssist {
 
-	private Configuration configuration;
 	private ConfigurationCompletion completion;
 	private Metadata metadata;
 	
 	private static final char[] charSeparators;	
+
 	static {
 		charSeparators = new char[]{',', '(', ')'};
 		Arrays.sort(charSeparators);
 	}
 	
 	public HQLCodeAssist(Configuration cfg) {
-		configuration = cfg;
-		metadata = MetadataHelper.getMetadata(configuration);
-		completion = new ConfigurationCompletion(metadata);
+		this(MetadataHelper.getMetadata(cfg));
+	}
+	
+	public HQLCodeAssist(Metadata metadata) {
+		this.metadata = metadata;
+		this.completion = new ConfigurationCompletion(metadata);
 	}
 
 	public void codeComplete(String query, int position, IHQLCompletionRequestor collector) {
@@ -36,7 +39,7 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 			showEntityNames = new HQLAnalyzer().shouldShowEntityNames( query, position );
 		
 		if(showEntityNames) {
-			if(hasConfiguration()) {
+			if(hasMetadata()) {
 				completion.getMatchingImports( prefix, position, collector );				
 			} else {
 				collector.completionFailure("Configuration not available nor open");
@@ -56,7 +59,7 @@ public class HQLCodeAssist implements IHQLCodeAssist {
                     		completionProposal.setReplaceEnd( position+0 );
                     		completionProposal.setSimpleName( alias );
                     		completionProposal.setShortEntityName( qt.getEntityName() );
-                    		if(hasConfiguration()) {
+                    		if(hasMetadata()) {
                     			String importedName = (String) metadata.getImports().get( qt.getEntityName() );
                     			completionProposal.setEntityName( importedName );
                     		}
@@ -64,7 +67,7 @@ public class HQLCodeAssist implements IHQLCodeAssist {
                     }                                        
                 }
             } else {
-            	if(hasConfiguration()) {        			
+            	if(hasMetadata()) {        			
             		String path = CompletionHelper.getCanonicalPath(visible, prefix.substring(0, dotIndex));
             		String propertyPrefix = prefix.substring(dotIndex + 1);
             		completion.getMatchingProperties( path, propertyPrefix, position, collector );
@@ -84,8 +87,8 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 		
 	}
 	
-	private boolean hasConfiguration() {
-		return configuration!=null;
+	private boolean hasMetadata() {
+		return metadata!=null;
 	}
 	
 	public static int findNearestWhiteSpace( CharSequence doc, int start ) {
