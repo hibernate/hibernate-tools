@@ -26,14 +26,14 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
@@ -89,21 +89,22 @@ public class TestCase {
 
 	@Test
 	public void testReadable() {
-        Configuration cfg = new Configuration();
-        cfg.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-        cfg.addFile(new File(
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+        MetadataSources metadataSources = new MetadataSources(ssrb.build());
+        metadataSources.addFile(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/ComplexPropertyValue.hbm.xml"));
-        cfg.addFile(new File(
+        metadataSources.addFile(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/IntegerPropertyValue.hbm.xml"));
-        cfg.addFile(new File(
+        metadataSources.addFile(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/StringPropertyValue.hbm.xml"));
-        cfg.addFile(new File(
+        metadataSources.addFile(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/PropertySet.hbm.xml"));
-        Assert.assertNotNull(MetadataHelper.getMetadata(cfg));
+        Assert.assertNotNull(metadataSources.buildMetadata());
     }
 
 	@Test
