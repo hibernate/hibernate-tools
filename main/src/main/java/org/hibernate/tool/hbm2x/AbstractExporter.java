@@ -12,10 +12,8 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.tool.util.MetadataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +45,6 @@ public abstract class AbstractExporter implements Exporter {
 	public AbstractExporter() {
 		c2h = new Cfg2HbmTool();
 		c2j = new Cfg2JavaTool();		
-	}
-	
-	public void setConfiguration(Configuration cfg) {
-		setMetadata(MetadataHelper.getMetadata(cfg));
-		properties.putAll(cfg.getProperties());
-		metadataSources = MetadataHelper.getMetadataSources(cfg);
-		serviceRegistry = cfg.getStandardServiceRegistryBuilder().build();
 	}
 	
 	public void setMetadataSources(MetadataSources metadataSources) {
