@@ -3,10 +3,11 @@ package org.hibernate.tools.test.util;
 import java.util.Iterator;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.util.MetadataHelper;
 
 public class HibernateUtil {
 	
@@ -26,13 +27,17 @@ public class HibernateUtil {
 	}
 	
 	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
-		String resourcesLocation = '/' + test.getClass().getPackage().getName().replace(".", "/") + '/';
-		Configuration configuration = new Configuration();
-		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-		for (int i = 0; i < hbmXmlFiles.length; i++) {
-			configuration.addResource(resourcesLocation + hbmXmlFiles[i]);
-		}
-		return MetadataHelper.getMetadata(configuration);
+		return initializeMetadataSources(test, hbmXmlFiles).buildMetadata();
 	}
 	 
+	public static MetadataSources initializeMetadataSources(Object test, String[] hbmXmlFiles) {
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources result = new MetadataSources(ssrb.build());
+		String resourcesLocation = '/' + test.getClass().getPackage().getName().replace(".", "/") + '/';
+		for (int i = 0; i < hbmXmlFiles.length; i++) {
+			result.addResource(resourcesLocation + hbmXmlFiles[i]);
+		}
+		return result;
+	}
 }
