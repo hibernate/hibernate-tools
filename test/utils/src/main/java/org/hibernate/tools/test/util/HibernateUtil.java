@@ -25,19 +25,13 @@ public class HibernateUtil {
 		return result;
 	}
 	
-	public static Configuration initializeConfiguration(Object test, String[] hbmXmlFiles) {
+	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
 		String resourcesLocation = '/' + test.getClass().getPackage().getName().replace(".", "/") + '/';
 		Configuration configuration = new Configuration();
 		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 		for (int i = 0; i < hbmXmlFiles.length; i++) {
 			configuration.addResource(resourcesLocation + hbmXmlFiles[i]);
 		}
-		MetadataHelper.getMetadata(configuration);
-		return configuration;
-	}
-	
-	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
-		Configuration configuration = initializeConfiguration(test, hbmXmlFiles);
 		return MetadataHelper.getMetadata(configuration);
 	}
 	 
