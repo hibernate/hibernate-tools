@@ -1,7 +1,8 @@
 package org.hibernate.tool.hbmlint.HbmLintTest;
 
-import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.Detector;
 import org.hibernate.tool.hbmlint.HbmLint;
@@ -39,10 +40,9 @@ public class TestCase {
 
 	@Test
 	public void testExporter() {	
-		Metadata metadata = HibernateUtil
-				.initializeMetadata(this, HBM_XML_FILES);
+		MetadataSources metadataSources = initializeMetadataSources();
 		HbmLintExporter exporter = new HbmLintExporter();		
-		exporter.setMetadata(metadata);
+		exporter.setMetadata(metadataSources.buildMetadata());
 		exporter.setOutputDirectory(temporaryFolder.getRoot());
 		exporter.start();
 	}
@@ -72,7 +72,9 @@ public class TestCase {
 	}
 	
 	private MetadataSources initializeMetadataSources() {
-		MetadataSources result = new MetadataSources();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources result = new MetadataSources(ssrb.build());
 		String resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
 		for (int i = 0; i < HBM_XML_FILES.length; i++) {
 			result.addResource(resourcesLocation + HBM_XML_FILES[i]);
