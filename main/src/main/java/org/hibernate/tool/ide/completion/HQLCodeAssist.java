@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.util.MetadataHelper;
 
 public class HQLCodeAssist implements IHQLCodeAssist {
 
@@ -18,10 +16,6 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 	static {
 		charSeparators = new char[]{',', '(', ')'};
 		Arrays.sort(charSeparators);
-	}
-	
-	public HQLCodeAssist(Configuration cfg) {
-		this(MetadataHelper.getMetadata(cfg));
 	}
 	
 	public HQLCodeAssist(Metadata metadata) {
