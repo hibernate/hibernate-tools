@@ -5,13 +5,11 @@
 package org.hibernate.tool.hbm2x.Hbm2JavaInitializationTest;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,9 +32,7 @@ public class TestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		Configuration configuration = 
-				HibernateUtil.initializeConfiguration(this, HBM_XML_FILES);
-		metadata = MetadataHelper.getMetadata(configuration);
+		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 	}
 	
 	@Test
