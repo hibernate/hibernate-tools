@@ -8,14 +8,13 @@ import java.io.File;
 
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -142,12 +141,12 @@ public class TestCase {
 		
 		Assert.assertEquals(6, outputDir.listFiles().length);
 		
-		Configuration configuration = new Configuration()
+		MetadataSources metadataSources = new MetadataSources()
 		    .addFile( new File(outputDir, "Employee.hbm.xml") )
 		    .addFile( new File(outputDir, "Project.hbm.xml") )
 			.addFile( new File(outputDir, "WorksOnContext.hbm.xml") );
 		
-		Assert.assertNotNull(MetadataHelper.getMetadata(configuration));
+		Assert.assertNotNull(metadataSources.buildMetadata());
 		
 	}
 	
