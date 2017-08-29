@@ -13,9 +13,11 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
@@ -176,8 +178,10 @@ public class TestCase {
         BootstrapServiceRegistry bootstrapServiceRegistry =  
         		new BootstrapServiceRegistryBuilder()
         			.applyClassLoader(ucl)
-        			.build();        
-        Configuration derived = new Configuration(bootstrapServiceRegistry);        
+        			.build();   
+        StandardServiceRegistry standardServiceRegistry =
+        		new StandardServiceRegistryBuilder(bootstrapServiceRegistry).build();
+        MetadataSources derived = new MetadataSources(standardServiceRegistry);        
         derived.addFile(new File(testFolder, "Simplecustomerorder.hbm.xml") );
         derived.addFile(new File(testFolder, "Simplelineitem.hbm.xml") );
         derived.addFile(new File(testFolder, "Product.hbm.xml") );
@@ -185,7 +189,7 @@ public class TestCase {
         derived.addFile(new File(testFolder, "Lineitem.hbm.xml") );
         derived.addFile(new File(testFolder, "Customerorder.hbm.xml") );       
         Thread.currentThread().setContextClassLoader(ucl);
-        SessionFactory factory = derived.buildSessionFactory();
+        SessionFactory factory = derived.buildMetadata().buildSessionFactory();
         Session session = factory.openSession();        
         JdbcUtil.populateDatabase(this);
         session.createQuery("from LineItem").getResultList();
