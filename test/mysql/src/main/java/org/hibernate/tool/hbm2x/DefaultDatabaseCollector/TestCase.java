@@ -13,10 +13,11 @@ package org.hibernate.tool.hbm2x.DefaultDatabaseCollector;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
@@ -100,18 +101,18 @@ public class TestCase {
 	@Ignore
 	@Test
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
-		Configuration cfg = new Configuration();
+		Properties properties = Environment.getProperties();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();	
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
-				cfg.getProperties() );
+				properties);
 		JDBCReader reader = JDBCReaderFactory.newJDBCReader( 
-				cfg.getProperties(), new DefaultReverseEngineeringStrategy(), 
+				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, "cat.cat" );
-		String defaultCatalog = cfg.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.master"));
 		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.child")));
