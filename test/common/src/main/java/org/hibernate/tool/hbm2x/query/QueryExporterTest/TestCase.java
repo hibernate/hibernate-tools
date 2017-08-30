@@ -12,8 +12,10 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.schema.TargetType;
@@ -32,19 +34,12 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private File outputDir = null;
-	private MetadataSources metadataSources = null;
 	
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		BootstrapServiceRegistry bsr = new BootstrapServiceRegistryBuilder().enableAutoClose().build();
-		metadataSources = new MetadataSources(bsr);
-		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(bsr);
-		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
-		Metadata metadata = metadataSources.buildMetadata(ssrb.build());
 		outputDir = temporaryFolder.getRoot();
-		SessionFactory factory = metadata.buildSessionFactory();		
+		SessionFactory factory = buildMetadata().buildSessionFactory();		
 		Session s = factory.openSession();	
 		Transaction t = s.beginTransaction();
 		User user = new User("max", "jboss");
@@ -78,17 +73,36 @@ public class TestCase {
 		SchemaExport export = new SchemaExport();
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		targetTypes.add( TargetType.DATABASE );
-		BootstrapServiceRegistry bsr = new BootstrapServiceRegistryBuilder().enableAutoClose().build();
-		MetadataSources metadataSources = new MetadataSources(bsr);
-		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(bsr);
-		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
-		Metadata metadata = metadataSources.buildMetadata(ssrb.build());
-		export.drop(targetTypes, metadata);		
+		export.drop(targetTypes, buildMetadata());		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
 			Assert.fail("Schema export failed");
 		}		
 		JdbcUtil.dropDatabase(this);
+	}
+	
+	private BootstrapServiceRegistry buildBootstrapServiceRegistry() {
+		return new BootstrapServiceRegistryBuilder()
+			.enableAutoClose()
+			.build();
+	}
+	
+	private MetadataSources buildMetadataSources(ServiceRegistry sr) {
+		MetadataSources metadataSources = new MetadataSources(sr);
+		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
+		return metadataSources;
+	}
+	
+	private StandardServiceRegistry buildStandardServiceRegistry(BootstrapServiceRegistry sr) {
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(sr);
+		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
+		return ssrb.build();
+	}
+	
+	private Metadata buildMetadata() {
+		BootstrapServiceRegistry bsr = buildBootstrapServiceRegistry();
+		StandardServiceRegistry sr = buildStandardServiceRegistry(bsr);
+		MetadataSources mds = buildMetadataSources(bsr);
+		return mds.buildMetadata(sr);
 	}
 	
 }
