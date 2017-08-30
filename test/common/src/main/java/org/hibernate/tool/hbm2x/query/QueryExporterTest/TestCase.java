@@ -10,12 +10,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.BootstrapServiceRegistry;
+import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -31,18 +32,19 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private File outputDir = null;
-	private Configuration configuration = null;
-	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
 	
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		configuration = new Configuration();
-		configuration.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
-		configuration.setProperty(AvailableSettings.HBM2DDL_AUTO, "update");
-		metadata = MetadataHelper.getMetadata(configuration);
+		BootstrapServiceRegistry bsr = new BootstrapServiceRegistryBuilder().enableAutoClose().build();
+		metadataSources = new MetadataSources(bsr);
+		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(bsr);
+		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
+		Metadata metadata = metadataSources.buildMetadata(ssrb.build());
 		outputDir = temporaryFolder.getRoot();
-		SessionFactory factory = configuration.buildSessionFactory();		
+		SessionFactory factory = metadata.buildSessionFactory();		
 		Session s = factory.openSession();	
 		Transaction t = s.beginTransaction();
 		User user = new User("max", "jboss");
@@ -76,6 +78,12 @@ public class TestCase {
 		SchemaExport export = new SchemaExport();
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		targetTypes.add( TargetType.DATABASE );
+		BootstrapServiceRegistry bsr = new BootstrapServiceRegistryBuilder().enableAutoClose().build();
+		MetadataSources metadataSources = new MetadataSources(bsr);
+		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(bsr);
+		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
+		Metadata metadata = metadataSources.buildMetadata(ssrb.build());
 		export.drop(targetTypes, metadata);		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
 			Assert.fail("Schema export failed");
