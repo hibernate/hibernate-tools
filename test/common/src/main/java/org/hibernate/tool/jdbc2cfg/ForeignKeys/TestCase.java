@@ -45,7 +45,9 @@ public class TestCase {
 	
 	@Test
 	public void testMultiRefs() {		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CONNECTION") );		
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "CONNECTION") );		
 		ForeignKey foreignKey = HibernateUtil.getForeignKey(
 				table, 
 				JdbcUtil.toIdentifier(this, "CON2MASTER") );	
@@ -58,7 +60,9 @@ public class TestCase {
         		JdbcUtil.toIdentifier(this, "CONNECTION"), 
         		foreignKey.getTable().getName() );	
 		Assert.assertEquals(
-				jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MASTER") ), 
+				HibernateUtil.getTable(
+						jmdcfg.getMetadata(), 
+						JdbcUtil.toIdentifier(this, "MASTER") ), 
 				foreignKey.getReferencedTable() );
 		Assert.assertNotNull(
 				HibernateUtil.getForeignKey(
@@ -77,8 +81,12 @@ public class TestCase {
 	
 	@Test
 	public void testMasterChild() {		
-		Assert.assertNotNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MASTER")));
-		Table child = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CHILD") );	
+		Assert.assertNotNull(HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "MASTER")));
+		Table child = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "CHILD") );	
 		Iterator<?> iterator = child.getForeignKeyIterator();		
 		ForeignKey fk = (ForeignKey) iterator.next();		
 		Assert.assertFalse("should only be one fk", iterator.hasNext() );	

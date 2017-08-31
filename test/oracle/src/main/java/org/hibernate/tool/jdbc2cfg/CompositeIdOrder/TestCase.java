@@ -46,7 +46,7 @@ public class TestCase {
 	@Test
 	public void testMultiColumnForeignKeys() throws SQLException {
 
-		Table table = jmdcfg.getTable("COURSE");
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), "COURSE");
         Assert.assertNotNull(table);
         ForeignKey foreignKey = HibernateUtil.getForeignKey(table, "FK_COURSE__SCHEDULE");     
         Assert.assertNotNull(foreignKey);

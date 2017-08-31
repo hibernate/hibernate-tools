@@ -26,6 +26,19 @@ public class HibernateUtil {
 		return result;
 	}
 	
+	public static Table getTable(Metadata metadata, String tabName) {
+		if (metadata != null) {
+			Iterator<Table> iter = metadata.collectTableMappings().iterator();
+			while (iter.hasNext()) {
+				Table table = (Table) iter.next();
+				if (table.getName().equals(tabName)) {
+					return table;
+				}
+			}
+		}
+		return null;
+	}
+
 	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
 		return initializeMetadataSources(test, hbmXmlFiles).buildMetadata();
 	}

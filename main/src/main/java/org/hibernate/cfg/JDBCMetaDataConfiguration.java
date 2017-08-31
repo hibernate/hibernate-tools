@@ -4,8 +4,6 @@
  */
 package org.hibernate.cfg;
 
-import java.util.Iterator;
-
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.SessionFactory;
@@ -31,7 +29,6 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
@@ -248,19 +245,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		}
 
 		return basicTypeRegistry;
-	}
-
-	public Table getTable(String tabName) {
-		if (getMetadata() != null) {
-			Iterator<Table> iter = getMetadata().collectTableMappings().iterator();
-			while (iter.hasNext()) {
-				Table table = (Table) iter.next();
-				if (table.getName().equals(tabName)) {
-					return table;
-				}
-			}
-		}
-		return null;
 	}
 
 }

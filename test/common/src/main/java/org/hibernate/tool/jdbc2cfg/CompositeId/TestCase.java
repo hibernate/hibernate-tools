@@ -67,7 +67,9 @@ public class TestCase {
 
 	@Test
     public void testMultiColumnForeignKeys() {
-        Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "LINE_ITEM") );
+        Table table = HibernateUtil.getTable(
+        		jmdcfg.getMetadata(), 
+        		JdbcUtil.toIdentifier(this, "LINE_ITEM") );
         Assert.assertNotNull(table);
         ForeignKey foreignKey = HibernateUtil.getForeignKey(
         		table, 
@@ -86,7 +88,9 @@ public class TestCase {
         Assert.assertEquals(2,foreignKey.getColumnSpan() );
         Assert.assertEquals(foreignKey.getColumn(0).getName(), "CUSTOMER_ID_REF");
         Assert.assertEquals(foreignKey.getColumn(1).getName(), "ORDER_NUMBER");      
-        Table tab = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"));
+        Table tab = HibernateUtil.getTable(
+        		jmdcfg.getMetadata(), 
+        		JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"));
         Assert.assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMER_ID");
         Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");     
         PersistentClass lineMapping = jmdcfg.getMetadata().getEntityBinding(

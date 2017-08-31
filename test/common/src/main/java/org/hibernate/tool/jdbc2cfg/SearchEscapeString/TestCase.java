@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -43,8 +44,8 @@ public class TestCase {
 				jmdcfg.getMetadata().collectTableMappings().iterator(),
 				2);
 
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "B_TAB" ) );
-		Table table2 = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "B2TAB" ) );
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "B_TAB" ) );
+		Table table2 = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "B2TAB" ) );
 
 		Assert.assertNotNull(table);
 		Assert.assertNotNull(table2);

@@ -8,6 +8,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -41,7 +42,9 @@ public class TestCase {
 				"There should be three tables!", 
 				jmdcfg.getMetadata().getEntityBindings().iterator(),
 				3);
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "BASIC" ) );
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "BASIC" ) );
 		Assert.assertEquals( 
 				JdbcUtil.toIdentifier(this, "BASIC"), 
 				JdbcUtil.toIdentifier(this, table.getName()));
@@ -64,7 +67,9 @@ public class TestCase {
 
 	@Test
 	public void testScalePrecisionLength() {
-		Table table = jmdcfg.getTable( JdbcUtil.toIdentifier(this, "BASIC"));
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "BASIC"));
 		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "NAME" ) ) );
 		Assert.assertEquals( nameCol.getLength(), 20 );
 		Assert.assertEquals( nameCol.getPrecision(), Column.DEFAULT_PRECISION );
@@ -87,7 +92,9 @@ public class TestCase {
 
 	@Test
 	public void testCompositeKeys() {
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "MULTIKEYED"));
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "MULTIKEYED"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
 		Assert.assertEquals( 2, primaryKey.getColumnSpan() );
 	}

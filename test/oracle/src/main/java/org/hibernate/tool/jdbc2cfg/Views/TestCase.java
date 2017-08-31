@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -51,11 +52,11 @@ public class TestCase {
 		Assert.assertTrue("If this is not-null synonyms apparently work!",classMapping==null);
 
 		// get comments
-		Table table = jmdcfg.getTable("BASIC");
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), "BASIC");
 		Assert.assertEquals("a basic comment", table.getComment());
 		Assert.assertEquals("a solid key", table.getPrimaryKey().getColumn(0).getComment());
 		
-		table = jmdcfg.getTable("MULTIKEYED");
+		table = HibernateUtil.getTable(jmdcfg.getMetadata(), "MULTIKEYED");
 		Assert.assertNull(table.getComment());
 		Assert.assertNull(table.getColumn(0).getComment());
 		

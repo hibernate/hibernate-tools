@@ -26,6 +26,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -285,8 +286,12 @@ public class TestCase {
 	@Test
 	public void testRevEngExclude() {
 		
-		Assert.assertNull(jmdcfg.getTable(JdbcUtil.toIdentifier(this, "DEFUNCT_TABLE") ) );
-		Table foundTable = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
+		Assert.assertNull(HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "DEFUNCT_TABLE") ) );
+		Table foundTable = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
 		Assert.assertNotNull(foundTable);
 		Iterator<?> fkiter = foundTable.getForeignKeyIterator();
 		ForeignKey fk1 = (ForeignKey) fkiter.next();
@@ -380,7 +385,7 @@ public class TestCase {
 		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "NAME"));
 		Assert.assertTrue(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "EXCOLUMN"));
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
 		Assert.assertNotNull(table);
 		
 		Assert.assertNotNull(table.getColumn(new Column("name")));
@@ -391,7 +396,7 @@ public class TestCase {
 	@Test
 	public void testSimpleUserDefinedForeignKeys() {
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "ORDERS") );
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "ORDERS") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
@@ -408,7 +413,7 @@ public class TestCase {
 	@Test
 	public void testCompositeUserDefinedForeignKeys() {
 		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "CHILDREN") );
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "CHILDREN") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();

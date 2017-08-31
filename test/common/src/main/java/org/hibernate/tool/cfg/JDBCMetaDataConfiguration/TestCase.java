@@ -2,6 +2,7 @@ package org.hibernate.tool.cfg.JDBCMetaDataConfiguration;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -38,10 +39,16 @@ public class TestCase {
 	@Test
 	public void testGetTable() throws Exception {
 		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-		Assert.assertNull(cfg.getTable(JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
+		Assert.assertNull(
+				HibernateUtil.getTable(
+						cfg.getMetadata(), 
+						JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
 		cfg = new JDBCMetaDataConfiguration();
 		cfg.readFromJDBC();
-		Assert.assertNotNull(cfg.getTable(JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
+		Assert.assertNotNull(
+				HibernateUtil.getTable(
+						cfg.getMetadata(), 
+						JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
 	}
 
 }

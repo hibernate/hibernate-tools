@@ -8,6 +8,7 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class TestCase {
 
 	@Test
 	public void testForQuotes() {
-		Table table = jmdcfg.getTable("us-ers");
+		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), "us-ers");
 		Assert.assertNotNull(table);
 		Assert.assertTrue(table.isQuoted());		
 		Assert.assertEquals(2, table.getColumnSpan());		

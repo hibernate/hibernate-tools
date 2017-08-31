@@ -11,6 +11,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Index;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -39,7 +40,9 @@ public class TestCase {
 
 	@Test
 	public void testUniqueKey() {	
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "WITH_INDEX") );		
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "WITH_INDEX") );		
 		UniqueKey uniqueKey = table.getUniqueKey(
 				JdbcUtil.toIdentifier(this, "OTHER_IDX") );
 		Assert.assertNotNull(uniqueKey);
@@ -51,7 +54,9 @@ public class TestCase {
 	
 	@Test
 	public void testWithIndex() {		
-		Table table = jmdcfg.getTable(JdbcUtil.toIdentifier(this, "WITH_INDEX"));
+		Table table = HibernateUtil.getTable(
+				jmdcfg.getMetadata(), 
+				JdbcUtil.toIdentifier(this, "WITH_INDEX"));
 		Assert.assertEquals(
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"), 
 				JdbcUtil.toIdentifier(this, table.getName()));	
