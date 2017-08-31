@@ -29,6 +29,7 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
@@ -43,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * @author max
  *
  */
-public class JDBCMetaDataConfiguration extends Configuration {
+public class JDBCMetaDataConfiguration extends Configuration implements MetadataSources {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
@@ -54,10 +55,14 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	private MetadataBuildingOptions metadataBuildingOptions = null;
 	private MetadataBuildingContext metadataBuildingContext = null;
 	private Metadata metadata = null;
+	
+	public Metadata buildMetadata() {
+		return getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+	}
     
 	public Metadata getMetadata() {
 		if (metadata == null) {
-			metadata = getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+			metadata = buildMetadata();
 		}
 		return metadata;
 	}
