@@ -1,10 +1,10 @@
 package org.hibernate.cfg;
 
-import java.util.Map;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -38,16 +38,22 @@ public class JPAConfiguration extends Configuration {
 	private static class PersistenceProvider extends HibernatePersistenceProvider {
 		public EntityManagerFactoryBuilderImpl getEntityManagerFactoryBuilder(
 				String persistenceUnit, 
-				Map<Object, Object> properties) {
-			return (EntityManagerFactoryBuilderImpl)getEntityManagerFactoryBuilderOrNull(
+				Properties properties) {
+			EntityManagerFactoryBuilderImpl result = (EntityManagerFactoryBuilderImpl)getEntityManagerFactoryBuilderOrNull(
 					persistenceUnit, 
 					properties);
+			if (result == null) {
+				throw new HibernateException(
+						"Persistence unit not found: '" + persistenceUnit + "'."
+					);
+			}
+			return result;
 		}
 	}
 
 	private static EntityManagerFactoryBuilderImpl createEntityManagerFactoryBuilder(
 			final String persistenceUnit, 
-			final Map<Object, Object> properties) {
+			final Properties properties) {
 		return new PersistenceProvider().getEntityManagerFactoryBuilder(
 				persistenceUnit, 
 				properties);
