@@ -18,6 +18,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.TypeFactory;
@@ -25,7 +26,7 @@ import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
 import org.hibernate.usertype.UserType;
 
-public class PojoMetaDataConfiguration extends Configuration {
+public class PojoMetaDataConfiguration extends Configuration implements MetadataSources {
 
 	private StandardServiceRegistry serviceRegistry = null;
 	
@@ -35,13 +36,17 @@ public class PojoMetaDataConfiguration extends Configuration {
 	private MetadataBuildingContext metadataBuildingContext = null;
 	private Metadata metadata = null;
 	
+	public Metadata buildMetadata() {
+		return getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+	}
+	
 	public void addClass(PersistentClass persistentClass) {
 		getMetadataCollector().addEntityBinding(persistentClass);
 	}
     
 	public Metadata getMetadata() {
 		if (metadata == null) {
-			metadata = getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+			metadata = buildMetadata();
 		}
 		return metadata;
 	}
