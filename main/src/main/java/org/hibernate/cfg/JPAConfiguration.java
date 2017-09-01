@@ -8,8 +8,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.tool.metadata.MetadataSources;
 
-public class JPAConfiguration extends Configuration {
+public class JPAConfiguration extends Configuration implements MetadataSources {
 	
 	private Properties properties = new Properties();
 	private Metadata metadata = null;
@@ -25,6 +26,10 @@ public class JPAConfiguration extends Configuration {
 				entityManagerFactoryBuilder.build();
 		metadata = entityManagerFactoryBuilder.getMetadata();
 		properties.putAll(entityManagerFactory.getProperties());
+	}
+	
+	public Metadata buildMetadata() {
+		return metadata;
 	}
 	
 	public Metadata getMetadata() {
