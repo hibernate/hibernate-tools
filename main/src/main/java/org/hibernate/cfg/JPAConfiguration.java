@@ -20,7 +20,7 @@ public class JPAConfiguration extends Configuration {
 		this(createEntityManagerFactoryBuilder(persistenceUnit, properties));
 	}
 	
-	public JPAConfiguration(EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder) {
+	private JPAConfiguration(EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder) {
 		EntityManagerFactory entityManagerFactory = 
 				entityManagerFactoryBuilder.build();
 		metadata = entityManagerFactoryBuilder.getMetadata();
