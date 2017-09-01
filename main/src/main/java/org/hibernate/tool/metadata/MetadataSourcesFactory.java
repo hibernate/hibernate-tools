@@ -12,4 +12,8 @@ public class MetadataSourcesFactory {
 		return new JpaMetadataSources(persistenceUnit, properties);
 	}
 	
+	public MetadataSources createNativeSources() {
+		return new NativeMetadataSources();
+	}
+	
 }
