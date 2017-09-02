@@ -16,4 +16,8 @@ public class MetadataSourcesFactory {
 		return new NativeMetadataSources();
 	}
 	
+	public MetadataSources createPojoSources() {
+		return new PojoMetadataSources();
+	}
+	
 }
