@@ -4,19 +4,19 @@ import java.util.Properties;
 
 public class MetadataSourcesFactory {
 	
-	public MetadataSources createJdbcSources() {
+	public static MetadataSources createJdbcSources() {
 		return new JdbcMetadataSources();
 	}
 	
-	public MetadataSources createJpaSources(String persistenceUnit, Properties properties) {
+	public static MetadataSources createJpaSources(String persistenceUnit, Properties properties) {
 		return new JpaMetadataSources(persistenceUnit, properties);
 	}
 	
-	public MetadataSources createNativeSources() {
+	public static MetadataSources createNativeSources() {
 		return new NativeMetadataSources();
 	}
 	
-	public MetadataSources createPojoSources() {
+	public static MetadataSources createPojoSources() {
 		return new PojoMetadataSources();
 	}
 	
