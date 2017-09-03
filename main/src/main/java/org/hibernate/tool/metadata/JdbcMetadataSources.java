@@ -5,5 +5,9 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 public class JdbcMetadataSources 
 	extends JDBCMetaDataConfiguration 
 	implements MetadataSources {
+	
+	public JdbcMetadataSources() {
+		readFromJDBC();
+	}
 
 }
