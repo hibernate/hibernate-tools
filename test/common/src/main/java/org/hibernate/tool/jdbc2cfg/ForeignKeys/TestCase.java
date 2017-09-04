@@ -8,12 +8,14 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -29,13 +31,16 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
+	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
 
 	@Before
 	public void setUp() {
-		JdbcUtil.createDatabase(this);;
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		JdbcUtil.createDatabase(this);
+		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(reverseEngineeringStrategy, null, true)
+				.buildMetadata();
 	}
 
 	@After
@@ -46,14 +51,14 @@ public class TestCase {
 	@Test
 	public void testMultiRefs() {		
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "CONNECTION") );		
 		ForeignKey foreignKey = HibernateUtil.getForeignKey(
 				table, 
 				JdbcUtil.toIdentifier(this, "CON2MASTER") );	
 		Assert.assertNotNull(foreignKey);			
 		Assert.assertEquals(
-				jmdcfg.getReverseEngineeringStrategy().tableToClassName(
+				reverseEngineeringStrategy.tableToClassName(
 						new TableIdentifier(null, null, "MASTER")),
 				foreignKey.getReferencedEntityName() );
         Assert.assertEquals(
@@ -61,7 +66,7 @@ public class TestCase {
         		foreignKey.getTable().getName() );	
 		Assert.assertEquals(
 				HibernateUtil.getTable(
-						jmdcfg.getMetadata(), 
+						metadata, 
 						JdbcUtil.toIdentifier(this, "MASTER") ), 
 				foreignKey.getReferencedTable() );
 		Assert.assertNotNull(
@@ -82,10 +87,10 @@ public class TestCase {
 	@Test
 	public void testMasterChild() {		
 		Assert.assertNotNull(HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "MASTER")));
 		Table child = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "CHILD") );	
 		Iterator<?> iterator = child.getForeignKeyIterator();		
 		ForeignKey fk = (ForeignKey) iterator.next();		
@@ -100,7 +105,6 @@ public class TestCase {
 	@Test
 	public void testExport() {
 		SchemaExport schemaExport = new SchemaExport();
-		Metadata metadata = jmdcfg.getMetadata();
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		targetTypes.add( TargetType.STDOUT );
 		schemaExport.create(targetTypes, metadata);		
