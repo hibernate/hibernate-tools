@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.mapping.PersistentClass;
@@ -18,6 +18,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -43,19 +44,16 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
-		 DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
-			 public List<SchemaSelection> getSchemaSelections() {
-				 List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
-				 selections.add(new SchemaSelection(null, "HTT"));
-				 selections.add(new SchemaSelection(null, "OTHERSCHEMA"));
-				 selections.add(new SchemaSelection(null, "THIRDSCHEMA"));
+		DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
+			public List<SchemaSelection> getSchemaSelections() {
+				List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
+				selections.add(new SchemaSelection(null, "HTT"));
+				selections.add(new SchemaSelection(null, "OTHERSCHEMA"));
+				selections.add(new SchemaSelection(null, "THIRDSCHEMA"));
 				return selections;
 			}
-		 };           
-	     jmdcfg.setReverseEngineeringStrategy(c);
-	     jmdcfg.readFromJDBC();
-	     metadata = jmdcfg.getMetadata();
+		};           
+	    metadata = MetadataSourcesFactory.createJdbcSources(c, null).buildMetadata();
 	}
 
 	@After
@@ -83,7 +81,7 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
 		Assert.assertEquals(3, outputFolder.listFiles().length);
-		JDBCMetaDataConfiguration configuration = (JDBCMetaDataConfiguration)new JDBCMetaDataConfiguration()
+		Configuration configuration = new Configuration()
 		    .addFile( new File(outputFolder, "Role.hbm.xml") )
 		    .addFile( new File(outputFolder, "User.hbm.xml") )
 		    .addFile( new File(outputFolder, "Plainrole.hbm.xml"));		
