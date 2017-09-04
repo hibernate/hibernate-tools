@@ -4,10 +4,11 @@
  */
 package org.hibernate.tool.jdbc2cfg.MetaData;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -22,13 +23,14 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
 	}
 
 	@After
@@ -40,10 +42,10 @@ public class TestCase {
 	public void testBasic() {
 		JUnitUtil.assertIteratorContainsExactly(
 				"There should be three tables!", 
-				jmdcfg.getMetadata().getEntityBindings().iterator(),
+				metadata.getEntityBindings().iterator(),
 				3);
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC" ) );
 		Assert.assertEquals( 
 				JdbcUtil.toIdentifier(this, "BASIC"), 
@@ -68,7 +70,7 @@ public class TestCase {
 	@Test
 	public void testScalePrecisionLength() {
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC"));
 		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "NAME" ) ) );
 		Assert.assertEquals( nameCol.getLength(), 20 );
@@ -93,7 +95,7 @@ public class TestCase {
 	@Test
 	public void testCompositeKeys() {
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "MULTIKEYED"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
 		Assert.assertEquals( 2, primaryKey.getColumnSpan() );
