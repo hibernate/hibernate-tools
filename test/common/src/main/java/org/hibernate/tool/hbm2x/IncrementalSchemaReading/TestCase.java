@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
@@ -36,7 +37,7 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Properties properties = null;
 	private String defaultSchema = null;
 	private String defaultCatalog = null;
 		
@@ -54,9 +55,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		defaultSchema = jmdcfg.getProperty(AvailableSettings.DEFAULT_SCHEMA);
-		defaultCatalog = jmdcfg.getProperty(AvailableSettings.DEFAULT_CATALOG);
+		properties = Environment.getProperties();
+		defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
+		defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 	}
 	
 	@After
@@ -67,11 +68,11 @@ public class TestCase {
 	@Test
 	public void testReadSchemaIncremental() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		builder.applySettings(jmdcfg.getProperties());
+		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultReverseEngineeringStrategy());
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( jmdcfg.getProperties(), tss, mockedMetaDataDialect, serviceRegistry);
+		JDBCReader reader = JDBCReaderFactory.newJDBCReader( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
