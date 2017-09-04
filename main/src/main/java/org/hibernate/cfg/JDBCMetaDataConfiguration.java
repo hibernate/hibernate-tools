@@ -57,12 +57,13 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 	private Metadata metadata = null;
 	
 	public Metadata buildMetadata() {
-		return getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
+		readFromJDBC();
+		return metadata;
 	}
     
 	public Metadata getMetadata() {
 		if (metadata == null) {
-			metadata = buildMetadata();
+			metadata = getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
 		}
 		return metadata;
 	}

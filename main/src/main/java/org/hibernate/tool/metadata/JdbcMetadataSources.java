@@ -18,7 +18,6 @@ public class JdbcMetadataSources
 		if (reverseEngineeringStrategy != null) {
 			setReverseEngineeringStrategy(reverseEngineeringStrategy);
 		}
-		readFromJDBC();
 	}
 
 }
