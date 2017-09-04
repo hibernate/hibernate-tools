@@ -7,13 +7,14 @@ package org.hibernate.tool.jdbc2cfg.CompositeIdOrder;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -29,13 +30,12 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 	
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		metadata = MetadataSourcesFactory.createJdbcSources().buildMetadata();
 	}
 	
 	@After
@@ -46,7 +46,7 @@ public class TestCase {
 	@Test
 	public void testMultiColumnForeignKeys() throws SQLException {
 
-		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), "COURSE");
+		Table table = HibernateUtil.getTable(metadata, "COURSE");
         Assert.assertNotNull(table);
         ForeignKey foreignKey = HibernateUtil.getForeignKey(table, "FK_COURSE__SCHEDULE");     
         Assert.assertNotNull(foreignKey);
@@ -60,14 +60,14 @@ public class TestCase {
         Assert.assertEquals(table.getPrimaryKey().getColumn(0).getName(), "SCHEDULE_KEY");
         Assert.assertEquals(table.getPrimaryKey().getColumn(1).getName(), "REQUEST_KEY");
         
-        PersistentClass course = jmdcfg.getMetadata().getEntityBinding("Course");
+        PersistentClass course = metadata.getEntityBinding("Course");
         
         Assert.assertEquals(2,course.getIdentifier().getColumnSpan() );
         Iterator<Selectable> columnIterator = course.getIdentifier().getColumnIterator();
         Assert.assertEquals(((Column)(columnIterator.next())).getName(), "SCHEDULE_KEY");
         Assert.assertEquals(((Column)(columnIterator.next())).getName(), "REQUEST_KEY");
         
-        PersistentClass topic = jmdcfg.getMetadata().getEntityBinding("CourseTopic");
+        PersistentClass topic = metadata.getEntityBinding("CourseTopic");
         
         Property property = topic.getProperty("course");
         columnIterator = property.getValue().getColumnIterator();
