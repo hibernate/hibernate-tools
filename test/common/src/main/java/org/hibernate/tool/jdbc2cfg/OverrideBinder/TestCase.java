@@ -9,8 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -26,6 +27,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -44,18 +46,18 @@ public class TestCase {
 	private static final String DOC_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/docexample.reveng.xml";
 	private static final String SCHEMA_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/schemaselection.reveng.xml";
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		jmdcfg.setReverseEngineeringStrategy(
-				or.getReverseEngineeringStrategy(
-						new DefaultReverseEngineeringStrategy() ) );
-		jmdcfg.readFromJDBC();
+		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(
+				new DefaultReverseEngineeringStrategy() );
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(res, null)
+				.buildMetadata();
 	}
 
 	@After
@@ -140,14 +142,14 @@ public class TestCase {
 		Assert.assertEquals("OVRTEST",ss.getMatchSchema());
 		Assert.assertEquals(".*",ss.getMatchTable());
 		
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		
 		OverrideRepository ox = new OverrideRepository();
 		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
-		configuration.setReverseEngineeringStrategy(ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
-		configuration.readFromJDBC();
+		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		Metadata md = MetadataSourcesFactory
+				.createJdbcSources(strategy, null)
+				.buildMetadata();
 		
-		Iterator<Table> tableMappings = configuration.getMetadata().collectTableMappings().iterator();
+		Iterator<Table> tableMappings = md.collectTableMappings().iterator();
 		Table t = (Table) tableMappings.next();
 		Assert.assertEquals(t.getName(), "DUMMY");
 		Assert.assertFalse(tableMappings.hasNext());
@@ -164,7 +166,7 @@ public class TestCase {
 		Assert.assertNull(repository.columnToHibernateTypeName(new TableIdentifier("ORDERS"), "CUSTID",0,0,0,0, false, false));
 		Assert.assertEquals("string", repository.columnToHibernateTypeName(new TableIdentifier(null, null, "ORDERS"), "NAME",0,0,0,0, false, false));
 		
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Orders");
+		PersistentClass classMapping = metadata.getEntityBinding("Orders");
 		
 		Property property = classMapping.getProperty("completed");		
 		Assert.assertEquals("boolean because of not null", "boolean", ((SimpleValue)property.getValue()).getTypeName());
@@ -172,7 +174,7 @@ public class TestCase {
 		property = classMapping.getProperty("verified");
 		Assert.assertEquals("java.lang.Boolean because of null","java.lang.Boolean", ((SimpleValue)property.getValue()).getTypeName());
 		
-		classMapping = jmdcfg.getMetadata().getEntityBinding("MiscTypes");
+		classMapping = metadata.getEntityBinding("MiscTypes");
 		
 		property = classMapping.getIdentifierProperty();
 		
@@ -194,7 +196,7 @@ public class TestCase {
 	
 	@Test
 	public void testMetaAttributeMappings() {
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding( "Orders" );
+		PersistentClass classMapping = metadata.getEntityBinding( "Orders" );
 		Assert.assertEquals("order table value", classMapping.getMetaAttribute( "order-meta" ).getValue());
 		
 		Property property = classMapping.getProperty("orderName");
@@ -235,7 +237,7 @@ public class TestCase {
 		Assert.assertFalse(repository.excludeColumn(ordersTable, "CUSTID"));
 		
 		// applied
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Orders");
+		PersistentClass classMapping = metadata.getEntityBinding("Orders");
 		SimpleValue sv = (SimpleValue) classMapping.getIdentifier();
 		Assert.assertEquals("CustomOID", ((Component)sv).getComponentClassName());
 		
@@ -244,7 +246,7 @@ public class TestCase {
 		Property identifierProperty = classMapping.getIdentifierProperty();
 		Assert.assertEquals("customOrderId", identifierProperty.getName());
 		
-		classMapping = jmdcfg.getMetadata().getEntityBinding("MiscTypes");
+		classMapping = metadata.getEntityBinding("MiscTypes");
 		sv = (SimpleValue) classMapping.getIdentifier(); 
 		Assert.assertEquals("sequence", sv.getIdentifierGeneratorStrategy()); // will fail if default schema is not set since then there is no match in the override binder		
 		
@@ -287,10 +289,10 @@ public class TestCase {
 	public void testRevEngExclude() {
 		
 		Assert.assertNull(HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "DEFUNCT_TABLE") ) );
 		Table foundTable = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
 		Assert.assertNotNull(foundTable);
 		Iterator<?> fkiter = foundTable.getForeignKeyIterator();
@@ -385,7 +387,7 @@ public class TestCase {
 		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "NAME"));
 		Assert.assertTrue(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "EXCOLUMN"));
 		
-		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
+		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
 		Assert.assertNotNull(table);
 		
 		Assert.assertNotNull(table.getColumn(new Column("name")));
@@ -396,16 +398,16 @@ public class TestCase {
 	@Test
 	public void testSimpleUserDefinedForeignKeys() {
 		
-		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "ORDERS") );
+		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "ORDERS") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
 		Assert.assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "CUSTOMER") );
 		
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Orders");
+		PersistentClass classMapping = metadata.getEntityBinding("Orders");
 		classMapping.getProperty("customer");
 		
-		classMapping = jmdcfg.getMetadata().getEntityBinding("Customer");
+		classMapping = metadata.getEntityBinding("Customer");
 		classMapping.getProperty("orderses");
 			
 	}
@@ -413,7 +415,7 @@ public class TestCase {
 	@Test
 	public void testCompositeUserDefinedForeignKeys() {
 		
-		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), JdbcUtil.toIdentifier(this, "CHILDREN") );
+		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "CHILDREN") );
 		
 		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
 		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
@@ -421,18 +423,18 @@ public class TestCase {
 		Assert.assertEquals(2, fk.getReferencedColumns().size());
 		Assert.assertEquals("child_to_parent", fk.getName());
 		
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Children");
+		PersistentClass classMapping = metadata.getEntityBinding("Children");
 		Property property = classMapping.getProperty("propertyParent");
 		Assert.assertEquals(2,property.getColumnSpan());
 		
-		classMapping = jmdcfg.getMetadata().getEntityBinding("Parent");
+		classMapping = metadata.getEntityBinding("Parent");
 		property = classMapping.getProperty("propertyChildren");	
 			
 	}
 		
 	@Test
 	public void testTypes() {		
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("MiscTypes");
+		PersistentClass classMapping = metadata.getEntityBinding("MiscTypes");
 		Assert.assertEquals(
 				"SomeUserType", 
 				((SimpleValue)classMapping.getProperty("name").getValue()).getTypeName());
@@ -453,7 +455,9 @@ public class TestCase {
 		Assert.assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
 		
 		tableIdentifier = new TableIdentifier(
-				jmdcfg.getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				Environment
+					.getProperties()
+					.getProperty(AvailableSettings.DEFAULT_CATALOG), 
 				"Werd", 
 				"Testy");
 		Assert.assertEquals("org.werd.Testy", res.tableToClassName(tableIdentifier));
@@ -477,7 +481,9 @@ public class TestCase {
 		Assert.assertEquals(ma.getValue(), "true");
 				
 		tableIdentifier = new TableIdentifier(
-				jmdcfg.getProperty(AvailableSettings.DEFAULT_CATALOG), 
+				Environment
+					.getProperties()
+					.getProperty(AvailableSettings.DEFAULT_CATALOG), 
 				"Werd", 
 				"Testy");
 		attributes = res.tableToMetaAttributes( tableIdentifier );
