@@ -51,7 +51,7 @@ public class TestCase {
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
 		metadata = MetadataSourcesFactory
-				.createJdbcSources(null, null)
+				.createJdbcSources(null, null, true)
 				.buildMetadata();
 	}
 	

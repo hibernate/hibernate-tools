@@ -38,7 +38,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadata = MetadataSourcesFactory
-				.createJdbcSources(null, null)
+				.createJdbcSources(null, null, true)
 				.buildMetadata();
 	}
 	
@@ -53,7 +53,7 @@ public class TestCase {
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
         metadata =  MetadataSourcesFactory
-        		.createJdbcSources(c, null)
+        		.createJdbcSources(c, null, true)
         		.buildMetadata();
 
         PersistentClass project = metadata.getEntityBinding("Project");

@@ -33,7 +33,7 @@ public class TestCase {
 	public void testMe() {
 		Assert.assertNotNull(
 			MetadataSourcesFactory
-				.createJdbcSources(null, null)
+				.createJdbcSources(null, null, true)
 				.buildMetadata());
 	}
 	

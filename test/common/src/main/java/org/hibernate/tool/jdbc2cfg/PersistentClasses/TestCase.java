@@ -45,7 +45,7 @@ public class TestCase {
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName(PACKAGE_NAME));
         metadata = MetadataSourcesFactory
-        		.createJdbcSources(c, null)
+        		.createJdbcSources(c, null, true)
         		.buildMetadata();
 	}
 	

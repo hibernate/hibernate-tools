@@ -8,7 +8,8 @@ public class MetadataSourcesFactory {
 	
 	public static MetadataSources createJdbcSources(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
-			Properties properties) {
+			Properties properties,
+			boolean preferBasicCompositeIds) {
 		return new JdbcMetadataSources(
 				reverseEngineeringStrategy, 
 				properties);

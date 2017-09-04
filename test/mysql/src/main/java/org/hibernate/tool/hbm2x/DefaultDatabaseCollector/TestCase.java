@@ -65,7 +65,7 @@ public class TestCase {
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata metadata = MetadataSourcesFactory
-				.createJdbcSources(res, null)
+				.createJdbcSources(res, null, true)
 				.buildMetadata();
 		List<Table> tables = getTables(metadata);
 		Assert.assertEquals(2,tables.size());

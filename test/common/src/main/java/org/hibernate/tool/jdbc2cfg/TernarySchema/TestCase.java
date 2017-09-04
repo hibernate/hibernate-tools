@@ -53,7 +53,9 @@ public class TestCase {
 				return selections;
 			}
 		};           
-	    metadata = MetadataSourcesFactory.createJdbcSources(c, null).buildMetadata();
+	    metadata = MetadataSourcesFactory
+	    		.createJdbcSources(c, null, true)
+	    		.buildMetadata();
 	}
 
 	@After

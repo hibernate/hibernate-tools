@@ -28,7 +28,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		MetadataSourcesFactory.createJdbcSources(null, null).buildMetadata();
+		MetadataSourcesFactory
+			.createJdbcSources(null, null, true)
+			.buildMetadata();
 	}
 
 	@After
