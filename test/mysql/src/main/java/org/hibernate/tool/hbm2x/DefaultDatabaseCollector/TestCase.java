@@ -15,10 +15,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
@@ -26,12 +26,14 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -59,12 +61,13 @@ public class TestCase {
 	@Ignore
 	@Test
 	public void testReadOnlySpecificSchema() {
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
-		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
-		configuration.readFromJDBC();
-		List<Table> tables = getTables(configuration);
+		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(res, null)
+				.buildMetadata();
+		List<Table> tables = getTables(metadata);
 		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
@@ -80,10 +83,11 @@ public class TestCase {
 	
 	@Test
 	public void testNeedQuote() {
-		JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-		cfg.readFromJDBC();
-		ServiceRegistry serviceRegistry = cfg.getServiceRegistry();
-		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), cfg.getProperties() );
+		Properties properties = Environment.getProperties();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySettings(properties);
+		ServiceRegistry serviceRegistry = ssrb.build();
+		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties);
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.cat"));
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
@@ -124,9 +128,9 @@ public class TestCase {
 		return "\"" + name + "\"";
 	}
 	
-	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
+	private List<Table> getTables(Metadata metadata) {
 		List<Table> list = new ArrayList<Table>();
-		Iterator<Table> iter = metaDataConfiguration.getMetadata().collectTableMappings().iterator();
+		Iterator<Table> iter = metadata.collectTableMappings().iterator();
 		while(iter.hasNext()) {
 			Table element = iter.next();
 			list.add(element);
