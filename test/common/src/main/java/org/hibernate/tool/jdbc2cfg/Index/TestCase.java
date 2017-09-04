@@ -6,11 +6,12 @@ package org.hibernate.tool.jdbc2cfg.Index;
 
 import java.util.Iterator;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Index;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -24,13 +25,14 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();
 	}
 
 	@After
@@ -41,7 +43,7 @@ public class TestCase {
 	@Test
 	public void testUniqueKey() {	
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "WITH_INDEX") );		
 		UniqueKey uniqueKey = table.getUniqueKey(
 				JdbcUtil.toIdentifier(this, "OTHER_IDX") );
@@ -55,7 +57,7 @@ public class TestCase {
 	@Test
 	public void testWithIndex() {		
 		Table table = HibernateUtil.getTable(
-				jmdcfg.getMetadata(), 
+				metadata, 
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"));
 		Assert.assertEquals(
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"), 
