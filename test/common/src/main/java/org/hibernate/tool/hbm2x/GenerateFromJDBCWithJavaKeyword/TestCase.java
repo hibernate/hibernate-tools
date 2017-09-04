@@ -9,12 +9,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -86,16 +86,16 @@ public class TestCase {
 	}
 	
 	private Metadata setUpMetadata() {
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
-		configuration.setReverseEngineeringStrategy(configurableNamingStrategy);
 		OverrideRepository overrideRepository = new OverrideRepository();
 		InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());
 		overrideRepository.addInputStream(inputStream);
-		configuration.setReverseEngineeringStrategy(overrideRepository.getReverseEngineeringStrategy(configurableNamingStrategy));
-		configuration.readFromJDBC();
-		return MetadataHelper.getMetadata(configuration);
+		ReverseEngineeringStrategy res = overrideRepository
+				.getReverseEngineeringStrategy(configurableNamingStrategy);
+		return MetadataSourcesFactory
+				.createJdbcSources(res, null, true)
+				.buildMetadata();
 	}
 	
 }
