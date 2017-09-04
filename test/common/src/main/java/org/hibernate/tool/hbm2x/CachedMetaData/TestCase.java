@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
@@ -133,13 +133,12 @@ public class TestCase {
 	
 	@Test
 	public void testCachedDialect() {
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();		
-		Properties properties = jmdcfg.getProperties();
+		Properties properties = Environment.getProperties();
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
-				jmdcfg.getProperties() );
+				Environment.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
 		JDBCReader reader = JDBCReaderFactory.newJDBCReader( 
