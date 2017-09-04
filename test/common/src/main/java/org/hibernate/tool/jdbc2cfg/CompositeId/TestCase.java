@@ -18,7 +18,8 @@ import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -46,18 +48,19 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
 	private Metadata metadata = null;
+	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	@Before
 	public void setUp() {
-		JdbcUtil.createDatabase(this);;
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
-		metadata = jmdcfg.getMetadata();
+		JdbcUtil.createDatabase(this);
+		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(reverseEngineeringStrategy, null, true)
+				.buildMetadata();
 	}
 
 	@After
@@ -68,7 +71,7 @@ public class TestCase {
 	@Test
     public void testMultiColumnForeignKeys() {
         Table table = HibernateUtil.getTable(
-        		jmdcfg.getMetadata(), 
+        		metadata, 
         		JdbcUtil.toIdentifier(this, "LINE_ITEM") );
         Assert.assertNotNull(table);
         ForeignKey foreignKey = HibernateUtil.getForeignKey(
@@ -76,7 +79,7 @@ public class TestCase {
         		JdbcUtil.toIdentifier(this, "TO_CUSTOMER_ORDER") );     
         Assert.assertNotNull(foreignKey);                
         Assert.assertEquals(
-        		jmdcfg.getReverseEngineeringStrategy().tableToClassName(
+        		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
         						null, 
@@ -89,12 +92,12 @@ public class TestCase {
         Assert.assertEquals(foreignKey.getColumn(0).getName(), "CUSTOMER_ID_REF");
         Assert.assertEquals(foreignKey.getColumn(1).getName(), "ORDER_NUMBER");      
         Table tab = HibernateUtil.getTable(
-        		jmdcfg.getMetadata(), 
+        		metadata, 
         		JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"));
         Assert.assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMER_ID");
         Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");     
-        PersistentClass lineMapping = jmdcfg.getMetadata().getEntityBinding(
-        		jmdcfg.getReverseEngineeringStrategy().tableToClassName(
+        PersistentClass lineMapping = metadata.getEntityBinding(
+        		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
         						null, 
@@ -107,8 +110,8 @@ public class TestCase {
      
 	@Test
     public void testPossibleKeyManyToOne() {
-         PersistentClass product = jmdcfg.getMetadata().getEntityBinding( 
-         		jmdcfg.getReverseEngineeringStrategy().tableToClassName(
+         PersistentClass product = metadata.getEntityBinding( 
+         		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
         						null, 
@@ -121,12 +124,12 @@ public class TestCase {
          Property id = (Property) iter.next();
          Property extraId = (Property) iter.next();         
  		Assert.assertEquals(
-				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
+				reverseEngineeringStrategy.columnToPropertyName(
 						null, 
 						"CUSTOMER_ID"), 
 				id.getName() );
          Assert.assertEquals(
- 				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
+ 				reverseEngineeringStrategy.columnToPropertyName(
 						null, 
 						"ORDER_NUMBER"), 
         		 extraId.getName() );         
@@ -136,8 +139,8 @@ public class TestCase {
      
 	@Test
     public void testKeyProperty() {
-        PersistentClass product = jmdcfg.getMetadata().getEntityBinding( 
-         		jmdcfg.getReverseEngineeringStrategy().tableToClassName(
+        PersistentClass product = metadata.getEntityBinding( 
+         		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
         						null, 
@@ -150,12 +153,12 @@ public class TestCase {
         Property id = (Property) iter.next();
         Property extraId = (Property) iter.next();     
         Assert.assertEquals(
-				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
+				reverseEngineeringStrategy.columnToPropertyName(
 						null, 
 						"PRODUCT_ID"), 
         		id.getName() );
         Assert.assertEquals(
-				jmdcfg.getReverseEngineeringStrategy().columnToPropertyName(
+				reverseEngineeringStrategy.columnToPropertyName(
 						null, 
 						"EXTRA_ID"), 
         		extraId.getName() );        
