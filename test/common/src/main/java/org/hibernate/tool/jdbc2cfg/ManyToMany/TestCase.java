@@ -9,12 +9,12 @@ import java.io.File;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -37,9 +37,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
-		metadata = jmdcfg.getMetadata();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
 	}
 	
 	@After
@@ -49,22 +49,21 @@ public class TestCase {
 
 	@Test
 	public void testNoManyToManyBiDirectional() {
-		
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();
         
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
-        c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false));        
-        localCfg.setReverseEngineeringStrategy(c);
-        localCfg.readFromJDBC();
+        c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
+        metadata =  MetadataSourcesFactory
+        		.createJdbcSources(c, null)
+        		.buildMetadata();
 
-        PersistentClass project = localCfg.getMetadata().getEntityBinding("Project");
+        PersistentClass project = metadata.getEntityBinding("Project");
 		
 		Assert.assertNotNull(project.getProperty("worksOns"));
 		//assertNotNull(project.getProperty("employee"));
 		Assert.assertEquals(3, project.getPropertyClosureSpan());		
 		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
 		
-		PersistentClass employee = localCfg.getMetadata().getEntityBinding("Employee");
+		PersistentClass employee = metadata.getEntityBinding("Employee");
 		
 		Assert.assertNotNull(employee.getProperty("worksOns"));
 		Assert.assertNotNull(employee.getProperty("employees"));
@@ -73,7 +72,7 @@ public class TestCase {
 		Assert.assertEquals(6, employee.getPropertyClosureSpan());
 		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
 		
-		PersistentClass worksOn = localCfg.getMetadata().getEntityBinding("WorksOn");
+		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
 		
 		Assert.assertNotNull(worksOn.getProperty("project"));
 		Assert.assertNotNull(worksOn.getProperty("employee"));
@@ -83,7 +82,7 @@ public class TestCase {
 	
 	@Test
 	public void testAutoCreation() {
-	    
+		
         Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
         
         Assert.assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", metadata.getEntityBinding( "WorksOnContext" ));
