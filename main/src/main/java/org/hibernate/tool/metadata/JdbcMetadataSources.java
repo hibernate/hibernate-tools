@@ -11,13 +11,15 @@ public class JdbcMetadataSources
 	
 	public JdbcMetadataSources(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
-			Properties properties) {
+			Properties properties,
+			boolean preferBasicCompositeIds) {
 		if (properties != null) {
 			getProperties().putAll(properties);
 		}
 		if (reverseEngineeringStrategy != null) {
 			setReverseEngineeringStrategy(reverseEngineeringStrategy);
 		}
+		setPreferBasicCompositeIds(preferBasicCompositeIds);
 	}
 
 }

@@ -12,7 +12,8 @@ public class MetadataSourcesFactory {
 			boolean preferBasicCompositeIds) {
 		return new JdbcMetadataSources(
 				reverseEngineeringStrategy, 
-				properties);
+				properties,
+				preferBasicCompositeIds);
 	}
 	
 	public static MetadataSources createJpaSources(String persistenceUnit, Properties properties) {
