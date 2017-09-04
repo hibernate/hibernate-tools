@@ -6,9 +6,10 @@ package org.hibernate.tool.jdbc2cfg.Identity;
 
 import java.sql.SQLException;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -21,13 +22,14 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();
 	}
 
 	@After
@@ -38,9 +40,7 @@ public class TestCase {
 	@Test
 	public void testIdentity() throws SQLException {
 
-		PersistentClass classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding("Autoinc");
+		PersistentClass classMapping = metadata.getEntityBinding("Autoinc");
 		Assert.assertNotNull(classMapping);
 		Assert.assertEquals(
 				"identity", 
@@ -49,9 +49,7 @@ public class TestCase {
 						.getValue())
 					.getIdentifierGeneratorStrategy());
 		
-		classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding("Noautoinc");
+		classMapping = metadata.getEntityBinding("Noautoinc");
 		Assert.assertEquals(
 				"assigned", 
 				((SimpleValue)classMapping
