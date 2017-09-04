@@ -4,10 +4,11 @@
  */
 package org.hibernate.tool.jdbc2cfg.AutoQuote;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -21,13 +22,14 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();
 	}
 
 	@After
@@ -37,11 +39,11 @@ public class TestCase {
 
 	@Test
 	public void testForQuotes() {
-		Table table = HibernateUtil.getTable(jmdcfg.getMetadata(), "us-ers");
+		Table table = HibernateUtil.getTable(metadata, "us-ers");
 		Assert.assertNotNull(table);
 		Assert.assertTrue(table.isQuoted());		
 		Assert.assertEquals(2, table.getColumnSpan());		
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Worklogs");
+		PersistentClass classMapping = metadata.getEntityBinding("Worklogs");
 		Assert.assertNotNull(classMapping);
 		Property property = classMapping.getProperty("usErs");
 		Assert.assertNotNull(property);	
