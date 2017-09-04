@@ -8,8 +8,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
@@ -31,13 +32,15 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Properties properties = null;
+	private ServiceRegistry serviceRegistry;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		properties = Environment.getProperties();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		serviceRegistry = ssrb.build();
 	}
 
 	@After
@@ -48,7 +51,8 @@ public class TestCase {
 	@Test
 	public void testExportedKeys() {	
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ServiceRegistry serviceRegistry = ssrb.build();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);			
@@ -57,7 +61,6 @@ public class TestCase {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));		
-		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String,Object>> tables = 
@@ -92,8 +95,7 @@ public class TestCase {
 	@Test
 	public void testDataType() {	
 		MetaDataDialect dialect = MetaDataDialectFactory
-				.fromDialectName(jmdcfg.getProperty(AvailableSettings.DIALECT));
-		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
+				.fromDialectName(properties.getProperty(AvailableSettings.DIALECT));
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);	
@@ -102,7 +104,6 @@ public class TestCase {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));		
-		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<?> tables = 
@@ -120,7 +121,6 @@ public class TestCase {
 	@Test
 	public void testCaseTest() {
 		MetaDataDialect dialect = new JDBCMetaDataDialect();
-		ServiceRegistry serviceRegistry = jmdcfg.getServiceRegistry();
 		JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);
@@ -129,7 +129,6 @@ public class TestCase {
 						connectionProvider,
 						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
 						new DefaultDatabaseCollector(dialect)));
-		Properties properties = jmdcfg.getProperties();
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String, Object>> tables = 
