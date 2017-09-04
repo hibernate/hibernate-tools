@@ -6,8 +6,9 @@ package org.hibernate.tool.jdbc2cfg.Performance;
 
 import java.sql.SQLException;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -24,11 +25,8 @@ public class TestCase {
 	private static final int TABLECOUNT = 200;
 	private static final int COLCOUNT = 10;
 	
-	private JDBCMetaDataConfiguration jmdcfg = null;
-
 	@Before
 	public void setUp() {
-		jmdcfg = new JDBCMetaDataConfiguration();
 		JdbcUtil.createDatabase(this);
 	}
 	
@@ -39,12 +37,14 @@ public class TestCase {
 
 	@Test
 	public void testBasic() throws SQLException {	
-		jmdcfg.readFromJDBC();
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
 		JUnitUtil.assertIteratorContainsExactly(
 				"There should be " + TABLECOUNT + " tables!", 
-				jmdcfg.getMetadata().collectTableMappings().iterator(), 
+				metadata.collectTableMappings().iterator(), 
 				TABLECOUNT);
-		Table tab = (Table) jmdcfg.getMetadata().collectTableMappings().iterator().next();
+		Table tab = (Table) metadata.collectTableMappings().iterator().next();
 		Assert.assertEquals(tab.getColumnSpan(), COLCOUNT+1);
 	}
 	
