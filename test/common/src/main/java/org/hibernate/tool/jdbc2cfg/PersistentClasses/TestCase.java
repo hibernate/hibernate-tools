@@ -11,8 +11,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.mapping.Collection;
@@ -21,6 +22,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -35,16 +37,16 @@ public class TestCase {
 	
 	private static final String PACKAGE_NAME = "org.hibernate.tool.jdbc2cfg.PersistentClasses";
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName(PACKAGE_NAME));
-        jmdcfg.setReverseEngineeringStrategy(c);
-		jmdcfg.readFromJDBC();
+        metadata = MetadataSourcesFactory
+        		.createJdbcSources(c, null)
+        		.buildMetadata();
 	}
 	
 	@After
@@ -54,9 +56,7 @@ public class TestCase {
 
 	@Test
 	public void testCreatePersistentClasses() {
-		PersistentClass classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding(PACKAGE_NAME + ".Orders");
+		PersistentClass classMapping = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");
 		Assert.assertNotNull("class not found", classMapping);		
 		KeyValue identifier = classMapping.getIdentifier();
 		Assert.assertNotNull(identifier);		
@@ -64,9 +64,7 @@ public class TestCase {
 		
 	@Test
 	public void testCreateManyToOne() {
-		PersistentClass classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding(PACKAGE_NAME + ".Item");
+		PersistentClass classMapping = metadata.getEntityBinding(PACKAGE_NAME + ".Item");
 		Assert.assertNotNull(classMapping);		
 		KeyValue identifier = classMapping.getIdentifier();
 		Assert.assertNotNull(identifier);	
@@ -79,9 +77,7 @@ public class TestCase {
 	
 	@Test
 	public void testCreateOneToMany() {
-		PersistentClass orders = jmdcfg
-				.getMetadata()
-				.getEntityBinding(PACKAGE_NAME + ".Orders");		
+		PersistentClass orders = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");		
 		Property itemset = orders.getProperty("itemsForRelatedOrderId");	
 		Collection col = (Collection) itemset.getValue();         
 		OneToMany otm = (OneToMany) col.getElement();
@@ -95,17 +91,15 @@ public class TestCase {
 	@Test
 	public void testBinding() throws HibernateException, SQLException {	
 		
-		String schemaToUse = jmdcfg.getProperty(AvailableSettings.DEFAULT_SCHEMA);
-		PersistentClass orders = jmdcfg
-				.getMetadata()
-				.getEntityBinding(PACKAGE_NAME + ".Orders");		
+		String schemaToUse = Environment
+				.getProperties()
+				.getProperty(AvailableSettings.DEFAULT_SCHEMA);
+		PersistentClass orders = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");		
 		orders.getTable().setSchema(schemaToUse);
-		PersistentClass items = jmdcfg
-				.getMetadata()
-				.getEntityBinding(PACKAGE_NAME + ".Item");
+		PersistentClass items = metadata.getEntityBinding(PACKAGE_NAME + ".Item");
 		items.getTable().setSchema(schemaToUse);
 		
-		SessionFactory sf = jmdcfg.buildSessionFactory();
+		SessionFactory sf = metadata.buildSessionFactory();
 		Session session = sf.openSession();
         Transaction t = session.beginTransaction();
 	
