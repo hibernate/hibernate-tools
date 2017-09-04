@@ -18,8 +18,6 @@ import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -28,6 +26,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -51,10 +50,9 @@ public class TestCase {
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();       
-        localCfg.setReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-        localCfg.readFromJDBC();
-        metadata = localCfg.getMetadata();
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
 	}
 	
 	@After
