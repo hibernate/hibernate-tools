@@ -2,10 +2,16 @@ package org.hibernate.tool.metadata;
 
 import java.util.Properties;
 
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+
 public class MetadataSourcesFactory {
 	
-	public static MetadataSources createJdbcSources() {
-		return new JdbcMetadataSources();
+	public static MetadataSources createJdbcSources(
+			ReverseEngineeringStrategy reverseEngineeringStrategy, 
+			Properties properties) {
+		return new JdbcMetadataSources(
+				reverseEngineeringStrategy, 
+				properties);
 	}
 	
 	public static MetadataSources createJpaSources(String persistenceUnit, Properties properties) {

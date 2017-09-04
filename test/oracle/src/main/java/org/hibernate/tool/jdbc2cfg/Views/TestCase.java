@@ -7,10 +7,8 @@ package org.hibernate.tool.jdbc2cfg.Views;
 import java.sql.SQLException;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -32,7 +30,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory.createJdbcSources().buildMetadata();
+		metadata = MetadataSourcesFactory.createJdbcSources(null, null).buildMetadata();
 	}
 	
 	@After

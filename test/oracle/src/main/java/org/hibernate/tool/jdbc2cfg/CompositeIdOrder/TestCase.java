@@ -35,7 +35,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory.createJdbcSources().buildMetadata();
+		metadata = MetadataSourcesFactory.createJdbcSources(null, null).buildMetadata();
 	}
 	
 	@After
