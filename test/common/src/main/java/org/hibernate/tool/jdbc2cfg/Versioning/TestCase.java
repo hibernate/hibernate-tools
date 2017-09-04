@@ -8,11 +8,11 @@ import java.io.File;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.IntegerType;
@@ -40,9 +40,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
-		metadata = jmdcfg.getMetadata();
+		metadata = MetadataSourcesFactory.createJdbcSources(null, null).buildMetadata();
 	}
 
 	@After
