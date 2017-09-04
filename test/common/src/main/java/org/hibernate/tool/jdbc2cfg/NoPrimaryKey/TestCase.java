@@ -4,8 +4,7 @@
  */
 package org.hibernate.tool.jdbc2cfg.NoPrimaryKey;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -20,13 +19,9 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
-
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
 	}
 
 	@After
@@ -35,8 +30,11 @@ public class TestCase {
 	}
 
 	@Test
-	public void testMe() throws Exception {
-		Assert.assertNotNull(MetadataHelper.getMetadata(jmdcfg));
+	public void testMe() {
+		Assert.assertNotNull(
+			MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata());
 	}
 	
 }
