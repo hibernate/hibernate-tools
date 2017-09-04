@@ -17,7 +17,6 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.internal.util.StringHelper;
@@ -27,7 +26,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.util.MetadataHelper;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -53,12 +52,11 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
-		jmdcfg.setReverseEngineeringStrategy(configurableNamingStrategy);
-		jmdcfg.readFromJDBC();
-		metadata = MetadataHelper.getMetadata(jmdcfg);
+		metadata = MetadataSourcesFactory
+				.createJdbcSources(configurableNamingStrategy, null, true)
+				.buildMetadata();
 	}
 	
 	@After
