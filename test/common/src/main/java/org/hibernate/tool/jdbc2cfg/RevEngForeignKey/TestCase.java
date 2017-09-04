@@ -7,13 +7,14 @@ package org.hibernate.tool.jdbc2cfg.RevEngForeignKey;
 import java.net.MalformedURLException;
 
 import org.hibernate.MappingException;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -41,21 +42,22 @@ public class TestCase {
 
 	@Test
 	public void testDefaultBiDirectional() {
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
-		PersistentClass project = jmdcfg.getMetadata().getEntityBinding("Project");
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
+		PersistentClass project = metadata.getEntityBinding("Project");
 		Assert.assertNotNull(project.getProperty("worksOns"));
 		Assert.assertNotNull(project.getProperty("employee"));
 		Assert.assertEquals(3, project.getPropertyClosureSpan());		
 		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
-		PersistentClass employee = jmdcfg.getMetadata().getEntityBinding("Employee");
+		PersistentClass employee = metadata.getEntityBinding("Employee");
 		Assert.assertNotNull(employee.getProperty("worksOns"));
 		Assert.assertNotNull(employee.getProperty("employees"));
 		Assert.assertNotNull(employee.getProperty("employee"));
 		Assert.assertNotNull(employee.getProperty("projects"));
 		Assert.assertEquals(5, employee.getPropertyClosureSpan());
 		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
-		PersistentClass worksOn = jmdcfg.getMetadata().getEntityBinding("WorksOn");
+		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
 		Assert.assertNotNull(worksOn.getProperty("project"));
 		Assert.assertNotNull(worksOn.getProperty("employee"));
 		Assert.assertEquals(4, worksOn.getPropertyClosureSpan());
@@ -67,10 +69,10 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();
-		localCfg.setReverseEngineeringStrategy(repository);
-		localCfg.readFromJDBC();			
-		PersistentClass project = localCfg.getMetadata().getEntityBinding("Project");		
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(repository, null)
+				.buildMetadata();
+		PersistentClass project = metadata.getEntityBinding("Project");		
 		Assert.assertNotNull(project.getProperty("worksOns"));
 		assertPropertyNotExists(project, "employee", "should be removed by reveng.xml");
 		Property property = project.getProperty("teamLead");
@@ -78,7 +80,7 @@ public class TestCase {
 		Assert.assertTrue(property.getValue() instanceof SimpleValue);
 		Assert.assertEquals(3, project.getPropertyClosureSpan());		
 		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
-		PersistentClass employee = localCfg.getMetadata().getEntityBinding("Employee");	
+		PersistentClass employee = metadata.getEntityBinding("Employee");	
 		Assert.assertNotNull(employee.getProperty("worksOns"));
 		Assert.assertNotNull("property should be renamed by reveng.xml", employee.getProperty("manager"));		
 		assertPropertyNotExists( employee, "employees", "set should be excluded by reveng.xml" );
@@ -87,7 +89,7 @@ public class TestCase {
 		Assert.assertEquals("delete, update", setProperty.getCascade());
 		Assert.assertEquals(4, employee.getPropertyClosureSpan());
 		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
-		PersistentClass worksOn = localCfg.getMetadata().getEntityBinding("WorksOn");
+		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
 		Assert.assertNotNull(worksOn.getProperty("project"));
 		Assert.assertNotNull(worksOn.getProperty("employee"));
 		Assert.assertEquals(4, worksOn.getPropertyClosureSpan());
@@ -99,13 +101,13 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();
-		localCfg.setReverseEngineeringStrategy(repository);
-		localCfg.readFromJDBC();			
-		PersistentClass person = localCfg.getMetadata().getEntityBinding("Person");
-		PersistentClass addressPerson = localCfg.getMetadata().getEntityBinding("AddressPerson");
-		PersistentClass addressMultiPerson = localCfg.getMetadata().getEntityBinding("AddressMultiPerson");
-		PersistentClass multiPerson = localCfg.getMetadata().getEntityBinding("MultiPerson");	
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(repository, null)
+				.buildMetadata();
+		PersistentClass person = metadata.getEntityBinding("Person");
+		PersistentClass addressPerson = metadata.getEntityBinding("AddressPerson");
+		PersistentClass addressMultiPerson = metadata.getEntityBinding("AddressMultiPerson");
+		PersistentClass multiPerson = metadata.getEntityBinding("MultiPerson");	
 		assertPropertyNotExists(addressPerson, "person", "should be removed by reveng.xml");
 		assertPropertyNotExists(person, "addressPerson", "should be removed by reveng.xml");	
 		Property property = addressMultiPerson.getProperty("renamedOne");
@@ -120,13 +122,11 @@ public class TestCase {
 	
 	@Test
 	public void testDuplicateForeignKeyDefinition() {
-		OverrideRepository or = new OverrideRepository();
-		or.addResource(BAD_FOREIGNKEY_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();
-		localCfg.setReverseEngineeringStrategy(repository);		
 		try {
-			localCfg.readFromJDBC();
+			OverrideRepository or = new OverrideRepository();
+			or.addResource(BAD_FOREIGNKEY_XML);
+			ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+			MetadataSourcesFactory.createJdbcSources(repository, null);
 			Assert.fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
 		} catch(MappingException me) {
 			Assert.assertTrue(me.getMessage().indexOf("already defined")>=0);			
@@ -135,9 +135,10 @@ public class TestCase {
 
 	@Test
 	public void testManyToOneAttributeDefaults() {	
-		JDBCMetaDataConfiguration jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
-		PersistentClass classMapping = jmdcfg.getMetadata().getEntityBinding("Employee");
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null)
+				.buildMetadata();
+		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("employee");	
 		Assert.assertEquals("none", property.getCascade());
 		Assert.assertEquals(true, property.isUpdateable());
@@ -150,10 +151,10 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();	
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		JDBCMetaDataConfiguration localCfg = new JDBCMetaDataConfiguration();
-		localCfg.setReverseEngineeringStrategy(repository);
-		localCfg.readFromJDBC();					
-		PersistentClass classMapping = localCfg.getMetadata().getEntityBinding("Employee");
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(repository, null)
+				.buildMetadata();
+		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("manager");	
 		Assert.assertEquals("all", property.getCascade());
 		Assert.assertEquals(false, property.isUpdateable());
