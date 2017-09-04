@@ -6,9 +6,10 @@ package org.hibernate.tool.jdbc2cfg.Identity;
 
 import java.sql.SQLException;
 
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -22,13 +23,12 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	private JDBCMetaDataConfiguration jmdcfg = null;
+	private Metadata metadata = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		jmdcfg = new JDBCMetaDataConfiguration();
-		jmdcfg.readFromJDBC();
+		MetadataSourcesFactory.createJdbcSources(null, null).buildMetadata();
 	}
 
 	@After
@@ -40,9 +40,7 @@ public class TestCase {
 	@Ignore 
 	@Test
 	public void testIdentity() throws SQLException {
-		PersistentClass classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding("WithIdentity");
+		PersistentClass classMapping = metadata.getEntityBinding("WithIdentity");
 		Assert.assertNotNull(classMapping);
 		Assert.assertEquals(
 				"identity", 
@@ -56,9 +54,7 @@ public class TestCase {
 	@Ignore 
 	@Test
 	public void testGuid() throws SQLException {
-		PersistentClass classMapping = jmdcfg
-				.getMetadata()
-				.getEntityBinding("WithGuid");
+		PersistentClass classMapping = metadata.getEntityBinding("WithGuid");
 		Assert.assertNotNull(classMapping);
 		Assert.assertEquals(
 				"guid", 
