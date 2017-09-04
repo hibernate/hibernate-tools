@@ -8,15 +8,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -45,13 +48,14 @@ public class TestCase {
 	
 	@Ignore
 	@Test
-	public void testReadOnlySpecificSchema() {
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
+	public void testReadOnlySpecificSchema() {		
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
-		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
-		configuration.readFromJDBC();
-		List<Table> tables = getTables(configuration);
+		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(res, null)
+				.buildMetadata();
+		List<Table> tables = getTables(metadata);
 		Assert.assertEquals(2,tables.size());	
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);	
@@ -68,15 +72,16 @@ public class TestCase {
 	@Ignore
 	@Test
 	public void testOverlapping() {	
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();	
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
 		or.addSchemaSelection(new SchemaSelection(null, null, "MASTER"));
 		or.addSchemaSelection(new SchemaSelection(null, null, "CHILD"));
-		configuration.setReverseEngineeringStrategy(or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
-		configuration.readFromJDBC();
+		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(res, null)
+				.buildMetadata();
 		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
-		Iterator<Table> iter = configuration.getMetadata().collectTableMappings().iterator();
+		Iterator<Table> iter = metadata.collectTableMappings().iterator();
 		while(iter.hasNext()) {
 			Table element = iter.next();
 			boolean added = tables.add(TableIdentifier.create(element));
@@ -89,11 +94,13 @@ public class TestCase {
 	@Ignore
 	@Test
 	public void testUseDefault() {
-		JDBCMetaDataConfiguration configuration = new JDBCMetaDataConfiguration();
-		configuration.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
-		configuration.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
-		configuration.readFromJDBC();
-		List<Table> tables = getTables(configuration);
+		Properties properties = new Properties();
+		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
+		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, properties)
+				.buildMetadata();
+		List<Table> tables = getTables(metadata);
 		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
@@ -107,9 +114,9 @@ public class TestCase {
 		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
 	}
 
-	private List<Table> getTables(JDBCMetaDataConfiguration metaDataConfiguration) {
+	private List<Table> getTables(Metadata metadata) {
 		List<Table> list = new ArrayList<Table>();
-		Iterator<Table> iter = metaDataConfiguration.getMetadata().collectTableMappings().iterator();
+		Iterator<Table> iter = metadata.collectTableMappings().iterator();
 		while(iter.hasNext()) {
 			Table element = iter.next();
 			list.add(element);
