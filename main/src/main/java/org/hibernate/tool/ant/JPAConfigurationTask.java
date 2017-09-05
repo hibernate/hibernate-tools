@@ -36,13 +36,6 @@ public class JPAConfigurationTask extends ConfigurationTask {
 		
 	}
 	
-	protected void doConfiguration(Configuration configuration) {
-	}
-	
-	protected void validateParameters() throws BuildException {
-		
-	}
-	
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}

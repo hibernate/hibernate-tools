@@ -68,7 +68,6 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected Configuration configure(Configuration configuration) {	
-		validateParameters();		
 		if (configurationFile != null) configuration.configure( configurationFile );
 		addMappings(configuration, getFiles() );
 		Properties p = loadPropertiesFile();
@@ -110,10 +109,6 @@ public class ConfigurationTask extends Task {
 	}
 	
 	
-	protected void validateParameters() throws BuildException {
-				// noop
-	}
-
 	/**
 	 * @param files
 	 */
