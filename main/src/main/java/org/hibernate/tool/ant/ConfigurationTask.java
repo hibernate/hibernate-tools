@@ -112,12 +112,8 @@ public class ConfigurationTask extends Task {
 			overrides.putAll(p);
 			configuration.setProperties(overrides);
 		}		
-		initProperties(overrides);
 	}
 	
-	protected void initProperties(Properties properties) {
-	}
-
 	protected Properties loadPropertiesFile() {
 		if (propertyFile!=null) { 
 			Properties properties = new Properties(); // TODO: should we "inherit" from the ant projects properties ?

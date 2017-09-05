@@ -22,12 +22,8 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			Properties p = loadPropertiesFile();	
 			if(p!=null) {
 				overrides.putAll( p );
-			} else { 
-				p = new Properties();
 			}
 			JPAConfiguration result = new JPAConfiguration(persistenceUnit, overrides);
-			p.putAll(result.getProperties());
-			initProperties(p);
 			return result;
 		} 
 		catch(HibernateException t) {
