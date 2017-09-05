@@ -18,7 +18,6 @@ import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PropertySet;
 import org.hibernate.boot.MappingNotFoundException;
-import org.hibernate.boot.Metadata;
 import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
@@ -283,10 +282,6 @@ public class HibernateToolTask extends Task {
 		return configurationTask.getConfiguration();
 	}
 	
-	public Metadata getMetadata() {
-		return configurationTask.getMetadata();
-	}
-
 	public void setTemplatePath(Path path) {
 		templatePath = path;
 	}
