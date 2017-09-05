@@ -36,7 +36,6 @@ public class ConfigurationTask extends Task {
 	private File propertyFile;
 	protected String entityResolver;
 	private Metadata metadata;
-	private Properties properties;
 	
 	public ConfigurationTask() {
 		setDescription("Standard Configuration");
@@ -65,13 +64,6 @@ public class ConfigurationTask extends Task {
 		return metadata;
 	}
 	
-	public Properties getProperties() {
-		if (properties == null) {
-			getMetadata();
-		}
-		return properties;
-	}
-
 	protected Configuration createConfiguration() {
 		return new Configuration();
 	}
@@ -124,7 +116,6 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected void initProperties(Properties properties) {
-		this.properties = properties;
 	}
 
 	protected Properties loadPropertiesFile() {
