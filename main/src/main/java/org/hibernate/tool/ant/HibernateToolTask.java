@@ -58,12 +58,6 @@ public class HibernateToolTask extends Task {
 		return (JDBCConfigurationTask) configurationTask;			
 	}
 	
-	public AnnotationConfigurationTask createAnnotationConfiguration() {
-		checkConfiguration();
-		configurationTask = new AnnotationConfigurationTask();
-		return (AnnotationConfigurationTask) configurationTask;			
-	}
-	
 	public JPAConfigurationTask createJpaConfiguration() {
 		checkConfiguration();
 		configurationTask = new JPAConfigurationTask();
