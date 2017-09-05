@@ -39,15 +39,14 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
 	protected Configuration createConfiguration() {
-		return new JDBCMetaDataConfiguration();
+		return configure(new JDBCMetaDataConfiguration());
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.hibernate.tool.hbm2x.ant.ConfigurationTask#doConfiguration(org.hibernate.cfg.Configuration)
 	 */
-	protected void doConfiguration(Configuration configuration) {
-		JDBCMetaDataConfiguration jmdc = (JDBCMetaDataConfiguration) configuration;
-		super.doConfiguration(jmdc);
+	protected Configuration configure(Configuration configuration) {
+		JDBCMetaDataConfiguration jmdc = (JDBCMetaDataConfiguration)super.configure(configuration);
 		
         jmdc.setPreferBasicCompositeIds(preferBasicCompositeIds);
 
@@ -81,6 +80,8 @@ public class JDBCConfigurationTask extends ConfigurationTask {
         jmdc.setReverseEngineeringStrategy(strategy);
         
 		jmdc.readFromJDBC(); 
+		
+		return jmdc;
 	}
 
     

@@ -51,7 +51,6 @@ public class ConfigurationTask extends Task {
 	public final Configuration getConfiguration() {
 		if(cfg==null) {
 			cfg = createConfiguration();
-			doConfiguration(cfg);
 		}
 		return cfg;
 	}
@@ -65,46 +64,13 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected Configuration createConfiguration() {
-		return new Configuration();
+		return configure(new Configuration());
 	}
 	
-	/**
-	 * 
-	 */
-	protected void doConfiguration(Configuration configuration) {	
+	protected Configuration configure(Configuration configuration) {	
 		validateParameters();		
-
-		
-		/** skip entity resolver and naming strategy for now 
-		
-		if (entityResolver != null) {
-			try {
-				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
-				Object object = resolver.newInstance();
-				
-				configuration.setEntityResolver((EntityResolver) object);
-				getProject().log("Using " + entityResolver + " as entity resolver");
-			}
-			catch (Exception e) {
-				throw new BuildException("Could not create or find " + entityResolver + " class to use for entity resolvement");
-			}			
-		}
-		if (namingStrategy != null) {
-			try {
-				Class resolver = ReflectHelper.classForName(namingStrategy, this.getClass());
-				Object object = resolver.newInstance();
-				
-				configuration.setNamingStrategy((NamingStrategy) object);
-				getProject().log("Using " + namingStrategy + " as naming strategy");
-			}
-			catch (Exception e) {
-				throw new BuildException("Could not create or find " + namingStrategy + " class to use for naming strategy");
-			}			
-		}
-		**/
-		
 		if (configurationFile != null) configuration.configure( configurationFile );
-		addMappings(getFiles() );
+		addMappings(configuration, getFiles() );
 		Properties p = loadPropertiesFile();
 		Properties overrides = new Properties();
 		if(p!=null) {		
@@ -112,6 +78,7 @@ public class ConfigurationTask extends Task {
 			overrides.putAll(p);
 			configuration.setProperties(overrides);
 		}		
+		return configuration;
 	}
 	
 	protected Properties loadPropertiesFile() {
@@ -150,10 +117,10 @@ public class ConfigurationTask extends Task {
 	/**
 	 * @param files
 	 */
-	private void addMappings(File[] files) {
+	private void addMappings(Configuration configuration,  File[] files) {
 		for (int i = 0; i < files.length; i++) {
 			File filename = files[i];
-			boolean added = addFile(filename);
+			boolean added = addFile(configuration, filename);
 			if(!added) {
 				log(filename + " not added to Configuration", Project.MSG_VERBOSE);
 			}
@@ -163,7 +130,7 @@ public class ConfigurationTask extends Task {
 	/**
 	 * @param filename
 	 */
-	protected boolean addFile(File filename) {
+	protected boolean addFile(Configuration cfg, File filename) {
 		try {
 			if ( filename.getName().endsWith(".jar") ) {
 				cfg.addJar( filename );

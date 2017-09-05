@@ -23,8 +23,7 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			if(p!=null) {
 				overrides.putAll( p );
 			}
-			JPAConfiguration result = new JPAConfiguration(persistenceUnit, overrides);
-			return result;
+			return configure(new JPAConfiguration(persistenceUnit, overrides));
 		} 
 		catch(HibernateException t) {
 			Throwable cause = t.getCause();

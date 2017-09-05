@@ -46,7 +46,6 @@ public class TestCase {
 			Assert.fail("An exception should occur");
 			
 		} catch (BuildException e) {
-			
 			Assert.assertTrue(e.getMessage(), e.getMessage().contains("Error while processing Entity"));
 			
 		}
