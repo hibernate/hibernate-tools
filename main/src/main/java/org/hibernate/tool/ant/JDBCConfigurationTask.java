@@ -6,6 +6,7 @@ package org.hibernate.tool.ant;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -16,6 +17,7 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.util.ReflectHelper;
 
 
@@ -39,7 +41,17 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
 	protected Configuration createConfiguration() {
-		return configure(new JDBCMetaDataConfiguration());
+		File configurationFile = getConfigurationFile();
+		File[] files = getFiles();
+		Properties properties = loadPropertiesFile();
+		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
+		return (Configuration)MetadataSourcesFactory
+				.createJdbcSources(
+						configurationFile, 
+						files, 
+						res, 
+						properties, 
+						preferBasicCompositeIds);
 	}
 	
 	/* (non-Javadoc)
@@ -82,6 +94,37 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		jmdc.readFromJDBC(); 
 		
 		return jmdc;
+	}
+	
+	private ReverseEngineeringStrategy createReverseEngineeringStrategy() {
+		DefaultReverseEngineeringStrategy defaultStrategy = new DefaultReverseEngineeringStrategy();
+		
+		ReverseEngineeringStrategy strategy = defaultStrategy;
+				
+		if(revengFiles!=null) {
+			OverrideRepository or = new OverrideRepository();
+			
+			String[] fileNames = revengFiles.list();
+			for (int i = 0; i < fileNames.length; i++) {
+				or.addFile(new File(fileNames[i]) );
+			}
+			strategy = or.getReverseEngineeringStrategy(defaultStrategy);			
+		}
+		
+		if(reverseEngineeringStrategyClass!=null) {
+			strategy = loadreverseEngineeringStrategy(reverseEngineeringStrategyClass, strategy);			
+		}
+		
+		ReverseEngineeringSettings qqsettings = 
+			new ReverseEngineeringSettings(strategy).setDefaultPackageName(packageName)
+			.setDetectManyToMany( detectManyToMany )
+			.setDetectOneToOne( detectOneToOne )
+			.setDetectOptimisticLock( detectOptimisticLock );
+	
+		defaultStrategy.setSettings(qqsettings);
+		strategy.setSettings(qqsettings);
+		
+		return strategy;
 	}
 
     

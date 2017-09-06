@@ -135,7 +135,7 @@ public class ConfigurationTask extends Task {
 		}
 	}
 
-	private File[] getFiles() {
+	protected File[] getFiles() {
 
 		List<File> files = new LinkedList<File>();
 		for ( Iterator<FileSet> i = fileSets.iterator(); i.hasNext(); ) {

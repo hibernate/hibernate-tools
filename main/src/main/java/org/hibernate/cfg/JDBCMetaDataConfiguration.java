@@ -57,7 +57,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 	private Metadata metadata = null;
 	
 	public Metadata buildMetadata() {
-		readFromJDBC();
+//		readFromJDBC();
 		return metadata;
 	}
     

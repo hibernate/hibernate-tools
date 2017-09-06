@@ -17,6 +17,20 @@ public class MetadataSourcesFactory {
 				preferBasicCompositeIds);
 	}
 	
+	public static MetadataSources createJdbcSources(
+			File cfgXmlFile,
+			File[] mappingFiles,
+			ReverseEngineeringStrategy reverseEngineeringStrategy, 
+			Properties properties,
+			boolean preferBasicCompositeIds) {
+		return new JdbcMetadataSources(
+				cfgXmlFile,
+				mappingFiles,
+				reverseEngineeringStrategy, 
+				properties,
+				preferBasicCompositeIds);
+	}
+	
 	public static MetadataSources createJpaSources(String persistenceUnit, Properties properties) {
 		return new JpaMetadataSources(persistenceUnit, properties);
 	}
