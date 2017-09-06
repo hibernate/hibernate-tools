@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.mapping.PersistentClass;
@@ -19,7 +19,6 @@ import org.hibernate.mapping.Set;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -83,12 +82,11 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
 		Assert.assertEquals(3, outputFolder.listFiles().length);
-		Configuration configuration = new Configuration()
+		MetadataSources metadataSources = new MetadataSources()
 		    .addFile( new File(outputFolder, "Role.hbm.xml") )
 		    .addFile( new File(outputFolder, "User.hbm.xml") )
 		    .addFile( new File(outputFolder, "Plainrole.hbm.xml"));		
-		MetadataHelper.getMetadata(configuration);		
-		assertMultiSchema(metadata);
+		assertMultiSchema(metadataSources.buildMetadata());
 	}
 	
 	private void assertMultiSchema(Metadata metadata) {
