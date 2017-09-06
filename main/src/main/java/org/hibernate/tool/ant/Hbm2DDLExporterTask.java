@@ -51,7 +51,7 @@ public class Hbm2DDLExporterTask extends ExporterTask {
 
 	protected Exporter createExporter() {
 		Hbm2DDLExporter exporter = new Hbm2DDLExporter();
-		Configuration configuration = parent.getConfiguration();
+		Configuration configuration = (Configuration)parent.getMetadataSources();
 		exporter.getProperties().putAll(configuration.getProperties());
 		exporter.setMetadata(MetadataHelper.getMetadata(configuration));
 		exporter.setOutputDirectory(parent.getDestDir());

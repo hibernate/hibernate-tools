@@ -22,7 +22,7 @@ public class Hbm2DAOExporterTask extends Hbm2JavaExporterTask {
 	
 	protected Exporter createExporter() {
 		Exporter result = new DAOExporter();
-		Configuration configuration = parent.getConfiguration();
+		Configuration configuration = (Configuration)parent.getMetadataSources();
 		result.getProperties().putAll(configuration.getProperties());
 		result.setMetadata(MetadataHelper.getMetadata(configuration));
 		result.setOutputDirectory(parent.getDestDir());

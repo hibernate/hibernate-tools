@@ -93,7 +93,7 @@ public abstract class ExporterTask {
 		Properties prop = new Properties();
 		prop.putAll(parent.getProperties());
 		prop.putAll(properties);
-		Configuration configuration = parent.getConfiguration();
+		Configuration configuration = (Configuration)parent.getMetadataSources();
 		prop.putAll(configuration.getProperties());
 		exporter.getProperties().putAll(prop);
 		exporter.setMetadata(MetadataHelper.getMetadata(configuration));

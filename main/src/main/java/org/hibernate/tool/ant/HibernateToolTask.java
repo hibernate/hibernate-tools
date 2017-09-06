@@ -19,8 +19,8 @@ import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.PropertySet;
 import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.StringHelper;
+import org.hibernate.tool.metadata.MetadataSources;
 
 /**
  * @author max
@@ -278,8 +278,8 @@ public class HibernateToolTask extends Task {
 	/**
 	 * @return
 	 */
-	public Configuration getConfiguration() {
-		return (Configuration)configurationTask.getMetadataSources();
+	public MetadataSources getMetadataSources() {
+		return configurationTask.getMetadataSources();
 	}
 	
 	public void setTemplatePath(Path path) {
@@ -295,7 +295,7 @@ public class HibernateToolTask extends Task {
 
 	public Properties getProperties() {
 		Properties p = new Properties();
-		p.putAll(getConfiguration().getProperties());
+		p.putAll(getMetadataSources().getProperties());
 		p.putAll(properties);
 		return p;
 	}
