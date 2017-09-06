@@ -9,10 +9,6 @@ import org.hibernate.tool.util.MetadataHelper;
 
 public class NativeMetadataSources extends Configuration implements MetadataSources {
 	
-	public NativeMetadataSources() {
-		this(null, null, null);
-	}
-	
 	public NativeMetadataSources(
 			File cfgXmlFile, 
 			File[] mappingFiles, 
