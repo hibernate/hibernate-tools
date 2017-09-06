@@ -21,6 +21,7 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 /**
  * @author max
@@ -53,7 +54,11 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected Configuration createConfiguration() {
-		return configure(new Configuration());
+		return (Configuration)MetadataSourcesFactory
+				.createNativeSources(
+						configurationFile, 
+						getFiles(), 
+						loadPropertiesFile());
 	}
 	
 	protected Configuration configure(Configuration configuration) {	
