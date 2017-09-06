@@ -12,7 +12,6 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
@@ -52,48 +51,6 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 						res, 
 						properties, 
 						preferBasicCompositeIds);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.hibernate.tool.hbm2x.ant.ConfigurationTask#doConfiguration(org.hibernate.cfg.Configuration)
-	 */
-	protected Configuration configure(Configuration configuration) {
-		JDBCMetaDataConfiguration jmdc = (JDBCMetaDataConfiguration)super.configure(configuration);
-		
-        jmdc.setPreferBasicCompositeIds(preferBasicCompositeIds);
-
-		DefaultReverseEngineeringStrategy defaultStrategy = new DefaultReverseEngineeringStrategy();
-		
-		ReverseEngineeringStrategy strategy = defaultStrategy;
-				
-		if(revengFiles!=null) {
-			OverrideRepository or = new OverrideRepository();
-			
-			String[] fileNames = revengFiles.list();
-			for (int i = 0; i < fileNames.length; i++) {
-				or.addFile(new File(fileNames[i]) );
-			}
-			strategy = or.getReverseEngineeringStrategy(defaultStrategy);			
-		}
-		
-		if(reverseEngineeringStrategyClass!=null) {
-			strategy = loadreverseEngineeringStrategy(reverseEngineeringStrategyClass, strategy);			
-		}
-		
-		ReverseEngineeringSettings qqsettings = 
-			new ReverseEngineeringSettings(strategy).setDefaultPackageName(packageName)
-			.setDetectManyToMany( detectManyToMany )
-			.setDetectOneToOne( detectOneToOne )
-			.setDetectOptimisticLock( detectOptimisticLock );
-	
-		defaultStrategy.setSettings(qqsettings);
-		strategy.setSettings(qqsettings);
-		
-        jmdc.setReverseEngineeringStrategy(strategy);
-        
-		jmdc.readFromJDBC(); 
-		
-		return jmdc;
 	}
 	
 	private ReverseEngineeringStrategy createReverseEngineeringStrategy() {
