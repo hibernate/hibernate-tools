@@ -16,10 +16,8 @@ import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
@@ -61,19 +59,6 @@ public class ConfigurationTask extends Task {
 						loadPropertiesFile());
 	}
 	
-	protected Configuration configure(Configuration configuration) {	
-		if (configurationFile != null) configuration.configure( configurationFile );
-		addMappings(configuration, getFiles() );
-		Properties p = loadPropertiesFile();
-		Properties overrides = new Properties();
-		if(p!=null) {		
-			overrides.putAll(configuration.getProperties());
-			overrides.putAll(p);
-			configuration.setProperties(overrides);
-		}		
-		return configuration;
-	}
-	
 	protected Properties loadPropertiesFile() {
 		if (propertyFile!=null) { 
 			Properties properties = new Properties(); // TODO: should we "inherit" from the ant projects properties ?
@@ -103,38 +88,6 @@ public class ConfigurationTask extends Task {
 	}
 	
 	
-	/**
-	 * @param files
-	 */
-	private void addMappings(Configuration configuration,  File[] files) {
-		for (int i = 0; i < files.length; i++) {
-			File filename = files[i];
-			boolean added = addFile(configuration, filename);
-			if(!added) {
-				log(filename + " not added to Configuration", Project.MSG_VERBOSE);
-			}
-		}		
-	}
-
-	/**
-	 * @param filename
-	 */
-	protected boolean addFile(Configuration cfg, File filename) {
-		try {
-			if ( filename.getName().endsWith(".jar") ) {
-				cfg.addJar( filename );
-				return true;
-			}
-			else {
-				cfg.addFile(filename);
-				return true;
-			}
-		} 
-		catch (HibernateException he) {
-			throw new BuildException("Failed in building configuration when adding " + filename, he);
-		}
-	}
-
 	protected File[] getFiles() {
 
 		List<File> files = new LinkedList<File>();
