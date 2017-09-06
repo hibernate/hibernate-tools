@@ -18,7 +18,6 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
@@ -29,7 +28,7 @@ import org.hibernate.tool.metadata.MetadataSourcesFactory;
 public class ConfigurationTask extends Task {
 
 	private List<FileSet> fileSets = new ArrayList<FileSet>();
-	private Configuration cfg;
+	private MetadataSources metadataSources;
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
@@ -45,11 +44,11 @@ public class ConfigurationTask extends Task {
 	/**
 	 * @return
 	 */
-	public final Configuration getConfiguration() {
-		if(cfg==null) {
-			cfg = (Configuration)createMetadataSources();
+	public final MetadataSources getMetadataSources() {
+		if (metadataSources == null) {
+			metadataSources = createMetadataSources();
 		}
-		return cfg;
+		return metadataSources;
 	}
 	
 	protected MetadataSources createMetadataSources() {
