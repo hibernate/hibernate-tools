@@ -11,11 +11,11 @@ import java.util.Properties;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.util.ReflectHelper;
 
@@ -39,12 +39,12 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 	public JDBCConfigurationTask() {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
-	protected Configuration createConfiguration() {
+	protected MetadataSources createMetadataSources() {
 		File configurationFile = getConfigurationFile();
 		File[] files = getFiles();
 		Properties properties = loadPropertiesFile();
 		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
-		return (Configuration)MetadataSourcesFactory
+		return MetadataSourcesFactory
 				.createJdbcSources(
 						configurationFile, 
 						files, 

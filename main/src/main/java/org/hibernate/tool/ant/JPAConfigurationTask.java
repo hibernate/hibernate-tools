@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 public class JPAConfigurationTask extends ConfigurationTask {
@@ -16,14 +16,14 @@ public class JPAConfigurationTask extends ConfigurationTask {
 		setDescription("JPA Configuration");
 	}
 	
-	protected Configuration createConfiguration() {
+	protected MetadataSources createMetadataSources() {
 		try {
 			Properties overrides = new Properties();
 			Properties p = loadPropertiesFile();	
 			if(p!=null) {
 				overrides.putAll( p );
 			}
-			return (Configuration)MetadataSourcesFactory
+			return MetadataSourcesFactory
 					.createJpaSources(persistenceUnit, overrides);
 		} 
 		catch(HibernateException t) {

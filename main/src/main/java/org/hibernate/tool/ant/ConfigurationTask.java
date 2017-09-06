@@ -19,6 +19,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 /**
@@ -46,13 +47,13 @@ public class ConfigurationTask extends Task {
 	 */
 	public final Configuration getConfiguration() {
 		if(cfg==null) {
-			cfg = createConfiguration();
+			cfg = (Configuration)createMetadataSources();
 		}
 		return cfg;
 	}
 	
-	protected Configuration createConfiguration() {
-		return (Configuration)MetadataSourcesFactory
+	protected MetadataSources createMetadataSources() {
+		return MetadataSourcesFactory
 				.createNativeSources(
 						configurationFile, 
 						getFiles(), 
