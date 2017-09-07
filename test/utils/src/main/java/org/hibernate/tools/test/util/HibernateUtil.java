@@ -42,6 +42,14 @@ public class HibernateUtil {
 		return null;
 	}
 	
+	public static Metadata initializeMetadata(
+			Object test,
+			String[] hbmResourceNames,
+			File hbmFileDir) {
+		return initializeMetadataSources(test, hbmResourceNames, hbmFileDir)
+				.buildMetadata();
+	}
+
 	public static org.hibernate.tool.metadata.MetadataSources initializeMetadataSources(
 			Object test, 
 			String[] hbmResourceNames, 
