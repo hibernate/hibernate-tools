@@ -1,6 +1,8 @@
 package org.hibernate.tools.test.util;
 
+import java.io.File;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -8,6 +10,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 public class HibernateUtil {
 	
@@ -38,7 +41,21 @@ public class HibernateUtil {
 		}
 		return null;
 	}
-
+	
+	public static org.hibernate.tool.metadata.MetadataSources initializeMetadataSources(
+			Object test, 
+			String[] hbmResourceNames, 
+			File hbmFileDir) {
+		ResourceUtil.createResources(test, hbmResourceNames, hbmFileDir);
+		File[] hbmFiles = new File[hbmResourceNames.length];
+		for (int i = 0; i < hbmResourceNames.length; i++) {
+			hbmFiles[i] = new File(hbmFileDir, hbmResourceNames[i]);
+		}
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		return MetadataSourcesFactory.createNativeSources(null, hbmFiles, properties);
+	}
+	
 	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
 		return initializeMetadataSources(test, hbmXmlFiles).buildMetadata();
 	}
