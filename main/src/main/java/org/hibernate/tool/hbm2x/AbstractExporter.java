@@ -9,13 +9,9 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.tool.metadata.MetadataSources;
-import org.hibernate.tool.util.MetadataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +32,7 @@ public abstract class AbstractExporter implements Exporter {
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
 	private Metadata metadata = null;
-	private org.hibernate.boot.MetadataSources metadataSources = null;
-	private StandardServiceRegistry serviceRegistry = null;
+	private MetadataSources metadataSources = null;
 
 	private Iterator<Entry<Object, Object>> iterator;
 
@@ -50,10 +45,6 @@ public abstract class AbstractExporter implements Exporter {
 	}
 	
 	public void setMetadataSources(MetadataSources metadataSources) {
-		this.metadataSources = MetadataHelper.getMetadataSources((Configuration)metadataSources);
-	}
-	
-	public void setMetadataSources(org.hibernate.boot.MetadataSources metadataSources) {
 		this.metadataSources = metadataSources;
 	}
 	
@@ -213,13 +204,7 @@ public abstract class AbstractExporter implements Exporter {
     }
 	
 	protected Metadata buildMetadata() {
-		StandardServiceRegistry sr = serviceRegistry;
-		if (sr == null) {
-			StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-			ssrb.applySettings(getProperties());
-			sr = ssrb.build();
-		}
-		return metadataSources.buildMetadata(sr);
+		return metadataSources.buildMetadata();
 	}
 
     private File getDirForPackage(File baseDir, String packageName) {
