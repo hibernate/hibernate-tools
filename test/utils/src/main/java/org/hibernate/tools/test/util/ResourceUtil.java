@@ -18,7 +18,7 @@ public class ResourceUtil {
 	public static void createResources(Object test, String resourcesLocation, String[] resources, File resourceDir) {
 		try {
 			for (String resource : resources) {
-				String resourceLocation = resourcesLocation == null ? resource : resourcesLocation + resource;
+				String resourceLocation = (resource.startsWith("/")) ? resource : resourcesLocation + resource;
 				InputStream inputStream = test
 						.getClass()
 						.getResourceAsStream(resourceLocation); 
