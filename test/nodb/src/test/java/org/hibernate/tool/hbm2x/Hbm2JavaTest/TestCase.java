@@ -58,14 +58,16 @@ public class TestCase {
 
 	private Metadata metadata = null;
 	private File outputDir = null;
+	private File resourcesDir = null;
 	private ArtifactCollector artifactCollector = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
-		outputDir = new File(temporaryFolder.getRoot(), "generated");
+		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);

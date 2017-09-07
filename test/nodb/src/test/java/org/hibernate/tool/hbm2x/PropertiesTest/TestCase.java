@@ -43,22 +43,25 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private ArtifactCollector artifactCollector;
-	private File exporterOutputDir;
+	private File outputDir = null;
+	private File resourcesDir = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		Metadata metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 		artifactCollector = new ArtifactCollector();
-		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
-		exporterOutputDir.mkdir();
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = new POJOExporter();
 		exporter.setMetadata(metadata);
-		exporter.setOutputDirectory(exporterOutputDir);
+		exporter.setOutputDirectory(outputDir);
 		exporter.setArtifactCollector(artifactCollector);
 		Exporter hbmexporter = new HibernateMappingExporter();
 		hbmexporter.setMetadata(metadata);
-		hbmexporter.setOutputDirectory(exporterOutputDir);
+		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.setArtifactCollector(artifactCollector);
 		exporter.start();
 		hbmexporter.start();
@@ -72,7 +75,7 @@ public class TestCase {
 	
 	@Test
 	public void testGenerationOfEmbeddedProperties() {
-		File outputXml = new File(exporterOutputDir,  "properties/PPerson.hbm.xml");
+		File outputXml = new File(outputDir,  "properties/PPerson.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
     	SAXReader xmlReader = new SAXReader();
     	xmlReader.setValidation(true);
@@ -87,12 +90,12 @@ public class TestCase {
 			Assert.assertNotNull(
 					FileUtil.findFirstString(
 							"name", 
-							new File(exporterOutputDir, "properties/PPerson.java" )));
+							new File(outputDir, "properties/PPerson.java" )));
 			Assert.assertNull(
 					"Embedded component/properties should not show up in .java", 
 					FileUtil.findFirstString(
 							"emergencyContact", 
-							new File(exporterOutputDir, "properties/PPerson.java" )));		
+							new File(outputDir, "properties/PPerson.java" )));		
 		} catch (DocumentException e) {
 			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
 		}		
@@ -102,11 +105,11 @@ public class TestCase {
 	public void testCompilable() throws Exception {
 		String propertiesUsageResourcePath = "/org/hibernate/tool/hbm2x/PropertiesTest/PropertiesUsage.java_";
 		File propertiesUsageOrigin = new File(getClass().getResource(propertiesUsageResourcePath).toURI());
-		File propertiesUsageDestination = new File(exporterOutputDir, "properties/PropertiesUsage.java");
+		File propertiesUsageDestination = new File(outputDir, "properties/PropertiesUsage.java");
 		File targetDir = new File(temporaryFolder.getRoot(), "compilerOutput" );
 		targetDir.mkdir();	
 		Files.copy(propertiesUsageOrigin.toPath(), propertiesUsageDestination.toPath());
-		JavaUtil.compile(exporterOutputDir, targetDir);
+		JavaUtil.compile(outputDir, targetDir);
 		Assert.assertTrue(new File(targetDir, "properties/PCompany.class").exists());
 		Assert.assertTrue(new File(targetDir, "properties/PPerson.class").exists());
 		Assert.assertTrue(new File(targetDir, "properties/PropertiesUsage.class").exists());

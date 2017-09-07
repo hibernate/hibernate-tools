@@ -5,10 +5,15 @@ import java.util.Collections;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Table;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class HibernateUtilTest {
 	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
 	@Test
 	public void testGetForeignKey() {
 		Table table = new Table();
@@ -29,7 +34,8 @@ public class HibernateUtilTest {
 		Metadata metadata = 
 				HibernateUtil.initializeMetadata(
 						this, 
-						new String[] { "HelloWorld.hbm.xml" });
+						new String[] { "HelloWorld.hbm.xml" },
+						temporaryFolder.getRoot());
 		Assert.assertSame(
 				HibernateUtil.Dialect.class, 
 				metadata.getDatabase().getDialect().getClass());

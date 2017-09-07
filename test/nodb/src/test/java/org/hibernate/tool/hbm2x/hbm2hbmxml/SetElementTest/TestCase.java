@@ -54,12 +54,16 @@ public class TestCase {
 	
 	private Exporter hbmexporter = null;
 	private File outputDir = null;
+	private File resourcesDir = null;
 
 	@Before
 	public void setUp() throws Exception {
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
 		Metadata metadata = HibernateUtil
-				.initializeMetadata(this, HBM_XML_FILES);
-		outputDir = temporaryFolder.getRoot();
+				.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
 		hbmexporter.setMetadata(metadata);
 		hbmexporter.setOutputDirectory(outputDir);

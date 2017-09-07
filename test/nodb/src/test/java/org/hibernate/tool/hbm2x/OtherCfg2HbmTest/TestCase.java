@@ -44,28 +44,31 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private File exporterOutputDir;
+	private File outputDir = null;
+	private File resourcesDir = null;
 	
 	@Before
 	public void setUp() throws Exception {
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();		
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
 		Metadata metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
-		exporterOutputDir = new File(temporaryFolder.getRoot(), "exporterOutput");
-		exporterOutputDir.mkdir();		
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();	
 		hbmexporter.setMetadata(metadata);
-		hbmexporter.setOutputDirectory(exporterOutputDir);
+		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();		
 	}
 	
 	@Test
 	public void testFileExistence() {
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "HelloWorld.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile(new File(exporterOutputDir, "HelloUniverse.hbm.xml") );		
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "HelloWorld.hbm.xml") );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "HelloUniverse.hbm.xml") );		
 	}
 	
 	@Test
@@ -73,26 +76,26 @@ public class TestCase {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
         MetadataSources metadataSources = new MetadataSources(ssrb.build());
-        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
-        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
-        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
-        metadataSources.addFile(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );              
+        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
+        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
+        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
+        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );              
         Assert.assertNotNull(metadataSources.buildMetadata());      
     }
 	
 	@Test
 	public void testNoVelocityLeftOvers() {
-		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") ) );
-		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(exporterOutputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") ) );
-		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") ) );
-		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") ) );   
+		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") ) );
+		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") ) );
+		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") ) );
+		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") ) );   
 	}
 	
 	@Test
 	public void testVersioning() throws DocumentException {	
     	SAXReader xmlReader = new SAXReader();
     	xmlReader.setValidation(true);
-		Document document = xmlReader.read(new File(exporterOutputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
+		Document document = xmlReader.read(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/version");
 		List<?> list = xpath.selectNodes(document);
 		Assert.assertEquals("Expected to get one version element", 1, list.size());			

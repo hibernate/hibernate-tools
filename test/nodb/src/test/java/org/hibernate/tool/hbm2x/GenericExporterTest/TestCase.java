@@ -40,13 +40,17 @@ public class TestCase {
 
 	private Metadata metadata = null;
 	private File outputDir = null;
+	private File resourcesDir = null;
 	private String resourcesLocation = null;
 	
 	@Before
 	public void setUp() {
-		outputDir = temporaryFolder.getRoot();
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
-		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
 	}
 
 	@Test

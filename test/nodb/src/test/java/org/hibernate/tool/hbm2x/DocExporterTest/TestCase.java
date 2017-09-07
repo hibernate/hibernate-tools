@@ -44,15 +44,19 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private File outputDir;
+	private File outputDir = null;
+	private File resourcesDir = null;
 	
 	private boolean ignoreDot;
 
 	@Before
 	public void setUp() throws Exception {
-		Metadata metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
-		outputDir = temporaryFolder.getRoot();
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		Metadata metadata = HibernateUtil.initializeMetadata(
+				this, HBM_XML_FILES, resourcesDir);
 		DocExporter exporter = new DocExporter();
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics

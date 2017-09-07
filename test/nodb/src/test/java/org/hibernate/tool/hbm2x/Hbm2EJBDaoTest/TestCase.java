@@ -40,14 +40,17 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private File outputDir;
+	private File outputDir = null;
+	private File resourcesDir = null;
 
 	@Before
 	public void setUp() throws Exception {
-		Metadata metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
-		outputDir = new File(temporaryFolder.getRoot(), "generated");
+		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		Metadata metadata = 
+				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter javaExporter = new POJOExporter();
 		javaExporter.setMetadata(metadata);
 		javaExporter.setOutputDirectory(outputDir);

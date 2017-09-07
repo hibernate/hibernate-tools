@@ -13,7 +13,9 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 /**
  * @author max
@@ -28,11 +30,17 @@ public class TestCase {
 			"Passenger.hbm.xml"
 	};
 	
+	@Rule
+	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
 	private Metadata metadata = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
+		metadata = HibernateUtil.initializeMetadata(
+				this, 
+				HBM_XML_FILES, 
+				temporaryFolder.getRoot());
 	}
 	
 	@Test

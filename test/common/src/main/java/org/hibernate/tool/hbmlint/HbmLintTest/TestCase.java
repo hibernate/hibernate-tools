@@ -1,5 +1,7 @@
 package org.hibernate.tool.hbmlint.HbmLintTest;
 
+import java.io.File;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.Detector;
@@ -25,18 +27,25 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
+	private File outputDir = null;
+	private File resourcesDir = null;
+	
 	private Metadata metadata = null;
 	
 	@Before
 	public void setUp() {
-		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES);
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		metadata = HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
 	}
 	
 	@Test
 	public void testExporter() {	
 		HbmLintExporter exporter = new HbmLintExporter();		
 		exporter.setMetadata(metadata);
-		exporter.setOutputDirectory(temporaryFolder.getRoot());
+		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
 	
