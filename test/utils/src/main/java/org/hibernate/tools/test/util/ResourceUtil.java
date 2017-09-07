@@ -12,17 +12,16 @@ public class ResourceUtil {
 	}
 	
 	public static void createResources(Object test, String[] resources, File resourcesDir) {
-		createResources(test, getResourcesLocation(test), resources, resourcesDir);
-	}
-	
-	public static void createResources(Object test, String resourcesLocation, String[] resources, File resourceDir) {
 		try {
+			String defaultResourceLocation = getResourcesLocation(test);
 			for (String resource : resources) {
-				String resourceLocation = (resource.startsWith("/")) ? resource : resourcesLocation + resource;
+				String resourceLocation = 
+						(resource.startsWith("/")) 
+						? resource : defaultResourceLocation + resource;
 				InputStream inputStream = test
 						.getClass()
 						.getResourceAsStream(resourceLocation); 
-				File resourceFile = new File(resourceDir, resource);
+				File resourceFile = new File(resourcesDir, resource);
 				File parent = resourceFile.getParentFile();
 				if (!parent.exists()) {
 					parent.mkdirs();
