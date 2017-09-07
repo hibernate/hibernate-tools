@@ -32,9 +32,8 @@ public class TestCase {
 	@Test
 	public void testJavaFormatFile() {
 		
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "formatting/SimpleOne.java"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
@@ -66,9 +65,8 @@ public class TestCase {
 	@Test
 	public void testJavaJdk5FormatFile() {
 		
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "formatting/Simple5One.java"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
@@ -105,9 +103,8 @@ public class TestCase {
 	@Test
 	public void testAntFormatTask() {
 		
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "formatting/SimpleOne.java"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
@@ -138,9 +135,8 @@ public class TestCase {
 	@Test
 	public void testConfig() {
 		
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "formatting/SimpleOne.java", "formatting/Simple5One.java", "emptyconfig.properties"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);

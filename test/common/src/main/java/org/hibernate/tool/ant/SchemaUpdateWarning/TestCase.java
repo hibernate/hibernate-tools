@@ -38,9 +38,8 @@ public class TestCase {
 	@Test
 	public void testSchemaUpdateWarning() {
 
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "TopDown.hbm.xml"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);

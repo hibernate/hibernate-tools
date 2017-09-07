@@ -38,16 +38,15 @@ public class TestCase {
 	@Test
 	public void testProperties() {
 
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "SomeClass.hbm.xml"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
-		ResourceUtil.createResources(this,  null, new String[] { "/hibernate.properties" }, resourcesDir);
+		ResourceUtil.createResources(this, new String[] { "/hibernate.properties" }, resourcesDir);
 		File templatesDir = new File(resourcesDir, "templates");
 		templatesDir.mkdir();
 		File pojoTemplateDir = new File(templatesDir, "pojo");
 		pojoTemplateDir.mkdir();
-		ResourceUtil.createResources(this,  resourcesLocation, new String[] { "Pojo.ftl" }, pojoTemplateDir);
+		ResourceUtil.createResources(this, new String[] { "Pojo.ftl" }, pojoTemplateDir);
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
 		project.setProperty("destinationDir", destinationDir.getAbsolutePath());

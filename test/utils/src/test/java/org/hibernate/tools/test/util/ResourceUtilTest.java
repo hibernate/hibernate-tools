@@ -25,7 +25,7 @@ public class ResourceUtilTest {
 		File outputFolder = temporaryFolder.getRoot();
 		File helloWorldFile = new File(outputFolder, "HelloWorld.hbm.xml");
 		Assert.assertFalse(helloWorldFile.exists());
-		ResourceUtil.createResources(this, "/org/hibernate/tools/test/util/", resources, outputFolder);
+		ResourceUtil.createResources(this, resources, outputFolder);
 		Assert.assertTrue(helloWorldFile.exists());
 		Assert.assertTrue(FileUtil
 				.findFirstString("class", helloWorldFile)

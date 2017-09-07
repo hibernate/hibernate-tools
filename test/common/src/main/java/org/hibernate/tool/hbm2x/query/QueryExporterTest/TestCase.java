@@ -43,8 +43,7 @@ public class TestCase {
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
 		String[] resources = { "UserGroup.hbm.xml" };		
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		userGroupHbmXmlFile = new File(resourcesDir, "UserGroup.hbm.xml");
 		SessionFactory factory = buildMetadata().buildSessionFactory();		
 		Session s = factory.openSession();	

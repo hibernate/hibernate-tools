@@ -27,9 +27,8 @@ public class TestCase {
 	@Test
 	public void testNoConnInfoExport() {
 
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml", "hibernate.properties"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);

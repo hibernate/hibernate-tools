@@ -38,11 +38,10 @@ public class TestCase {
 	@Test
 	public void testCfg2HbmWithCustomReverseNamingStrategy() {
 
-		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
 		String[] resources = new String[] {"build.xml"};
-		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
-		ResourceUtil.createResources(this,  null, new String[] { "/hibernate.properties" }, resourcesDir);
+		ResourceUtil.createResources(this, new String[] { "/hibernate.properties" }, resourcesDir);
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
 		project.setProperty("destinationDir", destinationDir.getAbsolutePath());
