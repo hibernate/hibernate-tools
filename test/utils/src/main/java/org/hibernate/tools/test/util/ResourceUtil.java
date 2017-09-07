@@ -11,6 +11,10 @@ public class ResourceUtil {
 		return '/' + test.getClass().getPackage().getName().replace('.', '/') + '/';
 	}
 	
+	public static void createResouces(Object test, String[] resources, File resourceDir) {
+		createResources(test, getResourcesLocation(test), resources, resourceDir);
+	}
+	
 	public static void createResources(Object test, String resourcesLocation, String[] resources, File resourceDir) {
 		try {
 			for (String resource : resources) {
