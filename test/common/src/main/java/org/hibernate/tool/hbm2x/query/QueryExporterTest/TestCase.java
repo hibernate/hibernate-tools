@@ -4,23 +4,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.BootstrapServiceRegistry;
-import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,12 +31,21 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private File outputDir = null;
+	private File destinationDir = null;
+	private File resourcesDir = null;
+	private File userGroupHbmXmlFile = null;
 	
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		outputDir = temporaryFolder.getRoot();
+		destinationDir = new File(temporaryFolder.getRoot(), "destination");
+		destinationDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
+		String[] resources = { "UserGroup.hbm.xml" };		
+		String resourcesLocation = ResourceUtil.getResourcesLocation(this);
+		ResourceUtil.createResources(this, resourcesLocation, resources, resourcesDir);
+		userGroupHbmXmlFile = new File(resourcesDir, "UserGroup.hbm.xml");
 		SessionFactory factory = buildMetadata().buildSessionFactory();		
 		Session s = factory.openSession();	
 		Transaction t = s.beginTransaction();
@@ -53,19 +60,22 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testQueryExporter() {		
+	public void testQueryExporter() throws Exception {		
 		QueryExporter exporter = new QueryExporter();
-		MetadataSources metadataSources = new MetadataSources();
-		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
+		MetadataSources metadataSources = MetadataSourcesFactory
+				.createNativeSources(
+						null, 
+						new File[] { userGroupHbmXmlFile }, 
+						null);
 		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
 		exporter.setMetadataSources(metadataSources);
-		exporter.setOutputDirectory(outputDir);
+		exporter.setOutputDirectory(destinationDir);
 		exporter.setFilename("queryresult.txt");
 		List<String> queries = new ArrayList<String>();
 		queries.add("from java.lang.Object");
 		exporter.setQueries( queries );		
 		exporter.start();
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "queryresult.txt"));		
+		JUnitUtil.assertIsNonEmptyFile(new File(destinationDir, "queryresult.txt"));		
 	}
 	
 	@After
@@ -80,29 +90,18 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	private BootstrapServiceRegistry buildBootstrapServiceRegistry() {
-		return new BootstrapServiceRegistryBuilder()
-			.enableAutoClose()
-			.build();
-	}
-	
-	private MetadataSources buildMetadataSources(ServiceRegistry sr) {
-		MetadataSources metadataSources = new MetadataSources(sr);
-		metadataSources.addResource("/org/hibernate/tool/hbm2x/query/QueryExporterTest/UserGroup.hbm.xml");
-		return metadataSources;
-	}
-	
-	private StandardServiceRegistry buildStandardServiceRegistry(BootstrapServiceRegistry sr) {
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder(sr);
-		ssrb.applySetting(AvailableSettings.HBM2DDL_AUTO, "update");
-		return ssrb.build();
+	private MetadataSources buildMetadataSources() {
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.HBM2DDL_AUTO, "update");
+		return MetadataSourcesFactory
+				.createNativeSources(
+						null, 
+						new File[] { userGroupHbmXmlFile }, 
+						properties);
 	}
 	
 	private Metadata buildMetadata() {
-		BootstrapServiceRegistry bsr = buildBootstrapServiceRegistry();
-		StandardServiceRegistry sr = buildStandardServiceRegistry(bsr);
-		MetadataSources mds = buildMetadataSources(bsr);
-		return mds.buildMetadata(sr);
+		return buildMetadataSources().buildMetadata();
 	}
 	
 }
