@@ -8,12 +8,12 @@ import java.io.File;
 
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -29,17 +29,12 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	private Metadata metadata = null;
-	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory
-				.createJdbcSources(null, null, true)
-				.buildMetadata();
 	}
 	
 	@After
@@ -52,7 +47,7 @@ public class TestCase {
         
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
-        metadata =  MetadataSourcesFactory
+        Metadata metadata =  MetadataSourcesFactory
         		.createJdbcSources(c, null, true)
         		.buildMetadata();
 
@@ -82,6 +77,9 @@ public class TestCase {
 	
 	@Test
 	public void testAutoCreation() {
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();
 		
         Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
         
@@ -104,27 +102,31 @@ public class TestCase {
 
 	@Test
 	public void testFalsePositive() {
-	    
-        Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));
-                				
-		
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();	    
+        Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
 	}
 
 	@Test
 	public void testBuildMappings() {		
-		Assert.assertNotNull(metadata);
-		
+		Metadata metadata = MetadataSourcesFactory
+				.createJdbcSources(null, null, true)
+				.buildMetadata();
+		Assert.assertNotNull(metadata);	
 	}
 	
 	@Test
 	public void testGenerateAndReadable() {
 		
+		MetadataSources metadataSources = MetadataSourcesFactory
+				.createJdbcSources(null, null, true);
 		File outputDir = temporaryFolder.getRoot();
 		
-		Assert.assertNotNull(metadata);
+		Assert.assertNotNull(metadataSources.buildMetadata());
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadata(metadata);
+		hme.setMetadataSources(metadataSources);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		
@@ -140,12 +142,14 @@ public class TestCase {
 		
 		Assert.assertEquals(6, outputDir.listFiles().length);
 		
-		MetadataSources metadataSources = new MetadataSources()
-		    .addFile( new File(outputDir, "Employee.hbm.xml") )
-		    .addFile( new File(outputDir, "Project.hbm.xml") )
-			.addFile( new File(outputDir, "WorksOnContext.hbm.xml") );
+		File[] files = new File[3];
+		files[0] = new File(outputDir, "Employee.hbm.xml");
+		files[1] = new File(outputDir, "Project.hbm.xml");
+		files[2] = new File(outputDir, "WorksOnContext.hbm.xml");
 		
-		Assert.assertNotNull(metadataSources.buildMetadata());
+		Assert.assertNotNull(MetadataSourcesFactory
+				.createNativeSources(null, files, null)
+				.buildMetadata());
 		
 	}
 	
