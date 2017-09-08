@@ -26,6 +26,7 @@ import org.hibernate.tool.hbm2x.pojo.ImportContext;
 import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
 import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -66,11 +67,11 @@ public class TestCase {
 		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
-		metadata = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
-				.buildMetadata();
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+		metadata = metadataSources.buildMetadata();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
