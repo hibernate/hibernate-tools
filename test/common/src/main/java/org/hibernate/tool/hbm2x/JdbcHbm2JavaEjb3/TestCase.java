@@ -40,9 +40,8 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(MetadataSourcesFactory
-				.createJdbcSources(null, null, true)
-				.buildMetadata());
+		exporter.setMetadataSources(MetadataSourcesFactory
+				.createJdbcSources(null, null, true));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
