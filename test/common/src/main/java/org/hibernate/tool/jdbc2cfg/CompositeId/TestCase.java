@@ -13,11 +13,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.BootstrapServiceRegistry;
-import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.TableIdentifier;
@@ -31,6 +26,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -48,7 +44,7 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 
-	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
 	
 	@Rule
@@ -58,9 +54,8 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
-		metadata = MetadataSourcesFactory
-				.createJdbcSources(reverseEngineeringStrategy, null, true)
-				.buildMetadata();
+		metadataSources = MetadataSourcesFactory
+				.createJdbcSources(reverseEngineeringStrategy, null, true);
 	}
 
 	@After
@@ -70,6 +65,7 @@ public class TestCase {
 
 	@Test
     public void testMultiColumnForeignKeys() {
+		Metadata metadata = metadataSources.buildMetadata();
         Table table = HibernateUtil.getTable(
         		metadata, 
         		JdbcUtil.toIdentifier(this, "LINE_ITEM") );
@@ -110,7 +106,7 @@ public class TestCase {
      
 	@Test
     public void testPossibleKeyManyToOne() {
-         PersistentClass product = metadata.getEntityBinding( 
+         PersistentClass product = metadataSources.buildMetadata().getEntityBinding( 
          		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
@@ -139,7 +135,7 @@ public class TestCase {
      
 	@Test
     public void testKeyProperty() {
-        PersistentClass product = metadata.getEntityBinding( 
+        PersistentClass product = metadataSources.buildMetadata().getEntityBinding( 
          		reverseEngineeringStrategy.tableToClassName(
         				new TableIdentifier(
         						null, 
@@ -170,10 +166,10 @@ public class TestCase {
     public void testGeneration() throws Exception {
         final File testFolder = temporaryFolder.getRoot();        
         Exporter exporter = new HibernateMappingExporter();	
-        exporter.setMetadata(metadata);
+        exporter.setMetadataSources(metadataSources);
         exporter.setOutputDirectory(testFolder);
         Exporter javaExp = new POJOExporter();
-        javaExp.setMetadata(metadata);
+        javaExp.setMetadataSources(metadataSources);
         javaExp.setOutputDirectory(testFolder);
         exporter.start();
         javaExp.start();      
@@ -182,21 +178,18 @@ public class TestCase {
         URLClassLoader ucl = new URLClassLoader(
         		urls, 
         		Thread.currentThread().getContextClassLoader());
-        BootstrapServiceRegistry bootstrapServiceRegistry =  
-        		new BootstrapServiceRegistryBuilder()
-        			.applyClassLoader(ucl)
-        			.build();   
-        StandardServiceRegistry standardServiceRegistry =
-        		new StandardServiceRegistryBuilder(bootstrapServiceRegistry).build();
-        MetadataSources derived = new MetadataSources(standardServiceRegistry);        
-        derived.addFile(new File(testFolder, "Simplecustomerorder.hbm.xml") );
-        derived.addFile(new File(testFolder, "Simplelineitem.hbm.xml") );
-        derived.addFile(new File(testFolder, "Product.hbm.xml") );
-        derived.addFile(new File(testFolder, "Customer.hbm.xml") );
-        derived.addFile(new File(testFolder, "Lineitem.hbm.xml") );
-        derived.addFile(new File(testFolder, "Customerorder.hbm.xml") );       
+        File[] files = new File[6];
+        files[0] = new File(testFolder, "Simplecustomerorder.hbm.xml");
+        files[1] = new File(testFolder, "Simplelineitem.hbm.xml");
+        files[2] = new File(testFolder, "Product.hbm.xml");
+        files[3] = new File(testFolder, "Customer.hbm.xml");
+        files[4] = new File(testFolder, "Lineitem.hbm.xml");
+        files[5] = new File(testFolder, "Customerorder.hbm.xml");
         Thread.currentThread().setContextClassLoader(ucl);
-        SessionFactory factory = derived.buildMetadata().buildSessionFactory();
+        SessionFactory factory = MetadataSourcesFactory
+        		.createNativeSources(null, files, null)
+        		.buildMetadata()
+        		.buildSessionFactory();
         Session session = factory.openSession();        
         JdbcUtil.populateDatabase(this);
         session.createQuery("from LineItem").getResultList();
