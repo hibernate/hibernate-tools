@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -64,18 +62,4 @@ public class HibernateUtil {
 		return MetadataSourcesFactory.createNativeSources(null, hbmFiles, properties);
 	}
 	
-	public static Metadata initializeMetadata(Object test, String[] hbmXmlFiles) {
-		return initializeMetadataSources(test, hbmXmlFiles).buildMetadata();
-	}
-	 
-	public static MetadataSources initializeMetadataSources(Object test, String[] hbmXmlFiles) {
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataSources result = new MetadataSources(ssrb.build());
-		String resourcesLocation = '/' + test.getClass().getPackage().getName().replace(".", "/") + '/';
-		for (int i = 0; i < hbmXmlFiles.length; i++) {
-			result.addResource(resourcesLocation + hbmXmlFiles[i]);
-		}
-		return result;
-	}
 }
