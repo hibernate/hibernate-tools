@@ -40,7 +40,7 @@ public class TestCase {
 		final File outputDir = new File(temporaryFolder.getRoot(), "HibernateMappingExporterTest.testStart");
 		outputDir.mkdir();
 		HibernateMappingExporter exporter = new HibernateMappingExporter();
-		exporter.setMetadata(MetadataHelper.getMetadata(configuration));
+		exporter.setMetadataSources(configuration);
 		exporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		Assert.assertFalse(fooHbmXml.exists());
