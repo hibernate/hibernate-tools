@@ -17,16 +17,18 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
@@ -59,11 +61,11 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		metadata = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
-				.buildMetadata();
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+		metadata = metadataSources.buildMetadata();
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadata(metadata);
+		hbmexporter.setMetadataSources(metadataSources);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -91,15 +93,17 @@ public class TestCase {
 	
 	@Test
 	public void testReadable() {
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-        MetadataSources metadataSources = new MetadataSources(ssrb.build());
-        metadataSources.addFile(new File(
+        ArrayList<File> files = new ArrayList<File>(4); 
+        files.add(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/Car.hbm.xml"));
-        metadataSources.addFile(new File(
+        files.add(new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/CarPart.hbm.xml"));
+		Properties properties = new Properties();
+		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources metadataSources = MetadataSourcesFactory
+				.createNativeSources(null, files.toArray(new File[2]), properties);
         Assert.assertNotNull(metadataSources.buildMetadata());
     }
 
