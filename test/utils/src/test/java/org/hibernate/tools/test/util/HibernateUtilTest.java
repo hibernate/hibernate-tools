@@ -31,11 +31,12 @@ public class HibernateUtilTest {
 	
 	@Test
 	public void testInitializeConfiguration() {
-		Metadata metadata = 
-				HibernateUtil.initializeMetadata(
+		Metadata metadata = HibernateUtil
+				.initializeMetadataSources(
 						this, 
 						new String[] { "HelloWorld.hbm.xml" },
-						temporaryFolder.getRoot());
+						temporaryFolder.getRoot())
+				.buildMetadata();
 		Assert.assertSame(
 				HibernateUtil.Dialect.class, 
 				metadata.getDatabase().getDialect().getClass());

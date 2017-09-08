@@ -66,8 +66,9 @@ public class TestCase {
 		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
-		metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
+		metadata = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
+				.buildMetadata();
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadata(metadata);
 		exporter.setOutputDirectory(outputDir);

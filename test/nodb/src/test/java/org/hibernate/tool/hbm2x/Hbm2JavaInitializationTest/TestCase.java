@@ -37,10 +37,12 @@ public class TestCase {
 	
 	@Before
 	public void setUp() throws Exception {
-		metadata = HibernateUtil.initializeMetadata(
-				this, 
-				HBM_XML_FILES, 
-				temporaryFolder.getRoot());
+		metadata = HibernateUtil
+				.initializeMetadataSources(
+						this, 
+						HBM_XML_FILES, 
+						temporaryFolder.getRoot())
+				.buildMetadata();
 	}
 	
 	@Test

@@ -8,9 +8,9 @@ import java.util.Properties;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.DocExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -55,8 +55,8 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		Metadata metadata = HibernateUtil.initializeMetadata(
-				this, HBM_XML_FILES, resourcesDir);
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		DocExporter exporter = new DocExporter();
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics
@@ -72,7 +72,7 @@ public class TestCase {
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.getProperties().putAll(properties);
-		exporter.setMetadata(metadata);
+		exporter.setMetadata(metadataSources.buildMetadata());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}

@@ -7,9 +7,9 @@ package org.hibernate.tool.hbm2x.Hbm2DaoTest;
 import java.io.File;
 import java.io.IOException;
 
-import org.hibernate.boot.Metadata;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -43,13 +43,13 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		Metadata metadata = 
-				HibernateUtil.initializeMetadata(this, HBM_XML_FILES, resourcesDir);
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter javaExporter = new POJOExporter();
-		javaExporter.setMetadata(metadata);
+		javaExporter.setMetadata(metadataSources.buildMetadata());
 		javaExporter.setOutputDirectory(outputDir);
 		POJOExporter exporter = new DAOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadata(metadataSources.buildMetadata());
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");
