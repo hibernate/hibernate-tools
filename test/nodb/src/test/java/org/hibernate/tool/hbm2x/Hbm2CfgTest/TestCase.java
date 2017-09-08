@@ -7,12 +7,11 @@ package org.hibernate.tool.hbm2x.Hbm2CfgTest;
 import java.io.File;
 import java.util.Properties;
 
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -46,11 +45,10 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		Metadata metadata = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
-				.buildMetadata();
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new HibernateConfigurationExporter();
-		cfgexporter.setMetadata(metadata);
+		cfgexporter.setMetadataSources(metadataSources);
 		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}
@@ -64,10 +62,8 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   StandardServiceRegistryBuilder ssb = new StandardServiceRegistryBuilder();
-	   ssb.applySettings(properties);   
-	   MetadataSources metadataSources = new MetadataSources(ssb.build());
-	   exporter.setMetadata(metadataSources.buildMetadata());
+	   exporter.setMetadataSources(MetadataSourcesFactory
+			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
@@ -84,10 +80,8 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   ssb = new StandardServiceRegistryBuilder();
-	   ssb.applySettings(properties);   
-	   metadataSources = new MetadataSources(ssb.build());
-	   exporter.setMetadata(metadataSources.buildMetadata());
+	   exporter.setMetadataSources(MetadataSourcesFactory
+			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNotNull(
@@ -96,10 +90,8 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   ssb = new StandardServiceRegistryBuilder();
-	   ssb.applySettings(properties);   
-	   metadataSources = new MetadataSources(ssb.build());
-	   exporter.setMetadata(metadataSources.buildMetadata());
+	   exporter.setMetadataSources(MetadataSourcesFactory
+			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNull(
