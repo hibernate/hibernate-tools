@@ -6,6 +6,7 @@ package org.hibernate.tool.hbm2x.OtherCfg2HbmTest;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -13,11 +14,12 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -53,11 +55,10 @@ public class TestCase {
 		outputDir.mkdir();		
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		Metadata metadata = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
-				.buildMetadata();
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();	
-		hbmexporter.setMetadata(metadata);
+		hbmexporter.setMetadataSources(metadataSources);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();		
 	}
@@ -76,12 +77,17 @@ public class TestCase {
     public void testReadable() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-        MetadataSources metadataSources = new MetadataSources(ssrb.build());
-        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
-        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") );
-        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") );
-        metadataSources.addFile(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") );              
-        Assert.assertNotNull(metadataSources.buildMetadata());      
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+        File[] hbmFiles = new File[4];
+        hbmFiles[0] = new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml");
+        hbmFiles[1] = new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml");
+        hbmFiles[2] = new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml");
+        hbmFiles[3] = new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml");       
+        Metadata metadata = MetadataSourcesFactory
+        		.createNativeSources(null, hbmFiles, properties)
+        		.buildMetadata();
+        Assert.assertNotNull(metadata);      
     }
 	
 	@Test
