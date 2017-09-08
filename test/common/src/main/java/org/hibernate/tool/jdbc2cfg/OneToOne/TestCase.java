@@ -16,7 +16,6 @@ import javax.persistence.Persistence;
 import org.hibernate.MappingException;
 import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
@@ -26,7 +25,9 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.NativeMetadataSources;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -45,14 +46,14 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
+	private MetadataSources metadataSources = null;
 	private Metadata metadata = null;
 
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory
-				.createJdbcSources(null, null, true)
-				.buildMetadata();
+		metadataSources = MetadataSourcesFactory.createJdbcSources(null, null, true);
+		metadata = metadataSources.buildMetadata();
 	}
 	
 	@After
@@ -127,7 +128,7 @@ public class TestCase {
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadata(metadata);
+		hme.setMetadataSources(metadataSources);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
@@ -139,7 +140,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
@@ -153,16 +154,19 @@ public class TestCase {
 	        Thread.currentThread().setContextClassLoader(ucl);
 	        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 	        ServiceRegistry serviceRegistry = builder.build();
-	        MetadataSources mds = new MetadataSources(serviceRegistry)
-			    .addFile( new File(outputDir, "Person.hbm.xml") )
-			    .addFile( new File(outputDir, "AddressPerson.hbm.xml") )
-				.addFile( new File(outputDir, "AddressMultiPerson.hbm.xml"))
-				.addFile( new File(outputDir, "MultiPerson.hbm.xml"))
-				.addFile( new File(outputDir, "MiddleTable.hbm.xml"))
-				.addFile( new File(outputDir, "LeftTable.hbm.xml"))
-				.addFile( new File(outputDir, "RightTable.hbm.xml"));
-	        Metadata metadata = mds.buildMetadata();
-	        new SchemaValidator().validate(metadata, serviceRegistry);
+	        File[] files = new File[7];
+	        files[0] = new File(outputDir, "Person.hbm.xml");
+	        files[1] = new File(outputDir, "AddressPerson.hbm.xml");
+	        files[2] = new File(outputDir, "AddressMultiPerson.hbm.xml");
+	        files[3] = new File(outputDir, "MultiPerson.hbm.xml");
+	        files[4] = new File(outputDir, "MiddleTable.hbm.xml");
+	        files[5] = new File(outputDir, "LeftTable.hbm.xml");
+	        files[6] = new File(outputDir, "RightTable.hbm.xml");
+	        new SchemaValidator().validate(
+	        		MetadataSourcesFactory
+	        			.createNativeSources(null, files, null)
+	        			.buildMetadata(), 
+	        		serviceRegistry);
 		} finally {
 			Thread.currentThread().setContextClassLoader(oldLoader);			
 		}
@@ -172,7 +176,7 @@ public class TestCase {
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
@@ -205,7 +209,7 @@ public class TestCase {
 	        Thread.currentThread().setContextClassLoader(ucl);			
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 			ServiceRegistry serviceRegistry = builder.build();			
-			MetadataSources mds = new MetadataSources(serviceRegistry);
+			NativeMetadataSources mds = new NativeMetadataSources(null, null, null);
 			mds.addAnnotatedClass(personClass)
 				.addAnnotatedClass(multiPersonClass)
 				.addAnnotatedClass(addressMultiPerson)
