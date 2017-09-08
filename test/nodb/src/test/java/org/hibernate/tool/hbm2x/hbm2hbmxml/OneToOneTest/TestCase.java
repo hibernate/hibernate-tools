@@ -17,7 +17,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -96,7 +95,6 @@ public class TestCase {
 		MetadataSources metadataSources = MetadataSourcesFactory
 				.createNativeSources(null, files, properties);
         Assert.assertNotNull(metadataSources.buildMetadata());
-       Assert.assertNotNull(metadataSources.buildMetadata());   
     }
 	
 	public void testOneToOne() throws DocumentException {
