@@ -8,12 +8,12 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -48,13 +48,11 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
 	private File outputDir = null;
-	private Metadata metadata = null;
 	
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
-		metadata = setUpMetadata();
 	}
 	
 	@After
@@ -65,7 +63,7 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws Exception {	
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(createMetadataSources());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");
@@ -85,7 +83,7 @@ public class TestCase {
 		loader.close();
 	}
 	
-	private Metadata setUpMetadata() {
+	private MetadataSources createMetadataSources() {
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();
@@ -94,8 +92,7 @@ public class TestCase {
 		ReverseEngineeringStrategy res = overrideRepository
 				.getReverseEngineeringStrategy(configurableNamingStrategy);
 		return MetadataSourcesFactory
-				.createJdbcSources(res, null, true)
-				.buildMetadata();
+				.createJdbcSources(res, null, true);
 	}
 	
 }
