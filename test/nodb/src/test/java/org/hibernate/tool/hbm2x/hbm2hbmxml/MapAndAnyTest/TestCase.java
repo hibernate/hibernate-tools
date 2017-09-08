@@ -114,7 +114,6 @@ public class TestCase {
 		MetadataSources metadataSources = MetadataSourcesFactory
 				.createNativeSources(null, files.toArray(new File[4]), properties);
         Assert.assertNotNull(metadataSources.buildMetadata());
-        Assert.assertNotNull(metadataSources.buildMetadata());
     }
 
 	@Test
