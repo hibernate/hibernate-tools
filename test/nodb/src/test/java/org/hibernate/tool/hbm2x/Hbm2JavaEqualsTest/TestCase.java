@@ -1,6 +1,5 @@
 package org.hibernate.tool.hbm2x.Hbm2JavaEqualsTest;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.InvocationHandler;
@@ -8,12 +7,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Properties;
 
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.Assert;
@@ -48,18 +48,26 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
 	private File outputDir = null;
+	private File resourcesDir = null;
 
 	@Before
 	public void setUp() throws Exception {
 		// create output folder
-		outputDir = temporaryFolder.getRoot();		
+		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir.mkdir();
+		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir.mkdir();
 		// export class ProxiedTestEntity.java and UnProxiedTestEntity
-		StandardServiceRegistryBuilder ssb = new StandardServiceRegistryBuilder();
-		ssb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataSources mds = new MetadataSources(ssb.build());
-		mds.addInputStream(new ByteArrayInputStream(TEST_ENTITY_HBM_XML.getBytes()));
+		File hbmXml = new File(resourcesDir, "testEntity.hbm.xml");
+		FileWriter fileWriter = new FileWriter(hbmXml);
+		fileWriter.write(TEST_ENTITY_HBM_XML);
+		fileWriter.close();
+		Properties properties = new Properties();
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources metadataSources = MetadataSourcesFactory
+				.createNativeSources(null, new File[] { hbmXml }, properties);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadata(mds.buildMetadata());
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		// copy interface EntityProxy.java
