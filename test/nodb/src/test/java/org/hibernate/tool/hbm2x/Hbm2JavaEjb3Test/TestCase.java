@@ -20,6 +20,7 @@ import org.hibernate.tool.hbm2x.pojo.AnnotationBuilder;
 import org.hibernate.tool.hbm2x.pojo.EntityPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.IteratorTransformer;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -57,12 +58,12 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		metadata = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir)
-				.buildMetadata();
+		MetadataSources metadataSources = HibernateUtil
+				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+		metadata = metadataSources.buildMetadata();
 		FileUtil.generateNoopComparator(outputDir);
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
