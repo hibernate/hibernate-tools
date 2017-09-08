@@ -48,6 +48,10 @@ public abstract class AbstractExporter implements Exporter {
 		this.metadataSources = metadataSources;
 	}
 	
+	protected MetadataSources getMetadataSources() {
+		return metadataSources;
+	}
+	
 	public Metadata getMetadata() {
 		if (metadata == null) {
 			metadata = buildMetadata();
