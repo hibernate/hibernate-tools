@@ -8,7 +8,6 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.util.MetadataHelper;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Rule;

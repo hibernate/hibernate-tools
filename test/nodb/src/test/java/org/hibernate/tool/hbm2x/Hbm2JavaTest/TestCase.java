@@ -58,6 +58,7 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
 	private File outputDir = null;
 	private File resourcesDir = null;
 	private ArtifactCollector artifactCollector = null;
@@ -67,7 +68,7 @@ public class TestCase {
 		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
-		MetadataSources metadataSources = HibernateUtil
+		metadataSources = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataSources.buildMetadata();
 		POJOExporter exporter = new POJOExporter();
@@ -454,7 +455,7 @@ public class TestCase {
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadata(metadata);
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
