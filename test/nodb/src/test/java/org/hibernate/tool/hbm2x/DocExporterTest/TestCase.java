@@ -72,7 +72,7 @@ public class TestCase {
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.getProperties().putAll(properties);
-		exporter.setMetadata(metadataSources.buildMetadata());
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
