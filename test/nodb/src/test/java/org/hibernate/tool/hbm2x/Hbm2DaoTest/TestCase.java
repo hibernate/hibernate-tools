@@ -46,10 +46,10 @@ public class TestCase {
 		MetadataSources metadataSources = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter javaExporter = new POJOExporter();
-		javaExporter.setMetadata(metadataSources.buildMetadata());
+		javaExporter.setMetadataSources(metadataSources);
 		javaExporter.setOutputDirectory(outputDir);
 		POJOExporter exporter = new DAOExporter();
-		exporter.setMetadata(metadataSources.buildMetadata());
+		exporter.setMetadataSources(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");
