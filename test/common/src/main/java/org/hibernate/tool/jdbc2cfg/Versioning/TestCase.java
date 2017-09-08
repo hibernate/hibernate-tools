@@ -7,11 +7,11 @@ package org.hibernate.tool.jdbc2cfg.Versioning;
 import java.io.File;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
@@ -33,6 +33,7 @@ import org.junit.rules.TemporaryFolder;
 public class TestCase {
 	
 	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -40,8 +41,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory
-				.createJdbcSources(null, null, true)
+		metadataSources = MetadataSourcesFactory
+				.createJdbcSources(null, null, true);
+		metadata = metadataSources
 				.buildMetadata();
 	}
 
@@ -66,15 +68,17 @@ public class TestCase {
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
-        exporter.setMetadata(metadata);
+        exporter.setMetadataSources(metadataSources);
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
-		MetadataSources derived = new MetadataSources();		
-		derived.addFile(new File(testFolder, "Withversion.hbm.xml") );
-		derived.addFile(new File(testFolder, "Noversion.hbm.xml") );
-		derived.addFile(new File(testFolder, "Withrealtimestamp.hbm.xml") );
-		derived.addFile(new File(testFolder, "Withfaketimestamp.hbm.xml") );		
-		Metadata metadata = derived.buildMetadata();		
+		File[] files = new File[4];		
+		files[0] = new File(testFolder, "Withversion.hbm.xml");
+		files[1] = new File(testFolder, "Noversion.hbm.xml");
+		files[2] = new File(testFolder, "Withrealtimestamp.hbm.xml");
+		files[3] = new File(testFolder, "Withfaketimestamp.hbm.xml");		
+		Metadata metadata = MetadataSourcesFactory
+				.createNativeSources(null, files, null)
+				.buildMetadata();
 		PersistentClass cl = metadata.getEntityBinding( "WithVersion" );				
 		Property version = cl.getVersion();
 		Assert.assertNotNull(version);
