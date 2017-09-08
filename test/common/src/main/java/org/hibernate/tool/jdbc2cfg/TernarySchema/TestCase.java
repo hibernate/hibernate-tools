@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.mapping.PersistentClass;
@@ -18,6 +17,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -38,7 +38,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private Metadata metadata = null;
+	private MetadataSources metadataSources = null;
 
 	@Before
 	public void setUp() {
@@ -52,9 +52,8 @@ public class TestCase {
 				return selections;
 			}
 		};           
-	    metadata = MetadataSourcesFactory
-	    		.createJdbcSources(c, null, true)
-	    		.buildMetadata();
+	    metadataSources = MetadataSourcesFactory
+	    		.createJdbcSources(c, null, true);
 	}
 
 	@After
@@ -66,7 +65,7 @@ public class TestCase {
 	@Ignore 
 	@Test
 	public void testTernaryModel() throws SQLException {
-		assertMultiSchema(metadata);	
+		assertMultiSchema(metadataSources.buildMetadata());	
 	}
 
 	// TODO Investigate the ignored test: HBX-1410
@@ -75,18 +74,20 @@ public class TestCase {
 	public void testGeneration() {		
 		File outputFolder = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadata(metadata);
+		hme.setMetadataSources(metadataSources);
 		hme.setOutputDirectory(outputFolder);
 		hme.start();			
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
 		Assert.assertEquals(3, outputFolder.listFiles().length);
-		MetadataSources metadataSources = new MetadataSources()
-		    .addFile( new File(outputFolder, "Role.hbm.xml") )
-		    .addFile( new File(outputFolder, "User.hbm.xml") )
-		    .addFile( new File(outputFolder, "Plainrole.hbm.xml"));		
-		assertMultiSchema(metadataSources.buildMetadata());
+		File[] files = new File[3];
+		files[0] = new File(outputFolder, "Role.hbm.xml");
+		files[0] = new File(outputFolder, "User.hbm.xml");
+		files[0] = new File(outputFolder, "Plainrole.hbm.xml");
+		assertMultiSchema(MetadataSourcesFactory
+				.createNativeSources(null, files, null)
+				.buildMetadata());
 	}
 	
 	private void assertMultiSchema(Metadata metadata) {
