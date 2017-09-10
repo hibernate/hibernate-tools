@@ -59,10 +59,6 @@ public abstract class AbstractExporter implements Exporter {
 		return metadata;
 	}
 	
-	public void setMetadata(Metadata metadata) {
-		this.metadata = metadata;
-	}
-
 	public File getOutputDirectory() {
 		return outputdir;
 	}

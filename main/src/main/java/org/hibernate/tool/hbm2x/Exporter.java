@@ -20,10 +20,6 @@ public interface Exporter {
 	 */
 	public void setMetadataSources(MetadataSources metadataSources);
 		
-	/** 
-	 * @param metadata An Hibernate {@link org.hibernate.boot.Metadata} or subclass instance that defines the hibernate meta model to be exported.
-	 */
-	public void setMetadata(Metadata metadata);
 
 	public Metadata getMetadata();
 	
