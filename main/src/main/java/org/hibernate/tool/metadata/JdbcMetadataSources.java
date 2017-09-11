@@ -23,9 +23,6 @@ public class JdbcMetadataSources
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
-		if (cfgXmlFile != null) {
-			configure(cfgXmlFile);
-		}
 		if (properties != null) {
 			getProperties().putAll(properties);
 		}
