@@ -40,14 +40,10 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
 	protected MetadataSources createMetadataSources() {
-		File configurationFile = getConfigurationFile();
-		File[] files = getFiles();
 		Properties properties = loadPropertiesFile();
 		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
 		return MetadataSourcesFactory
 				.createJdbcSources(
-						configurationFile, 
-						files, 
 						res, 
 						properties, 
 						preferBasicCompositeIds);
