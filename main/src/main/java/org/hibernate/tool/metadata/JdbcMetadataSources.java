@@ -26,15 +26,6 @@ public class JdbcMetadataSources
 		if (cfgXmlFile != null) {
 			configure(cfgXmlFile);
 		}
-		if (mappingFiles != null) {
-			for (File file : mappingFiles) {
-				if (file.getName().endsWith(".jar")) {
-					addJar(file); 
-				} else {
-					addFile(file);
-				}
-			}
-		}
 		if (properties != null) {
 			getProperties().putAll(properties);
 		}
