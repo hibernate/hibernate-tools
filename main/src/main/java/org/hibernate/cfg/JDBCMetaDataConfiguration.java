@@ -6,7 +6,6 @@ package org.hibernate.cfg;
 
 import org.dom4j.Element;
 import org.hibernate.MappingException;
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -135,11 +134,6 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 				buildMapping(getMetadata()));		
 	}
 	
-	@Override 
-	public SessionFactory buildSessionFactory() {
-		return getMetadata().buildSessionFactory();
-	}
-
 	static private Mapping buildMapping(final Metadata metadata) {
 		return new Mapping() {
 			/**
