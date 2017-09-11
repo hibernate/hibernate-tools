@@ -22,7 +22,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -43,7 +43,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
 
 	@Before

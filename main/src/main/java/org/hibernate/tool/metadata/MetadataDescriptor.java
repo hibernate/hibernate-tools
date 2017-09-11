@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 
-public interface MetadataSources {
+public interface MetadataDescriptor {
 	
 	Metadata buildMetadata();
 	

@@ -9,7 +9,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 public class HibernateUtil {
@@ -42,7 +42,7 @@ public class HibernateUtil {
 		return null;
 	}
 	
-	public static MetadataSources initializeMetadataSources(
+	public static MetadataDescriptor initializeMetadataSources(
 			Object test, 
 			String[] hbmResourceNames, 
 			File hbmFileDir) {
@@ -57,7 +57,7 @@ public class HibernateUtil {
 	}
 	
 	public static void addAnnotatedClass(
-			MetadataSources metadataSources, 
+			MetadataDescriptor metadataSources, 
 			Class<?> annotatedClass) {
 		try {
 			Field metadataSourcesField = metadataSources

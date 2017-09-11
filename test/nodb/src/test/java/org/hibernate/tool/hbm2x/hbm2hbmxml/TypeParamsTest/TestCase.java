@@ -32,7 +32,7 @@ import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -64,10 +64,10 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataSources(metadataSources);
+		hbmexporter.setMetadataSources(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -89,9 +89,9 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { orderHbmXml };
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
 				.createNativeSources(null, files, properties);
-        Assert.assertNotNull(metadataSources.buildMetadata());
+        Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }
 
 	@Test

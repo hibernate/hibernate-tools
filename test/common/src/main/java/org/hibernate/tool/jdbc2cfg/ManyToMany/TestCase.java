@@ -13,7 +13,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -119,7 +119,7 @@ public class TestCase {
 	@Test
 	public void testGenerateAndReadable() {
 		
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataSources = MetadataSourcesFactory
 				.createJdbcSources(null, null, true);
 		File outputDir = temporaryFolder.getRoot();
 		

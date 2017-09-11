@@ -10,7 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.DocExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -55,7 +55,7 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		DocExporter exporter = new DocExporter();
 		Properties properties = new Properties();
@@ -72,7 +72,7 @@ public class TestCase {
 		ignoreDot =  !dotSpecified;
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.getProperties().putAll(properties);
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}

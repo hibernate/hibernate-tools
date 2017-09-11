@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -45,10 +45,10 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new HibernateConfigurationExporter();
-		cfgexporter.setMetadataSources(metadataSources);
+		cfgexporter.setMetadataSources(metadataDescriptor);
 		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}

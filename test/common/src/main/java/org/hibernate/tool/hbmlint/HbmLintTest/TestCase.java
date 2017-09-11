@@ -8,7 +8,7 @@ import org.hibernate.tool.hbmlint.HbmLint;
 import org.hibernate.tool.hbmlint.detector.BadCachingDetector;
 import org.hibernate.tool.hbmlint.detector.InstrumentationDetector;
 import org.hibernate.tool.hbmlint.detector.ShadowedIdentifierDetector;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class TestCase {
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 	
 	@Before
 	public void setUp() {

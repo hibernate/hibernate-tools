@@ -8,7 +8,7 @@ import java.io.File;
 
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,10 +38,10 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}

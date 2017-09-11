@@ -25,7 +25,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.metadata.NativeMetadataSources;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -47,7 +47,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 	private Metadata metadata = null;
 
 	@Before

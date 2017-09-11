@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public abstract class AbstractExporter implements Exporter {
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
 	private Metadata metadata = null;
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 
 	private Iterator<Entry<Object, Object>> iterator;
 
@@ -44,11 +44,11 @@ public abstract class AbstractExporter implements Exporter {
 		c2j = new Cfg2JavaTool();		
 	}
 	
-	public void setMetadataSources(MetadataSources metadataSources) {
+	public void setMetadataSources(MetadataDescriptor metadataSources) {
 		this.metadataSources = metadataSources;
 	}
 	
-	protected MetadataSources getMetadataSources() {
+	protected MetadataDescriptor getMetadataSources() {
 		return metadataSources;
 	}
 	

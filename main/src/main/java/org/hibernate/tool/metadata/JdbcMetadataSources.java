@@ -7,7 +7,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
 public class JdbcMetadataSources 
 	extends JDBCMetaDataConfiguration 
-	implements MetadataSources {
+	implements MetadataDescriptor {
 	
 	public JdbcMetadataSources(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 

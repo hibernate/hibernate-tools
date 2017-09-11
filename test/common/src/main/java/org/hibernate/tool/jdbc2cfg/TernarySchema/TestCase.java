@@ -17,7 +17,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -38,7 +38,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 
 	@Before
 	public void setUp() {

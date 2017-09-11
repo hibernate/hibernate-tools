@@ -11,7 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
@@ -33,7 +33,7 @@ import org.junit.rules.TemporaryFolder;
 public class TestCase {
 	
 	private Metadata metadata = null;
-	private MetadataSources metadataSources = null;
+	private MetadataDescriptor metadataSources = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();

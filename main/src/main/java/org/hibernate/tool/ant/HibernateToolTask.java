@@ -20,7 +20,7 @@ import org.apache.tools.ant.types.PropertySet;
 import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 
 /**
  * @author max
@@ -278,7 +278,7 @@ public class HibernateToolTask extends Task {
 	/**
 	 * @return
 	 */
-	public MetadataSources getMetadataSources() {
+	public MetadataDescriptor getMetadataSources() {
 		return configurationTask.getMetadataSources();
 	}
 	

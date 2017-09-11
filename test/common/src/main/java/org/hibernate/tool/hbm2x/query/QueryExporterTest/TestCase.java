@@ -13,7 +13,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2x.QueryExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -61,7 +61,7 @@ public class TestCase {
 	@Test
 	public void testQueryExporter() throws Exception {		
 		QueryExporter exporter = new QueryExporter();
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataSources = MetadataSourcesFactory
 				.createNativeSources(
 						null, 
 						new File[] { userGroupHbmXmlFile }, 
@@ -89,7 +89,7 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	private MetadataSources buildMetadataSources() {
+	private MetadataDescriptor buildMetadataSources() {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.HBM2DDL_AUTO, "update");
 		return MetadataSourcesFactory

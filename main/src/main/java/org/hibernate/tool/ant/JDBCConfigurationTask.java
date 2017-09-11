@@ -15,7 +15,7 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.util.ReflectHelper;
 
@@ -39,7 +39,7 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 	public JDBCConfigurationTask() {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
-	protected MetadataSources createMetadataSources() {
+	protected MetadataDescriptor createMetadataSources() {
 		Properties properties = loadPropertiesFile();
 		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
 		return MetadataSourcesFactory

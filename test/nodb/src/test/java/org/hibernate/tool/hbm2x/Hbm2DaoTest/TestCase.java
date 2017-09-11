@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -43,13 +43,13 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter javaExporter = new POJOExporter();
-		javaExporter.setMetadataSources(metadataSources);
+		javaExporter.setMetadataSources(metadataDescriptor);
 		javaExporter.setOutputDirectory(outputDir);
 		POJOExporter exporter = new DAOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");

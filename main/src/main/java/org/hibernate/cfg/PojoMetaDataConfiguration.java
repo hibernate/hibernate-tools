@@ -18,7 +18,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.TypeFactory;
@@ -26,7 +26,7 @@ import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
 import org.hibernate.usertype.UserType;
 
-public class PojoMetaDataConfiguration extends Configuration implements MetadataSources {
+public class PojoMetaDataConfiguration extends Configuration implements MetadataDescriptor {
 
 	private StandardServiceRegistry serviceRegistry = null;
 	

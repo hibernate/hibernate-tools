@@ -34,7 +34,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -69,11 +69,11 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
-		metadata = metadataSources.buildMetadata();
+		metadata = metadataDescriptor.buildMetadata();
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataSources(metadataSources);
+		hbmexporter.setMetadataSources(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -111,9 +111,9 @@ public class TestCase {
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/PropertySet.hbm.xml"));
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
 				.createNativeSources(null, files.toArray(new File[4]), properties);
-        Assert.assertNotNull(metadataSources.buildMetadata());
+        Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }
 
 	@Test

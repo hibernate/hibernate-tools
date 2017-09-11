@@ -13,7 +13,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -83,7 +83,7 @@ public class TestCase {
 		loader.close();
 	}
 	
-	private MetadataSources createMetadataSources() {
+	private MetadataDescriptor createMetadataSources() {
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();

@@ -18,7 +18,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -55,10 +55,10 @@ public class TestCase {
 		outputDir.mkdir();		
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		MetadataSources metadataSources = HibernateUtil
+		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();	
-		hbmexporter.setMetadataSources(metadataSources);
+		hbmexporter.setMetadataSources(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();		
 	}

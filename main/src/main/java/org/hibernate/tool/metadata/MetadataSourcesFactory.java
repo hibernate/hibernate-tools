@@ -7,7 +7,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
 public class MetadataSourcesFactory {
 	
-	public static MetadataSources createJdbcSources(
+	public static MetadataDescriptor createJdbcSources(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
@@ -17,11 +17,11 @@ public class MetadataSourcesFactory {
 				preferBasicCompositeIds);
 	}
 	
-	public static MetadataSources createJpaSources(String persistenceUnit, Properties properties) {
+	public static MetadataDescriptor createJpaSources(String persistenceUnit, Properties properties) {
 		return new JpaMetadataSources(persistenceUnit, properties);
 	}
 	
-	public static MetadataSources createNativeSources(
+	public static MetadataDescriptor createNativeSources(
 			File cfgXmlFile,
 			File[] mappingFiles,
 			Properties properties) {
@@ -31,7 +31,7 @@ public class MetadataSourcesFactory {
 				properties);
 	}
 	
-	public static MetadataSources createPojoSources() {
+	public static MetadataDescriptor createPojoSources() {
 		return new PojoMetadataSources();
 	}
 	

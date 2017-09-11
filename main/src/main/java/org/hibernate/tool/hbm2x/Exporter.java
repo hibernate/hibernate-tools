@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 
 /**
  * @author max and david
@@ -16,9 +16,9 @@ import org.hibernate.tool.metadata.MetadataSources;
 public interface Exporter {
 	
 	/** 
-	 * @param metadataSources An Hibernate {@link org.hibernate.tool.metadata.MetadataSources} or subclass instance that defines the hibernate meta model to be exported.
+	 * @param metadataSources An Hibernate {@link org.hibernate.tool.metadata.MetadataDescriptor} or subclass instance that defines the hibernate meta model to be exported.
 	 */
-	public void setMetadataSources(MetadataSources metadataSources);
+	public void setMetadataSources(MetadataDescriptor metadataSources);
 		
 
 	public Metadata getMetadata();

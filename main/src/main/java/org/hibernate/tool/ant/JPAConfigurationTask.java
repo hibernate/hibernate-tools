@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.hibernate.HibernateException;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 public class JPAConfigurationTask extends ConfigurationTask {
@@ -16,7 +16,7 @@ public class JPAConfigurationTask extends ConfigurationTask {
 		setDescription("JPA Configuration");
 	}
 	
-	protected MetadataSources createMetadataSources() {
+	protected MetadataDescriptor createMetadataSources() {
 		try {
 			Properties overrides = new Properties();
 			Properties p = loadPropertiesFile();	

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -54,7 +54,7 @@ public class HibernateUtilTest {
 	public void testAddAnnotatedClass() {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataSources = MetadataSourcesFactory
 				.createNativeSources(null, null, properties);
 		Assert.assertNull(metadataSources
 				.buildMetadata()

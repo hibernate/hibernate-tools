@@ -8,7 +8,7 @@ import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-public class NativeMetadataSources implements MetadataSources {
+public class NativeMetadataSources implements MetadataDescriptor {
 	
 	private Properties properties = new Properties();
 	private org.hibernate.boot.MetadataSources metadataSources = null;

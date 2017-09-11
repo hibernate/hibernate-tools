@@ -12,7 +12,7 @@ import java.util.Properties;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -64,10 +64,10 @@ public class TestCase {
 		fileWriter.close();
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataSources metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
 				.createNativeSources(null, new File[] { hbmXml }, properties);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		// copy interface EntityProxy.java
