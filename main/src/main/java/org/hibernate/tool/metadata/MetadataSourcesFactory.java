@@ -11,7 +11,7 @@ public class MetadataSourcesFactory {
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
-		return new JdbcMetadataSources(
+		return new JdbcMetadataDescriptor(
 				reverseEngineeringStrategy, 
 				properties,
 				preferBasicCompositeIds);

@@ -5,11 +5,11 @@ import java.util.Properties;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
-public class JdbcMetadataSources 
+public class JdbcMetadataDescriptor 
 	extends JDBCMetaDataConfiguration 
 	implements MetadataDescriptor {
 	
-	public JdbcMetadataSources(
+	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
