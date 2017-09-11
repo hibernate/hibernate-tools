@@ -18,7 +18,7 @@ public class MetadataSourcesFactory {
 	}
 	
 	public static MetadataDescriptor createJpaSources(String persistenceUnit, Properties properties) {
-		return new JpaMetadataSources(persistenceUnit, properties);
+		return new JpaMetadataDescriptor(persistenceUnit, properties);
 	}
 	
 	public static MetadataDescriptor createNativeSources(

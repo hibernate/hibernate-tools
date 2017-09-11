@@ -9,12 +9,12 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 
-public class JpaMetadataSources implements MetadataDescriptor {
+public class JpaMetadataDescriptor implements MetadataDescriptor {
 
 	private Properties properties = new Properties();
 	private Metadata metadata = null;
 	
-	public JpaMetadataSources(
+	public JpaMetadataDescriptor(
 			final String persistenceUnit, 
 			final Properties properties) {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
