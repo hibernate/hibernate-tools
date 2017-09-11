@@ -1,6 +1,5 @@
 package org.hibernate.tool.metadata;
 
-import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -11,15 +10,6 @@ public class JdbcMetadataSources
 	implements MetadataSources {
 	
 	public JdbcMetadataSources(
-			ReverseEngineeringStrategy reverseEngineeringStrategy, 
-			Properties properties,
-			boolean preferBasicCompositeIds) {
-		this(null, null, reverseEngineeringStrategy, properties, preferBasicCompositeIds);
-	}
-
-		public JdbcMetadataSources(
-			File cfgXmlFile, 
-			File[] mappingFiles, 
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
