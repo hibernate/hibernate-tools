@@ -1,6 +1,7 @@
 package org.hibernate.tools.test.util;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -8,6 +9,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 
 public class HibernateUtil {
@@ -40,7 +42,7 @@ public class HibernateUtil {
 		return null;
 	}
 	
-	public static org.hibernate.tool.metadata.MetadataSources initializeMetadataSources(
+	public static MetadataSources initializeMetadataSources(
 			Object test, 
 			String[] hbmResourceNames, 
 			File hbmFileDir) {
@@ -52,6 +54,22 @@ public class HibernateUtil {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		return MetadataSourcesFactory.createNativeSources(null, hbmFiles, properties);
+	}
+	
+	public static void addAnnotatedClass(
+			MetadataSources metadataSources, 
+			Class<?> annotatedClass) {
+		try {
+			Field metadataSourcesField = metadataSources
+					.getClass()
+					.getDeclaredField("metadataSources");
+			metadataSourcesField.setAccessible(true);
+			org.hibernate.boot.MetadataSources bootSources = 
+					(org.hibernate.boot.MetadataSources)metadataSourcesField.get(metadataSources);
+			bootSources.addAnnotatedClass(annotatedClass);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

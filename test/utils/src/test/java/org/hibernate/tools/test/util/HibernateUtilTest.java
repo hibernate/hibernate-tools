@@ -1,9 +1,16 @@
 package org.hibernate.tools.test.util;
 
 import java.util.Collections;
+import java.util.Properties;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.metadata.MetadataSources;
+import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +48,28 @@ public class HibernateUtilTest {
 				HibernateUtil.Dialect.class, 
 				metadata.getDatabase().getDialect().getClass());
 		Assert.assertNotNull(metadata.getEntityBinding("HelloWorld"));
+	}
+	
+	@Test
+	public void testAddAnnotatedClass() {
+		Properties properties = new Properties();
+		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		MetadataSources metadataSources = MetadataSourcesFactory
+				.createNativeSources(null, null, properties);
+		Assert.assertNull(metadataSources
+				.buildMetadata()
+				.getEntityBinding(
+						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
+		HibernateUtil.addAnnotatedClass(metadataSources, Dummy.class);
+		Assert.assertNotNull(metadataSources
+				.buildMetadata()
+				.getEntityBinding(
+						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
+	}
+	
+	@Entity
+	private class Dummy {
+		@Id public int id;
 	}
 
 }
