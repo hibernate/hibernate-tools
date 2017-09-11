@@ -28,6 +28,7 @@ import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataSources;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
 import org.hibernate.tool.metadata.NativeMetadataSources;
+import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -210,15 +211,15 @@ public class TestCase {
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 			ServiceRegistry serviceRegistry = builder.build();			
 			NativeMetadataSources mds = new NativeMetadataSources(null, null, null);
-			mds.addAnnotatedClass(personClass)
-				.addAnnotatedClass(multiPersonClass)
-				.addAnnotatedClass(addressMultiPerson)
-				.addAnnotatedClass(addressMultiPersonId)
-				.addAnnotatedClass(addressPerson)
-				.addAnnotatedClass(multiPersonIdClass)
-				.addAnnotatedClass(middleClass)
-				.addAnnotatedClass(rightClass)
-				.addAnnotatedClass(leftClass);
+			HibernateUtil.addAnnotatedClass(mds, personClass);
+			HibernateUtil.addAnnotatedClass(mds, multiPersonClass);
+			HibernateUtil.addAnnotatedClass(mds, addressMultiPerson);
+			HibernateUtil.addAnnotatedClass(mds, addressMultiPersonId);
+			HibernateUtil.addAnnotatedClass(mds, addressPerson);
+			HibernateUtil.addAnnotatedClass(mds, multiPersonIdClass);
+			HibernateUtil.addAnnotatedClass(mds, middleClass);
+			HibernateUtil.addAnnotatedClass(mds, rightClass);
+			HibernateUtil.addAnnotatedClass(mds, leftClass);
 			Metadata metadata = mds.buildMetadata();			
 			new SchemaValidator().validate(metadata, serviceRegistry);
         } finally {
