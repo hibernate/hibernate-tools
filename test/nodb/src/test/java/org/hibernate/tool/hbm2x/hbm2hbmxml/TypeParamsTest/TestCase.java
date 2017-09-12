@@ -90,7 +90,7 @@ public class TestCase {
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { orderHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
-				.createNativeSources(null, files, properties);
+				.createNativeDescriptor(null, files, properties);
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }
 

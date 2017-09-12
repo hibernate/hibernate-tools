@@ -62,7 +62,7 @@ public class TestCase {
 	public void testQueryExporter() throws Exception {		
 		QueryExporter exporter = new QueryExporter();
 		MetadataDescriptor metadataSources = MetadataDescriptorFactory
-				.createNativeSources(
+				.createNativeDescriptor(
 						null, 
 						new File[] { userGroupHbmXmlFile }, 
 						null);
@@ -93,7 +93,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.HBM2DDL_AUTO, "update");
 		return MetadataDescriptorFactory
-				.createNativeSources(
+				.createNativeDescriptor(
 						null, 
 						new File[] { userGroupHbmXmlFile }, 
 						properties);

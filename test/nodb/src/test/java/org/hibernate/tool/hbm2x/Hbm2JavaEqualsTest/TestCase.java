@@ -65,7 +65,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
-				.createNativeSources(null, new File[] { hbmXml }, properties);
+				.createNativeDescriptor(null, new File[] { hbmXml }, properties);
 		Exporter exporter = new POJOExporter();
 		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);

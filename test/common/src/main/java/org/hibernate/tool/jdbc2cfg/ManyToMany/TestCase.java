@@ -148,7 +148,7 @@ public class TestCase {
 		files[2] = new File(outputDir, "WorksOnContext.hbm.xml");
 		
 		Assert.assertNotNull(MetadataDescriptorFactory
-				.createNativeSources(null, files, null)
+				.createNativeDescriptor(null, files, null)
 				.buildMetadata());
 		
 	}

@@ -77,7 +77,7 @@ public class TestCase {
 		files[2] = new File(testFolder, "Withrealtimestamp.hbm.xml");
 		files[3] = new File(testFolder, "Withfaketimestamp.hbm.xml");		
 		Metadata metadata = MetadataDescriptorFactory
-				.createNativeSources(null, files, null)
+				.createNativeDescriptor(null, files, null)
 				.buildMetadata();
 		PersistentClass cl = metadata.getEntityBinding( "WithVersion" );				
 		Property version = cl.getVersion();

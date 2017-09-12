@@ -165,7 +165,7 @@ public class TestCase {
 		files[5] = new File(testFolder, "Customerorder.hbm.xml");
 		Thread.currentThread().setContextClassLoader(ucl);
 		SessionFactory factory = MetadataDescriptorFactory
-				.createNativeSources(null, files, null)
+				.createNativeDescriptor(null, files, null)
 				.buildMetadata()
 				.buildSessionFactory();
 		Session session = factory.openSession();

@@ -55,7 +55,7 @@ public class HibernateUtilTest {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataSources = MetadataDescriptorFactory
-				.createNativeSources(null, null, properties);
+				.createNativeDescriptor(null, null, properties);
 		Assert.assertNull(metadataSources
 				.buildMetadata()
 				.getEntityBinding(

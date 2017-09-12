@@ -53,7 +53,7 @@ public class ConfigurationTask extends Task {
 	
 	protected MetadataDescriptor createMetadataSources() {
 		return MetadataDescriptorFactory
-				.createNativeSources(
+				.createNativeDescriptor(
 						configurationFile, 
 						getFiles(), 
 						loadPropertiesFile());

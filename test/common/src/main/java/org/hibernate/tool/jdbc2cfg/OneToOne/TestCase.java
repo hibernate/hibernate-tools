@@ -165,7 +165,7 @@ public class TestCase {
 	        files[6] = new File(outputDir, "RightTable.hbm.xml");
 	        new SchemaValidator().validate(
 	        		MetadataDescriptorFactory
-	        			.createNativeSources(null, files, null)
+	        			.createNativeDescriptor(null, files, null)
 	        			.buildMetadata(), 
 	        		serviceRegistry);
 		} finally {

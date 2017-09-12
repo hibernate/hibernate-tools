@@ -21,7 +21,7 @@ public class MetadataDescriptorFactory {
 		return new JpaMetadataDescriptor(persistenceUnit, properties);
 	}
 	
-	public static MetadataDescriptor createNativeSources(
+	public static MetadataDescriptor createNativeDescriptor(
 			File cfgXmlFile,
 			File[] mappingFiles,
 			Properties properties) {

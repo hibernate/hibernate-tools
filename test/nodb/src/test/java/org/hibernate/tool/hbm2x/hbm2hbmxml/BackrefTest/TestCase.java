@@ -103,7 +103,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
-				.createNativeSources(null, files.toArray(new File[2]), properties);
+				.createNativeDescriptor(null, files.toArray(new File[2]), properties);
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }
 

@@ -87,7 +87,7 @@ public class TestCase {
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { searchHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
-				.createNativeSources(null, files, properties);
+				.createNativeDescriptor(null, files, properties);
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }

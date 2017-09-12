@@ -89,7 +89,7 @@ public class TestCase {
 		files[0] = new File(outputDir, "org/reveng/Child.hbm.xml");
 		files[1] = new File(outputDir, "org/reveng/Master.hbm.xml");
 		Metadata metadata = MetadataDescriptorFactory
-				.createNativeSources(null, files, null)
+				.createNativeDescriptor(null, files, null)
 				.buildMetadata();
 		Assert.assertNotNull(metadata.getEntityBinding("org.reveng.Child") );
 		Assert.assertNotNull(metadata.getEntityBinding("org.reveng.Master") );

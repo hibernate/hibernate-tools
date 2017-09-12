@@ -53,7 +53,7 @@ public class HibernateUtil {
 		}
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		return MetadataDescriptorFactory.createNativeSources(null, hbmFiles, properties);
+		return MetadataDescriptorFactory.createNativeDescriptor(null, hbmFiles, properties);
 	}
 	
 	public static void addAnnotatedClass(

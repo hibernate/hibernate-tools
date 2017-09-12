@@ -63,7 +63,7 @@ public class TestCase {
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   exporter.setMetadataSources(MetadataDescriptorFactory
-			   .createNativeSources(null, null, properties));
+			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
@@ -81,7 +81,7 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   exporter.setMetadataSources(MetadataDescriptorFactory
-			   .createNativeSources(null, null, properties));
+			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNotNull(
@@ -91,7 +91,7 @@ public class TestCase {
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
 	   exporter.setMetadataSources(MetadataDescriptorFactory
-			   .createNativeSources(null, null, properties));
+			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNull(

@@ -86,7 +86,7 @@ public class TestCase {
 		files[0] = new File(outputFolder, "User.hbm.xml");
 		files[0] = new File(outputFolder, "Plainrole.hbm.xml");
 		assertMultiSchema(MetadataDescriptorFactory
-				.createNativeSources(null, files, null)
+				.createNativeDescriptor(null, files, null)
 				.buildMetadata());
 	}
 	
