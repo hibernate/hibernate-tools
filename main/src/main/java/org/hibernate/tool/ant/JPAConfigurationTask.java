@@ -24,7 +24,7 @@ public class JPAConfigurationTask extends ConfigurationTask {
 				overrides.putAll( p );
 			}
 			return MetadataDescriptorFactory
-					.createJpaSources(persistenceUnit, overrides);
+					.createJpaDescriptor(persistenceUnit, overrides);
 		} 
 		catch(HibernateException t) {
 			Throwable cause = t.getCause();

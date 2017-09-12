@@ -17,7 +17,7 @@ public class MetadataDescriptorFactory {
 				preferBasicCompositeIds);
 	}
 	
-	public static MetadataDescriptor createJpaSources(String persistenceUnit, Properties properties) {
+	public static MetadataDescriptor createJpaDescriptor(String persistenceUnit, Properties properties) {
 		return new JpaMetadataDescriptor(persistenceUnit, properties);
 	}
 	
