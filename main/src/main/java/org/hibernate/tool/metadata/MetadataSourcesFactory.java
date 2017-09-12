@@ -25,7 +25,7 @@ public class MetadataSourcesFactory {
 			File cfgXmlFile,
 			File[] mappingFiles,
 			Properties properties) {
-		return new NativeMetadataSources(
+		return new NativeMetadataDescriptor(
 				cfgXmlFile, 
 				mappingFiles, 
 				properties);

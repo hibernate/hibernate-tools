@@ -27,7 +27,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataSourcesFactory;
-import org.hibernate.tool.metadata.NativeMetadataSources;
+import org.hibernate.tool.metadata.NativeMetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -210,7 +210,7 @@ public class TestCase {
 	        Thread.currentThread().setContextClassLoader(ucl);			
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 			ServiceRegistry serviceRegistry = builder.build();			
-			NativeMetadataSources mds = new NativeMetadataSources(null, null, null);
+			NativeMetadataDescriptor mds = new NativeMetadataDescriptor(null, null, null);
 			HibernateUtil.addAnnotatedClass(mds, personClass);
 			HibernateUtil.addAnnotatedClass(mds, multiPersonClass);
 			HibernateUtil.addAnnotatedClass(mds, addressMultiPerson);

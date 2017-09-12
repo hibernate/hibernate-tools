@@ -8,13 +8,13 @@ import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-public class NativeMetadataSources implements MetadataDescriptor {
+public class NativeMetadataDescriptor implements MetadataDescriptor {
 	
 	private Properties properties = new Properties();
 	private org.hibernate.boot.MetadataSources metadataSources = null;
 	private StandardServiceRegistryBuilder ssrb = null;
 		
-	public NativeMetadataSources(
+	public NativeMetadataDescriptor(
 			File cfgXmlFile, 
 			File[] mappingFiles, 
 			Properties properties) {
