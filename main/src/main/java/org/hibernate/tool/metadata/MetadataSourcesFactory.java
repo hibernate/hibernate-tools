@@ -32,7 +32,7 @@ public class MetadataSourcesFactory {
 	}
 	
 	public static MetadataDescriptor createPojoSources() {
-		return new PojoMetadataSources();
+		return new PojoMetadataDescriptor();
 	}
 	
 }
