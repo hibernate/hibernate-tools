@@ -50,7 +50,7 @@ public class TestCase {
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		List<Table> tables = getTables(MetadataDescriptorFactory
-				.createJdbcSources(res, null, true)
+				.createJdbcDescriptor(res, null, true)
 				.buildMetadata());
 		Assert.assertEquals(2,tables.size());	
 		Table catchild = (Table) tables.get(0);
@@ -74,7 +74,7 @@ public class TestCase {
 		ReverseEngineeringStrategy res = 
 				or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcSources(res, null, true)
+				.createJdbcDescriptor(res, null, true)
 				.buildMetadata();
 		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
 		Iterator<Table> iter = metadata.collectTableMappings().iterator();
@@ -93,7 +93,7 @@ public class TestCase {
 		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		List<Table> tables = getTables(MetadataDescriptorFactory
-				.createJdbcSources(null, properties, true)
+				.createJdbcDescriptor(null, properties, true)
 				.buildMetadata());
 		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);

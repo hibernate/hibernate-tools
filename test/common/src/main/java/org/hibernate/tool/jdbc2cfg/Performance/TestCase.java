@@ -38,7 +38,7 @@ public class TestCase {
 	@Test
 	public void testBasic() throws SQLException {	
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcSources(null, null, true)
+				.createJdbcDescriptor(null, null, true)
 				.buildMetadata();
 		JUnitUtil.assertIteratorContainsExactly(
 				"There should be " + TABLECOUNT + " tables!", 

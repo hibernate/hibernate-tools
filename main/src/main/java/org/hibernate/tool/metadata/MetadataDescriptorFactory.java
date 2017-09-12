@@ -7,7 +7,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
 public class MetadataDescriptorFactory {
 	
-	public static MetadataDescriptor createJdbcSources(
+	public static MetadataDescriptor createJdbcDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {

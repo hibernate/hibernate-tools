@@ -53,7 +53,7 @@ public class TestCase {
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		metadataSources = MetadataDescriptorFactory.createJdbcSources(null, null, true);
+		metadataSources = MetadataDescriptorFactory.createJdbcDescriptor(null, null, true);
 		metadata = metadataSources.buildMetadata();
 	}
 	

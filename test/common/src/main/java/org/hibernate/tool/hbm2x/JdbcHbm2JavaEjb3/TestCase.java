@@ -41,7 +41,7 @@ public class TestCase {
 		outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadataSources(MetadataDescriptorFactory
-				.createJdbcSources(null, null, true));
+				.createJdbcDescriptor(null, null, true));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");

@@ -28,7 +28,7 @@ public class TestCase {
 	@Test
 	public void testReadFromJDBC() throws Exception {
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcSources(null, null, true)
+				.createJdbcDescriptor(null, null, true)
 				.buildMetadata();
 		Assert.assertNotNull("WithRealTimestamp", metadata.getEntityBinding("WithRealTimestamp"));
 		Assert.assertNotNull("NoVersion", metadata.getEntityBinding("NoVersion"));
@@ -41,7 +41,7 @@ public class TestCase {
 		Assert.assertNotNull(
 				HibernateUtil.getTable(
 						MetadataDescriptorFactory
-							.createJdbcSources(null, null, true)
+							.createJdbcDescriptor(null, null, true)
 							.buildMetadata(), 
 						JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
 	}

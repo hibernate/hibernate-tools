@@ -53,7 +53,7 @@ public class TestCase {
 			}
 		};           
 	    metadataSources = MetadataDescriptorFactory
-	    		.createJdbcSources(c, null, true);
+	    		.createJdbcDescriptor(c, null, true);
 	}
 
 	@After

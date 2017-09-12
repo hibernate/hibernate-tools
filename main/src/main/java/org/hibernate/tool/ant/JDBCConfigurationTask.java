@@ -43,7 +43,7 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		Properties properties = loadPropertiesFile();
 		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
 		return MetadataDescriptorFactory
-				.createJdbcSources(
+				.createJdbcDescriptor(
 						res, 
 						properties, 
 						preferBasicCompositeIds);

@@ -92,7 +92,7 @@ public class TestCase {
 		ReverseEngineeringStrategy res = overrideRepository
 				.getReverseEngineeringStrategy(configurableNamingStrategy);
 		return MetadataDescriptorFactory
-				.createJdbcSources(res, null, true);
+				.createJdbcDescriptor(res, null, true);
 	}
 	
 }
