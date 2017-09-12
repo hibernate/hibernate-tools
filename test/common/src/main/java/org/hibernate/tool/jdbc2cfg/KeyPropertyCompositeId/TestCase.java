@@ -23,7 +23,7 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -50,7 +50,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
-		metadataSources = MetadataSourcesFactory
+		metadataSources = MetadataDescriptorFactory
 				.createJdbcSources(reverseEngineeringStrategy, null, false);
 	}
 
@@ -164,7 +164,7 @@ public class TestCase {
 		files[4] = new File(testFolder, "Lineitem.hbm.xml");
 		files[5] = new File(testFolder, "Customerorder.hbm.xml");
 		Thread.currentThread().setContextClassLoader(ucl);
-		SessionFactory factory = MetadataSourcesFactory
+		SessionFactory factory = MetadataDescriptorFactory
 				.createNativeSources(null, files, null)
 				.buildMetadata()
 				.buildSessionFactory();

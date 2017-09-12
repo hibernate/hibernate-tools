@@ -26,7 +26,7 @@ import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.metadata.NativeMetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -53,7 +53,7 @@ public class TestCase {
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		metadataSources = MetadataSourcesFactory.createJdbcSources(null, null, true);
+		metadataSources = MetadataDescriptorFactory.createJdbcSources(null, null, true);
 		metadata = metadataSources.buildMetadata();
 	}
 	
@@ -164,7 +164,7 @@ public class TestCase {
 	        files[5] = new File(outputDir, "LeftTable.hbm.xml");
 	        files[6] = new File(outputDir, "RightTable.hbm.xml");
 	        new SchemaValidator().validate(
-	        		MetadataSourcesFactory
+	        		MetadataDescriptorFactory
 	        			.createNativeSources(null, files, null)
 	        			.buildMetadata(), 
 	        		serviceRegistry);

@@ -19,7 +19,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -52,7 +52,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "OVRTEST"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(res, null, true)
 				.buildMetadata();
 		List<Table> tables = getTables(metadata);
@@ -77,7 +77,7 @@ public class TestCase {
 		or.addSchemaSelection(new SchemaSelection(null, null, "MASTER"));
 		or.addSchemaSelection(new SchemaSelection(null, null, "CHILD"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(res, null, true)
 				.buildMetadata();
 		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
@@ -97,7 +97,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
 		properties.setProperty(Environment.DEFAULT_SCHEMA, "OVRTEST");
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, properties, true)
 				.buildMetadata();
 		List<Table> tables = getTables(metadata);

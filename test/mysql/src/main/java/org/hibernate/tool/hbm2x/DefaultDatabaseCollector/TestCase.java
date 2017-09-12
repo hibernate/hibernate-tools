@@ -33,7 +33,7 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -64,7 +64,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(res, null, true)
 				.buildMetadata();
 		List<Table> tables = getTables(metadata);

@@ -26,7 +26,7 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -54,7 +54,7 @@ public class TestCase {
 		outputDir = temporaryFolder.getRoot();
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
-		metadataSources = MetadataSourcesFactory
+		metadataSources = MetadataDescriptorFactory
 				.createJdbcSources(configurableNamingStrategy, null, true);
 	}
 	
@@ -88,7 +88,7 @@ public class TestCase {
 		File[] files = new File[2];
 		files[0] = new File(outputDir, "org/reveng/Child.hbm.xml");
 		files[1] = new File(outputDir, "org/reveng/Master.hbm.xml");
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createNativeSources(null, files, null)
 				.buildMetadata();
 		Assert.assertNotNull(metadata.getEntityBinding("org.reveng.Child") );

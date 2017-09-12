@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadata = MetadataSourcesFactory
+		metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 	}

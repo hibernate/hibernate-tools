@@ -27,7 +27,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -55,7 +55,7 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(
 				new DefaultReverseEngineeringStrategy() );
-		metadata = MetadataSourcesFactory
+		metadata = MetadataDescriptorFactory
 				.createJdbcSources(res, null, true)
 				.buildMetadata();
 	}
@@ -145,7 +145,7 @@ public class TestCase {
 		OverrideRepository ox = new OverrideRepository();
 		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
 		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata md = MetadataSourcesFactory
+		Metadata md = MetadataDescriptorFactory
 				.createJdbcSources(strategy, null, true)
 				.buildMetadata();
 		

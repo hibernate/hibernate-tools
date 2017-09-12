@@ -15,7 +15,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -38,7 +38,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
-		metadata = MetadataSourcesFactory
+		metadata = MetadataDescriptorFactory
 				.createJdbcSources(reverseEngineeringStrategy, null, true)
 				.buildMetadata();
 	}

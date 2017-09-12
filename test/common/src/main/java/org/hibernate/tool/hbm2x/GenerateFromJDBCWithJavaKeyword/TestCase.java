@@ -14,7 +14,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -91,7 +91,7 @@ public class TestCase {
 		overrideRepository.addInputStream(inputStream);
 		ReverseEngineeringStrategy res = overrideRepository
 				.getReverseEngineeringStrategy(configurableNamingStrategy);
-		return MetadataSourcesFactory
+		return MetadataDescriptorFactory
 				.createJdbcSources(res, null, true);
 	}
 	

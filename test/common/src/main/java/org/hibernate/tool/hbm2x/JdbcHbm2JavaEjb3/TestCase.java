@@ -11,7 +11,7 @@ import java.util.List;
 import javax.persistence.Persistence;
 
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -40,7 +40,7 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(MetadataSourcesFactory
+		exporter.setMetadataSources(MetadataDescriptorFactory
 				.createJdbcSources(null, null, true));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);

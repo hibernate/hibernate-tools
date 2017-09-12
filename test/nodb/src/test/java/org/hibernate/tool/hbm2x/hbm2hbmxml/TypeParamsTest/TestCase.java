@@ -33,7 +33,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
@@ -89,7 +89,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { orderHbmXml };
-		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeSources(null, files, properties);
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }

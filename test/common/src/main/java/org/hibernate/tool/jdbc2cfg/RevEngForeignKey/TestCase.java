@@ -14,7 +14,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -42,7 +42,7 @@ public class TestCase {
 
 	@Test
 	public void testDefaultBiDirectional() {
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		PersistentClass project = metadata.getEntityBinding("Project");
@@ -69,7 +69,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(repository, null, true)
 				.buildMetadata();			
 		PersistentClass project = metadata.getEntityBinding("Project");		
@@ -101,7 +101,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(repository, null, true)
 				.buildMetadata();
 		PersistentClass person = metadata.getEntityBinding("Person");
@@ -126,7 +126,7 @@ public class TestCase {
 			OverrideRepository or = new OverrideRepository();
 			or.addResource(BAD_FOREIGNKEY_XML);
 			ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-			MetadataSourcesFactory
+			MetadataDescriptorFactory
 					.createJdbcSources(repository, null, true)
 					.buildMetadata();
 			Assert.fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
@@ -137,7 +137,7 @@ public class TestCase {
 
 	@Test
 	public void testManyToOneAttributeDefaults() {	
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
@@ -153,7 +153,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();	
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(repository, null, true)
 				.buildMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");

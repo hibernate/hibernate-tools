@@ -18,7 +18,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.visitor.DefaultValueVisitor;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -52,7 +52,7 @@ public class TestCase {
 				return selections;
 			}
 		};           
-	    metadataSources = MetadataSourcesFactory
+	    metadataSources = MetadataDescriptorFactory
 	    		.createJdbcSources(c, null, true);
 	}
 
@@ -85,7 +85,7 @@ public class TestCase {
 		files[0] = new File(outputFolder, "Role.hbm.xml");
 		files[0] = new File(outputFolder, "User.hbm.xml");
 		files[0] = new File(outputFolder, "Plainrole.hbm.xml");
-		assertMultiSchema(MetadataSourcesFactory
+		assertMultiSchema(MetadataDescriptorFactory
 				.createNativeSources(null, files, null)
 				.buildMetadata());
 	}

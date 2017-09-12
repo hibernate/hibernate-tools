@@ -10,7 +10,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 
 public class HibernateUtil {
 	
@@ -53,7 +53,7 @@ public class HibernateUtil {
 		}
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		return MetadataSourcesFactory.createNativeSources(null, hbmFiles, properties);
+		return MetadataDescriptorFactory.createNativeSources(null, hbmFiles, properties);
 	}
 	
 	public static void addAnnotatedClass(

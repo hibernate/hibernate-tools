@@ -11,7 +11,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -62,7 +62,7 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataSourcesFactory
+	   exporter.setMetadataSources(MetadataDescriptorFactory
 			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
@@ -80,7 +80,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataSourcesFactory
+	   exporter.setMetadataSources(MetadataDescriptorFactory
 			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
@@ -90,7 +90,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataSourcesFactory
+	   exporter.setMetadataSources(MetadataDescriptorFactory
 			   .createNativeSources(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();

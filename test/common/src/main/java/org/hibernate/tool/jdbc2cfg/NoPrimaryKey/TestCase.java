@@ -4,7 +4,7 @@
  */
 package org.hibernate.tool.jdbc2cfg.NoPrimaryKey;
 
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -32,7 +32,7 @@ public class TestCase {
 	@Test
 	public void testMe() {
 		Assert.assertNotNull(
-			MetadataSourcesFactory
+			MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata());
 	}

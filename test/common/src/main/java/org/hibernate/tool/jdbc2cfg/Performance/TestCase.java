@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -37,7 +37,7 @@ public class TestCase {
 
 	@Test
 	public void testBasic() throws SQLException {	
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		JUnitUtil.assertIteratorContainsExactly(

@@ -19,7 +19,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -84,7 +84,7 @@ public class TestCase {
         hbmFiles[1] = new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml");
         hbmFiles[2] = new File(outputDir, "org/hibernate/tool/hbm2x/Order.hbm.xml");
         hbmFiles[3] = new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml");       
-        Metadata metadata = MetadataSourcesFactory
+        Metadata metadata = MetadataDescriptorFactory
         		.createNativeSources(null, hbmFiles, properties)
         		.buildMetadata();
         Assert.assertNotNull(metadata);      

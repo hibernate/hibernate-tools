@@ -12,7 +12,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.IntegerType;
@@ -41,7 +41,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadataSources = MetadataSourcesFactory
+		metadataSources = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true);
 		metadata = metadataSources
 				.buildMetadata();
@@ -76,7 +76,7 @@ public class TestCase {
 		files[1] = new File(testFolder, "Noversion.hbm.xml");
 		files[2] = new File(testFolder, "Withrealtimestamp.hbm.xml");
 		files[3] = new File(testFolder, "Withfaketimestamp.hbm.xml");		
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createNativeSources(null, files, null)
 				.buildMetadata();
 		PersistentClass cl = metadata.getEntityBinding( "WithVersion" );				

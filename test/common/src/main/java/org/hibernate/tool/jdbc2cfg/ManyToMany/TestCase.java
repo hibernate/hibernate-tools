@@ -14,7 +14,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -47,7 +47,7 @@ public class TestCase {
         
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
-        Metadata metadata =  MetadataSourcesFactory
+        Metadata metadata =  MetadataDescriptorFactory
         		.createJdbcSources(c, null, true)
         		.buildMetadata();
 
@@ -77,7 +77,7 @@ public class TestCase {
 	
 	@Test
 	public void testAutoCreation() {
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		
@@ -102,7 +102,7 @@ public class TestCase {
 
 	@Test
 	public void testFalsePositive() {
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();	    
         Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
@@ -110,7 +110,7 @@ public class TestCase {
 
 	@Test
 	public void testBuildMappings() {		
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		Assert.assertNotNull(metadata);	
@@ -119,7 +119,7 @@ public class TestCase {
 	@Test
 	public void testGenerateAndReadable() {
 		
-		MetadataDescriptor metadataSources = MetadataSourcesFactory
+		MetadataDescriptor metadataSources = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true);
 		File outputDir = temporaryFolder.getRoot();
 		
@@ -147,7 +147,7 @@ public class TestCase {
 		files[1] = new File(outputDir, "Project.hbm.xml");
 		files[2] = new File(outputDir, "WorksOnContext.hbm.xml");
 		
-		Assert.assertNotNull(MetadataSourcesFactory
+		Assert.assertNotNull(MetadataDescriptorFactory
 				.createNativeSources(null, files, null)
 				.buildMetadata());
 		

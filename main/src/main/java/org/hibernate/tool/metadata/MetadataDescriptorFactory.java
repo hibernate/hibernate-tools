@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 
-public class MetadataSourcesFactory {
+public class MetadataDescriptorFactory {
 	
 	public static MetadataDescriptor createJdbcSources(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 

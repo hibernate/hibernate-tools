@@ -19,7 +19,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 
 /**
  * @author max
@@ -52,7 +52,7 @@ public class ConfigurationTask extends Task {
 	}
 	
 	protected MetadataDescriptor createMetadataSources() {
-		return MetadataSourcesFactory
+		return MetadataDescriptorFactory
 				.createNativeSources(
 						configurationFile, 
 						getFiles(), 

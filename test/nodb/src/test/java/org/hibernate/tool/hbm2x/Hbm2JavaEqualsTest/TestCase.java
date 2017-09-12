@@ -13,7 +13,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.Assert;
@@ -64,7 +64,7 @@ public class TestCase {
 		fileWriter.close();
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeSources(null, new File[] { hbmXml }, properties);
 		Exporter exporter = new POJOExporter();
 		exporter.setMetadataSources(metadataDescriptor);

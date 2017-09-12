@@ -22,7 +22,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -44,7 +44,7 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDefaultPackageName(PACKAGE_NAME));
-        metadata = MetadataSourcesFactory
+        metadata = MetadataDescriptorFactory
         		.createJdbcSources(c, null, true)
         		.buildMetadata();
 	}

@@ -6,7 +6,7 @@ import java.util.Properties;
 import org.apache.tools.ant.BuildException;
 import org.hibernate.HibernateException;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 
 public class JPAConfigurationTask extends ConfigurationTask {
 	
@@ -23,7 +23,7 @@ public class JPAConfigurationTask extends ConfigurationTask {
 			if(p!=null) {
 				overrides.putAll( p );
 			}
-			return MetadataSourcesFactory
+			return MetadataDescriptorFactory
 					.createJpaSources(persistenceUnit, overrides);
 		} 
 		catch(HibernateException t) {

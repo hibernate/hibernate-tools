@@ -35,7 +35,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.metadata.MetadataDescriptor;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
@@ -111,7 +111,7 @@ public class TestCase {
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/PropertySet.hbm.xml"));
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataDescriptor metadataDescriptor = MetadataSourcesFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeSources(null, files.toArray(new File[4]), properties);
         Assert.assertNotNull(metadataDescriptor.buildMetadata());
     }

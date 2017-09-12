@@ -1,7 +1,7 @@
 package org.hibernate.tool.cfg.JDBCMetaDataConfiguration;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.tool.metadata.MetadataSourcesFactory;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -27,7 +27,7 @@ public class TestCase {
 
 	@Test
 	public void testReadFromJDBC() throws Exception {
-		Metadata metadata = MetadataSourcesFactory
+		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcSources(null, null, true)
 				.buildMetadata();
 		Assert.assertNotNull("WithRealTimestamp", metadata.getEntityBinding("WithRealTimestamp"));
@@ -40,7 +40,7 @@ public class TestCase {
 	public void testGetTable() throws Exception {
 		Assert.assertNotNull(
 				HibernateUtil.getTable(
-						MetadataSourcesFactory
+						MetadataDescriptorFactory
 							.createJdbcSources(null, null, true)
 							.buildMetadata(), 
 						JdbcUtil.toIdentifier(this, "WITH_REAL_TIMESTAMP")));
