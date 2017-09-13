@@ -10,7 +10,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -18,7 +17,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.BasicTypeRegistration;
 import org.hibernate.boot.spi.ClassLoaderAccess;
-import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -85,13 +83,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 			);			
 		}
 		return metadataCollector;
-	}
-	
-	protected MetadataBuildingContext getMetadataBuildingContext() {
-		return new MetadataBuildingContextRootImpl(
-					getMetadataBuildingOptions(), 
-					getClassLoaderAccess(), 
-					getMetadataCollector());					
 	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
