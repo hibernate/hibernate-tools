@@ -8,7 +8,6 @@ import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
-import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
@@ -29,8 +28,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
-import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
 import org.hibernate.usertype.UserType;
 import org.slf4j.Logger;
@@ -46,7 +43,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	protected StandardServiceRegistry serviceRegistry = null;
 	
-	protected InFlightMetadataCollectorImpl metadataCollector;
 	protected ClassLoaderAccess classLoaderAccess = null;
 	protected MetadataBuildingOptions metadataBuildingOptions = null;
 	
@@ -70,19 +66,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 			);			
 		}
 		return classLoaderAccess;
-	}
-	
-	protected InFlightMetadataCollectorImpl getMetadataCollector() {
-		if (metadataCollector == null) {
-			MetadataBuildingOptions options = getMetadataBuildingOptions();		
-			BasicTypeRegistry basicTypeRegistry = handleTypes( options );
-			metadataCollector = 
-					new InFlightMetadataCollectorImpl(
-					options,
-					new TypeResolver( basicTypeRegistry, new TypeFactory() )
-			);			
-		}
-		return metadataCollector;
 	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
@@ -163,7 +146,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 		return revEngStrategy;
 	}
 
-	private static BasicTypeRegistry handleTypes(MetadataBuildingOptions options) {
+	protected static BasicTypeRegistry handleTypes(MetadataBuildingOptions options) {
 		final ClassLoaderService classLoaderService = options.getServiceRegistry().getService( ClassLoaderService.class );
 
 		// ultimately this needs to change a little bit to account for HHH-7792
