@@ -110,21 +110,6 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		return serviceRegistry;
 	}
 	
-	public void readFromJDBC() {
-		metadata = getMetadataCollector()
-				.buildMetadataInstance(getMetadataBuildingContext());
-		JDBCBinder binder = new JDBCBinder(
-				getServiceRegistry(), 
-				getProperties(), 
-				getMetadataBuildingContext(), 
-				getReverseEngineeringStrategy(), 
-				preferBasicCompositeIds());
-		binder.readFromDatabase(
-				null, 
-				null, 
-				buildMapping(metadata));		
-	}
-	
 	static protected Mapping buildMapping(final Metadata metadata) {
 		return new Mapping() {
 			/**
