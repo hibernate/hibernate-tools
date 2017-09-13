@@ -46,21 +46,21 @@ import org.slf4j.LoggerFactory;
 public class JDBCMetaDataConfiguration extends Configuration implements MetadataDescriptor {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
-	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-	private StandardServiceRegistry serviceRegistry = null;
+	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
+	protected StandardServiceRegistry serviceRegistry = null;
 	
-	private InFlightMetadataCollectorImpl metadataCollector;
-	private ClassLoaderAccess classLoaderAccess = null;
-	private MetadataBuildingOptions metadataBuildingOptions = null;
-	private MetadataBuildingContext metadataBuildingContext = null;
-	private Metadata metadata = null;
+	protected InFlightMetadataCollectorImpl metadataCollector;
+	protected ClassLoaderAccess classLoaderAccess = null;
+	protected MetadataBuildingOptions metadataBuildingOptions = null;
+	protected MetadataBuildingContext metadataBuildingContext = null;
+	protected Metadata metadata = null;
 	
 	public Metadata buildMetadata() {
 //		readFromJDBC();
 		return metadata;
 	}
     
-	private MetadataBuildingOptions getMetadataBuildingOptions() {
+	protected MetadataBuildingOptions getMetadataBuildingOptions() {
 		if (metadataBuildingOptions == null) {
 			metadataBuildingOptions = 
 					new MetadataBuildingOptionsImpl( getServiceRegistry() );
@@ -68,7 +68,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		return metadataBuildingOptions;
 	}
 	
-	private ClassLoaderAccess getClassLoaderAccess() {
+	protected ClassLoaderAccess getClassLoaderAccess() {
 		if (classLoaderAccess == null) {
 			MetadataBuildingOptions options = getMetadataBuildingOptions();		
 			ClassLoaderService classLoaderService = 
@@ -82,7 +82,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		return classLoaderAccess;
 	}
 	
-	private InFlightMetadataCollectorImpl getMetadataCollector() {
+	protected InFlightMetadataCollectorImpl getMetadataCollector() {
 		if (metadataCollector == null) {
 			MetadataBuildingOptions options = getMetadataBuildingOptions();		
 			BasicTypeRegistry basicTypeRegistry = handleTypes( options );
@@ -95,7 +95,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		return metadataCollector;
 	}
 	
-	private MetadataBuildingContext getMetadataBuildingContext() {
+	protected MetadataBuildingContext getMetadataBuildingContext() {
 		if (metadataBuildingContext == null) {
 			metadataBuildingContext = new MetadataBuildingContextRootImpl(
 					getMetadataBuildingOptions(), 
@@ -129,7 +129,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 				buildMapping(metadata));		
 	}
 	
-	static private Mapping buildMapping(final Metadata metadata) {
+	static protected Mapping buildMapping(final Metadata metadata) {
 		return new Mapping() {
 			/**
 			 * Returns the identifier type of a mapped class
