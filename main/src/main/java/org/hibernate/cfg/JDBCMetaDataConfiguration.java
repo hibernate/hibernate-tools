@@ -53,11 +53,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	protected MetadataBuildingOptions metadataBuildingOptions = null;
 	protected Metadata metadata = null;
 	
-	public Metadata buildMetadata() {
-//		readFromJDBC();
-		return metadata;
-	}
-    
 	protected MetadataBuildingOptions getMetadataBuildingOptions() {
 		if (metadataBuildingOptions == null) {
 			metadataBuildingOptions = 

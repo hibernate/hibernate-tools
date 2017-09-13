@@ -2,6 +2,7 @@ package org.hibernate.tool.metadata;
 
 import java.util.Properties;
 
+import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.JDBCBinder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -24,6 +25,11 @@ public class JdbcMetadataDescriptor
 		readFromJDBC(); 
 	}
 
+	public Metadata buildMetadata() {
+//		readFromJDBC();
+		return metadata;
+	}
+    
 	public void readFromJDBC() {
 		metadata = getMetadataCollector()
 				.buildMetadataInstance(getMetadataBuildingContext());
