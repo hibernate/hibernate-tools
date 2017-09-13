@@ -60,13 +60,6 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		return metadata;
 	}
     
-	public Metadata getMetadata() {
-		if (metadata == null) {
-			metadata = getMetadataCollector().buildMetadataInstance(getMetadataBuildingContext());
-		}
-		return metadata;
-	}
-	
 	private MetadataBuildingOptions getMetadataBuildingOptions() {
 		if (metadataBuildingOptions == null) {
 			metadataBuildingOptions = 
@@ -122,6 +115,8 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 	}
 	
 	public void readFromJDBC() {
+		metadata = getMetadataCollector()
+				.buildMetadataInstance(getMetadataBuildingContext());
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
 				getProperties(), 
@@ -131,7 +126,7 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 		binder.readFromDatabase(
 				null, 
 				null, 
-				buildMapping(getMetadata()));		
+				buildMapping(metadata));		
 	}
 	
 	static private Mapping buildMapping(final Metadata metadata) {
