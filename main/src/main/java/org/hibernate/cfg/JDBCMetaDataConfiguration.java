@@ -52,7 +52,6 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 	protected InFlightMetadataCollectorImpl metadataCollector;
 	protected ClassLoaderAccess classLoaderAccess = null;
 	protected MetadataBuildingOptions metadataBuildingOptions = null;
-	protected MetadataBuildingContext metadataBuildingContext = null;
 	protected Metadata metadata = null;
 	
 	public Metadata buildMetadata() {
@@ -96,13 +95,10 @@ public class JDBCMetaDataConfiguration extends Configuration implements Metadata
 	}
 	
 	protected MetadataBuildingContext getMetadataBuildingContext() {
-		if (metadataBuildingContext == null) {
-			metadataBuildingContext = new MetadataBuildingContextRootImpl(
+		return new MetadataBuildingContextRootImpl(
 					getMetadataBuildingOptions(), 
 					getClassLoaderAccess(), 
 					getMetadataCollector());					
-		}
-		return metadataBuildingContext;
 	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
