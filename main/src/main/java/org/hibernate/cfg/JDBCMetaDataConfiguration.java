@@ -51,7 +51,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	protected InFlightMetadataCollectorImpl metadataCollector;
 	protected ClassLoaderAccess classLoaderAccess = null;
 	protected MetadataBuildingOptions metadataBuildingOptions = null;
-	protected Metadata metadata = null;
 	
 	protected MetadataBuildingOptions getMetadataBuildingOptions() {
 		if (metadataBuildingOptions == null) {

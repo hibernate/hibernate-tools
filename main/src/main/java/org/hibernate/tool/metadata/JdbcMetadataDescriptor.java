@@ -11,6 +11,8 @@ public class JdbcMetadataDescriptor
 	extends JDBCMetaDataConfiguration 
 	implements MetadataDescriptor {
 	
+	protected Metadata metadata = null;
+
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
