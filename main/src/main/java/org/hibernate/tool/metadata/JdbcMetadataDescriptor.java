@@ -3,12 +3,14 @@ package org.hibernate.tool.metadata;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.BasicTypeRegistration;
+import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.JDBCBinder;
@@ -28,7 +30,8 @@ public class JdbcMetadataDescriptor
 	implements MetadataDescriptor {
 	
 	private Metadata metadata = null;
-	private InFlightMetadataCollectorImpl metadataCollector;
+	private InFlightMetadataCollectorImpl metadataCollector = null;
+	private ClassLoaderAccess classLoaderAccess = null;
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
@@ -49,7 +52,7 @@ public class JdbcMetadataDescriptor
 		return metadata;
 	}
     
-	public void readFromJDBC() {
+	private void readFromJDBC() {
 		MetadataBuildingContext metadataBuildingContext = 
 				getMetadataBuildingContext();
 		metadata = getMetadataCollector()
@@ -130,4 +133,18 @@ public class JdbcMetadataDescriptor
 		return basicTypeRegistry;
 	}
 
+	private ClassLoaderAccess getClassLoaderAccess() {
+		if (classLoaderAccess == null) {
+			MetadataBuildingOptions options = getMetadataBuildingOptions();		
+			ClassLoaderService classLoaderService = 
+					options.getServiceRegistry().getService( 
+							ClassLoaderService.class );
+			classLoaderAccess = new ClassLoaderAccessImpl(
+					options.getTempClassLoader(),
+					classLoaderService
+			);			
+		}
+		return classLoaderAccess;
+	}
+	
 }

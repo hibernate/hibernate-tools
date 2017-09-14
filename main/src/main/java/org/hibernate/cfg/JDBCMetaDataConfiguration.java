@@ -7,12 +7,9 @@ package org.hibernate.cfg;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
-import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -34,7 +31,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	protected StandardServiceRegistry serviceRegistry = null;
 	
-	protected ClassLoaderAccess classLoaderAccess = null;
 	protected MetadataBuildingOptions metadataBuildingOptions = null;
 	
 	protected MetadataBuildingOptions getMetadataBuildingOptions() {
@@ -43,20 +39,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 					new MetadataBuildingOptionsImpl( getServiceRegistry() );
 		}
 		return metadataBuildingOptions;
-	}
-	
-	protected ClassLoaderAccess getClassLoaderAccess() {
-		if (classLoaderAccess == null) {
-			MetadataBuildingOptions options = getMetadataBuildingOptions();		
-			ClassLoaderService classLoaderService = 
-					options.getServiceRegistry().getService( 
-							ClassLoaderService.class );
-			classLoaderAccess = new ClassLoaderAccessImpl(
-					options.getTempClassLoader(),
-					classLoaderService
-			);			
-		}
-		return classLoaderAccess;
 	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
