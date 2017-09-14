@@ -17,6 +17,7 @@ import org.hibernate.boot.spi.BasicTypeRegistration;
 import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
+import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCBinder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -46,13 +47,15 @@ public class JdbcMetadataDescriptor
 	private StandardServiceRegistry serviceRegistry = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
     private boolean preferBasicCompositeIds = true;
+    private Properties properties = new Properties();
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
 			Properties properties,
 			boolean preferBasicCompositeIds) {
+		this.properties.putAll(Environment.getProperties());
 		if (properties != null) {
-			getProperties().putAll(properties);
+			this.properties.putAll(properties);
 		}
 		if (reverseEngineeringStrategy != null) {
 			this.reverseEngineeringStrategy = reverseEngineeringStrategy;
@@ -64,6 +67,12 @@ public class JdbcMetadataDescriptor
 	public Metadata buildMetadata() {
 //		readFromJDBC();
 		return metadata;
+	}
+	
+	public Properties getProperties() {
+		Properties result = new Properties();
+		result.putAll(properties);
+		return result;
 	}
     
 	private void readFromJDBC() {
