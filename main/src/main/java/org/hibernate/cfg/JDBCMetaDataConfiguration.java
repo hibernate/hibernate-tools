@@ -5,8 +5,6 @@
 package org.hibernate.cfg;
 
 import org.dom4j.Element;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +15,6 @@ import org.slf4j.LoggerFactory;
 public class JDBCMetaDataConfiguration extends Configuration {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
-	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-	
-	
-
 	
 	private boolean ignoreconfigxmlmapppings = true;
 	// set to true and fk's that are part of a primary key will just be mapped as the raw value and as a readonly property. if false, it will be <many-to-one-key-property
@@ -48,13 +42,5 @@ public class JDBCMetaDataConfiguration extends Configuration {
             log.info("Ignoring " + name + " mapping");
         }
     }
-
-	public void setReverseEngineeringStrategy(ReverseEngineeringStrategy reverseEngineeringStrategy) {
-		this.revEngStrategy = reverseEngineeringStrategy;		
-	}
-	
-	public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
-		return revEngStrategy;
-	}
 
 }

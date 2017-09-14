@@ -6,8 +6,8 @@ import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
-import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
+import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -19,6 +19,7 @@ import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.JDBCBinder;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
@@ -43,6 +44,7 @@ public class JdbcMetadataDescriptor
 	private ClassLoaderAccess classLoaderAccess = null;
 	private MetadataBuildingOptions metadataBuildingOptions = null;
 	private StandardServiceRegistry serviceRegistry = null;
+	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
@@ -52,7 +54,7 @@ public class JdbcMetadataDescriptor
 			getProperties().putAll(properties);
 		}
 		if (reverseEngineeringStrategy != null) {
-			setReverseEngineeringStrategy(reverseEngineeringStrategy);
+			this.reverseEngineeringStrategy = reverseEngineeringStrategy;
 		}
 		setPreferBasicCompositeIds(preferBasicCompositeIds);
 		readFromJDBC(); 
@@ -72,7 +74,7 @@ public class JdbcMetadataDescriptor
 				getServiceRegistry(), 
 				getProperties(), 
 				metadataBuildingContext, 
-				getReverseEngineeringStrategy(), 
+				reverseEngineeringStrategy, 
 				preferBasicCompositeIds());
 		binder.readFromDatabase(
 				null, 
