@@ -2,6 +2,7 @@ package org.hibernate.tool.metadata;
 
 import java.util.Properties;
 
+import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -21,8 +22,13 @@ import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.spi.Mapping;
+import org.hibernate.id.factory.IdentifierGeneratorFactory;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.Type;
 import org.hibernate.type.TypeFactory;
 import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
@@ -169,4 +175,36 @@ public class JdbcMetadataDescriptor
 		return serviceRegistry;
 	}
 	
+	private Mapping buildMapping(final Metadata metadata) {
+		return new Mapping() {
+			/**
+			 * Returns the identifier type of a mapped class
+			 */
+			public Type getIdentifierType(String persistentClass) throws MappingException {
+				final PersistentClass pc = metadata.getEntityBinding(persistentClass);
+				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
+				return pc.getIdentifier().getType();
+			}
+
+			public String getIdentifierPropertyName(String persistentClass) throws MappingException {
+				final PersistentClass pc = metadata.getEntityBinding(persistentClass);
+				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
+				if ( !pc.hasIdentifierProperty() ) return null;
+				return pc.getIdentifierProperty().getName();
+			}
+
+            public Type getReferencedPropertyType(String persistentClass, String propertyName) throws MappingException
+            {
+				final PersistentClass pc = metadata.getEntityBinding(persistentClass);
+				if (pc==null) throw new MappingException("persistent class not known: " + persistentClass);
+				Property prop = pc.getProperty(propertyName);
+				if (prop==null)  throw new MappingException("property not known: " + persistentClass + '.' + propertyName);
+				return prop.getType();
+			}
+
+			public IdentifierGeneratorFactory getIdentifierGeneratorFactory() {
+				return null;
+			}
+		};
+	}
 }
