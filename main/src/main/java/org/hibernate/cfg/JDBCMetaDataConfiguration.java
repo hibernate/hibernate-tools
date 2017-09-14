@@ -7,10 +7,8 @@ package org.hibernate.cfg;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
@@ -31,15 +29,6 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	protected StandardServiceRegistry serviceRegistry = null;
 	
-	protected MetadataBuildingOptions metadataBuildingOptions = null;
-	
-	protected MetadataBuildingOptions getMetadataBuildingOptions() {
-		if (metadataBuildingOptions == null) {
-			metadataBuildingOptions = 
-					new MetadataBuildingOptionsImpl( getServiceRegistry() );
-		}
-		return metadataBuildingOptions;
-	}
 	
 	public StandardServiceRegistry getServiceRegistry(){
 		if(serviceRegistry == null){

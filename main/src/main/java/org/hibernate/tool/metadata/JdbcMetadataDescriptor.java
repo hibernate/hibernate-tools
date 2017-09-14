@@ -6,6 +6,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.ClassLoaderAccessImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
@@ -32,6 +33,7 @@ public class JdbcMetadataDescriptor
 	private Metadata metadata = null;
 	private InFlightMetadataCollectorImpl metadataCollector = null;
 	private ClassLoaderAccess classLoaderAccess = null;
+	protected MetadataBuildingOptions metadataBuildingOptions = null;
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
@@ -145,6 +147,14 @@ public class JdbcMetadataDescriptor
 			);			
 		}
 		return classLoaderAccess;
+	}
+	
+	protected MetadataBuildingOptions getMetadataBuildingOptions() {
+		if (metadataBuildingOptions == null) {
+			metadataBuildingOptions = 
+					new MetadataBuildingOptionsImpl( getServiceRegistry() );
+		}
+		return metadataBuildingOptions;
 	}
 	
 }
