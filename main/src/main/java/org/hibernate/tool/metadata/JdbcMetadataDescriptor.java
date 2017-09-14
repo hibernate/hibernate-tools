@@ -19,7 +19,6 @@ import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCBinder;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.dialect.Dialect;
@@ -36,9 +35,7 @@ import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
 import org.hibernate.usertype.UserType;
 
-public class JdbcMetadataDescriptor 
-	extends JDBCMetaDataConfiguration 
-	implements MetadataDescriptor {
+public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	
 	private Metadata metadata = null;
 	private InFlightMetadataCollectorImpl metadataCollector = null;
