@@ -7,8 +7,6 @@ package org.hibernate.cfg;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
@@ -27,17 +25,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 
     private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
 	protected ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
-	protected StandardServiceRegistry serviceRegistry = null;
 	
-	
-	public StandardServiceRegistry getServiceRegistry(){
-		if(serviceRegistry == null){
-			serviceRegistry = new StandardServiceRegistryBuilder()
-				.applySettings(getProperties())
-				.build();
-		}
-		return serviceRegistry;
-	}
 	
 	static protected Mapping buildMapping(final Metadata metadata) {
 		return new Mapping() {

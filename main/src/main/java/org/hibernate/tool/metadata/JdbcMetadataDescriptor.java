@@ -9,6 +9,8 @@ import org.hibernate.boot.internal.MetadataBuildingContextRootImpl;
 import org.hibernate.boot.internal.MetadataBuilderImpl.MetadataBuildingOptionsImpl;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.BasicTypeRegistration;
 import org.hibernate.boot.spi.ClassLoaderAccess;
@@ -33,7 +35,8 @@ public class JdbcMetadataDescriptor
 	private Metadata metadata = null;
 	private InFlightMetadataCollectorImpl metadataCollector = null;
 	private ClassLoaderAccess classLoaderAccess = null;
-	protected MetadataBuildingOptions metadataBuildingOptions = null;
+	private MetadataBuildingOptions metadataBuildingOptions = null;
+	private StandardServiceRegistry serviceRegistry = null;
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
@@ -149,12 +152,21 @@ public class JdbcMetadataDescriptor
 		return classLoaderAccess;
 	}
 	
-	protected MetadataBuildingOptions getMetadataBuildingOptions() {
+	private MetadataBuildingOptions getMetadataBuildingOptions() {
 		if (metadataBuildingOptions == null) {
 			metadataBuildingOptions = 
 					new MetadataBuildingOptionsImpl( getServiceRegistry() );
 		}
 		return metadataBuildingOptions;
+	}
+	
+	private StandardServiceRegistry getServiceRegistry(){
+		if(serviceRegistry == null){
+			serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(getProperties())
+				.build();
+		}
+		return serviceRegistry;
 	}
 	
 }
