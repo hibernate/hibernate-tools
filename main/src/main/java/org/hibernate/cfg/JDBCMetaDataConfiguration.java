@@ -18,21 +18,7 @@ public class JDBCMetaDataConfiguration extends Configuration {
 	
 	private boolean ignoreconfigxmlmapppings = true;
 	// set to true and fk's that are part of a primary key will just be mapped as the raw value and as a readonly property. if false, it will be <many-to-one-key-property
-    private boolean preferBasicCompositeIds = true;
 	
-    /**
-     * If true, compositeid's will not create key-many-to-one and
-     * non-updatable/non-insertable many-to-one will be created instead. 
-     * @return
-     */
-    public boolean preferBasicCompositeIds() {
-        return preferBasicCompositeIds ;
-    }    
-   
-    public void setPreferBasicCompositeIds(boolean flag) {
-        preferBasicCompositeIds = flag;
-    }
-	    
     protected void parseMappingElement(Element subelement, String name) {
         if(!ignoreconfigxmlmapppings ) {  
         	//FIXME the method is private

@@ -45,6 +45,7 @@ public class JdbcMetadataDescriptor
 	private MetadataBuildingOptions metadataBuildingOptions = null;
 	private StandardServiceRegistry serviceRegistry = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
+    private boolean preferBasicCompositeIds = true;
 
 	public JdbcMetadataDescriptor(
 			ReverseEngineeringStrategy reverseEngineeringStrategy, 
@@ -56,7 +57,7 @@ public class JdbcMetadataDescriptor
 		if (reverseEngineeringStrategy != null) {
 			this.reverseEngineeringStrategy = reverseEngineeringStrategy;
 		}
-		setPreferBasicCompositeIds(preferBasicCompositeIds);
+		this.preferBasicCompositeIds = preferBasicCompositeIds;
 		readFromJDBC(); 
 	}
 
@@ -75,7 +76,7 @@ public class JdbcMetadataDescriptor
 				getProperties(), 
 				metadataBuildingContext, 
 				reverseEngineeringStrategy, 
-				preferBasicCompositeIds());
+				preferBasicCompositeIds);
 		binder.readFromDatabase(
 				null, 
 				null, 
