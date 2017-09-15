@@ -37,7 +37,6 @@ import org.hibernate.usertype.UserType;
 
 public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	
-	private Metadata metadata = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
     private boolean preferBasicCompositeIds = true;
     private Properties properties = new Properties();
@@ -54,21 +53,15 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 			this.reverseEngineeringStrategy = reverseEngineeringStrategy;
 		}
 		this.preferBasicCompositeIds = preferBasicCompositeIds;
-		readFromJDBC(); 
 	}
 
-	public Metadata buildMetadata() {
-//		readFromJDBC();
-		return metadata;
-	}
-	
 	public Properties getProperties() {
 		Properties result = new Properties();
 		result.putAll(properties);
 		return result;
 	}
     
-	private void readFromJDBC() {
+	public Metadata buildMetadata() {
 		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(getProperties())
 				.build();
@@ -83,7 +76,7 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 						metadataBuildingOptions, 
 						classLoaderAccess, 
 						metadataCollector);
-		metadata = metadataCollector
+		Metadata metadata = metadataCollector
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
 				serviceRegistry, 
@@ -94,7 +87,8 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		binder.readFromDatabase(
 				null, 
 				null, 
-				buildMapping(metadata));		
+				buildMapping(metadata));	
+		return metadata;
 	}
 	
 	private InFlightMetadataCollectorImpl getMetadataCollector(
