@@ -40,7 +40,6 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	private Metadata metadata = null;
 	private InFlightMetadataCollectorImpl metadataCollector = null;
 	private ClassLoaderAccess classLoaderAccess = null;
-	private MetadataBuildingOptions metadataBuildingOptions = null;
 	private StandardServiceRegistry serviceRegistry = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
     private boolean preferBasicCompositeIds = true;
@@ -73,12 +72,14 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	}
     
 	private void readFromJDBC() {
+		MetadataBuildingOptions metadataBuildingOptions = 
+				new MetadataBuildingOptionsImpl( getServiceRegistry() );		
 		MetadataBuildingContext metadataBuildingContext = 
 				new MetadataBuildingContextRootImpl(
-						getMetadataBuildingOptions(), 
-						getClassLoaderAccess(getMetadataBuildingOptions()), 
-						getMetadataCollector(getMetadataBuildingOptions()));
-		metadata = getMetadataCollector(getMetadataBuildingOptions())
+						metadataBuildingOptions, 
+						getClassLoaderAccess(metadataBuildingOptions), 
+						getMetadataCollector(metadataBuildingOptions));
+		metadata = getMetadataCollector(metadataBuildingOptions)
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
@@ -161,14 +162,6 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 			);			
 		}
 		return classLoaderAccess;
-	}
-	
-	private MetadataBuildingOptions getMetadataBuildingOptions() {
-		if (metadataBuildingOptions == null) {
-			metadataBuildingOptions = 
-					new MetadataBuildingOptionsImpl( getServiceRegistry() );
-		}
-		return metadataBuildingOptions;
 	}
 	
 	private StandardServiceRegistry getServiceRegistry(){
