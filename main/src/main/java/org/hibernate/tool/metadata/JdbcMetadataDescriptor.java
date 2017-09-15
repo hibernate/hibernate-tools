@@ -38,7 +38,6 @@ import org.hibernate.usertype.UserType;
 public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	
 	private Metadata metadata = null;
-	private StandardServiceRegistry serviceRegistry = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
     private boolean preferBasicCompositeIds = true;
     private Properties properties = new Properties();
@@ -70,8 +69,11 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	}
     
 	private void readFromJDBC() {
+		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(getProperties())
+				.build();
 		MetadataBuildingOptions metadataBuildingOptions = 
-				new MetadataBuildingOptionsImpl( getServiceRegistry() );	
+				new MetadataBuildingOptionsImpl( serviceRegistry );	
 		InFlightMetadataCollectorImpl metadataCollector = 
 				getMetadataCollector(metadataBuildingOptions);
 		ClassLoaderAccess classLoaderAccess = 
@@ -84,7 +86,7 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		metadata = metadataCollector
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
-				getServiceRegistry(), 
+				serviceRegistry, 
 				getProperties(), 
 				metadataBuildingContext, 
 				reverseEngineeringStrategy, 
@@ -156,15 +158,6 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		return  new ClassLoaderAccessImpl(
 				metadataBuildingOptions.getTempClassLoader(),
 				classLoaderService);			
-	}
-	
-	private StandardServiceRegistry getServiceRegistry(){
-		if(serviceRegistry == null){
-			serviceRegistry = new StandardServiceRegistryBuilder()
-				.applySettings(getProperties())
-				.build();
-		}
-		return serviceRegistry;
 	}
 	
 	private Mapping buildMapping(final Metadata metadata) {
