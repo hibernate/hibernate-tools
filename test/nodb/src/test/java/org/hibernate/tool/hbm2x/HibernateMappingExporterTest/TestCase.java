@@ -1,13 +1,12 @@
 package org.hibernate.tool.hbm2x.HibernateMappingExporterTest;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.util.Properties;
 
-import org.hibernate.cfg.PojoMetaDataConfiguration;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.metadata.MetadataDescriptor;
+import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -15,31 +14,35 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class TestCase {
+	
+	private static final String FOO_HBM_XML = 
+			"<hibernate-mapping>              "+
+			"	<class name='Foo' table='FOO'>"+
+			"		<id type='String'>        "+
+			"			<column name='BAR'/>  "+
+			"		</id>                     "+
+			"	</class>                      "+
+			"</hibernate-mapping>             ";
 
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	@Test
 	public void testStart() throws Exception {
-		PojoMetaDataConfiguration configuration = new PojoMetaDataConfiguration();
-		configuration.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-		RootClass persistentClass = new RootClass(null);
-		Table table = new Table("FOO");
-		Column keyColumn = new Column("BAR");
-		SimpleValue key = new SimpleValue(configuration.getMetadataImplementor());
-		key.setTypeName("String");
-		key.addColumn(keyColumn);
-		key.setTable(table);
-		persistentClass.setClassName("Foo");
-		persistentClass.setEntityName("Foo");
-		persistentClass.setJpaEntityName("Foo");
-		persistentClass.setTable(table);
-		persistentClass.setIdentifier(key);
-		configuration.addClass(persistentClass);	
-		final File outputDir = new File(temporaryFolder.getRoot(), "HibernateMappingExporterTest.testStart");
+		File resources = new File(temporaryFolder.getRoot(), "resources");
+		resources.mkdir();
+		File fooHbmXmlOrigin = new File(resources, "origin.hbm.xml");
+		FileWriter writer = new FileWriter(fooHbmXmlOrigin);
+		writer.write(FOO_HBM_XML);
+		writer.close();
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
+				.createNativeDescriptor(null, new File[] { fooHbmXmlOrigin }, properties); 		
+		final File outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		HibernateMappingExporter exporter = new HibernateMappingExporter();
-		exporter.setMetadataSources(configuration);
+		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		Assert.assertFalse(fooHbmXml.exists());
