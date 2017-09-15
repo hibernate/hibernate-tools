@@ -77,8 +77,8 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 				new MetadataBuildingContextRootImpl(
 						getMetadataBuildingOptions(), 
 						getClassLoaderAccess(getMetadataBuildingOptions()), 
-						getMetadataCollector());
-		metadata = getMetadataCollector()
+						getMetadataCollector(getMetadataBuildingOptions()));
+		metadata = getMetadataCollector(getMetadataBuildingOptions())
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
@@ -92,14 +92,14 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 				buildMapping(metadata));		
 	}
 	
-	private InFlightMetadataCollectorImpl getMetadataCollector() {
+	private InFlightMetadataCollectorImpl getMetadataCollector(
+			MetadataBuildingOptions metadataBuildingOptions) {
 		if (metadataCollector == null) {
-			MetadataBuildingOptions options = getMetadataBuildingOptions();		
-			BasicTypeRegistry basicTypeRegistry = handleTypes( options );
+			BasicTypeRegistry basicTypeRegistry = handleTypes( metadataBuildingOptions );
 			metadataCollector = 
 					new InFlightMetadataCollectorImpl(
-					options,
-					new TypeResolver( basicTypeRegistry, new TypeFactory() )
+						metadataBuildingOptions,
+						new TypeResolver( basicTypeRegistry, new TypeFactory() )
 			);			
 		}
 		return metadataCollector;
