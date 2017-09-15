@@ -74,7 +74,10 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
     
 	private void readFromJDBC() {
 		MetadataBuildingContext metadataBuildingContext = 
-				getMetadataBuildingContext();
+				new MetadataBuildingContextRootImpl(
+						getMetadataBuildingOptions(), 
+						getClassLoaderAccess(getMetadataBuildingOptions()), 
+						getMetadataCollector());
 		metadata = getMetadataCollector()
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
@@ -87,13 +90,6 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 				null, 
 				null, 
 				buildMapping(metadata));		
-	}
-	
-	private MetadataBuildingContext getMetadataBuildingContext() {
-		return new MetadataBuildingContextRootImpl(
-					getMetadataBuildingOptions(), 
-					getClassLoaderAccess(), 
-					getMetadataCollector());					
 	}
 	
 	private InFlightMetadataCollectorImpl getMetadataCollector() {
@@ -153,14 +149,14 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		return basicTypeRegistry;
 	}
 
-	private ClassLoaderAccess getClassLoaderAccess() {
+	private ClassLoaderAccess getClassLoaderAccess(
+			MetadataBuildingOptions metadataBuildingOptions) {
 		if (classLoaderAccess == null) {
-			MetadataBuildingOptions options = getMetadataBuildingOptions();		
 			ClassLoaderService classLoaderService = 
-					options.getServiceRegistry().getService( 
+					metadataBuildingOptions.getServiceRegistry().getService( 
 							ClassLoaderService.class );
 			classLoaderAccess = new ClassLoaderAccessImpl(
-					options.getTempClassLoader(),
+					metadataBuildingOptions.getTempClassLoader(),
 					classLoaderService
 			);			
 		}
