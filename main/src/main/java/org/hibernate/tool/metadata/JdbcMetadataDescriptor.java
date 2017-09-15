@@ -38,7 +38,6 @@ import org.hibernate.usertype.UserType;
 public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	
 	private Metadata metadata = null;
-	private InFlightMetadataCollectorImpl metadataCollector = null;
 	private ClassLoaderAccess classLoaderAccess = null;
 	private StandardServiceRegistry serviceRegistry = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
@@ -73,13 +72,15 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
     
 	private void readFromJDBC() {
 		MetadataBuildingOptions metadataBuildingOptions = 
-				new MetadataBuildingOptionsImpl( getServiceRegistry() );		
+				new MetadataBuildingOptionsImpl( getServiceRegistry() );	
+		InFlightMetadataCollectorImpl metadataCollector = 
+				getMetadataCollector(metadataBuildingOptions);
 		MetadataBuildingContext metadataBuildingContext = 
 				new MetadataBuildingContextRootImpl(
 						metadataBuildingOptions, 
 						getClassLoaderAccess(metadataBuildingOptions), 
-						getMetadataCollector(metadataBuildingOptions));
-		metadata = getMetadataCollector(metadataBuildingOptions)
+						metadataCollector);
+		metadata = metadataCollector
 				.buildMetadataInstance(metadataBuildingContext);
 		JDBCBinder binder = new JDBCBinder(
 				getServiceRegistry(), 
@@ -94,16 +95,12 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 	}
 	
 	private InFlightMetadataCollectorImpl getMetadataCollector(
-			MetadataBuildingOptions metadataBuildingOptions) {
-		if (metadataCollector == null) {
-			BasicTypeRegistry basicTypeRegistry = handleTypes( metadataBuildingOptions );
-			metadataCollector = 
-					new InFlightMetadataCollectorImpl(
-						metadataBuildingOptions,
-						new TypeResolver( basicTypeRegistry, new TypeFactory() )
-			);			
-		}
-		return metadataCollector;
+		MetadataBuildingOptions metadataBuildingOptions) {
+		BasicTypeRegistry basicTypeRegistry = handleTypes( metadataBuildingOptions );
+		return new InFlightMetadataCollectorImpl(
+			metadataBuildingOptions,
+			new TypeResolver( basicTypeRegistry, new TypeFactory() )
+		);			
 	}
 	
 	private BasicTypeRegistry handleTypes(MetadataBuildingOptions options) {
