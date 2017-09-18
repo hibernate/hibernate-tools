@@ -31,8 +31,4 @@ public class MetadataDescriptorFactory {
 				properties);
 	}
 	
-	public static MetadataDescriptor createPojoSources() {
-		return new PojoMetadataDescriptor();
-	}
-	
 }
