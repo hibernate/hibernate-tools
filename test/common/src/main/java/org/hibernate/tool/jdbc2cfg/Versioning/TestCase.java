@@ -44,7 +44,7 @@ public class TestCase {
 		metadataSources = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true);
 		metadata = metadataSources
-				.buildMetadata();
+				.createMetadata();
 	}
 
 	@After
@@ -78,7 +78,7 @@ public class TestCase {
 		files[3] = new File(testFolder, "Withfaketimestamp.hbm.xml");		
 		Metadata metadata = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
-				.buildMetadata();
+				.createMetadata();
 		PersistentClass cl = metadata.getEntityBinding( "WithVersion" );				
 		Property version = cl.getVersion();
 		Assert.assertNotNull(version);

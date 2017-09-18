@@ -61,7 +61,7 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		return result;
 	}
     
-	public Metadata buildMetadata() {
+	public Metadata createMetadata() {
 		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(getProperties())
 				.build();

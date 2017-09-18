@@ -42,7 +42,7 @@ public class TestCase {
 						this, 
 						HBM_XML_FILES, 
 						temporaryFolder.getRoot())
-				.buildMetadata();
+				.createMetadata();
 	}
 	
 	@Test

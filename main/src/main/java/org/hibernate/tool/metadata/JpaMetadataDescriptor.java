@@ -25,7 +25,7 @@ public class JpaMetadataDescriptor implements MetadataDescriptor {
 		properties.putAll(entityManagerFactory.getProperties());
 	}
 	
-	public Metadata buildMetadata() {
+	public Metadata createMetadata() {
 		return metadata;
 	}
 	

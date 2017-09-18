@@ -86,7 +86,7 @@ public class TestCase {
         hbmFiles[3] = new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml");       
         Metadata metadata = MetadataDescriptorFactory
         		.createNativeDescriptor(null, hbmFiles, properties)
-        		.buildMetadata();
+        		.createMetadata();
         Assert.assertNotNull(metadata);      
     }
 	

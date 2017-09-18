@@ -49,7 +49,7 @@ public class TestCase {
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
         Metadata metadata =  MetadataDescriptorFactory
         		.createJdbcDescriptor(c, null, true)
-        		.buildMetadata();
+        		.createMetadata();
 
         PersistentClass project = metadata.getEntityBinding("Project");
 		
@@ -79,7 +79,7 @@ public class TestCase {
 	public void testAutoCreation() {
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
-				.buildMetadata();
+				.createMetadata();
 		
         Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
         
@@ -104,7 +104,7 @@ public class TestCase {
 	public void testFalsePositive() {
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
-				.buildMetadata();	    
+				.createMetadata();	    
         Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
 	}
 
@@ -112,7 +112,7 @@ public class TestCase {
 	public void testBuildMappings() {		
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
-				.buildMetadata();
+				.createMetadata();
 		Assert.assertNotNull(metadata);	
 	}
 	
@@ -123,7 +123,7 @@ public class TestCase {
 				.createJdbcDescriptor(null, null, true);
 		File outputDir = temporaryFolder.getRoot();
 		
-		Assert.assertNotNull(metadataSources.buildMetadata());
+		Assert.assertNotNull(metadataSources.createMetadata());
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
 		hme.setMetadataSources(metadataSources);
@@ -149,7 +149,7 @@ public class TestCase {
 		
 		Assert.assertNotNull(MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
-				.buildMetadata());
+				.createMetadata());
 		
 	}
 	

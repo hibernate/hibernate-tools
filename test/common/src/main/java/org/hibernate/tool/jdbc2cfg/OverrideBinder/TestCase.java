@@ -57,7 +57,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy() );
 		metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(res, null, true)
-				.buildMetadata();
+				.createMetadata();
 	}
 
 	@After
@@ -147,7 +147,7 @@ public class TestCase {
 		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata md = MetadataDescriptorFactory
 				.createJdbcDescriptor(strategy, null, true)
-				.buildMetadata();
+				.createMetadata();
 		
 		Iterator<Table> tableMappings = md.collectTableMappings().iterator();
 		Table t = (Table) tableMappings.next();

@@ -204,7 +204,7 @@ public abstract class AbstractExporter implements Exporter {
     }
 	
 	protected Metadata buildMetadata() {
-		return metadataSources.buildMetadata();
+		return metadataSources.createMetadata();
 	}
 
     private File getDirForPackage(File baseDir, String packageName) {

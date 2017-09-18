@@ -44,7 +44,7 @@ public class TestCase {
 	public void testDefaultBiDirectional() {
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
-				.buildMetadata();
+				.createMetadata();
 		PersistentClass project = metadata.getEntityBinding("Project");
 		Assert.assertNotNull(project.getProperty("worksOns"));
 		Assert.assertNotNull(project.getProperty("employee"));
@@ -71,7 +71,7 @@ public class TestCase {
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(repository, null, true)
-				.buildMetadata();			
+				.createMetadata();			
 		PersistentClass project = metadata.getEntityBinding("Project");		
 		Assert.assertNotNull(project.getProperty("worksOns"));
 		assertPropertyNotExists(project, "employee", "should be removed by reveng.xml");
@@ -103,7 +103,7 @@ public class TestCase {
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(repository, null, true)
-				.buildMetadata();
+				.createMetadata();
 		PersistentClass person = metadata.getEntityBinding("Person");
 		PersistentClass addressPerson = metadata.getEntityBinding("AddressPerson");
 		PersistentClass addressMultiPerson = metadata.getEntityBinding("AddressMultiPerson");
@@ -128,7 +128,7 @@ public class TestCase {
 			ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 			MetadataDescriptorFactory
 					.createJdbcDescriptor(repository, null, true)
-					.buildMetadata();
+					.createMetadata();
 			Assert.fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
 		} catch(MappingException me) {
 			Assert.assertTrue(me.getMessage().indexOf("already defined")>=0);			
@@ -139,7 +139,7 @@ public class TestCase {
 	public void testManyToOneAttributeDefaults() {	
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
-				.buildMetadata();
+				.createMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("employee");	
 		Assert.assertEquals("none", property.getCascade());
@@ -155,7 +155,7 @@ public class TestCase {
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(repository, null, true)
-				.buildMetadata();
+				.createMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("manager");	
 		Assert.assertEquals("all", property.getCascade());

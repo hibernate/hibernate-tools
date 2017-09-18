@@ -100,7 +100,7 @@ public class TestCase {
 	}
 	
 	private Metadata buildMetadata() {
-		return buildMetadataSources().buildMetadata();
+		return buildMetadataSources().createMetadata();
 	}
 	
 }

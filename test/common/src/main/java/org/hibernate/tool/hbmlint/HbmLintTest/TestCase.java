@@ -52,21 +52,21 @@ public class TestCase {
 	@Test
 	public void testValidateCache() {	
 		HbmLint analyzer = new HbmLint(new Detector[] { new BadCachingDetector() });		
-		analyzer.analyze(metadataSources.buildMetadata());
+		analyzer.analyze(metadataSources.createMetadata());
 		Assert.assertEquals(1,analyzer.getResults().size());		
 	}
 
 	@Test
 	public void testValidateIdentifier() {		
 		HbmLint analyzer = new HbmLint(new Detector[] { new ShadowedIdentifierDetector() });		
-		analyzer.analyze(metadataSources.buildMetadata());
+		analyzer.analyze(metadataSources.createMetadata());
 		Assert.assertEquals(1,analyzer.getResults().size());
 	}
 	
 	@Test
 	public void testBytecodeRestrictions() {		
 		HbmLint analyzer = new HbmLint(new Detector[] { new InstrumentationDetector() });		
-		analyzer.analyze(metadataSources.buildMetadata());
+		analyzer.analyze(metadataSources.createMetadata());
 		Assert.assertEquals(analyzer.getResults().toString(), 2,analyzer.getResults().size());
 	}
 	

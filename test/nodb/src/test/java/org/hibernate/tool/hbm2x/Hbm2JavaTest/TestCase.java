@@ -70,7 +70,7 @@ public class TestCase {
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
-		metadata = metadataDescriptor.buildMetadata();
+		metadata = metadataDescriptor.createMetadata();
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadataSources(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
