@@ -16,7 +16,7 @@ public class JPAConfigurationTask extends ConfigurationTask {
 		setDescription("JPA Configuration");
 	}
 	
-	protected MetadataDescriptor createMetadataSources() {
+	protected MetadataDescriptor createMetadataDescriptor() {
 		try {
 			Properties overrides = new Properties();
 			Properties p = loadPropertiesFile();	

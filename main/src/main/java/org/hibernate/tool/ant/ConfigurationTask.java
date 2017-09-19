@@ -46,12 +46,12 @@ public class ConfigurationTask extends Task {
 	 */
 	public final MetadataDescriptor getMetadataSources() {
 		if (metadataDescriptor == null) {
-			metadataDescriptor = createMetadataSources();
+			metadataDescriptor = createMetadataDescriptor();
 		}
 		return metadataDescriptor;
 	}
 	
-	protected MetadataDescriptor createMetadataSources() {
+	protected MetadataDescriptor createMetadataDescriptor() {
 		return MetadataDescriptorFactory
 				.createNativeDescriptor(
 						configurationFile, 

@@ -39,7 +39,7 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 	public JDBCConfigurationTask() {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
-	protected MetadataDescriptor createMetadataSources() {
+	protected MetadataDescriptor createMetadataDescriptor() {
 		Properties properties = loadPropertiesFile();
 		ReverseEngineeringStrategy res = createReverseEngineeringStrategy();
 		return MetadataDescriptorFactory
