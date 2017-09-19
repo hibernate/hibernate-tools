@@ -44,7 +44,7 @@ public abstract class AbstractExporter implements Exporter {
 		c2j = new Cfg2JavaTool();		
 	}
 	
-	public void setMetadataSources(MetadataDescriptor metadataSources) {
+	public void setMetadataDescriptor(MetadataDescriptor metadataSources) {
 		this.metadataSources = metadataSources;
 	}
 	

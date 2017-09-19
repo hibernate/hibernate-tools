@@ -67,7 +67,7 @@ public class TestCase {
 						new File[] { userGroupHbmXmlFile }, 
 						null);
 		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(destinationDir);
 		exporter.setFilename("queryresult.txt");
 		List<String> queries = new ArrayList<String>();

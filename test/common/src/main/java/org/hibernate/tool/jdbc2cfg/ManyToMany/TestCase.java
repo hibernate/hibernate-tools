@@ -126,7 +126,7 @@ public class TestCase {
 		Assert.assertNotNull(metadataSources.createMetadata());
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataSources(metadataSources);
+		hme.setMetadataDescriptor(metadataSources);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		

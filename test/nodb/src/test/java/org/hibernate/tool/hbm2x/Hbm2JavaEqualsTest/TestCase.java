@@ -67,7 +67,7 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { hbmXml }, properties);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		// copy interface EntityProxy.java

@@ -47,7 +47,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
@@ -57,7 +57,7 @@ public class TestCase {
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new ArtifactCollector();

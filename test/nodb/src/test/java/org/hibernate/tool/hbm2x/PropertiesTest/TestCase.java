@@ -56,11 +56,11 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setArtifactCollector(artifactCollector);
 		Exporter hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataSources(metadataDescriptor);
+		hbmexporter.setMetadataDescriptor(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.setArtifactCollector(artifactCollector);
 		exporter.start();

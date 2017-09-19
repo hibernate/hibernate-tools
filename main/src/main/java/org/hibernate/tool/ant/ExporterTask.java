@@ -92,7 +92,7 @@ public abstract class ExporterTask {
 		prop.putAll(parent.getProperties());
 		prop.putAll(properties);
 		exporter.getProperties().putAll(prop);
-		exporter.setMetadataSources(parent.getMetadataDescriptor());
+		exporter.setMetadataDescriptor(parent.getMetadataDescriptor());
 		exporter.setOutputDirectory( getDestdir() );
 		exporter.setTemplatePath( getTemplatePath().list() );			
 		return exporter;

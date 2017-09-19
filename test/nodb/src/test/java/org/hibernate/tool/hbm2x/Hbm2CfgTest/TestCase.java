@@ -48,7 +48,7 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new HibernateConfigurationExporter();
-		cfgexporter.setMetadataSources(metadataDescriptor);
+		cfgexporter.setMetadataDescriptor(metadataDescriptor);
 		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}
@@ -62,7 +62,7 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataDescriptorFactory
+	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
@@ -80,7 +80,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataDescriptorFactory
+	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
@@ -90,7 +90,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataSources(MetadataDescriptorFactory
+	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();

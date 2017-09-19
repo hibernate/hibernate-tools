@@ -129,7 +129,7 @@ public class TestCase {
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataSources(metadataSources);
+		hme.setMetadataDescriptor(metadataSources);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
@@ -141,7 +141,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
@@ -177,7 +177,7 @@ public class TestCase {
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");

@@ -63,7 +63,7 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws Exception {	
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setMetadataSources(createMetadataSources());
+		exporter.setMetadataDescriptor(createMetadataSources());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");

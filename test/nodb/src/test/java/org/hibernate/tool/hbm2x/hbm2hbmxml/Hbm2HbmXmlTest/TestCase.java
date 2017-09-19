@@ -74,7 +74,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataSources(metadataDescriptor);
+		hbmexporter.setMetadataDescriptor(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -117,7 +117,7 @@ public class TestCase {
 		hgs.setSchemaName("myschema");
 		hgs.setCatalogName("mycatalog");		
 		Exporter gsExporter = new HibernateMappingExporter();
-		gsExporter.setMetadataSources(metadataDescriptor);
+		gsExporter.setMetadataDescriptor(metadataDescriptor);
 		gsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gsExporter).setGlobalSettings(hgs);
 		gsExporter.start();
@@ -147,7 +147,7 @@ public class TestCase {
 		hgs.setDefaultAccess("field");
 		hgs.setDefaultCascade("save-update");
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataSources(metadataDescriptor);
+		gbsExporter.setMetadataDescriptor(metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
@@ -263,7 +263,7 @@ public class TestCase {
 		hgs.setDefaultAccess("property");
 		hgs.setDefaultCascade("none");	
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataSources(metadataDescriptor);
+		gbsExporter.setMetadataDescriptor(metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
@@ -294,7 +294,7 @@ public class TestCase {
 		hgs.setDefaultLazy(false);
 		hgs.setAutoImport(false);		
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataSources(metadataDescriptor);
+		gbsExporter.setMetadataDescriptor(metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();

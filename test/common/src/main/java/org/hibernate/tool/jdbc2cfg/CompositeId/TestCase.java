@@ -166,10 +166,10 @@ public class TestCase {
     public void testGeneration() throws Exception {
         final File testFolder = temporaryFolder.getRoot();        
         Exporter exporter = new HibernateMappingExporter();	
-        exporter.setMetadataSources(metadataSources);
+        exporter.setMetadataDescriptor(metadataSources);
         exporter.setOutputDirectory(testFolder);
         Exporter javaExp = new POJOExporter();
-        javaExp.setMetadataSources(metadataSources);
+        javaExp.setMetadataDescriptor(metadataSources);
         javaExp.setOutputDirectory(testFolder);
         exporter.start();
         javaExp.start();      

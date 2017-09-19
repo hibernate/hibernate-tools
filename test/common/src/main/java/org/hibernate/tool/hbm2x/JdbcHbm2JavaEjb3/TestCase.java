@@ -40,7 +40,7 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(MetadataDescriptorFactory
+		exporter.setMetadataDescriptor(MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);

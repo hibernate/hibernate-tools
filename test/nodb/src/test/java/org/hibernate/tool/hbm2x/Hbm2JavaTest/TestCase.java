@@ -72,7 +72,7 @@ public class TestCase {
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
@@ -455,7 +455,7 @@ public class TestCase {
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new ArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);

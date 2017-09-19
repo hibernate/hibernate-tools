@@ -63,7 +63,7 @@ public class TestCase {
 		metadata = metadataDescriptor.createMetadata();
 		FileUtil.generateNoopComparator(outputDir);
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");

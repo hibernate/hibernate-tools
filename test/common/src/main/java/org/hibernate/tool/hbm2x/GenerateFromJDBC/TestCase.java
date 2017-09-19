@@ -66,11 +66,11 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		exporter = new POJOExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
@@ -79,7 +79,7 @@ public class TestCase {
 	@Test
 	public void testGenerateMappings() {
 		Exporter exporter = new HibernateMappingExporter();	
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
@@ -98,7 +98,7 @@ public class TestCase {
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
 		Exporter exporter = new HibernateConfigurationExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
@@ -124,7 +124,7 @@ public class TestCase {
 	public void testGenerateAnnotationCfgXml() throws DocumentException {
 		HibernateConfigurationExporter exporter = 
 				new HibernateConfigurationExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
@@ -150,7 +150,7 @@ public class TestCase {
 	@Test
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
-		exporter.setMetadataSources(metadataSources);
+		exporter.setMetadataDescriptor(metadataSources);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));

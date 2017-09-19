@@ -68,7 +68,7 @@ public class TestCase {
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
-        exporter.setMetadataSources(metadataSources);
+        exporter.setMetadataDescriptor(metadataSources);
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		File[] files = new File[4];		

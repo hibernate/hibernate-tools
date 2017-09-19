@@ -52,10 +52,10 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 		POJOExporter javaExporter = new POJOExporter();
-		javaExporter.setMetadataSources(metadataDescriptor);
+		javaExporter.setMetadataDescriptor(metadataDescriptor);
 		javaExporter.setOutputDirectory(outputDir);
 		POJOExporter exporter = new DAOExporter();
-		exporter.setMetadataSources(metadataDescriptor);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");
