@@ -19,7 +19,6 @@ import java.util.Set;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
@@ -98,8 +97,7 @@ public class JDBCBinder {
 		this.defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		this.defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 		metadataCollector = mdbc.getMetadataCollector();
-		MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-		this.metadata = metadataSources.buildMetadata();
+		this.metadata = ((InFlightMetadataCollectorImpl)metadataCollector).buildMetadataInstance(mdbc);
 	}
 
 	/**
