@@ -44,7 +44,7 @@ public class ConfigurationTask extends Task {
 	/**
 	 * @return
 	 */
-	public final MetadataDescriptor getMetadataSources() {
+	public final MetadataDescriptor getMetadataDescriptor() {
 		if (metadataDescriptor == null) {
 			metadataDescriptor = createMetadataDescriptor();
 		}

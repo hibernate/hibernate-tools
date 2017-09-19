@@ -279,7 +279,7 @@ public class HibernateToolTask extends Task {
 	 * @return
 	 */
 	public MetadataDescriptor getMetadataDescriptor() {
-		return configurationTask.getMetadataSources();
+		return configurationTask.getMetadataDescriptor();
 	}
 	
 	public void setTemplatePath(Path path) {
