@@ -32,7 +32,7 @@ public abstract class AbstractExporter implements Exporter {
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
 	private Metadata metadata = null;
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 
 	private Iterator<Entry<Object, Object>> iterator;
 
@@ -44,12 +44,12 @@ public abstract class AbstractExporter implements Exporter {
 		c2j = new Cfg2JavaTool();		
 	}
 	
-	public void setMetadataDescriptor(MetadataDescriptor metadataSources) {
-		this.metadataSources = metadataSources;
+	public void setMetadataDescriptor(MetadataDescriptor metadataDescriptor) {
+		this.metadataDescriptor = metadataDescriptor;
 	}
 	
-	protected MetadataDescriptor getMetadataSources() {
-		return metadataSources;
+	protected MetadataDescriptor getMetadataDescriptor() {
+		return metadataDescriptor;
 	}
 	
 	public Metadata getMetadata() {
@@ -204,7 +204,7 @@ public abstract class AbstractExporter implements Exporter {
     }
 	
 	protected Metadata buildMetadata() {
-		return metadataSources.createMetadata();
+		return metadataDescriptor.createMetadata();
 	}
 
     private File getDirForPackage(File baseDir, String packageName) {
