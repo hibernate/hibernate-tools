@@ -28,7 +28,7 @@ import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 public class ConfigurationTask extends Task {
 
 	private List<FileSet> fileSets = new ArrayList<FileSet>();
-	private MetadataDescriptor metadataSources;
+	private MetadataDescriptor metadataDescriptor;
 	private File configurationFile;
 	private File propertyFile;
 	protected String entityResolver;
@@ -45,10 +45,10 @@ public class ConfigurationTask extends Task {
 	 * @return
 	 */
 	public final MetadataDescriptor getMetadataSources() {
-		if (metadataSources == null) {
-			metadataSources = createMetadataSources();
+		if (metadataDescriptor == null) {
+			metadataDescriptor = createMetadataSources();
 		}
-		return metadataSources;
+		return metadataDescriptor;
 	}
 	
 	protected MetadataDescriptor createMetadataSources() {
