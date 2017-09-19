@@ -50,7 +50,7 @@ public class Hbm2DDLExporterTask extends ExporterTask {
 	protected Exporter createExporter() {
 		Hbm2DDLExporter exporter = new Hbm2DDLExporter();
 		exporter.getProperties().putAll(parent.getProperties());
-		exporter.setMetadataSources(parent.getMetadataSources());
+		exporter.setMetadataSources(parent.getMetadataDescriptor());
 		exporter.setOutputDirectory(parent.getDestDir());
 		return exporter;
 	}

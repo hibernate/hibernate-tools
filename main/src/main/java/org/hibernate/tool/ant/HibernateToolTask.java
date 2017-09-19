@@ -278,7 +278,7 @@ public class HibernateToolTask extends Task {
 	/**
 	 * @return
 	 */
-	public MetadataDescriptor getMetadataSources() {
+	public MetadataDescriptor getMetadataDescriptor() {
 		return configurationTask.getMetadataSources();
 	}
 	
@@ -295,7 +295,7 @@ public class HibernateToolTask extends Task {
 
 	public Properties getProperties() {
 		Properties p = new Properties();
-		p.putAll(getMetadataSources().getProperties());
+		p.putAll(getMetadataDescriptor().getProperties());
 		p.putAll(properties);
 		return p;
 	}
