@@ -39,7 +39,7 @@ public class HibernateUtilTest {
 	@Test
 	public void testInitializeConfiguration() {
 		Metadata metadata = HibernateUtil
-				.initializeMetadataSources(
+				.initializeMetadataDescriptor(
 						this, 
 						new String[] { "HelloWorld.hbm.xml" },
 						temporaryFolder.getRoot())

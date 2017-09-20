@@ -65,7 +65,7 @@ public class TestCase {
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();
 		hbmexporter.setMetadataDescriptor(metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);

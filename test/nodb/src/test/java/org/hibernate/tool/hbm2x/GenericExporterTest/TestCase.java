@@ -50,7 +50,7 @@ public class TestCase {
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
 		metadataDescriptor = HibernateUtil
-				.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
 	}
 

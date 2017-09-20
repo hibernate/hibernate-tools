@@ -38,7 +38,7 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		metadataDescriptor = HibernateUtil.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+		metadataDescriptor = HibernateUtil.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 	}
 	
 	@Test

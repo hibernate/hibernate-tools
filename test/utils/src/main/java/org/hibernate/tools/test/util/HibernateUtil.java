@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -42,7 +43,7 @@ public class HibernateUtil {
 		return null;
 	}
 	
-	public static MetadataDescriptor initializeMetadataSources(
+	public static MetadataDescriptor initializeMetadataDescriptor(
 			Object test, 
 			String[] hbmResourceNames, 
 			File hbmFileDir) {
@@ -57,16 +58,16 @@ public class HibernateUtil {
 	}
 	
 	public static void addAnnotatedClass(
-			MetadataDescriptor metadataSources, 
+			MetadataDescriptor metadataDescriptor, 
 			Class<?> annotatedClass) {
 		try {
-			Field metadataSourcesField = metadataSources
+			Field metadataSourcesField = metadataDescriptor
 					.getClass()
 					.getDeclaredField("metadataSources");
 			metadataSourcesField.setAccessible(true);
-			org.hibernate.boot.MetadataSources bootSources = 
-					(org.hibernate.boot.MetadataSources)metadataSourcesField.get(metadataSources);
-			bootSources.addAnnotatedClass(annotatedClass);
+			MetadataSources metadataSources = 
+					(MetadataSources)metadataSourcesField.get(metadataDescriptor);
+			metadataSources.addAnnotatedClass(annotatedClass);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
