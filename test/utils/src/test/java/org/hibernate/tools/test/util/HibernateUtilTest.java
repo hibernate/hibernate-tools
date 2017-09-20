@@ -54,14 +54,14 @@ public class HibernateUtilTest {
 	public void testAddAnnotatedClass() {
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		MetadataDescriptor metadataSources = MetadataDescriptorFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, null, properties);
-		Assert.assertNull(metadataSources
+		Assert.assertNull(metadataDescriptor
 				.createMetadata()
 				.getEntityBinding(
 						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
-		HibernateUtil.addAnnotatedClass(metadataSources, Dummy.class);
-		Assert.assertNotNull(metadataSources
+		HibernateUtil.addAnnotatedClass(metadataDescriptor, Dummy.class);
+		Assert.assertNotNull(metadataDescriptor
 				.createMetadata()
 				.getEntityBinding(
 						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
