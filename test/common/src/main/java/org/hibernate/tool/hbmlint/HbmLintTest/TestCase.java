@@ -30,7 +30,7 @@ public class TestCase {
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 	
 	@Before
 	public void setUp() {
@@ -38,13 +38,13 @@ public class TestCase {
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
 		resourcesDir.mkdir();
-		metadataSources = HibernateUtil.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
+		metadataDescriptor = HibernateUtil.initializeMetadataSources(this, HBM_XML_FILES, resourcesDir);
 	}
 	
 	@Test
 	public void testExporter() {	
 		HbmLintExporter exporter = new HbmLintExporter();		
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}
@@ -52,21 +52,21 @@ public class TestCase {
 	@Test
 	public void testValidateCache() {	
 		HbmLint analyzer = new HbmLint(new Detector[] { new BadCachingDetector() });		
-		analyzer.analyze(metadataSources.createMetadata());
+		analyzer.analyze(metadataDescriptor.createMetadata());
 		Assert.assertEquals(1,analyzer.getResults().size());		
 	}
 
 	@Test
 	public void testValidateIdentifier() {		
 		HbmLint analyzer = new HbmLint(new Detector[] { new ShadowedIdentifierDetector() });		
-		analyzer.analyze(metadataSources.createMetadata());
+		analyzer.analyze(metadataDescriptor.createMetadata());
 		Assert.assertEquals(1,analyzer.getResults().size());
 	}
 	
 	@Test
 	public void testBytecodeRestrictions() {		
 		HbmLint analyzer = new HbmLint(new Detector[] { new InstrumentationDetector() });		
-		analyzer.analyze(metadataSources.createMetadata());
+		analyzer.analyze(metadataDescriptor.createMetadata());
 		Assert.assertEquals(analyzer.getResults().toString(), 2,analyzer.getResults().size());
 	}
 	
