@@ -63,7 +63,7 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws Exception {	
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setMetadataDescriptor(createMetadataSources());
+		exporter.setMetadataDescriptor(createMetadataDescriptor());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");
@@ -83,7 +83,7 @@ public class TestCase {
 		loader.close();
 	}
 	
-	private MetadataDescriptor createMetadataSources() {
+	private MetadataDescriptor createMetadataDescriptor() {
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();
