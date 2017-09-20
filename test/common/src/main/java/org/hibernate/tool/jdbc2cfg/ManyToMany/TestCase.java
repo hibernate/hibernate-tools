@@ -119,14 +119,14 @@ public class TestCase {
 	@Test
 	public void testGenerateAndReadable() {
 		
-		MetadataDescriptor metadataSources = MetadataDescriptorFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true);
 		File outputDir = temporaryFolder.getRoot();
 		
-		Assert.assertNotNull(metadataSources.createMetadata());
+		Assert.assertNotNull(metadataDescriptor.createMetadata());
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataSources);
+		hme.setMetadataDescriptor(metadataDescriptor);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		
