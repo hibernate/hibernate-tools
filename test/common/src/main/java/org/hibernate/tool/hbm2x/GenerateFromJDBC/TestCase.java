@@ -45,7 +45,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 	private File outputDir = null;
 	
 	@Before
@@ -54,7 +54,7 @@ public class TestCase {
 		outputDir = temporaryFolder.getRoot();
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
-		metadataSources = MetadataDescriptorFactory
+		metadataDescriptor = MetadataDescriptorFactory
 				.createJdbcDescriptor(configurableNamingStrategy, null, true);
 	}
 	
@@ -66,11 +66,11 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
 		POJOExporter exporter = new POJOExporter();		
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		exporter = new POJOExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
@@ -79,7 +79,7 @@ public class TestCase {
 	@Test
 	public void testGenerateMappings() {
 		Exporter exporter = new HibernateMappingExporter();	
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
@@ -98,7 +98,7 @@ public class TestCase {
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
 		Exporter exporter = new HibernateConfigurationExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
@@ -124,7 +124,7 @@ public class TestCase {
 	public void testGenerateAnnotationCfgXml() throws DocumentException {
 		HibernateConfigurationExporter exporter = 
 				new HibernateConfigurationExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
@@ -150,7 +150,7 @@ public class TestCase {
 	@Test
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));
@@ -158,7 +158,7 @@ public class TestCase {
 	
 	@Test
 	public void testPackageNames() {
-		Iterator<PersistentClass> iter = metadataSources
+		Iterator<PersistentClass> iter = metadataDescriptor
 				.createMetadata()
 				.getEntityBindings()
 				.iterator();
