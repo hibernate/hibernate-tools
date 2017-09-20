@@ -38,7 +38,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 
 	@Before
 	public void setUp() {
@@ -52,7 +52,7 @@ public class TestCase {
 				return selections;
 			}
 		};           
-	    metadataSources = MetadataDescriptorFactory
+	    metadataDescriptor = MetadataDescriptorFactory
 	    		.createJdbcDescriptor(c, null, true);
 	}
 
@@ -65,7 +65,7 @@ public class TestCase {
 	@Ignore 
 	@Test
 	public void testTernaryModel() throws SQLException {
-		assertMultiSchema(metadataSources.createMetadata());	
+		assertMultiSchema(metadataDescriptor.createMetadata());	
 	}
 
 	// TODO Investigate the ignored test: HBX-1410
@@ -74,7 +74,7 @@ public class TestCase {
 	public void testGeneration() {		
 		File outputFolder = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataSources);
+		hme.setMetadataDescriptor(metadataDescriptor);
 		hme.setOutputDirectory(outputFolder);
 		hme.start();			
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
