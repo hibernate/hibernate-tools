@@ -45,7 +45,7 @@ public class TestCase {
 		String[] resources = { "UserGroup.hbm.xml" };		
 		ResourceUtil.createResources(this, resources, resourcesDir);
 		userGroupHbmXmlFile = new File(resourcesDir, "UserGroup.hbm.xml");
-		SessionFactory factory = buildMetadata().buildSessionFactory();		
+		SessionFactory factory = createMetadata().buildSessionFactory();		
 		Session s = factory.openSession();	
 		Transaction t = s.beginTransaction();
 		User user = new User("max", "jboss");
@@ -61,13 +61,13 @@ public class TestCase {
 	@Test
 	public void testQueryExporter() throws Exception {		
 		QueryExporter exporter = new QueryExporter();
-		MetadataDescriptor metadataSources = MetadataDescriptorFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(
 						null, 
 						new File[] { userGroupHbmXmlFile }, 
 						null);
 		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(destinationDir);
 		exporter.setFilename("queryresult.txt");
 		List<String> queries = new ArrayList<String>();
@@ -82,25 +82,22 @@ public class TestCase {
 		SchemaExport export = new SchemaExport();
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		targetTypes.add( TargetType.DATABASE );
-		export.drop(targetTypes, buildMetadata());		
+		export.drop(targetTypes, createMetadata());		
 		if (export.getExceptions() != null && export.getExceptions().size() > 0){
 			Assert.fail("Schema export failed");
 		}		
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	private MetadataDescriptor buildMetadataSources() {
+	private Metadata createMetadata() {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.HBM2DDL_AUTO, "update");
-		return MetadataDescriptorFactory
+		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(
 						null, 
 						new File[] { userGroupHbmXmlFile }, 
 						properties);
-	}
-	
-	private Metadata buildMetadata() {
-		return buildMetadataSources().createMetadata();
+		return metadataDescriptor.createMetadata();
 	}
 	
 }
