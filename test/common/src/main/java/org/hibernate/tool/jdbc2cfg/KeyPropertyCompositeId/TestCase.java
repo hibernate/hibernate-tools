@@ -43,14 +43,14 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
 
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
-		metadataSources = MetadataDescriptorFactory
+		metadataDescriptor = MetadataDescriptorFactory
 				.createJdbcDescriptor(reverseEngineeringStrategy, null, false);
 	}
 
@@ -61,7 +61,7 @@ public class TestCase {
 
 	@Test
 	public void testMultiColumnForeignKeys() {
-		Metadata metadata = metadataSources.createMetadata();
+		Metadata metadata = metadataDescriptor.createMetadata();
 		Table table = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "LINE_ITEM"));
@@ -92,7 +92,7 @@ public class TestCase {
 
 	@Test
 	public void testPossibleKeyManyToOne() {
-		PersistentClass product = metadataSources.createMetadata().getEntityBinding(
+		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
 				reverseEngineeringStrategy
 					.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));
 		Property identifierProperty = product.getIdentifierProperty();
@@ -118,7 +118,7 @@ public class TestCase {
 
 	@Test
 	public void testKeyProperty() {
-		PersistentClass product = metadataSources.createMetadata().getEntityBinding(
+		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
 				reverseEngineeringStrategy
 					.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "PRODUCT"))));
 		Property identifierProperty = product.getIdentifierProperty();
@@ -146,10 +146,10 @@ public class TestCase {
 	public void testGeneration() throws Exception {
 		final File testFolder = temporaryFolder.getRoot();
 		Exporter exporter = new HibernateMappingExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(testFolder);
 		Exporter javaExp = new POJOExporter();
-		javaExp.setMetadataDescriptor(metadataSources);
+		javaExp.setMetadataDescriptor(metadataDescriptor);
 		javaExp.setOutputDirectory(testFolder);
 		exporter.start();
 		javaExp.start();
