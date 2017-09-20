@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -11,7 +12,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class NativeMetadataDescriptor implements MetadataDescriptor {
 	
 	private Properties properties = new Properties();
-	private org.hibernate.boot.MetadataSources metadataSources = null;
+	private MetadataSources metadataSources = null;
 	private StandardServiceRegistryBuilder ssrb = null;
 		
 	public NativeMetadataDescriptor(
@@ -27,7 +28,7 @@ public class NativeMetadataDescriptor implements MetadataDescriptor {
 			this.properties.putAll(properties);
 		}
 		ssrb.applySettings(getProperties());
-		metadataSources = new org.hibernate.boot.MetadataSources(bsr);
+		metadataSources = new MetadataSources(bsr);
 		if (mappingFiles != null) {
 			for (File file : mappingFiles) {
 				if (file.getName().endsWith(".jar")) {
