@@ -47,14 +47,14 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 	private Metadata metadata = null;
 
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		metadataSources = MetadataDescriptorFactory.createJdbcDescriptor(null, null, true);
-		metadata = metadataSources.createMetadata();
+		metadataDescriptor = MetadataDescriptorFactory.createJdbcDescriptor(null, null, true);
+		metadata = metadataDescriptor.createMetadata();
 	}
 	
 	@After
@@ -129,7 +129,7 @@ public class TestCase {
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataSources);
+		hme.setMetadataDescriptor(metadataDescriptor);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
@@ -141,7 +141,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
@@ -177,7 +177,7 @@ public class TestCase {
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		POJOExporter exporter = new POJOExporter();
-		exporter.setMetadataDescriptor(metadataSources);
+		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
