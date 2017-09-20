@@ -33,7 +33,7 @@ import org.junit.rules.TemporaryFolder;
 public class TestCase {
 	
 	private Metadata metadata = null;
-	private MetadataDescriptor metadataSources = null;
+	private MetadataDescriptor metadataDescriptor = null;
 	
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -41,9 +41,9 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		metadataSources = MetadataDescriptorFactory
+		metadataDescriptor = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true);
-		metadata = metadataSources
+		metadata = metadataDescriptor
 				.createMetadata();
 	}
 
@@ -68,7 +68,7 @@ public class TestCase {
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
-        exporter.setMetadataDescriptor(metadataSources);
+        exporter.setMetadataDescriptor(metadataDescriptor);
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		File[] files = new File[4];		
