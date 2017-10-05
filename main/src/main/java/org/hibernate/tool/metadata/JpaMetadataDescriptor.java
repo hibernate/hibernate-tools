@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 
 public class JpaMetadataDescriptor implements MetadataDescriptor {
 

@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.hibernate.HibernateException;
-import org.hibernate.tool.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 
 public class JPAConfigurationTask extends ConfigurationTask {

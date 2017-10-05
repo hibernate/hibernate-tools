@@ -2,13 +2,13 @@ package org.hibernate.tool.hbmlint.HbmLintTest;
 
 import java.io.File;
 
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
 import org.hibernate.tool.hbmlint.Detector;
 import org.hibernate.tool.hbmlint.HbmLint;
 import org.hibernate.tool.hbmlint.detector.BadCachingDetector;
 import org.hibernate.tool.hbmlint.detector.InstrumentationDetector;
 import org.hibernate.tool.hbmlint.detector.ShadowedIdentifierDetector;
-import org.hibernate.tool.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;

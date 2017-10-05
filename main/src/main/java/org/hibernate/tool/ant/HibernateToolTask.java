@@ -20,7 +20,7 @@ import org.apache.tools.ant.types.PropertySet;
 import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.tool.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 
 /**
  * @author max

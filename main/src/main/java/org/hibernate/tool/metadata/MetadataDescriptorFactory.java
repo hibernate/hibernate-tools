@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 
 public class MetadataDescriptorFactory {
 	

@@ -1,4 +1,4 @@
-package org.hibernate.tool.metadata;
+package org.hibernate.tool.api.metadata;
 
 import java.util.Properties;
 

@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
-import org.hibernate.tool.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

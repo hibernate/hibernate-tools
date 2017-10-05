@@ -10,7 +10,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 
 public class HibernateUtil {
