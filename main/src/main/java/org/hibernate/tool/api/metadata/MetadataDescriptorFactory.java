@@ -1,10 +1,12 @@
-package org.hibernate.tool.metadata;
+package org.hibernate.tool.api.metadata;
 
 import java.io.File;
 import java.util.Properties;
 
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.metadata.JdbcMetadataDescriptor;
+import org.hibernate.tool.metadata.JpaMetadataDescriptor;
+import org.hibernate.tool.metadata.NativeMetadataDescriptor;
 
 public class MetadataDescriptorFactory {
 	

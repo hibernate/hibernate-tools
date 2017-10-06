@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.persistence.Persistence;
 
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;

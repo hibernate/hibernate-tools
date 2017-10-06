@@ -33,7 +33,7 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;

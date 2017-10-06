@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.util.Properties;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Rule;

@@ -8,7 +8,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;

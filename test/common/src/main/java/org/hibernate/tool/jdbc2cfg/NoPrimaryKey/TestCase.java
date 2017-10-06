@@ -4,7 +4,7 @@
  */
 package org.hibernate.tool.jdbc2cfg.NoPrimaryKey;
 
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;

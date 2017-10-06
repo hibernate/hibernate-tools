@@ -22,7 +22,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
-import org.hibernate.tool.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
