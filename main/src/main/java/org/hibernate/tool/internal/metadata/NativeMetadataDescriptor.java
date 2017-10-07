@@ -1,4 +1,4 @@
-package org.hibernate.tool.metadata;
+package org.hibernate.tool.internal.metadata;
 
 import java.io.File;
 import java.util.Properties;
