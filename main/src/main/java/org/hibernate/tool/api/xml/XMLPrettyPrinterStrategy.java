@@ -1,4 +1,4 @@
-package org.hibernate.tool.hbm2x.xml;
+package org.hibernate.tool.api.xml;
 
 public interface XMLPrettyPrinterStrategy {
 
