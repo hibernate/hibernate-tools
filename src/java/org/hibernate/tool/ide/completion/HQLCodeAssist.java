@@ -10,7 +10,6 @@ import org.hibernate.tool.util.MetadataHelper;
 
 public class HQLCodeAssist implements IHQLCodeAssist {
 
-	private Configuration configuration;
 	private ConfigurationCompletion completion;
 	private Metadata metadata;
 	
@@ -21,9 +20,12 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 	}
 	
 	public HQLCodeAssist(Configuration cfg) {
-		configuration = cfg;
-		metadata = MetadataHelper.getMetadata(configuration);
-		completion = new ConfigurationCompletion(metadata);
+		this(MetadataHelper.getMetadata(cfg));
+	}
+	
+	public HQLCodeAssist(Metadata md) {
+		metadata = md;
+		completion = new ConfigurationCompletion(md);
 	}
 
 	public void codeComplete(String query, int position, IHQLCompletionRequestor collector) {
@@ -85,7 +87,7 @@ public class HQLCodeAssist implements IHQLCodeAssist {
 	}
 	
 	private boolean hasConfiguration() {
-		return configuration!=null;
+		return metadata!=null;
 	}
 	
 	public static int findNearestWhiteSpace( CharSequence doc, int start ) {
