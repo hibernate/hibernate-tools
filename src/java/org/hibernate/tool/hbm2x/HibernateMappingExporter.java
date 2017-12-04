@@ -9,10 +9,9 @@ import java.util.Map;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.hibernate.tool.util.MetadataHelper;
-import org.hibernate.internal.util.StringHelper;
 
 /**
  * @author david and max
@@ -37,8 +36,7 @@ public class HibernateMappingExporter extends GenericExporter {
 
 	private void exportGeneralSettings() {
 		Cfg2HbmTool c2h = getCfg2HbmTool();
-		Configuration cfg = getConfiguration();
-		Metadata md = MetadataHelper.getMetadata(cfg);
+		Metadata md = getMetadata();
 		if( c2h.isImportData(md) && 
 				(c2h.isNamedQueries(md)) && 
 				(c2h.isNamedSQLQueries(md)) && 

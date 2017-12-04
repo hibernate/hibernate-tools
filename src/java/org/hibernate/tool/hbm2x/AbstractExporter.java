@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
@@ -32,6 +33,7 @@ public abstract class AbstractExporter implements Exporter {
 	private TemplateHelper vh;
 	private Properties properties = new Properties();
 	private ArtifactCollector collector = new ArtifactCollector();
+	private Metadata metadata = null;
 
 	private Iterator<Entry<Object, Object>> iterator;
 
@@ -178,7 +180,7 @@ public abstract class AbstractExporter implements Exporter {
 		}
 		getTemplateHelper().putInContext("artifacts", collector);
         if(getConfiguration()!=null) {
-        	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+        	Metadata metadata = getMetadata();
         	getTemplateHelper().putInContext("md", metadata);
         	getTemplateHelper().putInContext("props", getConfiguration().getProperties());
         	getTemplateHelper().putInContext("tables", metadata.collectTableMappings());
@@ -216,7 +218,7 @@ public abstract class AbstractExporter implements Exporter {
 		getTemplateHelper().removeFromContext("exporter", this);
 		getTemplateHelper().removeFromContext("artifacts", collector);
         if(getConfiguration()!=null) {
-        	Metadata metadata = MetadataHelper.getMetadata(getConfiguration());
+        	Metadata metadata = getMetadata();
         	getTemplateHelper().removeFromContext("md", metadata);
         	getTemplateHelper().removeFromContext("props", getConfiguration().getProperties());
         	getTemplateHelper().removeFromContext("tables", metadata.collectTableMappings());
@@ -262,4 +264,23 @@ public abstract class AbstractExporter implements Exporter {
 	public Cfg2JavaTool getCfg2JavaTool() {
 		return c2j;
 	}
+	
+	protected Metadata getMetadata() {
+		if (metadata == null) {
+			metadata = buildMetadata();
+		}
+		return metadata;
+	}
+	
+	protected Metadata buildMetadata() {
+		Metadata result = null;
+		Configuration configuration = getConfiguration();
+		if (configuration != null) {
+			result = MetadataHelper.getMetadata(getConfiguration());
+		} else {
+			result = new MetadataSources().buildMetadata();
+		}
+		return result;
+	}
+	
 }
