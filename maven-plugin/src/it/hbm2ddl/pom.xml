@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.stadler</groupId>
+    <artifactId>hbm2ddl</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>1.8</java.version>
+        <h2.version>1.4.195</h2.version>
+        <hibernate-tools-maven-plugin.version>0.1.1-SNAPSHOT</hibernate-tools-maven-plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.stadler</groupId>
+                <artifactId>hibernate-tools-maven-plugin</artifactId>
+                <version>${hibernate-tools-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>Schema generation</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                        <configuration>
+                            <schemaExportAction>BOTH</schemaExportAction>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <revengFile>${project.basedir}/src/main/hibernate/hibernate.reveng.xml</revengFile>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <!-- DB Driver of your choice -->
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>${h2.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
