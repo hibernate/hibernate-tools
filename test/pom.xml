@@ -24,11 +24,12 @@
          		<module>utils</module>
     			<module>nodb</module>
     			<module>common</module>
-        		<module>h2</module>
-        		<module>hsql</module>
-        		<module>mssql</module>
-        		<module>oracle</module>
-        		<module>mysql</module>
+				<module>maven-plugin</module>
+				<module>h2</module>
+				<module>hsql</module>
+				<module>mssql</module>
+				<module>oracle</module>
+				<module>mysql</module>
       		</modules>
       	</profile>
       	<profile>
@@ -40,6 +41,7 @@
             	<module>utils</module>
             	<module>nodb</module>
             	<module>common</module>
+				<module>maven-plugin</module>
             	<module>h2</module>
           	</modules> 
        	</profile>
