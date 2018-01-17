@@ -1,12 +1,11 @@
-package com.github.stadler;
+package org.hibernate.mvn;
 
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tool.util.MetadataHelper;
 
 import java.io.File;
 import java.util.EnumSet;
@@ -39,8 +38,8 @@ public class Hbm2DdlMojo extends AbstractHbm2xMojo {
 
 
     @Override
-    protected void executeExporter(Configuration cfg) {
-        Metadata metadata = MetadataHelper.getMetadata(cfg);
+    protected void executeExporter(MetadataDescriptor metadataDescriptor) {
+        Metadata metadata = metadataDescriptor.createMetadata();
 
         SchemaExport export = new SchemaExport();
         export.setOutputFile(new File(outputDirectory, outputFileName).toString());
