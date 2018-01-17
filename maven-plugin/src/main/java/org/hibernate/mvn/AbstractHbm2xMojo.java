@@ -1,17 +1,22 @@
-package com.github.stadler;
+package org.hibernate.mvn;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.apache.tools.ant.BuildException;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 public abstract class AbstractHbm2xMojo extends AbstractMojo {
 
@@ -32,14 +37,18 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     private boolean createManyToOneForForeignKey;
 
     // For configuration
-    @Parameter(defaultValue = "${project.basedir}/src/main/hibernate/hibernate.cfg.xml")
-    private File configFile;
+    @Parameter(defaultValue = "${project.basedir}/src/main/hibernate/hibernate.properties")
+    private File propertyFile;
+
+    // Not exposed for now
+    private boolean preferBasicCompositeIds = true;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Starting " + this.getClass().getSimpleName() + "...");
         ReverseEngineeringStrategy strategy = setupReverseEngineeringStrategy();
-        JDBCMetaDataConfiguration cfg = setupJdbcMetaDataConfiguration(strategy);
-        executeExporter(cfg);
+        Properties properties = loadPropertiesFile();
+        MetadataDescriptor jdbcDescriptor = createJdbcDescriptor(strategy, properties);
+        executeExporter(jdbcDescriptor);
         getLog().info("Finished " + this.getClass().getSimpleName() + "!");
     }
 
@@ -65,17 +74,29 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
         return strategy;
     }
 
-    private JDBCMetaDataConfiguration setupJdbcMetaDataConfiguration(ReverseEngineeringStrategy strategy) {
-        JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-        cfg.setReverseEngineeringStrategy(strategy);
+    private Properties loadPropertiesFile() {
+        if (propertyFile == null) {
+            return null;
+        }
 
-        getLog().info("Configuring using file: " + configFile + "...");
-        cfg.configure(configFile);
-
-        getLog().info("Reading from JDBC...");
-        cfg.readFromJDBC();
-        return cfg;
+        Properties properties = new Properties();
+        try (FileInputStream is = new FileInputStream(propertyFile);) {
+            properties.load(is);
+            return properties;
+        } catch (FileNotFoundException e) {
+            throw new BuildException(propertyFile + " not found.", e);
+        } catch (IOException e) {
+            throw new BuildException("Problem while loading " + propertyFile, e);
+        }
     }
 
-    protected abstract void executeExporter(Configuration cfg);
+    private MetadataDescriptor createJdbcDescriptor(ReverseEngineeringStrategy strategy, Properties properties) {
+        return MetadataDescriptorFactory
+                .createJdbcDescriptor(
+                        strategy,
+                        properties,
+                        preferBasicCompositeIds);
+    }
+
+    protected abstract void executeExporter(MetadataDescriptor metadataDescriptor);
 }

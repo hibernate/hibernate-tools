@@ -1,8 +1,8 @@
-package com.github.stadler;
+package org.hibernate.mvn;
 
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.POJOExporter;
 
 import java.io.File;
@@ -26,8 +26,10 @@ public class Hbm2JavaMojo extends AbstractHbm2xMojo {
     @Parameter
     private String templatePath;
 
-    protected void executeExporter(Configuration cfg) {
-        POJOExporter pojoExporter = new POJOExporter(cfg, outputDirectory);
+    protected void executeExporter(MetadataDescriptor metadataDescriptor) {
+        POJOExporter pojoExporter = new POJOExporter();
+        pojoExporter.setMetadataDescriptor(metadataDescriptor);
+        pojoExporter.setOutputDirectory(outputDirectory);
         if (templatePath != null) {
             getLog().info("Setting template path to: " + templatePath);
             pojoExporter.setTemplatePath(new String[]{templatePath});
