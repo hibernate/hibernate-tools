@@ -19,14 +19,6 @@
         <maven-invoker-plugin.version>3.0.1</maven-invoker-plugin.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools-maven-plugin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
