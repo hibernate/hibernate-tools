@@ -257,14 +257,14 @@ public class EntityPOJOClass extends BasicPOJOClass {
 					else if ( TableGenerator.class.getName().equals( strategy ) ) {
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") )
 						.addAttribute( "strategy", staticImport("javax.persistence.GenerationType", "TABLE" ) )
-					    .addQuotedAttribute( "generator", "generator" );
+					    .addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
 						buildAnnTableGenerator( wholeString, properties );
 					}
 					else {
 						isGenericGenerator = true;
 						builder.resetAnnotation( importType("javax.persistence.GeneratedValue") );
-						builder.addQuotedAttribute( "generator", "generator" );
+						builder.addQuotedAttribute( "generator", clazz.getClassName()+"IdGenerator" );
 						idResult.append(builder.getResult());
 					}
 				} else {
@@ -274,7 +274,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			}
 			if ( isGenericGenerator ) {
 				builder.resetAnnotation( importType("org.hibernate.annotations.GenericGenerator") )
-					.addQuotedAttribute( "name", "generator" )
+					.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" )
 					.addQuotedAttribute( "strategy", strategy);
 
 				List<AnnotationBuilder> params = new ArrayList<AnnotationBuilder>();
@@ -301,7 +301,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	private void buildAnnTableGenerator(StringBuffer wholeString, Properties properties) {
 
 		AnnotationBuilder builder = AnnotationBuilder.createAnnotation( importType("javax.persistence.TableGenerator") );
-		builder.addQuotedAttribute( "name", "generator" );
+		builder.addQuotedAttribute( "name", clazz.getClassName()+"IdGenerator" );
 		builder.addQuotedAttribute( "table", properties.getProperty( "generatorTableName", "hibernate_sequences" ) );
 		if ( ! isPropertyDefault( PersistentIdentifierGenerator.CATALOG, properties ) ) {
 			builder.addQuotedAttribute( "catalog", properties.getProperty( PersistentIdentifierGenerator.CATALOG, "") );
