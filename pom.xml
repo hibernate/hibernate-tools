@@ -50,7 +50,7 @@
 	</developers>
 
 	<properties>
-		<hibernateversion>5.2.12.Final</hibernateversion>
+		<hibernateversion>5.2.13.Final</hibernateversion>
 		<hibernateJpaversion>1.0.0.Final</hibernateJpaversion>
 		<hibernateCommonsAnnotationsVersion>5.0.0.Final</hibernateCommonsAnnotationsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
