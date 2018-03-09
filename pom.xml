@@ -24,9 +24,6 @@
     </modules>
 
     <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-        <maven.install.skip>true</maven.install.skip>
-        <!-- library version properties -->
 		<ant.version>1.10.1</ant.version>
 		<commons-collections.version>3.2.2</commons-collections.version>
 		<commons-logging.version>1.2</commons-logging.version>
