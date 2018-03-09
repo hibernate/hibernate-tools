@@ -17,6 +17,11 @@
 
     <name>Hibernate Tools Integration Tests Parent Project</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+    
  	<profiles>
      	<profile>
        		<id>all</id>
