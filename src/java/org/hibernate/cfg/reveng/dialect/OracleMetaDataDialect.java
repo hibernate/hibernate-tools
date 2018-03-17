@@ -17,6 +17,7 @@ import org.hibernate.tool.util.TableNameQualifier;
  * 
  * @author David Channon
  * @author Eric Kershner (added preparedstatements HBX-817)
+ * @author Jacques Stadler (added HBX-1027)
  *  
  */
 
@@ -93,14 +94,20 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	/* ****** COLUMN QUERIES ******* */	
 	private static final String SQL_COLUMN_BASE = "select a.column_name as COLUMN_NAME, a.owner as TABLE_SCHEM, "
 			+ "decode(a.nullable,'N',0,1) as NULLABLE, "
-			+ "decode(a.data_type, 'FLOAT',decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), 'NUMBER', decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), a.data_length) as COLUMN_SIZE, "
+			+ "decode(a.data_type, "
+			+ "'FLOAT', decode(a.data_precision, null, a.data_length, a.data_precision), "
+			+ "'NUMBER', decode(a.data_precision, null, a.data_length, a.data_precision), "
+			+ "'VARCHAR2', a.char_length, "
+			+ "'VARCHAR', a.char_length, "
+			+ "'NVARCHAR2', a.char_length, "
+			+ "'CHAR', a.char_length, "
+			+ "'NCHAR', a.char_length, "
+			+ "a.data_length) as COLUMN_SIZE, "
 			+ "decode(a.data_type,'CHAR',1, 'DATE',91, 'FLOAT',6, "
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
 			+ "'RAW',-3, 'ROWID',1111, 'UROWID',1111, 'LONG RAW', -4, "
-			+ "'TIMESTAMP', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
+			+ "'TIMESTAMP', 93, 'TIMESTAMP(6)', 93, 'XMLTYPE',2005, 1111) as DATA_TYPE, "
 			+ "a.table_name as TABLE_NAME, a.data_type as TYPE_NAME, "
 			+ "decode(a.data_scale, null, 0 ,a.data_scale) as DECIMAL_DIGITS, b.comments "
 			+ "from all_tab_columns a left join all_col_comments b on "
@@ -163,13 +170,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private static final String SQL_PK_NONE = SQL_PK_BASE + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA = SQL_PK_BASE
-			+ " and c.owner like ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? escape '\\' " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_TABLE = SQL_PK_BASE
-			+ " and c.table_name like ? " + SQL_PK_ORDER;
+			+ " and c.table_name like ? escape '\\' " + SQL_PK_ORDER;
 
 	private static final String SQL_PK_SCHEMA_AND_TABLE = SQL_PK_BASE
-			+ " and c.owner like ? and c.table_name like ? " + SQL_PK_ORDER;
+			+ " and c.owner like ? escape '\\' and c.table_name like ? escape '\\' " + SQL_PK_ORDER;
 
 	private PreparedStatement prepPkNone;
 
@@ -488,8 +495,14 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		}
 		
 	}
+	
+	private String escape(String str) {
+		return str.replace("_", "\\_");
+	}
 
-	private ResultSet getPrimaryKeysResultSet(final String schema, final String table) throws SQLException {
+	private ResultSet getPrimaryKeysResultSet(final String schem, final String tab) throws SQLException {
+		String schema = escape(schem);
+		String table = escape(tab);
 		if(prepPkNone==null) {
 			// Prepare primary key queries
 			log.debug("Preparing primary key queries...");
