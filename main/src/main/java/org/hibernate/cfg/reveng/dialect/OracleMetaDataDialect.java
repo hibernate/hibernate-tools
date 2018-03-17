@@ -17,6 +17,7 @@ import org.hibernate.tool.util.TableNameQualifier;
  * 
  * @author David Channon
  * @author Eric Kershner (added preparedstatements HBX-817)
+ * @author Jacques Stadler (added HBX-1027)
  *  
  */
 
@@ -93,9 +94,15 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	/* ****** COLUMN QUERIES ******* */	
 	private static final String SQL_COLUMN_BASE = "select a.column_name as COLUMN_NAME, a.owner as TABLE_SCHEM, "
 			+ "decode(a.nullable,'N',0,1) as NULLABLE, "
-			+ "decode(a.data_type, 'FLOAT',decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), 'NUMBER', decode(a.data_precision,null, "
-			+ "a.data_length, a.data_precision), a.data_length) as COLUMN_SIZE, "
+			+ "decode(a.data_type, "
+			+ "'FLOAT', decode(a.data_precision, null, a.data_length, a.data_precision), "
+			+ "'NUMBER', decode(a.data_precision, null, a.data_length, a.data_precision), "
+			+ "'VARCHAR2', a.char_length, "
+			+ "'VARCHAR', a.char_length, "
+			+ "'NVARCHAR2', a.char_length, "
+			+ "'CHAR', a.char_length, "
+			+ "'NCHAR', a.char_length, "
+			+ "a.data_length) as COLUMN_SIZE, "
 			+ "decode(a.data_type,'CHAR',1, 'DATE',91, 'FLOAT',6, "
 			+ "'LONG',-1, 'NUMBER',2, 'VARCHAR2',12, 'BFILE',-13, "
 			+ "'BLOB',2004, 'CLOB',2005, 'MLSLABEL',1111, 'NCHAR',1, 'NCLOB',2005, 'NVARCHAR2',12, "
