@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.Assert;
+
 public class ConnectionLeakUtil {
 	
 	public static ConnectionLeakUtil forH2() {
@@ -22,7 +24,12 @@ public class ConnectionLeakUtil {
 		connectionCount = idleConnectionCounter.countConnections();
 	}
 	
-	public int getLeakedConnectionCount() {
+	public void assertNoLeaks() {
+		int leaked = getLeakedConnectionCount();
+		Assert.assertTrue(leaked + " connections are leaked.", leaked == 0); 
+	}
+	
+	private int getLeakedConnectionCount() {
 		int previousCount = connectionCount;
 		connectionCount = idleConnectionCounter.countConnections();
 		return connectionCount - previousCount;
