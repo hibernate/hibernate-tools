@@ -24,12 +24,6 @@
 <#if !property.optimisticLocked>
         optimistic-lock="false"
 </#if>
-<#if property.value.hasFormula()>
-<#assign formula = c2h.getFormulaForProperty(property)>
-<#if formula?exists>
-        formula="${formula.text}"
-</#if>
-</#if>
     >
     <#assign metaattributable=property>
 	<#include "meta.hbm.ftl">    
