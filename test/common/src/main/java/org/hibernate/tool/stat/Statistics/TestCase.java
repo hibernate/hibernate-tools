@@ -27,11 +27,6 @@ public class TestCase {
 	public void testBrowser() throws Exception {
 		MetadataSources mds = new MetadataSources();
 		mds.addResource("/org/hibernate/tool/stat/Statistics/UserGroup.hbm.xml");
-//		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-//		ssrb.applySetting("hibernate.hbm2ddl.auto", "create");
-//		ssrb.applySetting("hibernate.hbm2dll.create_namespaces", true);
-//		ssrb.applySetting("hibernate.show_sql", true);
-//		Metadata md = mds.buildMetadata(ssrb.build());
 		Metadata md = mds.buildMetadata();
 		SessionFactory sf = md.buildSessionFactory();
 		sf.getStatistics().setStatisticsEnabled(true);
@@ -57,6 +52,7 @@ public class TestCase {
 		s.createQuery( "from java.lang.Object" ).getResultList();
 		tx.commit();
 		s.close();
+		sf.close();
 	}
 
 }
