@@ -65,24 +65,6 @@
 <#if clazz.table.comment?exists  && clazz.table.comment?trim?length!=0>
  <comment>${clazz.table.comment}</comment>
 </#if>
-<#foreach join in clazz.joinIterator>
- <join
- <#if join.table.name?exists>
-     table="${join.table.name}"
- </#if>>
- <#if join.table.comment?exists  && join.table.comment?trim?length!=0>
-   <comment>${comment}</comment>
- </#if>
-   <key>
- <#foreach column in join.key.columnIterator>
-  <#include "column.hbm.ftl">
- </#foreach>
-   </key>
- <#foreach property in join.propertyIterator>
-  <#include "${c2h.getTag(property)}.hbm.ftl"/>
- </#foreach>
-  </join>
-</#foreach>
 <#-- TODO: move this to id.hbm.ftl -->
 <#if !c2h.isSubclass(clazz)>
  <#if clazz.hasIdentifierProperty()>
@@ -139,6 +121,25 @@
 <#if c2h.getTag(property)!="version" && c2h.getTag(property)!="timestamp">
 <#include "${c2h.getTag(property)}.hbm.ftl"/>
 </#if>
+</#foreach>
+
+<#foreach join in clazz.joinIterator>
+ <join
+ <#if join.table.name?exists>
+     table="${join.table.name}"
+ </#if>>
+ <#if join.table.comment?exists  && join.table.comment?trim?length!=0>
+   <comment>${comment}</comment>
+ </#if>
+   <key>
+ <#foreach column in join.key.columnIterator>
+  <#include "column.hbm.ftl">
+ </#foreach>
+   </key>
+ <#foreach property in join.propertyIterator>
+  <#include "${c2h.getTag(property)}.hbm.ftl"/>
+ </#foreach>
+  </join>
 </#foreach>
 
 </${c2h.getTag(clazz)}>
