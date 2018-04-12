@@ -1,4 +1,4 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.internal.reveng;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +10,14 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
+import org.hibernate.cfg.reveng.DefaulAssociationInfo;
+import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
+import org.hibernate.cfg.reveng.MetaAttributeBinder;
+import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.SQLTypeMapping;
+import org.hibernate.cfg.reveng.SchemaSelection;
+import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;

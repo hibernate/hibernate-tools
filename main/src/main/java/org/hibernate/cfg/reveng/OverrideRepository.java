@@ -23,6 +23,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.internal.reveng.OverrideBinder;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.tool.xml.XMLHelper;
 import org.slf4j.Logger;
