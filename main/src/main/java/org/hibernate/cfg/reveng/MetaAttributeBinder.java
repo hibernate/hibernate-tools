@@ -102,4 +102,15 @@ public class MetaAttributeBinder {
 
 	}
 
+	 private static class SimpleMetaAttribute {
+		String value;
+		boolean inheritable = true;
+		public SimpleMetaAttribute(String value, boolean inherit) {
+			this.value = value;
+			this.inheritable = inherit;
+		}
+		public String toString() {
+			return value;
+		}
+	}
 }
