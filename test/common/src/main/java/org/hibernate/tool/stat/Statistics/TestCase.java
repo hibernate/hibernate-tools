@@ -9,6 +9,7 @@ import org.hibernate.tool.stat.StatisticsBrowser;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestCase {
@@ -23,6 +24,9 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
+	// HBX-1554: Ignore the test for now
+	// TODO: re-enable the test
+	@Ignore
 	@Test
 	public void testBrowser() throws Exception {
 		MetadataSources mds = new MetadataSources();
