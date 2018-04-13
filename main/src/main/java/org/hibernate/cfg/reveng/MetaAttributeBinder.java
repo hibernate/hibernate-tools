@@ -9,7 +9,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Element;
 import org.hibernate.mapping.MetaAttribute;
-import org.hibernate.tool.hbm2x.MetaAttributeHelper;
+import org.hibernate.tool.internal.util.MultiMapUtil;
 
 public class MetaAttributeBinder {
 
@@ -24,7 +24,7 @@ public class MetaAttributeBinder {
 	 */
 	public static MultiMap mergeMetaMaps(MultiMap specific, MultiMap general) {
 		MultiValueMap result = new MultiValueMap();
-		MetaAttributeHelper.copyMultiMap(result, specific);
+		MultiMapUtil.copyMultiMap(result, specific);
 		
 		if (general != null) {
 			for (Iterator<?> iter = general.keySet().iterator();iter.hasNext();) {
