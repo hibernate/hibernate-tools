@@ -12,7 +12,6 @@ import org.dom4j.Element;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.reveng.DefaulAssociationInfo;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
-import org.hibernate.cfg.reveng.MetaAttributeBinder;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SQLTypeMapping;
 import org.hibernate.cfg.reveng.SchemaSelection;
@@ -131,7 +130,7 @@ public final class OverrideBinder {
 	}
 
 	private static void bindMetaAttributes(Element element, Table table, OverrideRepository repository) {
-		MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+		MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap( element, new MultiValueMap());
 		if(map!=null && !map.isEmpty()) {
 			repository.addMetaAttributeInfo( table, map);
 		} 
@@ -328,7 +327,7 @@ public final class OverrideBinder {
 				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
 			}
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+			MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap( element, new MultiValueMap());
 			if(map!=null && !map.isEmpty()) {
 				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
 			} 
@@ -391,7 +390,7 @@ public final class OverrideBinder {
 			filter.setExclude(Boolean.valueOf(element.attributeValue("exclude") ) );
 			filter.setPackage(element.attributeValue("package") );
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+			MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap( element, new MultiValueMap());
 			if(map!=null && !map.isEmpty()) {
 				filter.setMetaAttributes( map );
 			} else {

@@ -1,4 +1,4 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.internal.reveng;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import org.dom4j.Element;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.tool.internal.util.MultiMapUtil;
 
-public class MetaAttributeBinder {
+public class MetaAttributeHelper {
 
 	/**
 	 * Merges a Multimap with inherited maps.
@@ -67,7 +67,7 @@ public class MetaAttributeBinder {
 	public static MultiMap loadAndMergeMetaMap(
 		Element classElement,
 		MultiMap inheritedMeta) {
-		return MetaAttributeBinder.mergeMetaMaps(loadMetaMap(classElement), inheritedMeta);
+		return MetaAttributeHelper.mergeMetaMaps(loadMetaMap(classElement), inheritedMeta);
 	}
 
 

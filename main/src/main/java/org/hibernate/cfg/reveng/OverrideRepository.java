@@ -23,6 +23,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.internal.reveng.MetaAttributeHelper;
 import org.hibernate.tool.internal.reveng.OverrideBinder;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.tool.xml.XMLHelper;
@@ -560,7 +561,7 @@ public class OverrideRepository  {
 			String name = (String) entry.getKey();
 			List<?> values = (List<?>) entry.getValue();
 
-			result.put(name, MetaAttributeBinder.toRealMetaAttribute(name, values));
+			result.put(name, MetaAttributeHelper.toRealMetaAttribute(name, values));
 		}
 
 		return result;
