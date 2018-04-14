@@ -179,12 +179,12 @@ public class TestCase {
         		urls, 
         		Thread.currentThread().getContextClassLoader());
         File[] files = new File[6];
-        files[0] = new File(testFolder, "Simplecustomerorder.hbm.xml");
-        files[1] = new File(testFolder, "Simplelineitem.hbm.xml");
+        files[0] = new File(testFolder, "SimpleCustomerOrder.hbm.xml");
+        files[1] = new File(testFolder, "SimpleLineItem.hbm.xml");
         files[2] = new File(testFolder, "Product.hbm.xml");
         files[3] = new File(testFolder, "Customer.hbm.xml");
-        files[4] = new File(testFolder, "Lineitem.hbm.xml");
-        files[5] = new File(testFolder, "Customerorder.hbm.xml");
+        files[4] = new File(testFolder, "LineItem.hbm.xml");
+        files[5] = new File(testFolder, "CustomerOrder.hbm.xml");
         Thread.currentThread().setContextClassLoader(ucl);
         SessionFactory factory = MetadataDescriptorFactory
         		.createNativeDescriptor(null, files, null)
