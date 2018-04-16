@@ -12,7 +12,15 @@ import org.w3c.dom.NodeList;
 
 public class MetaAttributeXmlHelper {
 
-	 static MultiMap loadMetaMap(Element element) {
+	static MultiMap loadAndMergeMetaMap(
+			Element classElement,
+			MultiMap inheritedMeta) {
+		return MetaAttributeHelper.mergeMetaMaps(
+				loadMetaMap(classElement), 
+				inheritedMeta);
+	}
+
+	static MultiMap loadMetaMap(Element element) {
 		MultiMap result = new MultiValueMap();
 		List<Element> metaAttributeList = new ArrayList<Element>();
 		NodeList nodeList = element.getElementsByTagName("meta");
@@ -32,7 +40,6 @@ public class MetaAttributeXmlHelper {
 			result.put(attribute, ma);
 		}
 		return result;
-
 	}
 
 }
