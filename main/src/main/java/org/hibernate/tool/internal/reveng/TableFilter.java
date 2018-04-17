@@ -1,6 +1,8 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.internal.reveng;
 
 import java.util.Map;
+
+import org.hibernate.cfg.reveng.TableIdentifier;
 
 
 /**

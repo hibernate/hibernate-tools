@@ -15,7 +15,6 @@ import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SQLTypeMapping;
 import org.hibernate.cfg.reveng.SchemaSelection;
-import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
