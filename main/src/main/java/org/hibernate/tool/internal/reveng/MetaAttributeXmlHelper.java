@@ -29,9 +29,12 @@ public class MetaAttributeXmlHelper {
 		}
 		for (Iterator<Element> iter = metaAttributeList.iterator(); iter.hasNext();) {
 			Element metaAttribute = iter.next();
-			String attribute = metaAttribute.getAttributeNode("attribute").getValue();
+			String attribute = metaAttribute.getAttribute("attribute");
 			String value = metaAttribute.getTextContent();
-			String inheritStr= metaAttribute.getAttributeNode("inherit").getValue();
+			String inheritStr= null;
+			if (metaAttribute.hasAttribute("inherit")) {
+				inheritStr = metaAttribute.getAttribute("inherit");
+			}
 			boolean inherit = true;
 			if(inheritStr!=null) {
 				inherit = Boolean.valueOf(inheritStr).booleanValue(); 
