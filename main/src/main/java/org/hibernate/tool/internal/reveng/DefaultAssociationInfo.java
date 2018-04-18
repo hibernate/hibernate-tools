@@ -1,8 +1,8 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.internal.reveng;
 
 import org.hibernate.tool.api.reveng.AssociationInfo;
 
-public class DefaulAssociationInfo implements AssociationInfo {
+public class DefaultAssociationInfo implements AssociationInfo {
 
 	String cascade;
 	String fetch;

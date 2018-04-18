@@ -10,7 +10,6 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.reveng.DefaulAssociationInfo;
 import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SQLTypeMapping;
@@ -58,8 +57,8 @@ public final class OverrideBinder {
 		String manyToOneProperty = null;
 		Boolean excludeManyToOne = null;
 		
-		DefaulAssociationInfo associationInfo = null;
-		DefaulAssociationInfo inverseAssociationInfo = null;
+		DefaultAssociationInfo associationInfo = null;
+		DefaultAssociationInfo inverseAssociationInfo = null;
 		Element manyToOne = element.element("many-to-one");
 		if(manyToOne!=null) {
 			manyToOneProperty = manyToOne.attributeValue("property");
@@ -213,7 +212,7 @@ public final class OverrideBinder {
 		String oneToOneProperty = null;
 		Boolean excludeOneToOne = null;
 		Element oneToOne = element.element("one-to-one");
-		DefaulAssociationInfo associationInfo = null;
+		DefaultAssociationInfo associationInfo = null;
 		if(oneToOne!=null) {
 			oneToOneProperty = oneToOne.attributeValue("property");
 			excludeOneToOne = BooleanValue(oneToOne.attributeValue("exclude"));
@@ -223,7 +222,7 @@ public final class OverrideBinder {
 		String inverseOneToOneProperty = null;
 		Boolean excludeInverseOneToOne = null;
 		Element inverseOneToOne = element.element("inverse-one-to-one");
-		DefaulAssociationInfo inverseAssociationInfo = null;
+		DefaultAssociationInfo inverseAssociationInfo = null;
 		if(inverseOneToOne!=null) {
 			inverseOneToOneProperty = inverseOneToOne.attributeValue("property");
 			excludeInverseOneToOne = BooleanValue(inverseOneToOne.attributeValue("exclude"));
@@ -238,9 +237,9 @@ public final class OverrideBinder {
 		}
 	}
 
-	private static DefaulAssociationInfo extractAssociationInfo(Element manyToOne) {
+	private static DefaultAssociationInfo extractAssociationInfo(Element manyToOne) {
 		String attributeValue = manyToOne.attributeValue("cascade");
-		DefaulAssociationInfo associationInfo = null;
+		DefaultAssociationInfo associationInfo = null;
 		if(attributeValue!=null) {
 			associationInfo = ensureInit(associationInfo);
 			associationInfo.setCascade(attributeValue);
@@ -269,9 +268,9 @@ public final class OverrideBinder {
 		return associationInfo;
 	}
 
-	private static DefaulAssociationInfo ensureInit(
-			DefaulAssociationInfo associationInfo) {
-		return associationInfo==null?new DefaulAssociationInfo():associationInfo;
+	private static DefaultAssociationInfo ensureInit(
+			DefaultAssociationInfo associationInfo) {
+		return associationInfo==null?new DefaultAssociationInfo():associationInfo;
 	}
 
 	private static boolean validateFkAssociations(Element element){
