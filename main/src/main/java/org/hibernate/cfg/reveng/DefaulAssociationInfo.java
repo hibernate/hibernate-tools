@@ -1,5 +1,7 @@
 package org.hibernate.cfg.reveng;
 
+import org.hibernate.tool.api.reveng.AssociationInfo;
+
 public class DefaulAssociationInfo implements AssociationInfo {
 
 	String cascade;
