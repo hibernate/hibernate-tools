@@ -13,11 +13,11 @@ import org.hibernate.MappingException;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SQLTypeMapping;
 import org.hibernate.cfg.reveng.SchemaSelection;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 
 

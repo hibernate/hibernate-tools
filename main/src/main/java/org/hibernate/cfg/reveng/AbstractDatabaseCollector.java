@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 
 public abstract class AbstractDatabaseCollector implements DatabaseCollector {
 

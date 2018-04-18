@@ -12,8 +12,8 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.DelegatingReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Column;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.junit.Assert;
 import org.junit.Test;
 

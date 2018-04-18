@@ -1,7 +1,7 @@
 package org.hibernate.tool.ant.Cfg2HbmWithCustomReverseNamingStrategy;
 
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 
 public class Strategy extends DefaultReverseEngineeringStrategy {
 

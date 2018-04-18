@@ -9,6 +9,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.AssociationInfo;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 
 public class DelegatingReverseEngineeringStrategy implements ReverseEngineeringStrategy {
 
