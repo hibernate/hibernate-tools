@@ -10,7 +10,6 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.SQLTypeMapping;
 import org.hibernate.cfg.reveng.SchemaSelection;
@@ -19,6 +18,7 @@ import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 
 
 public final class OverrideBinder {
@@ -317,7 +317,7 @@ public final class OverrideBinder {
 			column.setName( element.attributeValue("name") );
 			String attributeValue = element.attributeValue("jdbc-type");
 			if(StringHelper.isNotEmpty(attributeValue)) {
-				column.setSqlTypeCode(new Integer(JDBCToHibernateTypeHelper.getJDBCType(attributeValue)));
+				column.setSqlTypeCode(new Integer(JdbcToHibernateTypeHelper.getJDBCType(attributeValue)));
 			}
 						
 			TableIdentifier tableIdentifier = TableIdentifier.create(table);
@@ -404,7 +404,7 @@ public final class OverrideBinder {
 		
 		while (iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
-			int jdbcType = JDBCToHibernateTypeHelper.getJDBCType(element.attributeValue("jdbc-type") );
+			int jdbcType = JdbcToHibernateTypeHelper.getJDBCType(element.attributeValue("jdbc-type") );
 			SQLTypeMapping mapping = new SQLTypeMapping(jdbcType );
 			mapping.setHibernateType( getHibernateType( element ) );			
 			mapping.setLength(getInteger(element.attributeValue("length"), SQLTypeMapping.UNKNOWN_LENGTH) );

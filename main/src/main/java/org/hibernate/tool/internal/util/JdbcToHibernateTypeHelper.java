@@ -1,4 +1,4 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.internal.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -16,9 +16,9 @@ import org.hibernate.MappingException;
  * @author max (based on parts from Sql2Java from Middlegen)
  *
  */
-public final class JDBCToHibernateTypeHelper {
+public final class JdbcToHibernateTypeHelper {
    
-	private JDBCToHibernateTypeHelper() {
+	private JdbcToHibernateTypeHelper() {
 		
 	}
 	

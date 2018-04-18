@@ -17,6 +17,7 @@ import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.AssociationInfo;
+import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,11 +108,11 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
     }
 	
 	public String columnToHibernateTypeName(TableIdentifier table, String columnName, int sqlType, int length, int precision, int scale, boolean nullable, boolean generatedIdentifier) {
-		String preferredHibernateType = JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlType, length, precision, scale, nullable, generatedIdentifier);
+		String preferredHibernateType = JdbcToHibernateTypeHelper.getPreferredHibernateType(sqlType, length, precision, scale, nullable, generatedIdentifier);
 		
 		String location = "<no info>";
 		if(log.isDebugEnabled()) {
-			String info = " t:" + JDBCToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
+			String info = " t:" + JdbcToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
 			if(table!=null) {
 				location = TableNameQualifier.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName + info;
 			} else {

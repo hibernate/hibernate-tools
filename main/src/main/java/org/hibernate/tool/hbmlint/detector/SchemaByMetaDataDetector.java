@@ -18,7 +18,6 @@ import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
@@ -35,6 +34,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
+import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 
 public class SchemaByMetaDataDetector extends RelationalModelDetector {
@@ -200,7 +200,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 				pc.reportIssue( new Issue( "SCHEMA_COLUMN_TYPE_MISMATCH",
 						Issue.NORMAL_PRIORITY, table(table) + " has a wrong column type for "
 								+ col.getName() + ", expected: "
-								+ JDBCToHibernateTypeHelper.getJDBCTypeName(modelTypeCode) + " but was " + JDBCToHibernateTypeHelper.getJDBCTypeName(dbTypeCode) + " in db") );
+								+ JdbcToHibernateTypeHelper.getJDBCTypeName(modelTypeCode) + " but was " + JdbcToHibernateTypeHelper.getJDBCTypeName(dbTypeCode) + " in db") );
 			}
 		}
 	}
