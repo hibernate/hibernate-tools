@@ -1,13 +1,11 @@
 package org.hibernate.tool.internal.reveng;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.dom4j.Element;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.tool.internal.util.MultiMapUtil;
 
@@ -57,50 +55,6 @@ public class MetaAttributeHelper {
 		return attribute;
 	}
 
-
-	/**
-	 * Method loadAndMergeMetaMap.
-	 * @param classElement
-	 * @param inheritedMeta
-	 * @return MultiMap
-	 */
-	public static MultiMap loadAndMergeMetaMap(
-		Element classElement,
-		MultiMap inheritedMeta) {
-		return MetaAttributeHelper.mergeMetaMaps(loadMetaMap(classElement), inheritedMeta);
-	}
-
-
-	/**
-	 * Load meta attributes from jdom element into a MultiMap.
-	 * 
-	 * @param element
-	 * @return MultiMap
-	 */
-	 protected static MultiMap loadMetaMap(Element element) {
-		MultiMap result = new MultiValueMap();
-		List<Element> metaAttributeList = new ArrayList<Element>();
-		for (Object obj : element.elements("meta")) {
-			metaAttributeList.add((Element)obj);
-		}
-
-		for (Iterator<Element> iter = metaAttributeList.iterator(); iter.hasNext();) {
-			Element metaAttrib = iter.next();
-			// does not use getTextNormalize() or getTextTrim() as that would remove the formatting in new lines in items like description for javadocs.
-			String attribute = metaAttrib.attributeValue("attribute");
-			String value = metaAttrib.getText();
-			String inheritStr= metaAttrib.attributeValue("inherit");
-			boolean inherit = true;
-			if(inheritStr!=null) {
-				inherit = Boolean.valueOf(inheritStr).booleanValue(); 
-			}			
-			
-			SimpleMetaAttribute ma = new SimpleMetaAttribute(value, inherit);
-			result.put(attribute, ma);
-		}
-		return result;
-
-	}
 
 	 public static class SimpleMetaAttribute {
 		String value;

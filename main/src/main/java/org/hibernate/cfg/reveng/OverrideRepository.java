@@ -14,8 +14,10 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.collections.MultiMap;
-import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
@@ -30,10 +32,9 @@ import org.hibernate.tool.internal.reveng.OverrideBinder;
 import org.hibernate.tool.internal.reveng.TableFilter;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
-import org.hibernate.tool.xml.XMLHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
 
 public class OverrideRepository  {
 
@@ -146,9 +147,12 @@ public class OverrideRepository  {
 	public OverrideRepository addInputStream(InputStream xmlInputStream) throws MappingException {
 		try {
 			ErrorLogger errorLogger = new ErrorLogger( "XML InputStream" );
-			org.dom4j.Document doc = XMLHelper.createSAXReader( errorLogger).read( new InputSource( xmlInputStream ) );
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			db.setErrorHandler(errorLogger);
+			Document document = db.parse(xmlInputStream);
 			if ( errorLogger.hasErrors() ) throw new MappingException( "invalid override definition", ( Throwable ) errorLogger.getErrors().get( 0 ) );
-			add( doc );
+			add( document );
 			return this;
 		}
 		catch ( MappingException me ) {
