@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-public class MetaAttributeXmlHelperTest {
+public class MetaAttributeHelperTest {
 	
 	private static String XML = 
 			"<element>                                         " +
@@ -23,7 +23,7 @@ public class MetaAttributeXmlHelperTest {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		Document document = db.parse(new ByteArrayInputStream(XML.getBytes()));
-		MultiMap mm = MetaAttributeXmlHelper.loadMetaMap(document.getDocumentElement());
+		MultiMap mm = MetaAttributeHelper.loadMetaMap(document.getDocumentElement());
 		Assert.assertEquals(1, mm.size());
 		ArrayList<?> attributeList = (ArrayList<?>)mm.get("blah");
 		Assert.assertEquals(1, attributeList.size());

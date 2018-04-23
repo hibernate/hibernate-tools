@@ -57,7 +57,7 @@ public class OverrideBinder {
 			tableFilter.setMatchName(getAttribute(element, "match-name"));
 			tableFilter.setExclude(Boolean.valueOf(getAttribute(element, "exclude")));
 			tableFilter.setPackage(getAttribute(element, "package"));
-			MultiMap map = MetaAttributeXmlHelper.loadAndMergeMetaMap(element, new MultiValueMap());
+			MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap(element, new MultiValueMap());
 			if (map != null && !map.isEmpty()) {
 				tableFilter.setMetaAttributes(map);
 			} else {
@@ -124,7 +124,7 @@ public class OverrideBinder {
 			if (table.getColumn(column) != null) {
 				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
 			}
-			MultiMap map = MetaAttributeXmlHelper.loadAndMergeMetaMap( element, new MultiValueMap());
+			MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap( element, new MultiValueMap());
 			if(map!=null && !map.isEmpty()) {
 				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
 			} 
@@ -350,7 +350,7 @@ public class OverrideBinder {
 			Element element, 
 			Table table, 
 			OverrideRepository repository) {
-		MultiMap map = MetaAttributeXmlHelper.loadAndMergeMetaMap( element, new MultiValueMap());
+		MultiMap map = MetaAttributeHelper.loadAndMergeMetaMap( element, new MultiValueMap());
 		if(map!=null && !map.isEmpty()) {
 			repository.addMetaAttributeInfo( table, map);
 		} 
