@@ -14,6 +14,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.sql.Alias;
+import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
