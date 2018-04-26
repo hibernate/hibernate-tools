@@ -1,17 +1,16 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.api.reveng;
 
 
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.DatabaseCollector;
-import org.hibernate.tool.api.reveng.TableIdentifier;
 
 /**
  * Provides runtime-only information for reverse engineering process.
  * e.g. current connection provider, exception converter etc. 
  * 
  * @author max
+ * @author koen
  *
  */
 public class ReverseEngineeringRuntimeInfo {
@@ -24,7 +23,7 @@ public class ReverseEngineeringRuntimeInfo {
 		return new ReverseEngineeringRuntimeInfo(provider,sec,dbs);
 	}
 	
-	protected ReverseEngineeringRuntimeInfo(ConnectionProvider provider, SQLExceptionConverter sec, DatabaseCollector dbs) {
+	private ReverseEngineeringRuntimeInfo(ConnectionProvider provider, SQLExceptionConverter sec, DatabaseCollector dbs) {
 		this.connectionProvider = provider;
 		this.SQLExceptionConverter = sec;
 		this.dbs = dbs;
@@ -38,24 +37,8 @@ public class ReverseEngineeringRuntimeInfo {
 		return SQLExceptionConverter;
 	}
 	
-	/** Shorthand for {@link getTable(String,String,String)} **/
 	public Table getTable(TableIdentifier ti) {
 		return dbs.getTable(ti.getSchema(), ti.getCatalog(), ti.getName());
-	}
-	
-	/**
-	 * Look up the table identified by the parameters in the currently found tables. 
-	 * Warning: The table might not be fully initialized yet.  
-	 * 
-	 * @param catalog
-	 * @param schema
-	 * @param name
-	 * @return Table if found in processd tables, null if not
-	 */
-	public Table getTable(String catalog, String schema, String name) {
-		return dbs.getTable(schema, catalog, name);				
-	}
-	
-	
+	}	
 		
 }

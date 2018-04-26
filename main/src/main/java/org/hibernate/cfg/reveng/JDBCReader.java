@@ -19,6 +19,7 @@ import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
+import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 
 public class JDBCReader {
 
@@ -47,7 +48,8 @@ public class JDBCReader {
 		
 	public List<Table> readDatabaseSchema(DatabaseCollector dbs, String catalog, String schema, ProgressListener progress) {
 		try {
-			ReverseEngineeringRuntimeInfo info = new ReverseEngineeringRuntimeInfo(provider, sec, dbs);
+			ReverseEngineeringRuntimeInfo info = 
+					ReverseEngineeringRuntimeInfo.createInstance(provider, sec, dbs);
 			getMetaDataDialect().configure(info);
 			revengStrategy.configure(info);
 			
