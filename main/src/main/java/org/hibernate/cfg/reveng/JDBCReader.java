@@ -19,6 +19,7 @@ import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
+import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 
 public class JDBCReader {

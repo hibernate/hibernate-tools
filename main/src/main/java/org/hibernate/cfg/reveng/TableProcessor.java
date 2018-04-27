@@ -12,6 +12,7 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
+import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
