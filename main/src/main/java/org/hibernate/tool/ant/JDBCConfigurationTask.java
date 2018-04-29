@@ -13,10 +13,10 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
-import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
 import org.hibernate.tool.util.ReflectHelper;
 
 

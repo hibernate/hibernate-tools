@@ -7,10 +7,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.tools.ant.BuildException;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
-import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
 
 import java.io.File;
 import java.io.FileInputStream;
