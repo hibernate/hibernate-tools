@@ -34,6 +34,7 @@ import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -337,13 +338,14 @@ public class Cfg2JavaTool {
 	public String asFinderArgumentList(Map<Object,Object> parameterTypes, ImportContext ctx) {
 		StringBuffer buf = new StringBuffer();
 		Iterator<Entry<Object,Object>> iter = parameterTypes.entrySet().iterator();
+		TypeResolver typeResolver = new TypeConfiguration().getTypeResolver();
 		while ( iter.hasNext() ) {
 			Entry<Object,Object> entry = iter.next();
 			String typename = null;
 			Type type = null;
 			if(entry.getValue() instanceof String) {
 				try {
-					type = new TypeResolver().heuristicType((String) entry.getValue());
+					type = typeResolver.heuristicType((String) entry.getValue());
 				} catch(Throwable t) {
 					type = null;
 					typename = (String) entry.getValue();
