@@ -2,8 +2,9 @@ package org.hibernate.tool.hbmlint.detector;
 
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl;
+import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.cfg.Environment;
+import org.hibernate.engine.spi.Managed;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbmlint.Issue;
@@ -15,13 +16,15 @@ public class InstrumentationDetector extends EntityModelDetector {
 		return "instrument";
 	}
 
-	private boolean javassistEnabled;
+	private boolean enhanceEnabled;
 	
 	public void initialize(Metadata metadata) {
 		super.initialize(metadata);	
-		if(Environment.getBytecodeProvider() instanceof BytecodeProviderImpl) {
-			javassistEnabled = true;
-		}		
+		BytecodeProvider bytecodeProvider = Environment.getBytecodeProvider();
+		if(bytecodeProvider instanceof org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl ||
+		   bytecodeProvider instanceof org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl) {
+			enhanceEnabled = true;
+		}
 	}
 	
 	protected void visit(PersistentClass clazz, IssueCollector collector) {
@@ -45,17 +48,17 @@ public class InstrumentationDetector extends EntityModelDetector {
 				return;
 			}
 
-		} else if(javassistEnabled){
+		} else if(enhanceEnabled){
 			Class<?>[] interfaces = mappedClass.getInterfaces();
-			boolean javaassist = false;
+			boolean enhanced = false;
 			for (int i = 0; i < interfaces.length; i++) {
-				Class<?> intface = interfaces[i];				
-				if(intface.getName().equals( "org.hibernate.bytecode.internal.javassist.FieldHandled" )) {
-					javaassist = true;
+				Class<?> intface = interfaces[i];	
+				if(intface.getName().equals(Managed.class.getName())) {
+					enhanced = true;
 				} 							
 			}
 			
-			if (javassistEnabled && !javaassist) {
+			if (enhanceEnabled && !enhanced) {
 				collector.reportIssue( new Issue("LAZY_NOT_INSTRUMENTED", Issue.HIGH_PRIORITY, "'" + clazz.getEntityName() + "' has lazy='false', but its class '" + mappedClass.getName() + "' has not been instrumented with javaassist") );
 				return;
 			} else {
