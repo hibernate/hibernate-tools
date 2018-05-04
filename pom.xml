@@ -9,6 +9,8 @@
 		<version>24</version>
 	</parent>
 
+        <version>5.2.11.Final</version>
+
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
 	<packaging>jar</packaging>
@@ -760,5 +762,4 @@
 
 	</profiles>
 
-	<version>5.2.11-SNAPSHOT</version>
 </project>
