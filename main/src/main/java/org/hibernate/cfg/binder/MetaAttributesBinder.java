@@ -4,12 +4,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.cfg.reveng.RevEngUtils;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 
 public class MetaAttributesBinder {
 

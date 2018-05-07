@@ -15,6 +15,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ProgressListener;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;

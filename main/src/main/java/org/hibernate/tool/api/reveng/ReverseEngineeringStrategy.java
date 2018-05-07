@@ -1,18 +1,14 @@
-package org.hibernate.cfg.reveng;
+package org.hibernate.tool.api.reveng;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.cfg.reveng.SchemaSelection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.AssociationInfo;
-import org.hibernate.tool.api.reveng.MetaDataDialect;
-import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
-import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
-import org.hibernate.tool.api.reveng.TableIdentifier;
 
 public interface ReverseEngineeringStrategy {
 

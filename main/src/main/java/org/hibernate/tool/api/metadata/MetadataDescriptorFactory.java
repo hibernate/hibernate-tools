@@ -3,7 +3,7 @@ package org.hibernate.tool.api.metadata;
 import java.io.File;
 import java.util.Properties;
 
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.internal.metadata.JdbcMetadataDescriptor;
 import org.hibernate.tool.internal.metadata.JpaMetadataDescriptor;
 import org.hibernate.tool.internal.metadata.NativeMetadataDescriptor;

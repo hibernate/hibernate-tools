@@ -3,12 +3,12 @@ package org.hibernate.cfg;
 import java.util.Properties;
 
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.MetaDataDialect;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 
 final public class JDBCReaderFactory {
 

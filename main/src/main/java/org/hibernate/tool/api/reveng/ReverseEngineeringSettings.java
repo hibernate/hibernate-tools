@@ -1,7 +1,5 @@
 package org.hibernate.tool.api.reveng;
 
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-
 public class ReverseEngineeringSettings {
 
 	

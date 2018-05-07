@@ -17,12 +17,12 @@ import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCBinder;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.type.Type;
 
 public class JdbcMetadataDescriptor implements MetadataDescriptor {

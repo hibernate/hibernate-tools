@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 
 public class RevEngUtils {
