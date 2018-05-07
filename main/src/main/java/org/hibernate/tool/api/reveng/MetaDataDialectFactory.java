@@ -1,7 +1,9 @@
-package org.hibernate.cfg;
+package org.hibernate.tool.api.reveng;
 
 import java.util.Properties;
 
+import org.hibernate.cfg.JDBCBinderException;
+import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -15,7 +17,6 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.internal.util.ReflectHelper;
-import org.hibernate.tool.api.reveng.MetaDataDialect;
 
 public class MetaDataDialectFactory {
 	

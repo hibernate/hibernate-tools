@@ -8,6 +8,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.MetaDataDialect;
+import org.hibernate.tool.api.reveng.MetaDataDialectFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 
 final public class JDBCReaderFactory {
