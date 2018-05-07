@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.util.TableNameQualifier;
 
 public class DefaultDatabaseCollector extends AbstractDatabaseCollector  {

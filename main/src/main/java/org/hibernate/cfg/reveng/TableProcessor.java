@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.slf4j.Logger;

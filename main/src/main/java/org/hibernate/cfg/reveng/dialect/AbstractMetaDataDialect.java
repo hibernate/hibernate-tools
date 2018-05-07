@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.exception.spi.SQLExceptionConverter;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

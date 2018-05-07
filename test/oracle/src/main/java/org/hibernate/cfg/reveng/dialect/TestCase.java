@@ -7,6 +7,7 @@ import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;

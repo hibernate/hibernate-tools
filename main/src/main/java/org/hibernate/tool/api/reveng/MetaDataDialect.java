@@ -1,9 +1,7 @@
-package org.hibernate.cfg.reveng.dialect;
+package org.hibernate.tool.api.reveng;
 
 import java.util.Iterator;
 import java.util.Map;
-
-import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 
 /**
  * Interface for fetching metadata from databases.

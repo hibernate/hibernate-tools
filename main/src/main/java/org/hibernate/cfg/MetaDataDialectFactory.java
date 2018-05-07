@@ -5,7 +5,6 @@ import java.util.Properties;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.SQLServerMetaDataDialect;
@@ -16,6 +15,7 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 
 public class MetaDataDialectFactory {
 	

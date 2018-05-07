@@ -9,12 +9,12 @@ import java.util.Map;
 
 import org.hibernate.JDBCException;
 import org.hibernate.cfg.JDBCBinderException;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.sql.Alias;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

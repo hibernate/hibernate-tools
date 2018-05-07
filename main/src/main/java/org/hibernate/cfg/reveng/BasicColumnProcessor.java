@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.hibernate.JDBCException;
 import org.hibernate.cfg.JDBCBinderException;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;

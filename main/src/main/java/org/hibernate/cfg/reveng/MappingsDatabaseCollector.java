@@ -3,8 +3,8 @@ package org.hibernate.cfg.reveng;
 import java.util.Iterator;
 
 import org.hibernate.boot.spi.InFlightMetadataCollector;
-import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.MetaDataDialect;
 
 public class MappingsDatabaseCollector extends AbstractDatabaseCollector {
 
