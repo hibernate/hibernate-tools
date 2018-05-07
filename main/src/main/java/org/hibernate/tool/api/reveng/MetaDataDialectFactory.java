@@ -3,7 +3,6 @@ package org.hibernate.tool.api.reveng;
 import java.util.Properties;
 
 import org.hibernate.cfg.JDBCBinderException;
-import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
@@ -41,7 +40,7 @@ public class MetaDataDialectFactory {
 		if ( property != null ) {
 			try {
 				return (MetaDataDialect) ReflectHelper.classForName( property,
-						JDBCReaderFactory.class ).newInstance();
+						MetaDataDialectFactory.class ).newInstance();
 			}
 			catch (Exception e) {
 				throw new JDBCBinderException(
