@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.tool.api.reveng.MetaDataDialect;
+import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 
 public class CachedMetaDataDialect implements MetaDataDialect {

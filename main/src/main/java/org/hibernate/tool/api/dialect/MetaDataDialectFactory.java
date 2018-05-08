@@ -1,4 +1,4 @@
-package org.hibernate.tool.api.reveng;
+package org.hibernate.tool.api.dialect;
 
 import java.util.Properties;
 

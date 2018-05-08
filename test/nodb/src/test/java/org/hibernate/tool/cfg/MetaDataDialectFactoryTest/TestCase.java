@@ -11,7 +11,7 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.Oracle10gDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.Oracle9iDialect;
-import org.hibernate.tool.api.reveng.MetaDataDialectFactory;
+import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.internal.dialect.H2MetaDataDialect;
 import org.hibernate.tool.internal.dialect.HSQLMetaDataDialect;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;

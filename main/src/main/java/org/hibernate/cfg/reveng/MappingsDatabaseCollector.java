@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.MetaDataDialect;
+import org.hibernate.tool.api.dialect.MetaDataDialect;
 
 public class MappingsDatabaseCollector extends AbstractDatabaseCollector {
 

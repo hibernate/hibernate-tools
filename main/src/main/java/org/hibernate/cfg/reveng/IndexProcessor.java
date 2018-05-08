@@ -14,7 +14,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Index;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
-import org.hibernate.tool.api.reveng.MetaDataDialect;
+import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
