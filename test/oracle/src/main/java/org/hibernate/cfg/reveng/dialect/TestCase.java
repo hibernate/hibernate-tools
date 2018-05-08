@@ -9,6 +9,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
+import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Before;

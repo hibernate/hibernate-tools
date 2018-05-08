@@ -1,4 +1,4 @@
-package org.hibernate.cfg.reveng.dialect;
+package org.hibernate.tool.internal.dialect;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
