@@ -15,7 +15,6 @@ import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.JDBCBinder;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.factory.IdentifierGeneratorFactory;
@@ -23,6 +22,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.JdbcBinder;
 import org.hibernate.type.Type;
 
 public class JdbcMetadataDescriptor implements MetadataDescriptor {
@@ -73,7 +73,7 @@ public class JdbcMetadataDescriptor implements MetadataDescriptor {
 		MetadataImpl metadata = metadataCollector
 				.buildMetadataInstance(metadataBuildingContext);
 		metadata.getTypeConfiguration().scope(metadataBuildingContext);
-		JDBCBinder binder = new JDBCBinder(
+		JdbcBinder binder = new JdbcBinder(
 				serviceRegistry, 
 				getProperties(), 
 				metadataBuildingContext, 

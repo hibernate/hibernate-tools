@@ -2,7 +2,7 @@
  * Created on 2004-11-23
  *
  */
-package org.hibernate.cfg;
+package org.hibernate.tool.internal.reveng;
 
 
 import java.sql.SQLException;
@@ -23,6 +23,8 @@ import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.binder.PropertyBinder;
@@ -54,8 +56,6 @@ import org.hibernate.tool.api.reveng.AssociationInfo;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.reveng.JdbcBinderException;
-import org.hibernate.tool.internal.reveng.JdbcCollectionSecondPass;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.type.ForeignKeyDirection;
@@ -68,10 +68,10 @@ import org.slf4j.LoggerFactory;
  * @author max
  *
  */
-public class JDBCBinder {
+public class JdbcBinder {
 
 	private Properties properties;
-	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
+	private static final Logger log = LoggerFactory.getLogger(JdbcBinder.class);
 
 	private final MetadataBuildingContext mdbc;
 	
@@ -90,7 +90,7 @@ public class JDBCBinder {
 	 * @param mappings
 	 * @param configuration
 	 */
-	public JDBCBinder(ServiceRegistry serviceRegistry, Properties properties, MetadataBuildingContext mdbc, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
+	public JdbcBinder(ServiceRegistry serviceRegistry, Properties properties, MetadataBuildingContext mdbc, ReverseEngineeringStrategy revengStrategy, boolean preferBasicCompositeIds) {
 		this.serviceRegistry = serviceRegistry;
 		this.mdbc = mdbc;
 		this.properties = properties;
