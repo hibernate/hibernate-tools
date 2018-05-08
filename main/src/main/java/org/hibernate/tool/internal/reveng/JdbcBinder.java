@@ -24,7 +24,6 @@ import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.binder.PropertyBinder;
@@ -130,7 +129,7 @@ public class JdbcBinder {
 	     catalog = catalog!=null ? catalog : properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 	     schema = schema!=null ? schema : properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
-	     JDBCReader reader = JDBCReaderFactory.newJDBCReader(properties,revengStrategy,serviceRegistry);
+	     JDBCReader reader = JdbcReaderFactory.newJDBCReader(properties,revengStrategy,serviceRegistry);
 	     DatabaseCollector dbs = new MappingsDatabaseCollector(metadataCollector, reader.getMetaDataDialect());
 
 	     reader.readDatabaseSchema(dbs, catalog, schema);

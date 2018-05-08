@@ -19,7 +19,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -34,6 +33,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.JdbcReaderFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -105,7 +105,7 @@ public class TestCase {
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				properties);
-		JDBCReader reader = JDBCReaderFactory.newJDBCReader( 
+		JDBCReader reader = JdbcReaderFactory.newJDBCReader( 
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());

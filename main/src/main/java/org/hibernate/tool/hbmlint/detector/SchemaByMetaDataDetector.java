@@ -13,7 +13,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -34,6 +33,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
+import org.hibernate.tool.internal.reveng.JdbcReaderFactory;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 
@@ -65,7 +65,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 		tableSelector = new TableSelectorStrategy(
 				new DefaultReverseEngineeringStrategy() );
-		reader = JDBCReaderFactory.newJDBCReader( 
+		reader = JdbcReaderFactory.newJDBCReader( 
 				Environment.getProperties(),
 				tableSelector, 
 				serviceRegistry);
