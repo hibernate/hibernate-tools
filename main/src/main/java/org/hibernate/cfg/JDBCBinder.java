@@ -54,6 +54,7 @@ import org.hibernate.tool.api.reveng.AssociationInfo;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.JdbcCollectionSecondPass;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.type.ForeignKeyDirection;
@@ -498,7 +499,7 @@ public class JDBCBinder {
         	OneToMany oneToMany = new OneToMany((MetadataImplementor)metadata, collection.getOwner() );
 
 			oneToMany.setReferencedEntityName( tableToClassName ); // Child
-        	metadataCollector.addSecondPass( new JDBCCollectionSecondPass(mdbc, collection) );
+        	metadataCollector.addSecondPass( new JdbcCollectionSecondPass(mdbc, collection) );
 
         	collection.setElement(oneToMany);
         }
