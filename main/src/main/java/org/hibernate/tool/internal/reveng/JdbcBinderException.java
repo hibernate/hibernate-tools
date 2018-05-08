@@ -2,7 +2,7 @@
  * Created on 2004-11-23
  *
  */
-package org.hibernate.cfg;
+package org.hibernate.tool.internal.reveng;
 
 import java.io.ObjectStreamClass;
 
@@ -12,28 +12,28 @@ import org.hibernate.HibernateException;
  * @author max
  *
  */
-public class JDBCBinderException extends HibernateException {
+public class JdbcBinderException extends HibernateException {
 
 	private static final long serialVersionUID = 
-			ObjectStreamClass.lookup(JDBCBinderException.class).getSerialVersionUID();
+			ObjectStreamClass.lookup(JdbcBinderException.class).getSerialVersionUID();
 	
 	/**
 	 * @param string
 	 * @param root
 	 */
-	public JDBCBinderException(String string, Throwable root) {
+	public JdbcBinderException(String string, Throwable root) {
 		super(string, root);
 	}
 	/**
 	 * @param root
 	 */
-	public JDBCBinderException(Throwable root) {
+	public JdbcBinderException(Throwable root) {
 		super(root);
 	}
 	/**
 	 * @param s
 	 */
-	public JDBCBinderException(String s) {
+	public JdbcBinderException(String s) {
 		super(s);
 	}
 

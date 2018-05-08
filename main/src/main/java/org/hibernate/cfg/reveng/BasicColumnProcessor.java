@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.hibernate.JDBCException;
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class BasicColumnProcessor {
 				Column existing = table.getColumn(column);
 				if(existing!=null) {
 					// TODO: should we just pick it up and fill it up with whatever we get from the db instead ?
-					throw new JDBCBinderException(column + " already exists in " + qualify);
+					throw new JdbcBinderException(column + " already exists in " + qualify);
 				}
 								
 				//TODO: column.setSqlType(sqlTypeName); //this does not work 'cos the precision/scale/length are not retured in TYPE_NAME

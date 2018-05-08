@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.JDBCException;
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
@@ -16,6 +15,7 @@ import org.hibernate.sql.Alias;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,13 +54,13 @@ public class PrimaryKeyProcessor {
 					key.setName(name);
 					key.setTable(table);
 					if(table.getPrimaryKey()!=null) {
-						throw new JDBCBinderException(table + " already has a primary key!"); //TODO: ignore ?
+						throw new JdbcBinderException(table + " already has a primary key!"); //TODO: ignore ?
 					}
 					table.setPrimaryKey(key);
 				} 
 				else {
 					if(!(name==key.getName() ) && name!=null && !name.equals(key.getName() ) ) {
-						throw new JDBCBinderException("Duplicate names found for primarykey. Existing name: " + key.getName() + " JDBC name: " + name + " on table " + table);
+						throw new JdbcBinderException("Duplicate names found for primarykey. Existing name: " + key.getName() + " JDBC name: " + name + " on table " + table);
 					}	      		
 				}
 				
@@ -99,7 +99,7 @@ public class PrimaryKeyProcessor {
 	      		key.setName(new Alias(15, "PK").toAliasString( table.getName()));
 	      		key.setTable(table);
 	      		if(table.getPrimaryKey()!=null) {
-	      			throw new JDBCBinderException(table + " already has a primary key!"); //TODO: ignore ?
+	      			throw new JdbcBinderException(table + " already has a primary key!"); //TODO: ignore ?
 	      		}
 	      		table.setPrimaryKey(key);
 	      		t = new ArrayList<String>(userPrimaryKey);

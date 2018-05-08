@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +55,7 @@ public abstract class AbstractMetaDataDialect implements MetaDataDialect {
 		info = null;		
 	}
 	
-	protected DatabaseMetaData getMetaData() throws JDBCBinderException {
+	protected DatabaseMetaData getMetaData() throws JdbcBinderException {
 		if (metaData == null) {
 			try {
 				metaData = getConnection().getMetaData();				

@@ -54,6 +54,7 @@ import org.hibernate.tool.api.reveng.AssociationInfo;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.hibernate.tool.internal.reveng.JdbcCollectionSecondPass;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
 import org.hibernate.tool.util.TableNameQualifier;
@@ -197,7 +198,7 @@ public class JDBCBinder {
 				// TODO: detect this and generate a "permutation" of it ?
 				PersistentClass class1 = metadataCollector.getEntityBinding(dme.getName());
 				Table table2 = class1.getTable();
-				throw new JDBCBinderException("Duplicate class name '" + rc.getEntityName() + "' generated for '" + table + "'. Same name where generated for '" + table2 + "'");
+				throw new JdbcBinderException("Duplicate class name '" + rc.getEntityName() + "' generated for '" + table + "'. Same name where generated for '" + table2 + "'");
 			}
 			metadataCollector.addImport( rc.getEntityName(), rc.getEntityName() );
 
@@ -482,7 +483,7 @@ public class JDBCBinder {
 			}
 
         	if(keys.size()>1) {
-        		throw new JDBCBinderException("more than one other foreign key to choose from!"); // todo: handle better ?
+        		throw new JdbcBinderException("more than one other foreign key to choose from!"); // todo: handle better ?
         	}
 
         	ForeignKey fk = (ForeignKey) keys.get( 0 );
@@ -887,7 +888,7 @@ public class JDBCBinder {
 				" column: " + 
 				column.getQuotedName();
 		if(sqlTypeCode==null) {
-			throw new JDBCBinderException("sqltype is null for " + location);
+			throw new JdbcBinderException("sqltype is null for " + location);
 		}
 
 		String preferredHibernateType = revengStrategy.columnToHibernateTypeName(
@@ -903,7 +904,7 @@ public class JDBCBinder {
 			int[] wantedSqlTypes = wantedType.sqlTypes(mapping);
 
 			if(wantedSqlTypes.length>1) {
-				throw new JDBCBinderException("The type " + preferredHibernateType + " found on " + location + " spans multiple columns. Only single column types allowed.");
+				throw new JdbcBinderException("The type " + preferredHibernateType + " found on " + location + " spans multiple columns. Only single column types allowed.");
 			}
 
 			int wantedSqlType = wantedSqlTypes[0];
@@ -919,7 +920,7 @@ public class JDBCBinder {
 
 
 		if(preferredHibernateType==null) {
-			throw new JDBCBinderException("Could not find javatype for " + typeCodeName(sqlTypeCode.intValue()));
+			throw new JdbcBinderException("Could not find javatype for " + typeCodeName(sqlTypeCode.intValue()));
 		}
 
 		return preferredHibernateType;
@@ -960,7 +961,7 @@ public class JDBCBinder {
             if (element instanceof Column) {
                 Column column = (Column) element;
                 if ( processedColumns.contains(column) ) {
-                    throw new JDBCBinderException("Binding column twice for primary key should not happen: " + column);
+                    throw new JdbcBinderException("Binding column twice for primary key should not happen: " + column);
                 }
 				else {
                     checkColumn(column);
@@ -983,7 +984,7 @@ public class JDBCBinder {
                 processedColumns.addAll(fkfc.columns);
             }
 			else {
-				throw new JDBCBinderException("unknown thing");
+				throw new JdbcBinderException("unknown thing");
 			}
 
             markAsUseInEquals(property);

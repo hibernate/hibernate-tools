@@ -2,7 +2,6 @@ package org.hibernate.tool.api.dialect;
 
 import java.util.Properties;
 
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
@@ -16,6 +15,7 @@ import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.dialect.MySQLMetaDataDialect;
 import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
 import org.hibernate.tool.internal.dialect.SQLServerMetaDataDialect;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 
 public class MetaDataDialectFactory {
 	
@@ -43,7 +43,7 @@ public class MetaDataDialectFactory {
 						MetaDataDialectFactory.class ).newInstance();
 			}
 			catch (Exception e) {
-				throw new JDBCBinderException(
+				throw new JdbcBinderException(
 						"Could not load MetaDataDialect: " + property, e );
 			}
 		} else {

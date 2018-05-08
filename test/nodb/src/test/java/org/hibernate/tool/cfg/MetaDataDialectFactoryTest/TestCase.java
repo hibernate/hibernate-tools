@@ -2,7 +2,6 @@ package org.hibernate.tool.cfg.MetaDataDialectFactoryTest;
 
 import java.util.Properties;
 
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
@@ -17,6 +16,7 @@ import org.hibernate.tool.internal.dialect.HSQLMetaDataDialect;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.dialect.MySQLMetaDataDialect;
 import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class TestCase {
 		try {
 			MetaDataDialectFactory.createMetaDataDialect(new MySQL5Dialect(), p);
 			Assert.fail();
-		} catch (JDBCBinderException jbe) {
+		} catch (JdbcBinderException jbe) {
 			// expected
 		} catch(Exception e) {
 			Assert.fail();

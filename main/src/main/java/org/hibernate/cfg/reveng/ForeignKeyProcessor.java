@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.hibernate.JDBCException;
 import org.hibernate.MappingException;
-import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
@@ -17,6 +16,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ProgressListener;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.JdbcBinderException;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class ForeignKeyProcessor {
 			String defaultCatalog, 
 			DatabaseCollector dbs, 
 			Table referencedTable, 
-			ProgressListener progress) throws JDBCBinderException {
+			ProgressListener progress) throws JdbcBinderException {
 		// foreign key name to list of columns
 		Map<String, List<Column>> dependentColumns = new HashMap<String, List<Column>>();
 		// foreign key name to Table
@@ -101,7 +101,7 @@ public class ForeignKeyProcessor {
 				else {
 					Object previousTable = dependentTables.get(fkName);
 					if(fkTable != previousTable) {
-						throw new JDBCBinderException("Foreign key name (" + fkName + ") mapped to different tables! previous: " + previousTable + " current:" + fkTable);
+						throw new JdbcBinderException("Foreign key name (" + fkName + ") mapped to different tables! previous: " + previousTable + " current:" + fkTable);
 					}
 				}
 				
