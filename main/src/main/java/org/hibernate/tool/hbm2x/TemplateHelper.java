@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.tool.Version;
+import org.hibernate.tool.api.version.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -178,7 +178,7 @@ public class TemplateHelper {
 	}
 	
     public void setupContext() {
-    	getContext().put("version", Version.getDefault());
+    	getContext().put("version", Version.CURRENT_VERSION);
         getContext().put("ctx", getContext() ); //TODO: I would like to remove this, but don't know another way to actually get the list possible "root" keys for debugging.
         getContext().put("templates", new Templates());
         

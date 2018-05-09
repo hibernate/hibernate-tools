@@ -10,8 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.hibernate.tool.Version;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.version.Version;
 import org.hibernate.tool.hbm2x.ExporterException;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tools.test.util.FileUtil;
@@ -68,7 +68,7 @@ public class TestCase {
 				null, 
 				FileUtil.findFirstString("$", new File(outputDir, "artifacts.txt")));	
 		Assert.assertEquals(
-				"File for artifacts in " + Version.getDefault().getVersion(), 
+				"File for artifacts in " + Version.CURRENT_VERSION, 
 				FileUtil.findFirstString("artifacts", new File( outputDir, "artifacts.txt")));
 	}
 
