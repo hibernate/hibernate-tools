@@ -9,12 +9,12 @@
            <version>6.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>hibernate-tools</artifactId>
+	<artifactId>hibernate-tools-orm</artifactId>
 
 	<packaging>jar</packaging>
 
-	<name>Hibernate Tools</name>
-	<description>Hibernate Tools</description>
+	<name>Hibernate Tools ORM</name>
+	<description>Hibernate Tools ORM</description>
 	<url>http://hibernate.org/tools/</url>
 
 	<issueManagement>
