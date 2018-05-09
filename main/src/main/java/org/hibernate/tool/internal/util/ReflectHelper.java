@@ -1,4 +1,4 @@
-package org.hibernate.tool.util;
+package org.hibernate.tool.internal.util;
 
 public class ReflectHelper {
 
@@ -13,5 +13,5 @@ public class ReflectHelper {
 		}
 		return Class.forName( name );
 	}
-
+	
 }
