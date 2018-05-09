@@ -119,7 +119,7 @@
             </dependency>
         	    <dependency>
         		    <groupId>org.hibernate</groupId>
-        		    <artifactId>hibernate-tools</artifactId>
+        		    <artifactId>hibernate-tools-orm</artifactId>
         		    <version>${project.version}</version>
         	    </dependency>
         		<dependency>

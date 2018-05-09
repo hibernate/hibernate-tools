@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools</artifactId>
+            <artifactId>hibernate-tools-orm</artifactId>
         </dependency>
     </dependencies>
     
