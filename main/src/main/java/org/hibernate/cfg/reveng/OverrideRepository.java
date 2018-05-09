@@ -33,7 +33,7 @@ import org.hibernate.tool.internal.reveng.MetaAttributeHelper;
 import org.hibernate.tool.internal.reveng.OverrideBinder;
 import org.hibernate.tool.internal.reveng.TableFilter;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
-import org.hibernate.tool.util.TableNameQualifier;
+import org.hibernate.tool.internal.util.TableNameQualifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

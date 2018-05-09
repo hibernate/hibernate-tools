@@ -56,7 +56,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
-import org.hibernate.tool.util.TableNameQualifier;
+import org.hibernate.tool.internal.util.TableNameQualifier;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;

@@ -35,7 +35,7 @@ import org.hibernate.tool.hbmlint.Issue;
 import org.hibernate.tool.hbmlint.IssueCollector;
 import org.hibernate.tool.internal.reveng.JdbcReaderFactory;
 import org.hibernate.tool.internal.util.JdbcToHibernateTypeHelper;
-import org.hibernate.tool.util.TableNameQualifier;
+import org.hibernate.tool.internal.util.TableNameQualifier;
 
 public class SchemaByMetaDataDetector extends RelationalModelDetector {
 

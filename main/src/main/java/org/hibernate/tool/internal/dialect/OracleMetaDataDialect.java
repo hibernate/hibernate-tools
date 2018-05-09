@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hibernate.tool.util.TableNameQualifier;
+import org.hibernate.tool.internal.util.TableNameQualifier;
 
 /**
  * Oracle Specialised MetaData dialect that uses standard JDBC and querys on the
