@@ -7,9 +7,9 @@ package org.hibernate.tool.hbm2x.HashcodeEqualsTest;
 import java.io.File;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.internal.exporter.DefaultArtifactCollector;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -35,7 +35,7 @@ public class TestCase {
 
 	private File outputDir = null;
 	private File resourcesDir = null;
-	private ArtifactCollector artifactCollector = null;
+	private DefaultArtifactCollector artifactCollector = null;
 	private MetadataDescriptor metadataDescriptor = null;
 	
 	@Before
@@ -49,7 +49,7 @@ public class TestCase {
 		Exporter exporter = new POJOExporter();
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
-		artifactCollector = new ArtifactCollector();
+		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.start();
 	}
@@ -60,7 +60,7 @@ public class TestCase {
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
-		artifactCollector = new ArtifactCollector();
+		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.start();
 		testFileExistence();

@@ -19,7 +19,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Cfg2JavaTool;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.hbm2x.pojo.BasicPOJOClass;
@@ -27,6 +26,7 @@ import org.hibernate.tool.hbm2x.pojo.ImportContext;
 import org.hibernate.tool.hbm2x.pojo.ImportContextImpl;
 import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.hibernate.tool.internal.exporter.DefaultArtifactCollector;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -61,7 +61,7 @@ public class TestCase {
 	private MetadataDescriptor metadataDescriptor = null;
 	private File outputDir = null;
 	private File resourcesDir = null;
-	private ArtifactCollector artifactCollector = null;
+	private DefaultArtifactCollector artifactCollector = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -74,7 +74,7 @@ public class TestCase {
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
-		artifactCollector = new ArtifactCollector();
+		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.start();
 	}
@@ -457,7 +457,7 @@ public class TestCase {
 		POJOExporter exporter = new POJOExporter();
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(genericsSource);
-		artifactCollector = new ArtifactCollector();
+		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();

@@ -15,10 +15,10 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.internal.exporter.DefaultArtifactCollector;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -42,13 +42,13 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-	private ArtifactCollector artifactCollector;
+	private DefaultArtifactCollector artifactCollector;
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		artifactCollector = new ArtifactCollector();
+		artifactCollector = new DefaultArtifactCollector();
 		outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
