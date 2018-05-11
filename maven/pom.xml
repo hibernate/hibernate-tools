@@ -68,7 +68,7 @@
   <dependencies>
     <!-- Own dependencies -->
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.tool</groupId>
       <artifactId>hibernate-tools-orm</artifactId>
       <version>${project.version}</version>
     </dependency>

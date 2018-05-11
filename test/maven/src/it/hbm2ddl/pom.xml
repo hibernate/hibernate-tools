@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.hibernate</groupId>
+    <groupId>org.hibernate.tool.test</groupId>
     <artifactId>hbm2ddl</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -14,15 +14,15 @@
 
         <java.version>1.8</java.version>
         <h2.version>1.4.195</h2.version>
-        <hibernate-tools-maven-plugin.version>6.0.0-SNAPSHOT</hibernate-tools-maven-plugin.version>
+        <hibernate-tools-maven.version>6.0.0-SNAPSHOT</hibernate-tools-maven.version>
     </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-tools-maven-plugin</artifactId>
-                <version>${hibernate-tools-maven-plugin.version}</version>
+                <groupId>org.hibernate.tool</groupId>
+                <artifactId>hibernate-tools-maven</artifactId>
+                <version>${hibernate-tools-maven.version}</version>
                 <executions>
                     <execution>
                         <id>Schema generation</id>
