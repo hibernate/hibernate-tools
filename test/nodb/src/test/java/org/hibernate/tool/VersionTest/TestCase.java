@@ -37,7 +37,7 @@ public class TestCase {
 			JarFile jarFile = new JarFile(new File(path));
 			JarEntry jarEntry = jarFile
 					.getJarEntry(
-							"META-INF/maven/org.hibernate/hibernate-tools-orm/pom.xml");
+							"META-INF/maven/org.hibernate.tool/hibernate-tools-orm/pom.xml");
 			InputStream stream = jarFile.getInputStream(jarEntry);
 			result = readFromInputStream(stream);
 			jarFile.close();
