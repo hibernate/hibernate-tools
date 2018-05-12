@@ -6,8 +6,8 @@ package org.hibernate.tool.hbm2x.Hbm2JavaDidirectionalIndexedCollectionMappingTe
 
 import java.io.File;
 
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;

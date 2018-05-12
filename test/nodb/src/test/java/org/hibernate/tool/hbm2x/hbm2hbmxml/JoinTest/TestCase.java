@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
