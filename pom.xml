@@ -21,6 +21,7 @@
     <modules>
         <module>orm</module>
         <module>maven</module>
+        <module>ant</module>
         <module>test</module>
     </modules>
 
