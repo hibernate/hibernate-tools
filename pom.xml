@@ -34,7 +34,7 @@
         <h2.version>1.4.194</h2.version>
 		<hibernate-commons-annotations.version>5.0.3.Final</hibernate-commons-annotations.version>
         <hibernate-core.version>5.3.0.Final</hibernate-core.version>
-		<hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+		<javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <javaee-api.version>7.0</javaee-api.version>
         <jaxen.version>1.1.6</jaxen.version>
@@ -139,9 +139,9 @@
 			    <version>${hibernate-commons-annotations.version}</version>
 		    </dependency>
 		    <dependency>
-			    <groupId>org.hibernate.javax.persistence</groupId>
-			    <artifactId>hibernate-jpa-2.1-api</artifactId>
-			    <version>${hibernate-jpa.version}</version>
+			    <groupId>javax.persistence</groupId>
+			    <artifactId>javax.persistence-api</artifactId>
+			    <version>${javax.persistence-api.version}</version>
 		    </dependency>
             <dependency>
                 <groupId>org.hsqldb</groupId>
