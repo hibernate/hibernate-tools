@@ -10,7 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.hbm2x.DocExporter;
+import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
