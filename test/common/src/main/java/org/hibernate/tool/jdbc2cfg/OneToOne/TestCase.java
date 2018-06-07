@@ -26,7 +26,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.internal.export.pojo.POJOExporter;
 import org.hibernate.tool.internal.metadata.NativeMetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;

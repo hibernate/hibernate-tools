@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.DAOExporter;
-import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.internal.export.pojo.POJOExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
