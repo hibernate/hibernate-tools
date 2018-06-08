@@ -12,7 +12,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.IntegerType;

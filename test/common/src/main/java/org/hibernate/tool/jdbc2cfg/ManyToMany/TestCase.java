@@ -13,7 +13,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;

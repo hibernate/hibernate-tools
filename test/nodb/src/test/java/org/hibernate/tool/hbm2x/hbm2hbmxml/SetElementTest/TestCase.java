@@ -30,7 +30,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
