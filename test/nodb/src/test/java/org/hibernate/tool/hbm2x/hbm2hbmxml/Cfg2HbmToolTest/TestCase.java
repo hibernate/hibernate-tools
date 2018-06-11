@@ -7,7 +7,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.UnionSubclass;
-import org.hibernate.tool.hbm2x.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.junit.Assert;
 import org.junit.Test;
 
