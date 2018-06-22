@@ -4,11 +4,11 @@ import java.io.File;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.HbmLintExporter;
-import org.hibernate.tool.hbmlint.detector.ShadowedIdentifierDetector;
 import org.hibernate.tool.internal.export.lint.BadCachingDetector;
 import org.hibernate.tool.internal.export.lint.Detector;
 import org.hibernate.tool.internal.export.lint.HbmLint;
 import org.hibernate.tool.internal.export.lint.InstrumentationDetector;
+import org.hibernate.tool.internal.export.lint.ShadowedIdentifierDetector;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
