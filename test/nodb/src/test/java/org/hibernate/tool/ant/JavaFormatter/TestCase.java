@@ -2,7 +2,7 @@ package org.hibernate.tool.ant.JavaFormatter;
 
 import java.io.File;
 
-import org.hibernate.tool.ide.formatting.JavaFormatter;
+import org.hibernate.tool.api.java.Formatter;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
@@ -53,7 +53,7 @@ public class TestCase {
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
 		
-		JavaFormatter formatter = new JavaFormatter(null);
+		Formatter formatter = new Formatter(null);
 		formatter.formatFile( simpleOne );
 		
 		Assert.assertTrue(FileUtil
@@ -90,7 +90,7 @@ public class TestCase {
 		
 		Assert.assertFalse(log.contains("Exception"));
 				
-		JavaFormatter formatter = new JavaFormatter(null);
+		Formatter formatter = new Formatter(null);
 		Assert.assertTrue(
 				"formatting should pass when using default settings", 
 				formatter.formatFile(simple5One));
