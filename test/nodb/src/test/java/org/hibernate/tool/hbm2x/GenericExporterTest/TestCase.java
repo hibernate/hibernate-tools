@@ -12,7 +12,6 @@ import java.util.Properties;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.version.Version;
-import org.hibernate.tool.hbm2x.ExporterException;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -152,21 +151,21 @@ public class TestCase {
 			ge.setForEach("entity");
 			ge.start();
 			Assert.fail();
-		} catch(ExporterException e) {
+		} catch(RuntimeException e) {
 			Assert.assertTrue(e.getMessage().startsWith("Error while processing Entity:"));			
 		}
 		try {
 			ge.setForEach("component");
 			ge.start();
 			Assert.fail();
-		} catch(ExporterException e) {
+		} catch(RuntimeException e) {
 			Assert.assertTrue(e.getMessage().startsWith("Error while processing Component: UniversalAddress"));
 		}		
 		try {
 			ge.setForEach("configuration");
 			ge.start();
 			Assert.fail();
-		} catch(ExporterException e) {
+		} catch(RuntimeException e) {
 			Assert.assertTrue(e.getMessage().startsWith("Error while processing Configuration"));
 		}
 	}
