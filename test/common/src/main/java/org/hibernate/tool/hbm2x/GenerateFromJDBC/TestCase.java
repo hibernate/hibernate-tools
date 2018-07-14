@@ -22,7 +22,7 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
-import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
+import org.hibernate.tool.internal.export.cfg.HibernateConfigurationExporter;
 import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tool.internal.export.pojo.POJOExporter;
