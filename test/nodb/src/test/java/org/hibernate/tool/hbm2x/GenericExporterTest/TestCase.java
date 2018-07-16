@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.version.Version;
-import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
