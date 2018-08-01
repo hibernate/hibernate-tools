@@ -8,19 +8,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.jdt.internal.compiler.batch.Main;
 import org.hibernate.internal.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author max
- * 
+ * @author koen
  */
 public final class TestHelper {
 
@@ -61,22 +60,8 @@ public final class TestHelper {
 		return compile( srcdir, outputdir, srcFiles, "1.4", "" );
 	}
 
-	/** 
-	 * 
-	 * http://dev.eclipse.org/viewcvs/index.cgi/jdt-core-home/howto/batch%20compile/batchCompile.html?rev=1.4
-	 * 
-	 * @param srcdir
-	 * @param outputdir
-	 * @param srcFiles
-	 * @param jdktarget 1.5 or 1.4 
-	 * @param classPath
-	 * @return
-	 */
 	public static boolean compile(File srcdir, File outputdir, List<String> srcFiles, String jdktarget, String classPath) {
 		List<String> togglesList = new ArrayList<String>();
-		togglesList.add( "-" + jdktarget ); // put this here so DAOs compile
-		togglesList.add( "-noExit" );
-		togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon" ); 
 		togglesList.add( "-sourcepath" );
 		togglesList.add( srcdir.getAbsolutePath() + File.separatorChar );
 		togglesList.add( "-d" );
@@ -94,40 +79,14 @@ public final class TestHelper {
 				.arraycopy( strings, 0, arguments, toggles.length,
 						strings.length );
 
-		StringWriter out = new StringWriter();
-		StringWriter err = new StringWriter();
-
-		Main main = new Main( 
-				new PrintWriter( out ), 
-				new PrintWriter( err ),
-				false, 
+		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+		return javaCompiler.run(
 				null, 
-				null);
-		main.compile( arguments );
-		if ( main.globalErrorsCount > 0 ) {
-			throw new RuntimeException( out.toString() + err.toString() );
-		}
-		
-		if ( main.globalWarningsCount > 0 ) {
-			throw new RuntimeException( out.toString() + err.toString() );
-		}
-		return true;
-
-		// return javaCompile( arguments );
+				null, 
+				null, 
+				arguments) != 0;
+	
 	}
-
-	/* Uses the JDK javac tools.
-	private static boolean javaCompile(String[] arguments) {
-		StringWriter sw = new StringWriter();
-		int result = com.sun.tools.javac.Main.compile( arguments,
-				new PrintWriter( sw ) );
-		if ( result != 0 ) {
-			throw new RuntimeException( sw.toString() );
-		}
-		else {
-			return true;
-		}
-	}*/
 
 	/**
 	 * @param ext
