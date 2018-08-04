@@ -5,7 +5,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.tools.ant.BuildException;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -25,6 +24,11 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     private String packageName;
     @Parameter
     private File revengFile;
+    /** The class name of the reverse engineering strategy to use.
+     * Extend the DefaultReverseEngineeringStrategy and override the corresponding methods, e.g.
+     * to adapt the generate class names or to provide custom type mappings. */
+    @Parameter(defaultValue = "org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy")
+    private String revengStrategy;
     @Parameter(defaultValue = "true")
     private boolean detectManyToMany;
     @Parameter(defaultValue = "true")
@@ -53,7 +57,12 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     }
 
     private ReverseEngineeringStrategy setupReverseEngineeringStrategy() {
-        ReverseEngineeringStrategy strategy = new DefaultReverseEngineeringStrategy();
+        ReverseEngineeringStrategy strategy;
+        try {
+            strategy = ReverseEngineeringStrategy.class.cast(Class.forName(revengStrategy).newInstance());
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | ClassCastException e) {
+            throw new BuildException(revengStrategy + " not instanced.", e);
+        }
 
         if (revengFile != null) {
             OverrideRepository override = new OverrideRepository();
