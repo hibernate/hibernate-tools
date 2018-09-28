@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.persistence.Persistence;
 
+import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.internal.export.pojo.POJOExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -39,7 +41,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
-		POJOExporter exporter = new POJOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.setMetadataDescriptor(MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true));
 		exporter.setOutputDirectory(outputDir);

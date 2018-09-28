@@ -18,6 +18,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.pojo.BasicPOJOClass;
@@ -26,7 +29,6 @@ import org.hibernate.tool.internal.export.pojo.ImportContext;
 import org.hibernate.tool.internal.export.pojo.ImportContextImpl;
 import org.hibernate.tool.internal.export.pojo.NoopImportContext;
 import org.hibernate.tool.internal.export.pojo.POJOClass;
-import org.hibernate.tool.internal.export.pojo.POJOExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -71,7 +73,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
-		POJOExporter exporter = new POJOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new DefaultArtifactCollector();
@@ -454,7 +456,7 @@ public class TestCase {
 	@Test
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
-		POJOExporter exporter = new POJOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new DefaultArtifactCollector();

@@ -22,11 +22,13 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
-import org.hibernate.tool.internal.export.pojo.POJOExporter;
 import org.hibernate.tool.internal.metadata.NativeMetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -140,7 +142,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "LeftTable.hbm.xml") );
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
-		POJOExporter exporter = new POJOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
@@ -176,7 +178,7 @@ public class TestCase {
 	@Test
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
-		POJOExporter exporter = new POJOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.setMetadataDescriptor(metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
