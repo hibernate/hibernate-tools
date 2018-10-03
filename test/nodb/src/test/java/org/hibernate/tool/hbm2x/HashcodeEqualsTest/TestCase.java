@@ -7,6 +7,7 @@ package org.hibernate.tool.hbm2x.HashcodeEqualsTest;
 import java.io.File;
 
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -48,7 +49,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
@@ -58,7 +59,7 @@ public class TestCase {
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new DefaultArtifactCollector();

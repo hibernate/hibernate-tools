@@ -13,6 +13,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.SchemaSelection;
@@ -74,7 +75,7 @@ public class TestCase {
 	public void testGeneration() {		
 		File outputFolder = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataDescriptor);
+		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hme.setOutputDirectory(outputFolder);
 		hme.start();			
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );

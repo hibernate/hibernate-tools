@@ -23,6 +23,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -131,7 +132,7 @@ public class TestCase {
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataDescriptor);
+		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
@@ -143,7 +144,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
@@ -179,7 +180,7 @@ public class TestCase {
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");

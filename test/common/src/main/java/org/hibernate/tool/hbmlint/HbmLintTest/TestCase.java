@@ -2,6 +2,7 @@ package org.hibernate.tool.hbmlint.HbmLintTest;
 
 import java.io.File;
 
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.lint.BadCachingDetector;
 import org.hibernate.tool.internal.export.lint.Detector;
@@ -43,8 +44,8 @@ public class TestCase {
 	
 	@Test
 	public void testExporter() {	
-		HbmLintExporter exporter = new HbmLintExporter();		
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		HbmLintExporter exporter = new HbmLintExporter();
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 	}

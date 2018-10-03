@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.cfg.HibernateConfigurationExporter;
@@ -48,7 +49,7 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new HibernateConfigurationExporter();
-		cfgexporter.setMetadataDescriptor(metadataDescriptor);
+		cfgexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		cfgexporter.setOutputDirectory(outputDir);
 		cfgexporter.start();
 	}
@@ -62,8 +63,9 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
-			   .createNativeDescriptor(null, null, properties));
+	   exporter.getProperties().put(
+			   ExporterConstants.METADATA_DESCRIPTOR, 
+			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
@@ -80,8 +82,9 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
-			   .createNativeDescriptor(null, null, properties));
+	   exporter.getProperties().put(
+			   ExporterConstants.METADATA_DESCRIPTOR, 
+			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNotNull(
@@ -90,8 +93,9 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
-			   .createNativeDescriptor(null, null, properties));
+	   exporter.getProperties().put(
+			   ExporterConstants.METADATA_DESCRIPTOR, 
+			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
 	   exporter.start();
 	   Assert.assertNull(

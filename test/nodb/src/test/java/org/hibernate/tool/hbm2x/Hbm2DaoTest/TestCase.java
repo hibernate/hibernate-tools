@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -48,10 +49,10 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.POJO);
-		javaExporter.setMetadataDescriptor(metadataDescriptor);
+		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExporter.setOutputDirectory(outputDir);
 		Exporter exporter = new DAOExporter();
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");

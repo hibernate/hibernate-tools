@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Persistence;
 
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -42,8 +43,9 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null, true));
+		exporter.getProperties().put(
+				ExporterConstants.METADATA_DESCRIPTOR, 
+				MetadataDescriptorFactory.createJdbcDescriptor(null, null, true));
 		exporter.setOutputDirectory(outputDir);
 		exporter.setTemplatePath(new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");

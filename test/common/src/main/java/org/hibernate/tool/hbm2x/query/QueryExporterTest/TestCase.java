@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -67,7 +68,7 @@ public class TestCase {
 						new File[] { userGroupHbmXmlFile }, 
 						null);
 		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(destinationDir);
 		exporter.setFilename("queryresult.txt");
 		List<String> queries = new ArrayList<String>();
