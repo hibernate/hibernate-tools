@@ -17,6 +17,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
@@ -58,7 +59,7 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();	
-		hbmexporter.setMetadataDescriptor(metadataDescriptor);
+		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();		
 	}

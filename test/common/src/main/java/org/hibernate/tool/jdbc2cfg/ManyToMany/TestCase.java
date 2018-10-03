@@ -10,6 +10,7 @@ import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
@@ -126,7 +127,7 @@ public class TestCase {
 		Assert.assertNotNull(metadataDescriptor.createMetadata());
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataDescriptor);
+		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hme.setOutputDirectory(outputDir);
 		hme.start();		
 		

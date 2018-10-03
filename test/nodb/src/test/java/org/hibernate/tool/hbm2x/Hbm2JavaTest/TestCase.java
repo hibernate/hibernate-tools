@@ -19,6 +19,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -74,7 +75,7 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);
@@ -457,7 +458,7 @@ public class TestCase {
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.setArtifactCollector(artifactCollector);

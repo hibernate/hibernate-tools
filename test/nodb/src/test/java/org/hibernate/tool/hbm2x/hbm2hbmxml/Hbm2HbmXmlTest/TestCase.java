@@ -19,6 +19,7 @@ import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingGlobalSettings;
@@ -74,7 +75,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataDescriptor(metadataDescriptor);
+		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}
@@ -117,7 +118,7 @@ public class TestCase {
 		hgs.setSchemaName("myschema");
 		hgs.setCatalogName("mycatalog");		
 		Exporter gsExporter = new HibernateMappingExporter();
-		gsExporter.setMetadataDescriptor(metadataDescriptor);
+		gsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gsExporter).setGlobalSettings(hgs);
 		gsExporter.start();
@@ -147,7 +148,7 @@ public class TestCase {
 		hgs.setDefaultAccess("field");
 		hgs.setDefaultCascade("save-update");
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataDescriptor(metadataDescriptor);
+		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
@@ -263,7 +264,7 @@ public class TestCase {
 		hgs.setDefaultAccess("property");
 		hgs.setDefaultCascade("none");	
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataDescriptor(metadataDescriptor);
+		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
@@ -294,7 +295,7 @@ public class TestCase {
 		hgs.setDefaultLazy(false);
 		hgs.setAutoImport(false);		
 		Exporter gbsExporter = new HibernateMappingExporter();
-		gbsExporter.setMetadataDescriptor(metadataDescriptor);
+		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.setOutputDirectory(outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();

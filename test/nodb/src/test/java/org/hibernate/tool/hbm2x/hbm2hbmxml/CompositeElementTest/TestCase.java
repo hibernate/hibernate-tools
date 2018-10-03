@@ -29,6 +29,7 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
@@ -67,7 +68,7 @@ public class TestCase {
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
-		hbmexporter.setMetadataDescriptor(metadataDescriptor);
+		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
 		hbmexporter.start();
 	}

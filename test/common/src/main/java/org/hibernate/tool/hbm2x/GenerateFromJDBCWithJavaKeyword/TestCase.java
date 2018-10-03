@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -64,8 +65,8 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateJava() throws Exception {	
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);		
-		exporter.setMetadataDescriptor(createMetadataDescriptor());
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);	
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, createMetadataDescriptor());
 		exporter.setOutputDirectory(outputDir);
 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");

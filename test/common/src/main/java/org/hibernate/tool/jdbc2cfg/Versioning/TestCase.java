@@ -10,6 +10,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
@@ -68,7 +69,7 @@ public class TestCase {
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
-        exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		File[] files = new File[4];		

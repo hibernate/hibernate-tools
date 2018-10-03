@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Properties;
 
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
@@ -42,7 +43,7 @@ public class TestCase {
 		final File outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
 		HibernateMappingExporter exporter = new HibernateMappingExporter();
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
 		Assert.assertFalse(fooHbmXml.exists());

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -52,7 +53,7 @@ public class TestCase {
 	@Test
 	public void testGenerateJava() throws IOException {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);	
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();

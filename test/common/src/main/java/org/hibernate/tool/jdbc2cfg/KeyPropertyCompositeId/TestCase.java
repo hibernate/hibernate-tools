@@ -17,6 +17,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -147,10 +148,10 @@ public class TestCase {
 	public void testGeneration() throws Exception {
 		final File testFolder = temporaryFolder.getRoot();
 		Exporter exporter = new HibernateMappingExporter();
-		exporter.setMetadataDescriptor(metadataDescriptor);
+		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(testFolder);
 		Exporter javaExp = ExporterFactory.createExporter(ExporterType.POJO);
-		javaExp.setMetadataDescriptor(metadataDescriptor);
+		javaExp.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExp.setOutputDirectory(testFolder);
 		exporter.start();
 		javaExp.start();
