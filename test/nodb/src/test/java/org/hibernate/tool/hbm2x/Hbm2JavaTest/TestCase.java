@@ -78,7 +78,7 @@ public class TestCase {
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new DefaultArtifactCollector();
-		exporter.setArtifactCollector(artifactCollector);
+		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
 	}
 
@@ -461,7 +461,7 @@ public class TestCase {
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(genericsSource);
 		artifactCollector = new DefaultArtifactCollector();
-		exporter.setArtifactCollector(artifactCollector);
+		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();
 		File genericsTarget = new File(temporaryFolder.getRoot(), "genericstarget" );

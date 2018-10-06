@@ -60,11 +60,11 @@ public class TestCase {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
-		exporter.setArtifactCollector(artifactCollector);
+		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		Exporter hbmexporter = new HibernateMappingExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hbmexporter.setOutputDirectory(outputDir);
-		hbmexporter.setArtifactCollector(artifactCollector);
+		hbmexporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
 		hbmexporter.start();
 	}	

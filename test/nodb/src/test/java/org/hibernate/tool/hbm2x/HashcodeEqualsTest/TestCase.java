@@ -52,7 +52,7 @@ public class TestCase {
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.setOutputDirectory(outputDir);
 		artifactCollector = new DefaultArtifactCollector();
-		exporter.setArtifactCollector(artifactCollector);
+		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
 	}
 
@@ -63,7 +63,7 @@ public class TestCase {
 		exporter.setOutputDirectory(outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new DefaultArtifactCollector();
-		exporter.setArtifactCollector(artifactCollector);
+		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
 		testFileExistence();
 		testNoVelocityLeftOvers();
