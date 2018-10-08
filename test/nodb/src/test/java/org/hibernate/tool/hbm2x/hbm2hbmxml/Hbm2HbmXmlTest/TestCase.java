@@ -64,7 +64,7 @@ public class TestCase {
 	private MetadataDescriptor metadataDescriptor = null;
 	private File outputDir = null;
 	private File resourcesDir = null;
-	private Exporter hbmexporter = null;
+	private HibernateMappingExporter hbmexporter = null;
 
 	@Before
 	public void setUp() throws Exception {

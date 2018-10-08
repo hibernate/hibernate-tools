@@ -19,7 +19,6 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -41,7 +40,7 @@ public class TestCase {
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 	
-	private Exporter hbmexporter = null;
+	private HibernateMappingExporter hbmexporter = null;
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
