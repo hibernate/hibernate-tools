@@ -58,7 +58,7 @@ public class TestCase {
 	public void testSingleFileGeneration() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-test.ftl"); 
 		ge.setFilePattern("generictest.txt");
 		ge.start();
@@ -77,7 +77,7 @@ public class TestCase {
 	public void testFreeMarkerSyntaxFailureExpected() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "freemarker.ftl");
 		ge.setFilePattern("{class-name}.ftltest");
 		ge.start();
@@ -92,7 +92,7 @@ public class TestCase {
 	public void testClassFileGeneration() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("generic{class-name}.txt");
 		ge.start();
@@ -104,7 +104,7 @@ public class TestCase {
 	public void testPackageFileGeneration() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.start();
@@ -119,7 +119,7 @@ public class TestCase {
 	public void testForEachGeneration() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.setForEach("entity");
@@ -145,7 +145,7 @@ public class TestCase {
 	public void testForEachWithExceptionGeneration() {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-exception.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		try {
@@ -181,7 +181,7 @@ public class TestCase {
 		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.internal.export.pojo.Cfg2JavaTool");
 		ge.getProperties().putAll(p);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		ge.setOutputDirectory(outputDir);
+		ge.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.start();		

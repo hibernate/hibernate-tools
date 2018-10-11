@@ -54,7 +54,7 @@ public class TestCase {
 	public void testGenerateJava() throws IOException {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);	
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
 		File etManyToManyComp1 = new File(outputDir, "EtManyToManyComp1.java");

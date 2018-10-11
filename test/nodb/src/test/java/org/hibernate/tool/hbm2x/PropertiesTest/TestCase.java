@@ -59,11 +59,11 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		Exporter hbmexporter = new HibernateMappingExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.setOutputDirectory(outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		hbmexporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
 		hbmexporter.start();

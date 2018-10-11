@@ -74,7 +74,7 @@ public class TestCase {
 		properties.setProperty("dot.ignoreerror", Boolean.toString(ignoreDot));
 		exporter.getProperties().putAll(properties);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.start();
 	}
 	

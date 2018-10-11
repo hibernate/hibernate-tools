@@ -50,7 +50,7 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
@@ -60,7 +60,7 @@ public class TestCase {
 	public void testJDK5FailureExpectedOnJDK4() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.getProperties().setProperty("jdk5", "true");
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);

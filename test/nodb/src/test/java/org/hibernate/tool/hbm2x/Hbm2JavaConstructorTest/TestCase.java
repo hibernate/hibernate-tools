@@ -59,7 +59,7 @@ public class TestCase {
 		metadata = metadataDescriptor.createMetadata();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.start();
 	}	
 	

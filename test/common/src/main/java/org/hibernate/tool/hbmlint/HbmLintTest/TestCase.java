@@ -46,7 +46,7 @@ public class TestCase {
 	public void testExporter() {	
 		HbmLintExporter exporter = new HbmLintExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.start();
 	}
 	

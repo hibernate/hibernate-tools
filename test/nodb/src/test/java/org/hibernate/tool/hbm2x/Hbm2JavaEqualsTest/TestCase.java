@@ -70,7 +70,7 @@ public class TestCase {
 				.createNativeDescriptor(null, new File[] { hbmXml }, properties);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		exporter.start();
 		// copy interface EntityProxy.java
 		File file = new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2JavaEquals/TestEntityProxy.java");

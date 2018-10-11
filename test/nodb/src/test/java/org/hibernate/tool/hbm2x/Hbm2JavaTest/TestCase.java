@@ -76,7 +76,7 @@ public class TestCase {
 		metadata = metadataDescriptor.createMetadata();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(outputDir);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.start();
@@ -459,7 +459,7 @@ public class TestCase {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.setOutputDirectory(genericsSource);
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, genericsSource);
 		artifactCollector = new DefaultArtifactCollector();
 		exporter.getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		exporter.getProperties().setProperty("jdk5", "true");

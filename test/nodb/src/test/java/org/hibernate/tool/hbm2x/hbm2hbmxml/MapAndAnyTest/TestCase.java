@@ -75,7 +75,7 @@ public class TestCase {
 		metadata = metadataDescriptor.createMetadata();
 		hbmexporter = new HibernateMappingExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.setOutputDirectory(outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		hbmexporter.start();
 	}
 

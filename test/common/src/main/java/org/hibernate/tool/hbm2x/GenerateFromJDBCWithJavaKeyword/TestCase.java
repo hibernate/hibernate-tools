@@ -67,8 +67,8 @@ public class TestCase {
 	public void testGenerateJava() throws Exception {	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);	
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, createMetadataDescriptor());
-		exporter.setOutputDirectory(outputDir);
-		exporter.start();
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+ 		exporter.start();
 		File myReturn = new File(outputDir, "org/reveng/MyReturn.java");
 		Assert.assertTrue(myReturn.exists());
 		File myReturnHistory = new File(outputDir, "org/reveng/MyReturnHistory.java");

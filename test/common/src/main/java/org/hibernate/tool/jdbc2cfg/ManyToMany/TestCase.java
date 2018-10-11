@@ -128,7 +128,7 @@ public class TestCase {
 		
 		HibernateMappingExporter hme = new HibernateMappingExporter();
 		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hme.setOutputDirectory(outputDir);
+		hme.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
 		hme.start();		
 		
 		assertFileAndExists( new File(outputDir, "Employee.hbm.xml") );
