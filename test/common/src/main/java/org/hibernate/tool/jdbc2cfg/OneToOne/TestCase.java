@@ -146,7 +146,7 @@ public class TestCase {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
-		exporter.setTemplatePath(new String[0]);
+		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "false");
 		exporter.start();			
@@ -182,7 +182,7 @@ public class TestCase {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
-		exporter.setTemplatePath(new String[0]);
+		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();		
