@@ -112,7 +112,6 @@ public class TestCase {
 		Assert.assertEquals(1, cfgexporter.getArtifactCollector().getFileCount("cfg.xml"));
 	}
 	
-	@SuppressWarnings("el-syntax")
 	@Test
 	public void testNoVelocityLeftOvers() {
         Assert.assertNull(FileUtil.findFirstString("${",new File(outputDir, "hibernate.cfg.xml")));
