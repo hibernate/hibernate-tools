@@ -101,7 +101,7 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 	public boolean onSave(Session s) throws CallbackException {
 		dynaBean = new HashMap<Object, Object>();
 		dynaBean.put("foo", "foo");
-		dynaBean.put("bar", new Integer(66));
+		dynaBean.put("bar", Integer.valueOf(66));
 		immutable="never changes!";
 		return NO_VETO;
 	}

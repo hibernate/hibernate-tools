@@ -35,7 +35,7 @@ public class AnyKindOfUserType implements UserType {
 
 	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
-		return new Integer(rs.getInt(names[0]) );
+		return Integer.valueOf(rs.getInt(names[0]) );
 	}
 
 	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
@@ -45,7 +45,7 @@ public class AnyKindOfUserType implements UserType {
 	}
 
 	public Object deepCopy(Object value) throws HibernateException {
-		return new Integer( ( (Integer)value).intValue() );
+		return Integer.valueOf( ( (Integer)value).intValue() );
 	}
 	public Object assemble(Serializable cached, Object owner)
 	throws HibernateException {

@@ -207,7 +207,7 @@ public class TestCase {
 		Assert.assertEquals("@javax.persistence.OneToMany", builder.getResult());
 		builder = AnnotationBuilder.createAnnotation("abc");
 		ArrayList<Object> list = new ArrayList<Object>();
-		list.add(new Integer(42));
+		list.add(Integer.valueOf(42));
 		list.add( new String("xxx") );
 		builder.addQuotedAttributes( "it", list.iterator() );
 		Assert.assertEquals("@abc(it={\"42\", \"xxx\"})", builder.getResult());		

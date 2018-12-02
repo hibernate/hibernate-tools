@@ -104,7 +104,7 @@ public class TestCase {
         Transaction t = session.beginTransaction();
 	
         Orders order = new Orders();
-		order.setId(new Integer(1) );
+		order.setId(Integer.valueOf(1) );
 		order.setName("Mickey");
 		
 		session.save(order);
@@ -122,7 +122,7 @@ public class TestCase {
 		session = sf.openSession();
 		t = session.beginTransaction();
 		
-		Item loadeditem = (Item) session.get(PACKAGE_NAME + ".Item", new Integer(42) );
+		Item loadeditem = (Item) session.get(PACKAGE_NAME + ".Item", Integer.valueOf(42) );
 		
 		Assert.assertEquals(item.getName(),loadeditem.getName() );
         Assert.assertEquals(item.getChildId(),loadeditem.getChildId() );
@@ -140,7 +140,7 @@ public class TestCase {
         session = sf.openSession();
 		t = session.beginTransaction();
         
-		order = (Orders) session.load(Orders.class, new Integer(1) );
+		order = (Orders) session.load(Orders.class, Integer.valueOf(1) );
         Assert.assertFalse(Hibernate.isInitialized(order) );
         Assert.assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
@@ -154,7 +154,7 @@ public class TestCase {
 
 	private Item addItem(Orders m, int itemid, String name) {
         Item item = new Item();
-        item.setChildId(new Integer(itemid) );
+        item.setChildId(Integer.valueOf(itemid) );
         item.setOrderId(m);
         item.setName(name);
         m.getItemsForOrderId().add(item);
