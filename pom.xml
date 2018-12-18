@@ -43,7 +43,7 @@
         <junit.version>4.12</junit.version>
         <mysql.version>6.0.6</mysql.version>
         <oracle.version>12.2.0.1</oracle.version>
-        <slf4j.version>1.7.23</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <sqlserver.version>6.1.7.jre8-preview</sqlserver.version>
     </properties>
     
