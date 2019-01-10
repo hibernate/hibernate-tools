@@ -343,8 +343,6 @@
 					<includes>
 						<include>**/*.java</include>
 					</includes>
-					<source>1.4</source>
-					<target>1.4</target>
 				</configuration>
 			</plugin>
 			<plugin>
