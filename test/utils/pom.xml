@@ -34,10 +34,6 @@
             <groupId>org.hibernate.tool</groupId>
             <artifactId>hibernate-tools-orm</artifactId>
         </dependency>
-		<dependency>
-    		<groupId>javax.activation</groupId>
-    		<artifactId>javax.activation-api</artifactId>
-		</dependency>		    
     </dependencies>
     
 </project>
