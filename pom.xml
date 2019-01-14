@@ -145,35 +145,34 @@
    			<version>7.0</version>
    			<scope>test</scope>
    		</dependency>
+		<dependency>
+   			<groupId>javax</groupId>
+   			<artifactId>javaee-api</artifactId>
+   			<version>7.0</version>
+   			<scope>test</scope>
+   		</dependency>
+   		<dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
+        </dependency>
 
-	<dependency>
-		<groupId>${jdbc.driver.groupId}</groupId>
-		<artifactId>${jdbc.driver.artifactId}</artifactId>
-		<version>${jdbc.driver.jdbc.driver.version}</version>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>commons-collections</groupId>
-		<artifactId>commons-collections</artifactId>
-		<version>3.2.2</version>
-	</dependency>
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-		<version>1.7.23</version>
-	</dependency>
-	
-		<dependency>
-		    <groupId>com.sun.xml.bind</groupId>
-		    <artifactId>jaxb-impl</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.sun.xml.bind</groupId>
-		    <artifactId>jaxb-core</artifactId>
-		    <version>2.3.0</version>
-		</dependency>
+	    <dependency>
+		    <groupId>${jdbc.driver.groupId}</groupId>
+		    <artifactId>${jdbc.driver.artifactId}</artifactId>
+		    <version>${jdbc.driver.jdbc.driver.version}</version>
+		    <scope>test</scope>
+	    </dependency>
+	    <dependency>
+		    <groupId>commons-collections</groupId>
+		    <artifactId>commons-collections</artifactId>
+		    <version>3.2.2</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.23</version>
+	    </dependency>
 	
 	</dependencies>
 
