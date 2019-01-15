@@ -141,12 +141,6 @@
 			    <version>${hibernate-commons-annotations.version}</version>
 		    </dependency>
 			<dependency>
-    			<groupId>javax.activation</groupId>
-    			<artifactId>javax.activation-api</artifactId>
-    			<version>${javax.activation-api.version}</version>
-    			<scope>runtime</scope>
-			</dependency>		    
-			<dependency>
 			    <groupId>javax.persistence</groupId>
 			    <artifactId>javax.persistence-api</artifactId>
 			    <version>${javax.persistence-api.version}</version>
