@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -75,12 +77,7 @@ public final class TestHelper {
 	 * @return
 	 */
 	public static boolean compile(File srcdir, File outputdir, List srcFiles, String jdktarget, String classPath) {
-		List togglesList = new ArrayList();
-		togglesList.add( "-" + jdktarget ); // put this here so DAOs compile
-		togglesList.add( "-noExit" );
-		//togglesList.add( "-noWarn" );
-		//togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon,uselessTypeCheck" ); // TODO: unused private
-		togglesList.add( "-warn:unusedImport,noEffectAssign,fieldHiding,localHiding,semicolon" ); // TODO: unused private
+		List<String> togglesList = new ArrayList<String>();
 		togglesList.add( "-sourcepath" );
 		togglesList.add( srcdir.getAbsolutePath() + File.separatorChar );
 		togglesList.add( "-d" );
@@ -90,32 +87,21 @@ public final class TestHelper {
 			togglesList.add( classPath );
 		}
 
-		String[] toggles = (String[]) togglesList
-				.toArray( new String[togglesList.size()] );
-		String[] strings = (String[]) srcFiles.toArray( new String[srcFiles
-				.size()] );
+		String[] toggles = togglesList.toArray( new String[togglesList.size()] );
+		String[] strings = (String[])srcFiles.toArray( new String[srcFiles.size()] );
 		String[] arguments = new String[toggles.length + strings.length];
 		System.arraycopy( toggles, 0, arguments, 0, toggles.length );
 		System
 				.arraycopy( strings, 0, arguments, toggles.length,
 						strings.length );
 
-		StringWriter out = new StringWriter();
-		StringWriter err = new StringWriter();
-
-		Main main = new Main( new PrintWriter( out ), new PrintWriter( err ),
-				false );
-		main.compile( arguments );
-		if ( main.globalErrorsCount > 0 ) {
-			throw new RuntimeException( out.toString() + err.toString() );
-		}
-		
-		if ( main.globalWarningsCount > 0 ) {
-			throw new RuntimeException( out.toString() + err.toString() );
-		}
-		return true;
-
-		// return javaCompile( arguments );
+		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+		return javaCompiler.run(
+				null, 
+				null, 
+				null, 
+				arguments) != 0;
+	
 	}
 
 	/* Uses the JDK javac tools.
