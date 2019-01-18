@@ -29,14 +29,14 @@
 	    <ant.version>1.10.5</ant.version>
 	    <commons-collections.version>3.2.2</commons-collections.version>
 	    <commons-logging.version>1.2</commons-logging.version>
-	    <eclipse-jdt-core.version>3.15.0</eclipse-jdt-core.version>
+	    <eclipse-jdt-core.version>3.16.0</eclipse-jdt-core.version>
  	    <freemarker.version>2.3.28</freemarker.version>
         <h2.version>1.4.197</h2.version>
 	    <hibernate-commons-annotations.version>5.1.0.Final</hibernate-commons-annotations.version>
         <hibernate-core.version>5.4.0.CR2</hibernate-core.version>
-	    <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <javaee-api.version>7.0</javaee-api.version>
+	    <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <jaxen.version>1.1.6</jaxen.version>
         <junit.version>4.12</junit.version>
         <mysql.version>6.0.6</mysql.version>
@@ -54,16 +54,16 @@
                 <scope>test</scope>
             </dependency>
 			<dependency>
-    			    <groupId>com.microsoft.sqlserver</groupId>
-    			    <artifactId>mssql-jdbc</artifactId>
-    			    <version>${sqlserver.version}</version>
-    			    <scope>test</scope>
+    			<groupId>com.microsoft.sqlserver</groupId>
+    		    <artifactId>mssql-jdbc</artifactId>
+    			<version>${sqlserver.version}</version>
+    			<scope>test</scope>
 			</dependency>
 			<dependency>
-    			    <groupId>com.oracle.jdbc</groupId>
-    			    <artifactId>ojdbc8</artifactId>
-    			    <version>${oracle.version}</version>
-    			    <scope>test</scope>
+    			<groupId>com.oracle.jdbc</groupId>
+    			<artifactId>ojdbc8</artifactId>
+    			<version>${oracle.version}</version>
+    			<scope>test</scope>
 			</dependency>
 	        <dependency>
 		        <groupId>commons-collections</groupId>
@@ -81,6 +81,11 @@
    			    <version>${javaee-api.version}</version>
    			    <scope>test</scope>
    		    </dependency>
+ 			<dependency>
+			    <groupId>javax.persistence</groupId>
+			    <artifactId>javax.persistence-api</artifactId>
+			    <version>${javax.persistence-api.version}</version>
+		    </dependency>
   	        <dependency>
                 <groupId>jaxen</groupId>
                 <artifactId>jaxen</artifactId>
@@ -118,31 +123,26 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate-core.version}</version>
             </dependency>
-        	    <dependency>
-        		    <groupId>org.hibernate.tool</groupId>
-        		    <artifactId>hibernate-tools-orm</artifactId>
-        		    <version>${project.version}</version>
-        	    </dependency>
-        		<dependency>
-        		    <groupId>org.hibernate.tool</groupId>
-        		    <artifactId>hibernate-tools-tests-common</artifactId>
-        		    <version>${project.version}</version>
-            	</dependency>
-            	<dependency>
-        	        <groupId>org.hibernate.tool</groupId>
-        		    <artifactId>hibernate-tools-tests-utils</artifactId>
-        		    <version>${project.version}</version>
-        	    </dependency>
- 		    <dependency>
+  		    <dependency>
 			    <groupId>org.hibernate.common</groupId>
 			    <artifactId>hibernate-commons-annotations</artifactId>
 			    <version>${hibernate-commons-annotations.version}</version>
 		    </dependency>
-			<dependency>
-			    <groupId>javax.persistence</groupId>
-			    <artifactId>javax.persistence-api</artifactId>
-			    <version>${javax.persistence-api.version}</version>
-		    </dependency>
+        	<dependency>
+        		<groupId>org.hibernate.tool</groupId>
+        		<artifactId>hibernate-tools-orm</artifactId>
+        		<version>${project.version}</version>
+        	</dependency>
+            <dependency>
+        		<groupId>org.hibernate.tool</groupId>
+        		<artifactId>hibernate-tools-tests-common</artifactId>
+        		<version>${project.version}</version>
+            </dependency>
+            <dependency>
+        	    <groupId>org.hibernate.tool</groupId>
+        		<artifactId>hibernate-tools-tests-utils</artifactId>
+        		<version>${project.version}</version>
+        	</dependency>
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
