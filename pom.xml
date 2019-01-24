@@ -134,16 +134,10 @@
 			<version>1.10.5</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>text</artifactId>
-			<version>3.3.0-v20070606-0010</version>
-			<scope>compile</scope>
-		</dependency>
         <dependency>
-            <groupId>org.eclipse.tycho</groupId>
+            <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.9.1.v20130905-0837</version>
+            <version>3.16.0</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>

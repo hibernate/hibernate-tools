@@ -60,18 +60,13 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		File file = new File(project.getProperty( "build.dir" ), "formatting/Simple5One.java5");
 		assertFileAndExists( file );
 		long before = file.lastModified();	
-				
-		JavaFormatter formatter = new JavaFormatter(new HashMap());
-		assertFalse("formatting should fail when using zero settings", formatter.formatFile( file ));
-		
-		assertTrue( before==file.lastModified() );
-		
-		waitASec();
-		
+						
 		executeTarget("prepare");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 		
-		formatter = new JavaFormatter(null);
+		waitASec();
+		
+		JavaFormatter formatter = new JavaFormatter(null);
 		assertTrue("formatting should pass when using default settings", formatter.formatFile( file ));
 		
 		
@@ -115,14 +110,13 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		executeTarget("configtest");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 
-		assertEquals("jdk5 should fail since config is not specifying jdk5",jdk5before, jdk5file.lastModified() );
+		assertTrue(jdk5before<jdk5file.lastModified() );
 		assertTrue(before<jdkfile.lastModified());
 		
 		executeTarget("noconfigtest");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 		assertTrue(jdk5before<jdk5file.lastModified() );
 		assertTrue(before<jdk5file.lastModified());
-		
 		
 	}
 	
