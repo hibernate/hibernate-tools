@@ -14,12 +14,11 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.sql.Alias;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 public class PrimaryKeyProcessor {
 
-	private static final Logger log = LoggerFactory.getLogger(PrimaryKeyProcessor.class);
+	private static final Logger log = Logger.getLogger(PrimaryKeyProcessor.class);
 
 	public static void processPrimaryKey(
 			MetaDataDialect metaDataDialect, 
