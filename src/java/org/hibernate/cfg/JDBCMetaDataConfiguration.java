@@ -36,8 +36,7 @@ import org.hibernate.type.TypeFactory;
 import org.hibernate.type.TypeResolver;
 import org.hibernate.usertype.CompositeUserType;
 import org.hibernate.usertype.UserType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * @author max
@@ -45,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JDBCMetaDataConfiguration extends Configuration {
 
-    private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
+    private static final Logger log = Logger.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	private StandardServiceRegistry serviceRegistry = null;
 	

@@ -11,12 +11,11 @@ import java.util.Set;
 import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Table;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 public class TableProcessor {
 
-	private static final Logger log = LoggerFactory.getLogger(TableProcessor.class);
+	private static final Logger log = Logger.getLogger(TableProcessor.class);
 
 	public static Collection<Table> processTables(
 			MetaDataDialect metaDataDialect, 

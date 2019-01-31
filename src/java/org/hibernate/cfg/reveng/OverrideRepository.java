@@ -25,13 +25,12 @@ import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
 import org.hibernate.tool.xml.XMLHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.xml.sax.InputSource;
 
 public class OverrideRepository  {
 
-	final private static Logger log = LoggerFactory.getLogger( OverrideRepository.class );
+	final private static Logger log = Logger.getLogger( OverrideRepository.class );
 
 	final private Map<TypeMappingKey, List<SQLTypeMapping>> typeMappings; // from sqltypes to list of SQLTypeMapping
 

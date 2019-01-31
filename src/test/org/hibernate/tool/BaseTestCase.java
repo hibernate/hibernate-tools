@@ -24,15 +24,14 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.test.TestHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
 public abstract class BaseTestCase extends TestCase {
 
-	protected static final Logger SKIP_LOG = LoggerFactory.getLogger("org.hibernate.tool.test.SKIPPED");
+	protected static final Logger SKIP_LOG = Logger.getLogger("org.hibernate.tool.test.SKIPPED");
 	
 	private File outputdir;
 	
