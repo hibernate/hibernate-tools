@@ -12,15 +12,14 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * @author max and david
  */
 public class ConfigurationNavigator {
 
-	private static final Logger log = LoggerFactory.getLogger(POJOExporter.class);
+	private static final Logger log = Logger.getLogger(POJOExporter.class);
 	
 	/**
 	 * @param clazz
