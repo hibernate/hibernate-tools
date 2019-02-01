@@ -21,8 +21,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hibernate.internal.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -31,7 +30,7 @@ import org.xml.sax.SAXException;
  */
 public final class TestHelper {
 
-	private static final Logger log = LoggerFactory.getLogger(TestHelper.class);
+	private static final Logger log = Logger.getLogger(TestHelper.class);
 
 	private TestHelper() {
 		// noop

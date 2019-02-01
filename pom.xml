@@ -153,17 +153,11 @@
 			<version>${hibernateJpaversion}</version>
 			<scope>compile</scope>
 		</dependency>
-	    <dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>1.7.25</version>
-	    </dependency>
  		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.25</version>
-			<scope>test</scope>
-		</dependency> 
+		    <groupId>org.jboss.logging</groupId>
+		    <artifactId>jboss-logging</artifactId>
+		    <version>3.3.2.Final</version>
+		</dependency>
 		<dependency>
 		    <groupId>${jdbc.driver.groupId}</groupId>
 		    <artifactId>${jdbc.driver.artifactId}</artifactId>
