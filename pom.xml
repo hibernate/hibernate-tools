@@ -157,12 +157,6 @@
 			<version>r8-20060801</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.25</version>
-			<scope>test</scope>
-		</dependency>
 	    <dependency>
 		    <groupId>${jdbc.driver.groupId}</groupId>
 		    <artifactId>${jdbc.driver.artifactId}</artifactId>
