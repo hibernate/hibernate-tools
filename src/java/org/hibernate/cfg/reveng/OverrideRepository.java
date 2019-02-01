@@ -21,13 +21,12 @@ import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.xml.XMLHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.xml.sax.InputSource;
 
 public class OverrideRepository  {
 
-	final private static Logger log = LoggerFactory.getLogger( OverrideRepository.class );
+	final private static Logger log = Logger.getLogger( OverrideRepository.class );
 
 	final private Map typeMappings; // from sqltypes to list of SQLTypeMapping
 

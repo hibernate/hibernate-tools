@@ -11,8 +11,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.internal.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * Base exporter for the template and direct output generation.
@@ -22,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractExporter implements Exporter {
 
-	protected Logger log = LoggerFactory.getLogger(this.getClass());
+	protected Logger log = Logger.getLogger(this.getClass());
 	
 	private File outputdir;
 	private Configuration configuration;

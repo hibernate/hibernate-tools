@@ -52,8 +52,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 
 /**
@@ -63,7 +62,7 @@ import org.slf4j.LoggerFactory;
 public class JDBCBinder {
 
 	private Properties properties;
-	private static final Logger log = LoggerFactory.getLogger(JDBCBinder.class);
+	private static final Logger log = Logger.getLogger(JDBCBinder.class);
 
 	private final Mappings mappings;
 

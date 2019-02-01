@@ -9,10 +9,9 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tool.test.TestHelper;
+import org.jboss.logging.Logger;
 
 /**
  * @author max
@@ -21,7 +20,7 @@ import org.hibernate.tool.test.TestHelper;
 public class AntHibernateToolTest extends BuildFileTestCase {
 
 
-	private static final Logger log = LoggerFactory.getLogger(AntHibernateToolTest.class);
+	private static final Logger log = Logger.getLogger(AntHibernateToolTest.class);
 
 	private String property;
 	

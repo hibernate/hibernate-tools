@@ -8,8 +8,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,11 +20,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.eclipse.jdt.internal.compiler.batch.Main;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.internal.util.StringHelper;
+import org.jboss.logging.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -35,7 +30,7 @@ import org.xml.sax.SAXException;
  */
 public final class TestHelper {
 
-	private static final Logger log = LoggerFactory.getLogger(TestHelper.class);
+	private static final Logger log = Logger.getLogger(TestHelper.class);
 
 	private TestHelper() {
 		// noop

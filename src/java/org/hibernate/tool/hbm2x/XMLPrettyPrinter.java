@@ -19,8 +19,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.w3c.tidy.Tidy;
 
 /**
@@ -29,7 +28,7 @@ import org.w3c.tidy.Tidy;
  */
 public final class XMLPrettyPrinter {
 
-	private static final Logger log = LoggerFactory.getLogger( XMLPrettyPrinter.class );
+	private static final Logger log = Logger.getLogger( XMLPrettyPrinter.class );
 
 	private XMLPrettyPrinter() {
 		// noop

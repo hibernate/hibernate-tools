@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -16,13 +14,14 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.hbm2x.pojo.ComponentPOJOClass;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
+import org.jboss.logging.Logger;
 
 /**
  * @author max and david
  */
 public class ConfigurationNavigator {
 
-	private static final Logger log = LoggerFactory.getLogger(POJOExporter.class);
+	private static final Logger log = Logger.getLogger(POJOExporter.class);
 	
 	/**
 	 * @param cfg

@@ -15,8 +15,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * @author max
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class JDBCMetaDataConfiguration extends Configuration {
 
-    private static final Logger log = LoggerFactory.getLogger(JDBCMetaDataConfiguration.class);
+    private static final Logger log = Logger.getLogger(JDBCMetaDataConfiguration.class);
 	private ReverseEngineeringStrategy revEngStrategy = new DefaultReverseEngineeringStrategy();
 	private ServiceRegistry serviceRegistry = null;
     
