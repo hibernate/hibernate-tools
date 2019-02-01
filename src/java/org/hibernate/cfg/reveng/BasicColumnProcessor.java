@@ -10,12 +10,11 @@ import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 public class BasicColumnProcessor {
 
-	private static final Logger log = LoggerFactory.getLogger(BasicColumnProcessor.class);
+	private static final Logger log = Logger.getLogger(BasicColumnProcessor.class);
 
 	public static void processBasicColumns(
 			MetaDataDialect metaDataDialect, 

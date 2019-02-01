@@ -19,8 +19,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 /**
  * @author max
@@ -28,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	private Logger log = Logger.getLogger(this.getClass());
 
 	public JDBCMetaDataBinderTestCase() {
 		super(null);
