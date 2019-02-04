@@ -2,12 +2,19 @@ package org.hibernate.tool.hbm2x;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Properties;
 
+import javax.xml.parsers.SAXParserFactory;
+
 import org.hibernate.tool.NonReflectiveTestCase;
-import org.w3c.tidy.Tidy;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
 public class DocExporterTest extends NonReflectiveTestCase {
 
@@ -82,9 +89,8 @@ public class DocExporterTest extends NonReflectiveTestCase {
 		
     	    	new FileVisitor() {
     			protected void process(File dir) {
-    				final Tidy tidy = new Tidy();
     				if(dir.isFile() && dir.getName().endsWith( ".html" )) {
-    					testHtml( tidy, dir );
+    					testHtml(dir);
     				}
     				
     			}
@@ -118,15 +124,43 @@ public class DocExporterTest extends NonReflectiveTestCase {
 		assertNotNull("Missing inherited property", findFirstString("firstName", entityFile));
 	}
 
-	private void testHtml(final Tidy tidy, File dir) {
+	private void testHtml(File file) {
 		try {
-			tidy.parse( new FileInputStream(dir), (OutputStream)null );
-			assertEquals(dir + "has errors ", 0, tidy.getParseErrors());
-			assertEquals(dir + "has warnings ", 0, tidy.getParseWarnings());
-		}
-		catch (FileNotFoundException e) {
-			fail();
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			XMLReader parser = factory.newSAXParser().getXMLReader();
+			TestHandler handler = new TestHandler();
+			parser.setErrorHandler(handler);
+			parser.setEntityResolver(new TestResolver());
+			parser.parse(new InputSource(new FileInputStream(file)));
+			assertEquals(file + "has errors ", 0, handler.errors);
+			assertEquals(file + "has warnings ", 0, handler.warnings);
+		} catch (Exception e) {
+			fail(e.getMessage());
 		}
 	}
-
+	
+	private class TestResolver implements EntityResolver {
+		@Override
+		public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+			return new InputSource(new StringReader(""));
+		}		
+	}
+	
+	private class TestHandler implements ErrorHandler {
+		int warnings = 0;
+		int errors = 0;
+		@Override
+		public void warning(SAXParseException exception) throws SAXException {
+			warnings++;
+		}
+		@Override
+		public void error(SAXParseException exception) throws SAXException {
+			errors++;
+		}
+		@Override
+		public void fatalError(SAXParseException exception) throws SAXException {
+			errors++;
+		}		
+	}
+	
 }
