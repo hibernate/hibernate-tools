@@ -28,7 +28,7 @@
 	    <ant.version>1.10.5</ant.version>
 	    <commons-collections.version>3.2.2</commons-collections.version>
 	    <commons-logging.version>1.2</commons-logging.version>
-	    <eclipse-jdt-core.version>3.16.0</eclipse-jdt-core.version>
+	    <eclipse-jdt-core.version>3.17.0</eclipse-jdt-core.version>
 	    <freemarker.version>2.3.28</freemarker.version>
         <h2.version>1.4.197</h2.version>
 	    <hibernate-commons-annotations.version>5.1.0.Final</hibernate-commons-annotations.version>
