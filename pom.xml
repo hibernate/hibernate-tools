@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant-launcher</artifactId>
-			<version>1.10.5</version>
+			<version>1.10.6</version>
 			<scope>test</scope>
 		</dependency>
         <dependency>
@@ -454,7 +454,7 @@
 				<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
 				<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
 				<db.dialect>org.hibernate.dialect.H2Dialect</db.dialect>
-				<jdbc.driver.jdbc.driver.version>1.2.124</jdbc.driver.jdbc.driver.version>
+				<jdbc.driver.jdbc.driver.version>1.4.199</jdbc.driver.jdbc.driver.version>
 				<jdbc.driver>org.h2.Driver</jdbc.driver>
 				<jdbc.url>jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</jdbc.url>
 				<jdbc.user>sa</jdbc.user>
