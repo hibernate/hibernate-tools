@@ -156,7 +156,7 @@
  		<dependency>
 		    <groupId>org.jboss.logging</groupId>
 		    <artifactId>jboss-logging</artifactId>
-		    <version>3.3.2.Final</version>
+		    <version>3.4.0.Final</version>
 		</dependency>
 	    <dependency>
 		    <groupId>${jdbc.driver.groupId}</groupId>
