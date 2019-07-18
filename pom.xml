@@ -39,7 +39,7 @@
 	    <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb-runtime.version>2.3.2</jaxb-runtime.version>
-        <jaxen.version>1.1.6</jaxen.version>
+        <jaxen.version>1.2.0</jaxen.version>
         <jboss-logging.version>3.4.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
         <mysql.version>6.0.6</mysql.version>
