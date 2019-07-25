@@ -40,6 +40,7 @@
         <jaxen.version>1.2.0</jaxen.version>
         <jboss-logging.version>3.4.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
+        <junit-jupiter.version>5.5.1</junit-jupiter.version>
         <mysql.version>6.0.6</mysql.version>
         <oracle.version>12.2.0.1</oracle.version>
         <sqlserver.version>6.1.7.jre8-preview</sqlserver.version>
@@ -154,6 +155,17 @@
 		        <artifactId>jboss-logging</artifactId>
 		        <version>${jboss-logging.version}</version>
 		    </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
          </dependencies>
     </dependencyManagement>
 
