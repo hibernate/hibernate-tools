@@ -56,10 +56,10 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.POJO);;
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		javaExporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		Exporter exporter = new DAOExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();

@@ -133,7 +133,7 @@ public class TestCase {
 		File outputDir = temporaryFolder.getRoot();
 		HibernateMappingExporter hme = new HibernateMappingExporter();
 		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hme.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		hme.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		hme.start();		
 		assertFileAndExists( new File(outputDir, "Person.hbm.xml") );
 		assertFileAndExists( new File(outputDir, "AddressPerson.hbm.xml") );
@@ -145,7 +145,7 @@ public class TestCase {
 		Assert.assertEquals(7, outputDir.listFiles().length);	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "false");
@@ -181,7 +181,7 @@ public class TestCase {
 		File outputDir = temporaryFolder.getRoot();
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.getProperties().setProperty("jdk5", "true");

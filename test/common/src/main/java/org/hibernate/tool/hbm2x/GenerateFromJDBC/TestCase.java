@@ -69,11 +69,11 @@ public class TestCase {
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);		
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();
 		exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();
 	}
@@ -82,7 +82,7 @@ public class TestCase {
 	public void testGenerateMappings() {
 		Exporter exporter = new HibernateMappingExporter();	
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
 		File file = new File(outputDir, "GeneralHbmSettings.hbm.xml");
@@ -101,7 +101,7 @@ public class TestCase {
 	public void testGenerateCfgXml() throws DocumentException {	
 		Exporter exporter = new CfgExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
 		SAXReader xmlReader =  new SAXReader();
@@ -127,7 +127,7 @@ public class TestCase {
 		CfgExporter exporter = 
 				new CfgExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
@@ -153,7 +153,7 @@ public class TestCase {
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));
 	}

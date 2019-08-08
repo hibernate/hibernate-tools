@@ -69,7 +69,7 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HibernateMappingExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		hbmexporter.start();
 	}
 

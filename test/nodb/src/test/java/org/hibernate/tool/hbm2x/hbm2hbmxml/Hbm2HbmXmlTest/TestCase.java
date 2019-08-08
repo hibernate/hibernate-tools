@@ -76,7 +76,7 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		hbmexporter.start();
 	}
 	
@@ -119,7 +119,7 @@ public class TestCase {
 		hgs.setCatalogName("mycatalog");		
 		Exporter gsExporter = new HibernateMappingExporter();
 		gsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		gsExporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		gsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		( (HibernateMappingExporter)gsExporter).setGlobalSettings(hgs);
 		gsExporter.start();
 		File outputXml = new File(
@@ -149,7 +149,7 @@ public class TestCase {
 		hgs.setDefaultCascade("save-update");
 		Exporter gbsExporter = new HibernateMappingExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		gbsExporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
@@ -265,7 +265,7 @@ public class TestCase {
 		hgs.setDefaultCascade("none");	
 		Exporter gbsExporter = new HibernateMappingExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		gbsExporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
@@ -296,7 +296,7 @@ public class TestCase {
 		hgs.setAutoImport(false);		
 		Exporter gbsExporter = new HibernateMappingExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		gbsExporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		( (HibernateMappingExporter)gbsExporter).setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(

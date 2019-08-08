@@ -149,10 +149,10 @@ public class TestCase {
 		final File testFolder = temporaryFolder.getRoot();
 		Exporter exporter = new HibernateMappingExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, testFolder);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
 		Exporter javaExp = ExporterFactory.createExporter(ExporterType.POJO);
 		javaExp.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		javaExp.getProperties().put(ExporterConstants.OUTPUT_FOLDER, testFolder);
+		javaExp.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
 		exporter.start();
 		javaExp.start();
 		JavaUtil.compile(testFolder);

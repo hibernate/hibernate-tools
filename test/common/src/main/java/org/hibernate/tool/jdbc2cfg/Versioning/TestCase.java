@@ -70,7 +70,7 @@ public class TestCase {
 		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HibernateMappingExporter();		
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, testFolder);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
  		exporter.start();		
 		File[] files = new File[4];		
 		files[0] = new File(testFolder, "WithVersion.hbm.xml");

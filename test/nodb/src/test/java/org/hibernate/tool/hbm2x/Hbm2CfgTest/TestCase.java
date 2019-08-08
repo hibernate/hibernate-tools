@@ -50,7 +50,7 @@ public class TestCase {
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new CfgExporter();
 		cfgexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		cfgexporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+		cfgexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		cfgexporter.start();
 	}
 	
@@ -66,7 +66,7 @@ public class TestCase {
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
-	   exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+	   exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 	   exporter.start();
 	   File file = new File(outputDir, "hibernate.cfg.xml");
 	   Assert.assertNull(
@@ -85,7 +85,7 @@ public class TestCase {
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
-	   exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+	   exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 	   exporter.start();
 	   Assert.assertNotNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
@@ -96,7 +96,7 @@ public class TestCase {
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
-	   exporter.getProperties().put(ExporterConstants.OUTPUT_FOLDER, outputDir);
+	   exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 	   exporter.start();
 	   Assert.assertNull(
 			   FileUtil.findFirstString( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, file ));
