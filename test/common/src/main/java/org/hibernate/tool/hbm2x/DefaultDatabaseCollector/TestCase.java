@@ -62,7 +62,7 @@ public class TestCase {
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		List<Table> tables = getTables(MetadataDescriptorFactory
-				.createJdbcDescriptor(res, null, true)
+				.createJdbcDescriptor(res, null)
 				.createMetadata());
 		Assert.assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);

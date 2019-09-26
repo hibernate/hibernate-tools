@@ -54,7 +54,7 @@ public class TestCase {
 			}
 		};           
 	    metadataDescriptor = MetadataDescriptorFactory
-	    		.createJdbcDescriptor(c, null, true);
+	    		.createJdbcDescriptor(c, null);
 	}
 
 	@After

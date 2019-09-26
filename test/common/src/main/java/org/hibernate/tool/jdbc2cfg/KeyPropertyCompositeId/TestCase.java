@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -52,8 +53,10 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultReverseEngineeringStrategy();
+		Properties properties = new Properties();
+		properties.put(MetadataDescriptor.PREFER_BASIC_COMPOSITE_IDS, false);
 		metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(reverseEngineeringStrategy, null, false);
+				.createJdbcDescriptor(reverseEngineeringStrategy, properties);
 	}
 
 	@After

@@ -56,7 +56,7 @@ public class TestCase {
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(
 				new DefaultReverseEngineeringStrategy() );
 		metadata = MetadataDescriptorFactory
-				.createJdbcDescriptor(res, null, true)
+				.createJdbcDescriptor(res, null)
 				.createMetadata();
 	}
 
@@ -146,7 +146,7 @@ public class TestCase {
 		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
 		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		Metadata md = MetadataDescriptorFactory
-				.createJdbcDescriptor(strategy, null, true)
+				.createJdbcDescriptor(strategy, null)
 				.createMetadata();
 		
 		Iterator<Table> tableMappings = md.collectTableMappings().iterator();

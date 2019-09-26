@@ -45,7 +45,7 @@ public class TestCase {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
 		exporter.getProperties().put(
 				ExporterConstants.METADATA_DESCRIPTOR, 
-				MetadataDescriptorFactory.createJdbcDescriptor(null, null, true));
+				MetadataDescriptorFactory.createJdbcDescriptor(null, null));
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
 		exporter.getProperties().setProperty("ejb3", "true");
