@@ -1,4 +1,4 @@
-package org.hibernate.tool.ant.old;
+package org.hibernate.tool.ant;
 
 import java.util.ArrayList;
 import java.util.Iterator;

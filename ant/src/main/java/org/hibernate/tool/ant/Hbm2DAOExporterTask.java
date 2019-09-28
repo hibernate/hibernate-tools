@@ -1,4 +1,4 @@
-package org.hibernate.tool.ant.old;
+package org.hibernate.tool.ant;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;

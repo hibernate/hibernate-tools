@@ -1,4 +1,4 @@
-package org.hibernate.tool.ant.old;
+package org.hibernate.tool.ant;
 
 import java.io.File;
 import java.util.Properties;

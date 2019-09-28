@@ -2,7 +2,7 @@
  * Created on 14-Feb-2005
  *
  */
-package org.hibernate.tool.ant.old;
+package org.hibernate.tool.ant;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterFactory;

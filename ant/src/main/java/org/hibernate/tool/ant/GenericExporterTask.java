@@ -2,7 +2,7 @@
  * Created on 14-Feb-2005
  *
  */
-package org.hibernate.tool.ant.old;
+package org.hibernate.tool.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tool.api.export.Exporter;
