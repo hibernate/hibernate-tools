@@ -23,6 +23,7 @@
         <module>maven</module>
         <module>ant</module>
         <module>test</module>
+        <module>utils</module>
     </modules>
 
     <properties>

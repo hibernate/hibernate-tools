@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+           <groupId>org.hibernate.tool</groupId>
+           <artifactId>hibernate-tools-parent</artifactId>
+           <version>6.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>hibernate-tools-utils</artifactId>
+
+	<packaging>jar</packaging>
+
+	<name>Hibernate Tools Common Utilities</name>
+	<description>Hibernate Tools Common Utilities</description>
+	<url>http://hibernate.org/tools/</url>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>https://hibernate.atlassian.net/projects/HBX/summary</url>
+	</issueManagement>
+
+	<scm>
+	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
+	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
+	  <url>http://github.com/hibernate/hibernate-tools</url>
+	</scm>
+
+	<organization>
+		<name>Hibernate</name>
+		<url>http://www.hibernate.org</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>koentsje</id>
+			<name>Koen Aers</name>
+			<email>koen@hibernate.org</email>
+			<url>http://koentsje.blogspot.be</url>
+		</developer>
+	</developers>
+
+</project>
