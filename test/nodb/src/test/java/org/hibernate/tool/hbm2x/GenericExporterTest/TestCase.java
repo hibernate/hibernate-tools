@@ -59,7 +59,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-test.ftl"); 
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-test.ftl");
 		ge.setFilePattern("generictest.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir,"artifacts.txt"));	
@@ -78,7 +78,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "freemarker.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "freemarker.ftl");
 		ge.setFilePattern("{class-name}.ftltest");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Author.ftltest" ) );	
@@ -93,7 +93,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("generic{class-name}.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "genericAuthor.txt" ) );	
@@ -105,7 +105,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericAuthor.txt"));	
@@ -120,7 +120,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.setForEach("entity");
 		ge.start();
@@ -146,7 +146,7 @@ public class TestCase {
 		GenericExporter ge = new GenericExporter();
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-exception.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-exception.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		try {
 			ge.setForEach("entity");
@@ -182,7 +182,7 @@ public class TestCase {
 		ge.getProperties().putAll(p);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		ge.setTemplateName(resourcesLocation + "generic-class.ftl");
+    	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
 		ge.setFilePattern("{package-name}/generic{class-name}.txt");
 		ge.start();		
 		Properties generated = new Properties();
