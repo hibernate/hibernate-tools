@@ -145,6 +145,11 @@
         		<artifactId>hibernate-tools-tests-utils</artifactId>
         		<version>${project.version}</version>
         	</dependency>
+        	<dependency>
+        		<groupId>org.hibernate.tool</groupId>
+        		<artifactId>hibernate-tools-utils</artifactId>
+        		<version>${project.version}</version>
+        	</dependency>
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
