@@ -60,7 +60,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-test.ftl");
-		ge.setFilePattern("generictest.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "generictest.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir,"artifacts.txt"));	
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir, "templates.txt"));
@@ -79,7 +79,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "freemarker.ftl");
-		ge.setFilePattern("{class-name}.ftltest");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{class-name}.ftltest");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Author.ftltest" ) );	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Article.ftltest" ) );
@@ -94,7 +94,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
-		ge.setFilePattern("generic{class-name}.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "generic{class-name}.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "genericAuthor.txt" ) );	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "genericArticle.txt" ) );
@@ -106,7 +106,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
-		ge.setFilePattern("{package-name}/generic{class-name}.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericAuthor.txt"));	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"));
@@ -121,7 +121,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
-		ge.setFilePattern("{package-name}/generic{class-name}.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		ge.setForEach("entity");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericAuthor.txt"));	
@@ -147,7 +147,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-exception.ftl");
-		ge.setFilePattern("{package-name}/generic{class-name}.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		try {
 			ge.setForEach("entity");
 			ge.start();
@@ -183,7 +183,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
-		ge.setFilePattern("{package-name}/generic{class-name}.txt");
+    	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		ge.start();		
 		Properties generated = new Properties();
 		FileInputStream is = null;
