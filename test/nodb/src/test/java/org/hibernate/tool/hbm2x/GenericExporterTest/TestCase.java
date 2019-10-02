@@ -10,10 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.version.Version;
-import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -56,7 +58,7 @@ public class TestCase {
 
 	@Test
 	public void testSingleFileGeneration() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-test.ftl");
@@ -75,7 +77,7 @@ public class TestCase {
 	// Not sure about this next test... There doesn't seem to be a syntax failure anywhere
 	@Test
 	public void testFreeMarkerSyntaxFailureExpected() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "freemarker.ftl");
@@ -90,7 +92,7 @@ public class TestCase {
 
 	@Test
 	public void testClassFileGeneration() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
@@ -102,7 +104,7 @@ public class TestCase {
 	
 	@Test
 	public void testPackageFileGeneration() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
@@ -117,7 +119,7 @@ public class TestCase {
 
 	@Test
 	public void testForEachGeneration() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
@@ -143,7 +145,7 @@ public class TestCase {
 
 	@Test
 	public void testForEachWithExceptionGeneration() {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-exception.ftl");
@@ -173,7 +175,7 @@ public class TestCase {
 
 	@Test
 	public void testPropertySet() throws FileNotFoundException, IOException {
-		GenericExporter ge = new GenericExporter();
+		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		Properties p = new Properties();
 		p.setProperty("proptest", "A value");
 		p.setProperty( "refproperty", "proptest=${proptest}" );
