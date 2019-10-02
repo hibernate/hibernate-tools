@@ -122,7 +122,7 @@ public class TestCase {
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-class.ftl");
     	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
-		ge.setForEach("entity");
+    	ge.getProperties().put(ExporterConstants.FOR_EACH, "entity");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericAuthor.txt"));	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"));
@@ -132,7 +132,7 @@ public class TestCase {
 				new File(outputDir, "genericUniversalAddress.txt" ).exists());
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "genericHelloUniverse.txt" ) );
 		try {
-			ge.setForEach( "does, not, exist" );
+	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "does, not, exist");
 			ge.start();
 			Assert.fail();
 		} catch(Exception e) {
@@ -149,21 +149,21 @@ public class TestCase {
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-exception.ftl");
     	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		try {
-			ge.setForEach("entity");
+	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "entity");
 			ge.start();
 			Assert.fail();
 		} catch(RuntimeException e) {
 			Assert.assertTrue(e.getMessage().startsWith("Error while processing Entity:"));			
 		}
 		try {
-			ge.setForEach("component");
+	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "component");
 			ge.start();
 			Assert.fail();
 		} catch(RuntimeException e) {
 			Assert.assertTrue(e.getMessage().startsWith("Error while processing Component: UniversalAddress"));
 		}		
 		try {
-			ge.setForEach("configuration");
+	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "configuration");
 			ge.start();
 			Assert.fail();
 		} catch(RuntimeException e) {
