@@ -9,10 +9,13 @@ import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.tool.api.export.ArtifactCollector;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -38,7 +41,7 @@ public class TestCase {
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
-	private CfgExporter cfgexporter;
+	private Exporter cfgexporter;
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,7 +51,7 @@ public class TestCase {
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
-		cfgexporter = new CfgExporter();
+		cfgexporter = ExporterFactory.createExporter(ExporterType.CFG);
 		cfgexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		cfgexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		cfgexporter.start();
@@ -56,7 +59,7 @@ public class TestCase {
 	
 	@Test
 	public void testMagicPropertyHandling() {
-	   CfgExporter exporter = new CfgExporter();
+	   Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
 	   Properties properties = exporter.getProperties();
 	   properties.setProperty( "hibernate.basic", "aValue" );
 	   properties.setProperty( Environment.SESSION_FACTORY_NAME, "shouldNotShowUp");
@@ -78,7 +81,7 @@ public class TestCase {
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   Assert.assertNull(
 			   FileUtil.findFirstString("hibernate.temp.use_jdbc_metadata_defaults", file ));
-	   exporter = new CfgExporter();
+	   exporter = ExporterFactory.createExporter(ExporterType.CFG);
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
@@ -89,7 +92,7 @@ public class TestCase {
 	   exporter.start();
 	   Assert.assertNotNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
-	   exporter = new CfgExporter();
+	   exporter = ExporterFactory.createExporter(ExporterType.CFG);
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
@@ -109,7 +112,8 @@ public class TestCase {
 
 	@Test
 	public void testArtifactCollection() {
-		Assert.assertEquals(1, cfgexporter.getArtifactCollector().getFileCount("cfg.xml"));
+		ArtifactCollector ac = (ArtifactCollector)cfgexporter.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR);
+		Assert.assertEquals(1, ac.getFileCount("cfg.xml"));
 	}
 	
 	@Test

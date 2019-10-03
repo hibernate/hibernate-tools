@@ -25,7 +25,6 @@ import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
-import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
@@ -99,7 +98,7 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
-		Exporter exporter = new CfgExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();				
@@ -124,8 +123,7 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateAnnotationCfgXml() throws DocumentException {
-		CfgExporter exporter = 
-				new CfgExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
