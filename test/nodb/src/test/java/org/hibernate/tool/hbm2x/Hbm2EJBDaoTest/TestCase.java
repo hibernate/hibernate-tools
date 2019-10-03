@@ -57,7 +57,7 @@ public class TestCase {
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.POJO);;
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		Exporter exporter = new DAOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.DAO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");

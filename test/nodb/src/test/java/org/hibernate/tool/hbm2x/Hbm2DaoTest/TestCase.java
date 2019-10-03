@@ -12,7 +12,6 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.internal.export.dao.DAOExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -51,7 +50,7 @@ public class TestCase {
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.POJO);
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
-		Exporter exporter = new DAOExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.DAO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "false");
