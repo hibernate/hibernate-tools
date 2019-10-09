@@ -29,7 +29,7 @@ import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
-import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.metadata.NativeMetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -131,7 +131,7 @@ public class TestCase {
 	@Test
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
-		HibernateMappingExporter hme = new HibernateMappingExporter();
+		HbmExporter hme = new HbmExporter();
 		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hme.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		hme.start();		

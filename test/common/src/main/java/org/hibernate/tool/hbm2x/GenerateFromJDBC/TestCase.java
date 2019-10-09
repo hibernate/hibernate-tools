@@ -26,7 +26,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
 import org.hibernate.tool.internal.export.doc.DocExporter;
-import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -79,7 +79,7 @@ public class TestCase {
 	
 	@Test
 	public void testGenerateMappings() {
-		Exporter exporter = new HibernateMappingExporter();	
+		Exporter exporter = new HbmExporter();	
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();	

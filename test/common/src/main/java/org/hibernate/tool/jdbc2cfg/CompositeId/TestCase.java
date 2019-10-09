@@ -28,7 +28,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
@@ -167,7 +167,7 @@ public class TestCase {
     @Test
     public void testGeneration() throws Exception {
         final File testFolder = temporaryFolder.getRoot();        
-        Exporter exporter = new HibernateMappingExporter();	
+        Exporter exporter = new HbmExporter();	
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
         Exporter javaExp = ExporterFactory.createExporter(ExporterType.POJO);

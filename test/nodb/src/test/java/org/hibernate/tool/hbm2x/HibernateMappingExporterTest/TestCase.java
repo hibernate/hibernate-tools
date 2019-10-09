@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.internal.export.hbm.HibernateMappingExporter;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -42,7 +42,7 @@ public class TestCase {
 				.createNativeDescriptor(null, new File[] { fooHbmXmlOrigin }, properties); 		
 		final File outputDir = new File(temporaryFolder.getRoot(), "output");
 		outputDir.mkdir();
-		HibernateMappingExporter exporter = new HibernateMappingExporter();
+		HbmExporter exporter = new HbmExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		final File fooHbmXml = new File(outputDir, "Foo.hbm.xml");
