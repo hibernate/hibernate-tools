@@ -70,7 +70,7 @@ public class TestCase {
 		exporter.getProperties().put(AvailableSettings.HBM2DDL_AUTO, "update");
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, destinationDir);
-		exporter.setFilename("queryresult.txt");
+		exporter.getProperties().put(ExporterConstants.OUTPUT_FILE_NAME, "queryresult.txt");
 		List<String> queries = new ArrayList<String>();
 		queries.add("from java.lang.Object");
 		exporter.setQueries( queries );		
