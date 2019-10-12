@@ -73,7 +73,7 @@ public class TestCase {
 		exporter.getProperties().put(ExporterConstants.OUTPUT_FILE_NAME, "queryresult.txt");
 		List<String> queries = new ArrayList<String>();
 		queries.add("from java.lang.Object");
-		exporter.setQueries( queries );		
+		exporter.getProperties().put(ExporterConstants.QUERY_LIST, queries);
 		exporter.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(destinationDir, "queryresult.txt"));		
 	}
