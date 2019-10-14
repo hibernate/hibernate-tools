@@ -132,6 +132,11 @@
 		    </dependency>
         	<dependency>
         		<groupId>org.hibernate.tool</groupId>
+        		<artifactId>hibernate-tools-ant</artifactId>
+        		<version>${project.version}</version>
+        	</dependency>
+        	<dependency>
+        		<groupId>org.hibernate.tool</groupId>
         		<artifactId>hibernate-tools-orm</artifactId>
         		<version>${project.version}</version>
         	</dependency>
