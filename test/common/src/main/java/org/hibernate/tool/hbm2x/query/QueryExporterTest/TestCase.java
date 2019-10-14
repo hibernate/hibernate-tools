@@ -11,11 +11,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -61,7 +63,7 @@ public class TestCase {
 	
 	@Test
 	public void testQueryExporter() throws Exception {		
-		QueryExporter exporter = new QueryExporter();
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.QUERY);
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(
 						null, 
