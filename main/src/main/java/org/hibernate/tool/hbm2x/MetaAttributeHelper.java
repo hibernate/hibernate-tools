@@ -3,7 +3,7 @@ package org.hibernate.tool.hbm2x;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.MultiMap;
 import org.hibernate.mapping.MetaAttribute;
 
 /**
