@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.collections4.MultiMap;
 import org.dom4j.Element;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.tool.hbm2x.MetaAttributeHelper;
@@ -24,7 +24,7 @@ public class MetaAttributeBinder {
 	 * from inherited
 	 */
 	public static MultiMap mergeMetaMaps(Map specific, Map general) {
-		MultiHashMap result = new MultiHashMap();
+		MultiValueMap result = new MultiValueMap();
 		MetaAttributeHelper.copyMultiMap(result, specific);
 		
 		if (general != null) {
@@ -83,7 +83,7 @@ public class MetaAttributeBinder {
 	 * @return MultiMap
 	 */
 	 protected static MultiMap loadMetaMap(Element element) {
-		MultiMap result = new MultiHashMap();
+		MultiMap result = new MultiValueMap();
 		List metaAttributeList = new ArrayList();
 		metaAttributeList.addAll(element.elements("meta") );
 

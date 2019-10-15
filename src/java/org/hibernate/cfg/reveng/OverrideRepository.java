@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.MultiMap;
 import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
