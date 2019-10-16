@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,12 +14,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.MultiMap;
+import org.apache.commons.collections4.MultiValuedMap;
 import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.xml.XMLHelper;
 import org.jboss.logging.Logger;
@@ -66,9 +70,9 @@ public class OverrideRepository  {
 	final private Map foreignKeyToEntityInfo;
 	final private Map foreignKeyToInverseEntityInfo;
 
-	final private Map tableMetaAttributes; // TI -> MultiMap of SimpleMetaAttributes
+	final private Map<TableIdentifier, MultiValuedMap<String, SimpleMetaAttribute>> tableMetaAttributes; // TI -> MultiMap of SimpleMetaAttributes
 
-	final private Map columnMetaAttributes;
+	final private Map<TableColumnKey, MultiValuedMap<String, SimpleMetaAttribute>> columnMetaAttributes;
 
 	//private String defaultCatalog;
 	//private String defaultSchema;
@@ -486,8 +490,8 @@ public class OverrideRepository  {
 		};
 	}
 
-	protected Map columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
-		Map specific = (Map) columnMetaAttributes.get( new TableColumnKey(tableIdentifier, column) );
+	protected Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
+		MultiValuedMap<String, SimpleMetaAttribute> specific = columnMetaAttributes.get( new TableColumnKey(tableIdentifier, column) );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
@@ -496,12 +500,12 @@ public class OverrideRepository  {
 	}
 
 	// TODO: optimize
-	protected Map tableToMetaAttributes(TableIdentifier identifier) {
-		Map specific = (Map) tableMetaAttributes.get( identifier );
+	protected Map<String,MetaAttribute> tableToMetaAttributes(TableIdentifier identifier) {
+		MultiValuedMap<String, SimpleMetaAttribute> specific = tableMetaAttributes.get( identifier );
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
-		Map general = findGeneralAttributes( identifier );
+		MultiValuedMap<String, SimpleMetaAttribute> general = findGeneralAttributes( identifier );
 		if(general!=null && !general.isEmpty()) {
 			return toMetaAttributes(general);
 		}
@@ -523,11 +527,11 @@ public class OverrideRepository  {
 		*/
 	}
 
-	private Map findGeneralAttributes(TableIdentifier identifier) {
+	private MultiValuedMap<String, SimpleMetaAttribute> findGeneralAttributes(TableIdentifier identifier) {
 		Iterator iterator = tableFilters.iterator();
 		while(iterator.hasNext() ) {
 			TableFilter tf = (TableFilter) iterator.next();
-			Map value = tf.getMetaAttributes(identifier);
+			MultiValuedMap<String, SimpleMetaAttribute> value = tf.getMetaAttributes(identifier);
 			if(value!=null) {
 				return value;
 			}
@@ -535,20 +539,16 @@ public class OverrideRepository  {
 		return null;
 	}
 
-	private Map toMetaAttributes(Map value) {
-		Map result = new HashMap();
-
-		Set set = value.entrySet();
-		for (Iterator iter = set.iterator(); iter.hasNext();) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			String name = (String) entry.getKey();
-			List values = (List) entry.getValue();
-
-			result.put(name, MetaAttributeBinder.toRealMetaAttribute(name, values));
+	private Map<String, MetaAttribute> toMetaAttributes(MultiValuedMap<String, SimpleMetaAttribute> mvm) {
+		Map<String, MetaAttribute> result = new HashMap<String, MetaAttribute>();
+		for (MapIterator<String, SimpleMetaAttribute> iter = mvm.mapIterator(); iter.hasNext();) {
+			String key = iter.next();
+			Collection<SimpleMetaAttribute> values = mvm.get(key);
+			result.put(key, MetaAttributeBinder.toRealMetaAttribute(key, values));
 		}
-
 		return result;
-	}
+ 	}
+
 
 	public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
 		return getReverseEngineeringStrategy(null);
@@ -689,14 +689,19 @@ public class OverrideRepository  {
 
 	}
 
-	public void addMetaAttributeInfo(Table table, Map map) {
+	public void addMetaAttributeInfo(
+			Table table, 
+			MultiValuedMap<String, SimpleMetaAttribute> map) {
 		if(map!=null && !map.isEmpty()) {
 			tableMetaAttributes.put(TableIdentifier.create(table), map);
 		}
 
 	}
 
-	public void addMetaAttributeInfo(TableIdentifier tableIdentifier, String name, MultiMap map) {
+	public void addMetaAttributeInfo(
+			TableIdentifier tableIdentifier, 
+			String name, 
+			MultiValuedMap<String, SimpleMetaAttribute> map) {
 		if(map!=null && !map.isEmpty()) {
 			columnMetaAttributes.put(new TableColumnKey( tableIdentifier, name ), map);
 		}
