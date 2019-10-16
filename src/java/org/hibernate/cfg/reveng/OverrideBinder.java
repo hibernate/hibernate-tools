@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.collections4.MultiMap;
-import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hibernate.MappingException;
@@ -123,7 +123,10 @@ public final class OverrideBinder {
 	}
 
 	private static void bindMetaAttributes(Element element, Table table, OverrideRepository repository) {
-		MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+		MultiValuedMap<String, SimpleMetaAttribute> map = 
+				MetaAttributeBinder.loadAndMergeMetaMap(
+						element, 
+						new HashSetValuedHashMap<String, SimpleMetaAttribute>());
 		if(map!=null && !map.isEmpty()) {
 			repository.addMetaAttributeInfo( table, map);
 		} 
@@ -320,7 +323,10 @@ public final class OverrideBinder {
 				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
 			}
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+			MultiValuedMap<String, SimpleMetaAttribute> map = 
+					MetaAttributeBinder.loadAndMergeMetaMap( 
+							element, 
+							new HashSetValuedHashMap<String, SimpleMetaAttribute>());
 			if(map!=null && !map.isEmpty()) {
 				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
 			} 
@@ -383,7 +389,10 @@ public final class OverrideBinder {
 			filter.setExclude(Boolean.valueOf(element.attributeValue("exclude") ) );
 			filter.setPackage(element.attributeValue("package") );
 			
-			MultiMap map = MetaAttributeBinder.loadAndMergeMetaMap( element, new MultiValueMap());
+			MultiValuedMap<String, SimpleMetaAttribute> map = 
+					MetaAttributeBinder.loadAndMergeMetaMap( 
+							element, 
+							new HashSetValuedHashMap<String, SimpleMetaAttribute>());
 			if(map!=null && !map.isEmpty()) {
 				filter.setMetaAttributes( map );
 			} else {
