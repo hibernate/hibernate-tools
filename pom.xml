@@ -29,7 +29,6 @@
     <properties>
 	    <ant.version>1.10.7</ant.version>
 	    <commons-collections.version>4.4</commons-collections.version>
-	    <commons-logging.version>1.2</commons-logging.version>
 	    <eclipse-jdt-core.version>3.18.0</eclipse-jdt-core.version>
  	    <freemarker.version>2.3.29</freemarker.version>
         <h2.version>1.4.199</h2.version>
@@ -67,16 +66,6 @@
     			<version>${oracle.version}</version>
     			<scope>test</scope>
 			</dependency>
-	        <dependency>
-		        <groupId>org.apache.commons</groupId>
-		        <artifactId>commons-collections4</artifactId>
-		        <version>${commons-collections.version}</version>
-	        </dependency>
-		    <dependency>
-			    <groupId>commons-logging</groupId>
-			    <artifactId>commons-logging</artifactId>
-			    <version>${commons-logging.version}</version>
-		    </dependency>
  		    <dependency>
    			    <groupId>javax</groupId>
    			    <artifactId>javaee-api</artifactId>
@@ -110,6 +99,11 @@
 			    <artifactId>ant</artifactId>
 			    <version>${ant.version}</version>
 		    </dependency>
+	        <dependency>
+		        <groupId>org.apache.commons</groupId>
+		        <artifactId>commons-collections4</artifactId>
+		        <version>${commons-collections.version}</version>
+	        </dependency>
             <dependency>
                 <groupId>org.eclipse.jdt</groupId>
                 <artifactId>org.eclipse.jdt.core</artifactId>

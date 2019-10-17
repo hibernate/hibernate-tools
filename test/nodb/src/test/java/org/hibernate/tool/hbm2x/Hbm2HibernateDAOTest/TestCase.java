@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
 import org.hibernate.Version;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -81,7 +80,6 @@ public class TestCase {
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(outputDir);
 		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Log.class)); // for commons logging
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
 		JavaUtil.compile(outputDir, compiled, jars);
@@ -111,5 +109,5 @@ public class TestCase {
         		"$",
         		new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );       
 	}
-
+	
 }

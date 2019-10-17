@@ -12,13 +12,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.internal.export.dao.DaoExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -80,7 +78,6 @@ public class TestCase {
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(outputDir);
 		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Log.class)); // for commons logging
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(EJB.class)); // for javaee api
 		JavaUtil.compile(outputDir, compiled);
