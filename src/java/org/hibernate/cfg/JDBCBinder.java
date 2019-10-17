@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.FetchMode;
 import org.hibernate.MappingException;
@@ -50,7 +49,6 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeFactory;
 import org.hibernate.util.JoinedIterator;
 import org.hibernate.util.StringHelper;
 
@@ -63,7 +61,7 @@ public class JDBCBinder {
 
 	private Settings settings;
 	private ConnectionProvider connectionProvider;
-	private static final Log log = LogFactory.getLog(JDBCBinder.class);
+	private static final Logger log = Logger.getLogger(JDBCBinder.class.getName());
 
 	private final Mappings mappings;
 
@@ -133,7 +131,7 @@ public class JDBCBinder {
 		for (Iterator iter = mappings.iterateTables(); iter.hasNext();) {
 			Table table = (Table) iter.next();
 			if(table.getColumnSpan()==0) {
-				log.warn("Cannot create persistent class for " + table + " as no columns were found.");
+				log.warning("Cannot create persistent class for " + table + " as no columns were found.");
 				continue;
 			}
 			// TODO: this naively just create an entity per table
@@ -145,7 +143,7 @@ public class JDBCBinder {
             }*/
 
 			if(revengStrategy.isManyToManyTable(table)) {
-				log.debug( "Ignoring " + table + " as class since rev.eng. says it is a many-to-many" );
+				log.fine( "Ignoring " + table + " as class since rev.eng. says it is a many-to-many" );
 				continue;
 			}
 
@@ -153,7 +151,7 @@ public class JDBCBinder {
 			RootClass rc = new RootClass();
 			TableIdentifier tableIdentifier = TableIdentifier.create(table);
 			String className = revengStrategy.tableToClassName( tableIdentifier );
-			log.debug("Building entity " + className + " based on " + tableIdentifier);
+			log.fine("Building entity " + className + " based on " + tableIdentifier);
 			rc.setEntityName( className );
 			rc.setClassName( className );
 			rc.setProxyInterfaceName( rc.getEntityName() ); // TODO: configurable ?
@@ -243,7 +241,7 @@ public class JDBCBinder {
 						foreignKey.getColumns(),
 						TableIdentifier.create(foreignKey.getReferencedTable() ),
 						foreignKey.getReferencedColumns())) {
-					log.debug("Rev.eng excluded one-to-many or one-to-one for foreignkey " + foreignKey.getName());
+					log.fine("Rev.eng excluded one-to-many or one-to-one for foreignkey " + foreignKey.getName());
 				} else if (revengStrategy.isOneToOne(foreignKey)){
 					Property property = bindOneToOne(rc, foreignKey.getTable(), foreignKey, processed, false, true);
 					rc.addProperty(property);
@@ -543,7 +541,7 @@ public class JDBCBinder {
 
 		String fullRolePath = StringHelper.qualify(rc.getEntityName(), collectionRole);
 		if (mappings.getCollection(fullRolePath)!=null) {
-		    log.debug(fullRolePath + " found twice!");
+		    log.fine(fullRolePath + " found twice!");
 		}
 
 		collection.setRole(fullRolePath);  // Master.setOfChildren+
@@ -586,7 +584,7 @@ public class JDBCBinder {
 			keyColumns = table.getPrimaryKey().getColumns();
 		}
 		else {
-			log.debug("No primary key found for " + table + ", using all properties as the identifier.");
+			log.fine("No primary key found for " + table + ", using all properties as the identifier.");
 			keyColumns = new ArrayList();
 			Iterator iter = table.getColumnIterator();
 			while (iter.hasNext() ) {
@@ -602,7 +600,7 @@ public class JDBCBinder {
 		boolean naturalId;
 
 		if (keyColumns.size()>1) {
-			log.debug("id strategy for " + rc.getEntityName() + " since it has a multiple column primary key");
+			log.fine("id strategy for " + rc.getEntityName() + " since it has a multiple column primary key");
 			naturalId = true;
 
 			id = handleCompositeKey(rc, processed, keyColumns, mapping);
@@ -675,7 +673,7 @@ public class JDBCBinder {
         			TableIdentifier.create(foreignKey.getReferencedTable() ),
         			foreignKey.getReferencedColumns())) {
             	// TODO: if many-to-one is excluded should the column be marked as processed so it won't show up at all ?
-            	log.debug("Rev.eng excluded *-to-one for foreignkey " + foreignKey.getName());
+            	log.fine("Rev.eng excluded *-to-one for foreignkey " + foreignKey.getName());
             } else if (revengStrategy.isOneToOne(foreignKey)){
 				Property property = bindOneToOne(rc, foreignKey.getReferencedTable(), foreignKey, processedColumns, true, false);
 				rc.addProperty(property);
@@ -738,12 +736,12 @@ public class JDBCBinder {
 		if(optimisticLockColumnName!=null) {
 			Column column = table.getColumn(new Column(optimisticLockColumnName));
 			if(column==null) {
-				log.warn("Column " + column + " wanted for <version>/<timestamp> not found in " + identifier);
+				log.warning("Column " + column + " wanted for <version>/<timestamp> not found in " + identifier);
 			} else {
 				bindVersionProperty(table, identifier, column, rc, processed, mapping);
 			}
 		} else {
-			log.debug("Scanning " + identifier + " for <version>/<timestamp> columns.");
+			log.fine("Scanning " + identifier + " for <version>/<timestamp> columns.");
 			Iterator columnIterator = table.getColumnIterator();
 			while(columnIterator.hasNext()) {
 				Column column = (Column) columnIterator.next();
@@ -753,7 +751,7 @@ public class JDBCBinder {
 					return;
 				}
 			}
-			log.debug("No columns reported while scanning for <version>/<timestamp> columns in " + identifier);
+			log.fine("No columns reported while scanning for <version>/<timestamp> columns in " + identifier);
 		}
 	}
 
@@ -765,7 +763,7 @@ public class JDBCBinder {
 		rc.addProperty(property);
 		rc.setVersion(property);
 		rc.setOptimisticLockMode(Versioning.OPTIMISTIC_LOCK_VERSION);
-		log.debug("Column " + column.getName() + " will be used for <version>/<timestamp> columns in " + identifier);
+		log.fine("Column " + column.getName() + " will be used for <version>/<timestamp> columns in " + identifier);
 
 	}
 
@@ -836,12 +834,12 @@ public class JDBCBinder {
 
 			int wantedSqlType = wantedSqlTypes[0];
 			if(wantedSqlType!=sqlTypeCode.intValue() ) {
-				log.debug("Sql type mismatch for " + location + " between DB and wanted hibernate type. Sql type set to " + typeCodeName( sqlTypeCode.intValue() ) + " instead of " + typeCodeName(wantedSqlType) );
+				log.fine("Sql type mismatch for " + location + " between DB and wanted hibernate type. Sql type set to " + typeCodeName( sqlTypeCode.intValue() ) + " instead of " + typeCodeName(wantedSqlType) );
 				column.setSqlTypeCode(new Integer(wantedSqlType));
 			}
 		}
 		else {
-			log.debug("No Hibernate type found for " + preferredHibernateType + ". Most likely cause is a missing UserType class.");
+			log.fine("No Hibernate type found for " + preferredHibernateType + ". Most likely cause is a missing UserType class.");
 		}
 
 
@@ -1004,7 +1002,7 @@ public class JDBCBinder {
     }
 
     private Property makeProperty(TableIdentifier table, String propertyName, Value value, boolean insertable, boolean updatable, boolean lazy, String cascade, String propertyAccessorName) {
-    	log.debug("Building property " + propertyName);
+    	log.fine("Building property " + propertyName);
         Property prop = new Property();
 		prop.setName(propertyName);
 		prop.setValue(value);

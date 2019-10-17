@@ -12,25 +12,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import net.sf.cglib.core.KeyFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.collections.MultiMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.hibernate.MappingException;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.util.StringHelper;
 import org.hibernate.util.XMLHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
+import net.sf.cglib.core.KeyFactory;
+
 public class OverrideRepository  {
 
-	final private static Log log = LogFactory.getLog( OverrideRepository.class );
+	final private static Logger log = Logger.getLogger( OverrideRepository.class.getName() );
 
 	final private transient XMLHelper xmlHelper;
 	final private transient EntityResolver entityResolver;
@@ -115,7 +114,7 @@ public class OverrideRepository  {
 			addInputStream( new FileInputStream( xmlFile ) );
 		}
 		catch ( Exception e ) {
-			log.error( "Could not configure overrides from file: " + xmlFile.getPath(), e );
+			log.log(Level.SEVERE, "Could not configure overrides from file: " + xmlFile.getPath(), e );
 			throw new MappingException( "Could not configure overrides from file: " + xmlFile.getPath(), e );
 		}
 		return this;
@@ -153,7 +152,7 @@ public class OverrideRepository  {
 			throw me;
 		}
 		catch ( Exception e ) {
-			log.error( "Could not configure overrides from input stream", e );
+			log.log(Level.SEVERE, "Could not configure overrides from input stream", e );
 			throw new MappingException( e );
 		}
 		finally {
@@ -161,7 +160,7 @@ public class OverrideRepository  {
 				xmlInputStream.close();
 			}
 			catch ( IOException ioe ) {
-				log.error( "could not close input stream", ioe );
+				log.log(Level.SEVERE, "could not close input stream", ioe );
 			}
 		}
 	}
@@ -325,7 +324,7 @@ public class OverrideRepository  {
 				if(table!=null && columnName!=null) {
 					result = (String) typeForColumn.get(TABLECOLUMN_KEY_FACTORY.newInstance(table, columnName));
 					if(result!=null) {
-						log.debug("explicit column mapping found for [" + location + "] to [" + result + "]");
+						log.fine("explicit column mapping found for [" + location + "] to [" + result + "]");
 						return result;
 					}
 				}
@@ -335,7 +334,7 @@ public class OverrideRepository  {
 					return super.columnToHibernateTypeName(table, columnName, sqlType, length, precision, scale, nullable, generatedIdentifier);
 				}
 				else {
-					log.debug("<type-mapping> found for [" + location + info + "] to [" + result + "]");
+					log.fine("<type-mapping> found for [" + location + info + "] to [" + result + "]");
 					return result;
 				}
 			}
@@ -399,7 +398,7 @@ public class OverrideRepository  {
 				if(result==null) {
 					return super.getTableIdentifierStrategyName( tableIdentifier );
 				} else {
-					log.debug("tableIdentifierStrategy for " + tableIdentifier + " -> '" + result + "'");
+					log.fine("tableIdentifierStrategy for " + tableIdentifier + " -> '" + result + "'");
 					return result;
 				}
 			}

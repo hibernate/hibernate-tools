@@ -23,7 +23,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			final String schema = caseForSearch( xschema );
 			final String table = caseForSearch( xtable );
 			
-			log.debug("getTables(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getTables(" + catalog + "." + schema + "." + table + ")");
 			
 			ResultSet tableRs = getMetaData().getTables(catalog , schema , table, new String[] { "TABLE", "VIEW" });
 			
@@ -59,7 +59,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			final String schema = caseForSearch( xschema );
 			final String table = caseForSearch( xtable );
 			
-			log.debug("getIndexInfo(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getIndexInfo(" + catalog + "." + schema + "." + table + ")");
 			ResultSet tableRs = getMetaData().getIndexInfo(catalog , schema , table, false, true);
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
@@ -96,7 +96,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			final String table = caseForSearch( xtable );
 			final String column = caseForSearch( xcolumn );
 			
-			log.debug("getColumns(" + catalog + "." + schema + "." + table + "." + column + ")");
+			log.fine("getColumns(" + catalog + "." + schema + "." + table + "." + column + ")");
 			ResultSet tableRs = getMetaData().getColumns(catalog, schema, table, column);
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
@@ -129,7 +129,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			final String schema = caseForSearch( xschema );
 			final String table = caseForSearch( xtable );
 			
-			log.debug("getPrimaryKeys(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getPrimaryKeys(" + catalog + "." + schema + "." + table + ")");
 			ResultSet tableRs = getMetaData().getPrimaryKeys(catalog, schema, table);
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {
@@ -158,7 +158,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 			final String schema = caseForSearch( xschema );
 			final String table = caseForSearch( xtable );
 			
-			log.debug("getExportedKeys(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getExportedKeys(" + catalog + "." + schema + "." + table + ")");
 			ResultSet tableRs = getMetaData().getExportedKeys(catalog, schema, table);
 			
 			return new ResultSetIterator(tableRs, getSQLExceptionConverter()) {

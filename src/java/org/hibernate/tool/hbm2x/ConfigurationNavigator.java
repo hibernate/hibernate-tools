@@ -6,9 +6,8 @@ package org.hibernate.tool.hbm2x;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -22,7 +21,7 @@ import org.hibernate.tool.hbm2x.pojo.POJOClass;
  */
 public class ConfigurationNavigator {
 
-	private static final Log log = LogFactory.getLog(POJOExporter.class);
+	private static final Logger log = Logger.getLogger(POJOExporter.class.getName());
 	
 	/**
 	 * @param cfg
@@ -108,10 +107,10 @@ public class ConfigurationNavigator {
 			Component existing = (Component) components.put(comp.getComponentClassName(), comp);
 			
 			if(existing!=null) {
-				log.warn("Component " + existing.getComponentClassName() + " found more than once! Will only generate the last found.");
+				log.warning("Component " + existing.getComponentClassName() + " found more than once! Will only generate the last found.");
 			}
 		} else {
-			log.debug("dynamic-component found. Ignoring it as a component, but will collect any embedded components.");
+			log.fine("dynamic-component found. Ignoring it as a component, but will collect any embedded components.");
 		}	
 		collectComponents( components, new ComponentPOJOClass(comp, new Cfg2JavaTool()).getAllPropertiesIterator());		
 	}

@@ -55,7 +55,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 				schema = caseForSearch( schema );
 				table = caseForSearch( table );
 				
-				log.debug("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
+				log.fine("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
 				
 				String sql =  "SELECT idx.TABLE_CATALOG TABLE_CAT, idx.TABLE_SCHEMA TABLE_SCHEM, idx.TABLE_NAME, idx.COLUMN_NAME, cols.COLUMN_DEFAULT COLUMN_DEFAULT FROM " +
 						"INFORMATION_SCHEMA.INDEXES idx, INFORMATION_SCHEMA.COLUMNS cols " +

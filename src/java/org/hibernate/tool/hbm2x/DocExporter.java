@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
@@ -203,7 +204,7 @@ public class DocExporter extends AbstractExporter {
 			}
 			catch (IOException e) {
 				if(ignoreError) {
-					log.warn( "Skipping entitygraph creation since dot.executable was not found and dot.ignoreerror=false." );
+					log.warning( "Skipping entitygraph creation since dot.executable was not found and dot.ignoreerror=false." );
 					return false;
 				} else {
 					throw new HibernateException("Problem while generating DOT graph for Configuration (set dot.ignoreerror=false to ignore)", e);
@@ -251,7 +252,7 @@ public class DocExporter extends AbstractExporter {
 		Process p = Runtime.getRuntime().exec(exeCmd);
 		//p.getErrorStream().
 		try {
-			log.debug( "Executing: " + exeCmd );
+			log.fine( "Executing: " + exeCmd );
 //			 Get the input stream and read from it
 	        InputStream in = p.getErrorStream();
 	        int c;
@@ -262,10 +263,10 @@ public class DocExporter extends AbstractExporter {
 			int i = p.waitFor( );
 			if(i!=0) {
 				//TODO: dump system.err
-				log.error("Error " + i + " while executing: " + exeCmd);				
+				log.severe("Error " + i + " while executing: " + exeCmd);				
 			}
 		} catch(Exception ie){
-			log.error( "Error while executing: " + exeCmd, ie );
+			log.log(Level.SEVERE, "Error while executing: " + exeCmd, ie );
 		}
 	}		
 

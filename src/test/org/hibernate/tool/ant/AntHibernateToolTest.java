@@ -5,14 +5,13 @@
 package org.hibernate.tool.ant;
 
 import java.io.File;
+import java.util.logging.Logger;
+
+import org.apache.tools.ant.BuildException;
+import org.hibernate.tool.test.TestHelper;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tools.ant.BuildException;
-import org.hibernate.tool.test.TestHelper;
 
 /**
  * @author max
@@ -21,7 +20,7 @@ import org.hibernate.tool.test.TestHelper;
 public class AntHibernateToolTest extends BuildFileTestCase {
 
 
-	private static final Log log = LogFactory.getLog(AntHibernateToolTest.class);
+	private static final Logger log = Logger.getLogger(AntHibernateToolTest.class.getName());
 
 	private String property;
 	
@@ -51,7 +50,7 @@ public class AntHibernateToolTest extends BuildFileTestCase {
 		short attempt = 1;
 		do {
 			try {
-				log.debug("Attempt " + attempt + " for calling 'remmoveDirs'");
+				log.fine("Attempt " + attempt + " for calling 'remmoveDirs'");
 				executeTarget("removeDirs");
 				removed = true;
 			} catch (BuildException be){

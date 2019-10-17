@@ -45,7 +45,7 @@ public class DAONewExporter extends GenericExporter {
         	throw new IllegalStateException("Expected parameter file_pattern is not found");
         filePattern = replaceParameters(filePattern, getProperties());
         setFilePattern(filePattern);
-        log.debug("File pattern set to " + filePattern);
+        log.fine("File pattern set to " + filePattern);
 	}
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ public class DAONewExporter extends GenericExporter {
         {
             File file = new File(getOutputDirectory(), filePattern);
             if (file.exists() && !isOverwrite()) {
-                log.warn("Skipping the generation of file " + file + " because target already exists");
+                log.warning("Skipping the generation of file " + file + " because target already exists");
                 doExport = false;
             }
         }
@@ -86,7 +86,7 @@ public class DAONewExporter extends GenericExporter {
         String filename = resolveFilename(element);
         File file = new File(getOutputDirectory(), filename);
         if (file.exists() && !isOverwrite()) {
-            log.warn("Skipping the generation of file " + file + " because target already exists");
+            log.warning("Skipping the generation of file " + file + " because target already exists");
         }
         else {
             super.exportPOJO(additionalContext, element);

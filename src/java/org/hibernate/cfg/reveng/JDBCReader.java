@@ -15,9 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.JDBCException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.JDBCBinderException;
@@ -35,7 +35,7 @@ import org.hibernate.util.StringHelper;
 
 public class JDBCReader {
 
-	private static final Log log = LogFactory.getLog(JDBCReader.class);
+	private static final Logger log = Logger.getLogger(JDBCReader.class.getName());
 	
 	private final ReverseEngineeringStrategy revengStrategy;
 	
@@ -178,7 +178,7 @@ public class JDBCReader {
 		
 		Iterator exportedKeyIterator = null;
 		
-        log.debug("Calling getExportedKeys on " + referencedTable);
+        log.fine("Calling getExportedKeys on " + referencedTable);
         progress.startSubTask("Finding exported foreignkeys on " + referencedTable.getName());
         try {
         	Map exportedKeyRs = null;
@@ -197,10 +197,10 @@ public class JDBCReader {
 				Table fkTable = dbs.getTable(fkSchema, fkCatalog, fkTableName);
 				if(fkTable==null) {
 					//	filter out stuff we don't have tables for!
-					log.debug("Foreign key " + fkName + " references unknown or filtered table " + Table.qualify(fkCatalog, fkSchema, fkTableName) );
+					log.fine("Foreign key " + fkName + " references unknown or filtered table " + Table.qualify(fkCatalog, fkSchema, fkTableName) );
 					continue;
 				} else {
-					log.debug("Foreign key " + fkName);
+					log.fine("Foreign key " + fkName);
 				}
 				
 				// TODO: if there is a relation to a column which is not a pk
@@ -256,12 +256,12 @@ public class JDBCReader {
         			getMetaDataDialect().close(exportedKeyIterator);
         		}
         	} catch(JDBCException se) {
-        		log.warn("Exception while closing result set for foreign key meta data",se);
+        		log.log(Level.WARNING, "Exception while closing result set for foreign key meta data",se);
         	}
         }
         } catch(JDBCException se) {
         	//throw sec.convert(se, "Exception while reading foreign keys for " + referencedTable, null);
-        	log.warn("Exception while reading foreign keys for " + referencedTable + " [" + se.toString() + "]", se);
+        	log.log(Level.WARNING, "Exception while reading foreign keys for " + referencedTable + " [" + se.toString() + "]", se);
         	// sybase (and possibly others has issues with exportedkeys) see HBX-411
         	// we continue after this to allow user provided keys to be added.
         }
@@ -273,7 +273,7 @@ public class JDBCReader {
         		ForeignKey element = (ForeignKey) iterator.next();
         		
         		if(!equalTable(referencedTable, element.getReferencedTable() ) ) {
-        			log.debug("Referenced table " + element.getReferencedTable().getName() + " is not " +  referencedTable + ". Ignoring userdefined foreign key " + element );
+        			log.fine("Referenced table " + element.getReferencedTable().getName() + " is not " +  referencedTable + ". Ignoring userdefined foreign key " + element );
         			continue; // skip non related foreign keys
         		}
         		
@@ -291,7 +291,7 @@ public class JDBCReader {
         		deptable = dbs.getTable(userfkTable.getSchema(), userfkTable.getCatalog(), userfkTable.getName() );
         		if(deptable==null) {
 					//	filter out stuff we don't have tables for!
-					log.debug("User defined foreign key " + userfkName + " references unknown or filtered table " + TableIdentifier.create(userfkTable) );
+					log.fine("User defined foreign key " + userfkName + " references unknown or filtered table " + TableIdentifier.create(userfkTable) );
 					continue;        			
         		}
         		
@@ -379,7 +379,7 @@ public class JDBCReader {
 				try {
 					getMetaDataDialect().close(primaryKeyIterator);
 				} catch(JDBCException se) {
-					log.warn("Exception when closing resultset for reading primary key information",se);
+					log.log(Level.WARNING, "Exception when closing resultset for reading primary key information",se);
 				}
 			}
 		}
@@ -410,7 +410,7 @@ public class JDBCReader {
 	      columns = t;
 	      
 	      if(key==null) {
-	      	log.warn("The JDBC driver didn't report any primary key columns in " + table.getName() + ". Asking rev.eng. strategy" );
+	    	  log.log(Level.WARNING, "The JDBC driver didn't report any primary key columns in " + table.getName() + ". Asking rev.eng. strategy" );
 	      	List userPrimaryKey = revengStrategy.getPrimaryKeyColumnNames(TableIdentifier.create(table));
 	      	if(userPrimaryKey!=null && !userPrimaryKey.isEmpty()) {
 	      		key = new PrimaryKey();
@@ -422,7 +422,7 @@ public class JDBCReader {
 	      		table.setPrimaryKey(key);
 	      		columns = new ArrayList(userPrimaryKey);
 	      	} else {
-	      		log.warn("Rev.eng. strategy did not report any primary key columns for " + table.getName());
+	      		log.log(Level.WARNING, "Rev.eng. strategy did not report any primary key columns for " + table.getName());
 	      	}	      	
 	      }
 
@@ -440,7 +440,7 @@ public class JDBCReader {
 					try {
 						getMetaDataDialect().close(suggestedPrimaryKeyStrategyName);
 					} catch(JDBCException se) {
-						log.warn("Exception while closing iterator for suggested primary key strategy name",se);
+						log.log(Level.WARNING, "Exception while closing iterator for suggested primary key strategy name",se);
 					}
 				}	    	  
 	      }
@@ -453,7 +453,7 @@ public class JDBCReader {
 	    		  Column col = getColumn(table, name);
 	    		  key.addColumn(col);
 	    	  }
-	    	  log.debug("primary key for " + table + " -> "  + key);
+	    	  log.fine("primary key for " + table + " -> "  + key);
 	      } 
 	     	      
 	}
@@ -487,7 +487,7 @@ public class JDBCReader {
 		        
 		        TableIdentifier ti = new TableIdentifier(catalogName, schemaName, tableName);		        
 				if(revengStrategy.excludeTable(ti) ) {
-					log.debug("Table " + ti + " excluded by strategy");
+					log.fine("Table " + ti + " excluded by strategy");
 		        	continue;
 		        }
 				
@@ -533,7 +533,7 @@ public class JDBCReader {
 			  String tableType = (String) tableRs.get("TABLE_TYPE");
 			  
 			  if(dbs.getTable(schemaName, catalogName, tableName)!=null) {
-				  log.debug("Ignoring " + tableName + " since it has already been processed");
+				  log.fine("Ignoring " + tableName + " since it has already been processed");
 				  continue;
 			  } else {
 				  if ( ("TABLE".equalsIgnoreCase(tableType) || "VIEW".equalsIgnoreCase(tableType) /*|| "SYNONYM".equals(tableType) */) ) { //||
@@ -547,7 +547,7 @@ public class JDBCReader {
 					  if(catalogName!=null && catalogName.trim().length()==0) {
 						  catalogName=null;
 					  }
-					  log.debug("Adding table " + tableName + " of type " + tableType);
+					  log.fine("Adding table " + tableName + " of type " + tableType);
 					  progress.startSubTask("Found " + tableName);
 					  Table table = dbs.addTable(getSchemaForModel(schemaName), getCatalogForModel(catalogName), tableName);
 					  table.setComment(comment);
@@ -557,7 +557,7 @@ public class JDBCReader {
 					  processedTables.add( table );
 				  }
 				  else {
-					  log.debug("Ignoring table " + tableName + " of type " + tableType);
+					  log.fine("Ignoring table " + tableName + " of type " + tableType);
 				  }
 			  }
 		  }
@@ -573,7 +573,7 @@ public class JDBCReader {
 		
 		try {
 			Map columnRs = null;
-			log.debug("Finding columns for " + qualify );
+			log.fine("Finding columns for " + qualify );
 			progress.startSubTask("Finding columns for " + qualify);
 			columnIterator = getMetaDataDialect().getColumns(getCatalogForDBLookup(table.getCatalog()), getSchemaForDBLookup(table.getSchema()), table.getName(), null);
 			//dumpHeader(columnRs);
@@ -592,11 +592,11 @@ public class JDBCReader {
 				
 				TableIdentifier ti = TableIdentifier.create(table);
 				if(revengStrategy.excludeColumn(ti, columnName)) {
-					log.debug("Column " + ti + "." + columnName + " excluded by strategy");
+					log.fine("Column " + ti + "." + columnName + " excluded by strategy");
 					continue;
 				}
 				if(!tableName.equals(table.getName())) {
-					log.debug("Table name " + tableName + " does not match requested " + table.getName() + ". Ignoring column " + columnName + " since it either is invalid or a duplicate" );
+					log.fine("Table name " + tableName + " does not match requested " + table.getName() + ". Ignoring column " + columnName + " since it either is invalid or a duplicate" );
 					continue;
 				}
 				
@@ -660,7 +660,7 @@ public class JDBCReader {
 				try {
 					getMetaDataDialect().close(columnIterator);
 				} catch(JDBCException se) {
-					log.warn("Exception while closing iterator for column meta data",se);
+					log.log(Level.WARNING, "Exception while closing iterator for column meta data",se);
 				}
 			}
 		}
@@ -759,14 +759,14 @@ public class JDBCReader {
 					} 
 					else {
 						if(DatabaseMetaData.tableIndexStatistic != ((Short)indexRs.get("TYPE")).shortValue() ) {
-							log.warn("Index was not statistical, but no column name was found in " + indexName);
+							log.log(Level.WARNING, "Index was not statistical, but no column name was found in " + indexName);
 						}
 							
 					}								
 				}
 			} 
 			catch (JDBCException t) {
-				log.warn("Exception while trying to get indexinfo on " + Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) +  "=" + t.getMessage() );
+				log.log(Level.WARNING, "Exception while trying to get indexinfo on " + Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) +  "=" + t.getMessage() );
 				// Bug #604761 Oracle getIndexInfo() needs major grants And other dbs sucks too ;)
 				// http://sourceforge.net/tracker/index.php?func=detail&aid=604761&group_id=36044&atid=415990				
 			} 
@@ -775,7 +775,7 @@ public class JDBCReader {
 					try {
 						getMetaDataDialect().close(indexIterator);
 					} catch(JDBCException se) {
-						log.warn("Exception while trying to close resultset for index meta data",se);
+						log.log(Level.WARNING, "Exception while trying to close resultset for index meta data",se);
 					}
 				}
 			}

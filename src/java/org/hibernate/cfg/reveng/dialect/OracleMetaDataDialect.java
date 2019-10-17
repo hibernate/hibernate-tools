@@ -259,7 +259,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	public Iterator getTables(final String catalog, final String schema,
 			String table) {
 		try {
-			log.debug("getTables(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getTables(" + catalog + "." + schema + "." + table + ")");
 			
 			ResultSet tableRs = getTableResultSet( schema, table );
 
@@ -277,7 +277,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 					element.put("TABLE_CAT", null);
 					element.put("TABLE_TYPE", tableResultSet.getString(4));
 					element.put("REMARKS", tableResultSet.getString(3));
-					log.info( element );
+					log.fine( element.toString() );
 					return element;
 				}
 
@@ -307,7 +307,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	public Iterator getIndexInfo(final String catalog, final String schema,
 			final String table) {
 		try {
-			log.debug("getIndexInfo(" + catalog + "." + schema + "." + table + ")");
+			log.fine("getIndexInfo(" + catalog + "." + schema + "." + table + ")");
 
 			ResultSet indexRs;
 			indexRs = getIndexInfoResultSet( schema, table );
@@ -352,7 +352,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			final String table, String column) {
 		
 		try {
-			log.debug("getColumns(" + catalog + "." + schema + "." + table + "." + column + ")");
+			log.fine("getColumns(" + catalog + "." + schema + "." + table + "." + column + ")");
 
 			ResultSet columnRs;
 			columnRs = getColumnsResultSet( schema, table, column );
@@ -398,7 +398,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			final String table) {
 		
 		try {
-			log.debug("getPrimaryKeys(" + catalog + "." + schema + "." + table
+			log.fine("getPrimaryKeys(" + catalog + "." + schema + "." + table
 					+ ")");
 
 			ResultSet pkeyRs;
@@ -441,7 +441,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			final String table) {
 		
 		try {
-			log.debug("getExportedKeys(" + catalog + "." + schema + "." + table
+			log.fine("getExportedKeys(" + catalog + "." + schema + "." + table
 					+ ")");
 
 			ResultSet pExportRs = getExportedKeysResultSet( schema, table );
@@ -534,14 +534,14 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private ResultSet getPrimaryKeysResultSet(final String schema, final String table) throws SQLException {
 		if(prepPkNone==null) {
 			// Prepare primary key queries
-			log.debug("Preparing primary key queries...");
+			log.fine("Preparing primary key queries...");
 			Connection con = getConnection();
 			prepPkNone = con .prepareStatement(SQL_PK_NONE);
 			prepPkSchema = con.prepareStatement(SQL_PK_SCHEMA);
 			prepPkTable = con.prepareStatement(SQL_PK_TABLE);
 			prepPkSchemaAndTable = con
 			.prepareStatement(SQL_PK_SCHEMA_AND_TABLE);
-			log.debug("  primary key queries prepared!");
+			log.fine("  primary key queries prepared!");
 		}
 		
 		ResultSet pkeyRs;
@@ -566,13 +566,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private ResultSet getIndexInfoResultSet(final String schema, final String table) throws SQLException {
 		if(prepIndexNone==null) {
 			//	Prepare index queries
-			log.debug("Preparing index queries...");
+			log.fine("Preparing index queries...");
 			Connection con = getConnection();
 			prepIndexNone = con.prepareStatement(SQL_INDEX_NONE);
 			prepIndexSchema = con.prepareStatement(SQL_INDEX_SCHEMA);
 			prepIndexTable = con.prepareStatement(SQL_INDEX_TABLE);
 			prepIndexSchemaAndTable = con.prepareStatement(SQL_INDEX_SCHEMA_AND_TABLE);
-			log.debug("  ...index queries prepared!");			
+			log.fine("  ...index queries prepared!");			
 		}
 		ResultSet indexRs;
 		if (schema == null && table == null) {
@@ -596,13 +596,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 	private ResultSet getExportedKeysResultSet(final String schema, final String table) throws SQLException {
 		if(prepFkNone==null) {
 			//	Prepare foreign key queries
-			log.debug("Preparing foreign key queries...");
+			log.fine("Preparing foreign key queries...");
 			Connection con = getConnection();
 			prepFkNone = con .prepareStatement(SQL_FK_NONE);
 			prepFkSchema = con.prepareStatement(SQL_FK_SCHEMA);
 			prepFkTable = con.prepareStatement(SQL_FK_TABLE);
 			prepFkSchemaAndTable = con.prepareStatement(SQL_FK_SCHEMA_AND_TABLE);
-			log.debug("  foreign key queries prepared!");
+			log.fine("  foreign key queries prepared!");
 		}
 		
 		ResultSet pExportRs;
@@ -627,7 +627,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		
 		if(prepColumnNone==null) {			
 			// Prepare column queries
-			log.debug("Preparing column queries...");
+			log.fine("Preparing column queries...");
 			Connection con = getConnection();
 			prepColumnNone = con.prepareStatement(SQL_COLUMN_NONE);
 			prepColumnSchema = con.prepareStatement(SQL_COLUMN_SCHEMA);
@@ -637,7 +637,7 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 			prepColumnSchemaAndColumn = con.prepareStatement(SQL_COLUMN_SCHEMA_AND_COLUMN);
 			prepColumnTableAndColumn = con.prepareStatement(SQL_COLUMN_TABLE_AND_COLUMN);
 			prepColumnSchemaAndTableAndColumn = con.prepareStatement(SQL_COLUMN_SCHEMA_AND_TABLE_AND_COLUMN);
-			log.debug("  ...column queries prepared!");
+			log.fine("  ...column queries prepared!");
 		}
 		
 		ResultSet columnRs;
@@ -696,13 +696,13 @@ public class OracleMetaDataDialect extends AbstractMetaDataDialect {
 		ResultSet tableRs;
 		if(prepTableNone==null) {
 			// Prepare table queries
-			log.debug("Preparing table queries...");
+			log.fine("Preparing table queries...");
 			Connection connection2 = getConnection();
 			prepTableNone = connection2.prepareStatement(SQL_TABLE_NONE);
 			prepTableSchema = connection2.prepareStatement(SQL_TABLE_SCHEMA);
 			prepTableTable = connection2.prepareStatement(SQL_TABLE_TABLE);
 			prepTableSchemaAndTable = connection2.prepareStatement(SQL_TABLE_SCHEMA_AND_TABLE);
-			log.debug("  ...table queries prepared!");
+			log.fine("  ...table queries prepared!");
 		}
 		if (schema == null && table == null) {
 			tableRs = prepTableNone.executeQuery();

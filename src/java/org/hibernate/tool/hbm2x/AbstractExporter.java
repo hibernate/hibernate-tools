@@ -7,9 +7,9 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
@@ -22,7 +22,7 @@ import org.hibernate.util.StringHelper;
  */
 public abstract class AbstractExporter implements Exporter {
 
-	protected Log log = LogFactory.getLog(this.getClass());
+	protected Logger log = Logger.getLogger(this.getClass().getName());
 	
 	private File outputdir;
 	private Configuration configuration;
@@ -134,8 +134,8 @@ public abstract class AbstractExporter implements Exporter {
     }
  
 	protected void setupTemplates() {
-		if(log.isDebugEnabled()) {
-			log.debug(getClass().getName() + " outputdir:" + getOutputDirectory() + " path: " + toString(templatePaths) );
+		if(log.isLoggable(Level.FINE)) {
+			log.fine(getClass().getName() + " outputdir:" + getOutputDirectory() + " path: " + toString(templatePaths) );
 		}
 		getTemplateHelper().init(getOutputDirectory(), templatePaths);		
 	}

@@ -15,9 +15,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.tool.Version;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -45,7 +44,7 @@ import freemarker.template.TemplateModelException;
  */
 public class TemplateHelper {
     
-	static final Log log = LogFactory.getLog(TemplateHelper.class);
+	static final Logger log = Logger.getLogger(TemplateHelper.class.getName());
 	
     private String templatePrefix;
 	private File outputDirectory;
@@ -76,7 +75,7 @@ public class TemplateHelper {
 					throw new ExporterException("Problems with templatepath " + file, e);
 				}
         	} else {
-        		log.warn("template path" + file + " either does not exist or is not a directory");
+        		log.warning("template path" + file + " either does not exist or is not a directory");
         	}
 		}
         loaders.add(new ClassTemplateLoader(this.getClass(),"/")); // the template names are like pojo/Somewhere so have to be a rooted classpathloader
@@ -146,16 +145,16 @@ public class TemplateHelper {
 	
 	   
     public void putInContext(String key, Object value) {
-    	log.trace("putInContext " + key + "=" + value);
+    	log.finest("putInContext " + key + "=" + value);
         if(value == null) throw new IllegalStateException("value must not be null for " + key);
         Object replaced = internalPutInContext(key,value);
         if(replaced!=null) {
-        	log.warn( "Overwriting " + replaced + " when setting " + key + " to " + value + ".");
+        	log.warning( "Overwriting " + replaced + " when setting " + key + " to " + value + ".");
         }
     }
     
 	public void removeFromContext(String key, Object expected) {
-    	log.trace("removeFromContext " + key + "=" + expected);
+    	log.finest("removeFromContext " + key + "=" + expected);
         Object replaced = internalRemoveFromContext(key);
         if(replaced==null) throw new IllegalStateException(key + " did not exist in template context.");
         /*if(replaced!=expected) { //FREEMARKER-TODO: how can i validate this ? or maybe not needed to validate since mutation is considered bad ?

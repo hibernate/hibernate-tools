@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.JDBCBinderException;
 import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.exception.SQLExceptionConverter;
@@ -26,7 +26,7 @@ import org.hibernate.util.StringHelper;
  */
 abstract public class AbstractMetaDataDialect implements MetaDataDialect {
 
-	protected final Log log = LogFactory.getLog(this.getClass());
+	protected final Logger log = Logger.getLogger(this.getClass().getName());
 	
 	private Connection connection;
 	private DatabaseMetaData metaData;
@@ -84,7 +84,7 @@ abstract public class AbstractMetaDataDialect implements MetaDataDialect {
 	         }
 	      } 
 	      catch (SQLException e2) {
-	         log.warn("Could not get schemas", e2);
+	         log.log(Level.WARNING, "Could not get schemas", e2);
 	         sb.append("  <SQLException while getting schemas>").append(nl);
 	      } 
 	      finally {
@@ -103,7 +103,7 @@ abstract public class AbstractMetaDataDialect implements MetaDataDialect {
 	         }
 	      } 
 	      catch (SQLException e2) {
-	         log.warn("Could not get catalogs", e2);
+	         log.log(Level.WARNING, "Could not get catalogs", e2);
 	         sb.append("  <SQLException while getting catalogs>").append(nl);
 	      } 
 	      finally {

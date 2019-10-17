@@ -7,14 +7,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class TemplateProducer {
 
-	private static final Log log = LogFactory.getLog(TemplateProducer.class);
+	private static final Logger log = Logger.getLogger(TemplateProducer.class.getName());
 	private final TemplateHelper th;
 	private ArtifactCollector ac;
 	
@@ -28,7 +27,7 @@ public class TemplateProducer {
 		String tempResult = produceToString( additionalContext, templateName, rootContext );
 		
 		if(tempResult.trim().length()==0) {
-			log.warn("Generated output is empty. Skipped creation for file " + destination);
+			log.warning("Generated output is empty. Skipped creation for file " + destination);
 			return;
 		}
 		FileWriter fileWriter = null;
@@ -37,7 +36,7 @@ public class TemplateProducer {
 			th.ensureExistence( destination );    
 	     
 			ac.addFile(destination, fileType);
-			log.debug("Writing " + identifier + " to " + destination.getAbsolutePath() );
+			log.fine("Writing " + identifier + " to " + destination.getAbsolutePath() );
 			fileWriter = new FileWriter(destination);
             fileWriter.write(tempResult);			
 		} 
@@ -50,7 +49,7 @@ public class TemplateProducer {
 					fileWriter.close();
 				}
 				catch (IOException e) {
-					log.warn("Exception while flushing/closing " + destination,e);
+					log.log(Level.WARNING, "Exception while flushing/closing " + destination,e);
 				}				
 			}
 		}

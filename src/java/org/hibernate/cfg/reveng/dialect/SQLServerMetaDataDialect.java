@@ -21,7 +21,7 @@ public class SQLServerMetaDataDialect extends JDBCMetaDataDialect {
 				schema = caseForSearch( schema );
 				table = caseForSearch( table );
 				
-				log.debug("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
+				log.fine("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
 				
 				sql = "SELECT a.TABLE_CATALOG, a.TABLE_SCHEMA, a.TABLE_NAME as table_name, c.DATA_TYPE as data_type, b.CONSTRAINT_TYPE,  OBJECTPROPERTY(OBJECT_ID(a.TABLE_NAME),'TableHasIdentity') as hasIdentity " +
 						"FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE a " +

@@ -13,9 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategyUtil;
 import org.hibernate.mapping.Array;
@@ -48,7 +47,7 @@ import org.hibernate.util.StringHelper;
  */
 public class Cfg2JavaTool {
 
-	private static final Log log = LogFactory.getLog( Cfg2JavaTool.class );	
+	private static final Logger log = Logger.getLogger( Cfg2JavaTool.class.getName() );	
 			
 	public Cfg2JavaTool() {
 
@@ -265,7 +264,7 @@ public class Cfg2JavaTool {
 			String msg = "Could not resolve type without exception for " + p + " Value: " + value;
 			if ( value != null && value.isSimpleValue() ) {
 				String typename = ( (SimpleValue) value ).getTypeName();
-				log.warn( msg + ". Falling back to typename: " + typename );
+				log.warning( msg + ". Falling back to typename: " + typename );
 				return typename;
 			}
 			else {

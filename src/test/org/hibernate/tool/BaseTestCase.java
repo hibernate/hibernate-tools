@@ -11,12 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
@@ -27,6 +23,9 @@ import org.hibernate.cfg.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.test.TestHelper;
+
+import junit.framework.ComparisonFailure;
+import junit.framework.TestCase;
 
 public abstract class BaseTestCase extends TestCase {
 
@@ -85,7 +84,7 @@ public abstract class BaseTestCase extends TestCase {
 		
 	}
 
-	protected static final Log SKIP_LOG = LogFactory.getLog("org.hibernate.tool.test.SKIPPED");
+	protected static final Logger SKIP_LOG = Logger.getLogger("org.hibernate.tool.test.SKIPPED");
 	
 	private File outputdir;
 	

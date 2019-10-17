@@ -143,7 +143,7 @@ public class GenericExporter extends AbstractExporter {
 		additionalContext.put("clazz", element.getDecoratedObject());
 		String filename = resolveFilename( element );
 		if(filename.endsWith(".java") && filename.indexOf('$')>=0) {
-			log.warn("Filename for " + getClassNameForFile( element ) + " contains a $. Innerclass generation is not supported.");
+			log.warning("Filename for " + getClassNameForFile( element ) + " contains a $. Innerclass generation is not supported.");
 		}
 		producer.produce(additionalContext, getTemplateName(), new File(getOutputDirectory(),filename), templateName, element.toString());
 	}

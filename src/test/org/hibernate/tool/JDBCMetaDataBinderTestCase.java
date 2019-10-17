@@ -9,9 +9,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.Settings;
@@ -25,7 +25,7 @@ import org.hibernate.mapping.Table;
  */
 public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
 
-	private Log log = LogFactory.getLog( this.getClass() );
+	private Logger log = Logger.getLogger( this.getClass().getName() );
 	
 	public JDBCMetaDataBinderTestCase() {
 		super( null );
@@ -104,7 +104,7 @@ public abstract class JDBCMetaDataBinderTestCase extends BaseTestCase {
             	if(ignoreErrors) {
             		log.info(se.toString() + " for " + ddlsql);
             	} else {
-            		log.error(ddlsql, se);
+            		log.log(Level.SEVERE, ddlsql, se);
             		throw se;
             	}
             }

@@ -8,13 +8,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -22,10 +21,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.eclipse.jdt.internal.compiler.batch.Main;
-import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.util.StringHelper;
 import org.xml.sax.SAXException;
 
@@ -35,7 +30,7 @@ import org.xml.sax.SAXException;
  */
 public final class TestHelper {
 
-	private static final Log log = LogFactory.getLog(TestHelper.class);
+	private static final Logger log = Logger.getLogger(TestHelper.class.getName());
 
 	private TestHelper() {
 		// noop
@@ -161,7 +156,7 @@ public final class TestHelper {
 		}
 
 		// The directory is now empty so delete it
-		log.debug("deleting: " + dir);
+		log.fine("deleting: " + dir);
 		return dir.delete();
 	}
 

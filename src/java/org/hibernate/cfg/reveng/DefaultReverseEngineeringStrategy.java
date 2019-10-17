@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
@@ -20,7 +20,7 @@ import org.hibernate.util.StringHelper;
 
 public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStrategy {
 
-	static final private Log log = LogFactory.getLog(DefaultReverseEngineeringStrategy.class);
+	static final private Logger log = Logger.getLogger(DefaultReverseEngineeringStrategy.class.getName());
 	
 	private static Set AUTO_OPTIMISTICLOCK_COLUMNS;
 
@@ -107,7 +107,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		String preferredHibernateType = JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlType, length, precision, scale, nullable, generatedIdentifier);
 		
 		String location = "<no info>";
-		if(log.isDebugEnabled()) {
+		if(log.isLoggable(Level.FINE)) {
 			String info = " t:" + JDBCToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
 			if(table!=null) {
 				location = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName + info;
@@ -117,10 +117,10 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 			}			
 		}
 		if(preferredHibernateType==null) {
-			log.debug("No default type found for [" + location + "] falling back to [serializable]");
+			log.fine("No default type found for [" + location + "] falling back to [serializable]");
 			return "serializable";
 		} else {
-			log.debug("Default type found for [" + location + "] to [" + preferredHibernateType + "]");		
+			log.fine("Default type found for [" + location + "] to [" + preferredHibernateType + "]");		
 			return preferredHibernateType;
 		}		
 	}

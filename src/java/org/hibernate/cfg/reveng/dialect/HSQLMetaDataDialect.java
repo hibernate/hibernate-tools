@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.cfg.reveng.dialect.ResultSetIterator;
@@ -69,7 +70,7 @@ public class HSQLMetaDataDialect extends JDBCMetaDataDialect {
 
 						} catch(SQLException e) {
 							//log error and set HIBERNATE_STRATEGY to null
-							log.debug("Error while getting suggested primary key strategy for " + fullTableName + ". Falling back to default strategy.",e);
+							log.log(Level.FINE, "Error while getting suggested primary key strategy for " + fullTableName + ". Falling back to default strategy.",e);
 						} finally {
 							if(statement!=null) {
 								try {

@@ -20,6 +20,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -103,7 +104,7 @@ public class Hbm2DDLExporter extends AbstractExporter {
 						setOutputFile.invoke(update, new Object[] {new File(getOutputDirectory(),
 								outputFileName).toString()});
 										
-						log.debug("delimiter ='"+ delimiter + "'");
+						log.fine("delimiter ='"+ delimiter + "'");
 						Method setDelimiter = schemaUpdateClass.getMethod("setDelimiter", 
 								new Class[] {String.class});
 						setDelimiter.invoke(update, new Object[] {delimiter});
@@ -126,10 +127,10 @@ public class Hbm2DDLExporter extends AbstractExporter {
 						for (Iterator iterator = update.getExceptions().iterator(); iterator
 								.hasNext(); i++) {
 							Throwable element = (Throwable) iterator.next();
-							log.warn("Error #" + i + ": ", element);
+							log.log(Level.WARNING, "Error #" + i + ": ", element);
 
 						}
-						log.error(i - 1 + " errors occurred while performing Hbm2DDLExporter.");
+						log.severe(i - 1 + " errors occurred while performing Hbm2DDLExporter.");
 						if (haltOnError) {
 							throw new ExporterException(
 									"Errors while performing Hbm2DDLExporter");
@@ -137,19 +138,19 @@ public class Hbm2DDLExporter extends AbstractExporter {
 					}
 					
 				} catch (NoSuchMethodException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
+					log.log(Level.SEVERE, "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
 							" either update hibernate3.jar or don't used the involved parameters", e );
 				} catch (IllegalArgumentException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
+					log.log(Level.SEVERE, "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
 							" either update hibernate3.jar or don't used the involved parameters", e );
 				} catch (InvocationTargetException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
+					log.log(Level.SEVERE, "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
 							" either update hibernate3.jar or don't used the involved parameters", e );
 				} catch (IllegalAccessException e) {
-					log.error( "Error during DDL export, this version of hibernate doesn't support following " +
+					log.log(Level.SEVERE, "Error during DDL export, this version of hibernate doesn't support following " +
 							"SchemaUpdate parameters: haltonerror = true, format= true, delimiter and outputfilename" + 
 							" either update hibernate3.jar or don't used the involved parameters", e );
 				}
