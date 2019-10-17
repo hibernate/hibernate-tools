@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.hibernate.Version;
 import org.hibernate.tool.NonReflectiveTestCase;
 import org.hibernate.tool.test.TestHelper;
@@ -50,7 +49,6 @@ public class Hbm2HibernateDAOTest extends NonReflectiveTestCase {
 		
 		ArrayList<String> list = new ArrayList<String>();
 		List<File> jars = new ArrayList<File>();
-		jars.add(TestHelper.findJarFileFor(Log.class)); // for commons logging
 		jars.add(TestHelper.findJarFileFor(Version.class)); // for hibernate core
 		TestHelper.compile(getOutputDir(), file, TestHelper.visitAllFiles(getOutputDir(), list), "1.5", TestHelper.buildClasspathFromFileList(jars) );
 		
