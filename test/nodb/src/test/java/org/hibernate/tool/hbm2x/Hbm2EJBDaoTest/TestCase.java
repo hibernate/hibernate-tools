@@ -12,7 +12,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
@@ -77,7 +76,6 @@ public class TestCase {
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(outputDir);
 		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Log.class)); // for commons logging
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(EJB.class)); // for javaee api
 		JavaUtil.compile(outputDir, compiled);
