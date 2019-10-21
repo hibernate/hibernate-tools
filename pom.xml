@@ -38,7 +38,6 @@
         <javaee-api.version>7.0</javaee-api.version>
 	    <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <jaxen.version>1.2.0</jaxen.version>
-        <jboss-logging.version>3.4.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
         <junit-jupiter.version>5.5.1</junit-jupiter.version>
         <mysql.version>6.0.6</mysql.version>
@@ -155,11 +154,6 @@
                 <version>${hsqldb.version}</version>
                 <scope>test</scope>
             </dependency>
- 		    <dependency>
-		        <groupId>org.jboss.logging</groupId>
-		        <artifactId>jboss-logging</artifactId>
-		        <version>${jboss-logging.version}</version>
-		    </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
