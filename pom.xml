@@ -39,7 +39,6 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb-runtime.version>2.3.2</jaxb-runtime.version>
         <jaxen.version>1.2.0</jaxen.version>
-        <jboss-logging.version>3.4.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
         <mysql.version>6.0.6</mysql.version>
         <oracle.version>12.2.0.1</oracle.version>
@@ -157,11 +156,6 @@
                 <version>${hsqldb.version}</version>
                 <scope>test</scope>
             </dependency>
- 		    <dependency>
-		        <groupId>org.jboss.logging</groupId>
-		        <artifactId>jboss-logging</artifactId>
-		        <version>${jboss-logging.version}</version>
-		    </dependency>
 		 </dependencies>
     </dependencyManagement>
 
