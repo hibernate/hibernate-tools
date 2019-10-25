@@ -16,9 +16,7 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
-import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
-import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -57,10 +55,8 @@ public class TestCase {
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);			
 		dialect.configure(
-				ReverseEngineeringRuntimeInfo.createInstance(
-						connectionProvider,
-						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
-						new DefaultDatabaseCollector(dialect)));		
+				connectionProvider,
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter());
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String,Object>> tables = 
@@ -100,10 +96,8 @@ public class TestCase {
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);	
 		dialect.configure(
-				ReverseEngineeringRuntimeInfo.createInstance(
-						connectionProvider,
-						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
-						new DefaultDatabaseCollector(dialect)));		
+				connectionProvider,
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter());
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<?> tables = 
@@ -125,10 +119,8 @@ public class TestCase {
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);
 		dialect.configure( 
-				ReverseEngineeringRuntimeInfo.createInstance(
-						connectionProvider,
-						jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(), 
-						new DefaultDatabaseCollector(dialect)));
+				connectionProvider,
+				jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter());
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<Map<String, Object>> tables = 

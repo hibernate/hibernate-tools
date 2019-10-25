@@ -11,13 +11,14 @@ import java.util.Properties;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
-import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
@@ -55,8 +56,8 @@ public class TestCase {
 			delegate.close( iterator );
 		}
 
-		public void configure(ReverseEngineeringRuntimeInfo info) {
-			delegate.configure(info);			
+		public void configure(ConnectionProvider cp, SQLExceptionConverter sec) {
+			delegate.configure(cp, sec);			
 		}
 		
 		public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
