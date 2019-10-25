@@ -1,5 +1,12 @@
 package org.hibernate.cfg.reveng.dialect;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -7,20 +14,11 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
-import org.hibernate.tool.api.reveng.ReverseEngineeringRuntimeInfo;
 import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
-import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 public class TestCase {
 
@@ -63,10 +61,8 @@ public class TestCase {
         JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
         ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
         dialect.configure(
-                ReverseEngineeringRuntimeInfo.createInstance(
-                        connectionProvider,
-                        jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter(),
-                        new DefaultDatabaseCollector(dialect)));
+        		connectionProvider,
+        		jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter());
         return dialect;
     }
 
