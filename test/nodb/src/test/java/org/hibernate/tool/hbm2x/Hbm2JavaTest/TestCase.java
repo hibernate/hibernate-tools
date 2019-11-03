@@ -74,7 +74,7 @@ public class TestCase {
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		artifactCollector = new DefaultArtifactCollector();
@@ -457,7 +457,7 @@ public class TestCase {
 	@Test
 	public void testGenerics() throws Exception {
 		File genericsSource = new File(temporaryFolder.getRoot(), "genericssource");
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, genericsSource);
 		artifactCollector = new DefaultArtifactCollector();

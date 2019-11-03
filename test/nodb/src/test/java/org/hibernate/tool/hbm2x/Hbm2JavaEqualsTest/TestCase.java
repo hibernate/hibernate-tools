@@ -68,7 +68,7 @@ public class TestCase {
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { hbmXml }, properties);
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();

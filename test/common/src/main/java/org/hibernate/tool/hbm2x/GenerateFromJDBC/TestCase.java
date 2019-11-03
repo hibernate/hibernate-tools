@@ -66,11 +66,11 @@ public class TestCase {
 
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);		
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);		
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();
-		exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");

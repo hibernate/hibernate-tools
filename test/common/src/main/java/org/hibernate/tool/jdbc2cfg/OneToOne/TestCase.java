@@ -143,7 +143,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "LeftTable.hbm.xml") );
 		assertFileAndExists( new File(outputDir, "RightTable.hbm.xml") );		
 		Assert.assertEquals(7, outputDir.listFiles().length);	
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);
@@ -179,7 +179,7 @@ public class TestCase {
 	@Test
 	public void testGenerateAnnotatedClassesAndReadable() throws MappingException, ClassNotFoundException, MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[0]);

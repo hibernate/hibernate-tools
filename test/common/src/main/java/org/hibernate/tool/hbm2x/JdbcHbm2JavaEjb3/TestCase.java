@@ -42,7 +42,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
-		Exporter exporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(
 				ExporterConstants.METADATA_DESCRIPTOR, 
 				MetadataDescriptorFactory.createJdbcDescriptor(null, null));

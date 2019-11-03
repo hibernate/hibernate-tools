@@ -52,7 +52,7 @@ public class TestCase {
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
-		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.DAO);

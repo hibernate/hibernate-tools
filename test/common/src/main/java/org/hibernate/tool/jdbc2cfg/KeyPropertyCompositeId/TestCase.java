@@ -153,7 +153,7 @@ public class TestCase {
 		Exporter exporter = new HbmExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
-		Exporter javaExp = ExporterFactory.createExporter(ExporterType.POJO);
+		Exporter javaExp = ExporterFactory.createExporter(ExporterType.JAVA);
 		javaExp.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExp.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
 		exporter.start();
