@@ -180,7 +180,7 @@ public class TestCase {
 		p.setProperty("proptest", "A value");
 		p.setProperty( "refproperty", "proptest=${proptest}" );
 		p.setProperty("hibernatetool.booleanProperty", "true");
-		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.internal.export.pojo.Cfg2JavaTool");
+		p.setProperty("hibernatetool.myTool.toolclass", "org.hibernate.tool.internal.export.java.Cfg2JavaTool");
 		ge.getProperties().putAll(p);
 		ge.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		ge.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
