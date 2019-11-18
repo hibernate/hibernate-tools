@@ -13,7 +13,6 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
-import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
@@ -56,8 +55,8 @@ public class TestCase {
 			delegate.close( iterator );
 		}
 
-		public void configure(ConnectionProvider cp, SQLExceptionConverter sec) {
-			delegate.configure(cp, sec);			
+		public void configure(ConnectionProvider cp) {
+			delegate.configure(cp);			
 		}
 		
 		public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
