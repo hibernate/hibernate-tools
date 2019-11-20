@@ -21,7 +21,6 @@ import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.JDBCReader;
-import org.hibernate.tool.internal.reveng.JdbcReaderFactory;
 import org.hibernate.tool.internal.reveng.TableSelectorStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -72,7 +71,7 @@ public class TestCase {
 		ServiceRegistry serviceRegistry = builder.build();
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultReverseEngineeringStrategy());
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
-		JDBCReader reader = JdbcReaderFactory.newJDBCReader( properties, tss, mockedMetaDataDialect, serviceRegistry);
+		JDBCReader reader = JDBCReader.create( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		

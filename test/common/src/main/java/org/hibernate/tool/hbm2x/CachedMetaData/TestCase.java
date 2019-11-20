@@ -22,7 +22,6 @@ import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.JDBCReader;
-import org.hibernate.tool.internal.reveng.JdbcReaderFactory;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -141,7 +140,7 @@ public class TestCase {
 				Environment.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
-		JDBCReader reader = JdbcReaderFactory.newJDBCReader( 
+		JDBCReader reader = JDBCReader.create( 
 				properties, 
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
@@ -154,7 +153,7 @@ public class TestCase {
 				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA) );
 		validate( dc );				
 		mock.setFailOnDelegateAccess(true);	
-		reader = JdbcReaderFactory.newJDBCReader( 
+		reader = JDBCReader.create( 
 				properties, 
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
