@@ -18,7 +18,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
-import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
+import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.JDBCReader;
 import org.hibernate.tool.internal.reveng.TableSelectorStrategy;

@@ -29,7 +29,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.metadata.DefaultDatabaseCollector;
+import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.JDBCReader;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
