@@ -49,7 +49,7 @@ public class TestCase {
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
         Metadata metadata =  MetadataDescriptorFactory
-        		.createJdbcDescriptor(c, null)
+        		.createReverseEngineeringDescriptor(c, null)
         		.createMetadata();
 
         PersistentClass project = metadata.getEntityBinding("Project");
@@ -79,7 +79,7 @@ public class TestCase {
 	@Test
 	public void testAutoCreation() {
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null)
+				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
 		
         Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
@@ -104,7 +104,7 @@ public class TestCase {
 	@Test
 	public void testFalsePositive() {
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null)
+				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();	    
         Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
 	}
@@ -112,7 +112,7 @@ public class TestCase {
 	@Test
 	public void testBuildMappings() {		
 		Metadata metadata = MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null)
+				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
 		Assert.assertNotNull(metadata);	
 	}
@@ -121,7 +121,7 @@ public class TestCase {
 	public void testGenerateAndReadable() {
 		
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null);
+				.createReverseEngineeringDescriptor(null, null);
 		File outputDir = temporaryFolder.getRoot();
 		
 		Assert.assertNotNull(metadataDescriptor.createMetadata());

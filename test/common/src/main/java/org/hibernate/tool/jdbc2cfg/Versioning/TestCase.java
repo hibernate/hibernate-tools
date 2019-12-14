@@ -43,7 +43,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(null, null);
+				.createReverseEngineeringDescriptor(null, null);
 		metadata = metadataDescriptor
 				.createMetadata();
 	}

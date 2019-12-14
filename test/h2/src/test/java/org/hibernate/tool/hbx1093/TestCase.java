@@ -42,7 +42,7 @@ public class TestCase {
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(true)); 
 		metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(c, null);
+				.createReverseEngineeringDescriptor(c, null);
 	}
 	
 	@After

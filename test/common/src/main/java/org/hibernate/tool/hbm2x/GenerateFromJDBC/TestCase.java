@@ -56,7 +56,7 @@ public class TestCase {
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(configurableNamingStrategy, null);
+				.createReverseEngineeringDescriptor(configurableNamingStrategy, null);
 	}
 	
 	@After

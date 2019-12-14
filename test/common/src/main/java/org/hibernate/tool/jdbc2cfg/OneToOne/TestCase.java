@@ -56,7 +56,7 @@ public class TestCase {
 	@Before
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
-		metadataDescriptor = MetadataDescriptorFactory.createJdbcDescriptor(null, null);
+		metadataDescriptor = MetadataDescriptorFactory.createReverseEngineeringDescriptor(null, null);
 		metadata = metadataDescriptor.createMetadata();
 	}
 	

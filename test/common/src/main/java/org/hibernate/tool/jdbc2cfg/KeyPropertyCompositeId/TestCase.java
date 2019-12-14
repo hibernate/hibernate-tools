@@ -56,7 +56,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.put(MetadataDescriptor.PREFER_BASIC_COMPOSITE_IDS, false);
 		metadataDescriptor = MetadataDescriptorFactory
-				.createJdbcDescriptor(reverseEngineeringStrategy, properties);
+				.createReverseEngineeringDescriptor(reverseEngineeringStrategy, properties);
 	}
 
 	@After
