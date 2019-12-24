@@ -31,7 +31,7 @@ import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.tool.internal.reveng.JDBCReader;
+import org.hibernate.tool.internal.reveng.DatabaseReader;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -110,7 +110,7 @@ public class TestCase {
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				properties);
-		JDBCReader reader = JDBCReader.create( 
+		DatabaseReader reader = DatabaseReader.create( 
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
