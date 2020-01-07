@@ -21,7 +21,7 @@ import org.hibernate.tool.api.reveng.DatabaseCollector;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
-import org.hibernate.tool.internal.reveng.DatabaseReader;
+import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
