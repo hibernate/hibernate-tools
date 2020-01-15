@@ -72,8 +72,8 @@ public class TestCase {
 		} 
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.child"), childid);
-		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.master"), masterid);
+		Assert.assertEquals(TableIdentifier.create(null, "cat.cat", "cat.child"), childid);
+		Assert.assertEquals(TableIdentifier.create(null, "cat.cat", "cat.master"), masterid);
 	}
 	
 	@Test

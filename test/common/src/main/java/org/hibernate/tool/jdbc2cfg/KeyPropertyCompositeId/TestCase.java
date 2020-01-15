@@ -75,7 +75,7 @@ public class TestCase {
 		Assert.assertNotNull(foreignKey);
 		Assert.assertEquals(
 				reverseEngineeringStrategy.tableToClassName(
-						new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))),
+						TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))),
 				foreignKey.getReferencedEntityName());
 		Assert.assertEquals(JdbcUtil.toIdentifier(this, "LINE_ITEM"), foreignKey.getTable().getName());
 		Assert.assertEquals(2, foreignKey.getColumnSpan());
@@ -88,7 +88,7 @@ public class TestCase {
 		Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");
 		PersistentClass lineMapping = metadata.getEntityBinding(
 				reverseEngineeringStrategy
-					.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "LINE_ITEM"))));
+					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "LINE_ITEM"))));
 		Assert.assertEquals(4, lineMapping.getIdentifier().getColumnSpan());
 		Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
 		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "CUSTOMER_ID_REF");
@@ -99,7 +99,7 @@ public class TestCase {
 	public void testPossibleKeyManyToOne() {
 		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
 				reverseEngineeringStrategy
-					.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));
+					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));
 		Property identifierProperty = product.getIdentifierProperty();
 		Assert.assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();
@@ -125,7 +125,7 @@ public class TestCase {
 	public void testKeyProperty() {
 		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
 				reverseEngineeringStrategy
-					.tableToClassName(new TableIdentifier(null, null, JdbcUtil.toIdentifier(this, "PRODUCT"))));
+					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "PRODUCT"))));
 		Property identifierProperty = product.getIdentifierProperty();
 		Assert.assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();

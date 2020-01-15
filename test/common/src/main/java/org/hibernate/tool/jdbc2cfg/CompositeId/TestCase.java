@@ -78,7 +78,7 @@ public class TestCase {
         Assert.assertNotNull(foreignKey);                
         Assert.assertEquals(
         		reverseEngineeringStrategy.tableToClassName(
-        				new TableIdentifier(
+        				TableIdentifier.create(
         						null, 
         						null, 
         						JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))),
@@ -96,7 +96,7 @@ public class TestCase {
         Assert.assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");     
         PersistentClass lineMapping = metadata.getEntityBinding(
         		reverseEngineeringStrategy.tableToClassName(
-        				new TableIdentifier(
+        				TableIdentifier.create(
         						null, 
         						null, 
         						JdbcUtil.toIdentifier(this, "LINE_ITEM"))));       
@@ -110,7 +110,7 @@ public class TestCase {
     public void testPossibleKeyManyToOne() {
          PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding( 
          		reverseEngineeringStrategy.tableToClassName(
-        				new TableIdentifier(
+        				TableIdentifier.create(
         						null, 
         						null, 
         						JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));         
@@ -139,7 +139,7 @@ public class TestCase {
     public void testKeyProperty() {
         PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding( 
          		reverseEngineeringStrategy.tableToClassName(
-        				new TableIdentifier(
+        				TableIdentifier.create(
         						null, 
         						null, 
         						JdbcUtil.toIdentifier(this, "PRODUCT"))));                 

@@ -65,8 +65,8 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATMASTER"), masterid);
-		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATCHILD"), childid);	
+		Assert.assertEquals(TableIdentifier.create(null, "OVRTEST", "CATMASTER"), masterid);
+		Assert.assertEquals(TableIdentifier.create(null, "OVRTEST", "CATCHILD"), childid);	
 	}
 
 	@Ignore
@@ -110,8 +110,8 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATMASTER"), masterid);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
+		Assert.assertEquals("jdbcreader has not nulled out according to default schema", TableIdentifier.create(null, null, "CATMASTER"), masterid);
+		Assert.assertEquals("jdbcreader has not nulled out according to default schema", TableIdentifier.create(null, null, "CATCHILD"), childid);
 	}
 
 	private List<Table> getTables(Metadata metadata) {

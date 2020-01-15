@@ -58,40 +58,40 @@ public class TestCase {
 	
 	@Test
 	public void testTableKeepCase() {
-		Assert.assertEquals("SickPatients", rns.tableToClassName(new TableIdentifier("SickPatients") ) );
+		Assert.assertEquals("SickPatients", rns.tableToClassName(TableIdentifier.create(null, null, "SickPatients") ) );
 	}
 	
 	@Test
 	public void testTableUpperToLower() {
-		Assert.assertEquals("Patients", rns.tableToClassName(new TableIdentifier("PATIENTS") ) );
-		Assert.assertEquals("Patients", rns.tableToClassName(new TableIdentifier("patients") ) );
+		Assert.assertEquals("Patients", rns.tableToClassName(TableIdentifier.create(null, null, "PATIENTS") ) );
+		Assert.assertEquals("Patients", rns.tableToClassName(TableIdentifier.create(null, null, "patients") ) );
 	}
 	
 	@Test
 	public void testTableRemoveChars() {
-		Assert.assertEquals("Patients", rns.tableToClassName(new TableIdentifier("_Patients") ) );
-		Assert.assertEquals("Patients", rns.tableToClassName(new TableIdentifier("_patients") ) );
-		Assert.assertEquals("Patients", rns.tableToClassName(new TableIdentifier("_patients") ) );
-		Assert.assertEquals("PatientInterventions", rns.tableToClassName(new TableIdentifier("_PATIENT_INTERVENTIONS") ) );
+		Assert.assertEquals("Patients", rns.tableToClassName(TableIdentifier.create(null, null, "_Patients") ) );
+		Assert.assertEquals("Patients", rns.tableToClassName(TableIdentifier.create(null, null, "_patients") ) );
+		Assert.assertEquals("Patients", rns.tableToClassName(TableIdentifier.create(null, null, "_patients") ) );
+		Assert.assertEquals("PatientInterventions", rns.tableToClassName(TableIdentifier.create(null, null, "_PATIENT_INTERVENTIONS") ) );
 	}
 	
 	@Test
 	public void testTableToCamelCase() {
-		Assert.assertEquals("SickPatients", rns.tableToClassName(new TableIdentifier("Sick_Patients") ) );
-		Assert.assertEquals("SickPatients", rns.tableToClassName(new TableIdentifier("_Sick-Patients") ) );
+		Assert.assertEquals("SickPatients", rns.tableToClassName(TableIdentifier.create(null, null, "Sick_Patients") ) );
+		Assert.assertEquals("SickPatients", rns.tableToClassName(TableIdentifier.create(null, null, "_Sick-Patients") ) );
 	}
 	
 	@Test
 	public void testTableKeepCamelCase() {
-		Assert.assertEquals("SickPatients", rns.tableToClassName(new TableIdentifier("SickPatients") ) );
+		Assert.assertEquals("SickPatients", rns.tableToClassName(TableIdentifier.create(null, null, "SickPatients") ) );
 	}
     
 	@Test
     public void testBasicForeignKeyNames() {
-        Assert.assertEquals("products", rns.foreignKeyToCollectionName("something", new TableIdentifier("product"), null, new TableIdentifier("order"), null, true ) );
-        Assert.assertEquals("willies", rns.foreignKeyToCollectionName("something", new TableIdentifier("willy"), null, new TableIdentifier("order"), null, true ) );
-		Assert.assertEquals("boxes", rns.foreignKeyToCollectionName("something", new TableIdentifier("box"), null, new TableIdentifier("order"), null, true ) );
-        Assert.assertEquals("order", rns.foreignKeyToEntityName("something", new TableIdentifier("product"), null, new TableIdentifier("order"), null, true ) );
+        Assert.assertEquals("products", rns.foreignKeyToCollectionName("something", TableIdentifier.create(null, null, "product"), null, TableIdentifier.create(null, null, "order"), null, true ) );
+        Assert.assertEquals("willies", rns.foreignKeyToCollectionName("something", TableIdentifier.create(null, null, "willy"), null, TableIdentifier.create(null, null, "order"), null, true ) );
+		Assert.assertEquals("boxes", rns.foreignKeyToCollectionName("something", TableIdentifier.create(null, null, "box"), null, TableIdentifier.create(null, null, "order"), null, true ) );
+        Assert.assertEquals("order", rns.foreignKeyToEntityName("something", TableIdentifier.create(null, null, "product"), null, TableIdentifier.create(null, null, "order"), null, true ) );
     }
 	
 	@Test
@@ -105,10 +105,10 @@ public class TestCase {
 
     	custom.setSettings( new ReverseEngineeringSettings(custom) );
     	
-    	TableIdentifier productTable = new TableIdentifier("product");
+    	TableIdentifier productTable = TableIdentifier.create(null, null, "product");
 		Assert.assertEquals("ProductImpl", custom.tableToClassName( productTable ));
     	
-        Assert.assertEquals("productImpls", custom.foreignKeyToCollectionName("something", productTable, null, new TableIdentifier("order"), null, true ) );
+        Assert.assertEquals("productImpls", custom.foreignKeyToCollectionName("something", productTable, null, TableIdentifier.create(null, null, "order"), null, true ) );
         /*assertEquals("willies", custom.foreignKeyToCollectionName("something", new TableIdentifier("willy"), null, new TableIdentifier("order"), null, true ) );
 		assertEquals("boxes", custom.foreignKeyToCollectionName("something", new TableIdentifier("box"), null, new TableIdentifier("order"), null, true ) );
         assertEquals("order", custom.foreignKeyToEntityName("something", productTable, null, new TableIdentifier("order"), null, true ) );*/
@@ -118,10 +118,10 @@ public class TestCase {
     public void testForeignKeyNamesToPropertyNames() {
     	
     	String fkName = "something";
-		TableIdentifier fromTable = new TableIdentifier("company");
+		TableIdentifier fromTable = TableIdentifier.create(null, null, "company");
 		List<Column> fromColumns = new ArrayList<Column>();
 		
-		TableIdentifier toTable = new TableIdentifier("address");
+		TableIdentifier toTable = TableIdentifier.create(null, null, "address");
 		List<Column> toColumns = new ArrayList<Column>();
 		
 		Assert.assertEquals("address", rns.foreignKeyToEntityName(fkName, fromTable, fromColumns, toTable, toColumns, true) );
@@ -144,14 +144,14 @@ public class TestCase {
     	Assert.assertEquals("because nullable it should not be int", "java.lang.Integer",rns.columnToHibernateTypeName(null, "bogus",Types.INTEGER,0,0,0, true, false));
     	Assert.assertEquals("java.lang.Integer",rns.columnToHibernateTypeName(null, "bogus",Types.NUMERIC,0,9,0, true, false));
        	Assert.assertEquals("java.lang.Integer",rns.columnToHibernateTypeName(null, "bogus",Types.INTEGER,0,0,0, true, false));			
-       	Assert.assertEquals("serializable",rns.columnToHibernateTypeName(new TableIdentifier("sdf"), "bogus",-567,0,0,0, false, false));
+       	Assert.assertEquals("serializable",rns.columnToHibernateTypeName(TableIdentifier.create(null, null, "sdf"), "bogus",-567,0,0,0, false, false));
        	
-       	Assert.assertEquals("string",rns.columnToHibernateTypeName(new TableIdentifier("sdf"), "bogus",12,0,0,0, false, false));
+       	Assert.assertEquals("string",rns.columnToHibernateTypeName(TableIdentifier.create(null, null, "sdf"), "bogus",12,0,0,0, false, false));
     }
     
 	@Test
     public void testReservedKeywordsHandling() {
-    	Assert.assertEquals("class_", rns.columnToPropertyName(new TableIdentifier("blah"), "class"));    	
+    	Assert.assertEquals("class_", rns.columnToPropertyName(TableIdentifier.create(null, null, "blah"), "class"));    	
     }
      
 }

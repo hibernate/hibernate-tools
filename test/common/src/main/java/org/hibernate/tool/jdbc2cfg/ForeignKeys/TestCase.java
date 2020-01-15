@@ -59,7 +59,7 @@ public class TestCase {
 		Assert.assertNotNull(foreignKey);			
 		Assert.assertEquals(
 				reverseEngineeringStrategy.tableToClassName(
-						new TableIdentifier(null, null, "MASTER")),
+						TableIdentifier.create(null, null, "MASTER")),
 				foreignKey.getReferencedEntityName() );
         Assert.assertEquals(
         		JdbcUtil.toIdentifier(this, "CONNECTION"), 

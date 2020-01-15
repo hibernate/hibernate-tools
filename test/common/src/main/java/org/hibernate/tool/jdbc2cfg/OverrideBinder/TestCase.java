@@ -162,9 +162,9 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
 
-		Assert.assertNull(repository.columnToHibernateTypeName(new TableIdentifier("blah"), "bogus",0,0,0,0, false, false));
-		Assert.assertNull(repository.columnToHibernateTypeName(new TableIdentifier("ORDERS"), "CUSTID",0,0,0,0, false, false));
-		Assert.assertEquals("string", repository.columnToHibernateTypeName(new TableIdentifier(null, null, "ORDERS"), "NAME",0,0,0,0, false, false));
+		Assert.assertNull(repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "blah"), "bogus",0,0,0,0, false, false));
+		Assert.assertNull(repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "ORDERS"), "CUSTID",0,0,0,0, false, false));
+		Assert.assertEquals("string", repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "ORDERS"), "NAME",0,0,0,0, false, false));
 		
 		PersistentClass classMapping = metadata.getEntityBinding("Orders");
 		
@@ -189,9 +189,9 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
 
-		Assert.assertNull(repository.columnToPropertyName(new TableIdentifier("blah"), "bogus"));
-		Assert.assertNull(repository.columnToPropertyName(new TableIdentifier("ORDERS"), "cust_id"));
-		Assert.assertEquals("orderName", repository.columnToPropertyName(new TableIdentifier(null, null, "ORDERS"), "NAME"));
+		Assert.assertNull(repository.columnToPropertyName(TableIdentifier.create(null, null, "blah"), "bogus"));
+		Assert.assertNull(repository.columnToPropertyName(TableIdentifier.create(null, null, "ORDERS"), "cust_id"));
+		Assert.assertEquals("orderName", repository.columnToPropertyName(TableIdentifier.create(null, null, "ORDERS"), "NAME"));
 	}
 	
 	@Test
@@ -211,22 +211,22 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
 
-		TableIdentifier miscTable = new TableIdentifier(null,null, "MISC_TYPES");
+		TableIdentifier miscTable = TableIdentifier.create(null,null, "MISC_TYPES");
 		Assert.assertEquals("sequence",repository.getTableIdentifierStrategyName(miscTable));
 		Map<?,?> props = repository.getTableIdentifierProperties(miscTable);
 		Assert.assertEquals("seq_table", props.get("table"));
 		
-		Assert.assertNull(repository.getTableIdentifierStrategyName(new TableIdentifier("blah")));
-		Assert.assertNull(repository.getTableIdentifierProperties(new TableIdentifier("blah")));
-		TableIdentifier ordersTable = new TableIdentifier(null,null, "ORDERS");
+		Assert.assertNull(repository.getTableIdentifierStrategyName(TableIdentifier.create(null, null, "blah")));
+		Assert.assertNull(repository.getTableIdentifierProperties(TableIdentifier.create(null, null, "blah")));
+		TableIdentifier ordersTable = TableIdentifier.create(null,null, "ORDERS");
 		
 		Assert.assertEquals("customOrderId", repository.tableToIdentifierPropertyName(ordersTable));
-		Assert.assertEquals(null, repository.tableToIdentifierPropertyName(new TableIdentifier("blah")));
+		Assert.assertEquals(null, repository.tableToIdentifierPropertyName(TableIdentifier.create(null, null, "blah")));
 		
 		Assert.assertEquals("CustomOID", repository.tableToCompositeIdName(ordersTable));
-		Assert.assertEquals(null, repository.tableToCompositeIdName(new TableIdentifier("blah")));
+		Assert.assertEquals(null, repository.tableToCompositeIdName(TableIdentifier.create(null, null, "blah")));
 		
-		List<String> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(new TableIdentifier("blah"));
+		List<String> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(TableIdentifier.create(null, null, "blah"));
 		Assert.assertNull(primaryKeyColumnNames);
 		
 		primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(ordersTable);
@@ -262,11 +262,11 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
 		
-		Assert.assertTrue(repository.excludeTable(new TableIdentifier(null,null, "DoNotWantIt") ) );
-		Assert.assertFalse(repository.excludeTable(new TableIdentifier(null,null, "NotListedThere") ) );
-		Assert.assertFalse(repository.excludeTable(new TableIdentifier("cat","sch", "WantedTable") ) );
-		Assert.assertFalse(repository.excludeTable(new TableIdentifier("BAD","SCHEMA", "WantedTable") ) ); 
-		Assert.assertTrue(repository.excludeTable(new TableIdentifier("BAD","SCHEMA", "SomethingElse") ) );
+		Assert.assertTrue(repository.excludeTable(TableIdentifier.create(null,null, "DoNotWantIt") ) );
+		Assert.assertFalse(repository.excludeTable(TableIdentifier.create(null,null, "NotListedThere") ) );
+		Assert.assertFalse(repository.excludeTable(TableIdentifier.create("cat","sch", "WantedTable") ) );
+		Assert.assertFalse(repository.excludeTable(TableIdentifier.create("BAD","SCHEMA", "WantedTable") ) ); 
+		Assert.assertTrue(repository.excludeTable(TableIdentifier.create("BAD","SCHEMA", "SomethingElse") ) );
 		
 	}
 	
@@ -277,11 +277,11 @@ public class TestCase {
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		
-		Assert.assertEquals("org.werd.Q", repository.tableToClassName(new TableIdentifier("q","Werd", "Q") ) );
-		Assert.assertEquals("Notknown", repository.tableToClassName(new TableIdentifier(null,null, "notknown") ) );
+		Assert.assertEquals("org.werd.Q", repository.tableToClassName(TableIdentifier.create("q","Werd", "Q") ) );
+		Assert.assertEquals("Notknown", repository.tableToClassName(TableIdentifier.create(null,null, "notknown") ) );
 		
-		Assert.assertEquals("org.werd.MyWorld", repository.tableToClassName(new TableIdentifier(null,"Werd", "TBL_PKG") ) );
-		Assert.assertEquals("other.MyWorld", repository.tableToClassName(new TableIdentifier(null,"Werd", "TBL_OTHER") ) );
+		Assert.assertEquals("org.werd.MyWorld", repository.tableToClassName(TableIdentifier.create(null,"Werd", "TBL_PKG") ) );
+		Assert.assertEquals("other.MyWorld", repository.tableToClassName(TableIdentifier.create(null,"Werd", "TBL_OTHER") ) );
 		
 	}
 	
@@ -361,18 +361,18 @@ public class TestCase {
 		TableFilter tf = new TableFilter();
 		tf.setMatchName("max");
 		tf.setExclude(Boolean.TRUE);
-		Assert.assertTrue(tf.exclude(new TableIdentifier("max") ).booleanValue() );
-		Assert.assertNull(tf.exclude(new TableIdentifier("maxnotexact") ) );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		Assert.assertNull(tf.exclude(TableIdentifier.create(null, null, "maxnotexact") ) );
 		tf.setMatchName(".*max");
-		Assert.assertTrue(tf.exclude(new TableIdentifier("max") ).booleanValue() );
-		Assert.assertNull(tf.exclude(new TableIdentifier("maxnotending") ) );
-		Assert.assertTrue(tf.exclude(new TableIdentifier("endingWithmax") ).booleanValue() );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		Assert.assertNull(tf.exclude(TableIdentifier.create(null, null, "maxnotending") ) );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "endingWithmax") ).booleanValue() );
 		tf.setMatchName("max.*");
-		Assert.assertTrue(tf.exclude(new TableIdentifier("max") ).booleanValue() );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
 		tf.setMatchName(".*max.*");
-		Assert.assertTrue(tf.exclude(new TableIdentifier("max") ).booleanValue() );
-		Assert.assertNull(tf.exclude(new TableIdentifier("notxam") ) );
-		Assert.assertTrue(tf.exclude(new TableIdentifier("heremaxsub") ).booleanValue() );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		Assert.assertNull(tf.exclude(TableIdentifier.create(null, null, "notxam") ) );
+		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "heremaxsub") ).booleanValue() );
 	}
 	
 	@Test
@@ -383,9 +383,9 @@ public class TestCase {
 		
 		ReverseEngineeringStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy();
 		
-		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "blah"));
-		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "NAME"));
-		Assert.assertTrue(reverseEngineeringStrategy.excludeColumn(new TableIdentifier("EXCOLUMNS"), "EXCOLUMN"));
+		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "blah"));
+		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "NAME"));
+		Assert.assertTrue(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "EXCOLUMN"));
 		
 		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "EXCOLUMNS"));
 		Assert.assertNotNull(table);
@@ -451,10 +451,10 @@ public class TestCase {
 		
 		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		
-		TableIdentifier tableIdentifier = new TableIdentifier(null, null, "TblTest");
+		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Assert.assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
 		
-		tableIdentifier = new TableIdentifier(
+		tableIdentifier = TableIdentifier.create(
 				Environment
 					.getProperties()
 					.getProperty(AvailableSettings.DEFAULT_CATALOG), 
@@ -462,7 +462,7 @@ public class TestCase {
 				"Testy");
 		Assert.assertEquals("org.werd.Testy", res.tableToClassName(tableIdentifier));
 		
-		tableIdentifier = new TableIdentifier(null, null, "Nothing");
+		tableIdentifier = TableIdentifier.create(null, null, "Nothing");
 		Assert.assertEquals("Nothing", res.tableToClassName(tableIdentifier));
 		
 	}
@@ -472,7 +472,7 @@ public class TestCase {
 		
 		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
 		
-		TableIdentifier tableIdentifier = new TableIdentifier(null, null, "TblTest");
+		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Map<String,MetaAttribute> attributes = res.tableToMetaAttributes(tableIdentifier);
 		Assert.assertNotNull(attributes);
 		Assert.assertEquals(attributes.size(),1);
@@ -480,7 +480,7 @@ public class TestCase {
 		Assert.assertEquals(ma.getName(), "use-in-test");
 		Assert.assertEquals(ma.getValue(), "true");
 				
-		tableIdentifier = new TableIdentifier(
+		tableIdentifier = TableIdentifier.create(
 				Environment
 					.getProperties()
 					.getProperty(AvailableSettings.DEFAULT_CATALOG), 
@@ -492,7 +492,7 @@ public class TestCase {
 		Assert.assertEquals(ma.getName(), "werd-meta");
 		Assert.assertEquals(ma.getValues().size(), 2);				
 	
-		tableIdentifier = new TableIdentifier(null, "Werd", "MetaTable");
+		tableIdentifier = TableIdentifier.create(null, "Werd", "MetaTable");
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		Assert.assertNotNull(attributes);
 		Assert.assertEquals(2, attributes.size());
@@ -505,12 +505,12 @@ public class TestCase {
 		Assert.assertEquals(1, ma.getValues().size()); // as long as no inherit this should be one
 		Assert.assertEquals("value three", ma.getValue());
 	
-		tableIdentifier = new TableIdentifier(null, null, "Nothing");
+		tableIdentifier = TableIdentifier.create(null, null, "Nothing");
 		Assert.assertEquals(null, res.tableToMetaAttributes(tableIdentifier));
 		
-		Assert.assertNull(res.columnToMetaAttributes(new TableIdentifier("Nothing"), "bogus"));
-		Assert.assertNull(res.columnToMetaAttributes( new TableIdentifier(null, "Werd", "MetaTable"), "bogusColumn" ));
-		attributes = res.columnToMetaAttributes( new TableIdentifier(null, "Werd", "MetaTable"), "MetaColumn" );
+		Assert.assertNull(res.columnToMetaAttributes(TableIdentifier.create(null, null, "Nothing"), "bogus"));
+		Assert.assertNull(res.columnToMetaAttributes( TableIdentifier.create(null, "Werd", "MetaTable"), "bogusColumn" ));
+		attributes = res.columnToMetaAttributes( TableIdentifier.create(null, "Werd", "MetaTable"), "MetaColumn" );
 		Assert.assertEquals(1, attributes.size());
 		ma = attributes.get("specific-column");
 		Assert.assertEquals("specific-column",ma.getName());
