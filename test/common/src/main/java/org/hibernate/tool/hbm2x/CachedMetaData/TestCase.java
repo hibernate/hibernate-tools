@@ -145,7 +145,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
 				serviceRegistry );
-		DatabaseCollector dc = new DefaultDatabaseCollector(
+		DefaultDatabaseCollector dc = new DefaultDatabaseCollector(
 				reader.getMetaDataDialect());
 		reader.readDatabaseSchema( 
 				dc, 
@@ -166,7 +166,7 @@ public class TestCase {
 		validate(dc);
 	}
 
-	private void validate(DatabaseCollector dc) {
+	private void validate(DefaultDatabaseCollector dc) {
 		Iterator<Table> iterator = dc.iterateTables();
 		Table table = iterator.next();
 		Table master = null, child = null;
