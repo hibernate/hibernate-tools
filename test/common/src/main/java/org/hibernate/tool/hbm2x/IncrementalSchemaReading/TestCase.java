@@ -17,8 +17,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
-import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.TableSelectorStrategy;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -74,7 +74,7 @@ public class TestCase {
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
-		DefaultDatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
+		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 		
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);

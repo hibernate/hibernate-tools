@@ -18,9 +18,8 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
-import org.hibernate.tool.internal.reveng.DatabaseCollector;
-import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -145,7 +144,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
 				serviceRegistry );
-		DefaultDatabaseCollector dc = new DefaultDatabaseCollector(
+		RevengMetadataCollector dc = new RevengMetadataCollector(
 				reader.getMetaDataDialect());
 		reader.readDatabaseSchema( 
 				dc, 
@@ -158,7 +157,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
 				serviceRegistry );
-		dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
+		dc = new RevengMetadataCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( 
 				dc, 
 				properties.getProperty(AvailableSettings.DEFAULT_CATALOG), 
@@ -166,7 +165,7 @@ public class TestCase {
 		validate(dc);
 	}
 
-	private void validate(DefaultDatabaseCollector dc) {
+	private void validate(RevengMetadataCollector dc) {
 		Iterator<Table> iterator = dc.iterateTables();
 		Table table = iterator.next();
 		Table master = null, child = null;

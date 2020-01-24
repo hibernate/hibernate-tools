@@ -29,9 +29,9 @@ import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.DatabaseCollector;
-import org.hibernate.tool.internal.reveng.DefaultDatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
+import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -113,7 +113,7 @@ public class TestCase {
 		DatabaseReader reader = DatabaseReader.create( 
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
-		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
+		DatabaseCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, "cat.cat" );
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
