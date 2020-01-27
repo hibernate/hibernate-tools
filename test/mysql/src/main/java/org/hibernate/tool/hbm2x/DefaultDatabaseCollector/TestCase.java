@@ -28,7 +28,6 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.reveng.DatabaseCollector;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
@@ -113,7 +112,7 @@ public class TestCase {
 		DatabaseReader reader = DatabaseReader.create( 
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
-		DatabaseCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
+		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, "cat.cat" );
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
