@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
@@ -146,10 +145,7 @@ public class TestCase {
 				serviceRegistry );
 		RevengMetadataCollector dc = new RevengMetadataCollector(
 				reader.getMetaDataDialect());
-		reader.readDatabaseSchema( 
-				dc, 
-				properties.getProperty(AvailableSettings.DEFAULT_CATALOG), 
-				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA) );
+		reader.readDatabaseSchema(dc);
 		validate( dc );				
 		mock.setFailOnDelegateAccess(true);	
 		reader = DatabaseReader.create( 
@@ -158,10 +154,7 @@ public class TestCase {
 				dialect, 
 				serviceRegistry );
 		dc = new RevengMetadataCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( 
-				dc, 
-				properties.getProperty(AvailableSettings.DEFAULT_CATALOG), 
-				properties.getProperty(AvailableSettings.DEFAULT_SCHEMA) );
+		reader.readDatabaseSchema(dc);
 		validate(dc);
 	}
 

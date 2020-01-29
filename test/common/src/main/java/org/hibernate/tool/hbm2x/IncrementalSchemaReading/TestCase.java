@@ -75,7 +75,7 @@ public class TestCase {
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
 		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( dc, null, null );
+		reader.readDatabaseSchema(dc);
 		
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
@@ -91,7 +91,7 @@ public class TestCase {
 		tss.addSchemaSelection( new SchemaSelection(null, null, "MASTER") );
 		
 		mockedMetaDataDialect.gottenTables.clear();
-		reader.readDatabaseSchema( dc, null, null );
+		reader.readDatabaseSchema(dc);
 		
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.get(0),"MASTER");
@@ -112,7 +112,7 @@ public class TestCase {
 		
 		
 		tss.clearSchemaSelections();		
-		reader.readDatabaseSchema( dc, null, null );
+		reader.readDatabaseSchema(dc);
 		
 		Table finalMaster = dc.getTable( defaultSchema, defaultCatalog, "MASTER" );
 		

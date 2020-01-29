@@ -104,6 +104,7 @@ public class TestCase {
 	@Test
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		Properties properties = Environment.getProperties();
+		properties.put(AvailableSettings.DEFAULT_SCHEMA, "cat.cat");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();	
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
@@ -113,7 +114,7 @@ public class TestCase {
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
 		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
-		reader.readDatabaseSchema( dc, null, "cat.cat" );
+		reader.readDatabaseSchema(dc);
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
 		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.master"));
