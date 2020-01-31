@@ -15,7 +15,9 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.reveng.SchemaSelection;
+import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
@@ -102,7 +104,7 @@ public class TestCase {
 		Assert.assertNotNull(iterator.next());
 		Assert.assertFalse(iterator.hasNext());
 		
-		Table table = dc.getTable( defaultSchema, defaultCatalog, "CHILD" );
+		Table table = getTable(dc, mockedMetaDataDialect, defaultCatalog, defaultSchema, "CHILD" );
 		Assert.assertSame( firstChild, table );
 		
 		JUnitUtil.assertIteratorContainsExactly(
@@ -114,9 +116,9 @@ public class TestCase {
 		tss.clearSchemaSelections();		
 		reader.readDatabaseSchema(dc);
 		
-		Table finalMaster = dc.getTable( defaultSchema, defaultCatalog, "MASTER" );
+		Table finalMaster = getTable(dc, mockedMetaDataDialect, defaultCatalog, defaultSchema, "MASTER" );
 		
-		Assert.assertSame(firstChild, dc.getTable( defaultSchema, defaultCatalog, "CHILD" ));
+		Assert.assertSame(firstChild, getTable(dc, mockedMetaDataDialect, defaultCatalog, defaultSchema, "CHILD" ));
 		JUnitUtil.assertIteratorContainsExactly(
 				null,
 				firstChild.getForeignKeyIterator(),
@@ -127,4 +129,32 @@ public class TestCase {
 				0);
 	}
 
+	private Table getTable(
+			RevengMetadataCollector revengMetadataCollector, 
+			MetaDataDialect metaDataDialect, 
+			String catalog, 
+			String schema, 
+			String name) {
+		return revengMetadataCollector.getTable(
+				TableIdentifier.create(
+						quote(metaDataDialect, catalog), 
+						quote(metaDataDialect, schema), 
+						quote(metaDataDialect, name)));
+	}
+ 	
+	private String quote(MetaDataDialect metaDataDialect, String name) {
+		if (name == null)
+			return name;
+		if (metaDataDialect.needQuote(name)) {
+			if (name.length() > 1 && name.charAt(0) == '`'
+					&& name.charAt(name.length() - 1) == '`') {
+				return name; // avoid double quoting
+			}
+			return "`" + name + "`";
+		} else {
+			return name;
+		}
+	}
+
+	
 }

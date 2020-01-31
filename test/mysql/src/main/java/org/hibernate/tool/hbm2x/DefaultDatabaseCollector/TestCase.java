@@ -116,14 +116,42 @@ public class TestCase {
 		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema(dc);
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
-		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
-		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.master"));
-		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.child")));
-		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.master")));
+		Assert.assertNotNull("The table should be found", getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.child"));
+		Assert.assertNotNull("The table should be found", getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.master"));
+		Assert.assertNull("Quoted names should not return the table", getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.child")));
+		Assert.assertNull("Quoted names should not return the table", getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.master")));
 		Assert.assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
 	}
 	
-	private static String quote(String name) {
+	private Table getTable(
+			RevengMetadataCollector revengMetadataCollector, 
+			MetaDataDialect metaDataDialect, 
+			String catalog, 
+			String schema, 
+			String name) {
+		return revengMetadataCollector.getTable(
+				TableIdentifier.create(
+						quote(metaDataDialect, catalog), 
+						quote(metaDataDialect, schema), 
+						quote(metaDataDialect, name)));
+	}
+ 	
+	private String quote(MetaDataDialect metaDataDialect, String name) {
+		if (name == null)
+			return name;
+		if (metaDataDialect.needQuote(name)) {
+			if (name.length() > 1 && name.charAt(0) == '`'
+					&& name.charAt(name.length() - 1) == '`') {
+				return name; // avoid double quoting
+			}
+			return "`" + name + "`";
+		} else {
+			return name;
+		}
+	}
+
+	
+	private static String doubleQuote(String name) {
 		return "\"" + name + "\"";
 	}
 	
