@@ -76,7 +76,7 @@ public class TestCase {
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
 		
-		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
+		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		
 		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);

@@ -143,8 +143,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
 				serviceRegistry );
-		RevengMetadataCollector dc = new RevengMetadataCollector(
-				reader.getMetaDataDialect());
+		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		validate( dc );				
 		mock.setFailOnDelegateAccess(true);	
@@ -153,7 +152,7 @@ public class TestCase {
 				new DefaultReverseEngineeringStrategy(), 
 				dialect, 
 				serviceRegistry );
-		dc = new RevengMetadataCollector(reader.getMetaDataDialect());
+		dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		validate(dc);
 	}

@@ -107,7 +107,7 @@ public class TestCase {
 		DatabaseReader reader = DatabaseReader.create( 
 				properties, new DefaultReverseEngineeringStrategy(), 
 				realMetaData, serviceRegistry );
-		RevengMetadataCollector dc = new RevengMetadataCollector(reader.getMetaDataDialect());
+		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		Assert.assertNotNull("The table should be found", getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.child"));
