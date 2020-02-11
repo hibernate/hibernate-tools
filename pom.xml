@@ -60,10 +60,10 @@
     			    <scope>test</scope>
 			</dependency>
 			<dependency>
-    			    <groupId>com.oracle.jdbc</groupId>
-    			    <artifactId>ojdbc8</artifactId>
-    			    <version>${oracle.version}</version>
-    			    <scope>test</scope>
+    			<groupId>com.oracle.ojdbc</groupId>
+    			<artifactId>ojdbc8</artifactId>
+    			<version>${oracle.version}</version>
+    			<scope>test</scope>
 			</dependency>
 	        <dependency>
 		        <groupId>org.apache.commons</groupId>
