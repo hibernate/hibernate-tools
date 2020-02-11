@@ -11,7 +11,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
@@ -58,11 +57,8 @@ public class TestCase {
 
     private MetaDataDialect configureOracleMetaDataDialect() {
         MetaDataDialect dialect = new OracleMetaDataDialect();
-        JdbcServices jdbcServices = serviceRegistry.getService(JdbcServices.class);
         ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
-        dialect.configure(
-        		connectionProvider,
-        		jdbcServices.getSqlExceptionHelper().getSqlExceptionConverter());
+        dialect.configure(connectionProvider);
         return dialect;
     }
 
