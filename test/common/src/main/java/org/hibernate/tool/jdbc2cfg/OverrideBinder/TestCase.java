@@ -21,10 +21,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
 import org.hibernate.tool.internal.reveng.SQLTypeMapping;
 import org.hibernate.tool.internal.reveng.TableFilter;
@@ -54,7 +54,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(
-				new DefaultReverseEngineeringStrategy() );
+				new DefaultRevengStrategy() );
 		metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata();
@@ -98,7 +98,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(DOC_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 
 		Assert.assertEquals("int", repository.columnToHibernateTypeName(null, "ID", Types.INTEGER, SQLTypeMapping.UNKNOWN_LENGTH, 10, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 		Assert.assertEquals("your.package.TrimStringUserType", repository.columnToHibernateTypeName(null, "NAME", Types.VARCHAR, 30, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, true, false) );
@@ -114,7 +114,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(SCHEMA_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 
 		List<?> schemaSelectors = repository.getSchemaSelections();
 		
@@ -144,7 +144,7 @@ public class TestCase {
 		
 		OverrideRepository ox = new OverrideRepository();
 		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
-		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata md = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(strategy, null)
 				.createMetadata();
@@ -275,7 +275,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		Assert.assertEquals("org.werd.Q", repository.tableToClassName(TableIdentifier.create("q","Werd", "Q") ) );
 		Assert.assertEquals("Notknown", repository.tableToClassName(TableIdentifier.create(null,null, "notknown") ) );
@@ -449,7 +449,7 @@ public class TestCase {
 	@Test
 	public void testTableToClass() {
 		
-		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Assert.assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
@@ -470,7 +470,7 @@ public class TestCase {
 	@Test
 	public void testMetaAttributes() {
 		
-		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Map<String,MetaAttribute> attributes = res.tableToMetaAttributes(tableIdentifier);

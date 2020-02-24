@@ -13,9 +13,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.strategy.AbstractRevengStrategy;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -46,7 +47,7 @@ public class TestCase {
 	@Test
 	public void testNoManyToManyBiDirectional() {
         
-        DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
+        AbstractRevengStrategy c = new DefaultRevengStrategy();
         c.setSettings(new ReverseEngineeringSettings(c).setDetectManyToMany(false)); 
         Metadata metadata =  MetadataDescriptorFactory
         		.createReverseEngineeringDescriptor(c, null)

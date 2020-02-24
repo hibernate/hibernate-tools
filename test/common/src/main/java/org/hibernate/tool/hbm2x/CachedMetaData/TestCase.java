@@ -16,8 +16,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
+import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
-import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -140,7 +140,7 @@ public class TestCase {
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
 		DatabaseReader reader = DatabaseReader.create( 
 				properties, 
-				new DefaultReverseEngineeringStrategy(), 
+				new DefaultRevengStrategy(), 
 				dialect, 
 				serviceRegistry );
 		RevengMetadataCollector dc = new RevengMetadataCollector();
@@ -149,7 +149,7 @@ public class TestCase {
 		mock.setFailOnDelegateAccess(true);	
 		reader = DatabaseReader.create( 
 				properties, 
-				new DefaultReverseEngineeringStrategy(), 
+				new DefaultRevengStrategy(), 
 				dialect, 
 				serviceRegistry );
 		dc = new RevengMetadataCollector();

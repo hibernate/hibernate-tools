@@ -25,10 +25,10 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
@@ -61,7 +61,7 @@ public class TestCase {
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
-		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy());
+		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata();
@@ -111,7 +111,7 @@ public class TestCase {
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				properties);
 		DatabaseReader reader = DatabaseReader.create( 
-				properties, new DefaultReverseEngineeringStrategy(), 
+				properties, new DefaultRevengStrategy(), 
 				realMetaData, serviceRegistry );
 		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);

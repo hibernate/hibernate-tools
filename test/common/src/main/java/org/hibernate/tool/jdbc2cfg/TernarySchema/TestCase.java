@@ -19,7 +19,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.internal.export.common.DefaultValueVisitor;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tool.internal.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.tool.internal.reveng.strategy.AbstractRevengStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -44,7 +44,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
+		AbstractRevengStrategy c = new AbstractRevengStrategy() {
 			public List<SchemaSelection> getSchemaSelections() {
 				List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
 				selections.add(new SchemaSelection(null, "HTT"));
