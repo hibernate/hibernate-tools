@@ -22,7 +22,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
@@ -53,7 +53,7 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(
+		RevengStrategy res = or.getReverseEngineeringStrategy(
 				new DefaultRevengStrategy() );
 		metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
@@ -70,7 +70,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 				
 		or.addResource(TEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
+		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		Assert.assertEquals("int", repository.columnToHibernateTypeName(null, null, Types.INTEGER, 5, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 		Assert.assertEquals("long", repository.columnToHibernateTypeName(null, null, Types.INTEGER, SQLTypeMapping.UNKNOWN_LENGTH, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
@@ -98,7 +98,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(DOC_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 
 		Assert.assertEquals("int", repository.columnToHibernateTypeName(null, "ID", Types.INTEGER, SQLTypeMapping.UNKNOWN_LENGTH, 10, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 		Assert.assertEquals("your.package.TrimStringUserType", repository.columnToHibernateTypeName(null, "NAME", Types.VARCHAR, 30, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, true, false) );
@@ -114,7 +114,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(SCHEMA_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 
 		List<?> schemaSelectors = repository.getSchemaSelections();
 		
@@ -144,7 +144,7 @@ public class TestCase {
 		
 		OverrideRepository ox = new OverrideRepository();
 		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
-		ReverseEngineeringStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata md = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(strategy, null)
 				.createMetadata();
@@ -160,7 +160,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
+		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		Assert.assertNull(repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "blah"), "bogus",0,0,0,0, false, false));
 		Assert.assertNull(repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "ORDERS"), "CUSTID",0,0,0,0, false, false));
@@ -187,7 +187,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
+		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		Assert.assertNull(repository.columnToPropertyName(TableIdentifier.create(null, null, "blah"), "bogus"));
 		Assert.assertNull(repository.columnToPropertyName(TableIdentifier.create(null, null, "ORDERS"), "cust_id"));
@@ -209,7 +209,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
+		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		TableIdentifier miscTable = TableIdentifier.create(null,null, "MISC_TYPES");
 		Assert.assertEquals("sequence",repository.getTableIdentifierStrategyName(miscTable));
@@ -260,7 +260,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(null);
+		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 		
 		Assert.assertTrue(repository.excludeTable(TableIdentifier.create(null,null, "DoNotWantIt") ) );
 		Assert.assertFalse(repository.excludeTable(TableIdentifier.create(null,null, "NotListedThere") ) );
@@ -275,7 +275,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		
 		or.addResource(OVERRIDETEST_REVENG_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		Assert.assertEquals("org.werd.Q", repository.tableToClassName(TableIdentifier.create("q","Werd", "Q") ) );
 		Assert.assertEquals("Notknown", repository.tableToClassName(TableIdentifier.create(null,null, "notknown") ) );
@@ -350,7 +350,7 @@ public class TestCase {
 		sqltype.setHibernateType("yes_no");
 		or.addTypeMapping(sqltype);
 		
-		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(null);
+		RevengStrategy res = or.getReverseEngineeringStrategy(null);
 		Assert.assertEquals("boolean",res.columnToHibernateTypeName(null,null, Types.BINARY, 1, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 		Assert.assertEquals(null,res.columnToHibernateTypeName(null,null, Types.LONGVARCHAR, 1, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 		Assert.assertEquals("yes_no",res.columnToHibernateTypeName(null,null, Types.BIT, SQLTypeMapping.UNKNOWN_LENGTH, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
@@ -381,7 +381,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		
-		ReverseEngineeringStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy();
+		RevengStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy();
 		
 		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "blah"));
 		Assert.assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "NAME"));
@@ -449,7 +449,7 @@ public class TestCase {
 	@Test
 	public void testTableToClass() {
 		
-		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Assert.assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
@@ -470,7 +470,7 @@ public class TestCase {
 	@Test
 	public void testMetaAttributes() {
 		
-		ReverseEngineeringStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Map<String,MetaAttribute> attributes = res.tableToMetaAttributes(tableIdentifier);

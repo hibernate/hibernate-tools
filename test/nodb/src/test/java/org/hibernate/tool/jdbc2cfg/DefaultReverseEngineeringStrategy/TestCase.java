@@ -11,7 +11,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.DelegatingReverseEngineeringStrategy;
 import org.junit.Assert;
@@ -24,7 +24,7 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	ReverseEngineeringStrategy rns = new DefaultRevengStrategy();
+	RevengStrategy rns = new DefaultRevengStrategy();
 	
 	@Test
 	public void testColumnKeepCase() {
@@ -97,7 +97,7 @@ public class TestCase {
 	@Test
     public void testCustomClassNameStrategyWithCollectionName() {
     	
-    	ReverseEngineeringStrategy custom = new DelegatingReverseEngineeringStrategy(new DefaultRevengStrategy()) {
+    	RevengStrategy custom = new DelegatingReverseEngineeringStrategy(new DefaultRevengStrategy()) {
     		public String tableToClassName(TableIdentifier tableIdentifier) {
     			return super.tableToClassName( tableIdentifier ) + "Impl";
     		}

@@ -13,7 +13,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
@@ -32,7 +32,7 @@ import org.junit.Test;
 public class TestCase {
 
 	private Metadata metadata = null;
-	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
+	private RevengStrategy reverseEngineeringStrategy = null;
 
 	@Before
 	public void setUp() {

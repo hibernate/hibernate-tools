@@ -13,7 +13,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -68,7 +68,7 @@ public class TestCase {
 	public void testSetAndManyToOne() {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(repository, null)
 				.createMetadata();			
@@ -100,7 +100,7 @@ public class TestCase {
 	public void testOneToOne() throws MalformedURLException, ClassNotFoundException {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(repository, null)
 				.createMetadata();
@@ -125,7 +125,7 @@ public class TestCase {
 		try {
 			OverrideRepository or = new OverrideRepository();
 			or.addResource(BAD_FOREIGNKEY_XML);
-			ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+			RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 			MetadataDescriptorFactory
 					.createReverseEngineeringDescriptor(repository, null)
 					.createMetadata();
@@ -152,7 +152,7 @@ public class TestCase {
 	public void testManyToOneAttributeOverrides() {
 		OverrideRepository or = new OverrideRepository();	
 		or.addResource(FOREIGN_KEY_TEST_XML);
-		ReverseEngineeringStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(repository, null)
 				.createMetadata();

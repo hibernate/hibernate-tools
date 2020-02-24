@@ -25,7 +25,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
@@ -48,7 +48,7 @@ public class TestCase {
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	private MetadataDescriptor metadataDescriptor = null;
-	private ReverseEngineeringStrategy reverseEngineeringStrategy = null;
+	private RevengStrategy reverseEngineeringStrategy = null;
 
 	@Before
 	public void setUp() {

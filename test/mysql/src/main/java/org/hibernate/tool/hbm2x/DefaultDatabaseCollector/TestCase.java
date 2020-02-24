@@ -26,7 +26,7 @@ import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.OverrideRepository;
@@ -61,7 +61,7 @@ public class TestCase {
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
 		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
-		ReverseEngineeringStrategy res = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
+		RevengStrategy res = or.getReverseEngineeringStrategy(new DefaultRevengStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata();
