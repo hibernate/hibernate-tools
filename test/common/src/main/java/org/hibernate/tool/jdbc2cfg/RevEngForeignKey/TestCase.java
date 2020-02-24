@@ -14,7 +14,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.internal.reveng.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
