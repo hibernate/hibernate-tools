@@ -25,7 +25,7 @@ import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractRevengStrategy;
@@ -55,7 +55,7 @@ public class TestCase {
 		JdbcUtil.createDatabase(this);
 		outputDir = temporaryFolder.getRoot();
 		AbstractRevengStrategy configurableNamingStrategy = new DefaultRevengStrategy();
-		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
+		configurableNamingStrategy.setSettings(new RevengSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		metadataDescriptor = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(configurableNamingStrategy, null);
 	}

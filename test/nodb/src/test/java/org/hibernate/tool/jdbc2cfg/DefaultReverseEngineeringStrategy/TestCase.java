@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
-import org.hibernate.tool.api.reveng.ReverseEngineeringSettings;
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.DelegatingReverseEngineeringStrategy;
@@ -103,7 +103,7 @@ public class TestCase {
     		}
     	};
 
-    	custom.setSettings( new ReverseEngineeringSettings(custom) );
+    	custom.setSettings( new RevengSettings(custom) );
     	
     	TableIdentifier productTable = TableIdentifier.create(null, null, "product");
 		Assert.assertEquals("ProductImpl", custom.tableToClassName( productTable ));
