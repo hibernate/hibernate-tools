@@ -1,9 +1,9 @@
-package org.hibernate.tool.api.export;
+package org.hibernate.tool.ant.util;
 
 import org.hibernate.boot.MappingNotFoundException;
 import org.hibernate.boot.jaxb.Origin;
 
-public class ExporterUtil {
+public class ExceptionUtil {
 
 	public static String getProblemSolutionOrCause(Throwable re) {
 		if(re==null) return null;
