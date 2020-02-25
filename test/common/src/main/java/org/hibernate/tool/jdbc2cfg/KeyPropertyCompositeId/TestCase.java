@@ -24,10 +24,10 @@ import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.metadata.MetadataConstants;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -53,7 +53,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		reverseEngineeringStrategy = new DefaultRevengStrategy();
+		reverseEngineeringStrategy = new DefaultStrategy();
 		Properties properties = new Properties();
 		properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);
 		metadataDescriptor = MetadataDescriptorFactory

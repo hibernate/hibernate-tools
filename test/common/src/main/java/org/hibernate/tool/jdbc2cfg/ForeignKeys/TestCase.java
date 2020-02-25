@@ -12,10 +12,10 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -37,7 +37,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-		reverseEngineeringStrategy = new DefaultRevengStrategy();
+		reverseEngineeringStrategy = new DefaultStrategy();
 		metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(reverseEngineeringStrategy, null)
 				.createMetadata();

@@ -21,9 +21,9 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.reveng.strategy.AbstractRevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -43,7 +43,7 @@ public class TestCase {
 	@Before
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
-        AbstractRevengStrategy c = new DefaultRevengStrategy();
+        AbstractRevengStrategy c = new DefaultStrategy();
         c.setSettings(new RevengSettings(c).setDefaultPackageName(PACKAGE_NAME));
         metadata = MetadataDescriptorFactory
         		.createReverseEngineeringDescriptor(c, null)

@@ -16,12 +16,12 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.dialect.MetaDataDialect;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableSelectorStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -70,7 +70,7 @@ public class TestCase {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
-		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultRevengStrategy());
+		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultStrategy());
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
 		DatabaseReader reader = DatabaseReader.create( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		

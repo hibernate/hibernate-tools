@@ -14,10 +14,10 @@ import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.AbstractRevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -88,7 +88,7 @@ public class TestCase {
 	}
 	
 	private MetadataDescriptor createMetadataDescriptor() {
-		AbstractRevengStrategy configurableNamingStrategy = new DefaultRevengStrategy();
+		AbstractRevengStrategy configurableNamingStrategy = new DefaultStrategy();
 		configurableNamingStrategy.setSettings(new RevengSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();
 		InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());

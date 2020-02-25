@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
-import org.hibernate.tool.api.reveng.DefaultRevengStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	RevengStrategy rns = new DefaultRevengStrategy();
+	RevengStrategy rns = new DefaultStrategy();
 	
 	@Test
 	public void testColumnKeepCase() {
@@ -97,7 +97,7 @@ public class TestCase {
 	@Test
     public void testCustomClassNameStrategyWithCollectionName() {
     	
-    	RevengStrategy custom = new DelegatingStrategy(new DefaultRevengStrategy()) {
+    	RevengStrategy custom = new DelegatingStrategy(new DefaultStrategy()) {
     		public String tableToClassName(TableIdentifier tableIdentifier) {
     			return super.tableToClassName( tableIdentifier ) + "Impl";
     		}
