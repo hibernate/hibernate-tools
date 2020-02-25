@@ -22,7 +22,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.api.reveng.SchemaSelection;
+import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -143,7 +143,7 @@ public class TestCase {
 		Assert.assertEquals(".*",ss.getMatchTable());
 		
 		OverrideRepository ox = new OverrideRepository();
-		ox.addSchemaSelection(new SchemaSelection(null, null, "DUMMY.*"));
+		ox.addSchemaSelection(createSchemaSelection(null, null, "DUMMY.*"));
 		RevengStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultStrategy());
 		Metadata md = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(strategy, null)
@@ -516,6 +516,23 @@ public class TestCase {
 		Assert.assertEquals("specific-column",ma.getName());
 		Assert.assertEquals("yes a column with meta",ma.getValue());
 		
+	}
+	
+	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+		return new SchemaSelection() {
+			@Override
+			public String getMatchCatalog() {
+				return matchCatalog;
+			}
+			@Override
+			public String getMatchSchema() {
+				return matchSchema;
+			}
+			@Override
+			public String getMatchTable() {
+				return matchTable;
+			}		
+		};
 	}
 	
 }

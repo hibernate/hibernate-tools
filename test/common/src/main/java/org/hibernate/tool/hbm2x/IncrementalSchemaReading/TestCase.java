@@ -16,7 +16,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengDialect;
-import org.hibernate.tool.api.reveng.SchemaSelection;
+import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
@@ -74,7 +74,7 @@ public class TestCase {
 		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
 		DatabaseReader reader = DatabaseReader.create( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		
-		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
+		tss.addSchemaSelection( createSchemaSelection(null,null, "CHILD") );
 		
 		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
@@ -90,7 +90,7 @@ public class TestCase {
 		Assert.assertFalse("should not record foreignkey to table it doesn't know about yet",firstChild.getForeignKeyIterator().hasNext());
 		
 		tss.clearSchemaSelections();
-		tss.addSchemaSelection( new SchemaSelection(null, null, "MASTER") );
+		tss.addSchemaSelection( createSchemaSelection(null, null, "MASTER") );
 		
 		mockedMetaDataDialect.gottenTables.clear();
 		reader.readDatabaseSchema(dc);
@@ -156,5 +156,22 @@ public class TestCase {
 		}
 	}
 
+	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+		return new SchemaSelection() {
+			@Override
+			public String getMatchCatalog() {
+				return matchCatalog;
+			}
+			@Override
+			public String getMatchSchema() {
+				return matchSchema;
+			}
+			@Override
+			public String getMatchTable() {
+				return matchTable;
+			}		
+		};
+	}
+	
 	
 }

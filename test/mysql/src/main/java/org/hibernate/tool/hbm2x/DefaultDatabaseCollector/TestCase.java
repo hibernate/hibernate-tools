@@ -26,7 +26,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.api.reveng.SchemaSelection;
+import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
@@ -60,7 +60,7 @@ public class TestCase {
 	@Test
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
-		or.addSchemaSelection(new SchemaSelection(null, "cat.cat"));
+		or.addSchemaSelection(createSchemaSelection(null, "cat.cat", null));
 		RevengStrategy res = or.getReverseEngineeringStrategy(new DefaultStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
@@ -165,4 +165,20 @@ public class TestCase {
 		return list;
 	}
 	
+	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+		return new SchemaSelection() {
+			@Override
+			public String getMatchCatalog() {
+				return matchCatalog;
+			}
+			@Override
+			public String getMatchSchema() {
+				return matchSchema;
+			}
+			@Override
+			public String getMatchTable() {
+				return matchTable;
+			}		
+		};
+	}
 }

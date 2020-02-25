@@ -16,7 +16,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.api.reveng.SchemaSelection;
+import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.internal.export.common.DefaultValueVisitor;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
@@ -47,9 +47,9 @@ public class TestCase {
 		AbstractStrategy c = new AbstractStrategy() {
 			public List<SchemaSelection> getSchemaSelections() {
 				List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
-				selections.add(new SchemaSelection(null, "HTT"));
-				selections.add(new SchemaSelection(null, "OTHERSCHEMA"));
-				selections.add(new SchemaSelection(null, "THIRDSCHEMA"));
+				selections.add(createSchemaSelection(null, "HTT", null));
+				selections.add(createSchemaSelection(null, "OTHERSCHEMA", null));
+				selections.add(createSchemaSelection(null, "THIRDSCHEMA", null));
 				return selections;
 			}
 		};           
@@ -124,4 +124,20 @@ public class TestCase {
 		});
 	}	
 	
+	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+		return new SchemaSelection() {
+			@Override
+			public String getMatchCatalog() {
+				return matchCatalog;
+			}
+			@Override
+			public String getMatchSchema() {
+				return matchSchema;
+			}
+			@Override
+			public String getMatchTable() {
+				return matchTable;
+			}		
+		};
+	}
 }
