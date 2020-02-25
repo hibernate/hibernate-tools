@@ -13,7 +13,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tools.test.util.JUnitUtil;
@@ -86,7 +86,7 @@ public class TestCase {
 
 	@Test
 	public void testDataType() {	
-		RevengDialect dialect = MetaDataDialectFactory
+		RevengDialect dialect = RevengDialectFactory
 				.fromDialectName(properties.getProperty(AvailableSettings.DIALECT));
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);	

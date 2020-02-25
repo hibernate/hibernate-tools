@@ -14,7 +14,7 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
@@ -133,7 +133,7 @@ public class TestCase {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();		
 		Properties properties = Environment.getProperties();
-		RevengDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
+		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				Environment.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);

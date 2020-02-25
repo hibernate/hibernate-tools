@@ -22,8 +22,8 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.SchemaSelection;
@@ -85,7 +85,7 @@ public class TestCase {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySettings(properties);
 		ServiceRegistry serviceRegistry = ssrb.build();
-		RevengDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties);
+		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties);
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.cat"));
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
 		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
@@ -107,7 +107,7 @@ public class TestCase {
 		properties.put(AvailableSettings.DEFAULT_SCHEMA, "cat.cat");
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();	
-		RevengDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
+		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				properties);
 		DatabaseReader reader = DatabaseReader.create( 
