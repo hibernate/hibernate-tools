@@ -14,8 +14,8 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
+import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.internal.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
@@ -35,12 +35,12 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	public class MockedMetaDataDialect implements MetaDataDialect {
+	public class MockedMetaDataDialect implements RevengDialect {
 
-		MetaDataDialect delegate;
+		RevengDialect delegate;
 		private boolean failOnDelegateAccess;
 
-		public MockedMetaDataDialect(MetaDataDialect realMetaData) {
+		public MockedMetaDataDialect(RevengDialect realMetaData) {
 			delegate = realMetaData;
 		}
 
@@ -133,7 +133,7 @@ public class TestCase {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();		
 		Properties properties = Environment.getProperties();
-		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
+		RevengDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( 
 				serviceRegistry.getService(JdbcServices.class).getDialect(), 
 				Environment.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);

@@ -13,8 +13,8 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialect;
 import org.hibernate.tool.api.dialect.MetaDataDialectFactory;
+import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -47,7 +47,7 @@ public class TestCase {
 
 	@Test
 	public void testExportedKeys() {	
-		MetaDataDialect dialect = new JDBCMetaDataDialect();
+		RevengDialect dialect = new JDBCMetaDataDialect();
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = ssrb.build();
 		ConnectionProvider connectionProvider = 
@@ -86,7 +86,7 @@ public class TestCase {
 
 	@Test
 	public void testDataType() {	
-		MetaDataDialect dialect = MetaDataDialectFactory
+		RevengDialect dialect = MetaDataDialectFactory
 				.fromDialectName(properties.getProperty(AvailableSettings.DIALECT));
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);	
@@ -107,7 +107,7 @@ public class TestCase {
 	
 	@Test
 	public void testCaseTest() {
-		MetaDataDialect dialect = new JDBCMetaDataDialect();
+		RevengDialect dialect = new JDBCMetaDataDialect();
 		ConnectionProvider connectionProvider = 
 				serviceRegistry.getService(ConnectionProvider.class);
 		dialect.configure(connectionProvider);

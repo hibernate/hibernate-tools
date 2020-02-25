@@ -15,7 +15,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialect;
+import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.api.reveng.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.dialect.JDBCMetaDataDialect;
@@ -131,7 +131,7 @@ public class TestCase {
 
 	private Table getTable(
 			RevengMetadataCollector revengMetadataCollector, 
-			MetaDataDialect metaDataDialect, 
+			RevengDialect metaDataDialect, 
 			String catalog, 
 			String schema, 
 			String name) {
@@ -142,7 +142,7 @@ public class TestCase {
 						quote(metaDataDialect, name)));
 	}
  	
-	private String quote(MetaDataDialect metaDataDialect, String name) {
+	private String quote(RevengDialect metaDataDialect, String name) {
 		if (name == null)
 			return name;
 		if (metaDataDialect.needQuote(name)) {

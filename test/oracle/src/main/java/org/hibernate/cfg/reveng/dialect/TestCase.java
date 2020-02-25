@@ -12,7 +12,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.dialect.MetaDataDialect;
+import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.internal.dialect.OracleMetaDataDialect;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
@@ -39,7 +39,7 @@ public class TestCase {
 
     @Test
     public void testColumnTypeSizes() {
-        MetaDataDialect dialect = configureOracleMetaDataDialect();
+        RevengDialect dialect = configureOracleMetaDataDialect();
 
         assertSqlTypeLengths(dialect, "a_varchar2_char", "VARCHAR2", 10, 0);
         assertSqlTypeLengths(dialect, "a_varchar2_byte", "VARCHAR2", 10, 0);
@@ -55,14 +55,14 @@ public class TestCase {
         assertSqlTypeLengths(dialect, "a_float", "FLOAT", 10, 0);
     }
 
-    private MetaDataDialect configureOracleMetaDataDialect() {
-        MetaDataDialect dialect = new OracleMetaDataDialect();
+    private RevengDialect configureOracleMetaDataDialect() {
+        RevengDialect dialect = new OracleMetaDataDialect();
         ConnectionProvider connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
         dialect.configure(connectionProvider);
         return dialect;
     }
 
-    private void assertSqlTypeLengths(MetaDataDialect dialect, String columnName, String typeName, int columnSize, int decimalDigits) {
+    private void assertSqlTypeLengths(RevengDialect dialect, String columnName, String typeName, int columnSize, int decimalDigits) {
         columnName = columnName.toUpperCase();
         String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
         String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
