@@ -30,4 +30,4 @@ content table comes here
 
 ## Contributing
 
-reference to the contribution guide
+If you run into errors, have ideas on how to improve the project or if you just want to collaborate, checkout the [contribution guide](./contribute.md).
