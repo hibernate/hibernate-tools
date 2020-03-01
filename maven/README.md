@@ -22,7 +22,7 @@
 
 # Hibernate Tools Maven Plugin
 
-This [Maven](http://maven.apache.org/) plugin brings the power of the [Hibernate Tools API](../hibernate-tools-orm) to you Maven build.
+This [Maven](http://maven.apache.org/) plugin brings the power of the [Hibernate Tools API](../orm) to you Maven build.
 
 
 
