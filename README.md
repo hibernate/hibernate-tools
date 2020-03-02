@@ -28,11 +28,11 @@ Working with Hibernate is very easy and developers enjoy using the APIs and the 
 
 Hibernate Tools is developed under the form of a hierarchical multi module Maven project. This parent module contains the following child modules:
 
-* **main**: 
+* [**main:**](./main)
 This module contains the base tools to reverse engineer Hibernate artifacts from an existing database as well as a number of Ant tasks that use these tools and can be used in Ant build script to generate Hibernate and JPA artifacts.  
-* **maven-plugin**:
+* [**hibernate-tools-maven**:](./maven-plugin)
 This module uses the tools defined in the main module to create some Maven mojos that bring the reverse engineering power to your Maven build.
-* **test**:
+* [**hibernate-tools-test**:](./test)
 The test module is a multi module in itself that contains tests targeting different databases as well as no database tests.
 
 ## Contributing
