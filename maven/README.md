@@ -124,7 +124,7 @@ To properly generate our entity, we need to do two more things. The first is of 
   
   <properties>
     ...
-    <hibernate.version>5.4.13-SNAPSHOT</hibernate.version>
+    <hibernate.version>6.0.0-SNAPSHOT</hibernate.version>
   </properties>
   
   <build>
@@ -133,13 +133,13 @@ To properly generate our entity, we need to do two more things. The first is of 
     ...
     
       <plugin>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-tools-maven-plugin</artifactId>
+        <groupId>org.hibernate.tool</groupId>
+        <artifactId>hibernate-tools-maven</artifactId>
         <version>${hibernate.version}</version>
         <dependencies>
           <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-tools</artifactId>
+            <groupId>org.hibernate.tool</groupId>
+            <artifactId>hibernate-tools-orm</artifactId>
             <version>${hibernate.version}</version>
           </dependency>
           <dependency>
