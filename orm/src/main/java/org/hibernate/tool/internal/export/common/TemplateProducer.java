@@ -1,6 +1,10 @@
 package org.hibernate.tool.internal.export.common;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,31 +32,19 @@ public class TemplateProducer {
 			log.warn("Generated output is empty. Skipped creation for file " + destination);
 			return;
 		}
-		FileOutputStream destinationStream = null;
-		OutputStreamWriter fileWriter = null;
+		FileWriter fileWriter = null;
 		try {
 			
 			th.ensureExistence( destination );    
 	     
 			ac.addFile(destination, fileType);
 			log.debug("Writing " + identifier + " to " + destination.getAbsolutePath() );
-			destinationStream = new FileOutputStream(destination);
-			// Output encoding set to UTF-8, in order to support international character sets. 
-			fileWriter = new OutputStreamWriter(destinationStream, "UTF-8");;
+			fileWriter = new FileWriter(destination);
             fileWriter.write(tempResult);			
 		} 
 		catch (Exception e) {
 		    throw new RuntimeException("Error while writing result to file", e);	
 		} finally {
-			if(destinationStream != null){
-				try {
-					destinationStream.flush();
-					destinationStream.close();
-				}
-				catch (IOException e) {
-					log.warn("Exception while flushing/closing " + destinationStream,e);
-				}
-			}
 			if(fileWriter!=null) {
 				try {
 					fileWriter.flush();
