@@ -15,45 +15,6 @@
 
 	<name>Hibernate Tools ORM</name>
 	<description>Hibernate Tools ORM</description>
-	<url>http://hibernate.org/tools/</url>
-
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://hibernate.onjira.com/browse/HBX</url>
-	</issueManagement>
-
-	<scm>
-	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
-	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-	  <url>http://github.com/hibernate/hibernate-tools</url>
-	</scm>
-
-	<organization>
-		<name>Hibernate</name>
-		<url>http://www.hibernate.org</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License</name>
-			<url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>maxandersen</id>
-			<name>Max Andersen</name>
-			<email>max@hibernate.org</email>
-			<url>http://in.relation.to/Bloggers/Max</url>
-		</developer>
-		<developer>
-			<id>koentsje</id>
-			<name>Koen Aersn</name>
-			<email>koen@hibernate.org</email>
-			<url>http://koentsje.blogspot.be</url>
-		</developer>
-	</developers>
 
 	<dependencies>
 		<dependency>
