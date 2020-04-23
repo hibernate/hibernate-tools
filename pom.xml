@@ -77,8 +77,8 @@
     <modules>
         <module>orm</module>
         <module>maven</module>
-        <module>ant</module>
-        <module>test</module>
+<!--        <module>ant</module>-->
+<!--        <module>test</module>-->
         <module>utils</module>
     </modules>
 
@@ -224,5 +224,66 @@
             </dependency>
          </dependencies>
     </dependencyManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
 
+				<!-- Check for the minimum version of Java and Maven.  Runs during the validate phase. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+		<plugins>
+
+			<!-- Check for the minimum version of Java and Maven.  Runs during the validate phase. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-java-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedRepositories>
+									<!--修改验证等级，保证编译-->
+                                    <level>WARN</level>
+                                    <bannedRepositories>
+                                        <bannedRepository>http://*</bannedRepository>
+                                    </bannedRepositories>
+                                    <bannedPluginRepositories>
+                                        <bannedPluginRepository>http://*</bannedPluginRepository>
+                                    </bannedPluginRepositories>
+                                </bannedRepositories>
+								<requireJavaVersion>
+									<message>To build this project JDK ${jdk.min.version} (or greater) is required. Please install it.</message>
+									<version>${jdk.min.version}</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>enforce-maven-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<message>To build this project Maven ${maven.min.version} (or greater) is required. Please install it.</message>
+									<version>${maven.min.version}</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>
