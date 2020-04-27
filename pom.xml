@@ -58,8 +58,31 @@
 			<url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
 		</license>
 	</licenses>
-
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>Cargo Release Repository</name>
+			<url>http://192.168.2.133:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Cargo Snapshot Repository</name>
+			<url>http://192.168.2.133:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<developers>
+		<developer>
+			<id>flyTiger</id>
+			<name>LFH</name>
+			<email>www.fhtiger.com</email>
+			<url>http://www.fhtiger.com</url>
+			<organization>JAVA-O</organization>
+			<roles>
+				<role>user</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
 		<developer>
 			<id>maxandersen</id>
 			<name>Max Andersen</name>

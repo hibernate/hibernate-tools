@@ -1,5 +1,6 @@
 package org.hibernate.tool.api.reveng;
 
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 
 /**
@@ -10,7 +11,7 @@ import org.hibernate.mapping.Table;
 public class TableIdentifier {
 	
 	public static TableIdentifier create(Table table) {
-		return new TableIdentifier(table.getCatalog(), table.getSchema(), table.getName() );
+		return new TableIdentifier(table);
 	}
 	
 	public static TableIdentifier create(String catalog, String schema, String name) {
@@ -20,7 +21,19 @@ public class TableIdentifier {
 	private final String catalog;
 	private final String schema;
 	private final String name;
-	
+
+	/*添加Table原型对象，提高更高扩展*/
+	private PrimaryKey primaryKey;
+
+	public PrimaryKey getPrimaryKey() {
+		return primaryKey;
+	}
+
+	private TableIdentifier(Table table) {
+		this(table.getCatalog(), table.getSchema(), table.getName() );
+		this.primaryKey = table.getPrimaryKey();
+	}
+
 	private TableIdentifier(String catalog, String schema, String name) {
 		this.catalog = (catalog==null?null:catalog.intern() );
 		this.schema = (schema==null?null:schema.intern() );
