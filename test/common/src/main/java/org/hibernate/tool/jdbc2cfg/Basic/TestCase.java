@@ -71,9 +71,9 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC"));
 		Column nameCol = table.getColumn(new Column(JdbcUtil.toIdentifier(this, "NAME")));
-		Assert.assertEquals(nameCol.getLength(), 20);
-		Assert.assertEquals(nameCol.getPrecision(), Column.DEFAULT_PRECISION);
-		Assert.assertEquals(nameCol.getScale(), Column.DEFAULT_SCALE);
+		Assert.assertEquals(nameCol.getLength().intValue(), 20);
+		Assert.assertEquals(nameCol.getPrecision(), null);
+		Assert.assertEquals(nameCol.getScale(), null);
 	}
 
 	@Test
