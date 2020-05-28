@@ -31,6 +31,9 @@
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
                     <postBuildHookScript>verify</postBuildHookScript>
                     <goal>install</goal>
+                    <!-- HBX-2036: Reenable execution of the Maven plugin integration test for 6.0.0.x -->
+                    <!-- skipInvocation below needs to be removed again -->
+                    <skipInvocation>true</skipInvocation>
                 </configuration>
                 <executions>
                     <execution>
