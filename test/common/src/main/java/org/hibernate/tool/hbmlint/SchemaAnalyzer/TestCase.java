@@ -18,6 +18,7 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -40,6 +41,8 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testSchemaAnalyzer() {
 

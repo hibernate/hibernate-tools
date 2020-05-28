@@ -44,6 +44,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -314,6 +315,8 @@ public class TestCase {
         Assert.assertEquals(0, hcc.getCompletionProposals().length);
     }
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testBasicFrom() {
     		Collector c = new Collector();
@@ -349,6 +352,8 @@ public class TestCase {
     	       	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testFromNonWhitespace() {
     		Collector c = new Collector();
@@ -382,6 +387,8 @@ public class TestCase {
  	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testFromWithTabs() {
     		Collector c = new Collector();
@@ -407,6 +414,8 @@ public class TestCase {
 		Assert.assertTrue(completionProposals.length > 0);
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testBasicFromPartialEntityName() {
     		Collector c = new Collector();
@@ -433,6 +442,8 @@ public class TestCase {
 		}    	    	    	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testBasicFromPartialDifferentCaseEntityName() {
     		Collector c = new Collector();
@@ -459,6 +470,8 @@ public class TestCase {
 		}    	    	    	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testDottedFromPartialEntityName() {
     		Collector c = new Collector();
@@ -498,6 +511,8 @@ public class TestCase {
     	    	    	    	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testBadInputAfterCursor() {
     		Collector c = new Collector();
@@ -607,6 +622,8 @@ public class TestCase {
     	
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testInFromAfterEntityAlias() {
 		Collector c = new Collector();

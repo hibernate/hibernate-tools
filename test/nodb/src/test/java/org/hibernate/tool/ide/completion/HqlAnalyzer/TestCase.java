@@ -24,6 +24,7 @@ import org.hibernate.tool.ide.completion.EntityNameReference;
 import org.hibernate.tool.ide.completion.HQLAnalyzer;
 import org.hibernate.tool.ide.completion.SubQuery;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -31,6 +32,8 @@ import org.junit.Test;
  */
 public class TestCase {
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testShouldShowTables() {
         String query = "select | from";

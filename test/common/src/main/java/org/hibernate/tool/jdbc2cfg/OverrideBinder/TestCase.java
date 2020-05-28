@@ -33,6 +33,7 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -65,6 +66,8 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testReadTypeMappings() {
 		OverrideRepository or = new OverrideRepository();
@@ -93,6 +96,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testDocExample() {
 		OverrideRepository or = new OverrideRepository();
@@ -109,6 +114,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testSchemaSelection() {
 		OverrideRepository or = new OverrideRepository();
@@ -155,6 +162,8 @@ public class TestCase {
 		Assert.assertFalse(tableMappings.hasNext());
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testColumnTypeMappings() {
 		OverrideRepository or = new OverrideRepository();
@@ -182,6 +191,8 @@ public class TestCase {
 		Assert.assertEquals("java.lang.Long because of primary key", "java.lang.Long", ((SimpleValue)property.getValue()).getTypeName());
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testColumnPropertyNameMappings() {
 		OverrideRepository or = new OverrideRepository();
@@ -194,6 +205,8 @@ public class TestCase {
 		Assert.assertEquals("orderName", repository.columnToPropertyName(TableIdentifier.create(null, null, "ORDERS"), "NAME"));
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testMetaAttributeMappings() {
 		PersistentClass classMapping = metadata.getEntityBinding( "Orders" );
@@ -204,6 +217,8 @@ public class TestCase {
 		//TODO: test sequence of meta
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testIdGenerator() {
 		OverrideRepository or = new OverrideRepository();
@@ -255,6 +270,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testReadExcludeTables() {
 		OverrideRepository or = new OverrideRepository();
@@ -270,6 +287,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testReadPackageName() {
 		OverrideRepository or = new OverrideRepository();
@@ -285,6 +304,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testRevEngExclude() {
 		
@@ -303,6 +324,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testSQLTypeMappingComparisons() {
 		SQLTypeMapping one = new SQLTypeMapping(Types.BIGINT, 5, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE,SQLTypeMapping.UNKNOWN_NULLABLE);
@@ -334,6 +357,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testSqlTypeOverride() {
 		
@@ -356,6 +381,8 @@ public class TestCase {
 		Assert.assertEquals("yes_no",res.columnToHibernateTypeName(null,null, Types.BIT, SQLTypeMapping.UNKNOWN_LENGTH, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testTableExclude() {
 		TableFilter tf = new TableFilter();
@@ -375,6 +402,8 @@ public class TestCase {
 		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "heremaxsub") ).booleanValue() );
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testColumnExclude() {
 		
@@ -395,6 +424,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testSimpleUserDefinedForeignKeys() {
 		
@@ -412,6 +443,8 @@ public class TestCase {
 			
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testCompositeUserDefinedForeignKeys() {
 		
@@ -432,6 +465,8 @@ public class TestCase {
 			
 	}
 		
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testTypes() {		
 		PersistentClass classMapping = metadata.getEntityBinding("MiscTypes");
@@ -446,6 +481,8 @@ public class TestCase {
 				((SimpleValue)classMapping.getProperty("flag").getValue()).getTypeName());		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testTableToClass() {
 		
@@ -467,6 +504,8 @@ public class TestCase {
 		
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testMetaAttributes() {
 		

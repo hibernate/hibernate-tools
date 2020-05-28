@@ -17,6 +17,7 @@ import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -78,6 +79,8 @@ public class TestCase {
 		exporter.start();
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
     public void testExporter() {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html") );
@@ -99,6 +102,8 @@ public class TestCase {
 		checkHtml(outputDir);
 	}
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
     public void testCommentIncluded() {
     		// A unique customer comment!
@@ -107,6 +112,8 @@ public class TestCase {
 		Assert.assertNotNull(FileUtil.findFirstString("A unique customer comment!", tableFile));
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
     public void testGenericsRenderedCorrectly() {
     		// A unique customer comment!
@@ -120,6 +127,8 @@ public class TestCase {
 				FileUtil.findFirstString("List&lt;", tableFile));
     }
     
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
     @Test
 	public void testInheritedProperties() {
 		File entityFile = new File(outputDir, "entities/org/hibernate/tool/hbm2x/UUser.html");

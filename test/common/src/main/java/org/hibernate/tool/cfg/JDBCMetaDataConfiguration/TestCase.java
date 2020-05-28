@@ -7,6 +7,7 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,6 +26,8 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testReadFromJDBC() throws Exception {
 		Metadata metadata = MetadataDescriptorFactory
@@ -36,6 +39,8 @@ public class TestCase {
 		Assert.assertNotNull("WithVersion", metadata.getEntityBinding("WithVersion"));
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testGetTable() throws Exception {
 		Assert.assertNotNull(

@@ -18,6 +18,7 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -56,6 +57,8 @@ public class TestCase {
 		exporter.start();
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
@@ -70,6 +73,8 @@ public class TestCase {
 		testCompilable();
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
@@ -79,6 +84,8 @@ public class TestCase {
 		Assert.assertEquals(2, artifactCollector.getFileCount("java"));
 	}
 	
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testCompilable() {
 		File compiled = new File(temporaryFolder.getRoot(), "compiled");
@@ -90,6 +97,8 @@ public class TestCase {
 				compiled, "org/hibernate/tool/hbm2x/Address.class"));
 	}
 
+	// TODO HBX-2035: Investigate and reenable
+	@Ignore
 	@Test
 	public void testNoVelocityLeftOvers() {
 		Assert.assertNull(FileUtil
