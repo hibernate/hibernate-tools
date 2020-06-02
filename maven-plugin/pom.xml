@@ -16,17 +16,6 @@
   <description>Maven plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
   <url>https://hibernate.github.io/hibernate-tools/</url>
 
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://hibernate.onjira.com/browse/HBX</url>
-  </issueManagement>
-
-  <scm>
-    <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
-    <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-    <url>http://github.com/hibernate/hibernate-tools</url>
-  </scm>
-
   <organization>
     <name>Hibernate</name>
     <url>http://www.hibernate.org</url>
