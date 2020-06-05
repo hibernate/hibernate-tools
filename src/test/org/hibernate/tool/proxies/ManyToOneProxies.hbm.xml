@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.hibernate.tool.proxies">
+	<class name="ClassA">
+		<id name="id" type="int" />
+		<many-to-one name="myClassB" class="ClassB" not-null="true" />
+	</class>
+	<class name="ClassB" proxy="ProxyB" abstract="true">
+		<id name="id" type="int" />
+		<discriminator column="myType" />
+		<property name="name" type="string" />
+		<subclass name="ClassBSubA" discriminator-value="a" proxy="ProxyBSubA">
+			<property name="valueA" type="string" />
+		</subclass>
+		<subclass name="ClassBSubB" discriminator-value="iTunes"
+			proxy="ProxyBSubB">
+			<property name="valueB" type="string" />
+		</subclass>
+	</class>
+	<class name="ClassC">
+		<id name="id" type="int" />
+		<many-to-one name="myClassB" class="ClassB" not-null="true" />
+	</class>
+</hibernate-mapping>
