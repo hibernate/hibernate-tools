@@ -41,8 +41,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testBasic() throws SQLException {
 		JUnitUtil.assertIteratorContainsExactly(
