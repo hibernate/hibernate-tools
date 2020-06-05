@@ -75,22 +75,6 @@ public class TestCase {
 		Assert.assertEquals( nameCol.getScale(), null );
 	}
 
-	/*
-	 * public void testGetTables() {
-	 * 
-	 * Table table = new Table(); table.setName("dummy"); cfg.addTable(table);
-	 * 
-	 * Table foundTable = cfg.getTable(null,null,"dummy");
-	 * 
-	 * assertSame(table,foundTable);
-	 * 
-	 * foundTable = cfg.getTable(null,"dschema", "dummy");
-	 * 
-	 * assertNotSame(table, foundTable); }
-	 */
-
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCompositeKeys() {
 		Table table = HibernateUtil.getTable(
