@@ -56,10 +56,6 @@ public class TestCase {
 		Assert.assertEquals( 
 				JdbcUtil.toIdentifier(this, "A"), 
 				JdbcUtil.toIdentifier(this, basicColumn.getName()));
-		// TODO: we cannot call getSqlType(dialect,cfg) without a
-		// MappingassertEquals("INTEGER", basicColumn.getSqlType() ); // at
-		// least on hsqldb
-		// assertEquals(22, basicColumn.getLength() ); // at least on oracle
 		PrimaryKey key = table.getPrimaryKey();
 		Assert.assertNotNull( "There should be a primary key!", key );
 		Assert.assertEquals( key.getColumnSpan(), 1 );
@@ -68,8 +64,6 @@ public class TestCase {
 		Assert.assertSame( basicColumn, column );
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testScalePrecisionLength() {
 		Table table = HibernateUtil.getTable(
