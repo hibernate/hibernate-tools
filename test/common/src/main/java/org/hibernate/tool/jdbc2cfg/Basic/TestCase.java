@@ -66,8 +66,6 @@ public class TestCase {
 		Assert.assertSame(basicColumn, column);
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testScalePrecisionLength() {
 		Table table = HibernateUtil.getTable(
