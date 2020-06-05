@@ -17,7 +17,6 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -85,49 +84,6 @@ public class TestCase {
 		Assert.assertEquals( nameCol.getScale(), null );
 	}
 
-	
-/*	public void testAutoDetectSingleSchema() {
-		
-		//read single schema without default schema: result = no schema info in tables.
-		JDBCMetaDataConfiguration mycfg = new JDBCMetaDataConfiguration();
-		mycfg.setReverseEngineeringStrategy(new DelegatingReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()) {
-			public boolean excludeTable(TableIdentifier ti) {
-				return !"PUBLIC".equals(ti.getSchema());				
-			}
-		});
-		mycfg.getProperties().remove(org.hibernate.cfg.Environment.DEFAULT_SCHEMA);
-		mycfg.readFromJDBC();			
-		
-		Table table = getTable(mycfg, identifier("otherschema"));
-		assertNull("rev.eng.strategy should have excluded this table",table);
-		
-		table = getTable(mycfg, identifier("basic"));
-		assertNotNull(table);
-		assertNull(table.getSchema());
-		
-		
-		//read single schema with default schema: result = no schema info in tables.
-		
-		//read other single schema than default schema: result = schema info in tables.
-		
-	}*/
-	
-	/*
-	 * public void testGetTables() {
-	 * 
-	 * Table table = new Table(); table.setName("dummy"); cfg.addTable(table);
-	 * 
-	 * Table foundTable = cfg.getTable(null,null,"dummy");
-	 * 
-	 * assertSame(table,foundTable);
-	 * 
-	 * foundTable = cfg.getTable(null,"dschema", "dummy");
-	 * 
-	 * assertNotSame(table, foundTable); }
-	 */
-
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCompositeKeys() {
 		Table table = HibernateUtil.getTable(
