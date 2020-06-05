@@ -17,7 +17,6 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -77,8 +76,6 @@ public class TestCase {
 		Assert.assertEquals(nameCol.getScale(), null);
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCompositeKeys() {
 		Table table = HibernateUtil.getTable(
