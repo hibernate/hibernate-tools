@@ -103,8 +103,6 @@ public class TestCase {
 						new Column(JdbcUtil.toIdentifier(this, "MASTERREF"))));		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testExport() {
 		SchemaExport schemaExport = new SchemaExport();
