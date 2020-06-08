@@ -165,7 +165,7 @@ public class TestCase {
         Assert.assertFalse(extraId.getValue() instanceof ManyToOne);
     }
      
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
     @Test
     public void testGeneration() throws Exception {
