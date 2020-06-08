@@ -85,8 +85,6 @@ public class TestCase {
 		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeyIterator(), 3);
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testMasterChild() {		
 		Assert.assertNotNull(HibernateUtil.getTable(
