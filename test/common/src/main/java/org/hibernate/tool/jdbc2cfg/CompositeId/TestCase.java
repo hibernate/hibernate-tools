@@ -136,8 +136,6 @@ public class TestCase {
          Assert.assertFalse(extraId.getValue() instanceof ManyToOne);
      }
      
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
     public void testKeyProperty() {
         PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding( 
