@@ -55,8 +55,6 @@ public class TestCase {
 		Assert.assertSame(keyCol, table.getColumn(keyCol) );		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testWithIndex() {		
 		Table table = HibernateUtil.getTable(
