@@ -97,8 +97,6 @@ public class TestCase {
 		Assert.assertEquals(((Column) (columnIterator.next())).getName(), "ORDER_NUMBER");
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testPossibleKeyManyToOne() {
 		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
