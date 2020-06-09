@@ -111,8 +111,6 @@ public class TestCase {
         Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testBuildMappings() {		
 		Metadata metadata = MetadataDescriptorFactory
