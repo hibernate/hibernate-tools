@@ -78,8 +78,6 @@ public class TestCase {
 		Assert.assertEquals("id", worksOn.getIdentifierProperty().getName());		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testAutoCreation() {
 		Metadata metadata = MetadataDescriptorFactory
