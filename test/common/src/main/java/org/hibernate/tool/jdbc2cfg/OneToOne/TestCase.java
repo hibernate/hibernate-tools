@@ -129,8 +129,6 @@ public class TestCase {
 		Assert.assertNotNull(metadata);		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		File outputDir = temporaryFolder.getRoot();
