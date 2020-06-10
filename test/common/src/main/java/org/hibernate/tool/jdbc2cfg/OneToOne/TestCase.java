@@ -124,8 +124,6 @@ public class TestCase {
 		Assert.assertTrue(oto.isConstrained());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testBuildMappings() {	
 		Assert.assertNotNull(metadata);		
