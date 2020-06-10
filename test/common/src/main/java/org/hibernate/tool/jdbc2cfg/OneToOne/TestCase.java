@@ -98,8 +98,6 @@ public class TestCase {
 		Assert.assertEquals("foreign", ((SimpleValue)address.getIdentifier()).getIdentifierGeneratorStrategy());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testOneToOneMultiColumnBiDirectional() {
 		PersistentClass person = metadata.getEntityBinding("MultiPerson");	
