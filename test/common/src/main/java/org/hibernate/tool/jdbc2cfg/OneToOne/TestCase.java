@@ -92,8 +92,6 @@ public class TestCase {
 		Assert.assertEquals("addressId", addressPerson.getIdentifierProperty().getName());			
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testAddressWithForeignKeyGeneration() {
 		PersistentClass address = metadata.getEntityBinding("AddressPerson");	
