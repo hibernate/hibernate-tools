@@ -64,8 +64,6 @@ public class TestCase {
 		Assert.assertNotNull(identifier);		
 	}
 		
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCreateManyToOne() {
 		PersistentClass classMapping = metadata.getEntityBinding(PACKAGE_NAME + ".Item");
