@@ -77,8 +77,6 @@ public class TestCase {
 		Assert.assertNotNull(property);
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCreateOneToMany() {
 		PersistentClass orders = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");		
