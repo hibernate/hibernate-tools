@@ -97,8 +97,6 @@ public class TestCase {
 		Assert.assertEquals("id", worksOn.getIdentifierProperty().getName());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testOneToOne() throws MalformedURLException, ClassNotFoundException {
 		OverrideRepository or = new OverrideRepository();
