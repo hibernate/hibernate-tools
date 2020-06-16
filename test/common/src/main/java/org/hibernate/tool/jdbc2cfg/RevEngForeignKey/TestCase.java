@@ -149,8 +149,6 @@ public class TestCase {
 		Assert.assertEquals("SELECT", property.getValue().getFetchMode().toString());
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testManyToOneAttributeOverrides() {
 		OverrideRepository or = new OverrideRepository();	
