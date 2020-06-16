@@ -22,7 +22,6 @@ import org.hibernate.type.TimestampType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -66,8 +65,6 @@ public class TestCase {
 		Assert.assertNull(version);		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testGenerateMappings() {
 		File testFolder = temporaryFolder.getRoot();
