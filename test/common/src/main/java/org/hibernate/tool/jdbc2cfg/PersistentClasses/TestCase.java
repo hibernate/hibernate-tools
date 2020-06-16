@@ -90,7 +90,7 @@ public class TestCase {
 		Assert.assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2045: Reenable when supported in ORM 6.0
 	@Ignore
 	@Test
 	public void testBinding() throws HibernateException, SQLException {	
