@@ -81,7 +81,7 @@ public class TestCase {
 		hbmexporter.start();
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testAllFilesExistence() {
@@ -102,7 +102,7 @@ public class TestCase {
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicCompositeId.hbm.xml") );
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testArtifactCollection() {
@@ -112,11 +112,7 @@ public class TestCase {
 				hbmexporter.getArtifactCollector().getFileCount("hbm.xml"));
 	}
 	
-	/**
-	 * Special test for external Global settings were generated.
-	 * Schema and Catalog settings should appear.
-	 */
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGlobalSettingsGeneratedDatabase() throws Exception {
@@ -144,11 +140,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected mycatalog name", "mycatalog", root.attribute("catalog").getStringValue() );
 	}
 
-	/**
-	 * Special test for external Global settings were generated.
-	 * Non-defaults should appear for Cascade and Access.
-	 */
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGlobalSettingsGeneratedAccessAndCascadeNonDefault()  throws Exception {
@@ -176,7 +168,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected cascade setting", "save-update", root.attribute("default-cascade").getStringValue() );
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testMetaAttributes() throws DocumentException {
@@ -209,7 +201,7 @@ public class TestCase {
 		Assert.assertEquals(node.getText(),"anotherone");	
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testCollectionAttributes() throws DocumentException {
@@ -227,7 +219,7 @@ public class TestCase {
 		Assert.assertEquals("delete, update", node.attributeValue("cascade"));	
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testComments() throws DocumentException {
@@ -250,7 +242,7 @@ public class TestCase {
 		Assert.assertEquals(node.getText(),"columnd comment");
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testNoComments() throws DocumentException {
@@ -269,12 +261,7 @@ public class TestCase {
 		Assert.assertEquals("Expected to get no comment element", 0, list.size());	
 	}
 
-	/**
-	 * Special test for external Global settings were generated.
-	 * Test Access and Cascade setting but they are default values
-	 * so they should not appear.
-	 */
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGlobalSettingsGeneratedAccessAndCascadeDefault()  throws Exception {
@@ -302,12 +289,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected cascade setting", "none", root.attribute("default-cascade").getStringValue() );	
 	}
 
-	/**
-	 * Special test for external Global settings were generated.
-	 * Non default settings for Lazy and AutoImport so they 
-	 * should appear.
-	 */
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGlobalSettingsLasyAndAutoImportNonDefault()  throws Exception {
@@ -335,7 +317,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected cascade setting", "false", root.attribute("auto-import").getStringValue() );
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testIdGeneratorHasNotArgumentParameters()  throws Exception {
@@ -357,7 +339,7 @@ public class TestCase {
 		Assert.assertTrue("Expected to get no generator param elements", list.size() == 0);	
 	}
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
     public void testIdGeneratorHasArgumentParameters()  throws Exception {
@@ -396,7 +378,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected param value for column", "next_hi_value", columnElement.getStringValue() );
     }
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsQuery()  throws Exception {
@@ -429,7 +411,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected timeout value", "1000", genAtt.getStringValue() );
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQueryBasic()  throws Exception {
@@ -452,7 +434,7 @@ public class TestCase {
 		Assert.assertNull("Expected flush-mode value to be null", genAtt);
 	}
 	    
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQueryAllAttributes()  throws Exception {
@@ -484,7 +466,7 @@ public class TestCase {
 		Assert.assertNull("Expected synchronize element to be null", syncTable);	
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQuerySynchronize()  throws Exception {
@@ -510,7 +492,7 @@ public class TestCase {
 		Assert.assertNull("Expected return element to be null", returnEl);
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQueryWithReturnRoot()  throws Exception {
@@ -535,7 +517,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected class value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals", genAtt.getStringValue());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQueryWithReturnRole()  throws Exception {
@@ -561,7 +543,7 @@ public class TestCase {
 		Assert.assertEquals("Unexpected property role value for return element", "e.age", genAtt.getStringValue());
 	}
 	    
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testGeneralHbmSettingsSQLQueryWithReturnCollection()  throws Exception {
