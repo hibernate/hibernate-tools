@@ -62,7 +62,7 @@ public class TestCase {
 		factory.close();		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2042: Reenable when implemented in ORM 6.0
 	@Ignore
 	@Test
 	public void testQueryExporter() throws Exception {		
