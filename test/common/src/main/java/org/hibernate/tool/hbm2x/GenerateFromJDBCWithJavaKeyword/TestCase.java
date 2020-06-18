@@ -65,8 +65,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testGenerateJava() throws Exception {	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);	
