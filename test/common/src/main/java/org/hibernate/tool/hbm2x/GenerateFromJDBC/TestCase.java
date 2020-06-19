@@ -98,8 +98,6 @@ public class TestCase {
 		Assert.assertNotNull(metadata.getEntityBinding("org.reveng.Master") );
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testGenerateCfgXml() throws DocumentException {	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
