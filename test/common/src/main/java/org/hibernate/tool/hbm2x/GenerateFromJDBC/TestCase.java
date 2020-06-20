@@ -160,8 +160,6 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html"));
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testPackageNames() {
 		Iterator<PersistentClass> iter = metadataDescriptor
