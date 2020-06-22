@@ -66,8 +66,6 @@ public class TestCase {
 		Assert.assertEquals(TableIdentifier.create(null, "OVRTEST", "CATCHILD"), childid);	
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testOverlapping() {	
 		OverrideRepository or = new OverrideRepository();
