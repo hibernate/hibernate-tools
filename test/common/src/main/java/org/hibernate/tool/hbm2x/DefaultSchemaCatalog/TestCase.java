@@ -88,8 +88,6 @@ public class TestCase {
 		Assert.assertEquals(4,tables.size());					
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testUseDefault() {
 		Properties properties = new Properties();
