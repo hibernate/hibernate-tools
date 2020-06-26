@@ -17,19 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hibernate.tool.maven;
+package org.hibernate.mvn;
 
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.export.ExporterFactory;
-import org.hibernate.tool.api.export.ExporterType;
-import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 
 import java.io.File;
 
-import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.hbm2x.DAOExporter;
 
 /**
  * Mojo to generate Data Access Objects (DAOs) from an existing database.
@@ -37,7 +34,7 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURC
  * See: https://docs.jboss.org/tools/latest/en/hibernatetools/html_single/#d0e4821
  */
 @Mojo(name = "hbm2dao", defaultPhase = GENERATE_SOURCES)
-public class GenerateDaoMojo extends AbstractGenerationMojo {
+public class GenerateDaoMojo extends AbstractHbm2xMojo {
 
     /** The directory into which the DAOs will be generated. */
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/")
@@ -57,17 +54,17 @@ public class GenerateDaoMojo extends AbstractGenerationMojo {
     private String templatePath;
 
     protected void executeExporter(MetadataDescriptor metadataDescriptor) {
-        Exporter pojoExporter = ExporterFactory.createExporter(ExporterType.DAO);
-        pojoExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-        pojoExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDirectory);
+        DAOExporter daoExporter = new DAOExporter();
+        daoExporter.setMetadataDescriptor(metadataDescriptor);
+        daoExporter.setOutputDirectory(outputDirectory);
         if (templatePath != null) {
             getLog().info("Setting template path to: " + templatePath);
-            pojoExporter.getProperties().put(ExporterConstants.TEMPLATE_PATH, new String[] {templatePath});
+            daoExporter.setTemplatePath(new String[]{templatePath});
         }
-        pojoExporter.getProperties().setProperty("ejb3", String.valueOf(ejb3));
-        pojoExporter.getProperties().setProperty("jdk5", String.valueOf(jdk5));
+        daoExporter.getProperties().setProperty("ejb3", String.valueOf(ejb3));
+        daoExporter.getProperties().setProperty("jdk5", String.valueOf(jdk5));
         getLog().info("Starting DAO export to directory: " + outputDirectory + "...");
-        pojoExporter.start();
+        daoExporter.start();
     }
 
 
