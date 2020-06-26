@@ -19,8 +19,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.hibernate.tool</groupId>
-                <artifactId>hibernate-tools-maven</artifactId>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-tools-maven-plugin</artifactId>
                 <version>@project.version@</version>
                 <executions>
                     <execution>
