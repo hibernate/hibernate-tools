@@ -36,8 +36,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testHbm2DDLLogic() throws Exception {
 
