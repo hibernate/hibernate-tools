@@ -103,8 +103,6 @@ public class TestCase {
 				"comparator/NoopComparator.class") );
 	}
     
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testNoVelocityLeftOvers() {
 		Assert.assertNull(FileUtil.findFirstString(
