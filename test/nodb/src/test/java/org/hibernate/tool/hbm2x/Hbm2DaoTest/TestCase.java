@@ -83,8 +83,6 @@ public class TestCase {
 		Assert.assertTrue(new File(compiled, "comparator/NoopComparator.class").exists());
 	}
     
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testNoVelocityLeftOvers() {	
 		Assert.assertNull(FileUtil
