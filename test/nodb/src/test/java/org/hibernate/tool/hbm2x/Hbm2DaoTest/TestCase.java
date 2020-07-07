@@ -101,8 +101,6 @@ public class TestCase {
         						"org/hibernate/tool/hbm2x/AuthorHome.java")));
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testNamedQueries() {		
 		Assert.assertTrue(FileUtil
