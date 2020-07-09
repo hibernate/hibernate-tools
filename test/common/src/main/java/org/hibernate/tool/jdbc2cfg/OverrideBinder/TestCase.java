@@ -205,8 +205,6 @@ public class TestCase {
 		//TODO: test sequence of meta
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testIdGenerator() {
 		OverrideRepository or = new OverrideRepository();
