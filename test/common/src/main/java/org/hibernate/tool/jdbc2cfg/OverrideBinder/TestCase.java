@@ -183,8 +183,6 @@ public class TestCase {
 		Assert.assertEquals("java.lang.Long because of primary key", "java.lang.Long", ((SimpleValue)property.getValue()).getTypeName());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testColumnPropertyNameMappings() {
 		OverrideRepository or = new OverrideRepository();
