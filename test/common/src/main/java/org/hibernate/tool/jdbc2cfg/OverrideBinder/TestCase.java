@@ -156,8 +156,6 @@ public class TestCase {
 		Assert.assertFalse(tableMappings.hasNext());
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testColumnTypeMappings() {
 		OverrideRepository or = new OverrideRepository();
