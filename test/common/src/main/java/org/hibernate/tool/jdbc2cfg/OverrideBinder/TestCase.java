@@ -195,8 +195,6 @@ public class TestCase {
 		Assert.assertEquals("orderName", repository.columnToPropertyName(TableIdentifier.create(null, null, "ORDERS"), "NAME"));
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testMetaAttributeMappings() {
 		PersistentClass classMapping = metadata.getEntityBinding( "Orders" );
