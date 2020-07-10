@@ -376,8 +376,6 @@ public class TestCase {
 		Assert.assertTrue(tf.exclude(TableIdentifier.create(null, null, "heremaxsub") ).booleanValue() );
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testColumnExclude() {
 		
