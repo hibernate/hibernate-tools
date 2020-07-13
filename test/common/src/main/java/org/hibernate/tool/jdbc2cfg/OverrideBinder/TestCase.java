@@ -449,8 +449,6 @@ public class TestCase {
 				((SimpleValue)classMapping.getProperty("flag").getValue()).getTypeName());		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testTableToClass() {
 		
