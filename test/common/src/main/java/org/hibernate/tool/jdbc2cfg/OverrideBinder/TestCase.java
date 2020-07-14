@@ -433,7 +433,7 @@ public class TestCase {
 			
 	}
 		
-	// TODO HBX-2035: Investigate and reenable
+	// TODO: HBX-2052: investigate the use of hibernate-type=SomeUserType
 	@Ignore
 	@Test
 	public void testTypes() {		
