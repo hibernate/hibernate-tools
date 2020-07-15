@@ -131,20 +131,6 @@ public class TestCase {
 		Assert.assertTrue(new File(targetDir, "HelloWorld.class").exists());
 	}
 
-	//  TODO Implement HBX-606 so that the following test succeeds
-	@Ignore
-	@Test
-	public void testParentComponentFailureExpected() {		
-		File file = new File(
-				outputDir, 
-				"org/hibernate/tool/hbm2x/Hbm2JavaTest/FatherComponent.java");		
-		Assert.assertEquals(
-				"test", 
-				FileUtil.findFirstString(
-						"testParent", 
-						file));
-	}
-	
 	@Test
 	public void testNoFreeMarkerLeftOvers() {
 		Assert.assertNull(FileUtil.findFirstString(
