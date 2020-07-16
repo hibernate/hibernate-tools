@@ -108,8 +108,6 @@ public class TestCase {
 		Assert.assertNotNull(FileUtil.findFirstString("A unique customer comment!", tableFile));
     }
     
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
     @Test
     public void testGenericsRenderedCorrectly() {
     		// A unique customer comment!
