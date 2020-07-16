@@ -100,8 +100,6 @@ public class TestCase {
 		checkHtml(outputDir);
 	}
     
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
     public void testCommentIncluded() {
     		// A unique customer comment!
