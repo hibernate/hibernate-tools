@@ -79,8 +79,6 @@ public class TestCase {
 		exporter.start();
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
     public void testExporter() {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "index.html") );
