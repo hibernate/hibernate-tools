@@ -71,8 +71,6 @@ public class TestCase {
 		testCompilable();
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
