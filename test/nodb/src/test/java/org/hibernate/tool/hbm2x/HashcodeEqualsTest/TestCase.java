@@ -57,8 +57,6 @@ public class TestCase {
 		exporter.start();
 	}
 
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testJDK5FailureExpectedOnJDK4() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
