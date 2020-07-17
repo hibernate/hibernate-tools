@@ -121,8 +121,6 @@ public class TestCase {
 				FileUtil.findFirstString("List&lt;", tableFile));
     }
     
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
     @Test
 	public void testInheritedProperties() {
 		File entityFile = new File(outputDir, "entities/org/hibernate/tool/hbm2x/UUser.html");
