@@ -80,8 +80,6 @@ public class TestCase {
 		Assert.assertEquals(2, artifactCollector.getFileCount("java"));
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testCompilable() {
 		File compiled = new File(temporaryFolder.getRoot(), "compiled");
