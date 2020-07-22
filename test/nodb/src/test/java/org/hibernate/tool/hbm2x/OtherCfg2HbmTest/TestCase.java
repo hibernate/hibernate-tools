@@ -75,8 +75,6 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "HelloUniverse.hbm.xml") );		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
     public void testReadable() {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
