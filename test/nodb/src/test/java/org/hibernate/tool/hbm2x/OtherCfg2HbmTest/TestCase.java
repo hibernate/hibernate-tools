@@ -92,8 +92,6 @@ public class TestCase {
         Assert.assertNotNull(metadata);      
     }
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testNoVelocityLeftOvers() {
 		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") ) );
