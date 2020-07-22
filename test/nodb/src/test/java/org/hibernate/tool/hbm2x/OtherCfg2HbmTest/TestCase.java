@@ -65,8 +65,6 @@ public class TestCase {
 		hbmexporter.start();		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") );
