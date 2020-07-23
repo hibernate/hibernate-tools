@@ -100,8 +100,6 @@ public class TestCase {
 		Assert.assertEquals(null, FileUtil.findFirstString("$",new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") ) );   
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testVersioning() throws DocumentException {	
     	SAXReader xmlReader = new SAXReader();
