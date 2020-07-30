@@ -17,6 +17,10 @@ public class Hbm2JavaExporterTask extends ExporterTask {
 
 	boolean jdk5 = false;
 
+    boolean annotateFields = false;
+
+    boolean javaDocFromDbComments = false;
+
 	public Hbm2JavaExporterTask(HibernateToolTask parent) {
 		super( parent );
 	}
@@ -29,11 +33,21 @@ public class Hbm2JavaExporterTask extends ExporterTask {
 		jdk5 = b;
 	}
 
-	protected Exporter configureExporter(Exporter exp) {
+    public void setAnnotateFields(boolean annotateFields) {
+        this.annotateFields = annotateFields;
+    }
+
+    public void setJavaDocFromDbComments(boolean javaDocFromDbComments) {
+        this.javaDocFromDbComments = javaDocFromDbComments;
+    }
+
+    protected Exporter configureExporter(Exporter exp) {
 		POJOExporter exporter = (POJOExporter) exp;
 		super.configureExporter( exp );
-        exporter.getProperties().setProperty("ejb3", ""+ejb3);
+        exporter.getProperties().setProperty("ejb3", "" + ejb3);
         exporter.getProperties().setProperty("jdk5", ""+jdk5);
+        exporter.getProperties().setProperty("annotateFields", "" + annotateFields);
+        exporter.getProperties().setProperty("javaDocFromDbComments", "" + javaDocFromDbComments);
 		return exporter;
 	}
 

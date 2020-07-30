@@ -1,12 +1,12 @@
 <#-- // Property accessors -->
 <#foreach property in pojo.getAllPropertiesIterator()>
 <#if pojo.getMetaAttribAsBool(property, "gen-property", true)>
- <#if pojo.hasFieldJavaDoc(property)>    
+<#if !annotateFields ><#if pojo.hasFieldJavaDoc(property, javaDocFromDbComments) >
     /**       
-     * ${pojo.getFieldJavaDoc(property, 4)}
+      ${pojo.getFieldJavaDoc(property, 4, javaDocFromDbComments)}
      */
 </#if>
-    <#include "GetPropertyAnnotation.ftl"/>
+    <#include "GetPropertyAnnotation.ftl"/></#if>
     ${pojo.getPropertyGetModifiers(property)} ${pojo.getJavaTypeName(property, jdk5)} ${pojo.getGetterSignature(property)}() {
         return this.${c2j.keyWordCheck(property.name)};
     }

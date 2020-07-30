@@ -7,6 +7,9 @@ public interface MetaAttributeConstants {
 	static final String CLASS_MODIFIER = "class-modifier";
 	static final String SCOPE_CLASS = "scope-class";
 	static final String CLASS_DESCRIPTION = "class-description";
+	static final String CLASS_DB_DESCRIPTION = "class-db-description";
+	static final String FIELD_DESCRIPTION = "field-description";
+	static final String FIELD_DB_DESCRIPTION = "field-db-description";
 	static final String IMPLEMENTS = "implements";
 	static final String EXTENDS = "extends";
 	static final String GEN_PROPERTY = "gen-property"; // in templates.

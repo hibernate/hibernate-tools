@@ -144,16 +144,29 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return MetaAttributeHelper.getMetaAsBool( meta.getMetaAttribute( attribute ), defaultValue );
 	}
 
-	public String getClassJavaDoc(String fallback, int indent) {
+    public String getClassJavaDoc(String fallback, int indent) {
 		MetaAttribute c = meta.getMetaAttribute( CLASS_DESCRIPTION );
 		if ( c == null ) {
-			return c2j.toJavaDoc( fallback, indent );
+	        return c2j.toJavaDoc( fallback, indent );
 		}
 		else {
-			return c2j.toJavaDoc( getMetaAsString( CLASS_DESCRIPTION ), indent );
+			return c2j.toJavaDoc( MetaAttributeHelper.getMetaAsString(c), indent );
 		}
 	}
 	
+    public String getClassJavaDoc(String fallback, int indent, boolean javaDocFromDbComments) {
+		MetaAttribute c = meta.getMetaAttribute( CLASS_DESCRIPTION );
+		if ( c == null ) {
+            if (javaDocFromDbComments) {
+                c = meta.getMetaAttribute(CLASS_DB_DESCRIPTION);
+            }
+            if ( c == null ) {
+			    return c2j.toJavaDoc( fallback, indent );
+            }
+		}
+		return c2j.toJavaDoc( MetaAttributeHelper.getMetaAsString(c), indent );
+	}
+
 	public String getClassModifiers() {
 		String classModifiers = null;
 
@@ -535,26 +548,44 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	public boolean hasFieldJavaDoc(Property property) {
-		return property.getMetaAttribute("field-description")!=null;
+		return property.getMetaAttribute(FIELD_DESCRIPTION)!=null;
 	}
 	
+	public boolean hasFieldJavaDoc(Property property, boolean javaDocFromDbComments) {
+		return property.getMetaAttribute(FIELD_DESCRIPTION)!=null ||
+                (javaDocFromDbComments && property.getMetaAttribute(FIELD_DB_DESCRIPTION)!=null);
+	}
+
 	public String getFieldJavaDoc(Property property, int indent) {
-		MetaAttribute c = property.getMetaAttribute( "field-description" );
+		MetaAttribute c = property.getMetaAttribute( FIELD_DESCRIPTION );
 		if ( c == null ) {
 			return c2j.toJavaDoc( "", indent );
 		}
 		else {
-			return c2j.toJavaDoc( c2j.getMetaAsString( property, "field-description" ), indent );
+			return c2j.toJavaDoc( MetaAttributeHelper.getMetaAsString(c), indent );
 		}
 	}
 	
+	public String getFieldJavaDoc(Property property, int indent, boolean javaDocFromDbComments) {
+		MetaAttribute c = property.getMetaAttribute( FIELD_DESCRIPTION );
+		if ( c == null ) {
+            if (javaDocFromDbComments) {
+                c = property.getMetaAttribute( FIELD_DB_DESCRIPTION );
+            }
+            if ( c == null ) {
+                return c2j.toJavaDoc("", indent);
+            }
+		}
+		return c2j.toJavaDoc( MetaAttributeHelper.getMetaAsString(c), indent );
+	}
+
 	public String getFieldDescription(Property property){
-		MetaAttribute c = property.getMetaAttribute( "field-description" );
+		MetaAttribute c = property.getMetaAttribute( FIELD_DESCRIPTION );
 		if ( c == null ) {
 			return "";
 		}
 		else {
-			return c2j.getMetaAsString( property, "field-description" );
+			return MetaAttributeHelper.getMetaAsString(c);
 		}		
 	}
 

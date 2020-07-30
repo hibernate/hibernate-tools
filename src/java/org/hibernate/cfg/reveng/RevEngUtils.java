@@ -1,14 +1,20 @@
 package org.hibernate.cfg.reveng;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 
 public class RevEngUtils {
 
-	public static List<String> getPrimaryKeyInfoInRevengStrategy(
+    public static final String CLASS_DB_DESCRIPTION = "class-db-description";
+    public static final String FIELD_DB_DESCRIPTION = "field-db-description";
+
+    public static List<String> getPrimaryKeyInfoInRevengStrategy(
 			ReverseEngineeringStrategy revengStrat, 
 			Table table, 
 			String defaultCatalog, 
@@ -57,7 +63,9 @@ public class RevEngUtils {
 			tableIdentifier = new TableIdentifier(catalog, schema, table.getName());
 			result = revengStrat.columnToMetaAttributes(tableIdentifier, column);
 		}
-		return result;
+
+    Column col = table.getColumn(new Column(column));
+    return putMetaAttributeDbDescription(result, FIELD_DB_DESCRIPTION, col == null ? null : col.getComment());
 	}
 	
 	public static Map<String,MetaAttribute> getTableToMetaAttributesInRevengStrategy(
@@ -74,10 +82,24 @@ public class RevEngUtils {
 			tableIdentifier = new TableIdentifier(catalog, schema, table.getName());
 			result = revengStrat.tableToMetaAttributes(tableIdentifier);
 		}
-		return result;
+
+     return putMetaAttributeDbDescription(result, CLASS_DB_DESCRIPTION, table.getComment());
 	}
-	
-	public static String getColumnToPropertyNameInRevengStrategy(
+
+    private static Map<String,MetaAttribute> putMetaAttributeDbDescription(Map<String, MetaAttribute> map,
+                                                                           String metaAttributeName, String description) {
+        if (metaAttributeName != null && description != null) {
+            if (map == null) {
+                map = new HashMap<>();
+            }
+            List<SimpleMetaAttribute> comment = new ArrayList<>();
+            comment.add(new SimpleMetaAttribute(description, true));
+            map.put(metaAttributeName, MetaAttributeBinder.toRealMetaAttribute(metaAttributeName, comment));
+        }
+        return map;
+    }
+
+    public static String getColumnToPropertyNameInRevengStrategy(
 			ReverseEngineeringStrategy revengStrat,
 			Table table,
 			String defaultCatalog,
