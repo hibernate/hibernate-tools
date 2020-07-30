@@ -68,7 +68,7 @@ public class TestCase {
 				outputDir, "org/hibernate/tool/hbm2x/AuthorHome.java"));
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2060: Adapt the DAO template to remove the compilation issues
 	@Ignore
 	@Test
 	public void testCompilable() throws IOException {	
