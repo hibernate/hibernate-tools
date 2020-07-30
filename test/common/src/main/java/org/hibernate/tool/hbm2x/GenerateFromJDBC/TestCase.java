@@ -149,8 +149,6 @@ public class TestCase {
 		}		
 	}
 	
-	// TODO HBX-2035: Investigate and reenable
-	@Ignore
 	@Test
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
