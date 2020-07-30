@@ -41,7 +41,7 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2061: Investigate and reenable failing test below
 	@Ignore
 	@Test
 	public void testSchemaAnalyzer() {
