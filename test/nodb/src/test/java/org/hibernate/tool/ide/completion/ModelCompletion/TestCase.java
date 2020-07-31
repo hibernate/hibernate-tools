@@ -315,7 +315,7 @@ public class TestCase {
         Assert.assertEquals(0, hcc.getCompletionProposals().length);
     }
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testBasicFrom() {
@@ -352,7 +352,7 @@ public class TestCase {
     	       	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testFromNonWhitespace() {
@@ -387,7 +387,7 @@ public class TestCase {
  	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testFromWithTabs() {
@@ -414,7 +414,7 @@ public class TestCase {
 		Assert.assertTrue(completionProposals.length > 0);
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testBasicFromPartialEntityName() {
@@ -442,7 +442,7 @@ public class TestCase {
 		}    	    	    	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testBasicFromPartialDifferentCaseEntityName() {
@@ -470,7 +470,7 @@ public class TestCase {
 		}    	    	    	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testDottedFromPartialEntityName() {
@@ -511,7 +511,7 @@ public class TestCase {
     	    	    	    	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
     @Test
     public void testBadInputAfterCursor() {
@@ -622,7 +622,7 @@ public class TestCase {
     	
     }
     
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2063: Investigate and reenable
 	@Ignore
 	@Test
 	public void testInFromAfterEntityAlias() {
