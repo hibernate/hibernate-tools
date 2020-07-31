@@ -74,7 +74,7 @@ public class TestCase {
 		hbmexporter.start();
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2062: Investigate and reenable
 	@Ignore
 	@Test
 	public void testAllFilesExistence() {
@@ -84,7 +84,7 @@ public class TestCase {
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/TypeParamsTest/Order.hbm.xml"));
 	}
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2062: Investigate and reenable
 	@Ignore
 	@Test
 	public void testReadable() {
@@ -100,7 +100,7 @@ public class TestCase {
         Assert.assertNotNull(metadataDescriptor.createMetadata());
     }
 
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2062: Investigate and reenable
 	@Ignore
 	@Test
 	public void testTypeParamsElements() throws DocumentException {
