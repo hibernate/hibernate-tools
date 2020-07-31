@@ -32,7 +32,7 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	// TODO HBX-2035: Investigate and reenable
+	// TODO HBX-2064: Investigate and reenable
 	@Ignore
     @Test
     public void testShouldShowTables() {
