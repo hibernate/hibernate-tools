@@ -29,6 +29,7 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -64,6 +65,8 @@ public class TestCase {
 		hbmexporter.start();
 	}
 	
+	//TODO: Reenable this test: see HBX-2073
+	@Ignore
 	@Test
 	public void testReadable() {
         ArrayList<File> files = new ArrayList<File>(4); 

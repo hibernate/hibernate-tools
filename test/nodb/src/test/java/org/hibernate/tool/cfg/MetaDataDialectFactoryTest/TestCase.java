@@ -18,9 +18,20 @@ import org.junit.Test;
 
 public class TestCase {
 
-	private static class NoNameDialect extends Dialect {}
+	private static class NoNameDialect extends Dialect {
+		@Override
+		public int getVersion() {
+			return 0;
+		}
+	}
 	
-	private static class H2NamedDialect extends Dialect {}
+	private static class H2NamedDialect extends Dialect {
+
+		@Override
+		public int getVersion() {
+			// TODO Auto-generated method stub
+			return 0;
+		}}
 	
 	@Test
 	public void testCreateMetaDataDialect() {

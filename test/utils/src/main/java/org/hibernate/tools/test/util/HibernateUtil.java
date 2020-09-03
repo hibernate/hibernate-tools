@@ -34,7 +34,13 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 
 public class HibernateUtil {
 	
-	public static class Dialect extends org.hibernate.dialect.Dialect {}
+	public static class Dialect extends org.hibernate.dialect.Dialect {
+		@Override
+		public int getVersion() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+	}
 	
 	public static ForeignKey getForeignKey(Table table, String fkName) {
 		ForeignKey result = null;
