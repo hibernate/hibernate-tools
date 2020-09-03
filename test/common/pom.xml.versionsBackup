@@ -8,26 +8,30 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>5.4.21.Final</version>
+        <version>5.4.21-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hibernate-tools-tests-h2</artifactId>
+    <artifactId>hibernate-tools-tests-common</artifactId>
 
-    <name>Hibernate Tools H2 Tests Project</name>
+    <name>Hibernate Tools Common Database Tests Project</name>
 
     <dependencies>
+    	<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-tools</artifactId>
+    	</dependency>
+     	<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-tools-tests-utils</artifactId>
+     	</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
-    	<dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-tools-tests-common</artifactId>
-    	</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
     </dependencies>
     
 </project>

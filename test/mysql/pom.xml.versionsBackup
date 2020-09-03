@@ -8,12 +8,12 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>5.4.21.Final</version>
+        <version>5.4.21-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hibernate-tools-tests-h2</artifactId>
+    <artifactId>hibernate-tools-tests-mysql</artifactId>
 
-    <name>Hibernate Tools H2 Tests Project</name>
+    <name>Hibernate Tools MySQL Tests Project</name>
 
     <dependencies>
         <dependency>
@@ -21,8 +21,8 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     	<dependency>
     		<groupId>org.hibernate</groupId>
