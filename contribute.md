@@ -58,7 +58,7 @@ When you want to contribute code or documentation you first need to create a top
 
 When the work is done or the issue is (partly) fixed, squash the commits into one. It is good practice to refer to the solved issue in the commit message. E.g. `git commit -m "HBX-2000: Create README.md files for the parent and child modules of the project - Add a 'contribute.md' file"`. 
 
-Rebase your topic branch against the current master branch if necessary (`git rebase master`), push the branch to your own fork on GitHub (`git push <your-fork> HBX-2000`) and open a pull request (`https://github.com/<your-fork>/quarkus-eclipse/pull/new/HBX-2000`).
+Rebase your topic branch against the current master branch if necessary (`git rebase master`), push the branch to your own fork on GitHub (`git push <your-fork> HBX-2000`) and open a pull request (`https://github.com/<your-fork>/hibernate-tools/pull/new/HBX-2000`).
 
 ## The small print
 
