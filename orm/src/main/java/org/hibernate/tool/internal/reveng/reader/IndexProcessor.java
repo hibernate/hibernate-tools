@@ -57,17 +57,20 @@ public class IndexProcessor {
 						if(indexes.containsKey(indexName) ) {
 							throw new RuntimeException("UniqueKey exists also as Index! ");
 						}
-						Column column = getColumn(metaDataDialect, table, columnName);
-						key.addColumn(column);
-						
-						if (unique && key.getColumnSpan()==1) {
-							// make list of columns that has the chance of being unique
-							List<UniqueKey> l = uniqueColumns.get(column);
-							if (l == null) {
-								l = new ArrayList<UniqueKey>();
-								uniqueColumns.put(column, l);
+
+						if(columnName != null) {
+							Column column = getColumn(metaDataDialect, table, columnName);
+							key.addColumn(column);
+
+							if (unique && key.getColumnSpan() == 1) {
+								// make list of columns that has the chance of being unique
+								List<UniqueKey> l = uniqueColumns.get(column);
+								if (l == null) {
+									l = new ArrayList<UniqueKey>();
+									uniqueColumns.put(column, l);
+								}
+								l.add(key);
 							}
-							l.add(key);
 						}
 					} 
 					else {
@@ -83,8 +86,11 @@ public class IndexProcessor {
 						if(uniquekeys.containsKey(indexName) ) {
 							throw new RuntimeException("Index exists also as Unique! ");
 						}
-						Column column = getColumn(metaDataDialect, table, columnName);
-						index.addColumn(column);
+
+						if(columnName != null) {
+							Column column = getColumn(metaDataDialect, table, columnName);
+							index.addColumn(column);
+						}
 					}
 					
 				} 
