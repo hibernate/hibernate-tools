@@ -66,9 +66,11 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     public void execute() {
         getLog().info("Starting " + this.getClass().getSimpleName() + "...");
         ReverseEngineeringStrategy strategy = setupReverseEngineeringStrategy();
-        Properties properties = loadPropertiesFile();
-        MetadataDescriptor jdbcDescriptor = createJdbcDescriptor(strategy, properties);
-        executeExporter(jdbcDescriptor);
+        if (propertyFile.exists()) {
+        	executeExporter(createJdbcDescriptor(strategy, loadPropertiesFile()));
+        } else {
+        	getLog().info("Property file '" + propertyFile + "' cannot be found, aborting...");
+        }
         getLog().info("Finished " + this.getClass().getSimpleName() + "!");
     }
 
@@ -100,14 +102,10 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     }
 
     private Properties loadPropertiesFile() {
-        if (propertyFile == null) {
-            return null;
-        }
-
-        Properties properties = new Properties();
         try (FileInputStream is = new FileInputStream(propertyFile)) {
-            properties.load(is);
-            return properties;
+            Properties result = new Properties();
+            result.load(is);
+            return result;
         } catch (FileNotFoundException e) {
             throw new BuildException(propertyFile + " not found.", e);
         } catch (IOException e) {
