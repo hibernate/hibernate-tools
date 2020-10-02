@@ -28,7 +28,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 
 		if ( isInterface() ) {
 			if ( clazz.getMetaAttribute( EXTENDS ) != null ) {
-				if ( !"".equals( extendz ) ) {
+				if ( extendz != null && !extendz.isEmpty() ) {
 					extendz += ",";
 				}
 				extendz += getMetaAsString( EXTENDS, "," );
@@ -38,7 +38,7 @@ public class ComponentPOJOClass extends BasicPOJOClass {
 			extendz = getMetaAsString( EXTENDS, "," );
 		}
 
-		return "".equals( extendz ) ? null : extendz;
+		return ( extendz == null || extendz.isEmpty() ) ? null : extendz;
 	}
 	    
 	public String getImplements() {
