@@ -94,7 +94,7 @@
         <javaee-api.version>8.0.1</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <jaxen.version>1.2.0</jaxen.version>
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <junit-jupiter.version>5.6.2</junit-jupiter.version>
         <mysql.version>6.0.6</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
