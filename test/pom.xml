@@ -50,6 +50,14 @@
             	<module>h2</module>
           	</modules> 
        	</profile>
+       	<profile>
+     		<id>mssql</id>
+          	<modules>
+            	<module>utils</module>
+             	<module>common</module>
+            	<module>mssql</module>
+          	</modules> 
+       	</profile>
 	</profiles>
 
 </project>
