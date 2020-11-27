@@ -26,7 +26,7 @@ public class HibernateUtilTest {
 		Table table = new Table();
 		Assert.assertNull(HibernateUtil.getForeignKey(table, "foo"));
 		Assert.assertNull(HibernateUtil.getForeignKey(table, "bar"));
-		table.createForeignKey("foo", Collections.emptyList(), null, null);
+		table.createForeignKey("foo", Collections.emptyList(), "fooClass", null);
 		Assert.assertNotNull(HibernateUtil.getForeignKey(table, "foo"));
 		Assert.assertNull(HibernateUtil.getForeignKey(table, "bar"));
 	}
