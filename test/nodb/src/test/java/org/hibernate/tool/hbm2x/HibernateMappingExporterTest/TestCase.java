@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Properties;
 
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -37,6 +38,7 @@ public class TestCase {
 		writer.close();
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { fooHbmXmlOrigin }, properties); 		
 		final File outputDir = new File(temporaryFolder.getRoot(), "output");
