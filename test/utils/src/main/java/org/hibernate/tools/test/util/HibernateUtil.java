@@ -2,12 +2,16 @@ package org.hibernate.tools.test.util;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.engine.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -16,6 +20,16 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 public class HibernateUtil {
 	
 	public static class Dialect extends org.hibernate.dialect.Dialect {}
+	
+	public static class ConnectionProvider extends UserSuppliedConnectionProviderImpl {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public Connection getConnection() throws SQLException {
+			return DATABASE_META_DATA.getConnection();
+		}
+		@Override
+		public void closeConnection(Connection conn) throws SQLException {}
+	}
 	
 	public static ForeignKey getForeignKey(Table table, String fkName) {
 		ForeignKey result = null;
@@ -54,6 +68,7 @@ public class HibernateUtil {
 		}
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		return MetadataDescriptorFactory.createNativeDescriptor(null, hbmFiles, properties);
 	}
 	
@@ -72,5 +87,7 @@ public class HibernateUtil {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private static DatabaseMetaData DATABASE_META_DATA = new DummyDatabaseMetadata();
 	
 }

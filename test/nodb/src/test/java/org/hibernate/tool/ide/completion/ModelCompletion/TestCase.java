@@ -658,7 +658,8 @@ public class TestCase {
     
     private Metadata buildMetadata() {
      	StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-    		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+    	ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+    	ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
        	MetadataSources metadataSources = new MetadataSources()
        		.addInputStream(getClass().getResourceAsStream("Product.hbm.xml"))
        		.addInputStream(getClass().getResourceAsStream("Store.hbm.xml"))

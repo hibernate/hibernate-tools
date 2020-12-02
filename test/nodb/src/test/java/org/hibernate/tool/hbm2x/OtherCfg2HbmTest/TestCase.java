@@ -14,7 +14,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -75,10 +74,9 @@ public class TestCase {
 	
 	@Test
     public void testReadable() {
-		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
-		ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
         File[] hbmFiles = new File[4];
         hbmFiles[0] = new File(outputDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml");
         hbmFiles[1] = new File(outputDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml");

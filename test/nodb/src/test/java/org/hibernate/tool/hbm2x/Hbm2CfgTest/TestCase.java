@@ -62,6 +62,7 @@ public class TestCase {
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
 	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
@@ -80,6 +81,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
@@ -90,6 +92,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
 	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(outputDir);
