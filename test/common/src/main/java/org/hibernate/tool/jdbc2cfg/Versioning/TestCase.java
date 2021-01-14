@@ -16,8 +16,8 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.type.BigDecimalType;
+import org.hibernate.type.BinaryType;
 import org.hibernate.type.IntegerType;
-import org.hibernate.type.RowVersionType;
 import org.hibernate.type.TimestampType;
 import org.junit.After;
 import org.junit.Assert;
@@ -94,7 +94,7 @@ public class TestCase {
 		Assert.assertNotNull(version);
 		Assert.assertTrue(
 				version.getType() instanceof TimestampType || 
-				version.getType() instanceof RowVersionType);	// on MS SQL Server
+				version.getType() instanceof BinaryType);	// (for MS SQL Server) TODO verify: it used to be RowVersionType but since 6.0 BinaryTypee
 		cl = metadata.getEntityBinding( "WithFakeTimestamp" );
 		Assert.assertNotNull(cl);
 		version = cl.getVersion();

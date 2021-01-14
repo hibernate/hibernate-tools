@@ -24,6 +24,10 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
         </dependency>
+      	<dependency>
+    		<groupId>org.hibernate.tool</groupId>
+    		<artifactId>hibernate-tools-ant</artifactId>
+    	</dependency>
     	<dependency>
     		<groupId>org.hibernate.tool</groupId>
     		<artifactId>hibernate-tools-tests-common</artifactId>
