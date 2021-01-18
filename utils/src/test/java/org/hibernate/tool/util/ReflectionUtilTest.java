@@ -22,7 +22,6 @@ package org.hibernate.tool.util;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.hibernate.tool.util.ReflectionUtil;
 import org.junit.jupiter.api.Test;
 
 public class ReflectionUtilTest {
