@@ -19,18 +19,19 @@
  */
 package org.hibernate.tools.test.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ConnectionLeakUtilTest {
 	
 	private ConnectionLeakUtil connectionLeakUtil = null;
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		connectionLeakUtil = ConnectionLeakUtil.forH2();
 		connectionLeakUtil.initialize();
@@ -43,7 +44,7 @@ public class ConnectionLeakUtilTest {
 			connectionLeakUtil.assertNoLeaks();
 			throw new RuntimeException("should not happen");
 		} catch (AssertionError e) {
-			Assert.assertEquals("1 connections are leaked.", e.getMessage());
+			assertEquals("1 connections are leaked.", e.getMessage());
 		}
 	}
 	
