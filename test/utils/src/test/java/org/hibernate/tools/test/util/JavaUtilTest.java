@@ -19,13 +19,14 @@
  */
 package org.hibernate.tools.test.util;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.FileWriter;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class JavaUtilTest {
 	
@@ -41,13 +42,12 @@ public class JavaUtilTest {
 			"  public Foo foo;               "+
 			"}                               ";
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	@Test
 	public void testCompile() throws Exception {
-		File testFolder = temporaryFolder.getRoot();
-		File packageFolder = new File(testFolder, "org/hibernate/tool/test");
+		File packageFolder = new File(outputFolder, "org/hibernate/tool/test");
 		packageFolder.mkdirs();
 		File fooFile = new File(packageFolder, "Foo.java");
 		FileWriter fileWriter = new FileWriter(fooFile);
@@ -57,11 +57,11 @@ public class JavaUtilTest {
 		fileWriter = new FileWriter(barFile);
 		fileWriter.write(BAR_STRING);
 		fileWriter.close();
-		Assert.assertFalse(new File(packageFolder, "Foo.class").exists());
-		Assert.assertFalse(new File(packageFolder, "Bar.class").exists());
-		JavaUtil.compile(testFolder);
-		Assert.assertTrue(new File(packageFolder, "Foo.class").exists());
-		Assert.assertTrue(new File(packageFolder, "Bar.class").exists());
+		assertFalse(new File(packageFolder, "Foo.class").exists());
+		assertFalse(new File(packageFolder, "Bar.class").exists());
+		JavaUtil.compile(outputFolder);
+		assertTrue(new File(packageFolder, "Foo.class").exists());
+		assertTrue(new File(packageFolder, "Bar.class").exists());
 	}
 
 }
