@@ -19,6 +19,11 @@
  */
 package org.hibernate.tools.test.util;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+import java.io.File;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -30,29 +35,27 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class HibernateUtilTest {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
+	@TempDir
+	public File outputFolder = new File("output");
+	
 	@Test
 	public void testGetForeignKey() {
 		Table table = new Table();
-		Assert.assertNull(HibernateUtil.getForeignKey(table, "foo"));
-		Assert.assertNull(HibernateUtil.getForeignKey(table, "bar"));
+		assertNull(HibernateUtil.getForeignKey(table, "foo"));
+		assertNull(HibernateUtil.getForeignKey(table, "bar"));
 		table.createForeignKey("foo", Collections.emptyList(), null, null);
-		Assert.assertNotNull(HibernateUtil.getForeignKey(table, "foo"));
-		Assert.assertNull(HibernateUtil.getForeignKey(table, "bar"));
+		assertNotNull(HibernateUtil.getForeignKey(table, "foo"));
+		assertNull(HibernateUtil.getForeignKey(table, "bar"));
 	}
 	
 	@Test
 	public void testDialectInstantiation() {
-		Assert.assertNotNull(new HibernateUtil.Dialect());
+		assertNotNull(new HibernateUtil.Dialect());
 	}
 	
 	@Test
@@ -61,12 +64,12 @@ public class HibernateUtilTest {
 				.initializeMetadataDescriptor(
 						this, 
 						new String[] { "HelloWorld.hbm.xml" },
-						temporaryFolder.getRoot())
+						outputFolder)
 				.createMetadata();
-		Assert.assertSame(
+		assertSame(
 				HibernateUtil.Dialect.class, 
 				metadata.getDatabase().getDialect().getClass());
-		Assert.assertNotNull(metadata.getEntityBinding("HelloWorld"));
+		assertNotNull(metadata.getEntityBinding("HelloWorld"));
 	}
 	
 	@Test
@@ -75,12 +78,12 @@ public class HibernateUtilTest {
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, null, properties);
-		Assert.assertNull(metadataDescriptor
+		assertNull(metadataDescriptor
 				.createMetadata()
 				.getEntityBinding(
 						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
 		HibernateUtil.addAnnotatedClass(metadataDescriptor, Dummy.class);
-		Assert.assertNotNull(metadataDescriptor
+		assertNotNull(metadataDescriptor
 				.createMetadata()
 				.getEntityBinding(
 						"org.hibernate.tools.test.util.HibernateUtilTest$Dummy"));
