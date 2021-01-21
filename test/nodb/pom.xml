@@ -37,6 +37,18 @@
     <name>Hibernate Tools No Database Tests Project</name>
 
     <dependencies>
+		<dependency>
+		    <groupId>javax</groupId>
+		    <artifactId>javaee-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     	<dependency>
     		<groupId>org.hibernate.tool</groupId>
     		<artifactId>hibernate-tools-ant</artifactId>
@@ -49,17 +61,9 @@
     		<groupId>org.hibernate.tool</groupId>
     		<artifactId>hibernate-tools-tests-utils</artifactId>
     	</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>javax</groupId>
-		    <artifactId>javaee-api</artifactId>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
 		</dependency>
     </dependencies>
     
