@@ -19,12 +19,11 @@
  */
 package org.hibernate.tools.test.util;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.util.Iterator;
 
-import org.opentest4j.AssertionFailedError;
+import org.junit.Assert;
+import org.junit.ComparisonFailure;
 
 public class JUnitUtil {
 	
@@ -39,7 +38,7 @@ public class JUnitUtil {
 			iterator.next();
 		}
 		if (actualAmountOfElements != expectedAmountOfElements) {
-			throw new AssertionFailedError(
+			throw new ComparisonFailure(
 					reason, 
 					Integer.toString(expectedAmountOfElements),
 					Integer.toString(actualAmountOfElements));
@@ -47,9 +46,9 @@ public class JUnitUtil {
 	}
 	
 	public static void assertIsNonEmptyFile(File file) {
-		assertTrue(file.exists(), file + " does not exist");
-		assertTrue(file.isFile(), file + " not a file");		
-		assertTrue(file.length()>0, file + " does not have any contents");
+		Assert.assertTrue(file + " does not exist", file.exists() );
+		Assert.assertTrue(file + " not a file", file.isFile() );		
+		Assert.assertTrue(file + " does not have any contents", file.length()>0);
 	}
 
 }
