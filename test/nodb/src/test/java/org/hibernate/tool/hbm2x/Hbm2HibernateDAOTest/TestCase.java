@@ -39,7 +39,6 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -91,8 +90,6 @@ public class TestCase {
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") );
 	}
 	
-	// TODO HBX-2060: Adapt the DAO template to remove the compilation issues
-	@Ignore
 	@Test
 	public void testCompilable() throws IOException {
 		File compiled = new File(temporaryFolder.getRoot(), "compiled");
