@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2004-2020 Red Hat, Inc.
+ * Copyright 2004-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -19,6 +19,12 @@
  */
 
 package org.hibernate.tool.hbm2x.PropertiesTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -41,11 +47,9 @@ import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Josh Moore josh.moore@gmx.de
@@ -57,19 +61,19 @@ public class TestCase {
 			"Properties.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
+	@TempDir
+	public File outputFolder = new File("output");
+	
 	private DefaultArtifactCollector artifactCollector;
 	private File outputDir = null;
 	private File resourcesDir = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		artifactCollector = new DefaultArtifactCollector();
-		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir = new File(outputFolder, "src");
 		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
@@ -87,8 +91,8 @@ public class TestCase {
 	
 	@Test
 	public void testNoGenerationOfEmbeddedPropertiesComponent() {
-		Assert.assertEquals(2, artifactCollector.getFileCount("java"));
-		Assert.assertEquals(2, artifactCollector.getFileCount("hbm.xml"));
+		assertEquals(2, artifactCollector.getFileCount("java"));
+		assertEquals(2, artifactCollector.getFileCount("hbm.xml"));
 	}
 	
 	@Test
@@ -102,20 +106,20 @@ public class TestCase {
 			document = xmlReader.read(outputXml);
 			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/properties");
 			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one properties element", 1, list.size());
+			assertEquals(1, list.size(), "Expected to get one properties element");
 			Element node = (Element) list.get(0);
-			Assert.assertEquals(node.attribute( "name" ).getText(),"emergencyContact");
-			Assert.assertNotNull(
+			assertEquals(node.attribute( "name" ).getText(),"emergencyContact");
+			assertNotNull(
 					FileUtil.findFirstString(
 							"name", 
 							new File(outputDir, "properties/PPerson.java" )));
-			Assert.assertNull(
-					"Embedded component/properties should not show up in .java", 
+			assertNull(
 					FileUtil.findFirstString(
 							"emergencyContact", 
-							new File(outputDir, "properties/PPerson.java" )));		
+							new File(outputDir, "properties/PPerson.java" )),
+					"Embedded component/properties should not show up in .java");		
 		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
+			fail("Can't parse file " + outputXml.getAbsolutePath());
 		}		
 	}
 	
@@ -124,13 +128,13 @@ public class TestCase {
 		String propertiesUsageResourcePath = "/org/hibernate/tool/hbm2x/PropertiesTest/PropertiesUsage.java_";
 		File propertiesUsageOrigin = new File(getClass().getResource(propertiesUsageResourcePath).toURI());
 		File propertiesUsageDestination = new File(outputDir, "properties/PropertiesUsage.java");
-		File targetDir = new File(temporaryFolder.getRoot(), "compilerOutput" );
+		File targetDir = new File(outputFolder, "target" );
 		targetDir.mkdir();	
 		Files.copy(propertiesUsageOrigin.toPath(), propertiesUsageDestination.toPath());
 		JavaUtil.compile(outputDir, targetDir);
-		Assert.assertTrue(new File(targetDir, "properties/PCompany.class").exists());
-		Assert.assertTrue(new File(targetDir, "properties/PPerson.class").exists());
-		Assert.assertTrue(new File(targetDir, "properties/PropertiesUsage.class").exists());
+		assertTrue(new File(targetDir, "properties/PCompany.class").exists());
+		assertTrue(new File(targetDir, "properties/PPerson.class").exists());
+		assertTrue(new File(targetDir, "properties/PropertiesUsage.class").exists());
 	}
 
 }
