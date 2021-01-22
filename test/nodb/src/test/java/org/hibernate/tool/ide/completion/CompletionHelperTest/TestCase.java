@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2017-2020 Red Hat, Inc.
+ * Copyright 2017-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -20,16 +20,18 @@
 
 package org.hibernate.tool.ide.completion.CompletionHelperTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.tool.ide.completion.CompletionHelper;
 import org.hibernate.tool.ide.completion.EntityNameReference;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author leon
+ * @author koen
  */
 public class TestCase {
 	
@@ -39,17 +41,17 @@ public class TestCase {
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.descriptions", "descr"));
         qts.add(new EntityNameReference("descr.name", "n"));
-        Assert.assertEquals("Invalid path", "Article/descriptions/name/locale", CompletionHelper.getCanonicalPath(qts, "n.locale"));
-        Assert.assertEquals("Invalid path", "Article/descriptions", CompletionHelper.getCanonicalPath(qts, "descr"));
+        assertEquals("Article/descriptions/name/locale", CompletionHelper.getCanonicalPath(qts, "n.locale"), "Invalid path");
+        assertEquals("Article/descriptions", CompletionHelper.getCanonicalPath(qts, "descr"), "Invalid path");
         //
         qts.clear();
         qts.add(new EntityNameReference("com.company.Clazz", "clz"));
         qts.add(new EntityNameReference("clz.attr", "a"));
-        Assert.assertEquals("Invalid path", "com.company.Clazz/attr", CompletionHelper.getCanonicalPath(qts, "a"));
+        assertEquals("com.company.Clazz/attr", CompletionHelper.getCanonicalPath(qts, "a"), "Invalid path");
         //
         qts.clear();
         qts.add(new EntityNameReference("Agga", "a"));
-        Assert.assertEquals("Invalid path", "Agga", CompletionHelper.getCanonicalPath(qts, "a"));
+        assertEquals("Agga", CompletionHelper.getCanonicalPath(qts, "a"), "Invalid path");
     }
 
     @Test
