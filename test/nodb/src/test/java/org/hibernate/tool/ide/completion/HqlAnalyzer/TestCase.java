@@ -20,15 +20,18 @@
 
 package org.hibernate.tool.ide.completion.HqlAnalyzer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.tool.ide.completion.EntityNameReference;
 import org.hibernate.tool.ide.completion.HQLAnalyzer;
 import org.hibernate.tool.ide.completion.SubQuery;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author leon
@@ -36,7 +39,7 @@ import org.junit.Test;
 public class TestCase {
 	
 	// TODO HBX-2064: Investigate and reenable
-	@Ignore
+	@Disabled
     @Test
     public void testShouldShowTables() {
         String query = "select | from";
@@ -125,24 +128,24 @@ public class TestCase {
     public void doTestVisibleSubQueries(String query, int size) {
     	char[] cs = query.replaceAll("\\|", "").toCharArray();
     	List<SubQuery> visible = new HQLAnalyzer().getVisibleSubQueries(cs, query.indexOf("|"));
-        Assert.assertEquals("Invalid visible query size", size, visible.size());
+        assertEquals(size, visible.size(), "Invalid visible query size");
     }
 
     private void doTestSubQueries(String query, int size) {    	
     	List<SubQuery> l = new HQLAnalyzer().getSubQueries(query.toCharArray(), 0).subQueries;
-        Assert.assertEquals("Incorrent subqueries count", size, l.size());
+        assertEquals(size, l.size(), "Incorrent subqueries count");
     }
 
     private void doTestPrefix(String query, String prefix) {
-        Assert.assertEquals(prefix, HQLAnalyzer.getEntityNamePrefix(query.toCharArray(), query.indexOf("|")));
+        assertEquals(prefix, HQLAnalyzer.getEntityNamePrefix(query.toCharArray(), query.indexOf("|")));
     }
 
     private void doTestShouldShowTables(String query, boolean expectedValue) {
         char[] ch = query.replaceAll("\\|", "").toCharArray();
 		if (expectedValue) {
-            Assert.assertTrue(new HQLAnalyzer().shouldShowEntityNames(ch, getCaretPosition(query)));
+            assertTrue(new HQLAnalyzer().shouldShowEntityNames(ch, getCaretPosition(query)));
         } else {
-            Assert.assertFalse(new HQLAnalyzer().shouldShowEntityNames(ch, getCaretPosition(query)));
+            assertFalse(new HQLAnalyzer().shouldShowEntityNames(ch, getCaretPosition(query)));
         }
     }
 
@@ -257,12 +260,12 @@ public class TestCase {
     private void doTestVisibleTables(String query, String[] types, String aliases[]) {
         char[] toCharArray = query.replaceAll("\\|", "").toCharArray();
 		List<EntityNameReference> qts = new HQLAnalyzer().getVisibleEntityNames(toCharArray, getCaretPosition(query));
-        Assert.assertEquals("Incorrect table count", types.length, qts.size());
+        assertEquals(types.length, qts.size(), "Incorrect table count");
         int i = 0;
         for (Iterator<EntityNameReference> iter = qts.iterator(); iter.hasNext();) {
 			EntityNameReference qt = iter.next();
-			Assert.assertEquals("Incorrect query table type [" + i + "]", types[i], qt.getEntityName());
-            Assert.assertEquals("Incorrect query table alias [" + i + "]", aliases[i++], qt.getAlias());
+			assertEquals(types[i], qt.getEntityName(), "Incorrect query table type [" + i + "]");
+            assertEquals(aliases[i++], qt.getAlias(), "Incorrect query table alias [" + i + "]");
         }
     }
 
