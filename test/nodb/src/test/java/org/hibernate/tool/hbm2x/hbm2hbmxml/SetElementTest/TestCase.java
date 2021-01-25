@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2004-2020 Red Hat, Inc.
+ * Copyright 2004-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -19,6 +19,9 @@
  */
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.SetElementTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.List;
@@ -38,11 +41,9 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Dmitry Geraskov
@@ -54,24 +55,24 @@ public class TestCase {
 			"Search.hbm.xml",
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private Exporter hbmexporter = null;
-	private File outputDir = null;
+	private File srcDir = null;
 	private File resourcesDir = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "src");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HbmExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		hbmexporter.start();
 	}
 
@@ -79,28 +80,28 @@ public class TestCase {
 	public void testAllFilesExistence() {
 		JUnitUtil.assertIsNonEmptyFile(
 				new File(
-						outputDir,  
+						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml"));
 	}
 
 	@Test
 	public void testReadable() {
         File searchHbmXml =	new File(
-						outputDir,  
+						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { searchHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
-        Assert.assertNotNull(metadataDescriptor.createMetadata());
+        assertNotNull(metadataDescriptor.createMetadata());
     }
 
 	@Test
 	public void testKey() throws DocumentException {
 		File outputXml = 
 				new File(
-						outputDir,  
+						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
 		SAXReader xmlReader =  new SAXReader();
@@ -108,13 +109,13 @@ public class TestCase {
 		Document document = xmlReader.read(outputXml);
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/key");
 		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one key element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one key element");
 		Element node = (Element) list.get(0);
 		if (node.attribute( "column" ) != null){//implied attribute
-			Assert.assertEquals(node.attribute( "column" ).getText(),"searchString");
+			assertEquals(node.attribute( "column" ).getText(),"searchString");
 		} else {
 			node = node.element("column");
-			Assert.assertEquals(node.attribute( "name" ).getText(),"searchString");
+			assertEquals(node.attribute( "name" ).getText(),"searchString");
 		}
 	}
 
@@ -122,7 +123,7 @@ public class TestCase {
 	public void testSetElement() throws DocumentException {
 		File outputXml = 
 				new File(
-						outputDir,  
+						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
 		SAXReader xmlReader =  new SAXReader();
@@ -130,19 +131,19 @@ public class TestCase {
 		Document document = xmlReader.read(outputXml);
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
 		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one set element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one set element");
 		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "name" ).getText(),"searchResults");
-		Assert.assertEquals(node.attribute( "access" ).getText(),"field");
+		assertEquals(node.attribute( "name" ).getText(),"searchResults");
+		assertEquals(node.attribute( "access" ).getText(),"field");
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/element");
 		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one element 'element'", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one element 'element'");
 		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "type" ).getText(), "string");
+		assertEquals(node.attribute( "type" ).getText(), "string");
 		list = node.selectNodes("column");
-		Assert.assertEquals("Expected to get one element 'column'", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one element 'column'");
 		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "name" ).getText(), "text");
+		assertEquals(node.attribute( "name" ).getText(), "text");
 	}
 
 }
