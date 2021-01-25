@@ -70,7 +70,6 @@ public class TestCase {
 	@TempDir
 	public File outputFolder = new File("output");
 	
-
 	private File srcDir = null;
 	private File resourcesDir = null;
 	

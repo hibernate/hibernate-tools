@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2004-2020 Red Hat, Inc.
+ * Copyright 2004-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -20,6 +20,8 @@
 
 package org.hibernate.tool.hbm2x.Hbm2JavaDidirectionalIndexedCollectionMappingTest;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
 import org.hibernate.tool.api.export.Exporter;
@@ -28,12 +30,9 @@ import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tools.test.util.HibernateUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 /**
  * @author max
  * @author koen
@@ -44,30 +43,30 @@ public class TestCase {
 			"GenericModel.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
-	private File outputDir = null;
+	private File srcDir = null;
 	private File resourcesDir = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "src");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		exporter.start();
 	}
 	
 	@Test
 	public void testReflection() throws Exception {
-		Assert.assertTrue(new File(outputDir, "GenericObject.java").exists());
-		Assert.assertTrue(new File(outputDir, "GenericValue.java").exists());
+		assertTrue(new File(srcDir, "GenericObject.java").exists());
+		assertTrue(new File(srcDir, "GenericValue.java").exists());
 	}
 	
 }
