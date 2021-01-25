@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2004-2020 Red Hat, Inc.
+ * Copyright 2004-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -19,6 +19,11 @@
  */
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,11 +43,9 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
 
@@ -50,44 +53,44 @@ public class TestCase {
 			"UserGroup.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private HbmExporter hbmexporter = null;
-	private File outputDir = null;
+	private File srcDir = null;
 	private File resourcesDir = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "output");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HbmExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		hbmexporter.start();
 	}
 
 	@Test
 	public void testAllFilesExistence() {
-		Assert.assertFalse(new File(
-				outputDir,
+		assertFalse(new File(
+				srcDir,
 				"GeneralHbmSettings.hbm.xml")
 			.exists() );
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir,
+				srcDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/User.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir,
+				srcDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml") );
 	}
 
 	@Test
 	public void testArtifactCollection() {
-		Assert.assertEquals(
+		assertEquals(
 				2,
 				hbmexporter.getArtifactCollector().getFileCount("hbm.xml"));
 	}
@@ -96,22 +99,22 @@ public class TestCase {
 	public void testReadable() {
         ArrayList<File> files = new ArrayList<File>(4); 
         files.add(new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/User.hbm.xml"));
         files.add(new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml"));
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files.toArray(new File[2]), properties);
-        Assert.assertNotNull(metadataDescriptor.createMetadata());
+        assertNotNull(metadataDescriptor.createMetadata());
     }
 
 	@Test
 	public void testManyToMany() throws DocumentException {
 		File outputXml = new File(
-				outputDir,  
+				srcDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/User.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
 		SAXReader xmlReader = new SAXReader();
@@ -119,45 +122,45 @@ public class TestCase {
 		Document document = xmlReader.read(outputXml);
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/many-to-many");
 		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one many-to-many element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one many-to-many element");
 		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "entity-name" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group");
+		assertEquals(node.attribute( "entity-name" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group");
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
 		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one set element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one set element");
 		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "table" ).getText(),"UserGroup");
+		assertEquals(node.attribute( "table" ).getText(),"UserGroup");
 	}
 
 	@Test
 	public void testCompositeId() throws DocumentException {
 		File outputXml = new File(
-				outputDir, 
+				srcDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml");
 		SAXReader xmlReader = new SAXReader();
 		xmlReader.setValidation(true);
 		Document document = xmlReader.read(outputXml);
 		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
 		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one class element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one class element");
 		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute("table").getText(), "`Group`");
+		assertEquals(node.attribute("table").getText(), "`Group`");
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/composite-id");
 		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one composite-id element", 1, list.size());
+		assertEquals(1, list.size(), "Expected to get one composite-id element");
 		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/composite-id/key-property");
 		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get two key-property elements", 2, list.size());
+		assertEquals(2, list.size(), "Expected to get two key-property elements");
 		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute("name").getText(), "name");
+		assertEquals(node.attribute("name").getText(), "name");
 		node = (Element) list.get(1);
-		Assert.assertEquals(node.attribute("name").getText(), "org");
+		assertEquals(node.attribute("name").getText(), "org");
 	}
 
 	@Test
 	public void testSetAttributes() {
 		File outputXml = new File(
-				outputDir, 
+				srcDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
 		SAXReader xmlReader = new SAXReader();
@@ -167,14 +170,14 @@ public class TestCase {
 			document = xmlReader.read(outputXml);
 			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
 			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one set element", 1, list.size());
+			assertEquals(1, list.size(), "Expected to get one set element");
 			Element node = (Element) list.get(0);
-			Assert.assertEquals(node.attribute("table").getText(), "UserGroup");
-			Assert.assertEquals(node.attribute("name").getText(), "users");
-			Assert.assertEquals(node.attribute("inverse").getText(), "true");
-			Assert.assertEquals(node.attribute("lazy").getText(), "extra");
+			assertEquals(node.attribute("table").getText(), "UserGroup");
+			assertEquals(node.attribute("name").getText(), "users");
+			assertEquals(node.attribute("inverse").getText(), "true");
+			assertEquals(node.attribute("lazy").getText(), "extra");
 		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
+			fail("Can't parse file " + outputXml.getAbsolutePath());
 		}
 	}
 
