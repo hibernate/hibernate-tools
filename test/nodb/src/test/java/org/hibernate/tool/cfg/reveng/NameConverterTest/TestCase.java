@@ -1,27 +1,47 @@
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.hibernate.tool.cfg.reveng.NameConverterTest;
 
-import org.hibernate.tool.internal.util.NameConverter;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.hibernate.tool.internal.util.NameConverter;
+import org.junit.jupiter.api.Test;
 
 public class TestCase {
 
 	@Test
     public void testSimplePluralizeWithSingleH() throws Exception {
         String plural = NameConverter.simplePluralize("h");
-        Assert.assertEquals("hs", plural);
+        assertEquals("hs", plural);
     }
 	
 	@Test
 	public void testPluralize(){
-		Assert.assertEquals("boxes", NameConverter.simplePluralize("box"));
-		Assert.assertEquals("buses", NameConverter.simplePluralize("bus"));
-		Assert.assertEquals("keys", NameConverter.simplePluralize("key"));
-		Assert.assertEquals("countries", NameConverter.simplePluralize("country"));
-		Assert.assertEquals("churches", NameConverter.simplePluralize("church"));
-		Assert.assertEquals("bushes", NameConverter.simplePluralize("bush"));
-		Assert.assertEquals("roofs", NameConverter.simplePluralize("roof"));
+		assertEquals("boxes", NameConverter.simplePluralize("box"));
+		assertEquals("buses", NameConverter.simplePluralize("bus"));
+		assertEquals("keys", NameConverter.simplePluralize("key"));
+		assertEquals("countries", NameConverter.simplePluralize("country"));
+		assertEquals("churches", NameConverter.simplePluralize("church"));
+		assertEquals("bushes", NameConverter.simplePluralize("bush"));
+		assertEquals("roofs", NameConverter.simplePluralize("roof"));
 	}
 
 }
