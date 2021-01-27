@@ -1,4 +1,27 @@
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.hibernate.tool.cfg.MetaDataDialectFactoryTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Properties;
 
@@ -13,8 +36,7 @@ import org.hibernate.tool.internal.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.OracleMetaDataDialect;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestCase {
 
@@ -70,11 +92,11 @@ public class TestCase {
 		p.setProperty("hibernatetool.metadatadialect", "DoesNotExists");
 		try {
 			RevengDialectFactory.createMetaDataDialect(new MySQLDialect(500), p);
-			Assert.fail();
+			fail();
 		} catch (RuntimeException jbe) {
 			// expected
 		} catch(Exception e) {
-			Assert.fail();
+			fail();
 		}
 	}
 
@@ -130,33 +152,33 @@ public class TestCase {
 
 	private void assertSameClass(Class<?> clazz, Object instance) {
 		if(clazz==null && instance==null) {
-			Assert.assertEquals((Object)null, (Object)null);
+			assertEquals((Object)null, (Object)null);
 			return;
 		}
 		if(clazz==null) {
-			Assert.assertEquals(null, instance);
+			assertEquals(null, instance);
 			return;
 		}
 		if(instance==null) {
-			Assert.assertEquals(clazz.getCanonicalName(), null);
+			assertEquals(clazz.getCanonicalName(), null);
 			return;
 		}
-		Assert.assertEquals(clazz.getCanonicalName(), instance.getClass().getName());
+		assertEquals(clazz.getCanonicalName(), instance.getClass().getName());
 	}
 	
 	private void assertSameClass(String msg, Class<?> clazz, Object instance) {
 		if(clazz==null && instance==null) {
-			Assert.assertEquals((Object)null, (Object)null);
+			assertEquals((Object)null, (Object)null);
 			return;
 		}
 		if(clazz==null) {
-			Assert.assertEquals(msg, null, instance);
+			assertEquals(null, instance, msg);
 			return;
 		}
 		if(instance==null) {
-			Assert.assertEquals(msg, clazz.getCanonicalName(), null);
+			assertEquals(clazz.getCanonicalName(), null, msg);
 			return;
 		}
-		Assert.assertEquals(msg, clazz.getCanonicalName(), instance.getClass().getName());
+		assertEquals(clazz.getCanonicalName(), instance.getClass().getName(), msg);
 	}
 }
