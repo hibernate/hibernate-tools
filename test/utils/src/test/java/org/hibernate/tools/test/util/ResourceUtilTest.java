@@ -19,11 +19,13 @@
  */
 package org.hibernate.tools.test.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -34,10 +36,14 @@ public class ResourceUtilTest {
 	public File outputFolder = new File("output");
 	
 	@Test
-	public void testGetResourcesLocation() {
-		assertEquals(
-				"/org/hibernate/tools/test/util/", 
-				ResourceUtil.getResourcesLocation(this));
+	public void testResolveResourceLocation() {
+		InputStream is = ResourceUtil.resolveResourceLocation(getClass(), "/foo");
+		assertNull(is);
+		is = ResourceUtil.resolveResourceLocation(getClass(), "/ResourceUtilTest.resource");
+		assertNotNull(is);
+		is = ResourceUtil.resolveResourceLocation(getClass(), "HelloWorld.foo.bar");
+		assertNull(is);
+		is = ResourceUtil.resolveResourceLocation(getClass(), "HelloWorld.hbm.xml");
 	}
 	
 	@Test

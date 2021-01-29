@@ -26,20 +26,10 @@ import java.nio.file.Files;
 
 public class ResourceUtil {
 
-	public static String getResourcesLocation(Object test) {
-		return '/' + test.getClass().getPackage().getName().replace('.', '/') + '/';
-	}
-	
 	public static void createResources(Object test, String[] resources, File resourcesDir) {
 		try {
-			String defaultResourceLocation = getResourcesLocation(test);
 			for (String resource : resources) {
-				String resourceLocation = 
-						(resource.startsWith("/")) 
-						? resource : defaultResourceLocation + resource;
-				InputStream inputStream = test
-						.getClass()
-						.getResourceAsStream(resourceLocation); 
+				InputStream inputStream = resolveResourceLocation(test.getClass(), resource);
 				File resourceFile = new File(resourcesDir, resource);
 				File parent = resourceFile.getParentFile();
 				if (!parent.exists()) {
@@ -50,6 +40,28 @@ public class ResourceUtil {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static InputStream resolveResourceLocation(Class<?> testClass, String resourceName) {
+		InputStream result = null;
+		if (resourceName.startsWith("/")) {
+			result = testClass.getResourceAsStream(resourceName);
+		} else {
+			result = resolveRelativeResourceLocation(testClass, resourceName);
+		}
+		return result;
+	}
+	
+	private static String getRelativeResourcesRoot(Class<?> testClass) {
+		return '/' + testClass.getPackage().getName().replace('.', '/') + '/';
+	}
+	
+	private static InputStream resolveRelativeResourceLocation(Class<?> testClass, String resourceName) {
+		InputStream result = testClass.getResourceAsStream(getRelativeResourcesRoot(testClass) + resourceName);
+		if (result == null && testClass.getSuperclass() != Object.class) {
+			result = resolveRelativeResourceLocation(testClass.getSuperclass(), resourceName);
+		}
+		return result;
 	}
 	
 }

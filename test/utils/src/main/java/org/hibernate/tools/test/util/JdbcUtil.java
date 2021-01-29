@@ -131,8 +131,7 @@ public class JdbcUtil {
 	
 	private static String[] getSqls(Object test, String scriptName) {
 		String[] result =  new String[] {};
-		String location = ResourceUtil.getResourcesLocation(test) + scriptName;
-		InputStream inputStream = test.getClass().getResourceAsStream(location);
+		InputStream inputStream = ResourceUtil.resolveResourceLocation(test.getClass(), scriptName);
 		if (inputStream != null) {
 			BufferedReader bufferedReader = 
 					new BufferedReader(new InputStreamReader(inputStream));
