@@ -67,6 +67,7 @@
             	<module>nodb</module>
             	<module>common</module>
             	<module>h2</module>
+            	<module>h2-jupiter</module>
 				<module>maven</module>
           	</modules> 
        	</profile>
