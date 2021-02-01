@@ -11,5 +11,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class Cfg2HbmWithPackageName extends org.hibernate.tool.ant.Cfg2HbmWithPackageName.TestCase {}
 	@Nested public class Cfg2HbmWithPackageNameAndReverseNamingStrategy extends org.hibernate.tool.ant.Cfg2HbmWithPackageNameAndReverseNamingStrategy.TestCase {}
 	@Nested public class EJB3Configuration extends org.hibernate.tool.ant.EJB3Configuration.TestCase {}
+	@Nested public class GenericExport extends org.hibernate.tool.ant.GenericExport.TestCase {}
 
 }
