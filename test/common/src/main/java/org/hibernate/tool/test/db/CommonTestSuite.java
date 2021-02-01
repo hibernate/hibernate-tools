@@ -6,9 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.ant.AntHibernateTool.TestCase.class,
-	org.hibernate.tool.ant.Cfg2HbmNoError.TestCase.class,
-	org.hibernate.tool.ant.Cfg2HbmWithCustomReverseNamingStrategy.TestCase.class,
 	org.hibernate.tool.ant.Cfg2HbmWithInvalidReverseNamingStrategy.TestCase.class,
 	org.hibernate.tool.ant.Cfg2HbmWithPackageName.TestCase.class,
 	org.hibernate.tool.ant.Cfg2HbmWithPackageNameAndReverseNamingStrategy.TestCase.class,
