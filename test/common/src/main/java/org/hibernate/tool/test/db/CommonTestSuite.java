@@ -6,7 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.ant.SchemaExportWarning.TestCase.class,
 	org.hibernate.tool.cfg.DriverMetaData.TestCase.class,
 	org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase.class,
 	org.hibernate.tool.hbm2x.CachedMetaData.TestCase.class,
