@@ -19,5 +19,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class JDBCConfigWithRevEngXml extends org.hibernate.tool.ant.JDBCConfigWithRevEngXml.TestCase {}
 	@Nested public class JPABogusPUnit extends org.hibernate.tool.ant.JPABogusPUnit.TestCase {}
 	@Nested public class JPAPropertyOverridesPUnit extends org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase {}
+	@Nested public class JPAPUnit extends org.hibernate.tool.ant.JPAPUnit.TestCase {}
 
 }

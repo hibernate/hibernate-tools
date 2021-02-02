@@ -6,7 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.ant.JPAPUnit.TestCase.class,
 	org.hibernate.tool.ant.Properties.TestCase.class,
 	org.hibernate.tool.ant.Query.TestCase.class,
 	org.hibernate.tool.ant.SchemaExportWarning.TestCase.class,
