@@ -6,7 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.ant.JDBCConfiguration.TestCase.class,
 	org.hibernate.tool.ant.JDBCConfigWithRevEngXml.TestCase.class,
 	org.hibernate.tool.ant.JPABogusPUnit.TestCase.class,
 	org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase.class,

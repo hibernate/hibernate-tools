@@ -15,5 +15,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class Hbm2JavaConfiguration extends org.hibernate.tool.ant.Hbm2JavaConfiguration.TestCase {}
 	@Nested public class Hbm2JavaEJB3Configuration extends org.hibernate.tool.ant.Hbm2JavaEJB3Configuration.TestCase {}
 	@Nested public class HbmLint extends org.hibernate.tool.ant.HbmLint.TestCase {}
+	@Nested public class JDBCConfiguration extends org.hibernate.tool.ant.JDBCConfiguration.TestCase {}
 
 }
