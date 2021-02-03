@@ -32,5 +32,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class GenerateFromJDBC extends org.hibernate.tool.hbm2x.GenerateFromJDBC.TestCase {}
 	@Nested public class GenerateFromJDBCWithJavaKeyword extends org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword.TestCase {}
 	@Nested public class IncrementalSchemaReading extends org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase {}
+	@Nested public class JdbcHbm2JavaEjb3 extends org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase {}
 
 }
