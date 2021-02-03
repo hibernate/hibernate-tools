@@ -26,5 +26,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class SchemaUpdateWarning extends org.hibernate.tool.ant.SchemaUpdateWarning.TestCase {}
 	@Nested public class DriverMetaData extends org.hibernate.tool.cfg.DriverMetaData.TestCase {}
 	@Nested public class JDBCMetaDataConfiguration extends org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase {}
+	@Nested public class CachedMetaData extends org.hibernate.tool.hbm2x.CachedMetaData.TestCase {}
 
 }
