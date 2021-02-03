@@ -6,7 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword.TestCase.class,
 	org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase.class,
 	org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase.class,
 	org.hibernate.tool.hbm2x.query.QueryExporterTest.TestCase.class,
