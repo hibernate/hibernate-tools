@@ -6,7 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	org.hibernate.tool.hbmlint.SchemaAnalyzer.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.AutoQuote.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Basic.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.BasicMultiSchema.TestCase.class,
