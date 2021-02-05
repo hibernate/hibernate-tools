@@ -1,8 +1,30 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.ManyToMany;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 
@@ -18,12 +40,10 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author max
@@ -31,15 +51,15 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	@Before
+	@TempDir
+	public File outputDir = new File("output");
+	
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -55,26 +75,26 @@ public class TestCase {
 
         PersistentClass project = metadata.getEntityBinding("Project");
 		
-		Assert.assertNotNull(project.getProperty("worksOns"));
+		assertNotNull(project.getProperty("worksOns"));
 		//assertNotNull(project.getProperty("employee"));
-		Assert.assertEquals(3, project.getPropertyClosureSpan());		
-		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
+		assertEquals(3, project.getPropertyClosureSpan());		
+		assertEquals("projectId", project.getIdentifierProperty().getName());
 		
 		PersistentClass employee = metadata.getEntityBinding("Employee");
 		
-		Assert.assertNotNull(employee.getProperty("worksOns"));
-		Assert.assertNotNull(employee.getProperty("employees"));
-		Assert.assertNotNull(employee.getProperty("employee"));
+		assertNotNull(employee.getProperty("worksOns"));
+		assertNotNull(employee.getProperty("employees"));
+		assertNotNull(employee.getProperty("employee"));
 		//assertNotNull(employee.getProperty("projects"));
-		Assert.assertEquals(6, employee.getPropertyClosureSpan());
-		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
+		assertEquals(6, employee.getPropertyClosureSpan());
+		assertEquals("id", employee.getIdentifierProperty().getName());
 		
 		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
 		
-		Assert.assertNotNull(worksOn.getProperty("project"));
-		Assert.assertNotNull(worksOn.getProperty("employee"));
-		Assert.assertEquals(2, worksOn.getPropertyClosureSpan());
-		Assert.assertEquals("id", worksOn.getIdentifierProperty().getName());		
+		assertNotNull(worksOn.getProperty("project"));
+		assertNotNull(worksOn.getProperty("employee"));
+		assertEquals(2, worksOn.getPropertyClosureSpan());
+		assertEquals("id", worksOn.getIdentifierProperty().getName());		
 	}
 	
 	@Test
@@ -83,22 +103,22 @@ public class TestCase {
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
 		
-        Assert.assertNull("No middle class should be generated.", metadata.getEntityBinding( "WorksOn" ));
+        assertNull(metadata.getEntityBinding( "WorksOn" ), "No middle class should be generated.");
         
-        Assert.assertNotNull("Should create worksontext since one of the foreign keys is not part of pk", metadata.getEntityBinding( "WorksOnContext" ));
+        assertNotNull(metadata.getEntityBinding( "WorksOnContext" ), "Should create worksontext since one of the foreign keys is not part of pk");
         
         PersistentClass projectClass = metadata.getEntityBinding("Project");
-		Assert.assertNotNull( projectClass );
+		assertNotNull( projectClass );
 
 		PersistentClass employeeClass = metadata.getEntityBinding("Employee");
-		Assert.assertNotNull( employeeClass );
+		assertNotNull( employeeClass );
 				
 		assertPropertyNotExist( projectClass, "worksOns" );
 		assertPropertyNotExist( employeeClass, "worksOns" );
 		
         Property property = employeeClass.getProperty( "projects" );
-		Assert.assertNotNull( property);
-		Assert.assertNotNull( projectClass.getProperty( "employees" ));				
+		assertNotNull( property);
+		assertNotNull( projectClass.getProperty( "employees" ));				
 		
 	}
 
@@ -107,7 +127,7 @@ public class TestCase {
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();	    
-        Assert.assertNotNull("Middle class should be generated.", metadata.getEntityBinding( "NonMiddle" ));	
+        assertNotNull(metadata.getEntityBinding( "NonMiddle" ), "Middle class should be generated.");	
 	}
 
 	@Test
@@ -115,7 +135,7 @@ public class TestCase {
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
-		Assert.assertNotNull(metadata);	
+		assertNotNull(metadata);	
 	}
 	
 	@Test
@@ -123,9 +143,8 @@ public class TestCase {
 		
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null);
-		File outputDir = temporaryFolder.getRoot();
-		
-		Assert.assertNotNull(metadataDescriptor.createMetadata());
+
+		assertNotNull(metadataDescriptor.createMetadata());
 		
 		HbmExporter hme = new HbmExporter();
 		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
@@ -140,16 +159,16 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "LeftTable.hbm.xml") );
 		assertFileAndExists( new File(outputDir, "NonMiddle.hbm.xml") ); //Must be there since it has a fkey that is not part of the pk
 		
-		Assert.assertFalse(new File(outputDir, "WorksOn.hbm.xml").exists() );
+		assertFalse(new File(outputDir, "WorksOn.hbm.xml").exists() );
 		
-		Assert.assertEquals(6, outputDir.listFiles().length);
+		assertEquals(6, outputDir.listFiles().length);
 		
 		File[] files = new File[3];
 		files[0] = new File(outputDir, "Employee.hbm.xml");
 		files[1] = new File(outputDir, "Project.hbm.xml");
 		files[2] = new File(outputDir, "WorksOnContext.hbm.xml");
 		
-		Assert.assertNotNull(MetadataDescriptorFactory
+		assertNotNull(MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
 				.createMetadata());
 		
@@ -159,16 +178,16 @@ public class TestCase {
 	private void assertPropertyNotExist(PersistentClass projectClass, String prop) {
 		try {
 			projectClass.getProperty(prop);
-			Assert.fail("property " + prop + " should not exist on " + projectClass);
+			fail("property " + prop + " should not exist on " + projectClass);
 		} catch(MappingException e) {
 			// expected
 		}
 	}
 	
 	private void assertFileAndExists(File file) {
-		Assert.assertTrue(file + " does not exist", file.exists() );
-		Assert.assertTrue(file + " not a file", file.isFile() );		
-		Assert.assertTrue(file + " does not have any contents", file.length()>0);
+		assertTrue(file.exists(), file + " does not exist");
+		assertTrue(file.isFile(), file + " not a file");		
+		assertTrue(file.length()>0, file + " does not have any contents");
 	}
 
 }
