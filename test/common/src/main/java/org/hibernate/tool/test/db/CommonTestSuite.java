@@ -26,7 +26,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	org.hibernate.tool.jdbc2cfg.Identity.TestCase.class,
-	org.hibernate.tool.jdbc2cfg.KeyPropertyCompositeId.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.ManyToMany.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.MetaData.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase.class,
