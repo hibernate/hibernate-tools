@@ -26,7 +26,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	org.hibernate.tool.jdbc2cfg.Identity.TestCase.class,
-	org.hibernate.tool.jdbc2cfg.OneToOne.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.Performance.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.PersistentClasses.TestCase.class,
