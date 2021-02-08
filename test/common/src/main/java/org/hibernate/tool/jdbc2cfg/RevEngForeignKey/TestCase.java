@@ -1,8 +1,28 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.RevEngForeignKey;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.MalformedURLException;
 
@@ -16,10 +36,9 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -30,12 +49,12 @@ public class TestCase {
 	private static final String FOREIGN_KEY_TEST_XML = "org/hibernate/tool/jdbc2cfg/RevEngForeignKey/foreignkeytest.reveng.xml";
 	private static final String BAD_FOREIGNKEY_XML = "org/hibernate/tool/jdbc2cfg/RevEngForeignKey/badforeignkeytest.reveng.xml";
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -46,22 +65,22 @@ public class TestCase {
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
 		PersistentClass project = metadata.getEntityBinding("Project");
-		Assert.assertNotNull(project.getProperty("worksOns"));
-		Assert.assertNotNull(project.getProperty("employee"));
-		Assert.assertEquals(3, project.getPropertyClosureSpan());		
-		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
+		assertNotNull(project.getProperty("worksOns"));
+		assertNotNull(project.getProperty("employee"));
+		assertEquals(3, project.getPropertyClosureSpan());		
+		assertEquals("projectId", project.getIdentifierProperty().getName());
 		PersistentClass employee = metadata.getEntityBinding("Employee");
-		Assert.assertNotNull(employee.getProperty("worksOns"));
-		Assert.assertNotNull(employee.getProperty("employees"));
-		Assert.assertNotNull(employee.getProperty("employee"));
-		Assert.assertNotNull(employee.getProperty("projects"));
-		Assert.assertEquals(5, employee.getPropertyClosureSpan());
-		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
+		assertNotNull(employee.getProperty("worksOns"));
+		assertNotNull(employee.getProperty("employees"));
+		assertNotNull(employee.getProperty("employee"));
+		assertNotNull(employee.getProperty("projects"));
+		assertEquals(5, employee.getPropertyClosureSpan());
+		assertEquals("id", employee.getIdentifierProperty().getName());
 		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
-		Assert.assertNotNull(worksOn.getProperty("project"));
-		Assert.assertNotNull(worksOn.getProperty("employee"));
-		Assert.assertEquals(4, worksOn.getPropertyClosureSpan());
-		Assert.assertEquals("id", worksOn.getIdentifierProperty().getName());	
+		assertNotNull(worksOn.getProperty("project"));
+		assertNotNull(worksOn.getProperty("employee"));
+		assertEquals(4, worksOn.getPropertyClosureSpan());
+		assertEquals("id", worksOn.getIdentifierProperty().getName());	
 	}
 
 	@Test
@@ -73,27 +92,27 @@ public class TestCase {
 				.createReverseEngineeringDescriptor(repository, null)
 				.createMetadata();			
 		PersistentClass project = metadata.getEntityBinding("Project");		
-		Assert.assertNotNull(project.getProperty("worksOns"));
+		assertNotNull(project.getProperty("worksOns"));
 		assertPropertyNotExists(project, "employee", "should be removed by reveng.xml");
 		Property property = project.getProperty("teamLead");
-		Assert.assertNotNull(property);
-		Assert.assertTrue(property.getValue() instanceof SimpleValue);
-		Assert.assertEquals(3, project.getPropertyClosureSpan());		
-		Assert.assertEquals("projectId", project.getIdentifierProperty().getName());
+		assertNotNull(property);
+		assertTrue(property.getValue() instanceof SimpleValue);
+		assertEquals(3, project.getPropertyClosureSpan());		
+		assertEquals("projectId", project.getIdentifierProperty().getName());
 		PersistentClass employee = metadata.getEntityBinding("Employee");	
-		Assert.assertNotNull(employee.getProperty("worksOns"));
-		Assert.assertNotNull("property should be renamed by reveng.xml", employee.getProperty("manager"));		
+		assertNotNull(employee.getProperty("worksOns"));
+		assertNotNull(employee.getProperty("manager"), "property should be renamed by reveng.xml");		
 		assertPropertyNotExists( employee, "employees", "set should be excluded by reveng.xml" );
 		Property setProperty = employee.getProperty("managedProjects");
-		Assert.assertNotNull("should be renamed by reveng.xml", setProperty);
-		Assert.assertEquals("delete, update", setProperty.getCascade());
-		Assert.assertEquals(4, employee.getPropertyClosureSpan());
-		Assert.assertEquals("id", employee.getIdentifierProperty().getName());
+		assertNotNull(setProperty, "should be renamed by reveng.xml");
+		assertEquals("delete, update", setProperty.getCascade());
+		assertEquals(4, employee.getPropertyClosureSpan());
+		assertEquals("id", employee.getIdentifierProperty().getName());
 		PersistentClass worksOn = metadata.getEntityBinding("WorksOn");
-		Assert.assertNotNull(worksOn.getProperty("project"));
-		Assert.assertNotNull(worksOn.getProperty("employee"));
-		Assert.assertEquals(4, worksOn.getPropertyClosureSpan());
-		Assert.assertEquals("id", worksOn.getIdentifierProperty().getName());
+		assertNotNull(worksOn.getProperty("project"));
+		assertNotNull(worksOn.getProperty("employee"));
+		assertEquals(4, worksOn.getPropertyClosureSpan());
+		assertEquals("id", worksOn.getIdentifierProperty().getName());
 	}
 
 	@Test
@@ -111,13 +130,13 @@ public class TestCase {
 		assertPropertyNotExists(addressPerson, "person", "should be removed by reveng.xml");
 		assertPropertyNotExists(person, "addressPerson", "should be removed by reveng.xml");	
 		Property property = addressMultiPerson.getProperty("renamedOne");
-		Assert.assertNotNull(property);	
-		Assert.assertEquals("Casade should be set to delete by reveng.xml", "delete", property.getCascade());
+		assertNotNull(property);	
+		assertEquals("delete", property.getCascade(), "Casade should be set to delete by reveng.xml");
 		assertPropertyNotExists(multiPerson, "addressMultiPerson", "should not be there");
 		Property o2o = multiPerson.getProperty("renamedInversedOne");
-		Assert.assertNotNull(o2o);
-		Assert.assertEquals("update", o2o.getCascade());
-		Assert.assertEquals("JOIN", o2o.getValue().getFetchMode().toString());
+		assertNotNull(o2o);
+		assertEquals("update", o2o.getCascade());
+		assertEquals("JOIN", o2o.getValue().getFetchMode().toString());
 	}
 	
 	@Test
@@ -129,9 +148,9 @@ public class TestCase {
 			MetadataDescriptorFactory
 					.createReverseEngineeringDescriptor(repository, null)
 					.createMetadata();
-			Assert.fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
+			fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
 		} catch(MappingException me) {
-			Assert.assertTrue(me.getMessage().indexOf("already defined")>=0);			
+			assertTrue(me.getMessage().indexOf("already defined")>=0);			
 		}		
 	}
 
@@ -142,10 +161,10 @@ public class TestCase {
 				.createMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("employee");	
-		Assert.assertEquals("none", property.getCascade());
-		Assert.assertEquals(true, property.isUpdateable());
-		Assert.assertEquals(true, property.isInsertable());
-		Assert.assertEquals("SELECT", property.getValue().getFetchMode().toString());
+		assertEquals("none", property.getCascade());
+		assertEquals(true, property.isUpdateable());
+		assertEquals(true, property.isInsertable());
+		assertEquals("SELECT", property.getValue().getFetchMode().toString());
 	}
 	
 	@Test
@@ -158,16 +177,16 @@ public class TestCase {
 				.createMetadata();
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("manager");	
-		Assert.assertEquals("all", property.getCascade());
-		Assert.assertEquals(false, property.isUpdateable());
-		Assert.assertEquals(false, property.isInsertable());
-		Assert.assertEquals("JOIN", property.getValue().getFetchMode().toString());
+		assertEquals("all", property.getCascade());
+		assertEquals(false, property.isUpdateable());
+		assertEquals(false, property.isInsertable());
+		assertEquals("JOIN", property.getValue().getFetchMode().toString());
 	}	
 
 	private void assertPropertyNotExists(PersistentClass employee, String name, String msg) {
 		try {
 			employee.getProperty(name);
-			Assert.fail(msg);
+			fail(msg);
 		} catch(MappingException me) {
 			// excpected
 		}
