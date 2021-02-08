@@ -68,5 +68,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class NoPrimaryKey extends org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase {}
 	@Nested public class OneToOne extends org.hibernate.tool.jdbc2cfg.OneToOne.TestCase {}
 	@Nested public class OverrideBinder extends org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase {}
+	@Nested public class Performance extends org.hibernate.tool.jdbc2cfg.Performance.TestCase {}
 
 }
