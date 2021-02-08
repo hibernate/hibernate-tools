@@ -26,7 +26,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	org.hibernate.tool.jdbc2cfg.Identity.TestCase.class,
-	org.hibernate.tool.jdbc2cfg.PersistentClasses.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.RevEngForeignKey.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.SearchEscapeString.TestCase.class,
 	org.hibernate.tool.jdbc2cfg.TernarySchema.TestCase.class,
