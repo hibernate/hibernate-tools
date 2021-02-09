@@ -74,5 +74,6 @@ public class JupiterCommonTestSuite {
 	@Nested public class SearchEscapeString extends org.hibernate.tool.jdbc2cfg.SearchEscapeString.TestCase {}
 	@Nested public class TernarySchema extends org.hibernate.tool.jdbc2cfg.TernarySchema.TestCase {}
 	@Nested public class Versioning extends org.hibernate.tool.jdbc2cfg.Versioning.TestCase {}
+	@Nested public class Statistics extends org.hibernate.tool.stat.Statistics.TestCase {}
 
 }
