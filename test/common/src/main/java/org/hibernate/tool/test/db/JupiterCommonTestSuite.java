@@ -60,7 +60,7 @@ public class JupiterCommonTestSuite {
 	@Nested public class BasicMultiSchema extends org.hibernate.tool.jdbc2cfg.BasicMultiSchema.TestCase {}
 	@Nested public class CompositeId extends org.hibernate.tool.jdbc2cfg.CompositeId.TestCase {}
 	@Nested public class ForeignKeys extends org.hibernate.tool.jdbc2cfg.ForeignKeys.TestCase {}
-
+	@Nested public class Identity extends org.hibernate.tool.jdbc2cfg.Identity.TestCase {}
 	@Nested public class Index extends org.hibernate.tool.jdbc2cfg.Index.TestCase {}
 	@Nested public class KeyPropertyCompositeId extends org.hibernate.tool.jdbc2cfg.KeyPropertyCompositeId.TestCase {}
 	@Nested public class ManyToMany extends org.hibernate.tool.jdbc2cfg.ManyToMany.TestCase {}

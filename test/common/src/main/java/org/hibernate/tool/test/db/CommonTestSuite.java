@@ -24,7 +24,5 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({
-	org.hibernate.tool.jdbc2cfg.Identity.TestCase.class,
-})
+@SuiteClasses({ })
 public class CommonTestSuite {}
