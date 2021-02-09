@@ -1,8 +1,26 @@
 /*
- * Created on 2004-11-23
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.TernarySchema;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -22,13 +40,11 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author max
@@ -36,12 +52,12 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestCase {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private MetadataDescriptor metadataDescriptor = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		AbstractStrategy c = new AbstractStrategy() {
@@ -57,23 +73,22 @@ public class TestCase {
 	    		.createReverseEngineeringDescriptor(c, null);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
 
 	// TODO Investigate the ignored test: HBX-1410
-	@Ignore 
+	@Disabled 
 	@Test
 	public void testTernaryModel() throws SQLException {
 		assertMultiSchema(metadataDescriptor.createMetadata());	
 	}
 
 	// TODO Investigate the ignored test: HBX-1410
-	@Ignore
+	@Disabled
 	@Test
 	public void testGeneration() {		
-		File outputFolder = temporaryFolder.getRoot();
 		HbmExporter hme = new HbmExporter();
 		hme.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hme.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputFolder);
@@ -81,7 +96,7 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
-		Assert.assertEquals(3, outputFolder.listFiles().length);
+		assertEquals(3, outputFolder.listFiles().length);
 		File[] files = new File[3];
 		files[0] = new File(outputFolder, "Role.hbm.xml");
 		files[0] = new File(outputFolder, "User.hbm.xml");
@@ -97,28 +112,28 @@ public class TestCase {
 				metadata.getEntityBindings().iterator(), 
 				5);
 		final PersistentClass role = metadata.getEntityBinding("Role");
-		Assert.assertNotNull(role);
+		assertNotNull(role);
 		PersistentClass userroles = metadata.getEntityBinding("Userroles");
-		Assert.assertNotNull(userroles);
+		assertNotNull(userroles);
 		PersistentClass user = metadata.getEntityBinding("User");
-		Assert.assertNotNull(user);
+		assertNotNull(user);
 		PersistentClass plainRole = metadata.getEntityBinding("Plainrole");
-		Assert.assertNotNull(plainRole);
+		assertNotNull(plainRole);
 		Property property = role.getProperty("users");
-		Assert.assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
-		Assert.assertNotNull(property);
+		assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
+		assertNotNull(property);
 		property.getValue().accept(new DefaultValueVisitor(true) {
 			public Object accept(Set o) {
-				Assert.assertEquals(o.getCollectionTable().getSchema(), "THIRDSCHEMA");
+				assertEquals(o.getCollectionTable().getSchema(), "THIRDSCHEMA");
 				return null;
 			}
 		});
 		property = plainRole.getProperty("users");
-		Assert.assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
-		Assert.assertNotNull(property);
+		assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
+		assertNotNull(property);
 		property.getValue().accept(new DefaultValueVisitor(true) {
 			public Object accept(Set o) {
-				Assert.assertEquals(o.getCollectionTable().getSchema(), null);
+				assertEquals(o.getCollectionTable().getSchema(), null);
 				return null;
 			}
 		});
