@@ -6,6 +6,6 @@ import org.junit.jupiter.api.Nested;
 public class TestSuite {
 	
 	@Nested
-	public class H2TestSuite extends JupiterCommonTestSuite {}
+	public class MySqlTestSuite extends JupiterCommonTestSuite {}
 
 }
