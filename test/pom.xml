@@ -86,6 +86,14 @@
             	<module>mssql</module>
           	</modules> 
        	</profile>
+       	<profile>
+     		<id>mysql</id>
+          	<modules>
+            	<module>utils</module>
+             	<module>common</module>
+            	<module>mysql</module>
+          	</modules> 
+       	</profile>
 	</profiles>
 
 </project>

@@ -17,20 +17,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+     	<dependency>
+    		<groupId>org.hibernate.tool</groupId>
+    		<artifactId>hibernate-tools-ant</artifactId>
+    	</dependency>
     	<dependency>
     		<groupId>org.hibernate.tool</groupId>
     		<artifactId>hibernate-tools-tests-common</artifactId>
     	</dependency>
 		<dependency>
-		    <groupId>org.junit.vintage</groupId>
-		    <artifactId>junit-vintage-engine</artifactId>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
 		</dependency>
     </dependencies>
     

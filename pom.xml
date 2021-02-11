@@ -96,7 +96,7 @@
         <jaxen.version>1.2.0</jaxen.version>
         <junit.version>4.13.1</junit.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
-        <mysql.version>6.0.6</mysql.version>
+        <mysql.version>8.0.23</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
         <sqlserver.version>9.1.1.jre8-preview</sqlserver.version>
     </properties>
