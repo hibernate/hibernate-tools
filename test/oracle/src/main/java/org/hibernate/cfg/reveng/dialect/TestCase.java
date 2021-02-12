@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2018-2020 Red Hat, Inc.
+ * Copyright 2018-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
