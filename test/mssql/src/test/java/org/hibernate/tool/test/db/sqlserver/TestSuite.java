@@ -19,12 +19,12 @@
  */
 package org.hibernate.tool.test.db.sqlserver;
 
-import org.hibernate.tool.test.db.JupiterCommonTestSuite;
+import org.hibernate.tool.test.db.DbTestSuite;
 import org.junit.jupiter.api.Nested;
 
 public class TestSuite {
 	
 	@Nested
-	public class MSSqlTestSuite extends JupiterCommonTestSuite {}
+	public class MSSqlTestSuite extends DbTestSuite {}
 
 }

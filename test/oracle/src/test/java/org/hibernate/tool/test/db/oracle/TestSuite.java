@@ -19,12 +19,12 @@
  */
 package org.hibernate.tool.test.db.oracle;
 
-import org.hibernate.tool.test.db.JupiterCommonTestSuite;
+import org.hibernate.tool.test.db.DbTestSuite;
 import org.junit.jupiter.api.Nested;
 
 public class TestSuite {
 	
-	@Nested public class OracleTestSuite extends JupiterCommonTestSuite {}
+	@Nested public class OracleTestSuite extends DbTestSuite {}
 	@Nested public class DialectTestCase extends org.hibernate.cfg.reveng.dialect.TestCase {}
 	@Nested public class CompositeOrderTestCase extends org.hibernate.tool.jdbc2cfg.CompositeIdOrder.TestCase {}
 	@Nested public class ViewsTestCase extends org.hibernate.tool.jdbc2cfg.Views.TestCase {}
