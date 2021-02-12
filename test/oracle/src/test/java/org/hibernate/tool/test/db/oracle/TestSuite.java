@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2017-2020 Red Hat, Inc.
+ * Copyright 2017-2021 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -19,15 +19,14 @@
  */
 package org.hibernate.tool.test.db.oracle;
 
-import org.hibernate.tools.test.util.DbSuite;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.hibernate.tool.test.db.JupiterCommonTestSuite;
+import org.junit.jupiter.api.Nested;
 
-@RunWith(DbSuite.class)
-@SuiteClasses({
-	org.hibernate.cfg.reveng.dialect.TestCase.class,
-	org.hibernate.tool.jdbc2cfg.CompositeIdOrder.TestCase.class,
-	org.hibernate.tool.jdbc2cfg.Views.TestCase.class,
-	org.hibernate.tool.test.db.CommonTestSuite.class
-})
-public class TestSuite {}
+public class TestSuite {
+	
+	@Nested public class OracleTestSuite extends JupiterCommonTestSuite {}
+	@Nested public class DialectTestCase extends org.hibernate.cfg.reveng.dialect.TestCase {}
+	@Nested public class CompositeOrderTestCase extends org.hibernate.tool.jdbc2cfg.CompositeIdOrder.TestCase {}
+	@Nested public class ViewsTestCase extends org.hibernate.tool.jdbc2cfg.Views.TestCase {}
+	
+}
