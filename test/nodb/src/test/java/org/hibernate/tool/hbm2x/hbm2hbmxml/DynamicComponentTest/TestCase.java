@@ -20,8 +20,8 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.DynamicComponentTest;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -20,9 +20,9 @@
 
 package org.hibernate.tool.ide.completion.ModelCompletion;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URL;
@@ -139,11 +139,11 @@ public class TestCase {
         
     		hcc.clear();
         cc.getMatchingImports( " ", hcc );
-        assertTrue("Space prefix should have no classes", hcc.getCompletionProposals().length==0);
+        assertTrue(hcc.getCompletionProposals().length==0, "Space prefix should have no classes");
         
         hcc.clear();
         cc.getMatchingImports( "pro", hcc );
-        assertTrue("Completion should not be case sensitive", hcc.getCompletionProposals().length==2);
+        assertTrue(hcc.getCompletionProposals().length==2, "Completion should not be case sensitive");
         
         hcc.clear();
         cc.getMatchingImports( "StoreC", hcc );
@@ -240,7 +240,7 @@ public class TestCase {
 
     private void doTestFields(HQLCompletionProposal[] proposals, String[] fields) {
         if (fields == null || fields.length==0) {
-        	assertTrue("No fields should have been found", proposals.length==0);
+        	assertTrue(proposals.length==0, "No fields should have been found");
             return;
         }
         
