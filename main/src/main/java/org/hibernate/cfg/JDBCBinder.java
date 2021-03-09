@@ -189,6 +189,7 @@ public class JDBCBinder {
 
 			rc.setDiscriminatorValue( rc.getEntityName() );
 			rc.setTable(table);
+			rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 			try {
 				metadataCollector.addEntityBinding(rc);
 			} catch(DuplicateMappingException dme) {
