@@ -27,7 +27,6 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -89,8 +88,6 @@ public class TestCase {
 		Assert.assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
-	// TODO HBX-2137: Reenable this test
-	@Ignore
 	@Test
 	public void testBinding() throws HibernateException, SQLException {	
 		
