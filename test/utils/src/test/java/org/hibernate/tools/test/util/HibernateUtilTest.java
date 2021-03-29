@@ -35,14 +35,19 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 
 public class HibernateUtilTest {
 	
 	@TempDir
 	public File outputFolder = new File("output");
 	
+	// TODO HBX-2148: Reenable the test
+	@Disabled
 	@Test
 	public void testGetForeignKey() {
 		Table table = new Table();

@@ -31,12 +31,15 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.UnionSubclass;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author Dmitry Geraskov
  * @author koen
  */
+//TODO HBX-2148: Reenable the tests
+@Disabled
 public class TestCase {
 	
 	@Test

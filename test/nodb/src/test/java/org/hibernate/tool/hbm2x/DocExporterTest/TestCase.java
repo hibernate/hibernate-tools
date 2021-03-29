@@ -44,6 +44,7 @@ import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.EntityResolver;
@@ -56,6 +57,8 @@ import org.xml.sax.XMLReader;
 /**
  * @author koen
  */
+//TODO HBX-2148: Reenable these tests
+@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {

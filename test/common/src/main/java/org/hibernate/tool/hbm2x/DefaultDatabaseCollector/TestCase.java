@@ -49,6 +49,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -108,6 +109,8 @@ public class TestCase {
 	 * Because of this there are 2 opposite methods(and they are both failed as addTable uses quoted names
 	 * but getTable uses non-quoted names )
 	 */
+	//TODO HBX-2148: Reenable the test
+	@Disabled
 	@Test
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		Properties properties = Environment.getProperties();
