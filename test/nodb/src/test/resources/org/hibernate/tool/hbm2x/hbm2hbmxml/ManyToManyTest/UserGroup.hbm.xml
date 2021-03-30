@@ -34,7 +34,7 @@
 	package="org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest">
 
 	<class name="User" table="`User`">
-		<composite-id name="userId">
+		<composite-id>
 			<key-property name="name"/>
 			<key-property name="org"/>
 		</composite-id>
@@ -51,7 +51,7 @@
 	</class>
 
 	<class name="Group" table="`Group`">
-		<composite-id name="groupId">
+		<composite-id>
 			<key-property name="name"/>
 			<key-property name="org"/>
 		</composite-id>
