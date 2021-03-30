@@ -26,6 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.PersistentClass;
@@ -65,7 +69,7 @@ import org.junit.jupiter.api.io.TempDir;
  * @author koen
  */
 //TODO HBX-2148: Reenable these tests
-@Disabled
+//@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {
@@ -92,6 +96,7 @@ public class TestCase {
 		srcDir = new File(outputFolder, "src");
 		srcDir.mkdir();
 		resourcesDir = new File(outputFolder, "resources");
+		resourcesDir.mkdir();
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
@@ -297,6 +302,7 @@ public class TestCase {
 
 	@Test
 	public void testExtendsImplements() {
+		MetadataBuildingContext mdbc = createMetadataBuildingContext();
 		Cfg2JavaTool c2j = new Cfg2JavaTool();
 		PersistentClass pc = metadata.getEntityBinding(
 				"org.hibernate.tool.hbm2x.Hbm2JavaTest.Order" );
@@ -310,9 +316,9 @@ public class TestCase {
 				"",
 				entityPOJOClass.getImplementsDeclaration(),
 				"should be interface which cannot have implements");
-		PersistentClass base = new RootClass(null);
+		PersistentClass base = new RootClass(mdbc);
 		base.setClassName( "Base" );
-		PersistentClass sub = new SingleTableSubclass( base, null );
+		PersistentClass sub = new SingleTableSubclass( base, mdbc );
 		sub.setClassName( "Sub" );
 		assertEquals( null, c2j.getPOJOClass(base).getExtends() );
 		assertEquals( "Base", c2j.getPOJOClass(sub).getExtends() );
@@ -508,4 +514,15 @@ public class TestCase {
 		assertEquals("java.sql.Date", new Cfg2JavaTool().getJavaTypeName(property, false));	
 	}
 	
+	private MetadataBuildingContext createMetadataBuildingContext() {
+		return (MetadataBuildingContext)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { MetadataBuildingContext.class }, 
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+	}
 }
