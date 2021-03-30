@@ -21,7 +21,7 @@
 			<generator class="assigned"/>
 			</id>-->
 
-		<composite-id name="customerId">
+		<composite-id>
 			<key-property name="id" type="long" />
 		</composite-id>
 
