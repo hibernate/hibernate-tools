@@ -51,8 +51,6 @@ import org.junit.jupiter.api.io.TempDir;
  * @author max
  * @author koen
  */
-//TODO HBX-2148: Reenable these tests
-@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {
