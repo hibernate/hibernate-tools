@@ -84,8 +84,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	//TODO HBX-2148: Reenable the tests
-	@Disabled
 	@Test
 	public void testReadSchemaIncremental() {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
