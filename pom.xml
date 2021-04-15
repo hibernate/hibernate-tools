@@ -65,7 +65,7 @@
 		<jdbc.pass/>
 		<jdbc.driver.groupId>org.hsqldb</jdbc.driver.groupId>
 	    <jdbc.driver.artifactId>hsqldb</jdbc.driver.artifactId>
-	    <jdbc.driver.jdbc.driver.version>2.3.3</jdbc.driver.jdbc.driver.version>		
+	    <jdbc.driver.jdbc.driver.version>2.5.2</jdbc.driver.jdbc.driver.version>		
 	    <!-- End of settings for Database connection -->
 	</properties>
 	
