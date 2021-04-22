@@ -101,12 +101,12 @@
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
-			<version>1.10.9</version>
+			<version>1.10.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant-launcher</artifactId>
-			<version>1.10.9</version>
+			<version>1.10.10</version>
 			<scope>test</scope>
 		</dependency>
         <dependency>
