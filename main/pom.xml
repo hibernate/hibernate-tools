@@ -49,20 +49,20 @@
 		</developer>
 		<developer>
 			<id>koentsje</id>
-			<name>Koen Aersn</name>
+			<name>Koen Aers</name>
 			<email>koen@hibernate.org</email>
 			<url>http://koentsje.blogspot.be</url>
 		</developer>
 	</developers>
 
 	<dependencies>
-	    <dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-collections4</artifactId>
-	    </dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
 		</dependency>
  		<dependency>
 			<groupId>jaxen</groupId>
@@ -72,6 +72,10 @@
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 		</dependency>
+	    <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-collections4</artifactId>
+	    </dependency>
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
