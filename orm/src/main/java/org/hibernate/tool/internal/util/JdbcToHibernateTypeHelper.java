@@ -193,6 +193,7 @@ public final class JdbcToHibernateTypeHelper {
     public static boolean typeHasLength(int sqlType) {
     	return (sqlType == Types.CHAR || sqlType == Types.DATE
     			|| sqlType == Types.LONGVARCHAR || sqlType == Types.TIME || sqlType == Types.TIMESTAMP
+    			|| sqlType == Types.NCHAR || sqlType == Types.NVARCHAR
     			|| sqlType == Types.VARCHAR );
     }
 }
