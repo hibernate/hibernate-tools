@@ -21,6 +21,7 @@
 package org.hibernate.tool.hbm2x.Hbm2JavaTest;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,13 +31,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
-public class DummyDateType implements UserType {
+public class DummyDateType implements UserType<Date> {
 
 	public int[] sqlTypes() {
 		return new int[]{Types.DATE};
 	}
 
-	public Class<?> returnedClass() {
+	public Class<Date> returnedClass() {
 		return java.sql.Date.class;
 	}
 
@@ -73,19 +74,20 @@ public class DummyDateType implements UserType {
 	}
 	
 	//@Override
-	public Object nullSafeGet(
-			ResultSet rs, 
-			String[] names,
-			SharedSessionContractImplementor session, 
-			Object owner) throws HibernateException, SQLException {
-		return null;
-	}
-
-	//@Override
 	public void nullSafeSet(
 			PreparedStatement st, 
-			Object value, 
+			Date value, 
 			int index,
 			SharedSessionContractImplementor session) throws HibernateException, SQLException {}
+
+	@Override
+	public Date nullSafeGet(
+			ResultSet rs, 
+			int position, 
+			SharedSessionContractImplementor session, 
+			Object owner)
+					throws SQLException {
+		return null;
+	}
 
 }

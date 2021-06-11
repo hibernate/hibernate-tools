@@ -34,13 +34,13 @@ import org.hibernate.usertype.UserType;
  * Created on 25-Feb-2005
  *
  */
-public class AnyKindOfUserType implements UserType {
+public class AnyKindOfUserType implements UserType<Integer> {
 
 	public int[] sqlTypes() {
 		return new int[] { Types.INTEGER };
 	}
 
-	public Class<?> returnedClass() {
+	public Class<Integer> returnedClass() {
 		return Integer.class;
 	}
 
@@ -52,12 +52,7 @@ public class AnyKindOfUserType implements UserType {
 		return x.hashCode();
 	}
 
-	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
-			throws HibernateException, SQLException {
-		return Integer.valueOf(rs.getInt(names[0]) );
-	}
-
-	public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
+	public void nullSafeSet(PreparedStatement st, Integer value, int index, SharedSessionContractImplementor session)
 			throws HibernateException, SQLException {
 		st.setInt(index, ( (Integer)value).intValue() );
 
@@ -82,6 +77,12 @@ public class AnyKindOfUserType implements UserType {
 
 	public boolean isMutable() {
 		return false;
+	}
+
+	@Override
+	public Integer nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+			throws SQLException {
+		return Integer.valueOf(rs.getInt(position) );
 	}
 
 }
