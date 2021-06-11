@@ -18,15 +18,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.CompositeElementTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -39,6 +38,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -100,28 +103,41 @@ public class TestCase {
     }
 
 	@Test
-	public void testCompositeElementNode() throws DocumentException {
+	public void testCompositeElementNode() throws Exception {
 		File outputXml = new File(
         		outputDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/CompositeElementTest/Glarch.hbm.xml");
         JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/list");
-		Element node = (Element) xpath.selectNodes(document).get(1); //second list
-		List<?> list = node.elements("composite-element");
-		Assert.assertEquals("Expected to get one composite-element element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals("Expected to get two property element", 2, node.elements("property").size());
-
-		node = node.element("many-to-one");
-		Assert.assertEquals(node.attribute( "name" ).getText(),"fee");
-		Assert.assertEquals(node.attribute( "cascade" ).getText(),"all");
-		//TODO: assertEquals(node.attribute( "outer-join" ).getText(),"true");
-		node = node.getParent();//composite-element
-		node = node.element("nested-composite-element");
-		Assert.assertEquals(node.attribute( "name" ).getText(),"subcomponent");
-		Assert.assertEquals(node.attribute( "class" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.CompositeElementTest.FooComponent");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/list")
+				.evaluate(document, XPathConstants.NODESET);
+		Element secondList = (Element)nodeList.item(1);
+		NodeList compositeElementList = secondList.getElementsByTagName("composite-element");
+		Assert.assertEquals("Expected to get one composite-element element", 1, compositeElementList.getLength());
+		Element compositeElement = (Element)compositeElementList.item(0);
+		NodeList compositeElementChildNodes = compositeElement.getChildNodes();
+		int amountOfProperties = 0;
+		for (int i = 0; i < compositeElementChildNodes.getLength(); i++) {
+			Node node = compositeElementChildNodes.item(i);
+			if ("property".equals(node.getNodeName())) amountOfProperties++;
+		}
+		Assert.assertEquals("Expected to get two property element", 2, amountOfProperties);
+		NodeList manyToOneList = secondList.getElementsByTagName("many-to-one");
+		Assert.assertEquals(1, manyToOneList.getLength());
+		Element manyToOneElement = (Element)manyToOneList.item(0);
+		Assert.assertEquals("fee", manyToOneElement.getAttribute("name"));
+		Assert.assertEquals("all", manyToOneElement.getAttribute("cascade"));
+		NodeList nestedCompositeElementList = compositeElement.getElementsByTagName("nested-composite-element");
+		Assert.assertEquals(1, nestedCompositeElementList.getLength());
+		Element nestedCompositeElement = (Element)nestedCompositeElementList.item(0);
+		Assert.assertEquals("subcomponent", nestedCompositeElement.getAttribute("name"));
+		Assert.assertEquals(
+				"org.hibernate.tool.hbm2x.hbm2hbmxml.CompositeElementTest.FooComponent", 
+				nestedCompositeElement.getAttribute("class"));
 	}
 
 }
