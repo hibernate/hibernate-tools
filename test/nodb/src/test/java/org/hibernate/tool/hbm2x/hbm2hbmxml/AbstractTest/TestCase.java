@@ -18,15 +18,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.AbstractTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -39,6 +38,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -82,24 +84,22 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testAbstractPresent() {
+	public void testAbstractPresent() throws Exception {
 		File outputXml = new File(
 				outputDir,
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/AbstractTest/CarPart.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one class element", 1, list.size());
-			Element node = (Element) list.get(0);
-			Assert.assertNotNull("Abstract attrinute was not exported.", node.attribute( "abstract" ));
-			Assert.assertEquals(node.attribute( "abstract" ).getText(),"true");
-		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
-		}
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals( "Expected to get one class element", 1, nodeList.getLength());
+		Element node = (Element)nodeList.item(0);
+		Assert.assertNotNull(node.getAttribute("abstract"), "Abstract attrinute was not exported.");
+		Assert.assertEquals(node.getAttribute("abstract"), "true");
 	}
 	
 	public void testReadable() {
