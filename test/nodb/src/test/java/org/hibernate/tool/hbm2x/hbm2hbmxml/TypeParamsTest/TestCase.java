@@ -18,17 +18,16 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.TypeParamsTest;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -41,6 +40,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -95,33 +97,35 @@ public class TestCase {
     }
 
 	@Test
-	public void testTypeParamsElements() throws DocumentException {
+	public void testTypeParamsElements() throws Exception {
 		File outputXml = new File(
 				outputDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/TypeParamsTest/Order.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one property element", 2, list.size());
-		Element statusElement = (Element) list.get(0);
-		Element nameElement = (Element) list.get(1);
-		if(!statusElement.attribute( "name" ).getText().equals("status")) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/property")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one property element", 2, nodeList.getLength());
+		Element statusElement = (Element) nodeList.item(0);
+		Element nameElement = (Element) nodeList.item(1);
+		if(!statusElement.getAttribute( "name" ).equals("status")) {
 			Element temp = nameElement;
 			nameElement = statusElement;
 			statusElement = temp;
 		}
-		Assert.assertEquals(statusElement.attribute( "name" ).getText(),"status");
-		list = statusElement.elements("type");
-		Assert.assertEquals("Expected to get one type element", 1, list.size());
-		list =  ((Element) list.get(0)).elements("param");		
-		Assert.assertEquals("Expected to get 5 params elements", list.size(), 5);
+		Assert.assertEquals(statusElement.getAttribute( "name" ),"status");
+		nodeList = statusElement.getElementsByTagName("type");
+		Assert.assertEquals("Expected to get one type element", 1, nodeList.getLength());
+		nodeList =  ((Element) nodeList.item(0)).getElementsByTagName("param");		
+		Assert.assertEquals("Expected to get 5 params elements", nodeList.getLength(), 5);
 		Map<String, String> params = new HashMap<String, String>();
-		for (int i = 0; i < list.size(); i++) {
-			Element param = (Element) list.get(i);
-			params.put(param.attribute( "name" ).getText(), param.getText());
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Element param = (Element) nodeList.item(i);
+			params.put(param.getAttribute( "name" ), param.getTextContent());
 		}
 		Set<String> set = params.keySet();
 		Assert.assertEquals("Expected to get 5 different params elements", params.size(), 5);
@@ -147,8 +151,8 @@ public class TestCase {
 		Assert.assertEquals(
 				"org.hibernate.tool.hbm2x.hbm2hbmxml.Order$Status", 
 				params.get("enumClass"));
-		Assert.assertTrue("property name should not have any type element",nameElement.elements("type").isEmpty());
-		Assert.assertEquals(nameElement.attribute("type").getText(), "string");
+		Assert.assertTrue("property name should not have any type element",nameElement.getElementsByTagName("type").getLength() == 0);
+		Assert.assertEquals(nameElement.getAttribute("type"), "string");
 	}
 
 }
