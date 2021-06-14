@@ -5,14 +5,14 @@
 package org.hibernate.tool.hbm2x.OtherCfg2HbmTest;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
@@ -28,6 +28,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 /**
  * @author max
@@ -99,13 +101,15 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testVersioning() throws DocumentException {	
-    	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setValidation(true);
-		Document document = xmlReader.read(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/version");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one version element", 1, list.size());			
+	public void testVersioning() throws Exception {	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(new File(outputDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/version")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one version element", 1, nodeList.getLength());			
 	}
 	
 }
