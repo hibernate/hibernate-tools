@@ -24,15 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -44,6 +43,9 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -98,52 +100,57 @@ public class TestCase {
     }
 
 	@Test
-	public void testKey() throws DocumentException {
+	public void testKey() throws Exception {
 		File outputXml = 
 				new File(
 						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/key");
-		List<?> list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one key element");
-		Element node = (Element) list.get(0);
-		if (node.attribute( "column" ) != null){//implied attribute
-			assertEquals(node.attribute( "column" ).getText(),"searchString");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set/key")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one key element");
+		Element node = (Element)nodeList.item(0);
+		if (node.getAttribute( "column" ) != null && !"".equals(node.getAttribute("column"))) {//implied attribute
+			assertEquals(node.getAttribute( "column" ),"searchString");
 		} else {
-			node = node.element("column");
-			assertEquals(node.attribute( "name" ).getText(),"searchString");
+			node = (Element)node.getElementsByTagName("column").item(0);
+			assertEquals(node.getAttribute( "name" ),"searchString");
 		}
 	}
 
 	@Test
-	public void testSetElement() throws DocumentException {
+	public void testSetElement() throws Exception {
 		File outputXml = 
 				new File(
 						srcDir,  
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-		List<?> list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one set element");
-		Element node = (Element) list.get(0);
-		assertEquals(node.attribute( "name" ).getText(),"searchResults");
-		assertEquals(node.attribute( "access" ).getText(),"field");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/element");
-		list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one element 'element'");
-		node = (Element) list.get(0);
-		assertEquals(node.attribute( "type" ).getText(), "string");
-		list = node.selectNodes("column");
-		assertEquals(1, list.size(), "Expected to get one element 'column'");
-		node = (Element) list.get(0);
-		assertEquals(node.attribute( "name" ).getText(), "text");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
+		Element node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "name" ),"searchResults");
+		assertEquals(node.getAttribute( "access" ),"field");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set/element")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one element 'element'");
+		node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "type" ), "string");
+		nodeList = node.getElementsByTagName("column");
+		assertEquals(1, nodeList.getLength(), "Expected to get one element 'column'");
+		node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "name"), "text");
 	}
 
 }
