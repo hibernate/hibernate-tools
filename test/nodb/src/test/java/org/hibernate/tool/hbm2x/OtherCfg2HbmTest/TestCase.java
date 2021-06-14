@@ -23,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
@@ -43,9 +43,10 @@ import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 /**
  * @author max
@@ -117,13 +118,15 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testVersioning() throws DocumentException {	
-    	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setValidation(true);
-		Document document = xmlReader.read(new File(srcDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/version");
-		List<?> list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one version element");			
-	}
+	public void testVersioning() throws Exception {	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(new File(srcDir, "org/hibernate/tool/hbm2x/Product.hbm.xml"));
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/version")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one version element");			
+ 	}
 	
 }
