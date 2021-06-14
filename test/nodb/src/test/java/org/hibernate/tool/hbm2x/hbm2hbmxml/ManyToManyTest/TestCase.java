@@ -9,15 +9,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -30,6 +29,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class TestCase {
 
@@ -97,73 +99,78 @@ public class TestCase {
     }
 
 	@Test
-	public void testManyToMany() throws DocumentException {
+	public void testManyToMany() throws Exception {
 		File outputXml = new File(
 				outputDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/User.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader = new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/many-to-many");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one many-to-many element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "entity-name" ).getText(),"org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one set element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "table" ).getText(),"UserGroup");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set/many-to-many")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one many-to-many element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "entity-name" ),"org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one set element", 1, nodeList.getLength());
+		node = (Element)nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "table" ),"UserGroup");
 	}
 
 	@Test
-	public void testCompositeId() throws DocumentException {
-		File outputXml = new File(
-				outputDir, 
-				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml");
-		SAXReader xmlReader = new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one class element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute("table").getText(), "`Group`");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/composite-id");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one composite-id element", 1, list.size());
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/composite-id/key-property");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get two key-property elements", 2, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute("name").getText(), "name");
-		node = (Element) list.get(1);
-		Assert.assertEquals(node.attribute("name").getText(), "org");
-	}
-
-	@Test
-	public void testSetAttributes() {
+	public void testCompositeId() throws Exception {
 		File outputXml = new File(
 				outputDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader = new SAXReader();
-		xmlReader.setValidation(true);
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one set element", 1, list.size());
-			Element node = (Element) list.get(0);
-			Assert.assertEquals(node.attribute("table").getText(), "UserGroup");
-			Assert.assertEquals(node.attribute("name").getText(), "users");
-			Assert.assertEquals(node.attribute("inverse").getText(), "true");
-			Assert.assertEquals(node.attribute("lazy").getText(), "extra");
-		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
-		}
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one class element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute("table"), "`Group`");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/composite-id")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one composite-id element", 1, nodeList.getLength());
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/composite-id/key-property")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get two key-property elements", 2, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute("name"), "name");
+		node = (Element) nodeList.item(1);
+		Assert.assertEquals(node.getAttribute("name"), "org");
+	}
+
+	@Test
+	public void testSetAttributes() throws Exception {
+		File outputXml = new File(
+				outputDir, 
+				"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml");
+		JUnitUtil.assertIsNonEmptyFile(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one set element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute("table"), "UserGroup");
+		Assert.assertEquals(node.getAttribute("name"), "users");
+		Assert.assertEquals(node.getAttribute("inverse"), "true");
+		Assert.assertEquals(node.getAttribute("lazy"), "extra");
 	}
 
 }
