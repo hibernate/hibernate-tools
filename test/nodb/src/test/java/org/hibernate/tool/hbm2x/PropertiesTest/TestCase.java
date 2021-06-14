@@ -24,18 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
@@ -50,6 +48,9 @@ import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Josh Moore josh.moore@gmx.de
@@ -96,31 +97,28 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testGenerationOfEmbeddedProperties() {
+	public void testGenerationOfEmbeddedProperties() throws Exception {
 		File outputXml = new File(outputDir,  "properties/PPerson.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-    	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setValidation(true);
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/properties");
-			List<?> list = xpath.selectNodes(document);
-			assertEquals(1, list.size(), "Expected to get one properties element");
-			Element node = (Element) list.get(0);
-			assertEquals(node.attribute( "name" ).getText(),"emergencyContact");
-			assertNotNull(
-					FileUtil.findFirstString(
-							"name", 
-							new File(outputDir, "properties/PPerson.java" )));
-			assertNull(
-					FileUtil.findFirstString(
-							"emergencyContact", 
-							new File(outputDir, "properties/PPerson.java" )),
-					"Embedded component/properties should not show up in .java");		
-		} catch (DocumentException e) {
-			fail("Can't parse file " + outputXml.getAbsolutePath());
-		}		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/properties")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one properties element");
+		Element element = (Element) nodeList.item(0);
+		assertEquals(element.getAttribute( "name" ),"emergencyContact");
+		assertNotNull(
+				FileUtil.findFirstString(
+						"name", 
+						new File(outputDir, "properties/PPerson.java" )));
+		assertNull(
+				FileUtil.findFirstString(
+						"emergencyContact", 
+						new File(outputDir, "properties/PPerson.java" )),
+				"Embedded component/properties should not show up in .java");		
 	}
 	
 	@Test
