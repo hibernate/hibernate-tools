@@ -6,14 +6,13 @@ package org.hibernate.tool.hbm2x.PropertiesTest;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -28,6 +27,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Josh Moore josh.moore@gmx.de
@@ -74,31 +76,28 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testGenerationOfEmbeddedProperties() {
+	public void testGenerationOfEmbeddedProperties() throws Exception {
 		File outputXml = new File(outputDir,  "properties/PPerson.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-    	SAXReader xmlReader = new SAXReader();
-    	xmlReader.setValidation(true);
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/properties");
-			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one properties element", 1, list.size());
-			Element node = (Element) list.get(0);
-			Assert.assertEquals(node.attribute( "name" ).getText(),"emergencyContact");
-			Assert.assertNotNull(
-					FileUtil.findFirstString(
-							"name", 
-							new File(outputDir, "properties/PPerson.java" )));
-			Assert.assertNull(
-					"Embedded component/properties should not show up in .java", 
-					FileUtil.findFirstString(
-							"emergencyContact", 
-							new File(outputDir, "properties/PPerson.java" )));		
-		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
-		}		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/properties")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one properties element", 1, nodeList.getLength());
+		Element element = (Element) nodeList.item(0);
+		Assert.assertEquals(element.getAttribute( "name" ),"emergencyContact");
+		Assert.assertNotNull(
+				FileUtil.findFirstString(
+						"name", 
+						new File(outputDir, "properties/PPerson.java" )));
+		Assert.assertNull(
+				"Embedded component/properties should not show up in .java", 
+				FileUtil.findFirstString(
+						"emergencyContact", 
+						new File(outputDir, "properties/PPerson.java" )));		
 	}
 	
 	@Test
