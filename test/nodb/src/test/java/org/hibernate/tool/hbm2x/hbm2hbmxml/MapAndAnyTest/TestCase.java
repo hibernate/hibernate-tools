@@ -18,15 +18,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.MapAndAnyTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Any;
@@ -43,6 +42,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -117,37 +119,39 @@ public class TestCase {
     }
 
 	@Test
-	public void testAnyNode() throws DocumentException {
+	public void testAnyNode() throws Exception {
 		File outputXml = new File(
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/PropertySet.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/any");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one any element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "name" ).getText(),"someSpecificProperty");
-		Assert.assertEquals(node.attribute( "id-type" ).getText(),"long");
-		Assert.assertEquals(node.attribute( "meta-type" ).getText(),"string");
-		Assert.assertEquals(node.attribute( "cascade" ).getText(), "all");
-		Assert.assertEquals(node.attribute( "access" ).getText(), "field");
-		list = node.elements("column");
-		Assert.assertEquals("Expected to get two column elements", 2, list.size());
-		list = node.elements("meta-value");
-		Assert.assertEquals("Expected to get three meta-value elements", 3, list.size());
-		node = (Element) list.get(0);
-		String className = node.attribute( "class" ).getText();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/any")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one any element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "name" ),"someSpecificProperty");
+		Assert.assertEquals(node.getAttribute( "id-type" ),"long");
+		Assert.assertEquals(node.getAttribute( "meta-type" ),"string");
+		Assert.assertEquals(node.getAttribute( "cascade" ), "all");
+		Assert.assertEquals(node.getAttribute( "access" ), "field");
+		nodeList = node.getElementsByTagName("column");
+		Assert.assertEquals("Expected to get two column elements", 2, nodeList.getLength());
+		nodeList = node.getElementsByTagName("meta-value");
+		Assert.assertEquals("Expected to get three meta-value elements", 3, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		String className = node.getAttribute( "class" );
 		Assert.assertNotNull("Expected class attribute in meta-value", className);
 		if (className.indexOf("IntegerPropertyValue") > 0){
-			Assert.assertEquals(node.attribute( "value" ).getText(),"I");
+			Assert.assertEquals(node.getAttribute( "value" ),"I");
 		} else if (className.indexOf("StringPropertyValue") > 0){
-			Assert.assertEquals(node.attribute( "value" ).getText(),"S");
+			Assert.assertEquals(node.getAttribute( "value" ),"S");
 		} else {
 			Assert.assertTrue(className.indexOf("ComplexPropertyValue") > 0);
-			Assert.assertEquals(node.attribute( "value" ).getText(),"C");
+			Assert.assertEquals(node.getAttribute( "value" ),"C");
 		}
 	}
 
@@ -164,45 +168,47 @@ public class TestCase {
 	}
 
 	@Test
-	public void testMapManyToAny() throws DocumentException {
+	public void testMapManyToAny() throws Exception {
 		File outputXml = new File(outputDir,  "org/hibernate/tool/hbm2x/hbm2hbmxml/MapAndAnyTest/PropertySet.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/map");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one any element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "name" ).getText(),"generalProperties");
-		Assert.assertEquals(node.attribute( "table" ).getText(),"T_GEN_PROPS");
-		Assert.assertEquals(node.attribute( "lazy" ).getText(),"true");
-		Assert.assertEquals(node.attribute( "cascade" ).getText(), "all");
-		Assert.assertEquals(node.attribute( "access" ).getText(), "field");
-		list = node.elements("key");
-		Assert.assertEquals("Expected to get one key element", 1, list.size());
-		list = node.elements("map-key");
-		Assert.assertEquals("Expected to get one map-key element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "type" ).getText(),"string");
-		list = node.elements("column");
-		Assert.assertEquals("Expected to get one column element", 1, list.size());
-		node = node.getParent();//map
-		list = node.elements("many-to-any");
-		Assert.assertEquals("Expected to get one many-to-any element", 1, list.size());
-		node = (Element) list.get(0);
-		list = node.elements("column");
-		Assert.assertEquals("Expected to get two column elements", 2, list.size());
-		list = node.elements("meta-value");
-		Assert.assertEquals("Expected to get two meta-value elements", 2, list.size());
-		node = (Element) list.get(0);
-		String className = node.attribute( "class" ).getText();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/map")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one any element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "name" ),"generalProperties");
+		Assert.assertEquals(node.getAttribute( "table" ),"T_GEN_PROPS");
+		Assert.assertEquals(node.getAttribute( "lazy" ),"true");
+		Assert.assertEquals(node.getAttribute( "cascade" ), "all");
+		Assert.assertEquals(node.getAttribute( "access" ), "field");
+		nodeList = node.getElementsByTagName("key");
+		Assert.assertEquals("Expected to get one key element", 1, nodeList.getLength());
+		nodeList = node.getElementsByTagName("map-key");
+		Assert.assertEquals("Expected to get one map-key element", 1, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "type" ),"string");
+		nodeList = node.getElementsByTagName("column");
+		Assert.assertEquals("Expected to get one column element", 1, nodeList.getLength());
+		node = (Element)node.getParentNode();//map
+		nodeList = node.getElementsByTagName("many-to-any");
+		Assert.assertEquals("Expected to get one many-to-any element", 1, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		nodeList = node.getElementsByTagName("column");
+		Assert.assertEquals("Expected to get two column elements", 2, nodeList.getLength());
+		nodeList = node.getElementsByTagName("meta-value");
+		Assert.assertEquals("Expected to get two meta-value elements", 2, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		String className = node.getAttribute( "class" );
 		Assert.assertNotNull("Expected class attribute in meta-value", className);
 		if (className.indexOf("IntegerPropertyValue") > 0){
-			Assert.assertEquals(node.attribute( "value" ).getText(),"I");
+			Assert.assertEquals(node.getAttribute( "value" ),"I");
 		} else {
 			Assert.assertTrue(className.indexOf("StringPropertyValue") > 0);
-			Assert.assertEquals(node.attribute( "value" ).getText(),"S");
+			Assert.assertEquals(node.getAttribute( "value" ),"S");
 		}
 	}
 
