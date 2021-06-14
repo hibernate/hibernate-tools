@@ -25,15 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -44,6 +43,9 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class TestCase {
 
@@ -111,30 +113,33 @@ public class TestCase {
     }
 	
 	@Test
-	public void testOneToOne() throws DocumentException {
-		SAXReader xmlReader = new SAXReader();
-		xmlReader.setValidation(true);
+	public void testOneToOne() throws Exception {
 		File xmlFile = new File(
         		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Person.hbm.xml");
-		Document document = xmlReader.read(xmlFile);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/one-to-one");
-		List<?> list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one-to-one element");
-		Element node = (Element) list.get(0);
-		assertEquals(node.attribute( "name" ).getText(),"address");
-		assertEquals(node.attribute( "constrained" ).getText(),"false");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(xmlFile);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/one-to-one")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one-to-one element");
+		Element node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "name" ),"address");
+		assertEquals(node.getAttribute( "constrained" ),"false");
 		xmlFile = new File(
         		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
-		document = xmlReader.read(xmlFile);
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/one-to-one");
-		list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one set element");
-		node = (Element) list.get(0);
-		assertEquals(node.attribute( "name" ).getText(),"person");
-		assertEquals(node.attribute( "constrained" ).getText(),"true");
-		assertEquals(node.attribute( "access" ).getText(), "field");
+		document = db.parse(xmlFile);
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/one-to-one")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
+		node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "name" ),"person");
+		assertEquals(node.getAttribute( "constrained" ),"true");
+		assertEquals(node.getAttribute( "access" ), "field");
 	}
 
 }
