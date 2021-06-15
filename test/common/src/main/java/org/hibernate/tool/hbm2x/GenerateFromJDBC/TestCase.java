@@ -27,14 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.PersistentClass;
@@ -55,6 +54,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author max
@@ -114,53 +116,57 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testGenerateCfgXml() throws DocumentException {	
+	public void testGenerateCfgXml() throws Exception {	
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.start();				
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
-		SAXReader xmlReader =  new SAXReader();
-      	xmlReader.setValidation(true);
-		Document document = xmlReader.read(new File(outputDir, "hibernate.cfg.xml"));
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(new File(outputDir, "hibernate.cfg.xml"));
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and it has no arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-configuration/session-factory/mapping");
-		List<?> list = xpath.selectNodes(document);
-		Element[] elements = new Element[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			elements[i] = (Element)list.get(i);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-configuration/session-factory/mapping")
+				.evaluate(document, XPathConstants.NODESET);
+		Node[] elements = new Node[nodeList.getLength()];
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			elements[i] = (Node)nodeList.item(i);
 		}
-		assertEquals(2,elements.length);	
+		assertEquals(2, elements.length);
 		for (int i = 0; i < elements.length; i++) {
-			Element element = elements[i];
-			assertNotNull(element.attributeValue("resource"));
-			assertNull(element.attributeValue("class"));
+			Node element = elements[i];
+			assertNotNull(element.getAttributes().getNamedItem("resource"));
+			assertNull(element.getAttributes().getNamedItem("class"));
 		}		
 	}
 	
 	@Test
-	public void testGenerateAnnotationCfgXml() throws DocumentException {
+	public void testGenerateAnnotationCfgXml() throws Exception {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.CFG);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
 		exporter.getProperties().setProperty("ejb3", "true");
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml"));
-		SAXReader xmlReader =  new SAXReader();
-    	xmlReader.setValidation(true);
-		Document document = xmlReader.read(new File(outputDir, "hibernate.cfg.xml"));
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(new File(outputDir, "hibernate.cfg.xml"));
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and it has no arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-configuration/session-factory/mapping");
-		List<?> list = xpath.selectNodes(document);
-		Element[] elements = new Element[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			elements[i] = (Element)list.get(i);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-configuration/session-factory/mapping")
+				.evaluate(document, XPathConstants.NODESET);
+		Node[] elements = new Node[nodeList.getLength()];
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			elements[i] = (Node)nodeList.item(i);
 		}
 		assertEquals(2, elements.length);
 		for (int i = 0; i < elements.length; i++) {
-			Element element = elements[i];
-			assertNull(element.attributeValue("resource"));
-			assertNotNull(element.attributeValue("class"));
+			Node element = elements[i];
+			assertNull(element.getAttributes().getNamedItem("resource"));
+			assertNotNull(element.getAttributes().getNamedItem("class"));
 		}		
 	}
 	
