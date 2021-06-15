@@ -18,15 +18,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -39,6 +38,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -98,66 +100,75 @@ public class TestCase {
     }
 
 	@Test
-	public void testListNode() throws DocumentException {
+	public void testListNode() throws Exception {
 		File outputXml = new File(
 				outputDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ListArrayTest/Glarch.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/list");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get two list element", 2, list.size());
-		Element node = (Element) list.get(1); //second list
-		Assert.assertEquals("fooComponents", node.attribute( "name" ).getText());
-		Assert.assertEquals("true", node.attribute( "lazy" ).getText());
-		Assert.assertEquals("all", node.attribute( "cascade" ).getText());
-		list = node.elements("list-index");
-		Assert.assertEquals("Expected to get one list-index element", 1, list.size());
-		list = ((Element) list.get(0)).elements("column");
-		Assert.assertEquals("Expected to get one column element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals("tha_indecks", node.attribute( "name" ).getText());
-		node = node.getParent().getParent();//list
-		list = node.elements("composite-element");
-		Assert.assertEquals("Expected to get one composite-element element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals("Expected to get two property element", 2, node.elements("property").size());
-		node = node.element("many-to-one");
-		Assert.assertEquals("fee", node.attribute( "name" ).getText());
-		Assert.assertEquals("all", node.attribute( "cascade" ).getText());
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/list")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get two list element", 2, nodeList.getLength());
+		Element node = (Element) nodeList.item(1); //second list
+		Assert.assertEquals("fooComponents", node.getAttribute( "name" ));
+		Assert.assertEquals("true", node.getAttribute( "lazy" ));
+		Assert.assertEquals("all", node.getAttribute( "cascade" ));
+		nodeList = node.getElementsByTagName("list-index");
+		Assert.assertEquals("Expected to get one list-index element", 1, nodeList.getLength());
+		nodeList = ((Element) nodeList.item(0)).getElementsByTagName("column");
+		Assert.assertEquals("Expected to get one column element", 1, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		Assert.assertEquals("tha_indecks", node.getAttribute( "name" ));
+		node = (Element)node.getParentNode().getParentNode();//list
+		nodeList = node.getElementsByTagName("composite-element");
+		Assert.assertEquals("Expected to get one composite-element element", 1, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		int propertyCount = 0;
+		nodeList = node.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			if ("property".equals(nodeList.item(i).getNodeName())) propertyCount++;
+		}
+		Assert.assertEquals("Expected to get two property element", 2, propertyCount);
+		node = (Element)node.getElementsByTagName("many-to-one").item(0);
+		Assert.assertEquals("fee", node.getAttribute( "name" ));
+		Assert.assertEquals("all", node.getAttribute( "cascade" ));
 		//TODO :assertEquals(node.attribute( "outer-join" ).getText(),"true");
-		node = node.getParent();//composite-element
-		node = node.element("nested-composite-element");
-		Assert.assertEquals("subcomponent", node.attribute( "name" ).getText());
-		Assert.assertEquals("org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest.FooComponent", node.attribute( "class" ).getText());
+		node = (Element)node.getParentNode();//composite-element
+		node = (Element)node.getElementsByTagName("nested-composite-element").item(0);
+		Assert.assertEquals("subcomponent", node.getAttribute( "name" ));
+		Assert.assertEquals("org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest.FooComponent", node.getAttribute( "class" ));
 	}
 
 	@Test
-	public void testArrayNode() throws DocumentException {
+	public void testArrayNode() throws Exception {
 		File outputXml = new File(
 				outputDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/ListArrayTest/Glarch.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/array");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one array element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals("proxyArray", node.attribute( "name" ).getText());
-		Assert.assertEquals("org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest.GlarchProxy", node.attribute( "element-class" ).getText());
-		list = node.elements("list-index");		
-		Assert.assertEquals("Expected to get one list-index element", 1, list.size());
-		list = ((Element) list.get(0)).elements("column");
-		Assert.assertEquals("Expected to get one column element", 1, list.size());
-		node = (Element) list.get(0);
-		Assert.assertEquals("array_indecks", node.attribute( "name" ).getText());
-		node = node.getParent().getParent();//array
-		list = node.elements("one-to-many");
-		Assert.assertEquals("Expected to get one 'one-to-many' element", 1, list.size());
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/array")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one array element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals("proxyArray", node.getAttribute( "name" ));
+		Assert.assertEquals("org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest.GlarchProxy", node.getAttribute( "element-class" ));
+		nodeList = node.getElementsByTagName("list-index");		
+		Assert.assertEquals("Expected to get one list-index element", 1, nodeList.getLength());
+		nodeList = ((Element) nodeList.item(0)).getElementsByTagName("column");
+		Assert.assertEquals("Expected to get one column element", 1, nodeList.getLength());
+		node = (Element) nodeList.item(0);
+		Assert.assertEquals("array_indecks", node.getAttribute( "name" ));
+		node = (Element)node.getParentNode().getParentNode();//array
+		nodeList = node.getElementsByTagName("one-to-many");
+		Assert.assertEquals("Expected to get one 'one-to-many' element", 1, nodeList.getLength());
 	}
 
 }
