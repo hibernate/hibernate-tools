@@ -8,16 +8,13 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest;
 
 import java.io.File;
-import java.util.List;
 
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -29,6 +26,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Initial implentation based on the Hbm2XTest class.
@@ -125,15 +127,15 @@ public class TestCase {
 				outputDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicGlobals.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		Element root = document.getRootElement();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		Element root = document.getDocumentElement();
 		// There are 7 attributes because there are defaults defined by the DTD makes up the missing entries
-		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 7, root.attributeCount() );
-		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.attribute("package").getStringValue() );
-		Assert.assertEquals("Unexpected schema name", "myschema", root.attribute("schema").getStringValue() );
-		Assert.assertEquals("Unexpected mycatalog name", "mycatalog", root.attribute("catalog").getStringValue() );
+		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 7, root.getAttributes().getLength() );
+		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.getAttribute("package") );
+		Assert.assertEquals("Unexpected schema name", "myschema", root.getAttribute("schema") );
+		Assert.assertEquals("Unexpected mycatalog name", "mycatalog", root.getAttribute("catalog"));
 	}
 
 	/**
@@ -155,100 +157,113 @@ public class TestCase {
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicGlobals.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		Element root = document.getRootElement();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		Element root = document.getDocumentElement();
 		// There are 5 attributes because there are non-defaults not set for this test
-		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.attributeCount() );
-		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.attribute("package").getStringValue() );
-		Assert.assertEquals("Unexpected access setting", "field", root.attribute("default-access").getStringValue() );
-		Assert.assertEquals("Unexpected cascade setting", "save-update", root.attribute("default-cascade").getStringValue() );
+		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.getAttributes().getLength());
+		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.getAttribute("package"));
+		Assert.assertEquals("Unexpected access setting", "field", root.getAttribute("default-access"));
+		Assert.assertEquals("Unexpected cascade setting", "save-update", root.getAttribute("default-cascade") );
 	}
 
 	@Test
-	public void testMetaAttributes() throws DocumentException {
+	public void testMetaAttributes() throws Exception {
 		File outputXml = new File(
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/Basic.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);		
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/meta");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one meta element", 2, list.size());
-		Node node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"Basic");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/meta");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one meta element", 1, list.size());
-		node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"basicId");		
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property/meta");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one meta element", 1, list.size());
-		node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"description");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set/meta");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one meta element", 1, list.size());
-		node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"anotherone");	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/meta")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one meta element", 2, nodeList.getLength());
+		Node node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"Basic");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/id/meta")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one meta element", 1, nodeList.getLength());
+		node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"basicId");		
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/property/meta")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one meta element", 1, nodeList.getLength());
+		node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"description");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set/meta")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one meta element", 1, nodeList.getLength());
+		node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"anotherone");	
 	}
 
 	@Test
-	public void testCollectionAttributes() throws DocumentException {
+	public void testCollectionAttributes() throws Exception {
 		File outputXml = new File(
 				outputDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/Basic.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);		
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/set");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one set element", 1, list.size());
-		Element node = (Element) list.get(0);
-		Assert.assertEquals("delete, update", node.attributeValue("cascade"));	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/set")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one set element", 1, nodeList.getLength());
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals("delete, update", node.getAttribute("cascade"));	
 	}
 	
 	@Test
-	public void testComments() throws DocumentException {
+	public void testComments() throws Exception {
 		File outputXml = new File(
 				outputDir, 
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/ClassFullAttribute.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);		
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/comment");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one comment element", 1, list.size());
-		Node node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"A comment for ClassFullAttribute");
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property/column/comment");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one comment element", 1, list.size());
-		node = (Node) list.get(0);
-		Assert.assertEquals(node.getText(),"columnd comment");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/comment")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one comment element", 1, nodeList.getLength());
+		Node node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"A comment for ClassFullAttribute");
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/property/column/comment")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one comment element", 1, nodeList.getLength());
+		node = (Node) nodeList.item(0);
+		Assert.assertEquals(node.getTextContent(),"columnd comment");
 	}
 
 	@Test
-	public void testNoComments() throws DocumentException {
+	public void testNoComments() throws Exception {
 		File outputXml = new File(
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/Basic.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/comment");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get no comment element", list.size(), 0);	
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/property/column/comment");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get no comment element", 0, list.size());	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/comment")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get no comment element", nodeList.getLength(), 0);	
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/property/column/comment")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get no comment element", 0, nodeList.getLength());	
 	}
 
 	/**
@@ -271,15 +286,15 @@ public class TestCase {
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicGlobals.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		Element root = document.getRootElement();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		Element root = document.getDocumentElement();
 		// There are 5 attributes because there are non-defaults not set for this test
-		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.attributeCount() );
-		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.attribute("package").getStringValue() );
-		Assert.assertEquals("Unexpected access setting", "property", root.attribute("default-access").getStringValue() );
-		Assert.assertEquals("Unexpected cascade setting", "none", root.attribute("default-cascade").getStringValue() );	
+		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.getAttributes().getLength());
+		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.getAttribute("package"));
+		Assert.assertEquals("Unexpected access setting", "property", root.getAttribute("default-access"));
+		Assert.assertEquals("Unexpected cascade setting", "none", root.getAttribute("default-cascade"));	
 	}
 
 	/**
@@ -302,15 +317,15 @@ public class TestCase {
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicGlobals.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		Element root = document.getRootElement();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		Element root = document.getDocumentElement();
 		// There are 5 attributes because there are non-defaults not set for this test
-		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.attributeCount() );
-		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.attribute("package").getStringValue() );
-		Assert.assertEquals("Unexpected access setting", "false", root.attribute("default-lazy").getStringValue() );
-		Assert.assertEquals("Unexpected cascade setting", "false", root.attribute("auto-import").getStringValue() );
+		Assert.assertEquals("Unexpected number of hibernate-mapping elements ", 5, root.getAttributes().getLength());
+		Assert.assertEquals("Unexpected package name", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest", root.getAttribute("package"));
+		Assert.assertEquals("Unexpected access setting", "false", root.getAttribute("default-lazy"));
+		Assert.assertEquals("Unexpected cascade setting", "false", root.getAttribute("auto-import"));
 	}
 
 	@Test
@@ -319,18 +334,21 @@ public class TestCase {
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/BasicGlobals.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and it has no arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertTrue("Expected to get one generator element", list.size() == 1);
-		Attribute genAtt = ( (Element)list.get(0) ).attribute("class");
-		Assert.assertEquals("Unexpected generator class name", "assigned", genAtt.getStringValue() );
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator/param");
-		list = xpath.selectNodes(document);
-		Assert.assertTrue("Expected to get no generator param elements", list.size() == 0);	
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/id/generator")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertTrue("Expected to get one generator element", nodeList.getLength() == 1);
+		Node genAtt = ( (Element)nodeList.item(0)).getAttributeNode("class");
+		Assert.assertEquals("Unexpected generator class name", "assigned", genAtt.getTextContent() );
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/id/generator/param")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertTrue("Expected to get no generator param elements", nodeList.getLength() == 0);	
 	}
     
 	@Test
@@ -339,35 +357,38 @@ public class TestCase {
 				outputDir,
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/Hbm2HbmXmlTest/Basic.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertTrue("Expected to get one generator element", list.size() == 1);
-		Attribute genAtt = ( (Element)list.get(0) ).attribute("class");
-		Assert.assertEquals("Unexpected generator class name", "org.hibernate.id.TableHiLoGenerator", genAtt.getStringValue() );
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/class/id/generator/param");
-		list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get correct number of generator param elements", 2, list.size() );
-		Element tableElement = (Element)list.get(0);
-		Attribute paramTableAtt = tableElement.attribute("name");
-		Element columnElement = (Element)list.get(1);
-		Attribute paramColumnAtt = columnElement.attribute("name");
-		if(paramTableAtt.getStringValue().equals("column")) {
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/id/generator")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertTrue("Expected to get one generator element", nodeList.getLength() == 1);
+		Node genAtt = ( (Element)nodeList.item(0)).getAttributeNode("class");
+		Assert.assertEquals("Unexpected generator class name", "org.hibernate.id.TableHiLoGenerator", genAtt.getTextContent());
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/id/generator/param")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get correct number of generator param elements", 2, nodeList.getLength());
+		Element tableElement = (Element)nodeList.item(0);
+		Attr paramTableAtt = tableElement.getAttributeNode("name");
+		Element columnElement = (Element)nodeList.item(1);
+		Attr paramColumnAtt = columnElement.getAttributeNode("name");
+		if(paramTableAtt.getTextContent().equals("column")) {
 			// to make sure the order of the elements doesn't matter.
 			Element tempElement = tableElement;
-			Attribute temp = paramTableAtt;	
+			Attr temp = paramTableAtt;	
 			paramTableAtt = paramColumnAtt;
 			tableElement = columnElement;
 			paramColumnAtt = temp;
 			columnElement = tempElement;
 		}
-		Assert.assertEquals("Unexpected generator param name", "table", paramTableAtt.getStringValue() );
-		Assert.assertEquals("Unexpected generator param name", "column", paramColumnAtt.getStringValue() );
-		Assert.assertEquals("Unexpected param value for table", "uni_table", tableElement.getStringValue() );
-		Assert.assertEquals("Unexpected param value for column", "next_hi_value", columnElement.getStringValue() );
+		Assert.assertEquals("Unexpected generator param name", "table", paramTableAtt.getTextContent() );
+		Assert.assertEquals("Unexpected generator param name", "column", paramColumnAtt.getTextContent() );
+		Assert.assertEquals("Unexpected param value for table", "uni_table", tableElement.getTextContent() );
+		Assert.assertEquals("Unexpected param value for column", "next_hi_value", columnElement.getTextContent() );
     }
 
 	@Test
@@ -376,29 +397,31 @@ public class TestCase {
 				outputDir,
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/query");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get correct number of query elements", 2, list.size() );
-		Attribute genAtt = ( (Element)list.get(0) ).attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_query_1", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(0) ).attribute("flush-mode");
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/query")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get correct number of query elements", 2, nodeList.getLength() );
+		Attr genAtt = ( (Element)nodeList.item(0) ).getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_query_1", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(0) ).getAttributeNode("flush-mode");
 		Assert.assertNull("Expected flush-mode value to be null", genAtt);
-		genAtt = ( (Element)list.get(1) ).attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_query_2", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(1) ).attribute("flush-mode");
-		Assert.assertEquals("Unexpected flush-mode value", "auto", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(1) ).attribute("cacheable");
-		Assert.assertEquals("Unexpected cacheable value", "true", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(1) ).attribute("cache-region");
-		Assert.assertEquals("Unexpected cache-region value", "myregion", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(1) ).attribute("fetch-size");
-		Assert.assertEquals("Unexpected fetch-size value", "10", genAtt.getStringValue() );
-		genAtt = ( (Element)list.get(1) ).attribute("timeout");
-		Assert.assertEquals("Unexpected timeout value", "1000", genAtt.getStringValue() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_query_2", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("flush-mode");
+		Assert.assertEquals("Unexpected flush-mode value", "auto", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("cacheable");
+		Assert.assertEquals("Unexpected cacheable value", "true", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("cache-region");
+		Assert.assertEquals("Unexpected cache-region value", "myregion", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("fetch-size");
+		Assert.assertEquals("Unexpected fetch-size value", "10", genAtt.getTextContent() );
+		genAtt = ( (Element)nodeList.item(1) ).getAttributeNode("timeout");
+		Assert.assertEquals("Unexpected timeout value", "1000", genAtt.getTextContent() );
 	}
 
 	@Test
@@ -407,18 +430,21 @@ public class TestCase {
 				outputDir, 
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get correct number of query elements", 6, list.size() );
-		xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_1\"]");
-		list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get correct number of query elements", 6, nodeList.getLength() );
+		nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_1\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_1' not to be null", node);
-		Attribute genAtt = node.attribute("flush-mode");
+		Attr genAtt = node.getAttributeNode("flush-mode");
 		Assert.assertNull("Expected flush-mode value to be null", genAtt);
 	}
 	    
@@ -428,27 +454,29 @@ public class TestCase {
 				outputDir,
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_2\"]");
-		List<?> list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_2\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_2' not to be null", node);
-		Attribute genAtt = node.attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_sqlquery_2", genAtt.getStringValue() );
-		genAtt = node.attribute("flush-mode");
-		Assert.assertEquals("Unexpected flush-mode value", "auto", genAtt.getStringValue() );
-		genAtt = node.attribute("cacheable");
-		Assert.assertEquals("Unexpected cacheable value", "true", genAtt.getStringValue() );
-		genAtt = node.attribute("cache-region");
-		Assert.assertEquals("Unexpected cache-region value", "myregion", genAtt.getStringValue() );
-		genAtt = node.attribute("fetch-size");
-		Assert.assertEquals("Unexpected fetch-size value", "10", genAtt.getStringValue() );
-		genAtt = node.attribute("timeout");
-		Assert.assertEquals("Unexpected timeout value", "1000", genAtt.getStringValue() );
-		Element syncTable = node.element("synchronize");
+		Attr genAtt = node.getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_sqlquery_2", genAtt.getTextContent() );
+		genAtt = node.getAttributeNode("flush-mode");
+		Assert.assertEquals("Unexpected flush-mode value", "auto", genAtt.getTextContent() );
+		genAtt = node.getAttributeNode("cacheable");
+		Assert.assertEquals("Unexpected cacheable value", "true", genAtt.getTextContent() );
+		genAtt = node.getAttributeNode("cache-region");
+		Assert.assertEquals("Unexpected cache-region value", "myregion", genAtt.getTextContent() );
+		genAtt = node.getAttributeNode("fetch-size");
+		Assert.assertEquals("Unexpected fetch-size value", "10", genAtt.getTextContent() );
+		genAtt = node.getAttributeNode("timeout");
+		Assert.assertEquals("Unexpected timeout value", "1000", genAtt.getTextContent() );
+		Element syncTable = (Element)node.getElementsByTagName("synchronize").item(0);
 		Assert.assertNull("Expected synchronize element to be null", syncTable);	
 	}
 
@@ -458,21 +486,23 @@ public class TestCase {
 				outputDir, 
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_3\"]");
-		List<?> list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_3\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_3' not to be null", node);
-		Attribute genAtt = node.attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_sqlquery_3", genAtt.getStringValue() );
-		Element syncTable = node.element("synchronize");
+		Attr genAtt = node.getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_sqlquery_3", genAtt.getTextContent() );
+		Element syncTable = (Element)node.getElementsByTagName("synchronize").item(0);
 		Assert.assertNotNull("Expected synchronize element to not be null", syncTable);
-		genAtt = syncTable.attribute("table");
-		Assert.assertEquals("Unexpected table value for synchronize element", "mytable", genAtt.getStringValue() );
-		Element returnEl = node.element("return");
+		genAtt = syncTable.getAttributeNode("table");
+		Assert.assertEquals("Unexpected table value for synchronize element", "mytable", genAtt.getTextContent() );
+		Element returnEl = (Element)node.getElementsByTagName("return").item(0);
 		Assert.assertNull("Expected return element to be null", returnEl);
 	}
 
@@ -482,21 +512,24 @@ public class TestCase {
 				outputDir, 
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_4\"]");
-		List<?> list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_4\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_4' not to be null", node);
-		Attribute genAtt = node.attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_sqlquery_4", genAtt.getStringValue() );
-		Element returnEl = node.element("return");
+		Attr genAtt = node.getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_sqlquery_4", genAtt.getTextContent() );
+		Element returnEl = (Element)node.getElementsByTagName("return").item(0);
 		Assert.assertNotNull("Expected return element to not be null", returnEl);
-		genAtt = returnEl.attribute("alias");
-		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
-		genAtt = returnEl.attribute("class");
-		Assert.assertEquals("Unexpected class value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals", genAtt.getStringValue());
+		genAtt = returnEl.getAttributeNode("alias");
+		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getTextContent() );
+		genAtt = returnEl.getAttributeNode("class");
+		Assert.assertEquals("Unexpected class value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals", genAtt.getTextContent());
 	}
 
 	@Test
@@ -505,22 +538,24 @@ public class TestCase {
 				outputDir, 
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_5\"]");
-		List<?> list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_5\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_5' not to be null", node);
-		Attribute genAtt = node.attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_sqlquery_5", genAtt.getStringValue() );
-		Element returnEl = node.element("return-join");
+		Attr genAtt = node.getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_sqlquery_5", genAtt.getTextContent() );
+		Element returnEl = (Element)node.getElementsByTagName("return-join").item(0);
 		Assert.assertNotNull("Expected return element to not be null", returnEl);
-		genAtt = returnEl.attribute("alias");
-		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue() );
-		genAtt = returnEl.attribute("property");
-		Assert.assertEquals("Unexpected property role value for return element", "e.age", genAtt.getStringValue());
+		genAtt = returnEl.getAttributeNode("alias");
+		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getTextContent() );
+		genAtt = returnEl.getAttributeNode("property");
+		Assert.assertEquals("Unexpected property role value for return element", "e.age", genAtt.getTextContent());
 	}
 	    
 	@Test
@@ -529,23 +564,26 @@ public class TestCase {
 				outputDir, 
 				"GeneralHbmSettings.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		Document document = xmlReader.read(outputXml);
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder  db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
 		// Validate the Generator and that it does have arguments 
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/sql-query[@name=\"test_sqlquery_6\"]");
-		List<?> list = xpath.selectNodes(document);
-		Element node = (Element)list.get(0);
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/sql-query[@name=\"test_sqlquery_6\"]")
+				.evaluate(document, XPathConstants.NODESET);
+		Element node = (Element)nodeList.item(0);
 		Assert.assertNotNull("Expected sql-query named 'test_sqlquery_6' not to be null", node);
-		Attribute genAtt = node.attribute("name");
-		Assert.assertEquals("Unexpected query name", "test_sqlquery_6", genAtt.getStringValue());
-		Element returnEl = node.element("load-collection");
+		Attr genAtt = node.getAttributeNode("name");
+		Assert.assertEquals("Unexpected query name", "test_sqlquery_6", genAtt.getTextContent());
+		Element returnEl = (Element)node.getElementsByTagName("load-collection").item(0);
 		Assert.assertNotNull("Expected return element to not be null", returnEl);
-		genAtt = returnEl.attribute("alias");
-		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getStringValue());
-		genAtt = returnEl.attribute("role");
-		Assert.assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest.BasicGlobals.price", genAtt.getStringValue());
-		genAtt = returnEl.attribute("lock-mode");
-		Assert.assertEquals("Unexpected class lock-mode for return element", "none", genAtt.getStringValue());
+		genAtt = returnEl.getAttributeNode("alias");
+		Assert.assertEquals("Unexpected alias value for return element", "e", genAtt.getTextContent());
+		genAtt = returnEl.getAttributeNode("role");
+		Assert.assertEquals("Unexpected collection role value for return element", "org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest.BasicGlobals.price", genAtt.getTextContent());
+		genAtt = returnEl.getAttributeNode("lock-mode");
+		Assert.assertEquals("Unexpected class lock-mode for return element", "none", genAtt.getTextContent());
 	}
 	
 }
