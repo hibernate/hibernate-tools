@@ -9,15 +9,14 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.InheritanceTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -31,6 +30,9 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * this test should be fixed to have a proper model. currently a mix of subclass/joinedsubclass is in play.
@@ -109,38 +111,37 @@ public class TestCase {
 	// TODO Re-enable this test: HBX-1247
 	@Ignore
 	@Test
-	public void testComment() {
+	public void testComment() throws Exception {
 		File outputXml = new File(
 				outputDir,
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/InheritanceTest/Alien.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/joined-subclass/comment");
-			List<?> list = xpath.selectNodes(document);
-			Assert.assertEquals("Expected to get one comment element", 1, list.size());
-		} catch (DocumentException e) {
-			Assert.fail("Can't parse file " + outputXml.getAbsolutePath());
-		}
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/joined-subclass/comment")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one comment element", 1, nodeList.getLength());
     }
 	
 	@Test
-	public void testDiscriminator() throws DocumentException {
+	public void testDiscriminator() throws Exception {
 		File outputXml = new File(
 				outputDir, 
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/InheritanceTest/Animal.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/discriminator");
-		List<?> list = xpath.selectNodes(document);
-		Assert.assertEquals("Expected to get one discriminator element", 1, list.size());	
-		Element node = (Element) list.get(0);
-		Assert.assertEquals(node.attribute( "type" ).getText(), "string");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/discriminator")
+				.evaluate(document, XPathConstants.NODESET);
+		Assert.assertEquals("Expected to get one discriminator element", 1, nodeList.getLength());	
+		Element node = (Element) nodeList.item(0);
+		Assert.assertEquals(node.getAttribute( "type" ), "string");
 	}
 
 }
