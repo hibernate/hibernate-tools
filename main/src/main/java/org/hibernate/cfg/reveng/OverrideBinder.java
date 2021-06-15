@@ -1,451 +1,429 @@
 package org.hibernate.cfg.reveng;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
-import org.dom4j.Document;
-import org.dom4j.Element;
 import org.hibernate.MappingException;
+import org.hibernate.cfg.reveng.utils.JdbcToHibernateTypeHelper;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper.SimpleMetaAttribute;
+import org.hibernate.cfg.reveng.utils.RevengUtils;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+public class OverrideBinder {
 
-public final class OverrideBinder {
-
-	private OverrideBinder() {
-		// empty
+	public static void bindRoot(OverrideRepository repository, Document doc) {		
+		Element rootElement = doc.getDocumentElement();	
+		bindSchemaSelections(getChildElements(rootElement, "schema-selection"), repository);		
+		bindTypeMappings(getChildElements(rootElement, "type-mapping"), repository);
+		bindTableFilters(getChildElements(rootElement, "table-filter"), repository);
+		bindTables(getChildElements(rootElement, "table"), repository);
 	}
 	
-	public static void bindRoot(OverrideRepository repository, Document doc) {
+	private static void bindSchemaSelections(
+			ArrayList<Element> schemaSelections, 
+			OverrideRepository repository) {	
+		for (Element schemaSelection : schemaSelections) {
+			bindSchemaSelection(schemaSelection, repository);
+		}
+	}
+	
+	private static void bindTypeMappings(
+			ArrayList<Element> typeMappings, 
+			OverrideRepository repository) {	
+		if (typeMappings.size() > 0) {
+			bindTypeMapping(typeMappings.get(0), repository);
+		}
+	}
+	
+	private static void bindTableFilters(
+			ArrayList<Element> tableFilters, 
+			OverrideRepository repository) {		
+		for (Element element : tableFilters) {
+			TableFilter tableFilter = new TableFilter();
+			tableFilter.setMatchCatalog(getAttribute(element, "match-catalog"));
+			tableFilter.setMatchSchema(getAttribute(element, "match-schema"));
+			tableFilter.setMatchName(getAttribute(element, "match-name"));
+			tableFilter.setExclude(Boolean.valueOf(getAttribute(element, "exclude")));
+			tableFilter.setPackage(getAttribute(element, "package"));
+			MultiValuedMap<String, SimpleMetaAttribute> map = 
+					MetaAttributeHelper.loadAndMergeMetaMap(
+							element, 
+							new HashSetValuedHashMap<String, MetaAttributeHelper.SimpleMetaAttribute>());
+			if (map != null && !map.isEmpty()) {
+				tableFilter.setMetaAttributes(map);
+			} else {
+				tableFilter.setMetaAttributes(null);
+			}
+			repository.addTableFilter(tableFilter);
+		}
+	}
 		
-		Element rootElement = doc.getRootElement();
-		
-		Element element;
-		List<?> elements;
-
-		elements = rootElement.elements("schema-selection");
-		bindSchemaSelection(elements, repository);
-		
-		element = rootElement.element("type-mapping");
-		
-		if(element!=null) {
-			bindTypeMappings(element, repository);
+	private static void bindTables(
+			ArrayList<Element> tables, 
+			OverrideRepository repository) {	
+		for (Element element : tables) {
+			Table table = new Table();
+			table.setCatalog(getAttribute(element, "catalog"));
+			table.setSchema(getAttribute(element, "schema"));
+			table.setName(getAttribute(element, "name"));
+			ArrayList<Element> primaryKeys = getChildElements(element, "primary-key");
+			if (primaryKeys.size() > 0) {
+				bindPrimaryKey(primaryKeys.get(0), table, repository);
+			}
+			bindColumns(getChildElements(element, "column"), table, repository);
+			bindForeignKeys(getChildElements(element, "foreign-key"), table, repository);
+			bindMetaAttributes(element, table, repository);
+			repository.addTable(table, getAttribute(element, "class"));
+		}	
+	}
+	
+	private static void bindPrimaryKey(
+			Element element, 
+			Table table, 
+			OverrideRepository repository) {
+		String propertyName = getAttribute(element, "property");
+		String compositeIdName = getAttribute(element, "id-class");
+		ArrayList<Element> generators = getChildElements(element, "generator");
+		if (generators.size() > 0) {
+			Element generator = generators.get(0);
+			String identifierClass = getAttribute(generator, "class");
+			Properties params = new Properties();
+			ArrayList<Element> parameterList = getChildElements(generator, "param");
+			for (int i = 0; i < parameterList.size(); i++) {
+				Element parameter = parameterList.get(i);
+				params.setProperty(getAttribute(parameter, "name"), parameter.getTextContent());
+			}
+			repository.addTableIdentifierStrategy(table, identifierClass, params);
+		}
+		List<String> boundColumnNames = bindColumns(getChildElements(element, "key-column"), table, repository);
+		repository.addPrimaryKeyNamesForTable(table, boundColumnNames, propertyName, compositeIdName);
+	}
+	
+	private static List<String> bindColumns(
+			ArrayList<Element> columns, 
+			Table table, 
+			OverrideRepository repository) {
+		List<String> columnNames = new ArrayList<String>();
+		for (Element element : columns) {
+			Column column = new Column();
+			column.setName(getAttribute(element, "name"));
+			String attributeValue = getAttribute(element, "jdbc-type");
+			if (StringHelper.isNotEmpty(attributeValue)) {
+				column.setSqlTypeCode(Integer.valueOf(JdbcToHibernateTypeHelper.getJDBCType(attributeValue)));
+			}
+			TableIdentifier tableIdentifier = TableIdentifier.create(table);
+			if (table.getColumn(column) != null) {
+				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
+			}
+			MultiValuedMap<String, SimpleMetaAttribute> map = 
+					MetaAttributeHelper.loadAndMergeMetaMap(
+							element, 
+							new HashSetValuedHashMap<String, MetaAttributeHelper.SimpleMetaAttribute>());
+			if(map!=null && !map.isEmpty()) {
+				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
+			} 
+			table.addColumn(column);
+			columnNames.add(column.getName());
+			repository.setTypeNameForColumn(
+					tableIdentifier, 
+					column.getName(), 
+					getAttribute(element, "type"));
+			repository.setPropertyNameForColumn(
+					tableIdentifier, 
+					column.getName(), 
+					getAttribute(element, "property"));
+			boolean excluded = Boolean.valueOf(element.getAttribute("exclude") );
+			if(excluded) {
+				repository.setExcludedColumn(tableIdentifier, column.getName());
+			}
+			if (element.hasAttribute("foreign-table")) {
+				String foreignTableName = element.getAttribute("foreign-table");
+				List<Column> localColumns = new ArrayList<Column>();
+				localColumns.add(column);
+				List<Column> foreignColumns = new ArrayList<Column>();				
+				Table foreignTable = new Table();
+				foreignTable.setName(foreignTableName);
+				foreignTable.setCatalog(
+						element.hasAttribute("foreign-catalog") ?
+						element.getAttribute("foreign-catalog") :
+						table.getCatalog());
+				foreignTable.setSchema(
+						element.hasAttribute("foreign-schema") ?
+						element.getAttribute("foreign-schema") : 
+						table.getSchema());				
+				if (element.hasAttribute("foreign-column")) {
+					String foreignColumnName = element.getAttribute("foreign-column");
+					Column foreignColumn = new Column();
+					foreignColumn.setName(foreignColumnName);
+					foreignColumns.add(foreignColumn);
+				} else {
+					throw new MappingException("foreign-column is required when foreign-table is specified on " + column);
+				}
+				ForeignKey key = table.createForeignKey(
+						null, 
+						localColumns, 
+						foreignTableName, 
+						null, 
+						foreignColumns);
+				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)
+			}
+		}
+		return columnNames;
+	}
+	
+	private static void bindForeignKeys(
+			ArrayList<Element> foreignKeys, 
+			Table table, 
+			OverrideRepository repository) {
+		for (Element element : foreignKeys) {
+			String constraintName = getAttribute(element, "constraint-name");
+			String foreignTableName = getAttribute(element, "foreign-table");
+			if (foreignTableName != null) {
+				Table foreignTable = new Table();
+				foreignTable.setName(foreignTableName);
+				foreignTable.setCatalog(
+						element.hasAttribute("foreign-catalog") ? 
+						element.getAttribute("foreign-catalog") : 
+						table.getCatalog());
+				foreignTable.setSchema(
+						element.hasAttribute("foreign-schema") ? 
+						element.getAttribute("foreign-schema") : 
+						table.getSchema());
+				List<Column> localColumns = new ArrayList<Column>();
+				List<Column> foreignColumns = new ArrayList<Column>();
+				ArrayList<Element> columnRefs = getChildElements(element, "column-ref");
+				for (Element columnRef : columnRefs) {
+					localColumns.add(new Column(columnRef.getAttribute("local-column")));
+					foreignColumns.add(new Column(columnRef.getAttribute("foreign-column")));
+				}
+				ForeignKey key = table.createForeignKey(
+						constraintName, 
+						localColumns, 
+						foreignTableName, 
+						null, 
+						foreignColumns);
+				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)				
+			}
+			if (StringHelper.isNotEmpty(constraintName)) {
+				if (!validateFkAssociations(element)) {
+					throw new IllegalArgumentException("you can't mix <many-to-one/> or <set/> with <(inverse-)one-to-one/> ");
+				}
+				if (!bindManyToOneAndCollection(element, constraintName, repository)) {
+					bindOneToOne(element, constraintName, repository);
+				}
+			}
+			
+		}
+	}
+	
+	private static void bindOneToOne(Element element, String constraintName,
+			OverrideRepository repository) {
+		String oneToOneProperty = null;
+		Boolean excludeOneToOne = null;
+		ArrayList<Element> oneToOnes = getChildElements(element, "one-to-one");
+		Element oneToOne = null;
+		AssociationInfo associationInfo = null;
+		if(oneToOnes.size() > 0) {
+			oneToOne = oneToOnes.get(0);
+			oneToOneProperty = getAttribute(oneToOne, "property");
+			excludeOneToOne = Boolean.valueOf(oneToOne.getAttribute("exclude"));
+			associationInfo = extractAssociationInfo(oneToOne);										
 		}
 		
-		
-		elements = rootElement.elements("table-filter");
-		bindTableFilters(elements, repository);
-		
-		List<?> tables = rootElement.elements("table");
-		bindTables(tables, repository);
-		
+		String inverseOneToOneProperty = null;
+		Boolean excludeInverseOneToOne = null;
+		ArrayList<Element> inverseOneToOnes = getChildElements(element, "inverse-one-to-one");
+		Element inverseOneToOne = null;
+		AssociationInfo inverseAssociationInfo = null;
+		if(inverseOneToOnes.size() > 0) {
+			inverseOneToOne = inverseOneToOnes.get(0);
+			inverseOneToOneProperty = getAttribute(inverseOneToOne, "property");
+			excludeInverseOneToOne = Boolean.valueOf(inverseOneToOne.getAttribute("exclude"));
+			inverseAssociationInfo = extractAssociationInfo(inverseOneToOne);
+		}		
+		// having oneToOne = null and inverseOneToOne != null doesn't make sense
+		// we cannot have the inverse side without the owning side in this case		
+		if ( (oneToOne!=null) ) {
+			repository.addForeignKeyInfo(
+					constraintName, 
+					oneToOneProperty, 
+					excludeOneToOne, 
+					inverseOneToOneProperty, 
+					excludeInverseOneToOne, 
+					associationInfo, 
+					inverseAssociationInfo);
+		}
 	}
 
-	static boolean bindManyToOneAndCollection(Element element, String constraintName, OverrideRepository repository) {
-		
+	private static boolean bindManyToOneAndCollection(
+			Element element, 
+			String constraintName, 
+			OverrideRepository repository) {
 		String manyToOneProperty = null;
 		Boolean excludeManyToOne = null;
-		
-		DefaulAssociationInfo associationInfo = null;
-		DefaulAssociationInfo inverseAssociationInfo = null;
-		Element manyToOne = element.element("many-to-one");
-		if(manyToOne!=null) {
-			manyToOneProperty = manyToOne.attributeValue("property");
-			excludeManyToOne = BooleanValue(manyToOne.attributeValue("exclude"));										
-			associationInfo = extractAssociationInfo(manyToOne);										
+		AssociationInfo associationInfo = null;
+		AssociationInfo inverseAssociationInfo = null;
+		ArrayList<Element> manyToOnes = getChildElements(element, "many-to-one");
+		Element manyToOne = null;
+		if (manyToOnes.size() > 0) {
+			manyToOne = manyToOnes.get(0);
+			manyToOneProperty = getAttribute(manyToOne, "property");
+			excludeManyToOne = Boolean.valueOf(manyToOne.getAttribute("exclude"));
+			associationInfo = extractAssociationInfo(manyToOne);
 		}
-		
 		String collectionProperty = null;
 		Boolean excludeCollection = null;
-		Element collection = element.element("set");
-		if(collection!=null) {
-			collectionProperty = collection.attributeValue("property");
-			excludeCollection = BooleanValue(collection.attributeValue("exclude"));
-			inverseAssociationInfo = extractAssociationInfo(collection);
+		ArrayList<Element> sets = getChildElements(element, "set");
+		Element set = null;
+		if (sets.size() > 0) {
+			set = sets.get(0);
+			collectionProperty = getAttribute(set, "property");
+			excludeCollection = Boolean.valueOf(set.getAttribute("exclude"));
+			inverseAssociationInfo = extractAssociationInfo(set);
 		}
-		
-		if ( (manyToOne!=null) || (collection!=null) ) {
-			repository.addForeignKeyInfo(constraintName, manyToOneProperty, excludeManyToOne, collectionProperty, excludeCollection, associationInfo, inverseAssociationInfo);
+		if ( (manyToOne!=null) || (set!=null) ) {
+			repository.addForeignKeyInfo(
+					constraintName, 
+					manyToOneProperty, 
+					excludeManyToOne, 
+					collectionProperty, 
+					excludeCollection, 
+					associationInfo, 
+					inverseAssociationInfo);
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private static void bindSchemaSelection(List<?> selection, OverrideRepository repository) {
-		Iterator<?> iterator = selection.iterator();
-		
-		while ( iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			SchemaSelection schemaSelection = new SchemaSelection();
-			schemaSelection.setMatchCatalog( element.attributeValue("match-catalog") );
-			schemaSelection.setMatchSchema( element.attributeValue("match-schema") );
-			schemaSelection.setMatchTable( element.attributeValue("match-table") );
-			
-			repository.addSchemaSelection(schemaSelection);
-			
-		}		
+	private static AssociationInfo extractAssociationInfo(Element manyToOne) {
+		return RevengUtils.createAssociationInfo(
+				manyToOne.hasAttribute("cascade") ? manyToOne.getAttribute("cascade") : null, 
+				manyToOne.hasAttribute("fetch") ? manyToOne.getAttribute("fetch") : null, 
+				manyToOne.hasAttribute("insert") ? 
+					Boolean.parseBoolean(manyToOne.getAttribute("insert")) : null, 
+				manyToOne.hasAttribute("update") ? 
+					Boolean.parseBoolean(manyToOne.getAttribute("update")) : null);
 	}
 
-	private static void bindTables(List<?> tables, OverrideRepository repository) {
-		Iterator<?> iterator = tables.iterator();
-		
-		while ( iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			Table table = new Table();
-			table.setCatalog( element.attributeValue("catalog") );
-			table.setSchema( element.attributeValue("schema") );
-			table.setName( element.attributeValue("name") );
-			
-			String wantedClassName = element.attributeValue("class");
-			
-			Element primaryKey = element.element("primary-key");			
-			bindPrimaryKey(primaryKey, table, repository);
-			List<?> columns = element.elements("column");
-			bindColumns(columns, table, repository);
-			
-			
-			List<?> foreignKeys = element.elements("foreign-key");
-			bindForeignKeys(foreignKeys, table, repository);
-			
-			bindMetaAttributes(element, table, repository);
-			
-			repository.addTable(table,wantedClassName);
-			
+	private static boolean validateFkAssociations(Element element){
+		ArrayList<Element> manyToOnes = getChildElements(element, "many-to-one");
+		ArrayList<Element> oneToOnes = getChildElements(element, "one-to-one");
+		ArrayList<Element> sets = getChildElements(element, "set");
+		ArrayList<Element> inverseOneToOnes = getChildElements(element, "inverse-one-to-one");
+		if (manyToOnes.size() != 0 && 
+				(oneToOnes.size() != 0 || inverseOneToOnes.size() != 0)) {
+			return false;
 		}
-		
+		if (oneToOnes.size() != 0 && sets.size() != 0) {
+			return false;
+		}
+		if (inverseOneToOnes.size() != 0 && sets.size() != 0) {
+			return false;
+		}
+		return true;
 	}
-
-	private static void bindMetaAttributes(Element element, Table table, OverrideRepository repository) {
+	
+	private static void bindMetaAttributes(
+			Element element, 
+			Table table, 
+			OverrideRepository repository) {
 		MultiValuedMap<String, SimpleMetaAttribute> map = 
-				MetaAttributeBinder.loadAndMergeMetaMap(
+				MetaAttributeHelper.loadAndMergeMetaMap( 
 						element, 
-						new HashSetValuedHashMap<String, SimpleMetaAttribute>());
+						new HashSetValuedHashMap<String, MetaAttributeHelper.SimpleMetaAttribute>());
 		if(map!=null && !map.isEmpty()) {
 			repository.addMetaAttributeInfo( table, map);
 		} 
 	}
-
-	private static void bindPrimaryKey(Element identifier, Table table, OverrideRepository repository) {
-		if(identifier==null) return;
 		
-		String propertyName = identifier.attributeValue("property");
-		String compositeIdName = identifier.attributeValue("id-class");
-		
-		Element element = identifier.element("generator");
-		if(element!=null) {
-			String identifierClass = element.attributeValue("class");
-			
-			Properties params = new Properties();
-			Iterator<?> iter = element.elementIterator( "param" );
-			while ( iter.hasNext() ) {
-				Element childNode = (Element) iter.next();
-				params.setProperty( childNode.attributeValue( "name" ), childNode.getText() );
-			}
-			
-			repository.addTableIdentifierStrategy(table, identifierClass, params);
-		}
-		
-		List<String> boundColumnNames = bindColumns(identifier.elements("key-column"), table, repository);
-		
-		repository.addPrimaryKeyNamesForTable(table, boundColumnNames, propertyName, compositeIdName);
-		
-	}
-
-	private static void bindForeignKeys(List<?> foreignKeys, Table table, OverrideRepository repository) {
-		Iterator<?> iterator = foreignKeys.iterator();
-		
-		while( iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			
-			String constraintName = element.attributeValue("constraint-name");
-			
-			String foreignTableName = element.attributeValue("foreign-table");
-			if(foreignTableName!=null) {
-				Table foreignTable = new Table();
-				foreignTable.setName(foreignTableName);
-				foreignTable.setCatalog(getValue(element.attributeValue( "foreign-catalog"), table.getCatalog()) );
-				foreignTable.setSchema(getValue(element.attributeValue( "foreign-schema"), table.getSchema()) );
-
-				List<Column> localColumns = new ArrayList<Column>();
-				List<Column> foreignColumns = new ArrayList<Column>();
-				
-				Iterator<?> columnRefs = element.elements("column-ref").iterator();
-				while ( columnRefs.hasNext() ) {
-					Element columnRef = (Element) columnRefs.next();
-					String localColumnName = columnRef.attributeValue("local-column");
-					String foreignColumnName = columnRef.attributeValue("foreign-column");
-					
-					Column localColumn = new Column(localColumnName);
-					Column foreignColumn = new Column(foreignColumnName);
-					
-					localColumns.add(localColumn);
-					foreignColumns.add(foreignColumn);
-				}
-								
-				ForeignKey key = table.createForeignKey(constraintName, localColumns, foreignTableName, null, foreignColumns);
-				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)				
-			}
-			
-			if(StringHelper.isNotEmpty(constraintName)) {
-				if (!validateFkAssociations(element))
-					throw new IllegalArgumentException("you can't mix <many-to-one/> or <set/> with <(inverse-)one-to-one/> ");
-				
-				if(!bindManyToOneAndCollection(element, constraintName, repository)) {
-					bindOneToOne(element, constraintName, repository);
-				}								
-			}
-		}
-		
-	}
-
-	private static void bindOneToOne(Element element, String constraintName,
+	private static void bindSchemaSelection(
+			Element schemaSelectionElement, 
 			OverrideRepository repository) {
-		String oneToOneProperty = null;
-		Boolean excludeOneToOne = null;
-		Element oneToOne = element.element("one-to-one");
-		DefaulAssociationInfo associationInfo = null;
-		if(oneToOne!=null) {
-			oneToOneProperty = oneToOne.attributeValue("property");
-			excludeOneToOne = BooleanValue(oneToOne.attributeValue("exclude"));
-			associationInfo = extractAssociationInfo(oneToOne);										
-		}
-		
-		String inverseOneToOneProperty = null;
-		Boolean excludeInverseOneToOne = null;
-		Element inverseOneToOne = element.element("inverse-one-to-one");
-		DefaulAssociationInfo inverseAssociationInfo = null;
-		if(inverseOneToOne!=null) {
-			inverseOneToOneProperty = inverseOneToOne.attributeValue("property");
-			excludeInverseOneToOne = BooleanValue(inverseOneToOne.attributeValue("exclude"));
-			inverseAssociationInfo = extractAssociationInfo(inverseOneToOne);
-		}	
-		
-		// having oneToOne = null and inverseOneToOne != null doesn't make sense
-		// we cannot have the inverse side without the owning side in this case
-		
-		if ( (oneToOne!=null) ) {
-			repository.addForeignKeyInfo(constraintName, oneToOneProperty, excludeOneToOne, inverseOneToOneProperty, excludeInverseOneToOne, associationInfo, inverseAssociationInfo);
-		}
-	}
-
-	private static DefaulAssociationInfo extractAssociationInfo(Element manyToOne) {
-		String attributeValue = manyToOne.attributeValue("cascade");
-		DefaulAssociationInfo associationInfo = null;
-		if(attributeValue!=null) {
-			associationInfo = ensureInit(associationInfo);
-			associationInfo.setCascade(attributeValue);
-		}
-		
-		
-		attributeValue = manyToOne.attributeValue("fetch");
-		if(attributeValue!=null) {
-			associationInfo = ensureInit(associationInfo);
-			associationInfo.setFetch(attributeValue);
-		}					
-		
-		
-		attributeValue = manyToOne.attributeValue("insert");
-		if(attributeValue!=null) {
-			associationInfo = ensureInit(associationInfo);
-			associationInfo.setInsert(new Boolean(attributeValue));
-		}					
-		
-		
-		attributeValue = manyToOne.attributeValue("update");
-		if(attributeValue!=null) {
-			associationInfo = ensureInit(associationInfo);
-			associationInfo.setUpdate(new Boolean(attributeValue));
-		}
-		return associationInfo;
-	}
-
-	private static DefaulAssociationInfo ensureInit(
-			DefaulAssociationInfo associationInfo) {
-		return associationInfo==null?new DefaulAssociationInfo():associationInfo;
-	}
-
-	private static boolean validateFkAssociations(Element element){
-		Element manyToOne = element.element("many-to-one");
-		Element oneToOne = element.element("one-to-one");
-		Element set = element.element("set");
-		Element inverseOneToOne = element.element("inverse-one-to-one");
-		
-		if((manyToOne != null) && ( (oneToOne != null) || (inverseOneToOne != null))) {
-			return false;
-			
-		}
-				
-		if((oneToOne != null) && (set != null)) {
-			return false;
-		}
-		
-		if ((inverseOneToOne != null) && (set != null)) {
-			return false;
-		}
-		
-		return true;
+		repository.addSchemaSelection(
+				new SchemaSelection() {
+					@Override
+					public String getMatchCatalog() {
+						return getAttribute(schemaSelectionElement, "match-catalog");
+					}
+					@Override
+					public String getMatchSchema() {
+						return getAttribute(schemaSelectionElement, "match-schema");
+					}
+					@Override
+					public String getMatchTable() {
+						return getAttribute(schemaSelectionElement, "match-table");
+					}
+					
+				});
 	}
 	
-	private static Boolean BooleanValue(String string) {
-		if(string==null) return null;
-		return Boolean.valueOf(string);		
-	}
-
-	private static String getValue(String first, String second) {
-		if(first==null) {
-			return second;		
-		} else { 
-			return first;
+	private static void bindTypeMapping(
+			Element typeMapping, 
+			OverrideRepository repository) {	
+		ArrayList<Element> sqlTypes = getChildElements(typeMapping, "sql-type");
+		for (int i = 0; i < sqlTypes.size(); i++) {
+			bindSqlType(sqlTypes.get(i), repository);
 		}
 	}
-
-	private static List<String> bindColumns(List<?> columns, Table table, OverrideRepository repository) {
-		Iterator<?> iterator = columns.iterator();
-		List<String> columnNames = new ArrayList<String>();
-		while( iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			Column column = new Column();
-			column.setName( element.attributeValue("name") );
-			String attributeValue = element.attributeValue("jdbc-type");
-			if(StringHelper.isNotEmpty(attributeValue)) {
-				column.setSqlTypeCode(new Integer(JDBCToHibernateTypeHelper.getJDBCType(attributeValue)));
-			}
-						
-			TableIdentifier tableIdentifier = TableIdentifier.create(table);
-			if(table.getColumn(column)!=null) {
-				throw new MappingException("Column " + column.getName() + " already exists in table " + tableIdentifier );
-			}
-			
-			MultiValuedMap<String, SimpleMetaAttribute> map = 
-					MetaAttributeBinder.loadAndMergeMetaMap( 
-							element, 
-							new HashSetValuedHashMap<String, SimpleMetaAttribute>());
-			if(map!=null && !map.isEmpty()) {
-				repository.addMetaAttributeInfo( tableIdentifier, column.getName(), map);
-			} 
-			
-			table.addColumn(column);
-			columnNames.add(column.getName());
-			repository.setTypeNameForColumn(tableIdentifier, column.getName(), element.attributeValue("type"));
-			repository.setPropertyNameForColumn(tableIdentifier, column.getName(), element.attributeValue("property"));
-			
-			boolean excluded = booleanValue( element.attributeValue("exclude") );
-			if(excluded) {
-				repository.setExcludedColumn(tableIdentifier, column.getName());
-			}
-			
-			String foreignTableName = element.attributeValue("foreign-table");
-			if(foreignTableName!=null) {
-				List<Column> localColumns = new ArrayList<Column>();
-				localColumns.add(column);
-				List<Column> foreignColumns = new ArrayList<Column>();
-				
-				Table foreignTable = new Table();
-				foreignTable.setName(foreignTableName);
-				foreignTable.setCatalog(getValue(element.attributeValue( "foreign-catalog"),table.getCatalog()) );
-				foreignTable.setSchema(getValue(element.attributeValue( "foreign-schema"), table.getSchema()) );
-				
-				String foreignColumnName = element.attributeValue("foreign-column");
-				if(foreignColumnName!=null) {
-					Column foreignColumn = new Column();
-					foreignColumn.setName(foreignColumnName);
-					foreignColumns.add(foreignColumn);
-				} 
-				else {
-					throw new MappingException("foreign-column is required when foreign-table is specified on " + column);
-				}
-				
-				ForeignKey key = table.createForeignKey(null, localColumns, foreignTableName, null, foreignColumns);
-				key.setReferencedTable(foreignTable); // only possible if foreignColumns is explicitly specified (workaround on aligncolumns)
-			}
-			
-			
-			
+	
+	private static void bindSqlType(Element sqlType, OverrideRepository repository) {
+		int jdbcType = JdbcToHibernateTypeHelper.getJDBCType(
+				getAttribute(sqlType, "jdbc-type"));
+		SQLTypeMapping sqlTypeMapping = new SQLTypeMapping(jdbcType);
+		sqlTypeMapping.setHibernateType(getHibernateType(sqlType));
+		sqlTypeMapping.setLength(getInteger(
+				getAttribute(sqlType, "length"),
+				SQLTypeMapping.UNKNOWN_LENGTH));
+		sqlTypeMapping.setPrecision(getInteger(
+				getAttribute(sqlType, "precision"),
+				SQLTypeMapping.UNKNOWN_PRECISION));
+		sqlTypeMapping.setScale(getInteger(
+				getAttribute(sqlType, "scale"),
+				SQLTypeMapping.UNKNOWN_SCALE));
+		String notNull = getAttribute(sqlType, "not-null");
+		if (StringHelper.isEmpty(notNull)) {
+			sqlTypeMapping.setNullable(null);
+		} else {
+			sqlTypeMapping.setNullable(notNull.equals("false"));
 		}
-		
-		return columnNames;
-	}
-
-	private static boolean booleanValue(String value) {
-		return Boolean.valueOf(value).booleanValue();
-	}
-
-	private static void bindTableFilters(List<?> filters, OverrideRepository respository) {
-		Iterator<?> iterator = filters.iterator();
-		
-		while(iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			TableFilter filter = new TableFilter();
-			filter.setMatchCatalog(element.attributeValue("match-catalog") );
-			filter.setMatchSchema(element.attributeValue("match-schema") );
-			filter.setMatchName(element.attributeValue("match-name") );
-			filter.setExclude(Boolean.valueOf(element.attributeValue("exclude") ) );
-			filter.setPackage(element.attributeValue("package") );
-			
-			MultiValuedMap<String, SimpleMetaAttribute> map = 
-					MetaAttributeBinder.loadAndMergeMetaMap( 
-							element, 
-							new HashSetValuedHashMap<String, SimpleMetaAttribute>());
-			if(map!=null && !map.isEmpty()) {
-				filter.setMetaAttributes( map );
-			} else {
-				filter.setMetaAttributes( null );				
-			}
-			respository.addTableFilter(filter);
+		if (StringHelper.isEmpty(sqlTypeMapping.getHibernateType())) {
+			throw new MappingException(
+					"No hibernate-type specified for " + 
+					sqlType.getAttribute("jdbc-type") + 
+					" at " + 
+					sqlType.getTagName()); 
 		}
-		
+		repository.addTypeMapping(sqlTypeMapping);		
 	}
-
-	private static void bindTypeMappings(Element typeMapping, OverrideRepository repository) {
-		Iterator<?> iterator = typeMapping.elements("sql-type").iterator();
-		
-		while (iterator.hasNext() ) {
-			Element element = (Element) iterator.next();
-			int jdbcType = JDBCToHibernateTypeHelper.getJDBCType(element.attributeValue("jdbc-type") );
-			SQLTypeMapping mapping = new SQLTypeMapping(jdbcType );
-			mapping.setHibernateType( getHibernateType( element ) );			
-			mapping.setLength(getInteger(element.attributeValue("length"), SQLTypeMapping.UNKNOWN_LENGTH) );
-			mapping.setPrecision(getInteger(element.attributeValue("precision"), SQLTypeMapping.UNKNOWN_PRECISION) );
-			mapping.setScale(getInteger(element.attributeValue("scale"), SQLTypeMapping.UNKNOWN_SCALE) );
-			String notNull = element.attributeValue("not-null");
-			if(notNull==null) {
-				mapping.setNullable(null);
-			} else {
-				boolean nullable = notNull.equals( "false" );
-				mapping.setNullable( Boolean.valueOf(nullable) );
-			}
-			
-			if(StringHelper.isEmpty(mapping.getHibernateType())) {
-				throw new MappingException("No hibernate-type specified for " + element.attributeValue("jdbc-type") + " at " + element.getUniquePath());
-			}
-			repository.addTypeMapping(mapping);
-		}
-		
-	}
-
+	
 	private static String getHibernateType(Element element) {
-		String attributeValue = element.attributeValue("hibernate-type");
-		
+		String attributeValue = getAttribute(element, "hibernate-type");
 		if(StringHelper.isEmpty(attributeValue)) {
-			Element child = element.element("hibernate-type");
-			if(child==null) {
-				return null;
+			ArrayList<Element> hibernateTypes = getChildElements(element, "hibernate-type");
+			if (hibernateTypes.size() > 0) {
+				Element hibernateType = hibernateTypes.get(0);
+				if (hibernateType.hasAttribute("name")) {
+					return hibernateType.getAttribute("name");
+				}
 			} else {
-				return child.attributeValue("name");
+				return null;
 			}
-			
 		}
-		
 		return attributeValue;
 	}
-	
+
 	private static int getInteger(String string, int defaultValue) {
 		if(string==null) {
 			return defaultValue;
@@ -454,11 +432,27 @@ public final class OverrideBinder {
 			return Integer.parseInt(string);
 		}		
 	}
-
-	String getMatchString(String input) {
-		return input.toUpperCase();
-	}
-
 	
+	private static ArrayList<Element> getChildElements(Element parent, String tagName) {
+		ArrayList<Element> result = new ArrayList<Element>();
+		NodeList nodeList = parent.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node node = nodeList.item(i);
+			if (node instanceof Element) {
+				if (tagName.equals(((Element)node).getTagName())) {
+					result.add((Element)node);
+				}
+			}
+		}
+		return result;
+	}
+	
+	private static String getAttribute(Element element, String attributeName) {
+		String result = null;
+		if (element.hasAttribute(attributeName)) {
+			result = element.getAttribute(attributeName);
+		}
+		return result;
+	}
 
 }
