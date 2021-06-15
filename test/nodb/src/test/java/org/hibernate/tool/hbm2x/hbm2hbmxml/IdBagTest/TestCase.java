@@ -23,19 +23,17 @@ package org.hibernate.tool.hbm2x.hbm2hbmxml.IdBagTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -46,6 +44,9 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Dmitry Geraskov
@@ -116,47 +117,46 @@ public class TestCase {
     }
 	
 	@Test
-	public void testIdBagAttributes() {
+	public void testIdBagAttributes() throws Exception {
 		File outputXml = new File(
 				srcDir,  
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/IdBagTest/User.hbm.xml");
 		JUnitUtil.assertIsNonEmptyFile(outputXml);
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document;
-		try {
-			document = xmlReader.read(outputXml);
-			XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/idbag");
-			List<?> list = xpath.selectNodes(document);
-			assertEquals(1, list.size(), "Expected to get one idbag element");
-			Element node = (Element) list.get(0);
-			assertEquals(node.attribute( "table" ).getText(),"`UserGroups`");
-			assertEquals(node.attribute( "name" ).getText(),"groups");
-			assertEquals(node.attribute( "lazy" ).getText(),"false");
-			assertEquals(node.attribute( "access" ).getText(),"field");
-		} catch (DocumentException e) {
-			fail("Can't parse file " + outputXml.getAbsolutePath());
-		}		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/idbag")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one idbag element");
+		Element node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "table" ),"`UserGroups`");
+		assertEquals(node.getAttribute( "name" ),"groups");
+		assertEquals(node.getAttribute( "lazy" ),"false");
+		assertEquals(node.getAttribute( "access" ),"field");
 	}
 	
 	@Test
-	public void testCollectionId() throws DocumentException {
+	public void testCollectionId() throws Exception {
 		File outputXml = new File(
 				srcDir,  
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/IdBagTest/User.hbm.xml");
-		SAXReader xmlReader =  new SAXReader();
-		xmlReader.setValidation(true);
-		Document document = xmlReader.read(outputXml);	
-		XPath xpath = DocumentHelper.createXPath("//hibernate-mapping/class/idbag/collection-id");
-		List<?> list = xpath.selectNodes(document);
-		assertEquals(1, list.size(), "Expected to get one collection-id element");
-		Element node = (Element) list.get(0);
-		assertEquals(node.attribute( "column" ).getText(),"userGroupId");
-		assertEquals(node.attribute( "type" ).getText(),"long");
-		list = node.elements("generator");
-		assertEquals(1, list.size(), "Expected to get one generator element");
-		node = (Element) list.get(0);
-		assertEquals(node.attribute( "class" ).getText(),"increment");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(outputXml);
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList)xpath
+				.compile("//hibernate-mapping/class/idbag/collection-id")
+				.evaluate(document, XPathConstants.NODESET);
+		assertEquals(1, nodeList.getLength(), "Expected to get one collection-id element");
+		Element node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "column" ),"userGroupId");
+		assertEquals(node.getAttribute( "type" ),"long");
+		nodeList = node.getElementsByTagName("generator");
+		assertEquals(1, nodeList.getLength(), "Expected to get one generator element");
+		node = (Element) nodeList.item(0);
+		assertEquals(node.getAttribute( "class" ),"increment");
 	}
 	
 }
