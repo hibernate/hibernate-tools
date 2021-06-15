@@ -14,10 +14,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.MultiValuedMap;
-import org.dom4j.Document;
 import org.hibernate.MappingException;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper.SimpleMetaAttribute;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.xml.ErrorLogger;
 import org.hibernate.mapping.Column;
@@ -25,9 +29,8 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.MetaAttribute;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.util.TableNameQualifier;
-import org.hibernate.tool.xml.XMLHelper;
 import org.jboss.logging.Logger;
-import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
 
 public class OverrideRepository  {
 
@@ -140,9 +143,12 @@ public class OverrideRepository  {
 	public OverrideRepository addInputStream(InputStream xmlInputStream) throws MappingException {
 		try {
 			ErrorLogger errorLogger = new ErrorLogger( "XML InputStream" );
-			org.dom4j.Document doc = XMLHelper.createSAXReader( errorLogger).read( new InputSource( xmlInputStream ) );
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			db.setErrorHandler(errorLogger);
+			Document document = db.parse(xmlInputStream);
 			if ( errorLogger.hasErrors() ) throw new MappingException( "invalid override definition", ( Throwable ) errorLogger.getErrors().get( 0 ) );
-			add( doc );
+			add( document );
 			return this;
 		}
 		catch ( MappingException me ) {
@@ -161,6 +167,7 @@ public class OverrideRepository  {
 			}
 		}
 	}
+
 
 	private OverrideRepository add(Document doc) {
 		OverrideBinder.bindRoot(this, doc);
@@ -555,7 +562,7 @@ public class OverrideRepository  {
 		for (MapIterator<String, SimpleMetaAttribute> iter = mvm.mapIterator(); iter.hasNext();) {
 			String key = iter.next();
 			Collection<SimpleMetaAttribute> values = mvm.get(key);
-			result.put(key, MetaAttributeBinder.toRealMetaAttribute(key, values));
+			result.put(key, MetaAttributeHelper.toRealMetaAttribute(key, values));
 		}
 		return result;
  	}

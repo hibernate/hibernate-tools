@@ -1,6 +1,7 @@
 package org.hibernate.cfg.reveng;
 
 import org.apache.commons.collections4.MultiValuedMap;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper.SimpleMetaAttribute;
 
 
 /**
