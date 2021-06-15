@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.collections4.MultiValuedMap;
-import org.hibernate.cfg.reveng.SimpleMetaAttribute;
+import org.hibernate.cfg.reveng.utils.MetaAttributeHelper.SimpleMetaAttribute;
 import org.hibernate.mapping.MetaAttribute;
 
 /**
