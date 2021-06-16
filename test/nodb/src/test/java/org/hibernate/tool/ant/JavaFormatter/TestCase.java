@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
-import org.hibernate.tool.api.java.Formatter;
+import org.hibernate.tool.api.java.DefaultJavaPrettyPrinterStrategy;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
@@ -73,7 +73,7 @@ public class TestCase {
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
 		
-		Formatter formatter = new Formatter(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
 		formatter.formatFile( simpleOne );
 		
 		assertTrue(FileUtil
@@ -110,7 +110,7 @@ public class TestCase {
 		
 		assertFalse(log.contains("Exception"));
 				
-		Formatter formatter = new Formatter(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
 		assertTrue(
 				formatter.formatFile(simple5One),
 				"formatting should pass when using default settings");
