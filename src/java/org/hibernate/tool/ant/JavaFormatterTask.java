@@ -17,7 +17,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 import org.hibernate.tool.hbm2x.ExporterException;
-import org.hibernate.tool.ide.formatting.JavaFormatter;
+import org.hibernate.tool.ide.formatting.DefaultJavaPrettyPrinterStrategy;
 
 public class JavaFormatterTask extends Task {
 	
@@ -72,7 +72,7 @@ public class JavaFormatterTask extends Task {
 	
 		if(files.length>0) {
 			
-			JavaFormatter formatter = new JavaFormatter(settings);
+			DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(settings);
 			for (int i = 0; i < files.length; i++) {
 				File file = files[i];			
 				try {
