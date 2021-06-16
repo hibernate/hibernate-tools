@@ -6,7 +6,7 @@ package org.hibernate.tool.ant;
 
 import java.io.File;
 
-import org.hibernate.tool.ide.formatting.JavaFormatter;
+import org.hibernate.tool.ide.formatting.DefaultJavaPrettyPrinterStrategy;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -26,10 +26,8 @@ public class JavaFormatterTest extends BuildFileTestCase {
 	
 	protected void tearDown() throws Exception {
 		executeTarget( "cleanup" );
-		super.tearDown();
 	}
 	protected void setUp() throws Exception {
-		super.setUp();
 		configureProject("src/testsupport/javaformattest-build.xml");
 	}
 	
@@ -38,13 +36,13 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		executeTarget("prepare");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 		
-		File file = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.java");
+		File file = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.jav");
 		assertFileAndExists( file );
 		long before = file.lastModified();	
 		
 		waitASec();
 		
-		JavaFormatter formatter = new JavaFormatter(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
 		formatter.formatFile( file );
 		
 		assertTrue( before!=file.lastModified() );
@@ -65,7 +63,7 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		
 		waitASec();
 		
-		JavaFormatter formatter = new JavaFormatter(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
 		assertTrue("formatting should pass when using default settings", formatter.formatFile( file ));
 		
 		
@@ -86,7 +84,7 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		executeTarget("prepare");
 		assertTrue(getLog(), checkLogWithoutExceptions());
 		
-		File file = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.java");
+		File file = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.jav");
 		assertFileAndExists( file );
 		long before = file.lastModified();
 		waitASec();
@@ -101,7 +99,7 @@ public class JavaFormatterTest extends BuildFileTestCase {
 		assertTrue(getLog(), checkLogWithoutExceptions());
 		
 		File jdk5file = new File(project.getProperty( "build.dir" ), "formatting/Simple5One.java5");
-		File jdkfile = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.java");
+		File jdkfile = new File(project.getProperty( "build.dir" ), "formatting/SimpleOne.jav");
 		assertFileAndExists( jdkfile );
 		long jdk5before = jdk5file.lastModified();
 		long before = jdkfile.lastModified();	

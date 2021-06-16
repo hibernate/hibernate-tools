@@ -76,11 +76,12 @@
 	<!-- TODO: is it possible to automate this with maven? -->
 
 	<dependencies>
-	    <dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-collections4</artifactId>
-		    <version>4.4</version>
-	    </dependency>
+        <!-- 1.7 is the last google-java-format version that is compiled against Java 1.8 -->
+        <dependency>
+            <groupId>com.google.googlejavaformat</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>1.7</version>
+        </dependency>
 		<dependency>
    			<groupId>javax</groupId>
    			<artifactId>javaee-api</artifactId>
@@ -110,12 +111,11 @@
 			<version>1.10.10</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.eclipse.jdt</groupId>
-            <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.25.0</version>
-            <scope>compile</scope>
-        </dependency>
+	    <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-collections4</artifactId>
+		    <version>4.4</version>
+	    </dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
