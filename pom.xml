@@ -43,7 +43,6 @@
     <properties>
         <ant.version>1.10.10</ant.version>
         <commons-collections.version>4.4</commons-collections.version>
-        <dom4j.version>1.6.1</dom4j.version>
         <freemarker.version>2.3.31</freemarker.version>
         <!-- 1.7 is the last google-java-format version that is compiled against Java 1.8 -->
         <google-java-format.version>1.7</google-java-format.version>
@@ -84,11 +83,6 @@
                 <artifactId>ojdbc8</artifactId>
                 <version>${oracle.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>dom4j</groupId>
-                <artifactId>dom4j</artifactId>
-                <version>${dom4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
