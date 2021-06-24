@@ -1,0 +1,9 @@
+name: Build and Test
+
+on:
+  pull_request
+
+jobs:
+  test:
+    steps:
+    - run: echo "Building and testing"
