@@ -8,4 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - run: echo "Building and testing"
+    - name: Start the Build
+      run: echo "Building and testing ${{ github.event.pull_request.head.sha }}"
+    
+    - name: Checkout PR Branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 0
