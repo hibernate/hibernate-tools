@@ -1,0 +1,14 @@
+name: Publish Reports
+
+on:
+  workflow_run:
+    workflows: ["Build and Test"]
+    types: 
+      - completed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - run: echo "Publishing reports"
