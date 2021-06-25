@@ -11,4 +11,5 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-      - run: echo "Publishing reports"
+      - name: Download artifacts
+        run: echo "Downloading artifacts"
