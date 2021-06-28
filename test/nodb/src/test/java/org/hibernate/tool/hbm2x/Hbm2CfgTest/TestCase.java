@@ -1,8 +1,28 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.hibernate.tool.hbm2x.Hbm2CfgTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.util.Properties;
@@ -15,11 +35,9 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author max
@@ -31,25 +49,25 @@ public class TestCase {
 			"HelloWorld.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	private File outputDir = null;
+	@TempDir
+	public File outputFolder = new File("output");
+	
+	private File srcDir = null;
 	private File resourcesDir = null;
 	
 	private HibernateConfigurationExporter cfgexporter;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "src");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = new HibernateConfigurationExporter();
 		cfgexporter.setMetadataDescriptor(metadataDescriptor);
-		cfgexporter.setOutputDirectory(outputDir);
+		cfgexporter.setOutputDirectory(srcDir);
 		cfgexporter.start();
 	}
 	
@@ -65,17 +83,17 @@ public class TestCase {
 	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
-	   exporter.setOutputDirectory(outputDir);
+	   exporter.setOutputDirectory(srcDir);
 	   exporter.start();
-	   File file = new File(outputDir, "hibernate.cfg.xml");
-	   Assert.assertNull(
+	   File file = new File(srcDir, "hibernate.cfg.xml");
+	   assertNull(
 			   FileUtil.findFirstString(
 					   Environment.SESSION_FACTORY_NAME, file ));
-	   Assert.assertNotNull(
+	   assertNotNull(
 			   FileUtil.findFirstString( "hibernate.basic\">aValue<", file ));
-	   Assert.assertNull(
+	   assertNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
-	   Assert.assertNull(
+	   assertNull(
 			   FileUtil.findFirstString("hibernate.temp.use_jdbc_metadata_defaults", file ));
 	   exporter = new HibernateConfigurationExporter();
 	   properties = exporter.getProperties();
@@ -84,9 +102,9 @@ public class TestCase {
 	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
-	   exporter.setOutputDirectory(outputDir);
+	   exporter.setOutputDirectory(srcDir);
 	   exporter.start();
-	   Assert.assertNotNull(
+	   assertNotNull(
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   exporter = new HibernateConfigurationExporter();
 	   properties = exporter.getProperties();
@@ -95,26 +113,25 @@ public class TestCase {
 	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
-	   exporter.setOutputDirectory(outputDir);
+	   exporter.setOutputDirectory(srcDir);
 	   exporter.start();
-	   Assert.assertNull(
+	   assertNull(
 			   FileUtil.findFirstString( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, file ));
 	}
 	
 	@Test
 	public void testFileExistence() {
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "hibernate.cfg.xml") );		
+		JUnitUtil.assertIsNonEmptyFile(new File(srcDir, "hibernate.cfg.xml") );		
 	}
 
 	@Test
 	public void testArtifactCollection() {
-		Assert.assertEquals(1, cfgexporter.getArtifactCollector().getFileCount("cfg.xml"));
+		assertEquals(1, cfgexporter.getArtifactCollector().getFileCount("cfg.xml"));
 	}
 	
-	@SuppressWarnings("el-syntax")
 	@Test
 	public void testNoVelocityLeftOvers() {
-        Assert.assertNull(FileUtil.findFirstString("${",new File(outputDir, "hibernate.cfg.xml")));
+        assertNull(FileUtil.findFirstString("${",new File(srcDir, "hibernate.cfg.xml")));
 	}
 
 }
