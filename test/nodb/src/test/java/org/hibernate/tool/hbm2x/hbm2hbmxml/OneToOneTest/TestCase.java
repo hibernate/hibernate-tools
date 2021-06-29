@@ -1,11 +1,28 @@
-//$Id$
-
-/* 
- * Tests for generating the HBM documents from the Configuration data structure.
- * The generated XML document will be validated and queried to make sure the 
- * basic structure is correct in each test.
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.hibernate.tool.hbm2x.hbm2hbmxml.OneToOneTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.Properties;
@@ -23,11 +40,9 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,45 +55,45 @@ public class TestCase {
 			"PersonAddressOneToOnePrimaryKey.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
-	private File outputDir = null;
+	private File srcDir = null;
 	private File resourcesDir = null;
 	private Exporter hbmexporter = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "output");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HibernateMappingExporter();
 		hbmexporter.setMetadataDescriptor(metadataDescriptor);
-		hbmexporter.setOutputDirectory(outputDir);
+		hbmexporter.setOutputDirectory(srcDir);
 		hbmexporter.start();		
 	}
 	
 	@Test
 	public void testAllFilesExistence() {
-		Assert.assertFalse(new File(
-				outputDir, "GeneralHbmSettings.hbm.xml")
+		assertFalse(new File(
+				srcDir, "GeneralHbmSettings.hbm.xml")
 			.exists());
 		JUnitUtil.assertIsNonEmptyFile(
 				new File(
-						outputDir,
+						srcDir,
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Person.hbm.xml"));
 		JUnitUtil.assertIsNonEmptyFile(
 				new File(
-						outputDir, 
+						srcDir, 
 						"/org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml"));		
 	}
 	
 	@Test
 	public void testArtifactCollection() {
-		Assert.assertEquals(
+		assertEquals(
 				2,
 				hbmexporter.getArtifactCollector().getFileCount("hbm.xml"));
 	}
@@ -86,22 +101,22 @@ public class TestCase {
 	@Test
 	public void testReadable() {
         File personHbmXml = new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Person.hbm.xml");
         File addressHbmXml = new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 		File[] files = new File[] { personHbmXml, addressHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
-        Assert.assertNotNull(metadataDescriptor.createMetadata());
+        assertNotNull(metadataDescriptor.createMetadata());
     }
 	
 	public void testOneToOne() throws Exception {
 		File xmlFile = new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Person.hbm.xml");
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
@@ -110,22 +125,22 @@ public class TestCase {
 		NodeList nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/one-to-one")
 				.evaluate(document, XPathConstants.NODESET);
-		Assert.assertEquals("Expected to get one-to-one element", 1, nodeList.getLength());
+		assertEquals(1, nodeList.getLength(), "Expected to get one-to-one element");
 		Element node = (Element) nodeList.item(0);
-		Assert.assertEquals(node.getAttribute( "name" ),"address");
-		Assert.assertEquals(node.getAttribute( "constrained" ),"false");
+		assertEquals(node.getAttribute( "name" ),"address");
+		assertEquals(node.getAttribute( "constrained" ),"false");
 		xmlFile = new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
 		document = db.parse(xmlFile);
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/one-to-one")
 				.evaluate(document, XPathConstants.NODESET);
-		Assert.assertEquals("Expected to get one set element", 1, nodeList.getLength());
+		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
 		node = (Element)nodeList.item(0);
-		Assert.assertEquals(node.getAttribute( "name" ),"person");
-		Assert.assertEquals(node.getAttribute( "constrained" ),"true");
-		Assert.assertEquals(node.getAttribute( "access" ), "field");
+		assertEquals(node.getAttribute( "name" ),"person");
+		assertEquals(node.getAttribute( "constrained" ),"true");
+		assertEquals(node.getAttribute( "access" ), "field");
 	}
 
 }
