@@ -1,5 +1,7 @@
 package org.hibernate.tool.VersionTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -11,8 +13,7 @@ import java.util.jar.JarFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,7 +24,7 @@ public class TestCase {
 	
 	@Test
 	public void testVersion() throws Exception {
-		Assert.assertEquals(
+		assertEquals(
 				org.hibernate.tool.Version.VERSION,
 				extractVersion(getPomXml()));
 	}
