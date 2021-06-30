@@ -17,18 +17,14 @@
     <name>Hibernate Tools No Database Tests Project</name>
 
     <dependencies>
-    	    <dependency>
-    		    <groupId>org.hibernate</groupId>
-    		    <artifactId>hibernate-tools</artifactId>
-    	    </dependency>
-    	    <dependency>
-    		    <groupId>org.hibernate</groupId>
-    		    <artifactId>hibernate-tools-tests-utils</artifactId>
-    	    </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
+   	    <dependency>
+   		    <groupId>org.hibernate</groupId>
+   		    <artifactId>hibernate-tools</artifactId>
+   	    </dependency>
+   	    <dependency>
+   		    <groupId>org.hibernate</groupId>
+   		    <artifactId>hibernate-tools-tests-utils</artifactId>
+   	    </dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
