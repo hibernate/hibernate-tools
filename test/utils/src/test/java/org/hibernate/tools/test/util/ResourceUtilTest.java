@@ -1,20 +1,22 @@
 package org.hibernate.tools.test.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class ResourceUtilTest {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	@Test
 	public void testGetResourcesLocation() {
-		Assert.assertEquals(
+		assertEquals(
 				"/org/hibernate/tools/test/util/", 
 				ResourceUtil.getResourcesLocation(this));
 	}
@@ -22,12 +24,11 @@ public class ResourceUtilTest {
 	@Test
 	public void testCreateResources() {
 		String[] resources = new String[] { "HelloWorld.hbm.xml" };
-		File outputFolder = temporaryFolder.getRoot();
 		File helloWorldFile = new File(outputFolder, "HelloWorld.hbm.xml");
-		Assert.assertFalse(helloWorldFile.exists());
+		assertFalse(helloWorldFile.exists());
 		ResourceUtil.createResources(this, resources, outputFolder);
-		Assert.assertTrue(helloWorldFile.exists());
-		Assert.assertTrue(FileUtil
+		assertTrue(helloWorldFile.exists());
+		assertTrue(FileUtil
 				.findFirstString("class", helloWorldFile)
 				.contains("HelloWorld"));
 	}
