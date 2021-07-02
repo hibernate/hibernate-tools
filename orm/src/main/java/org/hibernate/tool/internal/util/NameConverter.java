@@ -75,7 +75,7 @@ final public class NameConverter {
 	 * @return The converted database name.
 	 */
 	public static String toUpperCamelCase(String s) {
-		if ( "".equals(s) ) {
+		if ( s == null || s.isEmpty() ) {
 			return s;
 		}
 		StringBuffer result = new StringBuffer();

@@ -88,7 +88,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	public String getQualifiedDeclarationName() {
 		String generatedName = qualifyInnerClass(getGeneratedClassName());
 		String qualifier = StringHelper.qualifier( getMappedClassName() );
-		if ( "".equals( qualifier ) ) {
+		if ( qualifier == null || qualifier.isEmpty() ) ) {
 			return qualifier + "." + generatedName;
 		}
 		else {
