@@ -16,6 +16,14 @@
     <name>Hibernate Tools Common Database Tests Project</name>
 
     <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
     	<dependency>
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools</artifactId>
@@ -24,13 +32,13 @@
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools-tests-utils</artifactId>
      	</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.junit.vintage</groupId>
+		    <artifactId>junit-vintage-engine</artifactId>
 		</dependency>
     </dependencies>
     
