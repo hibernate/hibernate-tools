@@ -8,4 +8,4 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	org.hibernate.tool.test.db.CommonTestSuite.class
 })
-public class TestSuite {}
+public class JUnit4TestSuite {}
