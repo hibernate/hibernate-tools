@@ -1,8 +1,28 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.hbm2x.IncrementalSchemaReading;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,11 +45,9 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbmlint.detector.TableSelectorStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -52,7 +70,7 @@ public class TestCase {
 		}
 	}	
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		properties = Environment.getProperties();
@@ -60,7 +78,7 @@ public class TestCase {
 		defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -79,15 +97,15 @@ public class TestCase {
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 		
-		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		Assert.assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
+		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
+		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
 		
 		Iterator<Table> iterator = dc.iterateTables();
 		Table firstChild = iterator.next();
-		Assert.assertEquals(firstChild.getName(), "CHILD");
-		Assert.assertFalse(iterator.hasNext());
+		assertEquals(firstChild.getName(), "CHILD");
+		assertFalse(iterator.hasNext());
 		
-		Assert.assertFalse("should not record foreignkey to table it doesn't know about yet",firstChild.getForeignKeyIterator().hasNext());
+		assertFalse(firstChild.getForeignKeyIterator().hasNext(), "should not record foreignkey to table it doesn't know about yet");
 		
 		tss.clearSchemaSelections();
 		tss.addSchemaSelection( new SchemaSelection(null, null, "MASTER") );
@@ -95,17 +113,17 @@ public class TestCase {
 		mockedMetaDataDialect.gottenTables.clear();
 		reader.readDatabaseSchema( dc, null, null );
 		
-		Assert.assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		Assert.assertEquals(mockedMetaDataDialect.gottenTables.get(0),"MASTER");
+		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
+		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"MASTER");
 		
 		
 		iterator = dc.iterateTables();
-		Assert.assertNotNull(iterator.next());
-		Assert.assertNotNull(iterator.next());
-		Assert.assertFalse(iterator.hasNext());
+		assertNotNull(iterator.next());
+		assertNotNull(iterator.next());
+		assertFalse(iterator.hasNext());
 		
 		Table table = dc.getTable( defaultSchema, defaultCatalog, "CHILD" );
-		Assert.assertSame( firstChild, table );
+		assertSame( firstChild, table );
 		
 		JUnitUtil.assertIteratorContainsExactly(
 				"should have recorded one foreignkey to child table", 
@@ -118,7 +136,7 @@ public class TestCase {
 		
 		Table finalMaster = dc.getTable( defaultSchema, defaultCatalog, "MASTER" );
 		
-		Assert.assertSame(firstChild, dc.getTable( defaultSchema, defaultCatalog, "CHILD" ));
+		assertSame(firstChild, dc.getTable( defaultSchema, defaultCatalog, "CHILD" ));
 		JUnitUtil.assertIteratorContainsExactly(
 				null,
 				firstChild.getForeignKeyIterator(),
