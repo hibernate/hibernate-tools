@@ -4,6 +4,9 @@
  */
 package org.hibernate.tool.cfg.DriverMetaData;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -21,10 +24,9 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -35,7 +37,7 @@ public class TestCase {
 	private Properties properties = null;
 	private ServiceRegistry serviceRegistry;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		properties = Environment.getProperties();
@@ -43,7 +45,7 @@ public class TestCase {
 		serviceRegistry = ssrb.build();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -86,10 +88,10 @@ public class TestCase {
 					exportedKeys.next();
 					cnt++;
 				}
-				Assert.assertEquals(1,cnt);
+				assertEquals(1,cnt);
 			}
 		}	
-		Assert.assertTrue(foundMaster);
+		assertTrue(foundMaster);
 	}
 
 	@Test
