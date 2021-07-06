@@ -1,13 +1,14 @@
 package org.hibernate.tool.cfg.JDBCMetaDataConfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -15,12 +16,12 @@ import org.junit.Test;
  */
 public class TestCase {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -30,15 +31,15 @@ public class TestCase {
 		Metadata metadata = MetadataDescriptorFactory
 				.createJdbcDescriptor(null, null, true)
 				.createMetadata();
-		Assert.assertNotNull("WithRealTimestamp", metadata.getEntityBinding("WithRealTimestamp"));
-		Assert.assertNotNull("NoVersion", metadata.getEntityBinding("NoVersion"));
-		Assert.assertNotNull("WithFakeTimestamp", metadata.getEntityBinding("WithFakeTimestamp"));
-		Assert.assertNotNull("WithVersion", metadata.getEntityBinding("WithVersion"));
+		assertNotNull(metadata.getEntityBinding("WithRealTimestamp"), "WithRealTimestamp");
+		assertNotNull(metadata.getEntityBinding("NoVersion"), "NoVersion");
+		assertNotNull(metadata.getEntityBinding("WithFakeTimestamp"), "WithFakeTimestamp");
+		assertNotNull(metadata.getEntityBinding("WithVersion"), "WithVersion");
 	}
 	
 	@Test
 	public void testGetTable() throws Exception {
-		Assert.assertNotNull(
+		assertNotNull(
 				HibernateUtil.getTable(
 						MetadataDescriptorFactory
 							.createJdbcDescriptor(null, null, true)
