@@ -1,8 +1,28 @@
 /*
- * Created on 2004-11-23
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.PersistentClasses;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.SQLException;
 
@@ -24,10 +44,9 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -39,7 +58,7 @@ public class TestCase {
 
 	private Metadata metadata = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
         DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy();
@@ -49,7 +68,7 @@ public class TestCase {
         		.createMetadata();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -57,22 +76,22 @@ public class TestCase {
 	@Test
 	public void testCreatePersistentClasses() {
 		PersistentClass classMapping = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");
-		Assert.assertNotNull("class not found", classMapping);		
+		assertNotNull(classMapping, "class not found");		
 		KeyValue identifier = classMapping.getIdentifier();
-		Assert.assertNotNull(identifier);		
+		assertNotNull(identifier);		
 	}
 		
 	@Test
 	public void testCreateManyToOne() {
 		PersistentClass classMapping = metadata.getEntityBinding(PACKAGE_NAME + ".Item");
-		Assert.assertNotNull(classMapping);		
+		assertNotNull(classMapping);		
 		KeyValue identifier = classMapping.getIdentifier();
-		Assert.assertNotNull(identifier);	
-		Assert.assertEquals(3,classMapping.getPropertyClosureSpan() );	
+		assertNotNull(identifier);	
+		assertEquals(3,classMapping.getPropertyClosureSpan() );	
 		Property property = classMapping.getProperty("ordersByRelatedOrderId");		
-		Assert.assertNotNull(property);	
+		assertNotNull(property);	
 		property = classMapping.getProperty("ordersByOrderId");		
-		Assert.assertNotNull(property);
+		assertNotNull(property);
 	}
 	
 	@Test
@@ -81,11 +100,11 @@ public class TestCase {
 		Property itemset = orders.getProperty("itemsForRelatedOrderId");	
 		Collection col = (Collection) itemset.getValue();         
 		OneToMany otm = (OneToMany) col.getElement();
-        Assert.assertEquals(otm.getReferencedEntityName(), PACKAGE_NAME + ".Item");
-        Assert.assertEquals(otm.getAssociatedClass().getClassName(), PACKAGE_NAME + ".Item");
-        Assert.assertEquals(otm.getTable().getName(), "ORDERS");        
-		Assert.assertNotNull(itemset);		
-		Assert.assertTrue(itemset.getValue() instanceof Set);		
+        assertEquals(otm.getReferencedEntityName(), PACKAGE_NAME + ".Item");
+        assertEquals(otm.getAssociatedClass().getClassName(), PACKAGE_NAME + ".Item");
+        assertEquals(otm.getTable().getName(), "ORDERS");        
+		assertNotNull(itemset);		
+		assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
 	@Test
@@ -124,15 +143,15 @@ public class TestCase {
 		
 		Item loadeditem = (Item) session.get(PACKAGE_NAME + ".Item", new Integer(42) );
 		
-		Assert.assertEquals(item.getName(),loadeditem.getName() );
-        Assert.assertEquals(item.getChildId(),loadeditem.getChildId() );
-        Assert.assertEquals(item.getOrderId().getId(),loadeditem.getOrderId().getId() );
+		assertEquals(item.getName(),loadeditem.getName() );
+        assertEquals(item.getChildId(),loadeditem.getChildId() );
+        assertEquals(item.getOrderId().getId(),loadeditem.getOrderId().getId() );
 		
-        Assert.assertTrue(loadeditem.getOrderId().getItemsForOrderId().contains(loadeditem) );
-        Assert.assertTrue(item.getOrderId().getItemsForOrderId().contains(item) );
+        assertTrue(loadeditem.getOrderId().getItemsForOrderId().contains(loadeditem) );
+        assertTrue(item.getOrderId().getItemsForOrderId().contains(item) );
         
-        Assert.assertEquals(5,item.getOrderId().getItemsForOrderId().size() );
-        Assert.assertEquals(5,loadeditem.getOrderId().getItemsForOrderId().size() );
+        assertEquals(5,item.getOrderId().getItemsForOrderId().size() );
+        assertEquals(5,loadeditem.getOrderId().getItemsForOrderId().size() );
 		
 		t.commit();
         session.close();
@@ -141,12 +160,12 @@ public class TestCase {
 		t = session.beginTransaction();
         
 		order = (Orders) session.load(Orders.class, new Integer(1) );
-        Assert.assertFalse(Hibernate.isInitialized(order) );
-        Assert.assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
+        assertFalse(Hibernate.isInitialized(order) );
+        assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
         order = (Orders) session.createQuery("from " + PACKAGE_NAME + ".Orders").getSingleResult();
          
-        Assert.assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
+        assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
 		t.commit();
         session.close();
         sf.close();
