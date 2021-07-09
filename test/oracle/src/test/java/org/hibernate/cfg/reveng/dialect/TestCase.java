@@ -1,5 +1,12 @@
 package org.hibernate.cfg.reveng.dialect;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -9,23 +16,16 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestCase {
 
     private Properties properties = null;
     private ServiceRegistry serviceRegistry;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         JdbcUtil.createDatabase(this);
         properties = Environment.getProperties();
@@ -33,7 +33,7 @@ public class TestCase {
         serviceRegistry = ssrb.build();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         JdbcUtil.dropDatabase(this);
     }
@@ -76,12 +76,12 @@ public class TestCase {
         boolean found = false;
         while (columns.hasNext()) {
             Map<String, Object> column = columns.next();
-            assertThat(column.get("COLUMN_NAME"), equalTo(columnName.toUpperCase()));
-            assertThat(column.get("TYPE_NAME"), equalTo(typeName));
-            assertThat(column.get("COLUMN_SIZE"), equalTo(columnSize));
-            assertThat(column.get("DECIMAL_DIGITS"), equalTo(decimalDigits));
+            assertEquals(column.get("COLUMN_NAME"),columnName.toUpperCase());
+            assertEquals(column.get("TYPE_NAME"), typeName);
+            assertEquals(column.get("COLUMN_SIZE"), columnSize);
+            assertEquals(column.get("DECIMAL_DIGITS"), decimalDigits);
             found = true;
         }
-        assertThat("Expected column '" + columnName + "'to exist.", found, equalTo(true));
+        assertTrue(found, "Expected column '" + columnName + "'to exist.");
     }
 }
