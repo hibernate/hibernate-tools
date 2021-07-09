@@ -34,7 +34,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.hibernate.type.BigDecimalType;
+import org.hibernate.type.BigIntegerType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.RowVersionType;
 import org.hibernate.type.TimestampType;
@@ -117,7 +117,7 @@ public class TestCase {
 		assertNotNull(version);
 		assertTrue(
 				version.getType() instanceof IntegerType ||
-				version.getType() instanceof BigDecimalType); // on Oracle
+				version.getType() instanceof BigIntegerType); // on Oracle
 	}
     
 }
