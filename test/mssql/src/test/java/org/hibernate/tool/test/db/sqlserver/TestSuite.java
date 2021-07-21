@@ -22,7 +22,7 @@ package org.hibernate.tool.test.db.sqlserver;
 import org.hibernate.tool.test.db.DbTestSuite;
 import org.junit.jupiter.api.Nested;
 
-public class TestSuiteJupiter {
+public class TestSuite {
 	
 	@Nested
 	public class SqlServerTestSuite extends DbTestSuite {}
