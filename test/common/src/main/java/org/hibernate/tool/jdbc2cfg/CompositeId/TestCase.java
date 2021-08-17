@@ -85,7 +85,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);;
 	}
 
-	@Disabled
 	@Test
     public void testMultiColumnForeignKeys() {
 		Metadata metadata = metadataDescriptor.createMetadata();
@@ -124,6 +123,7 @@ public class TestCase {
         assertEquals(4,lineMapping.getIdentifier().getColumnSpan() );
         Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
         assertEquals(((Column)(columnIterator.next())).getName(), "CUSTOMER_ID_REF");
+        assertEquals(((Column)(columnIterator.next())).getName(), "EXTRA_PROD_ID");
         assertEquals(((Column)(columnIterator.next())).getName(), "ORDER_NUMBER");
      }
      
