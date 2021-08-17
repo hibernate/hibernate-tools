@@ -146,7 +146,6 @@ public class TestCase {
 		assertFalse(extraId.getValue() instanceof ManyToOne);
 	}
 
-	@Disabled
 	@Test
 	public void testKeyProperty() {
 		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(
@@ -157,8 +156,13 @@ public class TestCase {
 		Component cmpid = (Component) identifierProperty.getValue();
 		assertEquals(2, cmpid.getPropertySpan());
 		Iterator<?> iter = cmpid.getPropertyIterator();
-		Property id = (Property) iter.next();
-		Property extraId = (Property) iter.next();
+		Property id = (Property)iter.next();
+		Property extraId = (Property)iter.next();
+		if ("extraId".equals(id.getName())) {
+			Property temp = id;
+			id = extraId;
+			extraId = temp;
+		}
 		assertEquals(
 				reverseEngineeringStrategy.columnToPropertyName(
 						null, 
