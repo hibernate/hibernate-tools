@@ -146,6 +146,7 @@ public class TestCase {
 		assertFalse(extraId.getValue() instanceof ManyToOne);
 	}
 
+	@Disabled
 	@Test
 	public void testKeyProperty() {
 		PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding(

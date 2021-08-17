@@ -85,6 +85,7 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);;
 	}
 
+	@Disabled
 	@Test
     public void testMultiColumnForeignKeys() {
 		Metadata metadata = metadataDescriptor.createMetadata();
@@ -155,6 +156,7 @@ public class TestCase {
          assertFalse(extraId.getValue() instanceof ManyToOne);
      }
      
+	@Disabled
 	@Test
     public void testKeyProperty() {
         PersistentClass product = metadataDescriptor.createMetadata().getEntityBinding( 

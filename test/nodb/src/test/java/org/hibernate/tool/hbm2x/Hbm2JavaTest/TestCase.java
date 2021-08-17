@@ -451,6 +451,7 @@ public class TestCase {
 		assertTrue(string.indexOf("$")<0);
 	}
 	
+	@Disabled
 	@Test
 	public void testEqualsHashCode() {
 		Cfg2JavaTool c2j = new Cfg2JavaTool();
