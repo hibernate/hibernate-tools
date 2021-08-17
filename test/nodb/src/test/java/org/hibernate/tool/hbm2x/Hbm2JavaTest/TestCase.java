@@ -30,10 +30,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.spi.MetadataBuildingContext;
@@ -451,18 +454,20 @@ public class TestCase {
 		assertTrue(string.indexOf("$")<0);
 	}
 	
-	@Disabled
 	@Test
 	public void testEqualsHashCode() {
 		Cfg2JavaTool c2j = new Cfg2JavaTool();
 		PersistentClass pc = metadata.getEntityBinding( "org.hibernate.tool.hbm2x.Hbm2JavaTest.Customer" );
 		POJOClass pjc = c2j.getPOJOClass((Component) pc.getProperty("addressComponent").getValue());
 		assertTrue( pjc.needsEqualsHashCode() );
+		Set<String> propertySet = new HashSet<String>();
+		propertySet.addAll(Arrays.asList("streetAddress1", "city", "verified"));
 		Iterator<Property> iter = pjc.getEqualsHashCodePropertiesIterator();
-		// in HelloWorld.hbm.xml there're 2 Properties for toString
-		assertEquals( "streetAddress1",  iter.next().getName() );
-		assertEquals( "city", iter.next().getName() );
-		assertEquals( "verified", iter.next().getName() );
+		// iterating over all the properties to remove them all 
+		assertTrue(propertySet.remove(iter.next().getName() ));
+		assertTrue(propertySet.remove(iter.next().getName() ));
+		assertTrue(propertySet.remove(iter.next().getName() ));
+		assertTrue(propertySet.isEmpty());
 		assertFalse( iter.hasNext() );
 	}
 	
