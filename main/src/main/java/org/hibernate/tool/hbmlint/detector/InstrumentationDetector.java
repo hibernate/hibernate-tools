@@ -21,8 +21,7 @@ public class InstrumentationDetector extends EntityModelDetector {
 	public void initialize(Metadata metadata) {
 		super.initialize(metadata);	
 		BytecodeProvider bytecodeProvider = Environment.getBytecodeProvider();
-		if(bytecodeProvider instanceof org.hibernate.bytecode.internal.javassist.BytecodeProviderImpl ||
-		   bytecodeProvider instanceof org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl) {
+		if(bytecodeProvider instanceof org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl) {
 			enhanceEnabled = true;
 		}
 	}
