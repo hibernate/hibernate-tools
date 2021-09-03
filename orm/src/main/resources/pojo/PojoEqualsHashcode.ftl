@@ -1,5 +1,5 @@
 <#if pojo.needsEqualsHashCode() && !clazz.superclass?exists>
-<#assign classNameToCastTo><#if clazz.getProxyInterfaceName?exists>${clazz.getProxyInterfaceName()}<#else>${pojo.getDeclarationName()}</#if></#assign>
+<#assign classNameToCastTo><#if clazz.getProxyInterfaceName()?exists>${clazz.getProxyInterfaceName()}<#else>${pojo.getDeclarationName()}</#if></#assign>
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
