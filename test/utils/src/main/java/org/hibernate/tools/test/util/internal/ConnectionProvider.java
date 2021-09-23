@@ -1,4 +1,4 @@
-package org.hibernate.tools.test.util;
+package org.hibernate.tools.test.util.internal;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 
 import org.hibernate.engine.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
 
-public class DummyConnectionProvider extends UserSuppliedConnectionProviderImpl {
+public class ConnectionProvider extends UserSuppliedConnectionProviderImpl {
 	
 	private static final long serialVersionUID = 1L;
 	

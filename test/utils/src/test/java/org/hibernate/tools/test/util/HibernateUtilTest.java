@@ -35,6 +35,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tools.test.util.internal.ConnectionProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -75,7 +76,8 @@ public class HibernateUtilTest {
 	@Test
 	public void testAddAnnotatedClass() {
 		Properties properties = new Properties();
-		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, null, properties);
 		assertNull(metadataDescriptor
