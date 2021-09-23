@@ -31,6 +31,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tools.test.util.internal.ConnectionProvider;
 
 public class HibernateUtil {
 	
@@ -79,7 +80,7 @@ public class HibernateUtil {
 		}
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, DummyConnectionProvider.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		return MetadataDescriptorFactory.createNativeDescriptor(null, hbmFiles, properties);
 	}
 	

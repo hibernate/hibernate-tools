@@ -1,4 +1,4 @@
-package org.hibernate.tools.test.util;
+package org.hibernate.tools.test.util.internal;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.jupiter.api.Test;
 
-public class DummyConnectionProviderTest {
+public class ConnectionProviderTest {
 	
-	private ConnectionProvider connectionProvider = new DummyConnectionProvider();
+	private ConnectionProvider connectionProvider = new org.hibernate.tools.test.util.internal.ConnectionProvider();
 	
 	@Test
 	public void testGetConnection() {
