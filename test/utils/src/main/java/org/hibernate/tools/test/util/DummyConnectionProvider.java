@@ -4,8 +4,6 @@ import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.NClob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,14 +25,14 @@ public class DummyConnectionProvider extends UserSuppliedConnectionProviderImpl 
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static Connection CONNECTION = new TestConnection();
-	private static DatabaseMetaData DATABASE_META_DATA = new TestDatabaseMetaData();
+	private static Connection CONNECTION = new Connection();
+	private static DatabaseMetaData DATABASE_META_DATA = new DatabaseMetaData();
 
-	@Override public Connection getConnection() throws SQLException { return CONNECTION; }
+	@Override public java.sql.Connection getConnection() throws SQLException { return CONNECTION; }
 	
-	@Override public void closeConnection(Connection conn) throws SQLException {}
+	@Override public void closeConnection(java.sql.Connection conn) throws SQLException {}
 	
-	private static class TestConnection implements Connection {
+	private static class Connection implements java.sql.Connection {
 		@Override public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 		@Override public boolean isWrapperFor(Class<?> iface) throws SQLException { return false; }
 		@Override public Statement createStatement() throws SQLException { return null; }
@@ -91,7 +89,7 @@ public class DummyConnectionProvider extends UserSuppliedConnectionProviderImpl 
 		@Override public int getNetworkTimeout() throws SQLException { return 0; }
 	}
 	
-	private static class TestDatabaseMetaData implements DatabaseMetaData {
+	private static class DatabaseMetaData implements java.sql.DatabaseMetaData {
 		@Override public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 		@Override public boolean isWrapperFor(Class<?> iface) throws SQLException { return false; }
 		@Override public boolean allProceduresAreCallable() throws SQLException { return false; }
