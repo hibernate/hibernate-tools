@@ -79,6 +79,7 @@ public class HibernateUtil {
 		}
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, DummyConnectionProvider.class.getName());
 		return MetadataDescriptorFactory.createNativeDescriptor(null, hbmFiles, properties);
 	}
 	
