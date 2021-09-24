@@ -31,16 +31,19 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.internal.ConnectionProvider;
 
 public class HibernateUtil {
 	
 	public static class Dialect extends org.hibernate.dialect.Dialect {
 		@Override
 		public int getVersion() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
+	}
+	
+	public static class ConnectionProvider 
+			extends org.hibernate.tools.test.util.internal.ConnectionProvider {
+		private static final long serialVersionUID = 1L;
 	}
 	
 	public static ForeignKey getForeignKey(Table table, String fkName) {
