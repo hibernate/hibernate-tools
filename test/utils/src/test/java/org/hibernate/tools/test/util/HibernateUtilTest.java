@@ -60,6 +60,11 @@ public class HibernateUtilTest {
 	}
 	
 	@Test
+	public void testConnectionProviderInstantiation() {
+		assertNotNull(new HibernateUtil.ConnectionProvider());
+	}
+	
+	@Test
 	public void testInitializeConfiguration() {
 		Metadata metadata = HibernateUtil
 				.initializeMetadataDescriptor(
