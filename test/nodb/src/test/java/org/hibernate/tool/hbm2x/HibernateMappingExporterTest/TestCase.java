@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Properties;
 
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -58,7 +59,8 @@ public class TestCase {
 		writer.write(FOO_HBM_XML);
 		writer.close();
 		Properties properties = new Properties();
-		properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { fooHbmXmlOrigin }, properties); 		
 		final File srcDir = new File(outputFolder, "output");
