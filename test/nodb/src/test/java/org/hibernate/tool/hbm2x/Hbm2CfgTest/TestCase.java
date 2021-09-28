@@ -75,12 +75,12 @@ public class TestCase {
 	public void testMagicPropertyHandling() {
 	   HibernateConfigurationExporter exporter = new HibernateConfigurationExporter();
 	   Properties properties = exporter.getProperties();
-	   properties.setProperty( "hibernate.basic", "aValue" );
-	   properties.setProperty( Environment.SESSION_FACTORY_NAME, "shouldNotShowUp");
-	   properties.setProperty( Environment.HBM2DDL_AUTO, "false");
-	   properties.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
-	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put("hibernate.basic", "aValue" );
+	   properties.put(AvailableSettings.SESSION_FACTORY_NAME, "shouldNotShowUp");
+	   properties.put(AvailableSettings.HBM2DDL_AUTO, "false");
+	   properties.put("hibernate.temp.use_jdbc_metadata_defaults", "false");	   
+	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(srcDir);
@@ -97,9 +97,9 @@ public class TestCase {
 			   FileUtil.findFirstString("hibernate.temp.use_jdbc_metadata_defaults", file ));
 	   exporter = new HibernateConfigurationExporter();
 	   properties = exporter.getProperties();
-	   properties.setProperty( Environment.HBM2DDL_AUTO, "validator");   
-	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put(AvailableSettings.HBM2DDL_AUTO, "validator");   
+	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(srcDir);
@@ -108,9 +108,9 @@ public class TestCase {
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   exporter = new HibernateConfigurationExporter();
 	   properties = exporter.getProperties();
-	   properties.setProperty( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
-	   properties.setProperty("hibernate.dialect", HibernateUtil.Dialect.class.getName());
-	   properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put(AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
+	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.setMetadataDescriptor(MetadataDescriptorFactory
 			   .createNativeDescriptor(null, null, properties));
 	   exporter.setOutputDirectory(srcDir);
