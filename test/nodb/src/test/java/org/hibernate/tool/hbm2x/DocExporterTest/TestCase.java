@@ -86,7 +86,7 @@ public class TestCase {
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		if(File.pathSeparator.equals(";")) { // to work around windows/jvm not seeming to respect executing just "dot"
 			properties.put("dot.executable", System.getProperties().getProperty("dot.executable","dot.exe"));
 		} else {
