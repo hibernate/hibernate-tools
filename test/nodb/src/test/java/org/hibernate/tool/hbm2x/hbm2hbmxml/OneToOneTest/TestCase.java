@@ -107,8 +107,8 @@ public class TestCase {
         		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
 		Properties properties = new Properties();
-		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		File[] files = new File[] { personHbmXml, addressHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
