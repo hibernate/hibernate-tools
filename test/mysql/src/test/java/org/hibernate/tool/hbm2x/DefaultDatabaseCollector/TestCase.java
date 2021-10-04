@@ -10,6 +10,11 @@
  ******************************************************************************/
 package org.hibernate.tool.hbm2x.DefaultDatabaseCollector;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,11 +40,10 @@ import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Dmitry Geraskov
@@ -47,18 +51,18 @@ import org.junit.Test;
  */
 public class TestCase {
 		
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
 	
 	// TODO Reenable this test (HBX-1401) 
-	@Ignore
+	@Disabled
 	@Test
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
@@ -68,7 +72,7 @@ public class TestCase {
 				.createJdbcDescriptor(res, null, true)
 				.createMetadata();
 		List<Table> tables = getTables(metadata);
-		Assert.assertEquals(2,tables.size());
+		assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		if(catchild.getName().equals("cat.master")) {
@@ -77,8 +81,8 @@ public class TestCase {
 		} 
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.child"), childid);
-		Assert.assertEquals(new TableIdentifier(null, "cat.cat", "cat.master"), masterid);
+		assertEquals(new TableIdentifier(null, "cat.cat", "cat.child"), childid);
+		assertEquals(new TableIdentifier(null, "cat.cat", "cat.master"), masterid);
 	}
 	
 	@Test
@@ -88,9 +92,9 @@ public class TestCase {
 		ssrb.applySettings(properties);
 		ServiceRegistry serviceRegistry = ssrb.build();
 		MetaDataDialect realMetaData = MetaDataDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties);
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.cat"));
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
+		assertTrue(realMetaData.needQuote("cat.cat"), "The name must be quoted!");
+		assertTrue(realMetaData.needQuote("cat.child"), "The name must be quoted!");
+		assertTrue(realMetaData.needQuote("cat.master"), "The name must be quoted!");
 	}
 	
 	/**
@@ -102,7 +106,7 @@ public class TestCase {
 	 * but getTable uses non-quoted names )
 	 */
 	// TODO Reenable this test (HBX-1401) 
-	@Ignore
+	@Disabled
 	@Test
 	public void testQuotedNamesAndDefaultDatabaseCollector() {
 		Properties properties = Environment.getProperties();
@@ -117,11 +121,11 @@ public class TestCase {
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, "cat.cat" );
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
-		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.child"));
-		Assert.assertNotNull("The table should be found", dc.getTable("cat.cat", defaultCatalog, "cat.master"));
-		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.child")));
-		Assert.assertNull("Quoted names should not return the table", dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.master")));
-		Assert.assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
+		assertNotNull(dc.getTable("cat.cat", defaultCatalog, "cat.child"), "The table should be found");
+		assertNotNull(dc.getTable("cat.cat", defaultCatalog, "cat.master"), "The table should be found");
+		assertNull(dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.child")), "Quoted names should not return the table");
+		assertNull(dc.getTable(quote("cat.cat"), defaultCatalog, quote("cat.master")), "Quoted names should not return the table");
+		assertEquals(1, dc.getOneToManyCandidates().size(), "Foreign key 'masterref' was filtered!");
 	}
 	
 	private static String quote(String name) {
