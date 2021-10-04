@@ -4,6 +4,9 @@
  */
 package org.hibernate.tool.hbm2x.DefaultSchemaCatalog;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,12 +24,10 @@ import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -36,17 +37,17 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	@Ignore
+	@Disabled
 	@Test
 	public void testReadOnlySpecificSchema() {		
 		OverrideRepository or = new OverrideRepository();
@@ -56,7 +57,7 @@ public class TestCase {
 				.createJdbcDescriptor(res, null, true)
 				.createMetadata();
 		List<Table> tables = getTables(metadata);
-		Assert.assertEquals(2,tables.size());	
+		assertEquals(2,tables.size());	
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);	
 		if(catchild.getName().equals("CATMASTER")) {
@@ -65,11 +66,11 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATMASTER"), masterid);
-		Assert.assertEquals(new TableIdentifier(null, "OVRTEST", "CATCHILD"), childid);	
+		assertEquals(new TableIdentifier(null, "OVRTEST", "CATMASTER"), masterid);
+		assertEquals(new TableIdentifier(null, "OVRTEST", "CATCHILD"), childid);	
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testOverlapping() {	
 		OverrideRepository or = new OverrideRepository();
@@ -86,12 +87,12 @@ public class TestCase {
 			Table element = iter.next();
 			boolean added = tables.add(TableIdentifier.create(element));
 			if(!added) 
-				Assert.fail("duplicate table found for " + element); 
+				fail("duplicate table found for " + element); 
 		}
-		Assert.assertEquals(4,tables.size());					
+		assertEquals(4,tables.size());					
 	}
 	
-	@Ignore
+	@Disabled
 	@Test
 	public void testUseDefault() {
 		Properties properties = new Properties();
@@ -101,7 +102,7 @@ public class TestCase {
 				.createJdbcDescriptor(null, properties, true)
 				.createMetadata();
 		List<Table> tables = getTables(metadata);
-		Assert.assertEquals(2,tables.size());
+		assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		if(catchild.getName().equals("CATMASTER")) {
@@ -110,8 +111,8 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATMASTER"), masterid);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", new TableIdentifier(null, null, "CATCHILD"), childid);
+		assertEquals(new TableIdentifier(null, null, "CATMASTER"), masterid, "jdbcreader has not nulled out according to default schema");
+		assertEquals(new TableIdentifier(null, null, "CATCHILD"), childid, "jdbcreader has not nulled out according to default schema");
 	}
 
 	private List<Table> getTables(Metadata metadata) {
