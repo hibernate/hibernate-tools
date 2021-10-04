@@ -50,6 +50,14 @@
             	<module>h2</module>
           	</modules> 
        	</profile>
+         <profile>
+                <id>hsql</id>
+                <modules>
+                <module>utils</module>
+                <module>common</module>
+                <module>hsql</module>
+                </modules>
+        </profile>
        	<profile>
      		<id>mssql</id>
           	<modules>
@@ -58,14 +66,14 @@
             	<module>mssql</module>
           	</modules> 
        	</profile>
-        <profile>
-                <id>hsql</id>
-                <modules>
-                <module>utils</module>
-                <module>common</module>
-                <module>hsql</module>
-                </modules>
-        </profile>
+       	<profile>
+     		<id>mysql</id>
+          	<modules>
+            	<module>utils</module>
+             	<module>common</module>
+            	<module>mysql</module>
+          	</modules> 
+       	</profile>
         <profile>
                 <id>oracle</id>
                 <modules>
