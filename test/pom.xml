@@ -94,6 +94,14 @@
             	<module>mysql</module>
           	</modules> 
        	</profile>
+       	<profile>
+     		<id>oracle</id>
+          	<modules>
+            	<module>utils</module>
+             	<module>common</module>
+            	<module>oracle</module>
+          	</modules> 
+       	</profile>
 	</profiles>
 
 </project>
