@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.junit.Assert;
+import org.opentest4j.AssertionFailedError;
 
 public class ConnectionLeakUtil {
 	
@@ -26,7 +26,9 @@ public class ConnectionLeakUtil {
 	
 	public void assertNoLeaks() {
 		int leaked = getLeakedConnectionCount();
-		Assert.assertTrue(leaked + " connections are leaked.", leaked == 0); 
+		if (leaked != 0) {
+			throw new AssertionFailedError(leaked + " connections are leaked.");
+		}
 	}
 	
 	private int getLeakedConnectionCount() {
