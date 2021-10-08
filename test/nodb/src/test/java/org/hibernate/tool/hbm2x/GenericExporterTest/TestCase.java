@@ -102,10 +102,10 @@ public class TestCase {
 		ge.setFilePattern("{class-name}.ftltest");
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Author.ftltest" ) );	
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Article.ftlTest" ) );
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "BaseHelloWorld.ftlTest" ) );	
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "HelloUniverse.ftlTest" ) );
-		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "UniversalAddress.ftlTest" ) );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "Article.ftltest" ) );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "BaseHelloWorld.ftltest" ) );	
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "HelloUniverse.ftltest" ) );
+		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "UniversalAddress.ftltest" ) );
 	}
 
 	@Test
