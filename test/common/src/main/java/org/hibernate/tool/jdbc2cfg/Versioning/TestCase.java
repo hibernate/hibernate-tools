@@ -89,10 +89,10 @@ public class TestCase {
         exporter.setOutputDirectory(testFolder);
 		exporter.start();		
 		File[] files = new File[4];		
-		files[0] = new File(testFolder, "Withversion.hbm.xml");
-		files[1] = new File(testFolder, "Noversion.hbm.xml");
-		files[2] = new File(testFolder, "Withrealtimestamp.hbm.xml");
-		files[3] = new File(testFolder, "Withfaketimestamp.hbm.xml");		
+		files[0] = new File(testFolder, "WithVersion.hbm.xml");
+		files[1] = new File(testFolder, "NoVersion.hbm.xml");
+		files[2] = new File(testFolder, "WithRealTimestamp.hbm.xml");
+		files[3] = new File(testFolder, "WithFakeTimestamp.hbm.xml");		
 		Metadata metadata = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
 				.createMetadata();
