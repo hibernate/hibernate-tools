@@ -179,12 +179,12 @@ public class TestCase {
 		URL[] urls = new URL[] { temporaryFolder.toURI().toURL() };
 		URLClassLoader ucl = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
 		File[] files = new File[6];
-		files[0] = new File(temporaryFolder, "Simplecustomerorder.hbm.xml");
-		files[1] = new File(temporaryFolder, "Simplelineitem.hbm.xml");
+		files[0] = new File(temporaryFolder, "SimpleCustomerOrder.hbm.xml");
+		files[1] = new File(temporaryFolder, "SimpleLineItem.hbm.xml");
 		files[2] = new File(temporaryFolder, "Product.hbm.xml");
 		files[3] = new File(temporaryFolder, "Customer.hbm.xml");
-		files[4] = new File(temporaryFolder, "Lineitem.hbm.xml");
-		files[5] = new File(temporaryFolder, "Customerorder.hbm.xml");
+		files[4] = new File(temporaryFolder, "LineItem.hbm.xml");
+		files[5] = new File(temporaryFolder, "CustomerOrder.hbm.xml");
 		Thread.currentThread().setContextClassLoader(ucl);
 		SessionFactory factory = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
