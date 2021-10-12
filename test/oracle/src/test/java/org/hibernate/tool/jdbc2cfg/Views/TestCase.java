@@ -4,6 +4,11 @@
  */
 package org.hibernate.tool.jdbc2cfg.Views;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.sql.SQLException;
 
 import org.hibernate.boot.Metadata;
@@ -12,12 +17,9 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -27,7 +29,7 @@ public class TestCase {
 	
 	private Metadata metadata;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadata = MetadataDescriptorFactory
@@ -35,7 +37,7 @@ public class TestCase {
 				.createMetadata();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -44,19 +46,19 @@ public class TestCase {
 	public void testViewAndSynonyms() throws SQLException {
 		
 		PersistentClass classMapping = metadata.getEntityBinding("Basicview");
-		Assert.assertNotNull(classMapping);
+		assertNotNull(classMapping);
 	
 		classMapping = metadata.getEntityBinding("Weirdname");
-		Assert.assertTrue("If this is not-null synonyms apparently work!",classMapping==null);
+		assertTrue(classMapping==null, "If this is not-null synonyms apparently work!");
 
 		// get comments
 		Table table = HibernateUtil.getTable(metadata, "BASIC");
-		Assert.assertEquals("a basic comment", table.getComment());
-		Assert.assertEquals("a solid key", table.getPrimaryKey().getColumn(0).getComment());
+		assertEquals("a basic comment", table.getComment());
+		assertEquals("a solid key", table.getPrimaryKey().getColumn(0).getComment());
 		
 		table = HibernateUtil.getTable(metadata, "MULTIKEYED");
-		Assert.assertNull(table.getComment());
-		Assert.assertNull(table.getColumn(0).getComment());
+		assertNull(table.getComment());
+		assertNull(table.getColumn(0).getComment());
 		
 	}
 
