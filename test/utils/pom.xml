@@ -30,10 +30,6 @@
 		    <artifactId>junit-jupiter-engine</artifactId>
 		    <scope>compile</scope>
 		</dependency>
-		<dependency>
-		    <groupId>org.junit.vintage</groupId>
-		    <artifactId>junit-vintage-engine</artifactId>
-		</dependency>
     </dependencies>
     
 </project>
