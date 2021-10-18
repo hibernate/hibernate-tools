@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Persistence;
+import jakarta.persistence.Persistence;
 
 import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
@@ -214,16 +214,16 @@ public class TestCase {
 	public void testAnnotationBuilder() {
 		AnnotationBuilder builder =  AnnotationBuilder.createAnnotation("SingleCleared").resetAnnotation( "Single" );
 		assertEquals("@Single", builder.getResult());
-		builder = AnnotationBuilder.createAnnotation("javax.persistence.OneToMany")
+		builder = AnnotationBuilder.createAnnotation("jakarta.persistence.OneToMany")
 				    .addAttribute("willbecleared", (String)null)
-				    .resetAnnotation("javax.persistence.OneToMany")
+				    .resetAnnotation("jakarta.persistence.OneToMany")
 					.addAttribute("cascade", new String[] { "val1", "val2"})
 					.addAttribute("fetch", "singleValue");
-		assertEquals("@javax.persistence.OneToMany(cascade={val1, val2}, fetch=singleValue)", builder.getResult());
-		builder = AnnotationBuilder.createAnnotation("javax.persistence.OneToMany");
+		assertEquals("@jakarta.persistence.OneToMany(cascade={val1, val2}, fetch=singleValue)", builder.getResult());
+		builder = AnnotationBuilder.createAnnotation("jakarta.persistence.OneToMany");
 		builder.addAttribute("cascade", (String[])null);
 		builder.addAttribute("fetch", (String)null);
-		assertEquals("@javax.persistence.OneToMany", builder.getResult());
+		assertEquals("@jakarta.persistence.OneToMany", builder.getResult());
 		builder = AnnotationBuilder.createAnnotation("abc");
 		ArrayList<Object> list = new ArrayList<Object>();
 		list.add(Integer.valueOf(42));

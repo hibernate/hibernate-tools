@@ -413,7 +413,7 @@ public class TestCase {
 	@Test
 	public void testImportOfSameName() {
 		ImportContext ic = new ImportContextImpl("foobar");
-		assertEquals("CascadeType", ic.importType("javax.persistence.CascadeType"));
+		assertEquals("CascadeType", ic.importType("jakarta.persistence.CascadeType"));
 		assertEquals("org.hibernate.annotations.CascadeType", ic.importType("org.hibernate.annotations.CascadeType"));
 		assertTrue(ic.generateImports().indexOf("hibernate")<0, "The hibernate annotation should not be imported to avoid name clashes");	
 	}

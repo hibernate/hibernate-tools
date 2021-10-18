@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Persistence;
+import jakarta.persistence.Persistence;
 
 import org.hibernate.Version;
 import org.hibernate.tool.api.export.Exporter;

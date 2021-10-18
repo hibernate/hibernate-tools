@@ -28,8 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
-import javax.persistence.Persistence;
+import jakarta.persistence.Persistence;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -96,7 +95,6 @@ public class TestCase {
 		FileUtil.generateNoopComparator(srcDir);
 		List<String> jars = new ArrayList<String>();
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		jars.add(JavaUtil.resolvePathToJarFileFor(EJB.class)); // for javaee api
 		JavaUtil.compile(srcDir, compiled);
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/Article.class").exists());
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/ArticleHome.class").exists());

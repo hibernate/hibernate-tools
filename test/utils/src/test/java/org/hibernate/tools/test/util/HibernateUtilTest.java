@@ -27,9 +27,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Properties;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Table;
@@ -37,6 +34,9 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 public class HibernateUtilTest {
 	
