@@ -35,14 +35,15 @@
     	
 	</class>
 
-	<query name="test_query_1"><![CDATA[from cat as c where c.age > 1]]></query>
+<!--  TODO: HBX-2042 - Uncomment -->
+<!--  	<query name="test_query_1"><![CDATA[from cat as c where c.age > 1]]></query> 
 	<query name="test_query_2"
 		flush-mode="auto"
 	    cacheable="true"
 	    cache-region="myregion"
         fetch-size="10"
         timeout="1000"	   
-	><![CDATA[from dog as d where d.age > 2]]></query>
+	><![CDATA[from dog as d where d.age > 2]]></query> -->
 
 	<sql-query name="test_sqlquery_1"><![CDATA[from bird as {b} where {b.age} > 3]]></sql-query>
 	
@@ -58,16 +59,17 @@
 	<sql-query name="test_sqlquery_3">
 		<synchronize table="mytable" />
 		<![CDATA[from fish as {f} where {f.age} > 5]]>
-	</sql-query>
+	</sql-query> 
 
-	<sql-query name="test_sqlquery_4">
+<!--  TODO: HBX-2042 - Uncomment -->
+<!--	<sql-query name="test_sqlquery_4">
 		<synchronize table="mytable" />
 		<return 
              alias="e"
              class="org.hibernate.tool.hbm2x.hbm2hbmxml.BasicGlobals"
 		/>
 		<![CDATA[from elephant as {e} where {e.age} > 50]]>
-	</sql-query>
+	</sql-query> -->
 
 	<sql-query name="test_sqlquery_5">
 		<synchronize table="mytable" />
@@ -76,19 +78,19 @@
         	property="e.age"
        	/>
 		<![CDATA[from elephant as {e} where {e.age} > 35]]>
-	</sql-query>
+	</sql-query> 
 
 	<sql-query name="test_sqlquery_6">
 		<synchronize table="mytable" />
         <load-collection alias="e" role="BasicGlobals.price" lock-mode="none"/>
 		<![CDATA[from elephant as {e} where {e.age} > 25]]>
-	</sql-query>
+	</sql-query> 
 	
 	<filter-def name="filterit">
 	    <filter-param
              name="idname"
              type="string"
 	    />
-	</filter-def>
+	</filter-def> 
 	
 </hibernate-mapping>

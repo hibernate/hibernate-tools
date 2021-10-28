@@ -134,8 +134,6 @@ public class TestCase {
 				"4 mappings + 1 global");
 	}
 	
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testGlobalSettingsGeneratedDatabase() throws Exception {
 		HibernateMappingGlobalSettings hgs = new HibernateMappingGlobalSettings();
