@@ -186,8 +186,6 @@ public class TestCase {
 		assertEquals("save-update", root.getAttribute("default-cascade"), "Unexpected cascade setting" );
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testMetaAttributes() throws Exception {
 		File outputXml = new File(
