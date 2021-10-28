@@ -160,8 +160,6 @@ public class TestCase {
 		assertEquals("mycatalog", root.getAttribute("catalog"), "Unexpected mycatalog name" );
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testGlobalSettingsGeneratedAccessAndCascadeNonDefault()  throws Exception {
 		HibernateMappingGlobalSettings hgs = new HibernateMappingGlobalSettings();
