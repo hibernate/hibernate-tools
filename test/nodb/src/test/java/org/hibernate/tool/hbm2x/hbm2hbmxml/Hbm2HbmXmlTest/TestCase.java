@@ -240,8 +240,6 @@ public class TestCase {
 		assertEquals("delete, update", node.getAttribute("cascade"));	
 	}
 	
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testComments() throws Exception {
 		File outputXml = new File(
