@@ -264,8 +264,6 @@ public class TestCase {
 		assertEquals(node.getTextContent(),"columnd comment");
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testNoComments() throws Exception {
 		File outputXml = new File(
