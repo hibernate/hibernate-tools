@@ -359,8 +359,6 @@ public class TestCase {
 		assertTrue(nodeList.getLength() == 0, "Expected to get no generator param elements");	
 	}
     
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
     public void testIdGeneratorHasArgumentParameters()  throws Exception {
 		File outputXml = new File(
