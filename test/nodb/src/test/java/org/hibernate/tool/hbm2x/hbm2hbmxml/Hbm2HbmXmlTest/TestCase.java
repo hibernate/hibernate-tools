@@ -310,10 +310,8 @@ public class TestCase {
 		assertEquals("none", root.getAttribute("default-cascade"), "Unexpected cascade setting" );	
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
-	public void testGlobalSettingsLasyAndAutoImportNonDefault()  throws Exception {
+	public void testGlobalSettingsLazyAndAutoImportNonDefault()  throws Exception {
 		HibernateMappingGlobalSettings hgs = new HibernateMappingGlobalSettings();
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultLazy(false);
