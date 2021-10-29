@@ -284,8 +284,6 @@ public class TestCase {
 		assertEquals(0, nodeList.getLength(), "Expected to get no comment element");	
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testGlobalSettingsGeneratedAccessAndCascadeDefault()  throws Exception {
 		HibernateMappingGlobalSettings hgs = new HibernateMappingGlobalSettings();
