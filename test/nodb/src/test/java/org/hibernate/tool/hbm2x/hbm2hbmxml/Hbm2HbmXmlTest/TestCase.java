@@ -336,8 +336,6 @@ public class TestCase {
 		assertEquals("false", root.getAttribute("auto-import"), "Unexpected cascade setting" );
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testIdGeneratorHasNotArgumentParameters()  throws Exception {
 		File outputXml = new File(
