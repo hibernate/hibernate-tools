@@ -222,8 +222,6 @@ public class TestCase {
 		assertEquals(node.getTextContent(),"anotherone");	
 	}
 
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
 	public void testCollectionAttributes() throws Exception {
 		File outputXml = new File(
