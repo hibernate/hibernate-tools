@@ -12,7 +12,7 @@
 		<property name="model"  type="string" node="model"/>
 		<set name="carParts" node="." cascade="all">
 			<key column="car" not-null="true"/>
-			<one-to-many class="CarPart" node="carPart" embed-xml="false"/>
+			<one-to-many class="CarPart" node="carPart"/>
 		</set>
 	</class>
 	
