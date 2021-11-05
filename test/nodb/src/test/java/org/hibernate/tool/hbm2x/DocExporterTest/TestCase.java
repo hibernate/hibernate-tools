@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Properties;
+import java.util.function.BiConsumer;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -43,6 +44,9 @@ import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.type.descriptor.java.JdbcDateJavaTypeDescriptor;
+import org.hibernate.type.descriptor.jdbc.DateJdbcType;
+import org.hibernate.usertype.BaseUserTypeSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -199,6 +203,14 @@ public class TestCase {
 		public void fatalError(SAXParseException exception) throws SAXException {
 			errors++;
 		}		
+	}
+	
+	public static class DummyDateType extends BaseUserTypeSupport<JdbcDateJavaTypeDescriptor> {
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		protected void resolve(BiConsumer resolutionConsumer) {
+			resolutionConsumer.accept(new JdbcDateJavaTypeDescriptor(), new DateJdbcType());
+		}
 	}
 	
 }
