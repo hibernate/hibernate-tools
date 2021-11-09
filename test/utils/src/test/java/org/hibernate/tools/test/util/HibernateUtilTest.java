@@ -75,7 +75,8 @@ public class HibernateUtilTest {
 	@Test
 	public void testAddAnnotatedClass() {
 		Properties properties = new Properties();
-		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, null, properties);
 		assertNull(metadataDescriptor
