@@ -230,7 +230,7 @@ public final class DocHelper {
 		classes.add(pojoClazz);
 		String packageName = pojoClazz.getPackageName();
 
-		if ("".equals(packageName)) {
+		if ( packageName == null || packageName.isEmpty() ) {
 			packageName = DEFAULT_NO_PACKAGE;
 		}
 
