@@ -6,6 +6,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.ToOne;
@@ -18,9 +19,15 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 
 	
 	private boolean preferRawTypeNames = true;
+	private boolean preferProxies = false;
 
 	public JavaTypeFromValueVisitor() {
 		super( true );
+	}
+
+	public JavaTypeFromValueVisitor(boolean preferProxies) {
+		this();
+		this.preferProxies = preferProxies;
 	}
 	
 	// special handling for Map's to avoid initialization of comparators that depends on the keys/values which might not be generated yet.
@@ -53,11 +60,26 @@ public class JavaTypeFromValueVisitor extends DefaultValueVisitor {
 	}
 	
 	private Object acceptToOne(ToOne value) {
+		if (preferProxies) {
+			String referencedEntityName = value.getReferencedEntityName();
+			PersistentClass referencedEntity = value.getMetadata().getEntityBinding(referencedEntityName);
+			if (referencedEntity != null && referencedEntity.getProxyInterfaceName() != null) {
+				return referencedEntity.getProxyInterfaceName();
+			}
+		}
+		
 		return value.getReferencedEntityName(); // should get the cfg and lookup the persistenclass.			
 	}
 	
 	public Object accept(OneToMany value) {
-		return value.getAssociatedClass().getClassName();
+		PersistentClass associatedClass = value.getAssociatedClass();
+		if (preferProxies) {
+			if (associatedClass.getProxyInterfaceName() != null) {
+				return associatedClass.getProxyInterfaceName();
+			}
+		}
+		
+		return associatedClass.getClassName();
 	}
 	
 	private String toName(Class<?> c) {

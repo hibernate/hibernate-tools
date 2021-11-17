@@ -851,7 +851,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 	
 	public String getJavaTypeName(Property p, boolean useGenerics) {
-		return c2j.getJavaTypeName(p, useGenerics, this);
+		return c2j.getJavaTypeName(p, useGenerics, true, this);
 	}
 	
 	static private class DefaultInitializor {
@@ -958,7 +958,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				}
 
 				if(useGenerics) {
-					decl = c2j.getGenericCollectionDeclaration((Collection) p.getValue(), true, importContext);
+					decl = c2j.getGenericCollectionDeclaration((Collection) p.getValue(), true, true, importContext);
 				}
 				return initialization.getDefaultValue(comparator, decl, this);
 			} else {
