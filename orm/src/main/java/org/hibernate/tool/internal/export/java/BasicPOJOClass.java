@@ -370,7 +370,9 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 						//annotations.append("/* TODO formula in multicolumns not supported by annotations */");
 					}
 					else {
-						annotations.append( "\n        " );
+						if (annotations.length() > 0) {
+							annotations.append( "\n        " );
+						}
 						buildColumnAnnotation( selectable, annotations, insertable, updatable );
 						annotations.append( ", " );
 					}

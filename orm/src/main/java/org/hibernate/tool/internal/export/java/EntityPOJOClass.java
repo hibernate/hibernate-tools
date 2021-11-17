@@ -444,7 +444,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	public String generateManyToOneAnnotation(Property property) {
-		StringBuffer buffer = new StringBuffer(AnnotationBuilder.createAnnotation( importType("jakarta.persistence.ManyToOne") )
+		StringBuffer buffer = new StringBuffer("    ");
+		buffer.append(new StringBuffer(AnnotationBuilder.createAnnotation( importType("jakarta.persistence.ManyToOne") )
 				.addAttribute( "cascade", getCascadeTypes(property))
 				.addAttribute( "fetch", getFetchType(property))
 				.getResult());
@@ -484,7 +485,8 @@ public class EntityPOJOClass extends BasicPOJOClass {
 			ab.addQuotedAttribute("mappedBy", getOneToOneMappedBy(md, oneToOne));
 		}
 
-		StringBuffer buffer = new StringBuffer(ab.getResult());
+		StringBuffer buffer = new StringBuffer("    ");
+		buffer.append(ab.getResult());
 		buffer.append(getHibernateCascadeTypeAnnotation(property));
 
 		if ( pkIsAlsoFk && oneToOne.getForeignKeyType().equals(ForeignKeyDirection.FROM_PARENT) ){
@@ -563,7 +565,7 @@ public class EntityPOJOClass extends BasicPOJOClass {
 	}
 
 	public String generateCollectionAnnotation(Property property, Metadata md) {
-		StringBuffer annotation = new StringBuffer();
+		StringBuffer annotation = new StringBuffer("    ");
 		Value value = property.getValue();
 		if ( value != null && value instanceof Collection) {
 			Collection collection = (Collection) value;
