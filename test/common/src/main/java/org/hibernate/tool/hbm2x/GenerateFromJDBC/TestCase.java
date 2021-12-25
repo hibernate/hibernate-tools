@@ -175,8 +175,6 @@ public class TestCase {
 		}		
 	}
 	
-	//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
-	@Disabled
 	@Test
 	public void testGenerateDoc() {	
 		DocExporter exporter = new DocExporter();
