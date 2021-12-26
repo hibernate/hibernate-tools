@@ -84,8 +84,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
-	//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
-	@Disabled
 	@Test
 	public void testGenerateJava() throws SQLException, ClassNotFoundException {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);		
