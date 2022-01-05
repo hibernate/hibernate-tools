@@ -54,8 +54,6 @@ import org.w3c.dom.NodeList;
  * @author max
  *
  */
-//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2	
-@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {
