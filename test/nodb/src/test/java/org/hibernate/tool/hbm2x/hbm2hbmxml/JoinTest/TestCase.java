@@ -34,15 +34,12 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author koen
  */
-//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2	
-@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {
