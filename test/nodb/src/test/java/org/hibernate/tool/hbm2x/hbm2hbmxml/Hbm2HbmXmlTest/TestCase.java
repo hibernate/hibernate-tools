@@ -57,8 +57,6 @@ import org.w3c.dom.NodeList;
  * @author David Channon
  * @author koen
  */
-//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2	
-@Disabled
 public class TestCase {
 
 	/**	@TempDir
