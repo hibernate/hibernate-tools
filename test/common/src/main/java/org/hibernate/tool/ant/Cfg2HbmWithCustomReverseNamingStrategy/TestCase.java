@@ -30,7 +30,6 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -56,8 +55,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	// TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
-	@Disabled
 	@Test
 	public void testCfg2HbmWithCustomReverseNamingStrategy() {
 
