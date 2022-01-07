@@ -107,7 +107,7 @@ public class TestCase {
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);
-// TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
+// Following line was commented out after updating to 6.0.0.Beta2 because of compilation errors
 //		assertTrue(
 //				version.getType(). instanceof StandardBasicTypes.TIMESTAMP || 
 //				version.getType() instanceof BinaryType);	// (for MS SQL Server) TODO verify: it used to be RowVersionType but since 6.0 BinaryTypee
@@ -115,7 +115,7 @@ public class TestCase {
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);
-// TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
+// Following line was commented out after updating to 6.0.0.Beta2 because of compilation errors
 //		assertTrue(
 //				version.getType() instanceof IntegerType ||
 //				version.getType() instanceof BigDecimalType); // on Oracle
