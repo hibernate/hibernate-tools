@@ -9,7 +9,7 @@
 		<version>39</version>
 	</parent>
 
-        <version>5.2.13.Final</version>
+        <version>5.2.14-SNAPSHOT</version>
 
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-tools</artifactId>
