@@ -1,5 +1,6 @@
 package org.hibernate.tool.hbmlint.detector;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.TreeMap;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.relational.QualifiedName;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -24,7 +26,11 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.id.MultipleHiLoPerTableGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
+import org.hibernate.id.SequenceGenerator;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
+import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -88,7 +94,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		// TODO: move this check into something that could check per class or collection instead.
 		while ( iter.hasNext() ) {
 			PersistentIdentifierGenerator generator = (PersistentIdentifierGenerator) iter.next();
-			Object key = generator.generatorKey();
+			Object key = getGeneratorKey(generator);
 			if ( !isSequence(key, sequences) && !isTable( key ) ) {
 				collector.reportIssue( new Issue( "MISSING_ID_GENERATOR", Issue.HIGH_PRIORITY, "Missing sequence or table: " + key));
 			}
@@ -218,7 +224,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	 * @return iterator over all the IdentifierGenerator's found in the entitymodel and return a list of unique IdentifierGenerators
 	 * @throws MappingException
 	 */
-	@SuppressWarnings("deprecation")
 	private Iterator<IdentifierGenerator> iterateGenerators() throws MappingException {
 
 		TreeMap<Object, IdentifierGenerator> generators = 
@@ -244,7 +249,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 							);
 
 				if ( ig instanceof PersistentIdentifierGenerator ) {
-					generators.put( ( (PersistentIdentifierGenerator) ig ).generatorKey(), ig );
+					generators.put( getGeneratorKey( (PersistentIdentifierGenerator) ig ), ig );
 				}
 
 			}
@@ -266,13 +271,60 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 							);
 
 				if ( ig instanceof PersistentIdentifierGenerator ) {
-					generators.put( ( (PersistentIdentifierGenerator) ig ).generatorKey(), ig );
+					generators.put( getGeneratorKey( (PersistentIdentifierGenerator) ig ), ig );
 				}
 
 			}
 		}
 
 		return generators.values().iterator();
+	}
+	
+	private String getGeneratorKey(PersistentIdentifierGenerator ig) {
+		String result = null;
+		if (ig instanceof MultipleHiLoPerTableGenerator) {
+			result = getKeyForMultipleHiloPerTableGenerator((MultipleHiLoPerTableGenerator)ig);
+		} else if (ig instanceof SequenceGenerator) {
+			result = getKeyForSequenceGenerator((SequenceGenerator)ig);
+		} else if (ig instanceof SequenceStyleGenerator) {
+			result = getKeyForSequenceStyleGenerator((SequenceStyleGenerator)ig);
+		} else if (ig instanceof TableGenerator) {
+			result = getKeyForTableGenerator((TableGenerator)ig);
+		}
+		return result;
+	}
+	
+	private String getKeyForMultipleHiloPerTableGenerator(MultipleHiLoPerTableGenerator ig) {
+		String result = null;
+		try {
+			Field field = MultipleHiLoPerTableGenerator.class.getDeclaredField("tableName");
+			field.setAccessible(true);
+			result = (String)field.get(ig);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+		return result;
+	}
+	
+	private String getKeyForSequenceGenerator(SequenceGenerator ig) {
+		String result = null;
+		try {
+			Field field = SequenceGenerator.class.getDeclaredField("logicalQualifiedSequenceName");
+			field.setAccessible(true);
+			QualifiedName name = (QualifiedName)field.get(ig);
+			result = name.render();
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+		return result;
+	}
+	
+	private String getKeyForSequenceStyleGenerator(SequenceStyleGenerator ig) {
+		return ig.getDatabaseStructure().getPhysicalName().render();
+	}
+	
+	private String getKeyForTableGenerator(TableGenerator ig) {
+		return ig.getTableName();
 	}
 
 }
