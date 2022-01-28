@@ -27,6 +27,7 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -35,9 +36,8 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 public class HibernateUtil {
 	
 	public static class Dialect extends org.hibernate.dialect.Dialect {
-		@Override
-		public int getVersion() {
-			return 0;
+		public Dialect() {
+			super((DatabaseVersion)null);
 		}
 	}
 	
