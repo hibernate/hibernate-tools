@@ -44,7 +44,7 @@ import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.type.descriptor.java.JdbcDateJavaTypeDescriptor;
+import org.hibernate.type.descriptor.java.JdbcDateJavaType;
 import org.hibernate.type.descriptor.jdbc.DateJdbcType;
 import org.hibernate.usertype.BaseUserTypeSupport;
 import org.junit.jupiter.api.BeforeEach;
@@ -205,11 +205,11 @@ public class TestCase {
 		}		
 	}
 	
-	public static class DummyDateType extends BaseUserTypeSupport<JdbcDateJavaTypeDescriptor> {
+	public static class DummyDateType extends BaseUserTypeSupport<JdbcDateJavaType> {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		protected void resolve(BiConsumer resolutionConsumer) {
-			resolutionConsumer.accept(new JdbcDateJavaTypeDescriptor(), new DateJdbcType());
+			resolutionConsumer.accept(new JdbcDateJavaType(), new DateJdbcType());
 		}
 	}
 	
