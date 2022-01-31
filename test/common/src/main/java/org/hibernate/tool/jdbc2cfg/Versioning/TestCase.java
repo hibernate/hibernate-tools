@@ -36,7 +36,6 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -79,8 +78,6 @@ public class TestCase {
 		assertNull(version);		
 	}
 	
-	// TODO HBX-2232: Investigate, fix and reenable failing tests after update to 6.0.0.Beta1
-	@Disabled
 	@Test
 	public void testGenerateMappings() {
         Exporter exporter = new HbmExporter();		
@@ -107,18 +104,12 @@ public class TestCase {
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);
-// Following line was commented out after updating to 6.0.0.Beta2 because of compilation errors
-//		assertTrue(
-//				version.getType(). instanceof StandardBasicTypes.TIMESTAMP || 
-//				version.getType() instanceof BinaryType);	// (for MS SQL Server) TODO verify: it used to be RowVersionType but since 6.0 BinaryTypee
+		assertEquals("timestamp", version.getType().getName());
 		cl = metadata.getEntityBinding( "WithFakeTimestamp" );
 		assertNotNull(cl);
 		version = cl.getVersion();
 		assertNotNull(version);
-// Following line was commented out after updating to 6.0.0.Beta2 because of compilation errors
-//		assertTrue(
-//				version.getType() instanceof IntegerType ||
-//				version.getType() instanceof BigDecimalType); // on Oracle
+		assertEquals("integer", version.getType().getName());
 	}
     
 }
