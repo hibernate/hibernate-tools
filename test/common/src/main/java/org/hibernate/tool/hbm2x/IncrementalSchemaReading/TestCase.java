@@ -24,22 +24,26 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.reveng.RevengDialect;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
-import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.TableSelectorStrategy;
@@ -47,7 +51,6 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -59,18 +62,8 @@ public class TestCase {
 	private Properties properties = null;
 	private String defaultSchema = null;
 	private String defaultCatalog = null;
+	private List<String> gottenTables = new ArrayList<String>();
 		
-	public class MockedMetaDataDialect extends JDBCMetaDataDialect {
-		List<String> gottenTables = new ArrayList<String>();
-		public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
-			gottenTables.add(table);
-			return super.getTables( catalog, schema, table == null ? "%" : table );
-		}	
-		public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
-			return super.getColumns(catalog, schema, table == null ? "%" : table, column == null ? "%" : column);
-		}
-	}	
-	
 	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
@@ -89,8 +82,10 @@ public class TestCase {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
+		Dialect dialect = serviceRegistry.getService(JdbcServices.class).getDialect();
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultStrategy());
-		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
+		RevengDialect mockedMetaDataDialect = createMockedMetaDataDialect(
+				RevengDialectFactory.createMetaDataDialect(dialect, properties));
 		DatabaseReader reader = DatabaseReader.create( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( createSchemaSelection(null,null, "CHILD") );
@@ -98,8 +93,8 @@ public class TestCase {
 		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		
-		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
+		assertEquals(gottenTables.size(),1);
+		assertEquals(gottenTables.get(0),"CHILD");
 		
 		Iterator<Table> iterator = dc.iterateTables();
 		Table firstChild = iterator.next();
@@ -111,11 +106,11 @@ public class TestCase {
 		tss.clearSchemaSelections();
 		tss.addSchemaSelection( createSchemaSelection(null, null, "MASTER") );
 		
-		mockedMetaDataDialect.gottenTables.clear();
+		gottenTables.clear();
 		reader.readDatabaseSchema(dc);
 		
-		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"MASTER");
+		assertEquals(gottenTables.size(),1);
+		assertEquals(gottenTables.get(0),"MASTER");
 		
 		
 		iterator = dc.iterateTables();
@@ -192,5 +187,31 @@ public class TestCase {
 		};
 	}
 	
+	private RevengDialect createMockedMetaDataDialect(RevengDialect delegate) {
+		return (RevengDialect)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { RevengDialect.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getTables".equals(method.getName())) {
+							gottenTables.add((String)args[2]);
+							return delegate.getTables(
+									(String)args[0], 
+									(String)args[1], 
+									args[2] == null ? "%" : (String)args[2]);
+						} else if ("getColumns".equals(method.getName())) {
+							return delegate.getColumns(
+									(String)args[0], 
+									(String)args[1], 
+									args[2] == null ? "%" : (String)args[2], 
+									args[3] == null ? "%" : (String)args[3]);
+						} else {
+							return method.invoke(delegate, args);
+							
+						}
+					}
+				});
+	}
 	
 }
