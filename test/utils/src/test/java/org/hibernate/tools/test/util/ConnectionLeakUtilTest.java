@@ -54,5 +54,5 @@ public class ConnectionLeakUtilTest {
 		connection.close();
 		connectionLeakUtil.assertNoLeaks();
 	}
-
+	
 }
