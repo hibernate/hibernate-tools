@@ -101,10 +101,10 @@ public class TestCase {
 		Column col1 = cols.next();
 		Column col2 = cols.next();	
 		assertEquals(
-				JdbcUtil.toIdentifier(this, "FIRST"), 
+				JdbcUtil.toIdentifier(this, "ONE"), 
 				JdbcUtil.toIdentifier(this, col1.getName()));
 		assertEquals(
-				JdbcUtil.toIdentifier(this, "THIRD"), 
+				JdbcUtil.toIdentifier(this, "THREE"), 
 				JdbcUtil.toIdentifier(this, col2.getName()));		
 		Column example = new Column();
 		example.setName(col2.getName() );
