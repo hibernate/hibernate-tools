@@ -24,22 +24,27 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCReaderFactory;
+import org.hibernate.cfg.MetaDataDialectFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
 import org.hibernate.cfg.reveng.SchemaSelection;
-import org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect;
+import org.hibernate.cfg.reveng.dialect.MetaDataDialect;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbmlint.detector.TableSelectorStrategy;
@@ -58,18 +63,8 @@ public class TestCase {
 	private Properties properties = null;
 	private String defaultSchema = null;
 	private String defaultCatalog = null;
+	private List<String> gottenTables = new ArrayList<String>();
 		
-	public class MockedMetaDataDialect extends JDBCMetaDataDialect {
-		List<String> gottenTables = new ArrayList<String>();
-		public Iterator<Map<String, Object>> getTables(String catalog, String schema, String table) {
-			gottenTables.add(table);
-			return super.getTables( catalog, schema, table == null ? "%" : table );
-		}	
-		public Iterator<Map<String, Object>> getColumns(String catalog, String schema, String table, String column) {
-			return super.getColumns(catalog, schema, table == null ? "%" : table, column == null ? "%" : column);
-		}
-	}	
-	
 	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
@@ -89,7 +84,9 @@ public class TestCase {
 		builder.applySettings(properties);
 		ServiceRegistry serviceRegistry = builder.build();
 		TableSelectorStrategy tss = new TableSelectorStrategy(new DefaultReverseEngineeringStrategy());
-		MockedMetaDataDialect mockedMetaDataDialect = new MockedMetaDataDialect();
+		Dialect dialect = serviceRegistry.getService(JdbcServices.class).getDialect();
+		MetaDataDialect mockedMetaDataDialect = createMockedMetaDataDialect(
+				MetaDataDialectFactory.fromDialect(dialect));
 		JDBCReader reader = JDBCReaderFactory.newJDBCReader( properties, tss, mockedMetaDataDialect, serviceRegistry);
 		
 		tss.addSchemaSelection( new SchemaSelection(null,null, "CHILD") );
@@ -97,8 +94,8 @@ public class TestCase {
 		DatabaseCollector dc = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 		reader.readDatabaseSchema( dc, null, null );
 		
-		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"CHILD");
+		assertEquals(gottenTables.size(),1);
+		assertEquals(gottenTables.get(0),"CHILD");
 		
 		Iterator<Table> iterator = dc.iterateTables();
 		Table firstChild = iterator.next();
@@ -110,11 +107,11 @@ public class TestCase {
 		tss.clearSchemaSelections();
 		tss.addSchemaSelection( new SchemaSelection(null, null, "MASTER") );
 		
-		mockedMetaDataDialect.gottenTables.clear();
+		gottenTables.clear();
 		reader.readDatabaseSchema( dc, null, null );
 		
-		assertEquals(mockedMetaDataDialect.gottenTables.size(),1);
-		assertEquals(mockedMetaDataDialect.gottenTables.get(0),"MASTER");
+		assertEquals(gottenTables.size(),1);
+		assertEquals(gottenTables.get(0),"MASTER");
 		
 		
 		iterator = dc.iterateTables();
@@ -147,4 +144,31 @@ public class TestCase {
 				0);
 	}
 
+	private MetaDataDialect createMockedMetaDataDialect(MetaDataDialect delegate) {
+		return (MetaDataDialect)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { MetaDataDialect.class }, 
+				new InvocationHandler() {
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						if ("getTables".equals(method.getName())) {
+							gottenTables.add((String)args[2]);
+							return delegate.getTables(
+									(String)args[0], 
+									(String)args[1], 
+									args[2] == null ? "%" : (String)args[2]);
+						} else if ("getColumns".equals(method.getName())) {
+							return delegate.getColumns(
+									(String)args[0], 
+									(String)args[1], 
+									args[2] == null ? "%" : (String)args[2], 
+									args[3] == null ? "%" : (String)args[3]);
+						} else {
+							return method.invoke(delegate, args);
+							
+						}
+					}
+				});
+	}
+	
 }
