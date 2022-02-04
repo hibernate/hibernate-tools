@@ -32,7 +32,7 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 				protected Map<String, Object> convertRow(ResultSet tableResultSet) throws SQLException {
 					element.clear();
 					putTablePart( element, tableResultSet );
-					element.put("TABLE_TYPE", tableResultSet.getString("TABLE_TYPE"));
+					putTableType(element, tableResultSet);
 					element.put("REMARKS", tableResultSet.getString("REMARKS"));
 					return element;					
 				}
@@ -86,6 +86,10 @@ public class JDBCMetaDataDialect extends AbstractMetaDataDialect {
 		element.put("TABLE_NAME", tableRs.getString("TABLE_NAME"));
 		element.put("TABLE_SCHEM", tableRs.getString("TABLE_SCHEM"));
 		element.put("TABLE_CAT", tableRs.getString("TABLE_CAT"));
+	}
+
+	protected void putTableType(Map<String, Object> element, ResultSet tableRs) throws SQLException {
+		element.put("TABLE_TYPE", tableRs.getString("TABLE_TYPE"));
 	}
 
 	public Iterator<Map<String, Object>> getColumns(final String xcatalog, final String xschema, final String xtable, String xcolumn) {
