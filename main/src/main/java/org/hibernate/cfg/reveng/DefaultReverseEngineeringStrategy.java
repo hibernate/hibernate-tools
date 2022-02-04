@@ -32,6 +32,7 @@ public class DefaultReverseEngineeringStrategy implements ReverseEngineeringStra
 		AUTO_OPTIMISTICLOCK_COLUMNS = new HashSet<String>();
 		AUTO_OPTIMISTICLOCK_COLUMNS.add("version");
 		AUTO_OPTIMISTICLOCK_COLUMNS.add("timestamp");
+		AUTO_OPTIMISTICLOCK_COLUMNS.add("dbtimestamp");
 	}
 	
 		
