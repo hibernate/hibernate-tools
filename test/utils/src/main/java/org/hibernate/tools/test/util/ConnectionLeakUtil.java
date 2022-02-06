@@ -57,7 +57,7 @@ public class ConnectionLeakUtil {
 				ResultSet resultSet = statement.executeQuery(
 						"SELECT COUNT(*) " +
 						"FROM information_schema.sessions " + 
-						"WHERE statement IS NULL");
+						"WHERE executing_statement IS NULL");
 				while (resultSet.next()) {
 					result = resultSet.getInt(1);
 				}
