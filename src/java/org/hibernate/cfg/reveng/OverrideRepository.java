@@ -25,7 +25,6 @@ import org.hibernate.util.XMLHelper;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-import net.sf.cglib.core.KeyFactory;
 
 public class OverrideRepository  {
 
@@ -292,7 +291,7 @@ public class OverrideRepository  {
 			}
 
 			public boolean excludeColumn(TableIdentifier identifier, String columnName) {
-				return excludedColumns.contains(TABLECOLUMN_KEY_FACTORY.newInstance(identifier, columnName));
+				return excludedColumns.contains(new TableColumnKey(identifier, columnName));
 			}
 
 			public String tableToCompositeIdName(TableIdentifier identifier) {
@@ -322,7 +321,7 @@ public class OverrideRepository  {
 					location += " Column: " + columnName + info;
 				}
 				if(table!=null && columnName!=null) {
-					result = (String) typeForColumn.get(TABLECOLUMN_KEY_FACTORY.newInstance(table, columnName));
+					result = (String) typeForColumn.get(new TableColumnKey(table, columnName));
 					if(result!=null) {
 						log.fine("explicit column mapping found for [" + location + "] to [" + result + "]");
 						return result;
@@ -376,7 +375,7 @@ public class OverrideRepository  {
 			}
 
 			public String columnToPropertyName(TableIdentifier table, String column) {
-				String result = (String) propertyNameForColumn.get(TABLECOLUMN_KEY_FACTORY.newInstance(table, column));
+				String result = (String) propertyNameForColumn.get(new TableColumnKey(table, column));
 				if(result==null) {
 					return super.columnToPropertyName(table, column);
 				} else {
@@ -495,7 +494,7 @@ public class OverrideRepository  {
 	}
 
 	protected Map columnToMetaAttributes(TableIdentifier tableIdentifier, String column) {
-		Map specific = (Map) columnMetaAttributes.get( TABLECOLUMN_KEY_FACTORY.newInstance(tableIdentifier, column) );
+		Map specific = (Map) columnMetaAttributes.get(  new TableColumnKey(tableIdentifier, column));
 		if(specific!=null && !specific.isEmpty()) {
 			return toMetaAttributes(specific);
 		}
@@ -583,28 +582,58 @@ public class OverrideRepository  {
 	}
 
 
-	private static final TableColumnKeyFactory TABLECOLUMN_KEY_FACTORY;
-	static {
-		TABLECOLUMN_KEY_FACTORY = (TableColumnKeyFactory) KeyFactory.create(TableColumnKeyFactory.class);
-	}
+	static class TableColumnKey {
+		private TableIdentifier query;
+		private String name;
+		
+		TableColumnKey(TableIdentifier query, String name){
+			this.query = query;
+			this.name = name;
+		}
 
-	static interface TableColumnKeyFactory {
-		Object newInstance(TableIdentifier query, String name);
+		@Override
+		public int hashCode() {
+			final int prime = 29;
+			int result = 1;
+			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			result = prime * result + ((query == null) ? 0 : query.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null) return false;
+			if (getClass() != obj.getClass()) return false;
+			TableColumnKey other = (TableColumnKey) obj;
+			if (name == null) {
+				if (other.name != null)
+					return false;
+			} else if (!name.equals(other.name))
+				return false;
+			if (query == null) {
+				if (other.query != null)
+					return false;
+			} else if (!query.equals(other.query))
+				return false;
+			return true;
+		}
+		
 	}
 
 	public void setTypeNameForColumn(TableIdentifier identifier, String columnName, String type) {
 		if(StringHelper.isNotEmpty(type)) {
-			typeForColumn.put(TABLECOLUMN_KEY_FACTORY.newInstance(identifier, columnName), type);
+			typeForColumn.put(new TableColumnKey(identifier, columnName), type);
 		}
 	}
 
 	public void setExcludedColumn(TableIdentifier tableIdentifier, String columnName) {
-		excludedColumns.add(TABLECOLUMN_KEY_FACTORY.newInstance(tableIdentifier, columnName));
+		excludedColumns.add(new TableColumnKey(tableIdentifier, columnName));
 	}
 
 	public void setPropertyNameForColumn(TableIdentifier identifier, String columnName, String property) {
 		if(StringHelper.isNotEmpty(property)) {
-			propertyNameForColumn.put(TABLECOLUMN_KEY_FACTORY.newInstance(identifier, columnName), property);
+			propertyNameForColumn.put(new TableColumnKey(identifier, columnName), property);
 		}
 	}
 
@@ -677,7 +706,7 @@ public class OverrideRepository  {
 
 	public void addMetaAttributeInfo(TableIdentifier tableIdentifier, String name, MultiMap map) {
 		if(map!=null && !map.isEmpty()) {
-			columnMetaAttributes.put(TABLECOLUMN_KEY_FACTORY.newInstance( tableIdentifier, name ), map);
+			columnMetaAttributes.put(new TableColumnKey(tableIdentifier, name), map);
 		}
 
 	}
