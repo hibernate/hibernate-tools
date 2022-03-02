@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.jboss</groupId>
 		<artifactId>jboss-parent</artifactId>
-		<version>6</version>
+		<version>39</version>
 	</parent>
 
 	<groupId>org.hibernate</groupId>
@@ -74,6 +74,12 @@
 	<!-- TODO: is it possible to automate this with maven? -->
 
 	<dependencies>
+        <!-- 1.7 is the last google-java-format version that is compiled against Java 1.8 -->
+        <dependency>
+            <groupId>com.google.googlejavaformat</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>1.7</version>
+        </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -152,30 +158,6 @@
 			<version>r8-20060801</version>
 			<scope>compile</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.9.1.v20130905-0837</version>
-            <scope>compile</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>text</artifactId>
-			<version>3.2.0-v20060605-1400</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.core</groupId>
-			<artifactId>runtime</artifactId>
-			<version>3.10.0-v20140318-2214</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>common</artifactId>
-			<version>3.2.0-v20060603</version>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
@@ -246,7 +228,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.4.1</version>
 				<configuration>
 					<filesets>
 						<fileset>
@@ -282,7 +263,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.4</version>
 				<executions>
 					<execution>
 						<phase>process-resources</phase>
@@ -301,7 +281,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
 				<executions>
 					<execution>
 						<id>add-test-source</id>
@@ -343,19 +322,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
 				<configuration>
 					<includes>
 						<include>**/*.java</include>
 					</includes>
-					<source>1.4</source>
-					<target>1.4</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.2</version>
 				<configuration>
 					<archive>
 				<!--		<manifestEntries>
@@ -373,8 +348,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
+					<configuration>
 					<stylesheetfile>${basedir}/src/javadoc/jdstyle.css</stylesheetfile>
 				</configuration>
 			</plugin>
