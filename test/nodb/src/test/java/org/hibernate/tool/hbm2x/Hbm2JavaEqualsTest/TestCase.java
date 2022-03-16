@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -110,13 +111,14 @@ public class TestCase {
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
         Class<?> entityClass = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.UnProxiedTestEntity");
+		Constructor<?> entityClassConstructor = entityClass.getConstructor(new Class[] {});
         Method setId = entityClass.getMethod("setId", new Class[] { int.class });
 
         // create a first entity and check the 'normal' behavior: 
         // - 'true' when comparing against itself
         // - 'false' when comparing against null
         // - 'false' when comparing against an object of a different class
-        Object firstEntity = entityClass.newInstance();
+        Object firstEntity = entityClassConstructor.newInstance();
         setId.invoke(firstEntity, new Object[] { Integer.MAX_VALUE });
         assertTrue(firstEntity.equals(firstEntity));
         assertFalse(firstEntity.equals(null));
@@ -125,7 +127,7 @@ public class TestCase {
         // create a second entity and check the 'normal behavior
         // - 'true' if the id property is the same
         // - 'false' if the id property is different
-        Object secondEntity = entityClass.newInstance();
+        Object secondEntity = entityClassConstructor.newInstance();
         setId.invoke(secondEntity, new Object[] { Integer.MAX_VALUE });
         assertTrue(firstEntity.equals(secondEntity));
         assertTrue(secondEntity.equals(firstEntity));
@@ -145,6 +147,7 @@ public class TestCase {
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
         Class<?> entityClass = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.ProxiedTestEntity");
         Class<?> entityProxyInterface = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.TestEntityProxy");
+		Constructor<?> entityClassConstructor = entityClass.getConstructor(new Class[] {});
         Method setId = entityClass.getMethod("setId", new Class[] { int.class });
         TestEntityProxyInvocationHandler handler = new TestEntityProxyInvocationHandler();
         Object testEntityProxy = Proxy.newProxyInstance(
@@ -156,7 +159,7 @@ public class TestCase {
         // - 'true' when comparing against itself
         // - 'false' when comparing against null
         // - 'false' when comparing against an object of a different class (that is not the proxy class)
-        Object firstEntity = entityClass.newInstance();
+		Object firstEntity = entityClassConstructor.newInstance();
         setId.invoke(firstEntity, new Object[] { Integer.MAX_VALUE });
         assertTrue(firstEntity.equals(firstEntity));
         assertFalse(firstEntity.equals(null));
@@ -165,7 +168,7 @@ public class TestCase {
         // create a second proxied entity and check the 'normal behavior
         // - 'true' if the id property is the same
         // - 'false' if the id property is different
-        Object secondEntity = entityClass.newInstance();
+        Object secondEntity = entityClassConstructor.newInstance();
         setId.invoke(secondEntity, new Object[] { Integer.MAX_VALUE });
         assertTrue(firstEntity.equals(secondEntity));
         assertTrue(secondEntity.equals(firstEntity));
