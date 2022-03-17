@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -211,7 +212,8 @@ public class TestCase {
 				.getResultList();
 		assertTrue(list.size() > 0);
 		Class<?> productIdClass = ucl.loadClass("ProductId");
-		Object object = productIdClass.newInstance();
+		Constructor<?> productIdConstructor = productIdClass.getConstructor(new Class[] {});
+		Object object = productIdConstructor.newInstance();
 		int hash = -1;
 		try {
 			hash = object.hashCode();
