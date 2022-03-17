@@ -67,7 +67,7 @@ public class TestCase {
 			group.addUser(new User("max" + i, "figo123"));
 			group.addUser(new User("anthony" + i, "figo123"));
 
-			s.saveOrUpdate( group );
+			s.persist( group );
 			if(i % 20==0) s.flush();
 		}
 		s.flush();
