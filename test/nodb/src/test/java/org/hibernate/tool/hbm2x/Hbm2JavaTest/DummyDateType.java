@@ -41,15 +41,15 @@ public class DummyDateType implements UserType<Date> {
 		return java.sql.Date.class;
 	}
 
-	public boolean equals(Object x, Object y) throws HibernateException {
+	public boolean equals(Date x, Date y) throws HibernateException {
 		return false;
 	}
 
-	public int hashCode(Object x) throws HibernateException {
+	public int hashCode(Date x) throws HibernateException {
 		return 0;
 	}
 
-	public Object deepCopy(Object value) throws HibernateException {
+	public Date deepCopy(Date value) throws HibernateException {
 		return null;
 	}
 
@@ -57,18 +57,18 @@ public class DummyDateType implements UserType<Date> {
 		return false;
 	}
 
-	public Serializable disassemble(Object value) throws HibernateException {
+	public Serializable disassemble(Date value) throws HibernateException {
 		return null;
 	}
 
-	public Object assemble(Serializable cached, Object owner) 
+	public Date assemble(Serializable cached, Object owner) 
 			throws HibernateException {
 		return null;
 	}
 
-	public Object replace(
-			Object original, 
-			Object target, 
+	public Date replace(
+			Date original, 
+			Date target, 
 			Object owner) throws HibernateException {
 		return null;
 	}
@@ -88,6 +88,11 @@ public class DummyDateType implements UserType<Date> {
 			Object owner)
 					throws SQLException {
 		return null;
+	}
+
+	@Override
+	public int getSqlType() {
+		return 0;
 	}
 
 }

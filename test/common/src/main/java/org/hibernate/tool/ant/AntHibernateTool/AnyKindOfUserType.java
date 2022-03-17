@@ -26,6 +26,7 @@ import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
 /*
  * Just used for testing classpath loading for ant tasks!
@@ -44,11 +45,11 @@ public class AnyKindOfUserType implements UserType<Integer> {
 		return Integer.class;
 	}
 
-	public boolean equals(Object x, Object y) throws HibernateException {
+	public boolean equals(Integer x, Integer y) throws HibernateException {
 		return x.equals(y);
 	}
 
-	public int hashCode(Object x) throws HibernateException {
+	public int hashCode(Integer x) throws HibernateException {
 		return x.hashCode();
 	}
 
@@ -58,19 +59,19 @@ public class AnyKindOfUserType implements UserType<Integer> {
 
 	}
 
-	public Object deepCopy(Object value) throws HibernateException {
+	public Integer deepCopy(Integer value) throws HibernateException {
 		return Integer.valueOf( ( (Integer)value).intValue() );
 	}
-	public Object assemble(Serializable cached, Object owner)
+	public Integer assemble(Serializable cached, Object owner)
 	throws HibernateException {
-		return cached;
+		return (Integer)cached;
 	}
 
-	public Serializable disassemble(Object value) throws HibernateException {
+	public Serializable disassemble(Integer value) throws HibernateException {
 		return (Serializable) value;
 	}
 
-	public Object replace(Object original, Object target, Object owner)
+	public Integer replace(Integer original, Integer target, Object owner)
 	throws HibernateException {
 		return original;
 	}
@@ -83,6 +84,11 @@ public class AnyKindOfUserType implements UserType<Integer> {
 	public Integer nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
 			throws SQLException {
 		return Integer.valueOf(rs.getInt(position) );
+	}
+
+	@Override
+	public int getSqlType() {
+		return SqlTypes.BIGINT;
 	}
 
 }
