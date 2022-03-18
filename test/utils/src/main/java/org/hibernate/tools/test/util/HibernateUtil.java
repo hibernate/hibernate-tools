@@ -48,9 +48,7 @@ public class HibernateUtil {
 	
 	public static ForeignKey getForeignKey(Table table, String fkName) {
 		ForeignKey result = null;
-		Iterator<?> iter = table.getForeignKeyIterator();
-		while (iter.hasNext()) {
-			ForeignKey fk = (ForeignKey) iter.next();
+		for (ForeignKey fk : table.getForeignKeys().values()) {
 			if (fk.getName().equals(fkName)) {
 				result = fk;
 				break;
