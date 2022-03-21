@@ -72,7 +72,7 @@ public class TestCase {
 		}
 		s.flush();
 		s.clear();
-		s.createQuery( "from java.lang.Object" ).getResultList();
+		s.createQuery( "from java.lang.Object", null).getResultList();
 		tx.commit();
 		s.close();
 		sf.close();
