@@ -115,7 +115,7 @@ public class TestCase {
 				reverseEngineeringStrategy
 					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "LINE_ITEM"))));
 		assertEquals(4, lineMapping.getIdentifier().getColumnSpan());
-		Iterator<?> columnIterator = lineMapping.getIdentifier().getColumnIterator();
+		Iterator<Column> columnIterator = lineMapping.getIdentifier().getColumns().iterator();
 		assertEquals(((Column) (columnIterator.next())).getName(), "CUSTOMER_ID_REF");
 		assertEquals(((Column) (columnIterator.next())).getName(), "ORDER_NUMBER");
 	}
