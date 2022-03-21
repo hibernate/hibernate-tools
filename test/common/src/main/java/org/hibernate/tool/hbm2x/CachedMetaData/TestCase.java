@@ -197,7 +197,7 @@ public class TestCase {
 		
 		JUnitUtil.assertIteratorContainsExactly(
 				"should have recorded one foreignkey to child table",  
-				child.getForeignKeyIterator(),
+				child.getForeignKeys().values().iterator(),
 				1);
 	}
 
