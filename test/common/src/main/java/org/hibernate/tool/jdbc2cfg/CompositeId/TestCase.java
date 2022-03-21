@@ -219,11 +219,11 @@ public class TestCase {
         		.buildSessionFactory();
         Session session = factory.openSession();        
         JdbcUtil.populateDatabase(this);
-        session.createQuery("from LineItem").getResultList();
-        List<?> list = session.createQuery("from Product").getResultList();
+        session.createQuery("from LineItem", null).getResultList();
+        List<?> list = session.createQuery("from Product", null).getResultList();
         assertEquals(2,list.size() );
         list = session
-        		.createQuery("select li.customerOrder.id from LineItem as li")
+        		.createQuery("select li.customerOrder.id from LineItem as li", null)
         		.getResultList();
         assertTrue(list.size()>0);     
         Class<?> productIdClass = ucl.loadClass("ProductId");
