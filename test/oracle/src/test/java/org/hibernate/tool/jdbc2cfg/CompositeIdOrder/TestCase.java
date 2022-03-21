@@ -80,16 +80,16 @@ public class TestCase {
         PersistentClass course = metadata.getEntityBinding("Course");
         
         assertEquals(2,course.getIdentifier().getColumnSpan() );
-        Iterator<Selectable> columnIterator = course.getIdentifier().getColumnIterator();
-        assertEquals(((Column)(columnIterator.next())).getName(), "SCHEDULE_KEY");
-        assertEquals(((Column)(columnIterator.next())).getName(), "REQUEST_KEY");
+        Iterator<Selectable> selectablesIterator = course.getIdentifier().getSelectables().iterator();
+        assertEquals(((Column)(selectablesIterator.next())).getName(), "SCHEDULE_KEY");
+        assertEquals(((Column)(selectablesIterator.next())).getName(), "REQUEST_KEY");
         
         PersistentClass topic = metadata.getEntityBinding("CourseTopic");
         
         Property property = topic.getProperty("course");
-        columnIterator = property.getValue().getColumnIterator();
-        assertEquals(((Column)(columnIterator.next())).getName(), "SCHEDULE_KEY");
-        assertEquals(((Column)(columnIterator.next())).getName(), "REQUEST_KEY");
+        selectablesIterator = property.getValue().getSelectables().iterator();
+        assertEquals(((Column)(selectablesIterator.next())).getName(), "SCHEDULE_KEY");
+        assertEquals(((Column)(selectablesIterator.next())).getName(), "REQUEST_KEY");
 
 	}
 
