@@ -160,7 +160,7 @@ public class TestCase {
         session = sf.openSession();
 		t = session.beginTransaction();
         
-		order = (Orders) session.load(Orders.class, Integer.valueOf(1) );
+		order = (Orders) session.getReference(Orders.class, Integer.valueOf(1) );
         assertFalse(Hibernate.isInitialized(order) );
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
