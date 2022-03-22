@@ -503,7 +503,7 @@ public class JDBCBinder {
         } else {
         	String tableToClassName = bindCollection( rc, foreignKey, null, collection );
 
-        	OneToMany oneToMany = new OneToMany((MetadataImplementor)metadata, collection.getOwner() );
+        	OneToMany oneToMany = new OneToMany(mdbc, collection.getOwner() );
 
 			oneToMany.setReferencedEntityName( tableToClassName ); // Child
         	metadataCollector.addSecondPass( new JDBCCollectionSecondPass(mdbc, collection) );
