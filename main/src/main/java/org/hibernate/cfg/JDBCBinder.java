@@ -334,7 +334,7 @@ public class JDBCBinder {
      * @param propName
      */
     private Property bindManyToOne(String propertyName, boolean mutable, Table table, ForeignKey fk, Set<Column> processedColumns) {
-        ManyToOne value = new ManyToOne((MetadataImplementor)metadata, table);
+        ManyToOne value = new ManyToOne(mdbc, table);
         value.setReferencedEntityName( fk.getReferencedEntityName() );
 		Iterator<Column> columns = fk.getColumnIterator();
         while ( columns.hasNext() ) {
