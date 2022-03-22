@@ -316,8 +316,8 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
 		assertNotNull(foundTable);
-		Iterator<?> fkiter = foundTable.getForeignKeyIterator();
-		ForeignKey fk1 = (ForeignKey) fkiter.next();
+		Iterator<ForeignKey> fkiter = foundTable.getForeignKeys().values().iterator();
+		ForeignKey fk1 = fkiter.next();
 		assertNotNull(fk1);
 		assertFalse(fkiter.hasNext() );
 		
@@ -421,8 +421,8 @@ public class TestCase {
 		
 		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "ORDERS") );
 		
-		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
-		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
+		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeys().values().iterator();
+		ForeignKey fk = foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "CUSTOMER") );
 		
 		PersistentClass classMapping = metadata.getEntityBinding("Orders");
@@ -438,8 +438,8 @@ public class TestCase {
 		
 		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "CHILDREN") );
 		
-		Iterator<?> foreignKeyIterator = table.getForeignKeyIterator();
-		ForeignKey fk = (ForeignKey) foreignKeyIterator.next();
+		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeys().values().iterator();
+		ForeignKey fk = foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "PARENT") );
 		assertEquals(2, fk.getReferencedColumns().size());
 		assertEquals("child_to_parent", fk.getName());
