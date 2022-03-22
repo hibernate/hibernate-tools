@@ -361,10 +361,10 @@ public class TestCase {
 		assertEquals(
 				"java.util.Calendar orderDate, java.math.BigDecimal total, org.hibernate.tool.hbm2x.Hbm2JavaTest.Customer customer, java.util.Collection lineItems",
 				c2j.asParameterList( 
-						pc.getPropertyIterator(), false, new NoopImportContext() ));
+						pc.getProperties().iterator(), false, new NoopImportContext() ));
 		assertEquals( 
 				"orderDate, total, customer, lineItems", 
-				c2j.asArgumentList( pc.getPropertyIterator() ) );
+				c2j.asArgumentList( pc.getProperties().iterator() ) );
 	}
 
 	@Test
