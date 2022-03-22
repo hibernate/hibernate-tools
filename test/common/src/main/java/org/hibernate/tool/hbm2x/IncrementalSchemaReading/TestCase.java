@@ -101,7 +101,7 @@ public class TestCase {
 		assertEquals(firstChild.getName(), "CHILD");
 		assertFalse(iterator.hasNext());
 		
-		assertFalse(firstChild.getForeignKeyIterator().hasNext(), "should not record foreignkey to table it doesn't know about yet");
+		assertFalse(firstChild.getForeignKeys().values().iterator().hasNext(), "should not record foreignkey to table it doesn't know about yet");
 		
 		tss.clearSchemaSelections();
 		tss.addSchemaSelection( createSchemaSelection(null, null, "MASTER") );
@@ -123,7 +123,7 @@ public class TestCase {
 		
 		JUnitUtil.assertIteratorContainsExactly(
 				"should have recorded one foreignkey to child table", 
-				firstChild.getForeignKeyIterator(),
+				firstChild.getForeignKeys().values().iterator(),
 				1);		
 		
 		
@@ -135,11 +135,11 @@ public class TestCase {
 		assertSame(firstChild, getTable(dc, mockedMetaDataDialect, defaultCatalog, defaultSchema, "CHILD" ));
 		JUnitUtil.assertIteratorContainsExactly(
 				null,
-				firstChild.getForeignKeyIterator(),
+				firstChild.getForeignKeys().values().iterator(),
 				1);
 		JUnitUtil.assertIteratorContainsExactly(
 				null,
-				finalMaster.getForeignKeyIterator(),
+				finalMaster.getForeignKeys().values().iterator(),
 				0);
 	}
 
