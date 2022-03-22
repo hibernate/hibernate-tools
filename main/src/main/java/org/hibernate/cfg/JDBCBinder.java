@@ -454,7 +454,7 @@ public class JDBCBinder {
 
 		Table collectionTable = foreignKey.getTable();
 
-		Collection collection = new org.hibernate.mapping.Set((MetadataImplementor)metadata, rc); // MASTER TODO: allow overriding collection type
+		Collection collection = new org.hibernate.mapping.Set(mdbc, rc); // MASTER TODO: allow overriding collection type
 
 		collection.setCollectionTable(collectionTable); // CHILD+
 
