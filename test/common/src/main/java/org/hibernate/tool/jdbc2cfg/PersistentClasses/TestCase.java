@@ -114,7 +114,7 @@ public class TestCase {
 		String schemaToUse = Environment
 				.getProperties()
 				.getProperty(AvailableSettings.DEFAULT_SCHEMA);
-		PersistentClass orders = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");		
+		PersistentClass orders = metadata.getEntityBinding(PACKAGE_NAME + ".Orders");	
 		orders.getTable().setSchema(schemaToUse);
 		PersistentClass items = metadata.getEntityBinding(PACKAGE_NAME + ".Item");
 		items.getTable().setSchema(schemaToUse);
@@ -127,14 +127,14 @@ public class TestCase {
 		order.setId(Integer.valueOf(1) );
 		order.setName("Mickey");
 		
-		session.save(order);
+		session.merge(order);
 		
 		Item item = addItem(order, 42, "item 42");
-        session.save(item);
-		session.save(addItem(order, 43, "x") );
-        session.save(addItem(order, 44, "y") );
-        session.save(addItem(order, 45, "z") );
-        session.save(addItem(order, 46, "w") );
+        session.merge(item);
+		session.merge(addItem(order, 43, "x") );
+        session.merge(addItem(order, 44, "y") );
+        session.merge(addItem(order, 45, "z") );
+        session.merge(addItem(order, 46, "w") );
         
 		t.commit();
 		session.close();
