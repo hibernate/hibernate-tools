@@ -32,6 +32,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -89,7 +90,7 @@ public class TestCase {
 	@Test
 	public void testBackrefPresent() {
 		PersistentClass pc = metadata.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest.CarPart");
-		Iterator<?> iterator = pc.getPropertyIterator();
+		Iterator<Property> iterator = pc.getProperties().iterator();
 		boolean hasBackrefs = false;
 		while (iterator.hasNext() && !hasBackrefs) {
 			hasBackrefs = (iterator.next() instanceof Backref);			
