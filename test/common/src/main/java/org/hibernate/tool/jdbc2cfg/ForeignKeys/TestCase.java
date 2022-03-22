@@ -101,7 +101,7 @@ public class TestCase {
 				HibernateUtil.getForeignKey(
 						table, 
 						JdbcUtil.toIdentifier(this, "DUMMY") ) );
-		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeyIterator(), 3);
+		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeys().values().iterator(), 3);
 	}
 	
 	@Test
@@ -112,7 +112,7 @@ public class TestCase {
 		Table child = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "CHILD") );	
-		Iterator<?> iterator = child.getForeignKeyIterator();		
+		Iterator<?> iterator = child.getForeignKeys().values().iterator();		
 		ForeignKey fk = (ForeignKey) iterator.next();		
 		assertFalse(iterator.hasNext(), "should only be one fk" );	
 		assertEquals(1, fk.getColumnSpan() );
