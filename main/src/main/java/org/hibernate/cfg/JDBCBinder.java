@@ -470,7 +470,7 @@ public class JDBCBinder {
 
         if(manyToMany) {
 
-        	ManyToOne element = new ManyToOne((MetadataImplementor)metadata, collection.getCollectionTable() );
+        	ManyToOne element = new ManyToOne(mdbc, collection.getCollectionTable() );
         	//TODO: find the other foreignkey and choose the other side.
         	Iterator<?> foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
         	List<ForeignKey> keys = new ArrayList<ForeignKey>();
