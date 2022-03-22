@@ -72,6 +72,7 @@ public class JDBCBinder {
 
 	private final MetadataBuildingContext mdbc;
 	
+	
 	private final InFlightMetadataCollector metadataCollector;
 	
 	private Metadata metadata;
@@ -278,7 +279,7 @@ public class JDBCBinder {
     private Property bindOneToOne(PersistentClass rc, Table targetTable,
             ForeignKey fk, Set<Column> processedColumns, boolean constrained, boolean inverseProperty) {
 
-        OneToOne value = new OneToOne((MetadataImplementor)metadata, targetTable, rc);
+        OneToOne value = new OneToOne(mdbc, targetTable, rc);
         value.setReferencedEntityName(revengStrategy
                 .tableToClassName(TableIdentifier.create(targetTable)));
 
