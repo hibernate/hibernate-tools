@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.internal.MetadataImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -27,6 +28,7 @@ import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.id.enhanced.TableGenerator;
+import org.hibernate.id.factory.IdentifierGeneratorFactory;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
@@ -237,7 +239,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = pc.getIdentifier()
 						.createIdentifierGenerator(
-								getMetadata().getIdentifierGeneratorFactory(),
+								getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,
@@ -259,7 +261,7 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 				IdentifierGenerator ig = ( (IdentifierCollection) collection ).getIdentifier()
 						.createIdentifierGenerator(
-								getMetadata().getIdentifierGeneratorFactory(),
+								getIdentifierGeneratorFactory(),
 								dialect,
 								defaultCatalog,
 								defaultSchema,
@@ -276,6 +278,11 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		return generators.values().iterator();
 	}
 	
+	@SuppressWarnings("deprecation")
+	private IdentifierGeneratorFactory getIdentifierGeneratorFactory() {
+		return ((Mapping)getMetadata()).getIdentifierGeneratorFactory();
+	}
+
 	private String getGeneratorKey(PersistentIdentifierGenerator ig) {
 		String result = null;
 		if  (ig instanceof SequenceStyleGenerator) {
