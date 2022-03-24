@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.model.relational.QualifiedName;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -28,7 +27,6 @@ import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.MultipleHiLoPerTableGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
-import org.hibernate.id.SequenceGenerator;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.internal.util.StringHelper;
@@ -284,8 +282,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 		String result = null;
 		if (ig instanceof MultipleHiLoPerTableGenerator) {
 			result = getKeyForMultipleHiloPerTableGenerator((MultipleHiLoPerTableGenerator)ig);
-		} else if (ig instanceof SequenceGenerator) {
-			result = getKeyForSequenceGenerator((SequenceGenerator)ig);
 		} else if (ig instanceof SequenceStyleGenerator) {
 			result = getKeyForSequenceStyleGenerator((SequenceStyleGenerator)ig);
 		} else if (ig instanceof TableGenerator) {
@@ -300,19 +296,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 			Field field = MultipleHiLoPerTableGenerator.class.getDeclaredField("tableName");
 			field.setAccessible(true);
 			result = (String)field.get(ig);
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
-		return result;
-	}
-	
-	private String getKeyForSequenceGenerator(SequenceGenerator ig) {
-		String result = null;
-		try {
-			Field field = SequenceGenerator.class.getDeclaredField("logicalQualifiedSequenceName");
-			field.setAccessible(true);
-			QualifiedName name = (QualifiedName)field.get(ig);
-			result = name.render();
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
