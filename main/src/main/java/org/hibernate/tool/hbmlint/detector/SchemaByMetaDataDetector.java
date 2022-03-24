@@ -1,6 +1,5 @@
 package org.hibernate.tool.hbmlint.detector;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.Mapping;
 import org.hibernate.id.IdentifierGenerator;
-import org.hibernate.id.MultipleHiLoPerTableGenerator;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.id.enhanced.TableGenerator;
@@ -280,24 +278,10 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 	
 	private String getGeneratorKey(PersistentIdentifierGenerator ig) {
 		String result = null;
-		if (ig instanceof MultipleHiLoPerTableGenerator) {
-			result = getKeyForMultipleHiloPerTableGenerator((MultipleHiLoPerTableGenerator)ig);
-		} else if (ig instanceof SequenceStyleGenerator) {
+		if  (ig instanceof SequenceStyleGenerator) {
 			result = getKeyForSequenceStyleGenerator((SequenceStyleGenerator)ig);
 		} else if (ig instanceof TableGenerator) {
 			result = getKeyForTableGenerator((TableGenerator)ig);
-		}
-		return result;
-	}
-	
-	private String getKeyForMultipleHiloPerTableGenerator(MultipleHiLoPerTableGenerator ig) {
-		String result = null;
-		try {
-			Field field = MultipleHiLoPerTableGenerator.class.getDeclaredField("tableName");
-			field.setAccessible(true);
-			result = (String)field.get(ig);
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
 		}
 		return result;
 	}
