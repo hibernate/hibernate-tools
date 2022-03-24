@@ -3,16 +3,13 @@ package org.hibernate.tool.hbmlint.detector;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.internal.MetadataImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.reveng.DatabaseCollector;
@@ -226,10 +223,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 
 		TreeMap<Object, IdentifierGenerator> generators = 
 				new TreeMap<Object, IdentifierGenerator>();
-		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-		Properties properties = (Properties)builder.getSettings();
-		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
-		String defaultSchema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);
 
 		Iterator<PersistentClass> persistentClassIterator = getMetadata().getEntityBindings().iterator();
 		while ( persistentClassIterator.hasNext() ) {
@@ -241,8 +234,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 						.createIdentifierGenerator(
 								getIdentifierGeneratorFactory(),
 								dialect,
-								defaultCatalog,
-								defaultSchema,
 								(RootClass) pc
 							);
 
@@ -263,8 +254,6 @@ public class SchemaByMetaDataDetector extends RelationalModelDetector {
 						.createIdentifierGenerator(
 								getIdentifierGeneratorFactory(),
 								dialect,
-								defaultCatalog,
-								defaultSchema,
 								null
 							);
 
