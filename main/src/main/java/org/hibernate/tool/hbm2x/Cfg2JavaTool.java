@@ -31,9 +31,7 @@ import org.hibernate.tool.hbm2x.pojo.NoopImportContext;
 import org.hibernate.tool.hbm2x.pojo.POJOClass;
 import org.hibernate.tool.hbm2x.visitor.JavaTypeFromValueVisitor;
 import org.hibernate.type.BasicTypeRegistry;
-import org.hibernate.type.PrimitiveType;
 import org.hibernate.type.Type;
-import org.hibernate.type.TypeResolver;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.jboss.logging.Logger;
 
@@ -337,14 +335,15 @@ public class Cfg2JavaTool {
 	public String asFinderArgumentList(Map<Object,Object> parameterTypes, ImportContext ctx) {
 		StringBuffer buf = new StringBuffer();
 		Iterator<Entry<Object,Object>> iter = parameterTypes.entrySet().iterator();
-		TypeResolver typeResolver = new TypeConfiguration().getTypeResolver();
 		while ( iter.hasNext() ) {
 			Entry<Object,Object> entry = iter.next();
 			String typename = null;
 			Type type = null;
 			if(entry.getValue() instanceof String) {
 				try {
-					type = typeResolver.heuristicType((String) entry.getValue());
+					type = new TypeConfiguration()
+							.getBasicTypeRegistry()
+							.getRegisteredType((String) entry.getValue());
 				} catch(Throwable t) {
 					type = null;
 					typename = (String) entry.getValue();
@@ -352,14 +351,7 @@ public class Cfg2JavaTool {
 			}
 			
 			if(type!=null) {
-				Class<?> typeClass;
-				if ( type instanceof PrimitiveType ) {
-					typeClass = ( (PrimitiveType<?>) type ).getPrimitiveClass();
-				}
-				else {
-					typeClass = type.getReturnedClass();
-				}
-				typename = typeClass.getName();
+				typename = type.getReturnedClass().getName();
 			}
 			buf.append( ctx.importType( typename ))
 					.append( " " )
