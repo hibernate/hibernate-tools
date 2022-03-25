@@ -904,7 +904,10 @@ public class JDBCBinder {
 				column.getLength(), column.getPrecision(), column.getScale(), column.isNullable(), generatedIdentifier
 		);
 
-		Type wantedType = metadataCollector.getTypeResolver().heuristicType(preferredHibernateType);
+		Type wantedType = metadataCollector
+				.getTypeConfiguration()
+				.getBasicTypeRegistry()
+				.getRegisteredType(preferredHibernateType);
 
 		if(wantedType!=null) {
 			int[] wantedSqlTypes = wantedType.sqlTypes(mapping);
