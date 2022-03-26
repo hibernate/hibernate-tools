@@ -21,6 +21,7 @@ package org.hibernate.tool.ant.Query;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class SerializableResult implements Serializable {
 	
 	public String id;
