@@ -22,7 +22,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.binder.BinderUtils;
 import org.hibernate.cfg.binder.PrimaryKeyInfo;
 import org.hibernate.cfg.binder.PropertyBinder;
@@ -522,7 +521,7 @@ public class JDBCBinder {
 				.getValue();
 		}
 
-		SimpleValue keyValue = new DependantValue((MetadataImplementor)metadata, collectionTable, referencedKeyValue );
+		SimpleValue keyValue = new DependantValue(mdbc, collectionTable, referencedKeyValue );
 		//keyValue.setForeignKeyName("none"); // Avoid creating the foreignkey
 		//key.setCascadeDeleteEnabled( "cascade".equals( subnode.attributeValue("on-delete") ) );
 		Iterator<Column> columnIterator = foreignKey.getColumnIterator();
@@ -852,7 +851,7 @@ public class JDBCBinder {
 	}
 
 	private SimpleValue bindColumnToSimpleValue(Table table, Column column, Mapping mapping, boolean generatedIdentifier) {
-		SimpleValue value = new SimpleValue((MetadataImplementor)metadata, table);
+		SimpleValue value = new SimpleValue(mdbc, table);
 		value.addColumn(column);
 		value.setTypeName(guessAndAlignType(table, column, mapping, generatedIdentifier));
 		return value;
@@ -947,7 +946,7 @@ public class JDBCBinder {
 	 * @return
 	 */
 	private SimpleValue handleCompositeKey(RootClass rc, Set<Column> processedColumns, List<Column> keyColumns, Mapping mapping) {
-		Component pkc = new Component((MetadataImplementor)metadata, rc);
+		Component pkc = new Component(mdbc, rc);
         pkc.setMetaAttributes(Collections.EMPTY_MAP);
         pkc.setEmbedded(false);
 
