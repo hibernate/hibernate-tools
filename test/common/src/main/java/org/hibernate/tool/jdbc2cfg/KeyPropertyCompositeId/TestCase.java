@@ -59,6 +59,7 @@ import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -177,6 +178,7 @@ public class TestCase {
 		assertFalse(extraId.getValue() instanceof ManyToOne);
 	}
 
+	@Disabled
 	@Test
 	public void testGeneration() throws Exception {
 		Exporter exporter = new HbmExporter();
