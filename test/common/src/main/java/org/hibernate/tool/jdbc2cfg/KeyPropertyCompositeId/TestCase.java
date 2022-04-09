@@ -177,7 +177,8 @@ public class TestCase {
 		assertFalse(id.getValue() instanceof ManyToOne);
 		assertFalse(extraId.getValue() instanceof ManyToOne);
 	}
-
+	
+	// TODO HBX-2337: Investigate and reenable this test
 	@Disabled
 	@Test
 	public void testGeneration() throws Exception {
