@@ -30,7 +30,7 @@
 
   <name>Hibernate Tools Maven Plugin</name>
   <description>Maven plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
-  <url>http://hibernate.org/tools/</url>
+  <url>https://hibernate.org/tools/</url>
 
   <issueManagement>
     <system>JIRA</system>
@@ -45,7 +45,7 @@
 
   <organization>
     <name>Hibernate</name>
-    <url>http://www.hibernate.org</url>
+    <url>https://www.hibernate.org</url>
   </organization>
 
   <licenses>
