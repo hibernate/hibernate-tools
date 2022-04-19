@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2004-2021 Red Hat, Inc.
+ * Copyright 2004-2022 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -21,6 +21,7 @@ package org.hibernate.tool.ant.Query;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class SerializableResult implements Serializable {
 	
 	public String id;
