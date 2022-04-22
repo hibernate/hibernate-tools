@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 final public class Version {
 
-	public static final String VERSION = "5.6.8-SNAPSHOT";
+	public static final String VERSION = "5.6.8.Final";
 	
 	private static final Version instance = new Version();
 	
