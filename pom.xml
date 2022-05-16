@@ -34,28 +34,28 @@
  
     <name>Hibernate Tools Parent Project</name>
 
-	<url>https://hibernate.org/tools/</url>
+	<url>http://hibernate.org/tools/</url>
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>https://hibernate.atlassian.net/projects/HBX</url>
+		<url>http://hibernate.atlassian.net/projects/HBX</url>
 	</issueManagement>
 
 	<scm>
 	  <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
 	  <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-	  <url>https://github.com/hibernate/hibernate-tools</url>
+	  <url>http://github.com/hibernate/hibernate-tools</url>
 	</scm>
 
 	<organization>
 		<name>Hibernate</name>
-		<url>https://www.hibernate.org</url>
+		<url>http://www.hibernate.org</url>
 	</organization>
 
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License</name>
-			<url>https://www.gnu.org/licenses/lgpl-2.1.html</url>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
 		</license>
 	</licenses>
 
@@ -64,13 +64,13 @@
 			<id>maxandersen</id>
 			<name>Max Andersen</name>
 			<email>max@hibernate.org</email>
-			<url>https://in.relation.to/Bloggers/Max</url>
+			<url>http://in.relation.to/Bloggers/Max</url>
 		</developer>
 		<developer>
 			<id>koentsje</id>
 			<name>Koen Aers</name>
 			<email>koen@hibernate.org</email>
-			<url>https://koentsje.blogspot.be</url>
+			<url>http://koentsje.blogspot.be</url>
 		</developer>
 	</developers>
 

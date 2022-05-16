@@ -19,7 +19,7 @@
   ~ limitations under the License.
   -->
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-                                   "https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 17.04.2009 10:41:19 by Hibernate Tools 3.2.4.GA -->
 <hibernate-mapping>
  <class name="org.hibernate.tool.hbm2x.hbm2hbmxml.TypeParamsTest.Order" table="ORDERS">

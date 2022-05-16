@@ -56,7 +56,7 @@ public class TestCase {
 	private static String REVENG_XML =
 			"<!DOCTYPE hibernate-reverse-engineering                                            \n"+
 			"          SYSTEM                                                                   \n"+
-	        "          'https://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>\n"+
+	        "          'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>\n"+
 			"<hibernate-reverse-engineering>                                                    \n"+
 	        "   <table name='MY_RETURN_HISTORY'>                                                \n"+
             "      <foreign-key                                                                 \n"+
