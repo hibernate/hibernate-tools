@@ -77,6 +77,10 @@
 			<artifactId>hibernate-tools-utils</artifactId>
 		</dependency>
 		<dependency>
+		    <groupId>org.jboss.logging</groupId>
+		    <artifactId>jboss-logging</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-engine</artifactId>
 		</dependency>
