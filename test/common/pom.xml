@@ -16,10 +16,6 @@
     <name>Hibernate Tools Common Database Tests Project</name>
 
     <dependencies>
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-		</dependency>
     	<dependency>
     		<groupId>org.hibernate</groupId>
     		<artifactId>hibernate-tools</artifactId>
