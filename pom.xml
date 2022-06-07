@@ -52,7 +52,6 @@
         <hsqldb.version>2.5.2</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
-        <jaxen.version>1.2.0</jaxen.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
@@ -100,12 +99,6 @@
                 <artifactId>javax.persistence-api</artifactId>
                 <version>${javax.persistence-api.version}</version>
             </dependency>
-            <dependency>
-                <groupId>jaxen</groupId>
-                <artifactId>jaxen</artifactId>
-                <version>${jaxen.version}</version>
-                <scope>runtime</scope>
-            </dependency> 
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
