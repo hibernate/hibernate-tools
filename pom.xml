@@ -94,7 +94,6 @@
         <hibernate-orm.version>6.0.2.Final</hibernate-orm.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
-        <jaxen.version>1.2.0</jaxen.version>
         <jboss-logging.version>3.4.3.Final</jboss-logging.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <mysql.version>8.0.22</mysql.version>
@@ -137,12 +136,6 @@
    			    <version>${javaee-api.version}</version>
    			    <scope>test</scope>
    		    </dependency>
-  	        <dependency>
-                <groupId>jaxen</groupId>
-                <artifactId>jaxen</artifactId>
-                <version>${jaxen.version}</version>
-                <scope>runtime</scope>
-			</dependency> 
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
