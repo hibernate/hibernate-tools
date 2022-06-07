@@ -26,10 +26,6 @@
    		    <artifactId>hibernate-tools-tests-utils</artifactId>
    	    </dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-		</dependency>
-		<dependency>
 		    <groupId>javax</groupId>
 		    <artifactId>javaee-api</artifactId>
 		</dependency>
