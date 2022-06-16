@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.hibernate.HibernateException;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.internal.MetadataImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.Dialect;
@@ -26,7 +27,9 @@ import org.hibernate.tool.internal.export.common.ConfigurationNavigator;
 import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.ComponentPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
+import org.hibernate.tool.internal.reveng.binder.TypeUtils;
 import org.hibernate.type.Type;
+import org.hibernate.type.spi.TypeConfiguration;
 
 /**
  * This helper class is used expose hibernate mapping information to the
@@ -111,14 +114,9 @@ public final class DocHelper {
 	 * The Dialect.
 	 */
 	private Dialect dialect;
+	
+	private Metadata metadata;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param cfg
-	 *            Hibernate configuration.
-	 */
-	@SuppressWarnings("unchecked")
 	public DocHelper(Metadata metadata, Properties properties, Cfg2JavaTool cfg2JavaTool) {
 
 		super();
@@ -126,6 +124,8 @@ public final class DocHelper {
 		if (metadata == null) {
 			throw new IllegalArgumentException("Hibernate Configuration cannot be null");
 		}
+		
+		this.metadata = metadata;
 
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		builder.applySettings(properties);
@@ -176,9 +176,7 @@ public final class DocHelper {
 			}
 			tableList.add(table);
 
-			Iterator<Column> columns = table.getColumnIterator();
-			while (columns.hasNext()) {
-				Column column = columns.next();
+			for(Column column : table.getColumns()) {
 				String columnFQN = getQualifiedColumnName(table, column);
 				List<Value> values = valuesByColumn.get(columnFQN);
 				if (values == null) {
@@ -200,9 +198,7 @@ public final class DocHelper {
 
 			this.processClass(pojoClazz);
 
-			Iterator<Property> propertyIterator = clazz.getPropertyIterator();
-			while (propertyIterator.hasNext()) {
-				Property property = propertyIterator.next();
+			for (Property property : clazz.getProperties()) {
 				Value value = property.getValue();
 				List<Property> props = propsByValue.get(value);
 				if (props == null) {
@@ -404,7 +400,8 @@ public final class DocHelper {
 	public String getSQLTypeName(Column column) {
 
 		try {
-			return column.getSqlType(dialect, null);
+			TypeConfiguration tc = ((MetadataImpl)metadata).getTypeConfiguration();
+			return column.getSqlType(tc, dialect, metadata);
 		} catch (HibernateException ex) {
 
 			// TODO: Fix this when we find a way to get the type or
@@ -412,6 +409,28 @@ public final class DocHelper {
 
 			return "N/D";
 		}
+	}
+	
+	public int getLength(Column column) {
+		return column.getLength() == null ? 
+				TypeUtils.DEFAULT_COLUMN_LENGTH : 
+					column.getLength().intValue();
+	}
+
+	public int getPrecision(Column column) {
+		return column.getPrecision() == null ? 
+				TypeUtils.DEFAULT_COLUMN_PRECISION : 
+					column.getPrecision().intValue();
+	}
+
+	public int getScale(Column column) {
+		return column.getScale() == null ? 
+				TypeUtils.DEFAULT_COLUMN_SCALE : 
+					column.getScale().intValue();
+	}
+	
+	public Iterator<Column> getPrimaryKeyColumnIterator(Table table) {
+		return table.getPrimaryKey().getColumns().iterator();
 	}
 
 	/**

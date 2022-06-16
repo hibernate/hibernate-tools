@@ -1,3 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Hibernate Tools, Tooling for your Hibernate Projects
+  ~
+  ~ Copyright 2018-2021 Red Hat, Inc.
+  ~
+  ~ Licensed under the GNU Lesser General Public License (LGPL), 
+  ~ version 2.1 or later (the "License").
+  ~ You may not use this file except in compliance with the License.
+  ~ You may read the licence in the 'lgpl.txt' file in the root folder of 
+  ~ project or obtain a copy at
+  ~
+  ~     http://www.gnu.org/licenses/lgpl-2.1.html
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -8,7 +28,7 @@
     <parent>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-maven</artifactId>
@@ -21,7 +41,7 @@
 
     <build>
         <plugins>
-            <plugin>
+             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version>${maven-invoker-plugin.version}</version>
                 <configuration>
@@ -40,7 +60,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>  
         </plugins>
     </build>
     

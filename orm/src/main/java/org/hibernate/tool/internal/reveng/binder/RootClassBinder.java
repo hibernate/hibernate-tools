@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.DuplicateMappingException;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -94,6 +95,7 @@ public class RootClassBinder extends AbstractBinder {
 		rc.setMetaAttributes(getMetaAttributes(table));
 		rc.setDiscriminatorValue( rc.getEntityName() );
 		rc.setTable(table);
+		rc.setOptimisticLockStyle(OptimisticLockStyle.NONE);
 		return rc;
 	}
 	
@@ -128,10 +130,9 @@ public class RootClassBinder extends AbstractBinder {
 
 	private void bindOutgoingForeignKeys(Table table, RootClass rc, Set<Column> processedColumns) {
 		// Iterate the outgoing foreign keys and create many-to-one's
-		for(Iterator<?> iterator = table.getForeignKeyIterator(); iterator.hasNext();) {
-			ForeignKey foreignKey = (ForeignKey) iterator.next();
+		for (ForeignKey foreignKey : table.getForeignKeys().values()) {
 			boolean mutable = true;
-            if ( contains( foreignKey.getColumnIterator(), processedColumns ) ) {
+            if ( contains( foreignKey.getColumns().iterator(), processedColumns ) ) {
 				if ( !preferBasicCompositeIds() ) continue; //it's in the pk, so skip this one
 				mutable = false;
             }           
@@ -140,8 +141,7 @@ public class RootClassBinder extends AbstractBinder {
 	}
 
 	private void bindColumnsToProperties(Table table, RootClass rc, Set<Column> processedColumns) {
-		for (Iterator<?> iterator = table.getColumnIterator(); iterator.hasNext();) {
-			Column column = (Column) iterator.next();
+		for (Column column : table.getColumns()) {
 			if ( !processedColumns.contains(column) ) {
 				BinderUtils.checkColumnForMultipleBinding(column);
 				String propertyName = getColumnToPropertyNameInRevengStrategy(table, column);				

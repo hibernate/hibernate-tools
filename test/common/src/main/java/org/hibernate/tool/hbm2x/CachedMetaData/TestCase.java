@@ -1,8 +1,27 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.hbm2x.CachedMetaData;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -14,19 +33,17 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -118,12 +135,12 @@ public class TestCase {
 		
 	}
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -168,19 +185,19 @@ public class TestCase {
 			child = table;
 			master = iterator.next();
 		} else {
-			Assert.fail("Only tables named 'MASTER' and 'CHILD' should exist");
+			fail("Only tables named 'MASTER' and 'CHILD' should exist");
 		}
-		Assert.assertNotNull(child);
-		Assert.assertNotNull(master);
+		assertNotNull(child);
+		assertNotNull(master);
 		
 		iterator = dc.iterateTables();
-		Assert.assertNotNull(iterator.next());
-		Assert.assertNotNull(iterator.next());
-		Assert.assertFalse(iterator.hasNext());		
+		assertNotNull(iterator.next());
+		assertNotNull(iterator.next());
+		assertFalse(iterator.hasNext());		
 		
 		JUnitUtil.assertIteratorContainsExactly(
 				"should have recorded one foreignkey to child table",  
-				child.getForeignKeyIterator(),
+				child.getForeignKeys().values().iterator(),
 				1);
 	}
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.hibernate.tool.test</groupId>
+    <artifactId>no-properties-file</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>1.8</java.version>
+        <h2.version>1.4.195</h2.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.hibernate.tool</groupId>
+                <artifactId>hibernate-tools-maven</artifactId>
+                <version>@project.version@</version>
+                <executions>
+                    <execution>
+                        <id>Entity generation</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

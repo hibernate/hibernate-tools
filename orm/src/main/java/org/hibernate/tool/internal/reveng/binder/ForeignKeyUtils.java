@@ -1,7 +1,7 @@
 package org.hibernate.tool.internal.reveng.binder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -10,9 +10,7 @@ import org.hibernate.mapping.ForeignKey;
 public class ForeignKeyUtils {
 
     public static boolean isUniqueReference(ForeignKey foreignKey) {
-    	Iterator<?> foreignKeyIterator = foreignKey.getTable().getForeignKeyIterator();
-    	while ( foreignKeyIterator.hasNext() ) {
-			ForeignKey element = (ForeignKey) foreignKeyIterator.next();
+		for (ForeignKey element : foreignKey.getTable().getForeignKeys().values()) {
 			if(element!=foreignKey && element.getReferencedTable().equals(foreignKey.getReferencedTable())) {
 				return false;
 			}
@@ -20,23 +18,20 @@ public class ForeignKeyUtils {
 		return true;
 	}
 
-    public static List<Object> findForeignKeys(Iterator<?> foreignKeyIterator, List<Column> pkColumns) {
+    public static List<Object> findForeignKeys(Collection<ForeignKey> foreignKeys, List<Column> pkColumns) {
     	List<ForeignKey> tempList = new ArrayList<ForeignKey>();
-    	while(foreignKeyIterator.hasNext()) {
-    		tempList.add((ForeignKey)foreignKeyIterator.next());
+     	for (ForeignKey fk : foreignKeys) {
+    		tempList.add(fk);
     	}
     	List<Object> result = new ArrayList<Object>();
     	Column[] myPkColumns = pkColumns.toArray(new Column[pkColumns.size()]);
     	for (int i = 0; i < myPkColumns.length; i++) {
     		boolean foundKey = false;
-    		foreignKeyIterator = tempList.iterator();
-    		while(foreignKeyIterator.hasNext()) {
-    			ForeignKey key = (ForeignKey)foreignKeyIterator.next();
+    	    for (ForeignKey key : tempList) {
     			List<Column> matchingColumns = columnMatches(myPkColumns, i, key);
     			if(!matchingColumns.isEmpty()) {
     				result.add(new ForeignKeyForColumns(key, matchingColumns));
     				i+=matchingColumns.size()-1;
-    				foreignKeyIterator.remove();
     				foundKey=true;
     				break;
     			}

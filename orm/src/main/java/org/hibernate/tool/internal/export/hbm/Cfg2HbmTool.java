@@ -3,22 +3,20 @@
  */
 package org.hibernate.tool.internal.export.hbm;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.hibernate.FetchMode;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.query.NamedHqlQueryDefinition;
+import org.hibernate.boot.query.NamedNativeQueryDefinition;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.OptimisticLockStyle;
-import org.hibernate.engine.query.spi.sql.NativeSQLQueryCollectionReturn;
-import org.hibernate.engine.query.spi.sql.NativeSQLQueryJoinReturn;
-import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
-import org.hibernate.engine.query.spi.sql.NativeSQLQueryRootReturn;
 import org.hibernate.engine.spi.FilterDefinition;
-import org.hibernate.engine.spi.NamedQueryDefinition;
-import org.hibernate.engine.spi.NamedSQLQueryDefinition;
 import org.hibernate.id.PersistentIdentifierGenerator;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;
@@ -33,6 +31,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PersistentClassVisitor;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
@@ -261,52 +260,32 @@ public class Cfg2HbmTool {
 	}
 
     public boolean isNamedQueries(Metadata md) {
-		java.util.Collection<NamedQueryDefinition> nqry = md.getNamedQueryDefinitions();
-		return nqry == null || nqry.isEmpty() ? false : true;
+    	final ArrayList<NamedHqlQueryDefinition> list = new ArrayList<NamedHqlQueryDefinition>();
+    	Consumer<NamedHqlQueryDefinition> consumer = new Consumer<NamedHqlQueryDefinition>() {
+			@Override
+			public void accept(NamedHqlQueryDefinition namedHqlQueryDefinition) {
+				list.add(namedHqlQueryDefinition);
+			}
+		};
+		md.visitNamedHqlQueryDefinitions(consumer);
+		return !list.isEmpty();
 	}
 
 	public boolean isNamedSQLQueries(Metadata md) {
-		java.util.Collection<NamedSQLQueryDefinition> nsqlqry = md.getNamedNativeQueryDefinitions();
-		return nsqlqry == null || nsqlqry.isEmpty() ? false : true;
+	   	final ArrayList<NamedNativeQueryDefinition> list = new ArrayList<NamedNativeQueryDefinition>();
+    	Consumer<NamedNativeQueryDefinition> consumer = new Consumer<NamedNativeQueryDefinition>() {
+			@Override
+			public void accept(NamedNativeQueryDefinition namedHqlQueryDefinition) {
+				list.add(namedHqlQueryDefinition);
+			}
+		};
+		md.visitNamedNativeQueryDefinitions(consumer);
+		return !list.isEmpty();
 	}
 
 
 	public String getCollectionLazy(Collection value){
 		return value.isExtraLazy() ? "extra" : Boolean.toString(value.isLazy());
-	}
-
-	public String getNamedSQLReturnTag(NativeSQLQueryReturn sqlret) {
-		String retVal = "return";
-		if (isNamedSQLReturnRole(sqlret) ) {
-			retVal = "return-join";
-		}
-		else if (isNamedSQLReturnCollection(sqlret) ) {
-			retVal = "load-collection";
-		}
-		return retVal;
-	}
-
-	public String getNamedSQLReturnProperty(NativeSQLQueryJoinReturn o) {
-		/*if(o instanceof NativeSQLQueryCollectionReturn) {
-			return ((NativeSQLQueryCollectionReturn)o).getOwnerEntityName() + "." + ((NativeSQLQueryCollectionReturn)o).getOwnerProperty();
-		}*/
-		return o.getOwnerAlias() + "." + o.getOwnerProperty();
-	}
-
-	public String getNamedSQLReturnRole(NativeSQLQueryCollectionReturn o) {
-		return o.getOwnerEntityName() + "." + o.getOwnerProperty();
-	}
-
-	public boolean isNamedSQLReturnRoot(NativeSQLQueryReturn sqlret) {
-		return sqlret instanceof NativeSQLQueryRootReturn;
-	}
-
-	public boolean isNamedSQLReturnCollection(NativeSQLQueryReturn sqlret) {
-		return sqlret instanceof NativeSQLQueryCollectionReturn;
-	}
-
-	public boolean isNamedSQLReturnRole(NativeSQLQueryReturn sqlret) {
-		return sqlret instanceof NativeSQLQueryJoinReturn;
 	}
 
 	public boolean isFilterDefinitions(Metadata md) {
@@ -349,11 +328,9 @@ public class Cfg2HbmTool {
 
 
 	public Formula getFormulaForProperty(Property prop) {
-		Iterator<?> iter = prop.getValue().getColumnIterator();
-		while ( iter.hasNext() ) {
-			Object o = iter.next();
-			if (o instanceof Formula)
-				return (Formula) o;
+		for (Selectable selectable : prop.getValue().getSelectables()) {
+			if (selectable instanceof Formula)
+				return (Formula) selectable;
 		}
 		return null;
 	}
@@ -364,13 +341,13 @@ public class Cfg2HbmTool {
 
 	public String columnAttributes(Column column, boolean isPrimaryKeyColumn) {
 		StringBuffer sb = new StringBuffer();
-		if (column.getPrecision() != Column.DEFAULT_PRECISION) {
+		if (column.getPrecision() != null) {
 			sb.append("precision=\"").append(column.getPrecision() ).append("\" ");
 		}
-		if (column.getScale() != Column.DEFAULT_SCALE) {
+		if (column.getScale() != null) {
 			sb.append("scale=\"").append(column.getScale() ).append("\" ");
 		}
-		else if (column.getLength() != Column.DEFAULT_LENGTH){
+		else if (column.getLength() != null){
 			sb.append("length=\"").append(column.getLength() ).append("\" ");
 		}
 		if (!isPrimaryKeyColumn) {
@@ -484,6 +461,6 @@ public class Cfg2HbmTool {
 	}
 
 	public Iterator<?> getProperties(PersistentClass pc) {
-		return new SkipBackRefPropertyIterator(pc.getUnjoinedPropertyIterator());
+		return new SkipBackRefPropertyIterator(pc.getProperties().iterator());
 	}
 }

@@ -1,12 +1,13 @@
 package org.hibernate.tool.api.reveng;
 
+import java.lang.reflect.Constructor;
 import java.util.Properties;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle8iDialect;
+import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.tool.internal.reveng.dialect.H2MetaDataDialect;
@@ -38,8 +39,12 @@ public class RevengDialectFactory {
 	public static RevengDialect fromClassName(String property) {
 		if ( property != null ) {
 			try {
-				return (RevengDialect) ReflectHelper.classForName( property,
-						RevengDialectFactory.class ).newInstance();
+				Class<?> revengDialectClass = ReflectHelper.classForName( 
+						property,
+						RevengDialectFactory.class );
+				Constructor<?> revengDialectConstructor = revengDialectClass.getConstructor(
+						new Class[] {});
+				return (RevengDialect)revengDialectConstructor.newInstance();
 			}
 			catch (Throwable e) {
 				throw new RuntimeException(
@@ -52,7 +57,7 @@ public class RevengDialectFactory {
 	
 	public static RevengDialect fromDialect(Dialect dialect) {
 		if(dialect!=null) {  
-			if(dialect instanceof Oracle8iDialect) {
+			if(dialect instanceof OracleDialect) {
 				return new OracleMetaDataDialect();
 			} else if (dialect instanceof H2Dialect) {
 				return new H2MetaDataDialect();

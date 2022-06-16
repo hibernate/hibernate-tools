@@ -1,8 +1,29 @@
 /*
- * Created on 2004-11-24
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.ForeignKeys;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -20,10 +41,9 @@ import org.hibernate.tool.schema.TargetType;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -34,7 +54,7 @@ public class TestCase {
 	private Metadata metadata = null;
 	private RevengStrategy reverseEngineeringStrategy = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		reverseEngineeringStrategy = new DefaultStrategy();
@@ -43,7 +63,7 @@ public class TestCase {
 				.createMetadata();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);;
 	}	
@@ -56,47 +76,47 @@ public class TestCase {
 		ForeignKey foreignKey = HibernateUtil.getForeignKey(
 				table, 
 				JdbcUtil.toIdentifier(this, "CON2MASTER") );	
-		Assert.assertNotNull(foreignKey);			
-		Assert.assertEquals(
+		assertNotNull(foreignKey);			
+		assertEquals(
 				reverseEngineeringStrategy.tableToClassName(
 						TableIdentifier.create(null, null, "MASTER")),
 				foreignKey.getReferencedEntityName() );
-        Assert.assertEquals(
+        assertEquals(
         		JdbcUtil.toIdentifier(this, "CONNECTION"), 
         		foreignKey.getTable().getName() );	
-		Assert.assertEquals(
+		assertEquals(
 				HibernateUtil.getTable(
 						metadata, 
 						JdbcUtil.toIdentifier(this, "MASTER") ), 
 				foreignKey.getReferencedTable() );
-		Assert.assertNotNull(
+		assertNotNull(
 				HibernateUtil.getForeignKey(
 						table, 
 						JdbcUtil.toIdentifier(this, "CHILDREF1") ) );
-		Assert.assertNotNull(
+		assertNotNull(
 				HibernateUtil.getForeignKey(
 						table, 
 						JdbcUtil.toIdentifier(this, "CHILDREF2") ) );
-		Assert.assertNull(
+		assertNull(
 				HibernateUtil.getForeignKey(
 						table, 
 						JdbcUtil.toIdentifier(this, "DUMMY") ) );
-		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeyIterator(), 3);
+		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeys().values().iterator(), 3);
 	}
 	
 	@Test
 	public void testMasterChild() {		
-		Assert.assertNotNull(HibernateUtil.getTable(
+		assertNotNull(HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "MASTER")));
 		Table child = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "CHILD") );	
-		Iterator<?> iterator = child.getForeignKeyIterator();		
+		Iterator<?> iterator = child.getForeignKeys().values().iterator();		
 		ForeignKey fk = (ForeignKey) iterator.next();		
-		Assert.assertFalse("should only be one fk", iterator.hasNext() );	
-		Assert.assertEquals(1, fk.getColumnSpan() );
-		Assert.assertSame(
+		assertFalse(iterator.hasNext(), "should only be one fk" );	
+		assertEquals(1, fk.getColumnSpan() );
+		assertSame(
 				fk.getColumn(0), 
 				child.getColumn(
 						new Column(JdbcUtil.toIdentifier(this, "MASTERREF"))));		

@@ -1,20 +1,27 @@
 /*
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,6 +32,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
@@ -32,11 +40,9 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Dmitry Geraskov
@@ -48,64 +54,65 @@ public class TestCase {
 			"Car.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private Metadata metadata = null;
-	private File outputDir = null;
+	private File srcDir = null;
 	private File resourcesDir = null;
 	private Exporter hbmexporter = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "src");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
 		hbmexporter = new HbmExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		hbmexporter.start();
 	}
 
 	@Test
 	public void testAllFilesExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir,  
+				srcDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/Car.hbm.xml") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir,  
+				srcDir,  
 				"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/CarPart.hbm.xml") );
 	}
 	
 	@Test
 	public void testBackrefPresent() {
 		PersistentClass pc = metadata.getEntityBinding("org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest.CarPart");
-		Iterator<?> iterator = pc.getPropertyIterator();
+		Iterator<Property> iterator = pc.getProperties().iterator();
 		boolean hasBackrefs = false;
 		while (iterator.hasNext() && !hasBackrefs) {
 			hasBackrefs = (iterator.next() instanceof Backref);			
 		}
-		Assert.assertTrue("Class mapping should create Backref for this testcase", hasBackrefs);
+		assertTrue(hasBackrefs, "Class mapping should create Backref for this testcase");
 	}
 	
 	@Test
 	public void testReadable() {
         ArrayList<File> files = new ArrayList<File>(4); 
         files.add(new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/Car.hbm.xml"));
         files.add(new File(
-        		outputDir, 
+        		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/BackrefTest/CarPart.hbm.xml"));
 		Properties properties = new Properties();
-		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files.toArray(new File[2]), properties);
-        Assert.assertNotNull(metadataDescriptor.createMetadata());
+        assertNotNull(metadataDescriptor.createMetadata());
     }
 
 }

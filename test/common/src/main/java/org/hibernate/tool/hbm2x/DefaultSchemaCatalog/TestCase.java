@@ -1,8 +1,26 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.hbm2x.DefaultSchemaCatalog;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,12 +39,9 @@ import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -34,12 +49,12 @@ import org.junit.Test;
  */
 public class TestCase {
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -52,7 +67,7 @@ public class TestCase {
 		List<Table> tables = getTables(MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata());
-		Assert.assertEquals(2,tables.size());	
+		assertEquals(2,tables.size());	
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);	
 		if(catchild.getName().equals("CATMASTER")) {
@@ -61,8 +76,8 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(TableIdentifier.create(null, "OVRTEST", "CATMASTER"), masterid);
-		Assert.assertEquals(TableIdentifier.create(null, "OVRTEST", "CATCHILD"), childid);	
+		assertEquals(TableIdentifier.create(null, "OVRTEST", "CATMASTER"), masterid);
+		assertEquals(TableIdentifier.create(null, "OVRTEST", "CATCHILD"), childid);	
 	}
 
 	@Test
@@ -82,9 +97,9 @@ public class TestCase {
 			Table element = iter.next();
 			boolean added = tables.add(TableIdentifier.create(element));
 			if(!added) 
-				Assert.fail("duplicate table found for " + element); 
+				fail("duplicate table found for " + element); 
 		}
-		Assert.assertEquals(4,tables.size());					
+		assertEquals(4,tables.size());					
 	}
 	
 	@Test
@@ -95,7 +110,7 @@ public class TestCase {
 		List<Table> tables = getTables(MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, properties)
 				.createMetadata());
-		Assert.assertEquals(2,tables.size());
+		assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		if(catchild.getName().equals("CATMASTER")) {
@@ -104,8 +119,8 @@ public class TestCase {
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", TableIdentifier.create(null, null, "CATMASTER"), masterid);
-		Assert.assertEquals("jdbcreader has not nulled out according to default schema", TableIdentifier.create(null, null, "CATCHILD"), childid);
+		assertEquals(TableIdentifier.create(null, null, "CATMASTER"), masterid, "jdbcreader has not nulled out according to default schema");
+		assertEquals(TableIdentifier.create(null, null, "CATCHILD"), childid, "jdbcreader has not nulled out according to default schema");
 	}
 
 	private List<Table> getTables(Metadata metadata) {

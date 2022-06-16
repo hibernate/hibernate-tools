@@ -1,12 +1,8 @@
 target
-testdb
-toolstestoutput
-bin
-*~
-reverseoutput
 .classpath
 .project
 .settings
 .DS_Store
 .idea
 *.iml
+.java-version

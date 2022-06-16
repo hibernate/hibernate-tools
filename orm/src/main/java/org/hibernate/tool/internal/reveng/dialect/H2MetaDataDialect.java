@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hibernate.internal.util.StringHelper;
 import org.hibernate.tool.util.ReflectionUtil;
 
 
@@ -18,8 +17,44 @@ import org.hibernate.tool.util.ReflectionUtil;
  *
  */
 public class H2MetaDataDialect extends JDBCMetaDataDialect {
+	
+	private static final String SPKSQ_H2_1_X =
+			"SELECT " + 
+			"  idx.TABLE_CATALOG TABLE_CAT, " + 
+			"  idx.TABLE_SCHEMA TABLE_SCHEM, " + 
+			"  idx.TABLE_NAME, " + 
+			"  idx.COLUMN_NAME " + 
+			"FROM " +
+			"  INFORMATION_SCHEMA.INDEXES idx, " + 
+			"  INFORMATION_SCHEMA.COLUMNS cols " +
+			"WHERE " +
+			"  idx.TABLE_CATALOG = cols.TABLE_CATALOG AND " +
+			"  idx.TABLE_SCHEMA = cols.TABLE_SCHEMA AND " +
+			"  idx.TABLE_NAME = cols.TABLE_NAME AND " +
+            "  idx.PRIMARY_KEY = TRUE AND " +
+            "  cols.COLUMN_DEFAULT like '%NEXT VALUE FOR%' ";	
+	
+	private static final String SPKSQ_H2_2_X =
+			"SELECT " +
+			"  idx.TABLE_CATALOG TABLE_CAT, " +
+			"  idx.TABLE_SCHEMA TABLE_SCHEM, " +
+			"  idx.TABLE_NAME, " +
+			"  cols.COLUMN_NAME " +
+			"FROM " + 
+			"  INFORMATION_SCHEMA.INDEXES idx, " + 
+			"  INFORMATION_SCHEMA.INDEX_COLUMNS idx_cols, " +
+			"  INFORMATION_SCHEMA.COLUMNS cols " +
+			"WHERE                                     " +
+			"   idx.TABLE_CATALOG = cols.TABLE_CATALOG AND " + 
+			"   idx.TABLE_SCHEMA = cols.TABLE_SCHEMA   AND " +
+			"   idx.TABLE_NAME = cols.TABLE_NAME AND " + 
+			"   idx.INDEX_TYPE_NAME = 'PRIMARY KEY' AND " +
+			"   cols.COLUMN_NAME = idx_cols.COLUMN_NAME AND " +
+			"   cols.IS_IDENTITY = 'YES'";
 
 	private static boolean understandsCatalogName = true;
+	
+	private String suggested_primary_key_strategy_query = null;
 
 	public H2MetaDataDialect() {
 		super();
@@ -29,10 +64,19 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 			if ( build.intValue() < 55 ) {
 				understandsCatalogName = false;
 			}
+			suggested_primary_key_strategy_query = build.intValue() > 200 ? SPKSQ_H2_2_X : SPKSQ_H2_1_X;
 		}
         catch( Throwable e ) {
             // ignore (probably H2 not in the classpath)
         }
+	}
+
+	protected void putTableType(Map<String, Object> element, ResultSet tableRs) throws SQLException {
+		String tableType = tableRs.getString("TABLE_TYPE");
+		if ("BASE TABLE".equals(tableType)) {
+			tableType = "TABLE";
+		}
+		element.put("TABLE_TYPE", tableType);
 	}
 
 	protected void putTablePart(Map<String, Object> element, ResultSet tableRs) throws SQLException {		
@@ -57,14 +101,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 				
 				log.debug("geSuggestedPrimaryKeyStrategyName(" + catalog + "." + schema + "." + table + ")");
 				
-				String sql =  "SELECT idx.TABLE_CATALOG TABLE_CAT, idx.TABLE_SCHEMA TABLE_SCHEM, idx.TABLE_NAME, idx.COLUMN_NAME, cols.COLUMN_DEFAULT COLUMN_DEFAULT FROM " +
-						"INFORMATION_SCHEMA.INDEXES idx, INFORMATION_SCHEMA.COLUMNS cols " +
-						"WHERE " +
-						"idx.TABLE_CATALOG = cols.TABLE_CATALOG " +
-						"and idx.TABLE_SCHEMA = cols.TABLE_SCHEMA " +
-						"and idx.TABLE_NAME = cols.TABLE_NAME " +
-                        "AND idx.PRIMARY_KEY = TRUE " +
-                        "AND COLUMN_DEFAULT like '%NEXT VALUE FOR%' ";				
+				String sql =  suggested_primary_key_strategy_query;				
 				if(catalog!=null) {
 					sql += "AND idx.TABLE_CATALOG like '" + catalog + "' ";
 				}
@@ -74,7 +111,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 				if(table!=null) {
 					sql += "AND idx.TABLE_NAME like '" + table + "' ";
 				}
-									
+				
 				PreparedStatement statement = getConnection().prepareStatement( sql );
 				
 				return new ResultSetIterator(statement.executeQuery()) {
@@ -83,8 +120,7 @@ public class H2MetaDataDialect extends JDBCMetaDataDialect {
 					protected Map<String, Object> convertRow(ResultSet tableRs) throws SQLException {
 						element.clear();
 						putTablePart( element, tableRs );
-						String string = tableRs.getString("COLUMN_DEFAULT");
-						element.put("HIBERNATE_STRATEGY", StringHelper.isEmpty( string )?null:"identity");						
+						element.put("HIBERNATE_STRATEGY", "identity");						
 						return element;					
 					}
 					protected Throwable handleSQLException(SQLException e) {

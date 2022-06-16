@@ -15,7 +15,7 @@
 	package="org.hibernate.tool.hbm2x.query.QueryExporterTest">
 	
 	<class name="User" table="`User`">
-		<composite-id>
+		<composite-id name="userId">
 			<key-property name="name"/>
 			<key-property name="org"/>
 		</composite-id>
@@ -32,7 +32,7 @@
 	</class>
 	
 	<class name="Group" table="`Group`">
-		<composite-id>
+		<composite-id name="userId">
 			<key-property name="name"/>
 			<key-property name="org"/>
 		</composite-id>

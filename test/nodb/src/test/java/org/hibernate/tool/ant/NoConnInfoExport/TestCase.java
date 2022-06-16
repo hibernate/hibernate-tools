@@ -1,30 +1,50 @@
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.hibernate.tool.ant.NoConnInfoExport;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private File destinationDir = null;
 	private File resourcesDir = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
-		destinationDir = new File(temporaryFolder.getRoot(), "destination");
+		destinationDir = new File(outputFolder, "destination");
 		destinationDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 	}
 	
@@ -40,12 +60,12 @@ public class TestCase {
 		project.setProperty("resourcesDir", resourcesDir.getAbsolutePath());
 		
 		File noConnInfo = new File(destinationDir, "noConnInfo.sql");
-		Assert.assertFalse(noConnInfo.exists());
+		assertFalse(noConnInfo.exists());
 		
 		project.executeTarget("testNoConnInfoExport");
 		
-		Assert.assertTrue(noConnInfo.exists());
-		Assert.assertTrue(FileUtil
+		assertTrue(noConnInfo.exists());
+		assertTrue(FileUtil
 				.findFirstString("create", noConnInfo)
 				.contains("create table TopDown (id bigint not null, name varchar(255), primary key (id));"));
 	}

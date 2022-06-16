@@ -1,8 +1,27 @@
 /*
- * Created on 2004-11-24
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.Versioning;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 
@@ -15,16 +34,10 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.hibernate.type.BigDecimalType;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.RowVersionType;
-import org.hibernate.type.TimestampType;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * To be extended by VersioningForJDK50Test for the JPA generation part
@@ -36,10 +49,10 @@ public class TestCase {
 	private Metadata metadata = null;
 	private MetadataDescriptor metadataDescriptor = null;
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	@Before
+	@TempDir
+	public File outputFolder = new File("output");
+	
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadataDescriptor = MetadataDescriptorFactory
@@ -48,7 +61,7 @@ public class TestCase {
 				.createMetadata();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);;
 	}
@@ -57,51 +70,46 @@ public class TestCase {
 	public void testVersion() {		
 		PersistentClass cl = metadata.getEntityBinding("WithVersion");		
 		Property version = cl.getVersion();
-		Assert.assertNotNull(version);
-		Assert.assertEquals("version", version.getName());		
+		assertNotNull(version);
+		assertEquals("version", version.getName());		
 		cl = metadata.getEntityBinding("NoVersion");
-		Assert.assertNotNull(cl);
+		assertNotNull(cl);
 		version = cl.getVersion();
-		Assert.assertNull(version);		
+		assertNull(version);		
 	}
 	
 	@Test
 	public void testGenerateMappings() {
-		File testFolder = temporaryFolder.getRoot();
         Exporter exporter = new HbmExporter();		
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, testFolder);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputFolder);
  		exporter.start();		
 		File[] files = new File[4];		
-		files[0] = new File(testFolder, "WithVersion.hbm.xml");
-		files[1] = new File(testFolder, "NoVersion.hbm.xml");
-		files[2] = new File(testFolder, "WithRealTimestamp.hbm.xml");
-		files[3] = new File(testFolder, "WithFakeTimestamp.hbm.xml");		
+		files[0] = new File(outputFolder, "WithVersion.hbm.xml");
+		files[1] = new File(outputFolder, "NoVersion.hbm.xml");
+		files[2] = new File(outputFolder, "WithRealTimestamp.hbm.xml");
+		files[3] = new File(outputFolder, "WithFakeTimestamp.hbm.xml");		
 		Metadata metadata = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, null)
 				.createMetadata();
 		PersistentClass cl = metadata.getEntityBinding( "WithVersion" );				
 		Property version = cl.getVersion();
-		Assert.assertNotNull(version);
-		Assert.assertEquals("version", version.getName());	
+		assertNotNull(version);
+		assertEquals("version", version.getName());	
 		cl = metadata.getEntityBinding( "NoVersion" );
-		Assert.assertNotNull(cl);
+		assertNotNull(cl);
 		version = cl.getVersion();
-		Assert.assertNull(version);
+		assertNull(version);
 		cl = metadata.getEntityBinding( "WithRealTimestamp" );
-		Assert.assertNotNull(cl);
+		assertNotNull(cl);
 		version = cl.getVersion();
-		Assert.assertNotNull(version);
-		Assert.assertTrue(
-				version.getType() instanceof TimestampType || 
-				version.getType() instanceof RowVersionType);	// on MS SQL Server
+		assertNotNull(version);
+		assertEquals("timestamp", version.getType().getName());
 		cl = metadata.getEntityBinding( "WithFakeTimestamp" );
-		Assert.assertNotNull(cl);
+		assertNotNull(cl);
 		version = cl.getVersion();
-		Assert.assertNotNull(version);
-		Assert.assertTrue(
-				version.getType() instanceof IntegerType ||
-				version.getType() instanceof BigDecimalType); // on Oracle
+		assertNotNull(version);
+		assertEquals("integer", version.getType().getName());
 	}
     
 }

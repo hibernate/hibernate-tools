@@ -222,8 +222,8 @@ hibernate-tools:hbm2java
       or <timestamp>.
 
     ejb3 (Default: false)
-      Code will contain EJB 3 features, e.g. using annotations from
-      javax.persistence and org.hibernate.annotations.
+      Code will contain JPA features, e.g. using annotations from
+      jakarta.persistence and org.hibernate.annotations.
 
     jdk5 (Default: false)
       Code will contain JDK 5 constructs such as generics and static imports.

@@ -1,8 +1,29 @@
 /*
- * Created on 2004-11-24
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.Index;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
@@ -14,10 +35,9 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -27,7 +47,7 @@ public class TestCase {
 
 	private Metadata metadata = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadata = MetadataDescriptorFactory
@@ -35,7 +55,7 @@ public class TestCase {
 				.createMetadata();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -47,11 +67,11 @@ public class TestCase {
 				JdbcUtil.toIdentifier(this, "WITH_INDEX") );		
 		UniqueKey uniqueKey = table.getUniqueKey(
 				JdbcUtil.toIdentifier(this, "OTHER_IDX") );
-		Assert.assertNotNull(uniqueKey);
-		Assert.assertEquals(1, uniqueKey.getColumnSpan() );	
+		assertNotNull(uniqueKey);
+		assertEquals(1, uniqueKey.getColumnSpan() );	
 		Column keyCol = uniqueKey.getColumn(0);
-		Assert.assertTrue(keyCol.isUnique() );
-		Assert.assertSame(keyCol, table.getColumn(keyCol) );		
+		assertTrue(keyCol.isUnique() );
+		assertSame(keyCol, table.getColumn(keyCol) );		
 	}
 	
 	@Test
@@ -59,38 +79,37 @@ public class TestCase {
 		Table table = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"));
-		Assert.assertEquals(
+		assertEquals(
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"), 
 				JdbcUtil.toIdentifier(this, table.getName()));	
-		Assert.assertNull("there should be no pk", table.getPrimaryKey() );
+		assertNull(table.getPrimaryKey(), "there should be no pk" );
 		Iterator<Index> iterator = table.getIndexIterator();
 		int cnt=0;
 		while(iterator.hasNext() ) {
 			iterator.next();
 			cnt++;
 		}
-		Assert.assertEquals(1, cnt);	
+		assertEquals(1, cnt);	
 		Index index = table.getIndex(JdbcUtil.toIdentifier(this, "MY_INDEX") );
-		Assert.assertNotNull("No index ?", index);
-		Assert.assertEquals(
+		assertNotNull(index, "No index ?");
+		assertEquals(
 				JdbcUtil.toIdentifier(this, "MY_INDEX"), 
 				JdbcUtil.toIdentifier(this, index.getName()));	
-		Assert.assertEquals(2, index.getColumnSpan() );	
-		Assert.assertSame(index.getTable(), table);
+		assertEquals(2, index.getColumnSpan() );	
+		assertSame(index.getTable(), table);
 		Iterator<Column> cols = index.getColumnIterator();
 		Column col1 = cols.next();
 		Column col2 = cols.next();	
-		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "FIRST"), 
+		assertEquals(
+				JdbcUtil.toIdentifier(this, "ONE"), 
 				JdbcUtil.toIdentifier(this, col1.getName()));
-		Assert.assertEquals(
-				JdbcUtil.toIdentifier(this, "THIRD"), 
+		assertEquals(
+				JdbcUtil.toIdentifier(this, "THREE"), 
 				JdbcUtil.toIdentifier(this, col2.getName()));		
 		Column example = new Column();
 		example.setName(col2.getName() );
-		Assert.assertSame(
-				"column with same name should be same instance!", 
-				table.getColumn(example), col2);			
+		assertSame(
+				table.getColumn(example), col2, "column with same name should be same instance!");			
 	}
 	
 }

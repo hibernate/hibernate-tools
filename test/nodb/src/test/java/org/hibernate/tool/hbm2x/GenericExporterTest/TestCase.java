@@ -1,8 +1,30 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.hibernate.tool.hbm2x.GenericExporterTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,11 +41,9 @@ import org.hibernate.tool.api.version.Version;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author max
@@ -37,19 +57,19 @@ public class TestCase {
 			"HelloWorld.hbm.xml"
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
+	@TempDir
+	public File outputFolder = new File("output");
+	
 	private MetadataDescriptor metadataDescriptor = null;
 	private File outputDir = null;
 	private File resourcesDir = null;
 	private String resourcesLocation = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
+		outputDir = new File(outputFolder, "src");
 		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
@@ -66,10 +86,10 @@ public class TestCase {
 		ge.start();
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir,"artifacts.txt"));	
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir, "templates.txt"));
-		Assert.assertEquals(
+		assertEquals(
 				null, 
 				FileUtil.findFirstString("$", new File(outputDir, "artifacts.txt")));	
-		Assert.assertEquals(
+		assertEquals(
 				"File for artifacts in " + Version.CURRENT_VERSION, 
 				FileUtil.findFirstString("artifacts", new File( outputDir, "artifacts.txt")));
 	}
@@ -129,14 +149,14 @@ public class TestCase {
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericAuthor.txt"));	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"));
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"));		
-		Assert.assertFalse(
-				"component file should not exist", 
-				new File(outputDir, "genericUniversalAddress.txt" ).exists());
+		assertFalse(
+				new File(outputDir, "genericUniversalAddress.txt" ).exists(),
+				"component file should not exist");
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "genericHelloUniverse.txt" ) );
 		try {
 	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "does, not, exist");
 			ge.start();
-			Assert.fail();
+			fail();
 		} catch(Exception e) {
 			//e.printStackTrace();
 			//expected
@@ -153,23 +173,23 @@ public class TestCase {
 		try {
 	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "entity");
 			ge.start();
-			Assert.fail();
+			fail();
 		} catch(RuntimeException e) {
-			Assert.assertTrue(e.getMessage().startsWith("Error while processing Entity:"));			
+			assertTrue(e.getMessage().startsWith("Error while processing Entity:"));			
 		}
 		try {
 	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "component");
 			ge.start();
-			Assert.fail();
+			fail();
 		} catch(RuntimeException e) {
-			Assert.assertTrue(e.getMessage().startsWith("Error while processing Component: UniversalAddress"));
+			assertTrue(e.getMessage().startsWith("Error while processing Component: UniversalAddress"));
 		}		
 		try {
 	    	ge.getProperties().put(ExporterConstants.FOR_EACH, "configuration");
 			ge.start();
-			Assert.fail();
+			fail();
 		} catch(RuntimeException e) {
-			Assert.assertTrue(e.getMessage().startsWith("Error while processing Configuration"));
+			assertTrue(e.getMessage().startsWith("Error while processing Configuration"));
 		}
 	}
 
@@ -197,11 +217,11 @@ public class TestCase {
 				is.close();
 			}
 		}		
-		Assert.assertEquals(generated.getProperty("booleanProperty"), "true");
-		Assert.assertEquals(generated.getProperty("hibernatetool.booleanProperty"), "true");
-		Assert.assertNull(generated.getProperty("booleanWasTrue"));
-		Assert.assertEquals(generated.getProperty("myTool.value"), "value");
-		Assert.assertEquals(generated.getProperty("refproperty"), "proptest=A value");	
+		assertEquals(generated.getProperty("booleanProperty"), "true");
+		assertEquals(generated.getProperty("hibernatetool.booleanProperty"), "true");
+		assertNull(generated.getProperty("booleanWasTrue"));
+		assertEquals(generated.getProperty("myTool.value"), "value");
+		assertEquals(generated.getProperty("refproperty"), "proptest=A value");	
 	}
 	
 }

@@ -35,7 +35,7 @@ class PrimaryKeyBinder extends AbstractBinder {
 	}
 	
 	private final BasicPropertyBinder basicPropertyBinder;
-	private final SimpleValueBinder simpleValueBinder;
+	private final BasicValueBinder simpleValueBinder;
 	private final ManyToOneBinder manyToOneBinder;
 	private final PropertyBinder propertyBinder;
 
@@ -43,7 +43,7 @@ class PrimaryKeyBinder extends AbstractBinder {
 	private PrimaryKeyBinder(BinderContext binderContext) {
 		super(binderContext);
 		this.basicPropertyBinder = BasicPropertyBinder.create(binderContext);
-		this.simpleValueBinder = SimpleValueBinder.create(binderContext);
+		this.simpleValueBinder = BasicValueBinder.create(binderContext);
 		this.manyToOneBinder = ManyToOneBinder.create(binderContext);
 		this.propertyBinder = PropertyBinder.create(binderContext);
 	}
@@ -64,6 +64,7 @@ class PrimaryKeyBinder extends AbstractBinder {
 				id, 
 				RevengUtils.createAssociationInfo(null, null, true, true));
 		rc.setIdentifierProperty(property);
+		rc.setDeclaredIdentifierProperty(property);
 		rc.setIdentifier(id);
 		return pki;
 	}
@@ -166,9 +167,7 @@ class PrimaryKeyBinder extends AbstractBinder {
 		else {
 			LOGGER.log(Level.INFO, "No primary key found for " + table + ", using all properties as the identifier.");
 			result = new ArrayList<Column>();
-			Iterator<?> iter = table.getColumnIterator();
-			while (iter.hasNext() ) {
-				Column col = (Column) iter.next();
+			for (Column col : table.getColumns()) {
 				result.add(col);
 			}
 		}
@@ -214,9 +213,7 @@ class PrimaryKeyBinder extends AbstractBinder {
     }
 
 	private Property getConstrainedOneToOne(RootClass rc) {
-		Iterator<?> propertyClosureIterator = rc.getPropertyClosureIterator();
-		while (propertyClosureIterator.hasNext()) {
-			Property property = (Property) propertyClosureIterator.next();
+		for (Property property : rc.getProperties()) {
 			if(property.getValue() instanceof OneToOne) {
 				OneToOne oto = (OneToOne) property.getValue();
 				if(oto.isConstrained()) {
@@ -307,7 +304,7 @@ class PrimaryKeyBinder extends AbstractBinder {
             return new ArrayList<Object>(keyColumns);
         }
 		else {
-            return ForeignKeyUtils.findForeignKeys(table.getForeignKeyIterator(), keyColumns);
+            return ForeignKeyUtils.findForeignKeys(table.getForeignKeys().values(), keyColumns);
         }
 	}
 	

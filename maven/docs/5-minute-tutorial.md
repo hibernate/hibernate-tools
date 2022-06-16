@@ -164,7 +164,7 @@ To properly generate our entity, we need to do two more things. The first is of 
 ```
 
 In principle, we are now ready to generate the entity, but issuing `mvn clean generate-sources` will result in an error, complaining about the fact that a 'hiberate.properties' file could not be found. 
-By default the plugin looks in the folder 'src/main/hibernate' for this file. So it is for now sufficient to add a 'hibernate.properties' file in that location with the contents specified below.
+By default the plugin looks in the folder 'src/main/resources' for this file. So it is for now sufficient to add a 'hibernate.properties' file in that location with the contents specified below.
 
 ```
 hibernate.dialect=H2

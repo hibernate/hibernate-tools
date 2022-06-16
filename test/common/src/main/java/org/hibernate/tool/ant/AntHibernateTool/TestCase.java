@@ -1,4 +1,29 @@
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.hibernate.tool.ant.AntHibernateTool;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -6,31 +31,29 @@ import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
+	@TempDir
+	public File outputFolder = new File("output");
 	
 	private File destinationDir = null;
 	private File resourcesDir = null;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
-		destinationDir = new File(temporaryFolder.getRoot(), "destination");
+		destinationDir = new File(outputFolder, "destination");
 		destinationDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -51,36 +74,36 @@ public class TestCase {
 		File dropAndCreate = new File(destinationDir, "dropandcreate.sql");
 		File update = new File(destinationDir, "update.sql");
 		
-		Assert.assertFalse(topDown.exists());
-		Assert.assertFalse(onlyDrop.exists());	
-		Assert.assertFalse(onlyCreate.exists());
-		Assert.assertFalse(dropAndCreate.exists());
-		Assert.assertFalse(update.exists());
+		assertFalse(topDown.exists());
+		assertFalse(onlyDrop.exists());	
+		assertFalse(onlyCreate.exists());
+		assertFalse(dropAndCreate.exists());
+		assertFalse(update.exists());
 		
 		project.executeTarget("testHbm2DDLLogic");
 		
 		String log = AntUtil.getLog(project);
-		Assert.assertTrue(log, !log.contains("Exception"));
+		assertTrue(!log.contains("Exception"), log);
 		
-		Assert.assertTrue(topDown.exists());	
+		assertTrue(topDown.exists());	
 		
-		Assert.assertTrue(onlyDrop.exists());		
-		Assert.assertNull(FileUtil.findFirstString("create", onlyDrop));
-		Assert.assertNotNull(FileUtil.findFirstString("drop", onlyDrop));	
+		assertTrue(onlyDrop.exists());		
+		assertNull(FileUtil.findFirstString("create", onlyDrop));
+		assertNotNull(FileUtil.findFirstString("drop", onlyDrop));	
 		
-		Assert.assertTrue(onlyCreate.exists());
-		Assert.assertNull(FileUtil.findFirstString("drop", onlyCreate));
-		Assert.assertNotNull(FileUtil.findFirstString("create", onlyCreate));
-		Assert.assertNotNull(FileUtil.findFirstString("---", onlyCreate));
+		assertTrue(onlyCreate.exists());
+		assertNull(FileUtil.findFirstString("drop", onlyCreate));
+		assertNotNull(FileUtil.findFirstString("create", onlyCreate));
+		assertNotNull(FileUtil.findFirstString("---", onlyCreate));
 		
-		Assert.assertTrue(dropAndCreate.exists());
-		Assert.assertNotNull(FileUtil.findFirstString("drop", dropAndCreate));
-		Assert.assertNotNull(FileUtil.findFirstString("create", dropAndCreate));
-		Assert.assertNotNull(FileUtil.findFirstString("---", dropAndCreate));
+		assertTrue(dropAndCreate.exists());
+		assertNotNull(FileUtil.findFirstString("drop", dropAndCreate));
+		assertNotNull(FileUtil.findFirstString("create", dropAndCreate));
+		assertNotNull(FileUtil.findFirstString("---", dropAndCreate));
 
-		Assert.assertTrue(update.exists());
-		Assert.assertNotNull(FileUtil.findFirstString("create", update));
-		Assert.assertNotNull(FileUtil.findFirstString("---", update));
+		assertTrue(update.exists());
+		assertNotNull(FileUtil.findFirstString("create", update));
+		assertNotNull(FileUtil.findFirstString("---", update));
 
 	}
 
@@ -99,22 +122,22 @@ public class TestCase {
 		File update1 = new File(destinationDir, "update1.sql");
 		File update2 = new File(destinationDir, "update2.sql");
 				
-		Assert.assertFalse(topDown.exists());
-		Assert.assertFalse(onlyDrop.exists());
-		Assert.assertFalse(update1.exists());
-		Assert.assertFalse(update2.exists());
+		assertFalse(topDown.exists());
+		assertFalse(onlyDrop.exists());
+		assertFalse(update1.exists());
+		assertFalse(update2.exists());
 		
 		project.executeTarget("testantcfgUpdateExecuted");
 		
 		String log = AntUtil.getLog(project);
-		Assert.assertTrue(log, !log.contains("Exception"));
+		assertTrue(!log.contains("Exception"), log);
 					
-		Assert.assertTrue(topDown.exists());
-		Assert.assertTrue(onlyDrop.exists());
-		Assert.assertTrue(update1.exists());
-		Assert.assertNotNull(FileUtil.findFirstString("create", update1));
-		Assert.assertTrue(update2.exists());
-		Assert.assertEquals(0, update2.length());
+		assertTrue(topDown.exists());
+		assertTrue(onlyDrop.exists());
+		assertTrue(update1.exists());
+		assertNotNull(FileUtil.findFirstString("create", update1));
+		assertTrue(update2.exists());
+		assertEquals(0, update2.length());
 
 	}
 
@@ -132,20 +155,20 @@ public class TestCase {
 		File update = new File(destinationDir, "update.sql");
 		File onlydrop = new File(destinationDir, "onlydrop.sql");
 		
-		Assert.assertFalse(export.exists());
-		Assert.assertFalse(update.exists());
-		Assert.assertFalse(onlydrop.exists());
+		assertFalse(export.exists());
+		assertFalse(update.exists());
+		assertFalse(onlydrop.exists());
 
 		project.executeTarget("testantcfgExportExecuted");
 		
 		String log = AntUtil.getLog(project);
-		Assert.assertTrue(log, !log.contains("Exception"));
+		assertTrue(!log.contains("Exception"), log);
 		
-		Assert.assertTrue(export.exists());
-		Assert.assertTrue(update.exists());
-		Assert.assertNotNull(FileUtil.findFirstString("create", export));
+		assertTrue(export.exists());
+		assertTrue(update.exists());
+		assertNotNull(FileUtil.findFirstString("create", export));
 		// if export is executed, update should be empty
-		Assert.assertEquals(0, update.length());
+		assertEquals(0, update.length());
 		
 	}
 

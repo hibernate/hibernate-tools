@@ -1,8 +1,28 @@
 /*
- * Created on 2004-11-23
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.hibernate.tool.jdbc2cfg.MetaData;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
@@ -12,10 +32,9 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author max
@@ -25,7 +44,7 @@ public class TestCase {
 
 	private Metadata metadata = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		metadata = MetadataDescriptorFactory
@@ -33,7 +52,7 @@ public class TestCase {
 				.createMetadata();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -47,24 +66,20 @@ public class TestCase {
 		Table table = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC" ) );
-		Assert.assertEquals( 
+		assertEquals( 
 				JdbcUtil.toIdentifier(this, "BASIC"), 
 				JdbcUtil.toIdentifier(this, table.getName()));
-		Assert.assertEquals( 2, table.getColumnSpan() );
+		assertEquals( 2, table.getColumnSpan() );
 		Column basicColumn = table.getColumn( 0 );
-		Assert.assertEquals( 
+		assertEquals( 
 				JdbcUtil.toIdentifier(this, "A"), 
 				JdbcUtil.toIdentifier(this, basicColumn.getName()));
-		// TODO: we cannot call getSqlType(dialect,cfg) without a
-		// MappingassertEquals("INTEGER", basicColumn.getSqlType() ); // at
-		// least on hsqldb
-		// assertEquals(22, basicColumn.getLength() ); // at least on oracle
 		PrimaryKey key = table.getPrimaryKey();
-		Assert.assertNotNull( "There should be a primary key!", key );
-		Assert.assertEquals( key.getColumnSpan(), 1 );
+		assertNotNull(key, "There should be a primary key!" );
+		assertEquals( key.getColumnSpan(), 1 );
 		Column column = key.getColumn( 0 );
-		Assert.assertTrue( column.isUnique() );
-		Assert.assertSame( basicColumn, column );
+		assertTrue( column.isUnique() );
+		assertSame( basicColumn, column );
 	}
 
 	@Test
@@ -73,24 +88,10 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC"));
 		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "NAME" ) ) );
-		Assert.assertEquals( nameCol.getLength(), 20 );
-		Assert.assertEquals( nameCol.getPrecision(), Column.DEFAULT_PRECISION );
-		Assert.assertEquals( nameCol.getScale(), Column.DEFAULT_SCALE );
+		assertEquals( nameCol.getLength().intValue(), 20 );
+		assertEquals( nameCol.getPrecision(), null );
+		assertEquals( nameCol.getScale(), null );
 	}
-
-	/*
-	 * public void testGetTables() {
-	 * 
-	 * Table table = new Table(); table.setName("dummy"); cfg.addTable(table);
-	 * 
-	 * Table foundTable = cfg.getTable(null,null,"dummy");
-	 * 
-	 * assertSame(table,foundTable);
-	 * 
-	 * foundTable = cfg.getTable(null,"dschema", "dummy");
-	 * 
-	 * assertNotSame(table, foundTable); }
-	 */
 
 	@Test
 	public void testCompositeKeys() {
@@ -98,7 +99,7 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "MULTIKEYED"));
 		PrimaryKey primaryKey = table.getPrimaryKey();
-		Assert.assertEquals( 2, primaryKey.getColumnSpan() );
+		assertEquals( 2, primaryKey.getColumnSpan() );
 	}
 
 }

@@ -1,29 +1,57 @@
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
+ *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.hibernate.tool.cfg.MetaDataDialectFactoryTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Properties;
 
+import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.dialect.MySQL5Dialect;
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle10gDialect;
-import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.Oracle9iDialect;
+import org.hibernate.dialect.OracleDialect;
 import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.internal.reveng.dialect.H2MetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.HSQLMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.MySQLMetaDataDialect;
 import org.hibernate.tool.internal.reveng.dialect.OracleMetaDataDialect;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestCase {
 
-	private static class NoNameDialect extends Dialect {}
+	private static class NoNameDialect extends Dialect {
+		public NoNameDialect() {
+			super((DatabaseVersion)null);
+		}
+	}
 	
-	private static class H2NamedDialect extends Dialect {}
+	private static class H2NamedDialect extends Dialect {
+		public H2NamedDialect() {
+			super((DatabaseVersion)null);
+		}
+	}
 	
 	@Test
 	public void testCreateMetaDataDialect() {
@@ -39,12 +67,12 @@ public class TestCase {
 		assertSameClass(
 				OracleMetaDataDialect.class, 
 				RevengDialectFactory.createMetaDataDialect(
-						new Oracle9iDialect(), 
+						new OracleDialect(), 
 						new Properties()));		
 		assertSameClass(
 				MySQLMetaDataDialect.class, 
 				RevengDialectFactory.createMetaDataDialect(
-						new MySQL5Dialect(), 
+						new MySQLDialect(), 
 						new Properties()));
 		Properties p = new Properties();
 		p.setProperty(
@@ -53,7 +81,7 @@ public class TestCase {
 		assertSameClass(
 				"property should override specific dialect", 
 				H2MetaDataDialect.class, 
-				RevengDialectFactory.createMetaDataDialect(new MySQL5Dialect(), p));			
+				RevengDialectFactory.createMetaDataDialect(new MySQLDialect(), p));			
 	}
 
 	@Test
@@ -61,12 +89,12 @@ public class TestCase {
 		Properties p = new Properties();
 		p.setProperty("hibernatetool.metadatadialect", "DoesNotExists");
 		try {
-			RevengDialectFactory.createMetaDataDialect(new MySQL5Dialect(), p);
-			Assert.fail();
+			RevengDialectFactory.createMetaDataDialect(new MySQLDialect(), p);
+			fail();
 		} catch (RuntimeException jbe) {
 			// expected
 		} catch(Exception e) {
-			Assert.fail();
+			fail();
 		}
 	}
 
@@ -78,13 +106,7 @@ public class TestCase {
 				RevengDialectFactory.fromDialect(new NoNameDialect()));	
 		assertSameClass(
 				OracleMetaDataDialect.class, 
-				RevengDialectFactory.fromDialect(new Oracle8iDialect()));
-		assertSameClass(
-				OracleMetaDataDialect.class, 
-				RevengDialectFactory.fromDialect(new Oracle9iDialect()));
-		assertSameClass(
-				OracleMetaDataDialect.class, 
-				RevengDialectFactory.fromDialect(new Oracle10gDialect()));
+				RevengDialectFactory.fromDialect(new OracleDialect()));
 		assertSameClass(
 				MySQLMetaDataDialect.class, 
 				RevengDialectFactory.fromDialect(new MySQLDialect()));
@@ -107,10 +129,7 @@ public class TestCase {
 				RevengDialectFactory.fromDialectName("mYorAcleDialect"));
 		assertSameClass(
 				OracleMetaDataDialect.class, 
-				RevengDialectFactory.fromDialectName(Oracle8iDialect.class.getName()));
-		assertSameClass(
-				OracleMetaDataDialect.class, 
-				RevengDialectFactory.fromDialectName(Oracle9iDialect.class.getName()));
+				RevengDialectFactory.fromDialectName(OracleDialect.class.getName()));
 		assertSameClass(
 				MySQLMetaDataDialect.class, 
 				RevengDialectFactory.fromDialectName(MySQLDialect.class.getName()));
@@ -125,33 +144,33 @@ public class TestCase {
 
 	private void assertSameClass(Class<?> clazz, Object instance) {
 		if(clazz==null && instance==null) {
-			Assert.assertEquals((Object)null, (Object)null);
+			assertEquals((Object)null, (Object)null);
 			return;
 		}
 		if(clazz==null) {
-			Assert.assertEquals(null, instance);
+			assertEquals(null, instance);
 			return;
 		}
 		if(instance==null) {
-			Assert.assertEquals(clazz.getCanonicalName(), null);
+			assertEquals(clazz.getCanonicalName(), null);
 			return;
 		}
-		Assert.assertEquals(clazz.getCanonicalName(), instance.getClass().getName());
+		assertEquals(clazz.getCanonicalName(), instance.getClass().getName());
 	}
 	
 	private void assertSameClass(String msg, Class<?> clazz, Object instance) {
 		if(clazz==null && instance==null) {
-			Assert.assertEquals((Object)null, (Object)null);
+			assertEquals((Object)null, (Object)null);
 			return;
 		}
 		if(clazz==null) {
-			Assert.assertEquals(msg, null, instance);
+			assertEquals(null, instance, msg);
 			return;
 		}
 		if(instance==null) {
-			Assert.assertEquals(msg, clazz.getCanonicalName(), null);
+			assertEquals(clazz.getCanonicalName(), null, msg);
 			return;
 		}
-		Assert.assertEquals(msg, clazz.getCanonicalName(), instance.getClass().getName());
+		assertEquals(clazz.getCanonicalName(), instance.getClass().getName(), msg);
 	}
 }

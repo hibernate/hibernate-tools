@@ -1,14 +1,28 @@
-/*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+/*
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
- * Contributor:
- *     Red Hat, Inc. - initial API and implementation
- ******************************************************************************/
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.hibernate.tool.hbm2x.DefaultDatabaseCollector;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,8 +37,8 @@ import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.mapping.Table;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengDialect;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
@@ -33,10 +47,9 @@ import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Dmitry Geraskov
@@ -44,12 +57,12 @@ import org.junit.Test;
  */
 public class TestCase {
 		
-	@Before
+	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
@@ -62,7 +75,7 @@ public class TestCase {
 		List<Table> tables = getTables(MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata());
-		Assert.assertEquals(2,tables.size());
+		assertEquals(2,tables.size());
 		Table catchild = (Table) tables.get(0);
 		Table catmaster = (Table) tables.get(1);
 		if(catchild.getName().equals("cat.master")) {
@@ -71,8 +84,8 @@ public class TestCase {
 		} 
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
-		Assert.assertEquals(TableIdentifier.create(null, "cat.cat", "cat.child"), childid);
-		Assert.assertEquals(TableIdentifier.create(null, "cat.cat", "cat.master"), masterid);
+		assertEquals(TableIdentifier.create(null, "cat.cat", "cat.child"), childid);
+		assertEquals(TableIdentifier.create(null, "cat.cat", "cat.master"), masterid);
 	}
 	
 	@Test
@@ -82,9 +95,9 @@ public class TestCase {
 		ssrb.applySettings(properties);
 		ServiceRegistry serviceRegistry = ssrb.build();
 		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties );
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.cat"));
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.child"));
-		Assert.assertTrue("The name must be quoted!", realMetaData.needQuote("cat.master"));
+		assertTrue(realMetaData.needQuote("cat.cat"), "The name must be quoted!");
+		assertTrue(realMetaData.needQuote("cat.child"), "The name must be quoted!");
+		assertTrue(realMetaData.needQuote("cat.master"), "The name must be quoted!");
 	}
 	
 	/**
@@ -110,11 +123,11 @@ public class TestCase {
 		RevengMetadataCollector dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		String defaultCatalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
-		Assert.assertNotNull("The table should be found", getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.child"));
-		Assert.assertNotNull("The table should be found", getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.master"));
-		Assert.assertNull("Quoted names should not return the table", getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.child")));
-		Assert.assertNull("Quoted names should not return the table", getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.master")));
-		Assert.assertEquals("Foreign key 'masterref' was filtered!", 1, dc.getOneToManyCandidates().size());
+		assertNotNull(getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.child"), "The table should be found");
+		assertNotNull(getTable(dc, realMetaData, defaultCatalog, "cat.cat", "cat.master"), "The table should be found");
+		assertNull(getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.child")), "Quoted names should not return the table");
+		assertNull(getTable(dc, realMetaData, defaultCatalog, doubleQuote("cat.cat"), doubleQuote("cat.master")), "Quoted names should not return the table");
+		assertEquals(1, dc.getOneToManyCandidates().size(), "Foreign key 'masterref' was filtered!");
 	}
 	
 	private Table getTable(

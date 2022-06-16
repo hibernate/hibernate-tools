@@ -15,7 +15,7 @@ public class ${declarationName}Home {
     private static final ${pojo.importType("java.util.logging.Logger")} logger = ${pojo.importType("Logger")}.getLogger(${pojo.getDeclarationName()}Home.class.getName());
 
 <#if ejb3>
-    @${pojo.importType("javax.persistence.PersistenceContext")} private ${pojo.importType("javax.persistence.EntityManager")} entityManager;
+    @${pojo.importType("jakarta.persistence.PersistenceContext")} private ${pojo.importType("jakarta.persistence.EntityManager")} entityManager;
     
     public void persist(${declarationName} transientInstance) {
         logger.log(${pojo.importType("java.util.logging.Level")}.INFO, "persisting ${declarationName} instance");
@@ -168,20 +168,22 @@ public class ${declarationName}Home {
     public ${declarationName} findByNaturalId(${c2j.asNaturalIdParameterList(clazz)}) {
         logger.log(${pojo.importType("java.util.logging.Level")}.INFO, "getting ${declarationName} instance by natural id");
         try {
-            ${declarationName} instance = (${declarationName}) sessionFactory.getCurrentSession()
-                    .createCriteria("${clazz.entityName}")
-<#if jdk5>
-                    .add( ${pojo.staticImport("org.hibernate.criterion.Restrictions", "naturalId")}()
-<#else>
-                   .add( ${pojo.importType("org.hibernate.criterion.Restrictions")}.naturalId()
-</#if>                    
+            ${pojo.importType("jakarta.persistence.criteria.CriteriaBuilder")} criteriaBuilder = sessionFactory.getCriteriaBuilder();
+            ${pojo.importType("jakarta.persistence.criteria.CriteriaQuery")}<${declarationName}> criteriaQuery = criteriaBuilder.createQuery(${declarationName}.class);
+            ${pojo.importType("jakarta.persistence.criteria.Root")}<${declarationName}> root = criteriaQuery.from(${declarationName}.class);
+            criteriaQuery.where(
+<#assign notFirst = false/>
 <#foreach property in pojo.getAllPropertiesIterator()>
 <#if property.isNaturalIdentifier()>
-                            .set("${property.name}", ${property.name})
+                    <#if notFirst>,</#if>criteriaBuilder.equal(root.get("${property.name}"), ${property.name})
+<#assign notFirst = true/>
 </#if>
 </#foreach>
-                        )
-                    .uniqueResult();
+            );
+            ${declarationName} instance = sessionFactory
+                    .getCurrentSession()
+                    .createQuery(criteriaQuery)
+                    .getSingleResult();                    
             if (instance==null) {
                 logger.log(${pojo.importType("java.util.logging.Level")}.INFO, "get successful, no instance found");
             }
@@ -195,7 +197,11 @@ public class ${declarationName}Home {
             throw re;
         }
     }
-</#if>    
+</#if>  
+
+<#if false>
+/**  
+TODO: 
 <#if jdk5>
     public ${pojo.importType("java.util.List")}<${declarationName}> findByExample(${declarationName} instance) {
 <#else>
@@ -223,8 +229,11 @@ public class ${declarationName}Home {
             throw re;
         }
     } 
-<#foreach query in md.namedQueryDefinitions>
-<#assign queryName = query.name>
+**/ 
+</#if>   
+    
+<#foreach query in daoHelper.getNamedHqlQueryDefinitions(md)>
+<#assign queryName = query.registrationName>
 <#if queryName.startsWith(clazz.entityName + ".")>
 <#assign methname = c2j.unqualify(queryName)>
 <#assign params = c2j.getParameterTypes(query)>
@@ -236,17 +245,8 @@ public class ${declarationName}Home {
 <#else>
     public ${pojo.importType("java.util.List")} ${methname}(${argList}) {
 </#if>
-        ${pojo.importType("org.hibernate.Query")} query = sessionFactory.getCurrentSession()
+        ${pojo.importType("org.hibernate.query.Query")} query = sessionFactory.getCurrentSession()
                 .getNamedQuery("${queryName}");
-<#foreach param in params.keySet()>
-<#if param.equals("maxResults")>
-		query.setMaxResults(maxResults);
-<#elseif param.equals("firstResult")>
-        query.setFirstResult(firstResult);
-<#else>
-        query.setParameter("${param}", ${param});
-</#if>
-</#foreach>
 <#if jdk5 && methname.startsWith("find")>
         return (List<${declarationName}>) query.list();
 <#elseif methname.startsWith("count")>

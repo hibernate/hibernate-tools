@@ -330,14 +330,14 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 	}
 
 	private StringBuffer buildTemporalAnnotation(StringBuffer annotations, String temporalTypeValue) {
-		String temporal = importType("javax.persistence.Temporal");
-		String temporalType = importType("javax.persistence.TemporalType");
+		String temporal = importType("jakarta.persistence.Temporal");
+		String temporalType = importType("jakarta.persistence.TemporalType");
 		
 		return annotations.append( "@" + temporal +"(" + temporalType + "." + temporalTypeValue + ")");
 	}
 	
 	private StringBuffer buildVersionAnnotation(StringBuffer annotations) {
-		String version = importType("javax.persistence.Version");
+		String version = importType("jakarta.persistence.Version");
 		
 		return annotations.append( "@" + version );
 	}
@@ -347,7 +347,7 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		boolean insertable = property.isInsertable();
 		boolean updatable = property.isUpdateable();
 		if ( property.isComposite() ) {
-			annotations.append( "@" + importType("javax.persistence.AttributeOverrides") +"( {" );
+			annotations.append( "@" + importType("jakarta.persistence.AttributeOverrides") +"( {" );
 			Component component = (Component) property.getValue();
 			Iterator<?> subElements = component.getPropertyIterator();
 			buildRecursiveAttributeOverride( subElements, null, property, annotations );
@@ -356,15 +356,12 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		}
 		else {
 			if ( property.getColumnSpan() == 1 ) {
-				Selectable selectable = (Selectable) property.getColumnIterator().next();
+				Selectable selectable = property.getColumns().get(0);
 				buildColumnAnnotation( selectable, annotations, insertable, updatable );				
 			}
 			else {
-				Iterator<?> columns = property.getColumnIterator();
 				annotations.append("@").append( importType("org.hibernate.annotations.Columns") ).append("( { " );
-				while ( columns.hasNext() ) {
-					Selectable selectable = (Selectable) columns.next();
-	
+				for (Selectable selectable : property.getColumns()) {
 					if ( selectable.isFormula() ) {
 						//TODO formula in multicolumns not supported by annotations
 						//annotations.append("/* TODO formula in multicolumns not supported by annotations */");
@@ -397,14 +394,13 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 				buildRecursiveAttributeOverride( component.getPropertyIterator(), path, subProperty, annotations );
 			}
 			else {
-				Iterator<?> columns = subProperty.getColumnIterator();
-				Selectable selectable = (Selectable) columns.next();
+				Selectable selectable = subProperty.getColumns().get(0);
 				if ( selectable.isFormula() ) {
 					//TODO formula in multicolumns not supported by annotations
 				}
 				else {
 					annotations.append( "\n        " ).append("@")
-							.append( importType("javax.persistence.AttributeOverride") ).append("(name=\"" );
+							.append( importType("jakarta.persistence.AttributeOverride") ).append("(name=\"" );
 					if ( path != null ) {
 						annotations.append( path ).append( "." );
 					}
@@ -426,17 +422,17 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		}
 		else {
 			Column column = (Column) selectable;
-			annotations.append( "@" + importType("javax.persistence.Column") + "(name=\"" ).append( column.getName() ).append( "\"" );
+			annotations.append( "@" + importType("jakarta.persistence.Column") + "(name=\"" ).append( column.getName() ).append( "\"" );
 			
 			appendCommonColumnInfo( annotations, column, insertable, updatable );
 			
-			if (column.getPrecision() != Column.DEFAULT_PRECISION) { // the default is actually 0 in spec
+			if (column.getPrecision() != null) {
 				annotations.append( ", precision=" ).append( column.getPrecision() );
 			}
-			if (column.getScale() != Column.DEFAULT_SCALE) { // default is actually 0 in spec
+			if (column.getScale() != null) { 
 				annotations.append( ", scale=" ).append( column.getScale() );
 			}
-			else if (column.getLength() != 255){ 
+			else if (column.getLength() != null){ 
 				annotations.append( ", length=" ).append( column.getLength() );
 			}
 			

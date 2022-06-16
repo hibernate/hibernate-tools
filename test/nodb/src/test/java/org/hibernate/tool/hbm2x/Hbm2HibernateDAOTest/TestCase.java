@@ -1,15 +1,31 @@
 /*
- * Created on 2004-12-01
+ * Hibernate Tools, Tooling for your Hibernate Projects
+ * 
+ * Copyright 2004-2021 Red Hat, Inc.
  *
+ * Licensed under the GNU Lesser General Public License (LGPL), 
+ * version 2.1 or later (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * project or obtain a copy at
+ *
+ *     http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.hibernate.tool.hbm2x.Hbm2HibernateDAOTest;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.Persistence;
 
 import org.hibernate.Version;
 import org.hibernate.tool.api.export.Exporter;
@@ -21,11 +37,11 @@ import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JavaUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -38,26 +54,26 @@ public class TestCase {
 			"Author.hbm.xml"				
 	};
 	
-	@Rule
-	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	private File outputDir = null;
+	@TempDir
+	public File outputFolder = new File("output");
+	
+	private File srcDir = null;
 	private File resourcesDir = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		outputDir = new File(temporaryFolder.getRoot(), "output");
-		outputDir.mkdir();
-		resourcesDir = new File(temporaryFolder.getRoot(), "resources");
+		srcDir = new File(outputFolder, "output");
+		srcDir.mkdir();
+		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.DAO);
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
-		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		exporter.getProperties().setProperty("ejb3", "false");
 		exporter.getProperties().setProperty("jdk5", "true");
 		exporter.start();
@@ -67,22 +83,22 @@ public class TestCase {
 	@Test
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir, 
+				srcDir, 
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java") );
 		JUnitUtil.assertIsNonEmptyFile(new File(
-				outputDir, 
+				srcDir, 
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") );
 	}
 	
 	@Test
 	public void testCompilable() throws IOException {
-		File compiled = new File(temporaryFolder.getRoot(), "compiled");
+		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
-		FileUtil.generateNoopComparator(outputDir);
+		FileUtil.generateNoopComparator(srcDir);
 		List<String> jars = new ArrayList<String>();
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(outputDir, compiled, jars);
+		JavaUtil.compile(srcDir, compiled, jars);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.class") );
@@ -102,12 +118,12 @@ public class TestCase {
     
 	@Test
 	public void testNoVelocityLeftOvers() {
-		Assert.assertNull(FileUtil.findFirstString(
+		assertNull(FileUtil.findFirstString(
 			"$",
-			new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java")));
-        Assert.assertNull(FileUtil.findFirstString(
+			new File(srcDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java")));
+        assertNull(FileUtil.findFirstString(
         		"$",
-        		new File(outputDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );       
+        		new File(srcDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );       
 	}
 	
 }

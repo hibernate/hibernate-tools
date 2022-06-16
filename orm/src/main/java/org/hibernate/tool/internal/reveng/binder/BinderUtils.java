@@ -40,7 +40,6 @@ public class BinderUtils {
         return propertyName;
     }
 
-    @SuppressWarnings("unchecked")
     public static String makeUnique(PersistentClass clazz, String propertyName) {
         List<Property> list = new ArrayList<Property>();
         if( clazz.hasIdentifierProperty() ) {
@@ -49,7 +48,7 @@ public class BinderUtils {
         if( clazz.isVersioned() ) {
             list.add( clazz.getVersion() );
         }
-		Iterator<Property> propertyClosureIterator = clazz.getPropertyClosureIterator();
+		Iterator<Property> propertyClosureIterator = clazz.getProperties().iterator();
         JoinedIterator<Property> iterator = 
         		new JoinedIterator<Property>( 
         				list.iterator(), 
@@ -57,7 +56,6 @@ public class BinderUtils {
         return BinderUtils.makeUnique(iterator, propertyName);
     }
  
-    @SuppressWarnings("unchecked")
 	public static String makeUnique(Component clazz, String propertyName) {
         return BinderUtils.makeUnique(clazz.getPropertyIterator(), propertyName);
     }

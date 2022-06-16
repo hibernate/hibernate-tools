@@ -1,11 +1,11 @@
 package org.hibernate.tool.test.db.mysql;
 
-import org.hibernate.tools.test.util.DbSuite;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.hibernate.tool.test.db.DbTestSuite;
+import org.junit.jupiter.api.Nested;
 
-@RunWith(DbSuite.class)
-@SuiteClasses({ 
-	org.hibernate.tool.test.db.CommonTestSuite.class 
-})
-public class TestSuite {}
+public class TestSuite {
+	
+	@Nested
+	public class MySqlTestSuite extends DbTestSuite {}
+
+}

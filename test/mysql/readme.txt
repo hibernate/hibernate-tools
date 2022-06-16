@@ -17,9 +17,9 @@ username: root
 password: P@55w0rd
 The complete JDBC URL is: jdbc:mysql://localhost:3306
 
-5. Create the 'HTT' schema. You can do this by executing the following SQL: 
+5. Create the 'htt' schema. You can do this by executing the following SQL: 
 
-create schema HTT;
+create schema htt;
 
 5bis. Increase the amount of connections. There are connection leaks in the tests that make the tests fail.
 Execute the following statement as the root user:

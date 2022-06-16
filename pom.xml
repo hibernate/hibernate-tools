@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2010 - 2020 Red Hat, Inc.
+  ~ Copyright 2010 - 2022 Red Hat, Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>36</version>
+        <version>39</version>
     </parent>
     
     <groupId>org.hibernate.tool</groupId>
     <artifactId>hibernate-tools-parent</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
  
@@ -38,7 +38,7 @@
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://hibernate.onjira.com/browse/HBX</url>
+		<url>http://hibernate.atlassian.net/projects/HBX</url>
 	</issueManagement>
 
 	<scm>
@@ -83,26 +83,35 @@
     </modules>
 
     <properties>
-        <ant.version>1.10.7</ant.version>
+
+        <ant.version>1.10.12</ant.version>
+        <antlr.version>4.10</antlr.version>
         <commons-collections.version>4.4</commons-collections.version>
-        <eclipse-jdt-core.version>3.21.0</eclipse-jdt-core.version>
-        <freemarker.version>2.3.30</freemarker.version>
-        <h2.version>1.4.200</h2.version>
-        <hibernate-commons-annotations.version>5.1.0.Final</hibernate-commons-annotations.version>
-        <hibernate-core.version>5.4.14.Final</hibernate-core.version>
-        <hsqldb.version>2.5.0</hsqldb.version>
-        <javaee-api.version>7.0</javaee-api.version>
-        <javax.persistence-api.version>2.2</javax.persistence-api.version>
-        <jaxen.version>1.2.0</jaxen.version>
-        <junit.version>4.12</junit.version>
-        <junit-jupiter.version>5.5.1</junit-jupiter.version>
-        <mysql.version>6.0.6</mysql.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <google-java-format.version>1.15.0</google-java-format.version>
+        <h2.version>2.1.214</h2.version>
+        <hibernate-commons-annotations.version>6.0.2.Final</hibernate-commons-annotations.version>
+        <hibernate-orm.version>6.0.2.Final</hibernate-orm.version>
+        <hsqldb.version>2.6.1</hsqldb.version>
+        <javaee-api.version>8.0.1</javaee-api.version>
+        <jboss-logging.version>3.4.3.Final</jboss-logging.version>
+        <junit-jupiter.version>5.8.2</junit-jupiter.version>
+        <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
-        <sqlserver.version>6.1.7.jre8-preview</sqlserver.version>
+        <sqlserver.version>9.2.1.jre8</sqlserver.version>
+
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+
     </properties>
     
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.google.googlejavaformat</groupId>
+                <artifactId>google-java-format</artifactId>
+                <version>${google-java-format.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
@@ -127,28 +136,17 @@
    			    <version>${javaee-api.version}</version>
    			    <scope>test</scope>
    		    </dependency>
- 			<dependency>
-			    <groupId>javax.persistence</groupId>
-			    <artifactId>javax.persistence-api</artifactId>
-			    <version>${javax.persistence-api.version}</version>
-		    </dependency>
-  	        <dependency>
-                <groupId>jaxen</groupId>
-                <artifactId>jaxen</artifactId>
-                <version>${jaxen.version}</version>
-                <scope>runtime</scope>
-			</dependency> 
-             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
 				<scope>test</scope>
 			</dependency>
+  		    <dependency>
+			    <groupId>org.antlr</groupId>
+			    <artifactId>antlr4-runtime</artifactId>
+			    <version>${antlr.version}</version>
+		    </dependency>
   		    <dependency>
 			    <groupId>org.apache.ant</groupId>
 			    <artifactId>ant</artifactId>
@@ -159,20 +157,20 @@
 		        <artifactId>commons-collections4</artifactId>
 		        <version>${commons-collections.version}</version>
 	        </dependency>
-            <dependency>
-                <groupId>org.eclipse.jdt</groupId>
-                <artifactId>org.eclipse.jdt.core</artifactId>
-                <version>${eclipse-jdt-core.version}</version>
-            </dependency>
 		    <dependency>
 			    <groupId>org.freemarker</groupId>
 			    <artifactId>freemarker</artifactId>
 			    <version>${freemarker.version}</version>
 		    </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
+                <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>${hibernate-core.version}</version>
+                <version>${hibernate-orm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-ant</artifactId>
+                <version>${hibernate-orm.version}</version>
             </dependency>
   		    <dependency>
 			    <groupId>org.hibernate.common</groupId>
@@ -211,14 +209,13 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit-jupiter.version}</version>
-                <scope>test</scope>
+            	<groupId>org.jboss.logging</groupId>
+            	<artifactId>jboss-logging</artifactId>
+            	<version>${jboss-logging.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter</artifactId>
+                <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>

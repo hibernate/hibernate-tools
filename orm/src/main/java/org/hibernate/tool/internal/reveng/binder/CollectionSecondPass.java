@@ -25,12 +25,11 @@ public class CollectionSecondPass extends org.hibernate.cfg.CollectionSecondPass
     }
 
    @SuppressWarnings("rawtypes")
-   public void secondPass(Map persistentClasses, Map inheritedMetas) throws MappingException {
-        bindCollectionSecondPass(getCollection(), persistentClasses, mdbc, inheritedMetas);
-    }
+   public void secondPass(Map persistentClasses) throws MappingException {
+        bindCollectionSecondPass(getCollection(), mdbc);
+   }
 
-    @SuppressWarnings("rawtypes")
-	public void doSecondPass(Map persistentClasses) throws MappingException {
+	public void doSecondPass(Map<String, PersistentClass> persistentClasses) throws MappingException {
     	Value element = getCollection().getElement();
     	DependantValue elementDependantValue = null;
     	String oldElementForeignKeyName = null;
@@ -58,9 +57,7 @@ public class CollectionSecondPass extends org.hibernate.cfg.CollectionSecondPass
 
     private void bindCollectionSecondPass(
             Collection collection,
-            Map<?,?> persistentClasses,
-            MetadataBuildingContext mdbc,
-            Map<?,?> inheritedMetas) throws MappingException {
+            MetadataBuildingContext mdbc) throws MappingException {
         if(collection.isOneToMany() ) {
             OneToMany oneToMany = (OneToMany) collection.getElement();
             PersistentClass persistentClass = mdbc.getMetadataCollector().getEntityBinding(oneToMany.getReferencedEntityName());
