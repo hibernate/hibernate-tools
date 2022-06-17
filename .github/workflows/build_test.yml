@@ -34,3 +34,7 @@ jobs:
           **/*target/surefire-reports/
           **/*.log
 
+    - name: Publish Test Report
+      if: ${{ always() }}
+      uses: scapap/action-surefire-report@v1
+
