@@ -26,11 +26,4 @@ jobs:
       with: 
         run: mvn clean install -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true
 
-    - name: Archive Test Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-reports
-        path: |
-          **/*target/surefire-reports/
-          **/*.log
 
