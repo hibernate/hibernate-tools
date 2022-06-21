@@ -24,6 +24,10 @@ jobs:
     - name: Build and Test
       uses: GabrielBB/xvfb-action@v1
       with: 
-        run: mvn clean install -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true
+        run: mvn clean install -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true --log-file build.output
+
+    - name: Check for test failures
+      run: ./.github/scripts/check_build_result.sh build.output
+
 
 
