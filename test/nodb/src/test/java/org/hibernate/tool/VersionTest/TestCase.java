@@ -21,6 +21,7 @@
 package org.hibernate.tool.VersionTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class TestCase {
+	
+	@Test
+	public void testFail() {
+		fail();
+	}
 	
 	@Test
 	public void testVersion() throws Exception {
