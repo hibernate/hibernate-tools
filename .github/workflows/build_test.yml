@@ -24,7 +24,7 @@ jobs:
     - name: Build and Test
       uses: GabrielBB/xvfb-action@v1
       with: 
-        run: mvn clean install -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true --log-file build.output
+        run: mvn clean install  --log-file build.output
 
     - name: Write Maven Output to Console
       run: cat build.output
