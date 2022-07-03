@@ -144,12 +144,6 @@
 			<version>${hibernateJpaversion}</version>
 			<scope>compile</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.29.0-GA</version>
-            <scope>test</scope>
-        </dependency>	
 	    <dependency>
 		    <groupId>${jdbc.driver.groupId}</groupId>
 		    <artifactId>${jdbc.driver.artifactId}</artifactId>
