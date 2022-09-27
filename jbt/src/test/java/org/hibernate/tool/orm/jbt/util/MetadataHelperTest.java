@@ -1,0 +1,98 @@
+package org.hibernate.tool.orm.jbt.util;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
+import org.junit.jupiter.api.Test;
+
+public class MetadataHelperTest {
+
+	@Test
+	public void testGetMetadataSources() {
+		MetadataSources mds1 = new MetadataSources();
+		Configuration configuration = new Configuration();
+		MetadataSources mds2 = MetadataHelper.getMetadataSources(configuration);
+		assertNotNull(mds2);
+		assertNotSame(mds1, mds2);
+		configuration = new Configuration(mds1);
+		mds2 = MetadataHelper.getMetadataSources(configuration);
+		assertNotNull(mds2);
+		assertSame(mds1, mds2);
+	}
+	
+	@Test
+	public void testGetMetadata() {
+		 Configuration methodConfiguration = new MetadataMethodConfiguration();
+	     assertSame(
+	    		 MetadataMethodConfiguration.METADATA, 
+	    		 MetadataHelper.getMetadata(methodConfiguration));
+	     Configuration fieldConfiguration = new MetadataFieldConfiguration();
+	     assertSame(
+	    		 MetadataFieldConfiguration.METADATA, 
+	    		 MetadataHelper.getMetadata(fieldConfiguration));
+	     MetadataSources metadataSources = new MetadataSources();
+	     metadataSources.addInputStream(new ByteArrayInputStream(TEST_HBM_XML_STRING.getBytes()));
+	     Configuration configuration = new Configuration(metadataSources);
+	     configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+	     configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+	     Metadata metadata = MetadataHelper.getMetadata(configuration);
+	     assertNotNull(metadata.getEntityBinding("org.hibernate.tool.orm.jbt.util.MetadataHelperTest$Foo"));
+	}
+	
+	private static class MetadataMethodConfiguration extends Configuration {
+		static Metadata METADATA = createMetadata();
+		@SuppressWarnings("unused")
+		public Metadata getMetadata() {
+			return METADATA;
+		}
+	}
+	
+	private static class MetadataFieldConfiguration extends Configuration {
+		static Metadata METADATA = createMetadata();
+		@SuppressWarnings("unused")
+		private Metadata metadata = METADATA;
+	}
+	
+	private static Metadata createMetadata() {
+		Metadata result = null;
+		result = (Metadata) Proxy.newProxyInstance(
+				MetadataHelperTest.class.getClassLoader(), 
+				new Class[] { Metadata.class },  
+				new InvocationHandler() {				
+					@Override
+					public Object invoke(
+							Object proxy, 
+							Method method, 
+							Object[] args) throws Throwable {
+						return null;
+					}
+				});
+		return result;
+	}
+	
+	@SuppressWarnings("unused")
+	private static class Foo {
+		public String id;
+	}
+	
+	private static final String TEST_HBM_XML_STRING =
+			"<!DOCTYPE hibernate-mapping PUBLIC" +
+			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
+			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.util'>" +
+			"  <class name='MetadataHelperTest$Foo'>" + 
+			"    <id name='id'/>" +
+			"  </class>" +
+			"</hibernate-mapping>";
+
+}
