@@ -36,6 +36,11 @@
 	<description>Hibernate Tools ORM - JBoss Tools Adapter</description>
 
 	<dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
 	    <dependency>
 		    <groupId>org.hibernate.tool</groupId>
 		    <artifactId>hibernate-tools-orm</artifactId>
