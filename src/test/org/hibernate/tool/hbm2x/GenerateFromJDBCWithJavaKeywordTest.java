@@ -24,7 +24,7 @@ public class GenerateFromJDBCWithJavaKeywordTest extends JDBCMetaDataBinderTestC
 	private static String REVENG_XML =
 			"<!DOCTYPE hibernate-reverse-engineering                                            \n"+
 			"          SYSTEM                                                                   \n"+
-	        "          'http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd'>\n"+
+	        "          'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>\n"+
 			"<hibernate-reverse-engineering>                                                    \n"+
 	        "   <table name='my_return_history'>                                                \n"+
             "      <foreign-key                                                                 \n"+
