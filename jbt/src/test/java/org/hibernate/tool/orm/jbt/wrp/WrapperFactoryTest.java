@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,13 @@ public class WrapperFactoryTest {
 		Object artifactCollectorWrapper = wrapperFactory.createArtifactCollectorWrapper();
 		assertNotNull(artifactCollectorWrapper);
 		assertTrue(artifactCollectorWrapper instanceof DefaultArtifactCollector);
+	}
+	
+	@Test
+	public void testCreateCfg2HbmWrapper() {
+		Object cfg2HbmWrapper = wrapperFactory.createCfg2HbmWrapper();
+		assertNotNull(cfg2HbmWrapper);
+		assertTrue(cfg2HbmWrapper instanceof Cfg2HbmTool);
 	}
 
 }
