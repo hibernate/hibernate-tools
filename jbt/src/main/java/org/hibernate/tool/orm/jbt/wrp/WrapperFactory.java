@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 
@@ -16,6 +17,10 @@ public class WrapperFactory {
 
 	public Object createNamingStrategyWrapper() {
 		return new DefaultNamingStrategy();
+	}
+
+	public Object createReverseEngineeringSettingsWrapper() {
+		return new RevengSettings(null);
 	}
 
 }
