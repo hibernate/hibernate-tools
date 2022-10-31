@@ -1,10 +1,13 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -43,9 +46,24 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateReverseEngineeringSettings() {
-		Object reverseEngineeringSettinsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper();
-		assertNotNull(reverseEngineeringSettinsWrapper);
-		assertTrue(reverseEngineeringSettinsWrapper instanceof RevengSettings);
+		Object reverseEngineeringSettingsWrapper = null;
+		try {
+			reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(null);
+			fail();
+		} catch (Throwable t) {
+			assertTrue(t instanceof AssertionError);
+		}
+		try {
+			reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(new Object());
+			fail();
+		} catch (Throwable t) {
+			assertTrue(t instanceof AssertionError);
+		}
+		RevengStrategy strategy = new DefaultStrategy();
+		reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(strategy);
+		assertNotNull(reverseEngineeringSettingsWrapper);
+		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettings);
+		assertSame(strategy, ((RevengSettings)reverseEngineeringSettingsWrapper).getRootStrategy());
 	}
 	
 	@Test
