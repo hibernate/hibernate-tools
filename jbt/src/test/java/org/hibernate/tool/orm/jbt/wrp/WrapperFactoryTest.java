@@ -7,6 +7,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,13 @@ public class WrapperFactoryTest {
 		Object reverseEngineeringSettinsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper();
 		assertNotNull(reverseEngineeringSettinsWrapper);
 		assertTrue(reverseEngineeringSettinsWrapper instanceof RevengSettings);
+	}
+	
+	@Test
+	public void testCreateReverseEngineeringStrategy() {
+		Object reverseEngineeringStrategyWrapper = wrapperFactory.createReverseEngineeringStrategyWrapper();
+		assertNotNull(reverseEngineeringStrategyWrapper);
+		assertTrue(reverseEngineeringStrategyWrapper instanceof DefaultStrategy);
 	}
 
 }
