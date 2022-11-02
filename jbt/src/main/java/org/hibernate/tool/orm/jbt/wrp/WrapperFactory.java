@@ -21,7 +21,10 @@ public class WrapperFactory {
 		Object result = new DefaultNamingStrategy();
 		if (namingStrategyClassName != null) {
 			try {
-				result = Class.forName(namingStrategyClassName).getDeclaredConstructor().newInstance();
+				result = getClass().getClassLoader()
+						.loadClass(namingStrategyClassName)
+						.getDeclaredConstructor()
+						.newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
