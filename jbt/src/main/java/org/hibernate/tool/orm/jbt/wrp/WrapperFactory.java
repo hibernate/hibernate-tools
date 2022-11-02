@@ -17,8 +17,16 @@ public class WrapperFactory {
 		return new Cfg2HbmTool();
 	}
 
-	public Object createNamingStrategyWrapper() {
-		return new DefaultNamingStrategy();
+	public Object createNamingStrategyWrapper(String namingStrategyClassName) {
+		Object result = new DefaultNamingStrategy();
+		if (namingStrategyClassName != null) {
+			try {
+				result = Class.forName(namingStrategyClassName).getDeclaredConstructor().newInstance();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return result;
 	}
 
 	public Object createReverseEngineeringSettingsWrapper(Object revengStrategy) {

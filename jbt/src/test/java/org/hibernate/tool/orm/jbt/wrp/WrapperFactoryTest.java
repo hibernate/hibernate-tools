@@ -1,6 +1,9 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -39,9 +42,24 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateNamingStrategyWrapper() {
-		Object namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper();
+		Object namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(null);
 		assertNotNull(namingStrategyWrapper);
 		assertTrue(namingStrategyWrapper instanceof DefaultNamingStrategy);
+		namingStrategyWrapper = null;
+		assertNull(namingStrategyWrapper);
+		namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(TestNamingStrategy.class.getName());
+		assertNotNull(namingStrategyWrapper);
+		assertTrue(namingStrategyWrapper instanceof TestNamingStrategy);
+		namingStrategyWrapper = null;
+		assertNull(namingStrategyWrapper);
+		try {
+			namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper("foo");
+			fail();
+		} catch (Exception e) {
+			assertTrue(e.getCause() instanceof ClassNotFoundException);
+			assertEquals(e.getCause().getMessage(), "foo");
+		}
+		assertNull(namingStrategyWrapper);
 	}
 	
 	@Test
@@ -72,5 +90,8 @@ public class WrapperFactoryTest {
 		assertNotNull(reverseEngineeringStrategyWrapper);
 		assertTrue(reverseEngineeringStrategyWrapper instanceof DefaultStrategy);
 	}
+	
+	@SuppressWarnings("serial")
+	static class TestNamingStrategy extends DefaultNamingStrategy {}
 
 }
