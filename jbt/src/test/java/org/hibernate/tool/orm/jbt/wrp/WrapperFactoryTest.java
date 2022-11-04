@@ -56,8 +56,7 @@ public class WrapperFactoryTest {
 			namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper("foo");
 			fail();
 		} catch (Exception e) {
-			assertTrue(e.getCause() instanceof ClassNotFoundException);
-			assertEquals(e.getCause().getMessage(), "foo");
+			assertEquals(e.getMessage(), "Exception while looking up class 'foo'");
 		}
 		assertNull(namingStrategyWrapper);
 	}
