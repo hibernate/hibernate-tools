@@ -14,6 +14,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +60,13 @@ public class WrapperFactoryTest {
 			assertEquals(e.getMessage(), "Exception while looking up class 'foo'");
 		}
 		assertNull(namingStrategyWrapper);
+	}
+	
+	@Test
+	public void testCreateOverrideRepositoryWrapper() {
+		Object overrideRepositoryWrapper = wrapperFactory.createOverrideRepositoryWrapper();
+		assertNotNull(overrideRepositoryWrapper);
+		assertTrue(overrideRepositoryWrapper instanceof OverrideRepository);
 	}
 	
 	@Test
