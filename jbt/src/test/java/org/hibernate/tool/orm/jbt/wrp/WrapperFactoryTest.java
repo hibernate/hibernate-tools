@@ -99,6 +99,6 @@ public class WrapperFactoryTest {
 	}
 	
 	@SuppressWarnings("serial")
-	static class TestNamingStrategy extends DefaultNamingStrategy {}
+	static public class TestNamingStrategy extends DefaultNamingStrategy {}
 
 }

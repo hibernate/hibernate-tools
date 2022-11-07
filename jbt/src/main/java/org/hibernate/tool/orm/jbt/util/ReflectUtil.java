@@ -37,8 +37,7 @@ public class ReflectUtil {
 	private static Constructor<?> lookupConstructor(Class<?> clazz) {
 		Constructor<?> constructor = null;
 		try {
-			constructor = clazz.getDeclaredConstructor();
-			constructor.setAccessible(true);
+			constructor = clazz.getConstructor();
 		} catch (Throwable t) {
 			throw new RuntimeException(
 					"Exception while looking up constructor for class '" + clazz.getName() + "'", t);
