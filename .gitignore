@@ -9,4 +9,5 @@ reverseoutput
 .settings
 .DS_Store
 .idea
+.java-version
 *.iml
