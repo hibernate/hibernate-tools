@@ -9,4 +9,5 @@ reverseoutput
 .settings
 
 .idea
+.java-version
 *.iml
