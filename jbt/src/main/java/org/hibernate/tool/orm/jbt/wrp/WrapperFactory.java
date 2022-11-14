@@ -1,13 +1,11 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class WrapperFactory {
 
@@ -20,11 +18,7 @@ public class WrapperFactory {
 	}
 
 	public Object createNamingStrategyWrapper(String namingStrategyClassName) {
-		Object result = new DefaultNamingStrategy();
-		if (namingStrategyClassName != null) {
-			result = ReflectUtil.createInstance(namingStrategyClassName);
-		}
-		return result;
+		return NamingStrategyWrapper.create(namingStrategyClassName);
 	}
 	
 	public Object createOverrideRepositoryWrapper() {

@@ -13,7 +13,7 @@ public class NamingStrategyWrapper {
 		Object delegate = ReflectUtil.createInstance(className);
 		return Proxy.newProxyInstance( 
 				NamingStrategyWrapper.class.getClassLoader(), 
-				new Class[] { NamingStrategy.class , ClassNameProvieer.class }, 
+				new Class[] { NamingStrategy.class , ClassNameProvider.class }, 
 				new NamingStrategyInvocationHandler(delegate));
 	}
 	
@@ -36,7 +36,7 @@ public class NamingStrategyWrapper {
 		
 	}
 	
-	private static interface ClassNameProvieer {
+	static interface ClassNameProvider {
 		public String getClassName();
 	}
 	

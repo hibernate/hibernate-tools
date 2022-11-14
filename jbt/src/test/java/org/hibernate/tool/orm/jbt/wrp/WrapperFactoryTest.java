@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -43,14 +44,13 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateNamingStrategyWrapper() {
-		Object namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(null);
+		Object namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
 		assertNotNull(namingStrategyWrapper);
-		assertTrue(namingStrategyWrapper instanceof DefaultNamingStrategy);
-		namingStrategyWrapper = null;
-		assertNull(namingStrategyWrapper);
-		namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(TestNamingStrategy.class.getName());
-		assertNotNull(namingStrategyWrapper);
-		assertTrue(namingStrategyWrapper instanceof TestNamingStrategy);
+		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapper.ClassNameProvider);
+		assertEquals(
+				((NamingStrategyWrapper.ClassNameProvider)namingStrategyWrapper).getClassName(),
+				DefaultNamingStrategy.class.getName());
+		assertTrue(namingStrategyWrapper instanceof NamingStrategy);
 		namingStrategyWrapper = null;
 		assertNull(namingStrategyWrapper);
 		try {
