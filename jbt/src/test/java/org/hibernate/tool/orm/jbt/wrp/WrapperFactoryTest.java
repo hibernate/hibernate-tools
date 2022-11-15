@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
+
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -15,6 +17,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,13 +95,22 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateReverseEngineeringStrategy() {
-		Object reverseEngineeringStrategyWrapper = wrapperFactory.createReverseEngineeringStrategyWrapper();
+	public void testCreateReverseEngineeringStrategy() throws Exception {
+		Object reverseEngineeringStrategyWrapper = wrapperFactory.createReverseEngineeringStrategyWrapper(null);
 		assertNotNull(reverseEngineeringStrategyWrapper);
 		assertTrue(reverseEngineeringStrategyWrapper instanceof DefaultStrategy);
+		reverseEngineeringStrategyWrapper = 
+				wrapperFactory.createReverseEngineeringStrategyWrapper(TestRevengStrategy.class.getName());
+		assertNotNull(reverseEngineeringStrategyWrapper);
+		assertTrue(reverseEngineeringStrategyWrapper instanceof DelegatingStrategy);
+		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
+		delegateField.setAccessible(true);
+		assertTrue(delegateField.get(reverseEngineeringStrategyWrapper) instanceof TestRevengStrategy);
 	}
 	
 	@SuppressWarnings("serial")
-	static public class TestNamingStrategy extends DefaultNamingStrategy {}
+	public static class TestNamingStrategy extends DefaultNamingStrategy {}
+	
+	public static class TestRevengStrategy extends DefaultStrategy {}
 
 }
