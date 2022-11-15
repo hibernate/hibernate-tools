@@ -16,7 +16,22 @@ public class ReflectUtil {
 		return result;
 	}
 	
-	private static Class<?> lookupClass(String className) {
+	public static Object createInstance(
+			String className, 
+			Class<?>[] parameterTypes, 
+			Object[] parameters) {
+		Object result = null;
+		Constructor<?> constructor = lookupConstructor(lookupClass(className), parameterTypes);
+		try {
+			result = constructor.newInstance(parameters);
+		} catch (Throwable t) {
+			throw new RuntimeException(
+					"Exception while creating new instance of class '" + className + "'", t);
+		}
+		return result;
+	}
+	
+	public static Class<?> lookupClass(String className) {
 		Class<?> clazz = null;
 		try {
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -34,10 +49,10 @@ public class ReflectUtil {
 		return clazz;
 	}
 	
-	private static Constructor<?> lookupConstructor(Class<?> clazz) {
+	public static Constructor<?> lookupConstructor(Class<?> clazz, Class<?>...parameterTypes ) {
 		Constructor<?> constructor = null;
 		try {
-			constructor = clazz.getConstructor();
+			constructor = clazz.getConstructor(parameterTypes);
 		} catch (Throwable t) {
 			throw new RuntimeException(
 					"Exception while looking up constructor for class '" + clazz.getName() + "'", t);
