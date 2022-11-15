@@ -21,7 +21,7 @@ public class NamingStrategyWrapperTest {
 	public void testGetClassName() throws Exception {
 		Method getClassNameMethod = namingStrategyWrapper
 				.getClass()
-				.getDeclaredMethod("getClassName", new Class[] {});
+				.getDeclaredMethod("getStrategyClassName", new Class[] {});
 		assertEquals(
 				DefaultNamingStrategy.class.getName(),
 				getClassNameMethod.invoke(namingStrategyWrapper, new Object[] {}));

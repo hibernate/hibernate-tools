@@ -46,9 +46,9 @@ public class WrapperFactoryTest {
 	public void testCreateNamingStrategyWrapper() {
 		Object namingStrategyWrapper = wrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
 		assertNotNull(namingStrategyWrapper);
-		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapper.ClassNameProvider);
+		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapper.StrategyClassNameProvider);
 		assertEquals(
-				((NamingStrategyWrapper.ClassNameProvider)namingStrategyWrapper).getClassName(),
+				((NamingStrategyWrapper.StrategyClassNameProvider)namingStrategyWrapper).getStrategyClassName(),
 				DefaultNamingStrategy.class.getName());
 		assertTrue(namingStrategyWrapper instanceof NamingStrategy);
 		namingStrategyWrapper = null;
