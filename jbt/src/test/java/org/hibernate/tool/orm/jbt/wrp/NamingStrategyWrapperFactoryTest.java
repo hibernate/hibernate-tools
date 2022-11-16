@@ -8,23 +8,23 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class NamingStrategyWrapperTest {
+public class NamingStrategyWrapperFactoryTest {
 	
-	private Object namingStrategyWrapper = null;
+	private Object namingStrategyWrapperFactory = null;
 	
 	@BeforeEach
 	public void beforeEach() {
-		namingStrategyWrapper = NamingStrategyWrapper.create(DefaultNamingStrategy.class.getName());
+		namingStrategyWrapperFactory = NamingStrategyWrapperFactory.create(DefaultNamingStrategy.class.getName());
 	}
 	
 	@Test
 	public void testGetClassName() throws Exception {
-		Method getClassNameMethod = namingStrategyWrapper
+		Method getClassNameMethod = namingStrategyWrapperFactory
 				.getClass()
 				.getDeclaredMethod("getStrategyClassName", new Class[] {});
 		assertEquals(
 				DefaultNamingStrategy.class.getName(),
-				getClassNameMethod.invoke(namingStrategyWrapper, new Object[] {}));
+				getClassNameMethod.invoke(namingStrategyWrapperFactory, new Object[] {}));
 	}
 
 }

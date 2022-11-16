@@ -7,12 +7,12 @@ import java.lang.reflect.Proxy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
-public class NamingStrategyWrapper {
+public class NamingStrategyWrapperFactory {
 	
 	public static Object create(String className) {
 		Object delegate = ReflectUtil.createInstance(className);
 		return Proxy.newProxyInstance( 
-				NamingStrategyWrapper.class.getClassLoader(), 
+				NamingStrategyWrapperFactory.class.getClassLoader(), 
 				new Class[] { NamingStrategy.class , StrategyClassNameProvider.class }, 
 				new NamingStrategyInvocationHandler(delegate));
 	}

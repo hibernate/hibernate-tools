@@ -22,7 +22,7 @@ public class WrapperFactory {
 	}
 
 	public Object createNamingStrategyWrapper(String namingStrategyClassName) {
-		return NamingStrategyWrapper.create(namingStrategyClassName);
+		return NamingStrategyWrapperFactory.create(namingStrategyClassName);
 	}
 	
 	public Object createOverrideRepositoryWrapper() {
