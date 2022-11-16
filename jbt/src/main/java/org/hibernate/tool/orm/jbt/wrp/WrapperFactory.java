@@ -28,9 +28,7 @@ public class WrapperFactory {
 		return RevengStrategyWrapperFactory.create(objects);
 	}
 
-	public Object createReverseEngineeringSettingsWrapper(Object revengStrategy) {
-		assert revengStrategy != null;
-		assert revengStrategy instanceof RevengStrategy;
+	public Object createRevengSettingsWrapper(Object revengStrategy) {
 		return new RevengSettings((RevengStrategy)(revengStrategy));
 	}
 

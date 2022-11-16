@@ -93,22 +93,10 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateReverseEngineeringSettings() {
+	public void testCreateRevengSettings() {
 		Object reverseEngineeringSettingsWrapper = null;
-		try {
-			reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(null);
-			fail();
-		} catch (Throwable t) {
-			assertTrue(t instanceof AssertionError);
-		}
-		try {
-			reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(new Object());
-			fail();
-		} catch (Throwable t) {
-			assertTrue(t instanceof AssertionError);
-		}
 		RevengStrategy strategy = new DefaultStrategy();
-		reverseEngineeringSettingsWrapper = wrapperFactory.createReverseEngineeringSettingsWrapper(strategy);
+		reverseEngineeringSettingsWrapper = wrapperFactory.createRevengSettingsWrapper(strategy);
 		assertNotNull(reverseEngineeringSettingsWrapper);
 		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettings);
 		assertSame(strategy, ((RevengSettings)reverseEngineeringSettingsWrapper).getRootStrategy());
