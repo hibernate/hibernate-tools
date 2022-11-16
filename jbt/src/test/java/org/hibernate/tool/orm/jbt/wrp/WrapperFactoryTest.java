@@ -73,25 +73,18 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateReverseEngineeringStrategy() throws Exception {
+	public void testCreateRevengStrategyWrapper() throws Exception {
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		Object reverseEngineeringStrategyWrapper = wrapperFactory
-				.createReverseEngineeringStrategyWrapper();
+				.createRevengStrategyWrapper();
 		assertNotNull(reverseEngineeringStrategyWrapper);
 		assertTrue(reverseEngineeringStrategyWrapper instanceof DefaultStrategy);
 		reverseEngineeringStrategyWrapper = null;
 		assertNull(reverseEngineeringStrategyWrapper);
-		reverseEngineeringStrategyWrapper = wrapperFactory
-				.createReverseEngineeringStrategyWrapper(TestRevengStrategy.class.getName());
-		assertNotNull(reverseEngineeringStrategyWrapper);
-		assertTrue(reverseEngineeringStrategyWrapper instanceof DelegatingStrategy);
-		assertTrue(delegateField.get(reverseEngineeringStrategyWrapper) instanceof TestRevengStrategy);
-		reverseEngineeringStrategyWrapper = null;
-		assertNull(reverseEngineeringStrategyWrapper);
 		RevengStrategy delegate = new TestRevengStrategy();
 		reverseEngineeringStrategyWrapper = wrapperFactory
-				.createReverseEngineeringStrategyWrapper(
+				.createRevengStrategyWrapper(
 						TestDelegatingStrategy.class.getName(), 
 						delegate);
 		assertNotNull(reverseEngineeringStrategyWrapper);
