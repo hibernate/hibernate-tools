@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
 
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
@@ -22,6 +24,18 @@ public class NativeConfigurationTest {
 		nativeConfiguration.setEntityResolver(entityResolver);
 		assertNotNull(field.get(nativeConfiguration));
 		assertSame(field.get(nativeConfiguration), entityResolver);
+	}
+	
+	@Test
+	public void testSetNamingStrategy() throws Exception {
+		NativeConfiguration nativeConfiguration = new NativeConfiguration();
+		Field field = NativeConfiguration.class.getDeclaredField("namingStrategy");
+		field.setAccessible(true);
+		assertNull(field.get(nativeConfiguration));
+		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		nativeConfiguration.setNamingStrategy(namingStrategy);
+		assertNotNull(field.get(nativeConfiguration));
+		assertSame(field.get(nativeConfiguration), namingStrategy);
 	}
 
 }
