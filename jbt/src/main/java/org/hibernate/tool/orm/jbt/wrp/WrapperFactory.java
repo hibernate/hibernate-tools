@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -30,6 +31,10 @@ public class WrapperFactory {
 
 	public Object createRevengSettingsWrapper(Object revengStrategy) {
 		return new RevengSettings((RevengStrategy)(revengStrategy));
+	}
+	
+	public Object createNativeConfigurationWrapper() {
+		return new Configuration();
 	}
 
 }

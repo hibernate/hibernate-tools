@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -93,13 +94,20 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateRevengSettings() {
+	public void testCreateRevengSettingsWrapper() {
 		Object reverseEngineeringSettingsWrapper = null;
 		RevengStrategy strategy = new DefaultStrategy();
 		reverseEngineeringSettingsWrapper = wrapperFactory.createRevengSettingsWrapper(strategy);
 		assertNotNull(reverseEngineeringSettingsWrapper);
 		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettings);
 		assertSame(strategy, ((RevengSettings)reverseEngineeringSettingsWrapper).getRootStrategy());
+	}
+	
+	@Test
+	public void testCreateNativeConfigurationWrapper() {
+		Object configurationWrapper = wrapperFactory.createNativeConfigurationWrapper();
+		assertNotNull(configurationWrapper);
+		assertTrue(configurationWrapper instanceof Configuration);
 	}
 		
 	@SuppressWarnings("serial")
