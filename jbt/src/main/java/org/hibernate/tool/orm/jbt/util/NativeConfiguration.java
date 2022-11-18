@@ -1,7 +1,19 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class NativeConfiguration extends Configuration {
@@ -27,6 +39,28 @@ public class NativeConfiguration extends Configuration {
 		this.namingStrategy = namingStrategy;
 	}
 	
+	public Configuration configure(Document document) {
+		File tempFile = null;
+		Configuration result = null;
+		try {
+			tempFile = File.createTempFile(document.toString(), "cfg.xml");
+			DOMSource domSource = new DOMSource(document);
+			StringWriter stringWriter = new StringWriter();
+			StreamResult stream = new StreamResult(stringWriter);
+		    TransformerFactory tf = TransformerFactory.newInstance();
+		    Transformer transformer = tf.newTransformer();
+		    transformer.transform(domSource, stream);
+		    FileWriter fileWriter = new FileWriter(tempFile);
+		    fileWriter.write(stringWriter.toString());
+		    fileWriter.close();
+			result = configure(tempFile);
+		} catch(IOException | TransformerException e) {
+			throw new RuntimeException("Problem while configuring", e);
+		} finally {
+			tempFile.delete();
+		}
+		return result;
+	}
 	
 
 }
