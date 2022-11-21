@@ -19,6 +19,7 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,6 +109,13 @@ public class WrapperFactoryTest {
 		Object configurationWrapper = wrapperFactory.createNativeConfigurationWrapper();
 		assertNotNull(configurationWrapper);
 		assertTrue(configurationWrapper instanceof NativeConfiguration);
+	}
+		
+	@Test
+	public void testCreateRevengConfigurationWrapper() {
+		Object configurationWrapper = wrapperFactory.createRevengConfigurationWrapper();
+		assertNotNull(configurationWrapper);
+		assertTrue(configurationWrapper instanceof JdbcMetadataConfiguration);
 	}
 		
 	@SuppressWarnings("serial")
