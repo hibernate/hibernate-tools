@@ -11,6 +11,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.w3c.dom.Document;
@@ -23,6 +26,8 @@ public class NativeConfiguration extends Configuration {
 	
 	@SuppressWarnings("unused")
 	private NamingStrategy namingStrategy = null;
+	
+	private Metadata metadata = null;
 	
 	public void setEntityResolver(EntityResolver entityResolver) {
 		// This method is not supported anymore in class Configuration from Hibernate 5+
@@ -62,5 +67,12 @@ public class NativeConfiguration extends Configuration {
 		return result;
 	}
 	
-
+	public void buildMappings() {
+		buildMetadata();
+	}
+	
+	private void buildMetadata() {
+		metadata = MetadataHelper.getMetadata(this);
+	}
+	
 }

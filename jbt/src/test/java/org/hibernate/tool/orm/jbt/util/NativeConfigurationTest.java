@@ -15,6 +15,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,9 +35,17 @@ public class NativeConfigurationTest {
 		public String id;
 	}
 	
+	private NativeConfiguration nativeConfiguration = null;
+	
+	@BeforeEach
+	public void beforeEach() {
+		nativeConfiguration = new NativeConfiguration();
+		nativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		nativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+	}
+	
 	@Test
 	public void testSetEntityResolver() throws Exception {
-		NativeConfiguration nativeConfiguration = new NativeConfiguration();
 		Field field = NativeConfiguration.class.getDeclaredField("entityResolver");
 		field.setAccessible(true);
 		assertNull(field.get(nativeConfiguration));
@@ -48,7 +57,6 @@ public class NativeConfigurationTest {
 	
 	@Test
 	public void testSetNamingStrategy() throws Exception {
-		NativeConfiguration nativeConfiguration = new NativeConfiguration();
 		Field field = NativeConfiguration.class.getDeclaredField("namingStrategy");
 		field.setAccessible(true);
 		assertNull(field.get(nativeConfiguration));
@@ -60,9 +68,6 @@ public class NativeConfigurationTest {
 
 	@Test
 	public void testConfigureDocument() throws Exception {
-		NativeConfiguration nativeConfiguration = new NativeConfiguration();
-		nativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
-		nativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		Document document = DocumentBuilderFactory
 				.newInstance()
 				.newDocumentBuilder()
@@ -90,6 +95,15 @@ public class NativeConfigurationTest {
 		nativeConfiguration.configure(document);
 		metadata = MetadataHelper.getMetadata(nativeConfiguration);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
+	}
+	
+	@Test
+	public void testBuildMappings() throws Exception {
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(nativeConfiguration));
+		nativeConfiguration.buildMappings();
+		assertNotNull(metadataField.get(nativeConfiguration));
 	}
 	
 }
