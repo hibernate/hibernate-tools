@@ -1,13 +1,17 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -15,6 +19,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -104,6 +109,33 @@ public class NativeConfigurationTest {
 		assertNull(metadataField.get(nativeConfiguration));
 		nativeConfiguration.buildMappings();
 		assertNotNull(metadataField.get(nativeConfiguration));
+	}
+	
+	@Test
+	public void testGetClassMappings() throws Exception {
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.util.NativeConfigurationTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		Iterator<PersistentClass> classesIterator = nativeConfiguration.getClassMappings();
+		assertFalse(classesIterator.hasNext());
+		metadataField.set(nativeConfiguration, null);
+		nativeConfiguration.addClass(Foo.class);
+		classesIterator = nativeConfiguration.getClassMappings();
+		assertTrue(classesIterator.hasNext());
+		PersistentClass pc = classesIterator.next();
+		assertEquals(fooClassName, pc.getEntityName());
 	}
 	
 }

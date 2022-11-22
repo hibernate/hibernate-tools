@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Iterator;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -11,11 +12,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -47,6 +48,7 @@ public class NativeConfiguration extends Configuration {
 	public Configuration configure(Document document) {
 		File tempFile = null;
 		Configuration result = null;
+		metadata = null;
 		try {
 			tempFile = File.createTempFile(document.toString(), "cfg.xml");
 			DOMSource domSource = new DOMSource(document);
@@ -71,8 +73,21 @@ public class NativeConfiguration extends Configuration {
 		buildMetadata();
 	}
 	
+	public Iterator<PersistentClass> getClassMappings() {
+		return getMetadata().getEntityBindings().iterator();
+	}
+	
+	private Metadata getMetadata() {
+		if (metadata == null) {
+			buildMetadata();
+		}
+		return metadata;
+	}
+	
 	private void buildMetadata() {
-		metadata = MetadataHelper.getMetadata(this);
+		MetadataSources metadataSources = MetadataHelper.getMetadataSources(this);
+		getStandardServiceRegistryBuilder().applySettings(getProperties());
+		metadata = metadataSources.buildMetadata(getStandardServiceRegistryBuilder().build());
 	}
 	
 }
