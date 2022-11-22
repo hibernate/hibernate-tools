@@ -139,7 +139,7 @@ public class RevengConfigurationTest {
 	}
 	
 	@Test
-	public void testReadFromJdbc() throws Exception {
+	public void testReadFromJDBC() throws Exception {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
@@ -147,7 +147,7 @@ public class RevengConfigurationTest {
 		jdbcMetadataConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
 		jdbcMetadataConfiguration.revengStrategy = new DefaultStrategy();
 		assertNull(jdbcMetadataConfiguration.metadata);
-		jdbcMetadataConfiguration.readFromJdbc();
+		jdbcMetadataConfiguration.readFromJDBC();
 		assertNotNull(jdbcMetadataConfiguration.metadata);
 		statement.execute("DROP TABLE FOO");
 		statement.close();
@@ -162,7 +162,7 @@ public class RevengConfigurationTest {
 		jdbcMetadataConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
 		jdbcMetadataConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
 		jdbcMetadataConfiguration.revengStrategy = new DefaultStrategy();
-		jdbcMetadataConfiguration.readFromJdbc();
+		jdbcMetadataConfiguration.readFromJDBC();
 		Iterator<PersistentClass> classMappings = jdbcMetadataConfiguration.getClassMappings();
 		assertNotNull(classMappings);
 		assertTrue(classMappings.hasNext());

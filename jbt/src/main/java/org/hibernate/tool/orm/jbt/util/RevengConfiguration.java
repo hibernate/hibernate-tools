@@ -58,7 +58,7 @@ public class RevengConfiguration {
 		return metadata;
 	}
 
-	public void readFromJdbc() {
+	public void readFromJDBC() {
 		metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(revengStrategy, properties)
 				.createMetadata();
