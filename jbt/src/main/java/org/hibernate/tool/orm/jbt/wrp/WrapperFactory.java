@@ -5,7 +5,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tool.orm.jbt.util.JdbcMetadataConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 
 public class WrapperFactory {
@@ -39,7 +39,7 @@ public class WrapperFactory {
 	}
 	
 	public Object createRevengConfigurationWrapper() {
-		return new JdbcMetadataConfiguration();
+		return new RevengConfiguration();
 	}
 
 }

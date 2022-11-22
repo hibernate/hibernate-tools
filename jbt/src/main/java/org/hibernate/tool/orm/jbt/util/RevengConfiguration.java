@@ -9,7 +9,7 @@ import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 
-public class JdbcMetadataConfiguration {
+public class RevengConfiguration {
 
 	Properties properties = new Properties();
 	RevengStrategy revengStrategy;

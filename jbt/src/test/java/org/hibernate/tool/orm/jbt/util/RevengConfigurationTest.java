@@ -21,16 +21,15 @@ import org.h2.Driver;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
-import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class JdbcMetadataConfigurationTest {
+public class RevengConfigurationTest {
 
-	private JdbcMetadataConfiguration jdbcMetadataConfiguration = null;
+	private RevengConfiguration jdbcMetadataConfiguration = null;
 	
 	@BeforeAll
 	public static void beforeAll() throws Exception {
@@ -39,7 +38,7 @@ public class JdbcMetadataConfigurationTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		jdbcMetadataConfiguration = new JdbcMetadataConfiguration();
+		jdbcMetadataConfiguration = new RevengConfiguration();
 	}
 	
 	@Test
