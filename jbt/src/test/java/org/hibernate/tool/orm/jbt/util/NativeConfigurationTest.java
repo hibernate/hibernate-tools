@@ -138,4 +138,15 @@ public class NativeConfigurationTest {
 		assertEquals(fooClassName, pc.getEntityName());
 	}
 	
+	@Test
+	public void testGetNamingStrategy() throws Exception {
+		Field field = NativeConfiguration.class.getDeclaredField("namingStrategy");
+		field.setAccessible(true);
+		assertNull(nativeConfiguration.getNamingStrategy());
+		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		field.set(nativeConfiguration, namingStrategy);
+		assertNotNull(nativeConfiguration.getNamingStrategy());
+		assertSame(field.get(nativeConfiguration), namingStrategy);
+	}
+	
 }

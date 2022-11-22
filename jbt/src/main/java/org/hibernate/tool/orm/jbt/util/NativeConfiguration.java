@@ -45,6 +45,12 @@ public class NativeConfiguration extends Configuration {
 		this.namingStrategy = namingStrategy;
 	}
 	
+	public NamingStrategy getNamingStrategy() {
+		// This method is not supported anymore from Hibernate 5+
+		// Returning the cached NamingStrategy for bookkeeping purposes
+		return namingStrategy;
+	}
+	
 	public Configuration configure(Document document) {
 		File tempFile = null;
 		Configuration result = null;
