@@ -1,8 +1,10 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -60,6 +62,10 @@ public class JdbcMetadataConfiguration {
 		metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(revengStrategy, properties)
 				.createMetadata();
+	}
+	
+	public Iterator<PersistentClass> getClassMappings() {
+		return getMetadata().getEntityBindings().iterator();
 	}
 		
 }
