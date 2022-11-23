@@ -96,4 +96,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public Configuration configure(Object object) {
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 }
