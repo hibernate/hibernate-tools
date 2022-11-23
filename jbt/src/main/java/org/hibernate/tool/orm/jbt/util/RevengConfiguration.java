@@ -1,10 +1,12 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -71,6 +73,12 @@ public class RevengConfiguration {
 		} else {
 			return Collections.emptyIterator();
 		}
+	}
+	
+	public Configuration addFile(File file) {
+		throw new RuntimeException(
+				"Method 'addFile' should not be called on instances of " +
+				this.getClass().getName());
 	}
 		
 }

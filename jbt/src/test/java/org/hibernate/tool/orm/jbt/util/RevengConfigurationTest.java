@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -175,6 +177,18 @@ public class RevengConfigurationTest {
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
+	}
+	
+	@Test
+	public void testAddFile() {
+		try {
+			revengConfiguration.addFile(new File("Foo"));
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addFile' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
 
 }
