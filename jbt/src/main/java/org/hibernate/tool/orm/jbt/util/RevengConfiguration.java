@@ -11,6 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.xml.sax.EntityResolver;
 
 public class RevengConfiguration {
 
@@ -81,5 +82,12 @@ public class RevengConfiguration {
 				"Method 'addFile' should not be called on instances of " +
 				this.getClass().getName());
 	}
+	
+	public void setEntityResolver(EntityResolver entityResolver) {
+		throw new RuntimeException(
+				"Method 'setEntityResolver' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
 		
 }

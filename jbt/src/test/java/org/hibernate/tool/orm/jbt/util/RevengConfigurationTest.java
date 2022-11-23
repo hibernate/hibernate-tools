@@ -28,6 +28,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class RevengConfigurationTest {
 
@@ -188,6 +189,18 @@ public class RevengConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'addFile' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetEntityResolver() {
+		try {
+			revengConfiguration.setEntityResolver(new DefaultHandler());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
 	}
 
