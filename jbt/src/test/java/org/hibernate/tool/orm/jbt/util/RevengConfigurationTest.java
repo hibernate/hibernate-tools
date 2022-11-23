@@ -19,8 +19,6 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.h2.Driver;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -31,7 +29,6 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class RevengConfigurationTest {
@@ -230,6 +227,14 @@ public class RevengConfigurationTest {
 					e.getMessage(),
 					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
+		try {
+			revengConfiguration.configure();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
 	}
-
+	
 }
