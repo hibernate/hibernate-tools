@@ -237,4 +237,16 @@ public class RevengConfigurationTest {
 		}
 	}
 	
+	@Test
+	public void testAddClass() {
+		try {
+			revengConfiguration.addClass(Object.class);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
 }

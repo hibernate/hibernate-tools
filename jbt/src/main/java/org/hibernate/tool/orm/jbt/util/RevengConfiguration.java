@@ -84,6 +84,12 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 	
+	public Configuration addClass(Class<?> file) {
+		throw new RuntimeException(
+				"Method 'addClass' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
 	public void setEntityResolver(EntityResolver entityResolver) {
 		throw new RuntimeException(
 				"Method 'setEntityResolver' should not be called on instances of " +
