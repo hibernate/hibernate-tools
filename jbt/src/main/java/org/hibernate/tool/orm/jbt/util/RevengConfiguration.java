@@ -22,8 +22,9 @@ public class RevengConfiguration {
 		return properties;
 	}
 	
-	public void setProperties(Properties properties) {
+	public RevengConfiguration setProperties(Properties properties) {
 		this.properties = properties;
+		return this;
 	}
 	
 	public Object getProperty(String key) {

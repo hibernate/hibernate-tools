@@ -62,7 +62,7 @@ public class RevengConfigurationTest {
 		Properties properties = new Properties();
 		assertNotNull(revengConfiguration.properties);
 		assertNotSame(properties,  revengConfiguration.getProperties());
-		revengConfiguration.setProperties(properties);
+		assertSame(revengConfiguration, revengConfiguration.setProperties(properties));
 		assertSame(properties, revengConfiguration.getProperties());
 	}
 	
