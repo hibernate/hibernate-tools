@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -9,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.mapping.PersistentClass;
 
 public class JpaConfiguration extends Configuration {
 
@@ -59,6 +61,10 @@ public class JpaConfiguration extends Configuration {
 	
 	public String getPersistenceUnit() {
 		return persistenceUnit;
+	}
+	
+	public Iterator<PersistentClass> getClassMappings() {
+		return getMetadata().getEntityBindings().iterator();
 	}
 	
 	void initialize() {

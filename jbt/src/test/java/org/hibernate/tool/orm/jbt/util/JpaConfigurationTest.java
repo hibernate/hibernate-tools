@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +15,7 @@ import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
+import java.util.Iterator;
 import java.util.Properties;
 
 import jakarta.persistence.Entity;
@@ -22,6 +24,7 @@ import jakarta.persistence.Id;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.mapping.PersistentClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -170,6 +173,16 @@ public class JpaConfigurationTest {
 		assertNotNull(jpaConfiguration.sessionFactory);
 		assertEquals("bar", jpaConfiguration.sessionFactory.getProperties().get("foo"));
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
+	}
+	
+	@Test
+	public void testGetClassMappings() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		Iterator<PersistentClass> classMappings = jpaConfiguration.getClassMappings();
+		assertNotNull(classMappings);
+		assertTrue(classMappings.hasNext());
+		PersistentClass pc = classMappings.next();
+		assertSame(pc.getMappedClass(), FooBar.class);
 	}
 	
 	@Entity public class FooBar {
