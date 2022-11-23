@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
@@ -89,5 +90,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 	
+	public void setNamingStrategy(NamingStrategy namingStrategy) {
+		throw new RuntimeException(
+				"Method 'setNamingStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
 		
 }

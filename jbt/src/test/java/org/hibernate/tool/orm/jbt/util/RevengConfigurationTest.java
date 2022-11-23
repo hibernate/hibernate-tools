@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import org.h2.Driver;
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -201,6 +202,18 @@ public class RevengConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetNamingStrategy() {
+		try {
+			revengConfiguration.setNamingStrategy(new DefaultNamingStrategy());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
 		}
 	}
 
