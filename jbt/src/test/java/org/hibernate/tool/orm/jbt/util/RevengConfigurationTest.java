@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 public class RevengConfigurationTest {
 
-	private RevengConfiguration jdbcMetadataConfiguration = null;
+	private RevengConfiguration revengConfiguration = null;
 	
 	@BeforeAll
 	public static void beforeAll() throws Exception {
@@ -38,87 +38,87 @@ public class RevengConfigurationTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		jdbcMetadataConfiguration = new RevengConfiguration();
+		revengConfiguration = new RevengConfiguration();
 	}
 	
 	@Test
 	public void testInstance() {
-		assertNotNull(jdbcMetadataConfiguration);
+		assertNotNull(revengConfiguration);
 	}
 	
 	@Test
 	public void testGetProperties() {
 		Properties properties = new Properties();
-		assertNotNull(jdbcMetadataConfiguration.properties);
-		assertNotSame(properties,  jdbcMetadataConfiguration.getProperties());
-		jdbcMetadataConfiguration.properties = properties;
-		assertSame(properties, jdbcMetadataConfiguration.getProperties());
+		assertNotNull(revengConfiguration.properties);
+		assertNotSame(properties,  revengConfiguration.getProperties());
+		revengConfiguration.properties = properties;
+		assertSame(properties, revengConfiguration.getProperties());
 	}
 	
 	@Test
 	public void testSetProperties() {
 		Properties properties = new Properties();
-		assertNotNull(jdbcMetadataConfiguration.properties);
-		assertNotSame(properties,  jdbcMetadataConfiguration.getProperties());
-		jdbcMetadataConfiguration.setProperties(properties);
-		assertSame(properties, jdbcMetadataConfiguration.getProperties());
+		assertNotNull(revengConfiguration.properties);
+		assertNotSame(properties,  revengConfiguration.getProperties());
+		revengConfiguration.setProperties(properties);
+		assertSame(properties, revengConfiguration.getProperties());
 	}
 	
 	@Test
 	public void testGetProperty() {
-		assertNull(jdbcMetadataConfiguration.getProperty("foo"));
-		jdbcMetadataConfiguration.properties.put("foo", "bar");
-		assertEquals("bar", jdbcMetadataConfiguration.getProperty("foo"));
+		assertNull(revengConfiguration.getProperty("foo"));
+		revengConfiguration.properties.put("foo", "bar");
+		assertEquals("bar", revengConfiguration.getProperty("foo"));
 	}
 
 	@Test
 	public void testSetProperty() {
-		assertNull(jdbcMetadataConfiguration.properties.get("foo"));
-		jdbcMetadataConfiguration.setProperty("foo", "bar");
-		assertEquals("bar", jdbcMetadataConfiguration.properties.get("foo"));
+		assertNull(revengConfiguration.properties.get("foo"));
+		revengConfiguration.setProperty("foo", "bar");
+		assertEquals("bar", revengConfiguration.properties.get("foo"));
 	}
 	
 	@Test
 	public void testAddProperties() {
 		Properties properties = new Properties();
 		properties.put("foo", "bar");
-		assertNull(jdbcMetadataConfiguration.properties.get("foo"));
-		jdbcMetadataConfiguration.addProperties(properties);
-		assertEquals("bar", jdbcMetadataConfiguration.properties.get("foo"));
+		assertNull(revengConfiguration.properties.get("foo"));
+		revengConfiguration.addProperties(properties);
+		assertEquals("bar", revengConfiguration.properties.get("foo"));
 	}
 	
 	@Test
 	public void testGetReverseEngineeringStrategy() {
 		RevengStrategy strategy = new DefaultStrategy();
-		assertNull(jdbcMetadataConfiguration.getReverseEngineeringStrategy());
-		jdbcMetadataConfiguration.revengStrategy = strategy;
-		assertSame(strategy, jdbcMetadataConfiguration.getReverseEngineeringStrategy());
+		assertNull(revengConfiguration.getReverseEngineeringStrategy());
+		revengConfiguration.revengStrategy = strategy;
+		assertSame(strategy, revengConfiguration.getReverseEngineeringStrategy());
 	}
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() {
 		RevengStrategy strategy = new DefaultStrategy();
-		assertNull(jdbcMetadataConfiguration.revengStrategy);
-		jdbcMetadataConfiguration.setReverseEngineeringStrategy(strategy);
-		assertSame(strategy, jdbcMetadataConfiguration.revengStrategy);
+		assertNull(revengConfiguration.revengStrategy);
+		revengConfiguration.setReverseEngineeringStrategy(strategy);
+		assertSame(strategy, revengConfiguration.revengStrategy);
 	}
 	
 	@Test
 	public void testPreferBasicCompositeIds() {
-		assertTrue(jdbcMetadataConfiguration.preferBasicCompositeIds());
-		jdbcMetadataConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);
-		assertFalse(jdbcMetadataConfiguration.preferBasicCompositeIds());
+		assertTrue(revengConfiguration.preferBasicCompositeIds());
+		revengConfiguration.properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);
+		assertFalse(revengConfiguration.preferBasicCompositeIds());
 	}
 	
 	@Test
 	public void testSetPreferBasicCompositeIds() {
 		assertNull(
-				jdbcMetadataConfiguration.properties.get(
+				revengConfiguration.properties.get(
 						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
-		jdbcMetadataConfiguration.setPreferBasicCompositeIds(true);
+		revengConfiguration.setPreferBasicCompositeIds(true);
 		assertEquals(
 				true, 
-				jdbcMetadataConfiguration.properties.get(
+				revengConfiguration.properties.get(
 						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
 	}
 	
@@ -133,9 +133,9 @@ public class RevengConfigurationTest {
 						return null;
 					}
 				});
-		assertNull(jdbcMetadataConfiguration.getMetadata());
-		jdbcMetadataConfiguration.metadata = metadata;
-		assertSame(metadata, jdbcMetadataConfiguration.getMetadata());
+		assertNull(revengConfiguration.getMetadata());
+		revengConfiguration.metadata = metadata;
+		assertSame(metadata, revengConfiguration.getMetadata());
 	}
 	
 	@Test
@@ -143,12 +143,12 @@ public class RevengConfigurationTest {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
-		jdbcMetadataConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
-		jdbcMetadataConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
-		jdbcMetadataConfiguration.revengStrategy = new DefaultStrategy();
-		assertNull(jdbcMetadataConfiguration.metadata);
-		jdbcMetadataConfiguration.readFromJDBC();
-		assertNotNull(jdbcMetadataConfiguration.metadata);
+		revengConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
+		revengConfiguration.revengStrategy = new DefaultStrategy();
+		assertNull(revengConfiguration.metadata);
+		revengConfiguration.readFromJDBC();
+		assertNotNull(revengConfiguration.metadata);
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();
@@ -159,11 +159,14 @@ public class RevengConfigurationTest {
 		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		Statement statement = connection.createStatement();
 		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
-		jdbcMetadataConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
-		jdbcMetadataConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
-		jdbcMetadataConfiguration.revengStrategy = new DefaultStrategy();
-		jdbcMetadataConfiguration.readFromJDBC();
-		Iterator<PersistentClass> classMappings = jdbcMetadataConfiguration.getClassMappings();
+		revengConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
+		revengConfiguration.revengStrategy = new DefaultStrategy();
+		Iterator<PersistentClass> classMappings = revengConfiguration.getClassMappings();
+		assertNotNull(classMappings);
+		assertFalse(classMappings.hasNext());
+		revengConfiguration.readFromJDBC();
+		classMappings = revengConfiguration.getClassMappings();
 		assertNotNull(classMappings);
 		assertTrue(classMappings.hasNext());
 		PersistentClass pc = classMappings.next();

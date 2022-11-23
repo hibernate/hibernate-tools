@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -65,7 +66,11 @@ public class RevengConfiguration {
 	}
 	
 	public Iterator<PersistentClass> getClassMappings() {
-		return getMetadata().getEntityBindings().iterator();
+		if (metadata != null) {
+			return metadata.getEntityBindings().iterator();
+		} else {
+			return Collections.emptyIterator();
+		}
 	}
 		
 }
