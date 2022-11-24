@@ -249,4 +249,16 @@ public class RevengConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testBuildMappings() {
+		try {
+			revengConfiguration.buildMappings();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildMappings' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
 }

@@ -108,4 +108,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public void buildMappings() {
+		throw new RuntimeException(
+				"Method 'buildMappings' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 }
