@@ -126,4 +126,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public void getEntityResolver() {
+		throw new RuntimeException(
+				"Method 'getEntityResolver' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 }

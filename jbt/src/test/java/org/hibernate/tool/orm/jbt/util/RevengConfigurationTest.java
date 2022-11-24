@@ -285,4 +285,16 @@ public class RevengConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testGetGetEntityResolver() {
+		try {
+			revengConfiguration.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
 }
