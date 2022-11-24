@@ -148,7 +148,7 @@ public class NativeConfigurationTest {
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
 		field.set(nativeConfiguration, namingStrategy);
 		assertNotNull(nativeConfiguration.getNamingStrategy());
-		assertSame(field.get(nativeConfiguration), namingStrategy);
+		assertSame(nativeConfiguration.getNamingStrategy(), namingStrategy);
 	}
 	
 	@Test
@@ -187,4 +187,15 @@ public class NativeConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testGetEntityResolver() throws Exception {
+		Field field = NativeConfiguration.class.getDeclaredField("entityResolver");
+		field.setAccessible(true);
+		assertNull(nativeConfiguration.getEntityResolver());
+		EntityResolver entityResolver = new DefaultHandler();
+		field.set(nativeConfiguration, entityResolver);
+		assertNotNull(nativeConfiguration.getEntityResolver());
+		assertSame(nativeConfiguration.getEntityResolver(), entityResolver);
+	}
+	
 }

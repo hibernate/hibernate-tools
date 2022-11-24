@@ -37,6 +37,12 @@ public class NativeConfiguration extends Configuration {
 		this.entityResolver = entityResolver;
 	}
 	
+	public EntityResolver getEntityResolver() {
+		// This method is not supported anymore in class Configuration from Hibernate 5+
+		// Returning the cached EntityResolver for bookkeeping purposes
+		return entityResolver;
+	}
+	
 	public void setNamingStrategy(NamingStrategy namingStrategy) {
 		// The method Configuration.setNamingStrategy() is not supported 
 		// anymore from Hibernate 5+.
