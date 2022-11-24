@@ -21,6 +21,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -159,6 +160,18 @@ public class NativeConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		try {
+			nativeConfiguration.setReverseEngineeringStrategy(new DefaultStrategy());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + NativeConfiguration.class.getName());
 		}
 	}
 

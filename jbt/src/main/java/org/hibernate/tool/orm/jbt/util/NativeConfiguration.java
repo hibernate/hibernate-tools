@@ -17,6 +17,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -89,6 +90,12 @@ public class NativeConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
+	public void setReverseEngineeringStrategy(RevengStrategy strategy) {
+		throw new RuntimeException(
+				"Method 'setReverseEngineeringStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
+
 	private Metadata getMetadata() {
 		if (metadata == null) {
 			buildMetadata();
