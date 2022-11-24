@@ -114,4 +114,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public void buildSessionFactory() {
+		throw new RuntimeException(
+				"Method 'buildSessionFactory' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 }

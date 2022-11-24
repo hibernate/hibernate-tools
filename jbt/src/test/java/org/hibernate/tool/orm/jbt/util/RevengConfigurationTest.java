@@ -261,4 +261,16 @@ public class RevengConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testBuildSessionFactory() {
+		try {
+			revengConfiguration.buildSessionFactory();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildSessionFactory' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
 }
