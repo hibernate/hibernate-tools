@@ -175,4 +175,16 @@ public class NativeConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testReadFromJDBC() {
+		try {
+			nativeConfiguration.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+	}
+
 }

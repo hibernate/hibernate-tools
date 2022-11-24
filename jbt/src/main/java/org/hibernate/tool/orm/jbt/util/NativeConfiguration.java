@@ -95,7 +95,13 @@ public class NativeConfiguration extends Configuration {
 				"Method 'setReverseEngineeringStrategy' should not be called on instances of " +
 				this.getClass().getName());
 	}
-
+	
+	public void readFromJDBC() {
+		throw new RuntimeException(
+				"Method 'readFromJDBC' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
 	private Metadata getMetadata() {
 		if (metadata == null) {
 			buildMetadata();
