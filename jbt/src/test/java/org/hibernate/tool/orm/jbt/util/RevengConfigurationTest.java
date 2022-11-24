@@ -273,4 +273,16 @@ public class RevengConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testGetNamingStrategy() {
+		try {
+			revengConfiguration.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+	}
+
 }

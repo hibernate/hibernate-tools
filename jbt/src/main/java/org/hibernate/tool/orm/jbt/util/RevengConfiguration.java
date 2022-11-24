@@ -120,4 +120,10 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public void getNamingStrategy() {
+		throw new RuntimeException(
+				"Method 'getNamingStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 }
