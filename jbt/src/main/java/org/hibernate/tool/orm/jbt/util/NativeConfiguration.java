@@ -83,6 +83,12 @@ public class NativeConfiguration extends Configuration {
 		return getMetadata().getEntityBindings().iterator();
 	}
 	
+	public void setPreferBasicCompositeIds(boolean b) {
+		throw new RuntimeException(
+				"Method 'setPreferBasicCompositeIds' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	private Metadata getMetadata() {
 		if (metadata == null) {
 			buildMetadata();

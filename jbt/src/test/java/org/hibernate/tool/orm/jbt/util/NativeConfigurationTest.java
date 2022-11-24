@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -149,4 +150,16 @@ public class NativeConfigurationTest {
 		assertSame(field.get(nativeConfiguration), namingStrategy);
 	}
 	
+	@Test
+	public void testBuildSessionFactory() {
+		try {
+			nativeConfiguration.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+	}
+
 }
