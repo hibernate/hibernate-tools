@@ -25,6 +25,7 @@ import jakarta.persistence.Id;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -210,6 +211,19 @@ public class JpaConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetNamingStrategy() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.setNamingStrategy(new DefaultNamingStrategy());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 

@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.xml.sax.EntityResolver;
@@ -74,6 +75,12 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
+	public void setNamingStrategy(NamingStrategy namingStrategy) {
+		throw new RuntimeException(
+				"Method 'setNamingStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}
