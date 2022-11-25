@@ -182,6 +182,23 @@ public class RevengConfigurationTest {
 	}
 	
 	@Test
+	public void testGetClassMapping() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		revengConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
+		revengConfiguration.revengStrategy = new DefaultStrategy();
+		Iterator<PersistentClass> classMappings = revengConfiguration.getClassMappings();
+		assertNull(revengConfiguration.getClassMapping("Foo"));
+		revengConfiguration.readFromJDBC();
+		assertNotNull(revengConfiguration.getClassMapping("Foo"));
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
+	
+	@Test
 	public void testAddFile() {
 		try {
 			revengConfiguration.addFile(new File("Foo"));

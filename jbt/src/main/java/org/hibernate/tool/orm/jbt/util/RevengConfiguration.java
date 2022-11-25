@@ -78,6 +78,10 @@ public class RevengConfiguration {
 		}
 	}
 	
+	public PersistentClass getClassMapping(String name) {
+		return (metadata != null) ? metadata.getEntityBinding(name) : null;
+	}
+	
 	public Configuration addFile(File file) {
 		throw new RuntimeException(
 				"Method 'addFile' should not be called on instances of " +
