@@ -198,4 +198,27 @@ public class NativeConfigurationTest {
 		assertSame(nativeConfiguration.getEntityResolver(), entityResolver);
 	}
 	
+	@Test
+	public void testGetClassMapping() throws Exception {
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.util.NativeConfigurationTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(nativeConfiguration.getClassMapping(fooClassName));
+		metadataField.set(nativeConfiguration, null);
+		nativeConfiguration.addClass(Foo.class);
+		assertNotNull(nativeConfiguration.getClassMapping(fooClassName));
+	}
+	
 }

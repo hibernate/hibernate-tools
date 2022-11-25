@@ -90,6 +90,10 @@ public class NativeConfiguration extends Configuration {
 		return getMetadata().getEntityBindings().iterator();
 	}
 	
+	public PersistentClass getClassMapping(String name) {
+		return getMetadata().getEntityBinding(name);
+	}
+	
 	public void setPreferBasicCompositeIds(boolean b) {
 		throw new RuntimeException(
 				"Method 'setPreferBasicCompositeIds' should not be called on instances of " +
