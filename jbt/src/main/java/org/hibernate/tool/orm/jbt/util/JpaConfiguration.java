@@ -12,6 +12,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
+import org.xml.sax.EntityResolver;
 
 public class JpaConfiguration extends Configuration {
 
@@ -64,6 +65,12 @@ public class JpaConfiguration extends Configuration {
 	public Configuration addFile(File file) {
 		throw new RuntimeException(
 				"Method 'addFile' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
+	public void setEntityResolver(EntityResolver entityResolver) {
+		throw new RuntimeException(
+				"Method 'setEntityResolver' should not be called on instances of " +
 				this.getClass().getName());
 	}
 	

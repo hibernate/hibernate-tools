@@ -30,6 +30,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class JpaConfigurationTest {
 	
@@ -196,6 +197,19 @@ public class JpaConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'addFile' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetEntityResolver() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.setEntityResolver(new DefaultHandler());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 
