@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.util;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -57,6 +58,13 @@ public class JpaConfiguration extends Configuration {
 		metadata = null;
 		sessionFactory = null;
 		return this;
+	}
+	
+	@Override
+	public Configuration addFile(File file) {
+		throw new RuntimeException(
+				"Method 'addFile' should not be called on instances of " +
+				this.getClass().getName());
 	}
 	
 	public String getPersistenceUnit() {

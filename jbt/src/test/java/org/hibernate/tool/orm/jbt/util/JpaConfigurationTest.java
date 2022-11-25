@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -185,6 +186,19 @@ public class JpaConfigurationTest {
 		assertSame(pc.getMappedClass(), FooBar.class);
 	}
 	
+	@Test
+	public void testAddFile() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.addFile(new File("Foo"));
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addFile' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
 	@Entity public class FooBar {
 		@Id public int id;
 	}
