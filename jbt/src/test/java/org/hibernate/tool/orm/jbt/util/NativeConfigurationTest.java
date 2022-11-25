@@ -21,6 +21,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -219,6 +220,31 @@ public class NativeConfigurationTest {
 		metadataField.set(nativeConfiguration, null);
 		nativeConfiguration.addClass(Foo.class);
 		assertNotNull(nativeConfiguration.getClassMapping(fooClassName));
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		Iterator<Table> tableIterator = nativeConfiguration.getTableMappings();
+		assertFalse(tableIterator.hasNext());
+		metadataField.set(nativeConfiguration, null);
+		nativeConfiguration.addClass(Foo.class);
+		tableIterator = nativeConfiguration.getTableMappings();
+		assertTrue(tableIterator.hasNext());
+		Table table = tableIterator.next();
+		assertEquals("NativeConfigurationTest$Foo", table.getName());
 	}
 	
 }

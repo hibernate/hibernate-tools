@@ -17,6 +17,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -92,6 +93,10 @@ public class NativeConfiguration extends Configuration {
 	
 	public PersistentClass getClassMapping(String name) {
 		return getMetadata().getEntityBinding(name);
+	}
+	
+	public Iterator<Table> getTableMappings() {
+		return getMetadata().collectTableMappings().iterator();
 	}
 	
 	public void setPreferBasicCompositeIds(boolean b) {
