@@ -1,12 +1,15 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.util.Properties;
+
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 
 public class WrapperFactory {
 
@@ -40,6 +43,12 @@ public class WrapperFactory {
 	
 	public Object createRevengConfigurationWrapper() {
 		return new RevengConfiguration();
+	}
+
+	public Object createJpaConfigurationWrapper(
+			String persistenceUnit, 
+			Properties properties) {
+		return new JpaConfiguration(persistenceUnit, properties);
 	}
 
 }
