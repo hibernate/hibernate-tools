@@ -23,6 +23,7 @@ import org.h2.Driver;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -193,6 +194,29 @@ public class RevengConfigurationTest {
 		assertNull(revengConfiguration.getClassMapping("Foo"));
 		revengConfiguration.readFromJDBC();
 		assertNotNull(revengConfiguration.getClassMapping("Foo"));
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		revengConfiguration.properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		revengConfiguration.properties.put("hibernate.default_schema", "PUBLIC");
+		revengConfiguration.revengStrategy = new DefaultStrategy();
+		Iterator<Table> tableMappings = revengConfiguration.getTableMappings();
+		assertNotNull(tableMappings);
+		assertFalse(tableMappings.hasNext());
+		revengConfiguration.readFromJDBC();
+		tableMappings = revengConfiguration.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		Table table = tableMappings.next();
+		assertEquals(table.getName(), "FOO");
+		assertFalse(tableMappings.hasNext());
 		statement.execute("DROP TABLE FOO");
 		statement.close();
 		connection.close();

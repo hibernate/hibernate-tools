@@ -9,6 +9,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -80,6 +81,14 @@ public class RevengConfiguration {
 	
 	public PersistentClass getClassMapping(String name) {
 		return (metadata != null) ? metadata.getEntityBinding(name) : null;
+	}
+	
+	public Iterator<Table> getTableMappings() {
+		if (metadata != null) {
+			return metadata.collectTableMappings().iterator();
+		} else {
+			return Collections.emptyIterator();
+		}
 	}
 	
 	public Configuration addFile(File file) {
