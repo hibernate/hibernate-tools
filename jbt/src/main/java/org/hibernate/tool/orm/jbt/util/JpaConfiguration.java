@@ -69,6 +69,17 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
+	@Override
+	public Configuration configure() {
+		return this.configure(new Object());
+	}
+	
+	public Configuration configure(Object... object) {
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public void setEntityResolver(EntityResolver entityResolver) {
 		throw new RuntimeException(
 				"Method 'setEntityResolver' should not be called on instances of " +

@@ -227,6 +227,27 @@ public class JpaConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testConfigure() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		try {
+			jpaConfiguration.configure(new Object());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+		try {
+			jpaConfiguration.configure();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+	
 	@Entity public class FooBar {
 		@Id public int id;
 	}
