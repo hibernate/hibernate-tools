@@ -99,6 +99,12 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
+	public void buildMappings() {
+		throw new RuntimeException(
+				"Method 'buildMappings' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public String getPersistenceUnit() {
 		return persistenceUnit;
 	}

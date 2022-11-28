@@ -261,6 +261,19 @@ public class JpaConfigurationTest {
 		}
 	}
 	
+	@Test
+	public void testBuildMappings() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		try {
+			jpaConfiguration.buildMappings();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildMappings' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
 	@Entity public class FooBar {
 		@Id public int id;
 	}
