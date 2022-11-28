@@ -333,6 +333,19 @@ public class JpaConfigurationTest {
 		assertNotNull(jpaConfiguration.getClassMapping(FooBar.class.getName()));
 	}
 	
+	@Test
+	public void testGetGetEntityResolver() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
 	@Entity public class FooBar {
 		@Id public int id;
 	}
