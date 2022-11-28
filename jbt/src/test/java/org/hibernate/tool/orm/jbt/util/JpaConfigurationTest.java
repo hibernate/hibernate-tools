@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -17,6 +18,9 @@ import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -28,6 +32,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.util.NativeConfigurationTest.Foo;
 import org.junit.jupiter.api.AfterEach;
@@ -346,6 +351,16 @@ public class JpaConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testGetTableMappings() throws Exception {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		Iterator<Table> tableMappings = jpaConfiguration.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		Table table = tableMappings.next();
+		assertEquals(table.getName(), "JpaConfigurationTest$FooBar");
+		assertFalse(tableMappings.hasNext());
+	}
 	@Entity public class FooBar {
 		@Id public int id;
 	}
