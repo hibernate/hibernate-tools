@@ -202,6 +202,19 @@ public class JpaConfigurationTest {
 	}
 
 	@Test
+	public void testAddClass() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.addClass(Object.class);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
+	@Test
 	public void testSetEntityResolver() {
 		try {
 			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);

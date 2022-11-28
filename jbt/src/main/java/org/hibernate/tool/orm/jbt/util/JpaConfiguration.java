@@ -70,6 +70,13 @@ public class JpaConfiguration extends Configuration {
 	}
 	
 	@Override
+	public Configuration addClass(Class pc) {
+		throw new RuntimeException(
+				"Method 'addClass' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
+	@Override
 	public Configuration configure() {
 		return this.configure(new Object());
 	}
