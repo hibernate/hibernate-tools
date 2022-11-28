@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import jakarta.persistence.EntityManagerFactory;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
@@ -15,8 +13,9 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.xml.sax.EntityResolver;
+
+import jakarta.persistence.EntityManagerFactory;
 
 public class JpaConfiguration extends Configuration {
 
@@ -27,7 +26,7 @@ public class JpaConfiguration extends Configuration {
 	
 	public JpaConfiguration(
 			String persistenceUnit, 
-			Map<Object, Object> properties) {
+			Map<?, ?> properties) {
 		this.persistenceUnit = persistenceUnit;
 		if (properties != null) {
 			getProperties().putAll(properties);

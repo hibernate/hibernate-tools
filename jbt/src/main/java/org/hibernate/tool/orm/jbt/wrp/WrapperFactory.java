@@ -1,6 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
-import java.util.Properties;
+import java.util.Map;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -47,7 +47,7 @@ public class WrapperFactory {
 
 	public Object createJpaConfigurationWrapper(
 			String persistenceUnit, 
-			Properties properties) {
+			Map<?,?> properties) {
 		return new JpaConfiguration(persistenceUnit, properties);
 	}
 
