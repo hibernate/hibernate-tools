@@ -62,6 +62,10 @@ public class JpaConfiguration extends Configuration {
 		return this;
 	}
 	
+	public void buildMappings() {
+		initialize();
+	}
+	
 	@Override
 	public Configuration addFile(File file) {
 		throw new RuntimeException(
@@ -96,12 +100,6 @@ public class JpaConfiguration extends Configuration {
 	public void setNamingStrategy(NamingStrategy namingStrategy) {
 		throw new RuntimeException(
 				"Method 'setNamingStrategy' should not be called on instances of " +
-				this.getClass().getName());
-	}
-		
-	public void buildMappings() {
-		throw new RuntimeException(
-				"Method 'buildMappings' should not be called on instances of " +
 				this.getClass().getName());
 	}
 		

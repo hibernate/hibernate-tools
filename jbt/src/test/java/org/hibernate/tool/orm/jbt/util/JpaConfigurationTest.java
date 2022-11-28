@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -262,18 +263,15 @@ public class JpaConfigurationTest {
 	}
 	
 	@Test
-	public void testBuildMappings() {
+	public void testBuildMappings() throws Exception {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
-		try {
-			jpaConfiguration.buildMappings();
-			fail();
-		} catch (RuntimeException e) {
-			assertEquals(
-					e.getMessage(),
-					"Method 'buildMappings' should not be called on instances of " + JpaConfiguration.class.getName());
-		}
+		Field metadataField = JpaConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(jpaConfiguration));
+		jpaConfiguration.buildMappings();
+		assertNotNull(metadataField.get(jpaConfiguration));
 	}
-
+	
 	@Entity public class FooBar {
 		@Id public int id;
 	}
