@@ -13,6 +13,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.xml.sax.EntityResolver;
 
 public class JpaConfiguration extends Configuration {
@@ -117,6 +119,12 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
+	public void setReverseEngineeringStrategy(RevengStrategy strategy) {
+		throw new RuntimeException(
+				"Method 'setReverseEngineeringStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
 	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider
@@ -129,4 +137,5 @@ public class JpaConfiguration extends Configuration {
 		metadata = entityManagerFactoryBuilder.getMetadata();
 		getProperties().putAll(entityManagerFactory.getProperties());
 	}
+
 }

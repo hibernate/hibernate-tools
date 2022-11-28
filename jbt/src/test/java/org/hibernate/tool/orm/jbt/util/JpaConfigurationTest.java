@@ -28,6 +28,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -282,6 +283,19 @@ public class JpaConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.setReverseEngineeringStrategy(new DefaultStrategy());
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
 	}
 
