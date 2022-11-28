@@ -153,7 +153,7 @@ public class NativeConfigurationTest {
 	}
 	
 	@Test
-	public void testBuildSessionFactory() {
+	public void testSetPreferBasicCompositeIds() {
 		try {
 			nativeConfiguration.setPreferBasicCompositeIds(false);
 			fail();

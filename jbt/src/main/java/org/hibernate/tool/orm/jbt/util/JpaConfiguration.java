@@ -111,6 +111,12 @@ public class JpaConfiguration extends Configuration {
 		return getMetadata().getEntityBindings().iterator();
 	}
 	
+	public void setPreferBasicCompositeIds(boolean b) {
+		throw new RuntimeException(
+				"Method 'setPreferBasicCompositeIds' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider

@@ -272,6 +272,19 @@ public class JpaConfigurationTest {
 		assertNotNull(metadataField.get(jpaConfiguration));
 	}
 	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		try {
+			jpaConfiguration.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
 	@Entity public class FooBar {
 		@Id public int id;
 	}
