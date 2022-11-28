@@ -29,6 +29,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.util.NativeConfigurationTest.Foo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -312,6 +313,13 @@ public class JpaConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testGetClassMapping() throws Exception {
+		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+		assertNull(jpaConfiguration.getClassMapping("Bar"));
+		assertNotNull(jpaConfiguration.getClassMapping(FooBar.class.getName()));
+	}
+	
 	@Entity public class FooBar {
 		@Id public int id;
 	}

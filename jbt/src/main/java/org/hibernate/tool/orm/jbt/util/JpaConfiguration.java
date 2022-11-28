@@ -125,6 +125,10 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
+	public PersistentClass getClassMapping(String name) {
+		return getMetadata().getEntityBinding(name);
+	}
+	
 	public void readFromJDBC() {
 		throw new RuntimeException(
 				"Method 'readFromJDBC' should not be called on instances of " +
