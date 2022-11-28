@@ -125,6 +125,12 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
+	public void readFromJDBC() {
+		throw new RuntimeException(
+				"Method 'readFromJDBC' should not be called on instances of " +
+				this.getClass().getName());
+	}
+	
 	void initialize() {
 		EntityManagerFactoryBuilderImpl entityManagerFactoryBuilder = 
 				HibernateToolsPersistenceProvider

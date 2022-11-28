@@ -299,6 +299,19 @@ public class JpaConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testReadFromJDBC() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
 	@Entity public class FooBar {
 		@Id public int id;
 	}
