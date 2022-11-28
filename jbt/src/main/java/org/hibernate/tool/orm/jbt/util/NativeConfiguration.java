@@ -117,7 +117,7 @@ public class NativeConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
-	private Metadata getMetadata() {
+	public Metadata getMetadata() {
 		if (metadata == null) {
 			buildMetadata();
 		}
