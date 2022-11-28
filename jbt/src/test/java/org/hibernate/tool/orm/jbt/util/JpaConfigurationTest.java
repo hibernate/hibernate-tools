@@ -314,6 +314,19 @@ public class JpaConfigurationTest {
 	}
 
 	@Test
+	public void testGetNamingStrategy() {
+		try {
+			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
+			jpaConfiguration.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+
+	@Test
 	public void testGetClassMapping() throws Exception {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
 		assertNull(jpaConfiguration.getClassMapping("Bar"));

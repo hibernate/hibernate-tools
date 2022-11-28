@@ -129,6 +129,12 @@ public class JpaConfiguration extends Configuration {
 		return getMetadata().getEntityBinding(name);
 	}
 	
+	public NamingStrategy getNamingStrategy() {
+		throw new RuntimeException(
+				"Method 'getNamingStrategy' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public void readFromJDBC() {
 		throw new RuntimeException(
 				"Method 'readFromJDBC' should not be called on instances of " +
