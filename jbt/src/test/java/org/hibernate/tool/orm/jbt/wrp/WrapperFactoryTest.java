@@ -125,6 +125,13 @@ public class WrapperFactoryTest {
 		assertNotNull(configurationWrapper);
 		assertTrue(configurationWrapper instanceof JpaConfiguration);
 	}
+	
+	@Test
+	public void testCreateColumnWrapper() {
+		Object columnWrapper = wrapperFactory.createColumnWrapper();
+		assertNotNull(columnWrapper);
+		assertTrue(columnWrapper instanceof ColumnWrapper);
+	}
 		
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}

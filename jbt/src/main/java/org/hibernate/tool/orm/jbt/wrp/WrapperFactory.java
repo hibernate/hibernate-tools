@@ -51,4 +51,8 @@ public class WrapperFactory {
 		return new JpaConfiguration(persistenceUnit, properties);
 	}
 
+	public Object createColumnWrapper() {
+		return new ColumnWrapper();
+	}
+
 }
