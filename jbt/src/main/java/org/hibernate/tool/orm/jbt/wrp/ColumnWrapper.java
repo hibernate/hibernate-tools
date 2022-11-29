@@ -13,12 +13,31 @@ import org.hibernate.mapping.Column;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.type.spi.TypeConfiguration;
 
-public class ColumnWrapper extends Column {
+public class ColumnWrapper {
+	
+	private Column wrappedColumn = new Column();
+	
+	public String getName() {
+		return wrappedColumn.getName();
+	}
+
+	public Integer getSqlTypeCode() {
+		return wrappedColumn.getSqlTypeCode();
+	}
+
+	public String getSqlType() {
+		return wrappedColumn.getSqlType();
+	}
 
 	public String getSqlType(Configuration configuration) {
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		TypeConfiguration tc = ((MetadataImpl)metadata).getTypeConfiguration();
-		return getSqlType(tc, buildDialect(configuration), metadata);
+		return wrappedColumn.getSqlType(tc, buildDialect(configuration), metadata);
+	}
+	
+	public int getLength() {
+		Long length = wrappedColumn.getLength();
+		return length == null ? Integer.MIN_VALUE : length.intValue();
 	}
 	
 	private Dialect buildDialect(Configuration configuration) {
