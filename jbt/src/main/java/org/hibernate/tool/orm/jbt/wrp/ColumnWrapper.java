@@ -79,6 +79,10 @@ public class ColumnWrapper {
 		return wrappedColumn.isUnique();
 	}
 
+	public void setSqlType(String string) {
+		wrappedColumn.setSqlType(string);
+	}
+
 	private Dialect buildDialect(Configuration configuration) {
 		Map<String, Object> dialectPropertyMap = new HashMap<String, Object>();
 		dialectPropertyMap.put(
