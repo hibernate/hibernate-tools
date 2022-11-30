@@ -46,6 +46,11 @@ public class ColumnWrapper {
 		return DEFAULT_LENGTH;
 	}
 	
+	public int getPrecision() {
+		Integer precision = wrappedColumn.getPrecision();
+		return precision == null ? Integer.MIN_VALUE : precision.intValue();
+	}
+
 	private Dialect buildDialect(Configuration configuration) {
 		Map<String, Object> dialectPropertyMap = new HashMap<String, Object>();
 		dialectPropertyMap.put(
