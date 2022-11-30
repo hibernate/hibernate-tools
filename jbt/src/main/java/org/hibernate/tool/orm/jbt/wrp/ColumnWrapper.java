@@ -17,6 +17,7 @@ public class ColumnWrapper {
 	
 	private static final int DEFAULT_LENGTH = 255;
 	private static final int DEFAULT_PRECISION = 19;
+	private static final int DEFAULT_SCALE = 2;
 	
 	private Column wrappedColumn = new Column();
 	
@@ -59,6 +60,10 @@ public class ColumnWrapper {
 	public Integer getScale() {
 		Integer scale = wrappedColumn.getScale();
 		return scale == null ? Integer.MIN_VALUE : scale.intValue();
+	}
+
+	public int getDefaultScale() {
+		return DEFAULT_SCALE;
 	}
 
 	private Dialect buildDialect(Configuration configuration) {
