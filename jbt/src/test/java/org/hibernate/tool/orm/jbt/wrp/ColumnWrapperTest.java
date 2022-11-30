@@ -125,6 +125,15 @@ public class ColumnWrapperTest {
 		assertNull(value);
 	}
 	
+	@Test
+	public void testIsUnique() {
+		assertFalse(columnWrapper.isUnique());
+		wrappedColumn.setUnique(true);
+		assertTrue(columnWrapper.isUnique());
+		wrappedColumn.setUnique(false);
+		assertFalse(columnWrapper.isUnique());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

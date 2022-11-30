@@ -75,6 +75,10 @@ public class ColumnWrapper {
 		return wrappedColumn.getValue();
 	}
 
+	public boolean isUnique() {
+		return wrappedColumn.isUnique();
+	}
+
 	private Dialect buildDialect(Configuration configuration) {
 		Map<String, Object> dialectPropertyMap = new HashMap<String, Object>();
 		dialectPropertyMap.put(
