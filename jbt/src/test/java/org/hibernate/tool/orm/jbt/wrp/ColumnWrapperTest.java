@@ -2,7 +2,9 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -56,7 +58,7 @@ public class ColumnWrapperTest {
 		Configuration cfg = new Configuration();
 		cfg.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		cfg.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		wrappedColumn.setValue(createIntegerTypeValue());
+		wrappedColumn.setValue(createValue());
 		assertEquals("integer", columnWrapper.getSqlType(cfg));
 	}
 	
@@ -110,7 +112,20 @@ public class ColumnWrapperTest {
 		assertFalse(columnWrapper.isNullable());
 	}
 	
-	private Value createIntegerTypeValue() {
+	@Test
+	public void testGetValue() {
+		Value v = createValue();
+		assertNull(columnWrapper.getValue());
+		wrappedColumn.setValue(v);
+		Value value = columnWrapper.getValue();
+		assertNotNull(value);
+		assertSame(v, value);
+		wrappedColumn.setValue(null);
+		value = columnWrapper.getValue();
+		assertNull(value);
+	}
+	
+	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
 				new Class[] { Value.class }, 
