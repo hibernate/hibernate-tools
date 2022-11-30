@@ -16,6 +16,7 @@ import org.hibernate.type.spi.TypeConfiguration;
 public class ColumnWrapper {
 	
 	private static final int DEFAULT_LENGTH = 255;
+	private static final int DEFAULT_PRECISION = 19;
 	
 	private Column wrappedColumn = new Column();
 	
@@ -49,6 +50,10 @@ public class ColumnWrapper {
 	public int getPrecision() {
 		Integer precision = wrappedColumn.getPrecision();
 		return precision == null ? Integer.MIN_VALUE : precision.intValue();
+	}
+
+	public int getDefaultPrecision() {
+		return DEFAULT_PRECISION;
 	}
 
 	private Dialect buildDialect(Configuration configuration) {
