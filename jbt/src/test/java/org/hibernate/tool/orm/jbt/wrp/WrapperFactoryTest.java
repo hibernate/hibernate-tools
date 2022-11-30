@@ -128,7 +128,7 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateColumnWrapper() {
-		Object columnWrapper = wrapperFactory.createColumnWrapper();
+		Object columnWrapper = wrapperFactory.createColumnWrapper(null);
 		assertNotNull(columnWrapper);
 		assertTrue(columnWrapper instanceof ColumnWrapper);
 	}

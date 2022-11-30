@@ -20,7 +20,11 @@ public class ColumnWrapper {
 	private static final int DEFAULT_PRECISION = 19;
 	private static final int DEFAULT_SCALE = 2;
 	
-	private Column wrappedColumn = new Column();
+	private Column wrappedColumn = null;
+	
+	public ColumnWrapper(String name) {
+		wrappedColumn = new Column(name);
+	}
 	
 	public String getName() {
 		return wrappedColumn.getName();

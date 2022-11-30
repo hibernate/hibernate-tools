@@ -29,7 +29,7 @@ public class ColumnWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		columnWrapper = new ColumnWrapper();
+		columnWrapper = new ColumnWrapper(null);
 		Field columnField = ColumnWrapper.class.getDeclaredField("wrappedColumn");
 		columnField.setAccessible(true);
 		wrappedColumn = (Column)columnField.get(columnWrapper);
