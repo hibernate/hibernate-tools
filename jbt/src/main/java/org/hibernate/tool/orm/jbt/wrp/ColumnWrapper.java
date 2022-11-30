@@ -15,6 +15,8 @@ import org.hibernate.type.spi.TypeConfiguration;
 
 public class ColumnWrapper {
 	
+	private static final int DEFAULT_LENGTH = 255;
+	
 	private Column wrappedColumn = new Column();
 	
 	public String getName() {
@@ -38,6 +40,10 @@ public class ColumnWrapper {
 	public int getLength() {
 		Long length = wrappedColumn.getLength();
 		return length == null ? Integer.MIN_VALUE : length.intValue();
+	}
+	
+	public int getDefaultLength() {
+		return DEFAULT_LENGTH;
 	}
 	
 	private Dialect buildDialect(Configuration configuration) {

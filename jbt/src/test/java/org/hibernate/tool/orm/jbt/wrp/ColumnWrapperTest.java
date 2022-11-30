@@ -65,6 +65,13 @@ public class ColumnWrapperTest {
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getLength());
 	}
 	
+	@Test
+	public void testGetDefaultLength() throws Exception {
+		Field defaultLengthField = ColumnWrapper.class.getDeclaredField("DEFAULT_LENGTH");
+		defaultLengthField.setAccessible(true);
+		assertEquals(defaultLengthField.get(null), columnWrapper.getDefaultLength());
+	}
+	
 	private Value createIntegerTypeValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
