@@ -1,7 +1,9 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -98,6 +100,14 @@ public class ColumnWrapperTest {
 		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
 		defaultScaleField.setAccessible(true);
 		assertEquals(defaultScaleField.get(null), columnWrapper.getDefaultScale());
+	}
+	
+	@Test
+	public void testIsNullable() {
+		wrappedColumn.setNullable(true);
+		assertTrue(columnWrapper.isNullable());
+		wrappedColumn.setNullable(false);
+		assertFalse(columnWrapper.isNullable());
 	}
 	
 	private Value createIntegerTypeValue() {

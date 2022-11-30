@@ -66,6 +66,10 @@ public class ColumnWrapper {
 		return DEFAULT_SCALE;
 	}
 
+	public boolean isNullable() {
+		return wrappedColumn.isNullable();
+	}
+
 	private Dialect buildDialect(Configuration configuration) {
 		Map<String, Object> dialectPropertyMap = new HashMap<String, Object>();
 		dialectPropertyMap.put(
