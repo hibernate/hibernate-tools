@@ -16,6 +16,7 @@ import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -23,6 +24,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -245,6 +247,13 @@ public class NativeConfigurationTest {
 		assertTrue(tableIterator.hasNext());
 		Table table = tableIterator.next();
 		assertEquals("NativeConfigurationTest$Foo", table.getName());
+	}
+	
+	@Test
+	public void testBuildSessionFactory() throws Exception {
+		SessionFactory sessionFactory = nativeConfiguration.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
 	}
 	
 }

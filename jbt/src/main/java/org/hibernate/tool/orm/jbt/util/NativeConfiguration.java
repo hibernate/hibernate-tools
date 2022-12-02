@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
@@ -19,6 +20,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -122,6 +124,11 @@ public class NativeConfiguration extends Configuration {
 			buildMetadata();
 		}
 		return metadata;
+	}
+	
+	@Override
+	public SessionFactory buildSessionFactory() {
+		return new SessionFactoryWrapper(super.buildSessionFactory());
 	}
 	
 	private void buildMetadata() {
