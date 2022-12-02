@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
 
 public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
@@ -16,6 +17,10 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 
 	public Map<String, EntityPersister> getAllClassMetadata() {
 		return getMetamodel().entityPersisters();
+	}
+
+	public Map<String, CollectionPersister> getAllCollectionMetadata() {
+		return getMetamodel().collectionPersisters();
 	}
 	
 }
