@@ -18,28 +18,26 @@ import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Properties;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.util.NativeConfigurationTest.Foo;
+import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.helpers.DefaultHandler;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 public class JpaConfigurationTest {
 	
@@ -115,18 +113,10 @@ public class JpaConfigurationTest {
 	
 	@Test
 	public void testSetProperties() {
-		Object dummy = Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { Metadata.class, SessionFactory.class },
-				new InvocationHandler() {					
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-				});
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
-		jpaConfiguration.metadata = (Metadata)dummy;
-		jpaConfiguration.sessionFactory = (SessionFactory)dummy;
+		jpaConfiguration.metadata = (Metadata)createDummy(Metadata.class);
+		jpaConfiguration.sessionFactory = new SessionFactoryWrapper(
+				(SessionFactory)createDummy(SessionFactoryImplementor.class));
 		assertNull(jpaConfiguration.getProperty("foo"));
 		Properties properties = new Properties();
 		properties.put("foo", "bar");
@@ -139,20 +129,12 @@ public class JpaConfigurationTest {
 	
 	@Test
 	public void testAddProperties() {
-		Object dummy = Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { Metadata.class, SessionFactory.class },
-				new InvocationHandler() {					
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-				});
 		Properties properties = new Properties();
 		properties.put("foo", "bar");
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
-		jpaConfiguration.metadata = (Metadata)dummy;
-		jpaConfiguration.sessionFactory = (SessionFactory)dummy;
+		jpaConfiguration.metadata = (Metadata)createDummy(Metadata.class);
+		jpaConfiguration.sessionFactory = new SessionFactoryWrapper(
+				(SessionFactory)createDummy(SessionFactoryImplementor.class));
 		assertEquals("bar", jpaConfiguration.getProperty("foo"));
 		assertNull(jpaConfiguration.getProperty("bar"));
 		properties = new Properties();
@@ -361,8 +343,21 @@ public class JpaConfigurationTest {
 		assertEquals(table.getName(), "JpaConfigurationTest$FooBar");
 		assertFalse(tableMappings.hasNext());
 	}
+	
 	@Entity public class FooBar {
 		@Id public int id;
 	}
 
+	private Object createDummy(Class<?> interf) {
+		return Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { interf },
+				new InvocationHandler() {					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+				});
+
+	}
 }

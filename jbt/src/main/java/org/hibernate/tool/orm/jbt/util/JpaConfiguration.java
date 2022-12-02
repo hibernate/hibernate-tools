@@ -9,10 +9,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.xml.sax.EntityResolver;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -20,7 +22,7 @@ import jakarta.persistence.EntityManagerFactory;
 public class JpaConfiguration extends Configuration {
 
 	Metadata metadata = null;
-	SessionFactory sessionFactory;
+	SessionFactoryWrapper sessionFactory;
 	
 	String persistenceUnit;
 	
@@ -159,7 +161,8 @@ public class JpaConfiguration extends Configuration {
 							getProperties());
 		EntityManagerFactory entityManagerFactory = 
 				entityManagerFactoryBuilder.build();
-		sessionFactory = (SessionFactory)entityManagerFactory;
+		sessionFactory = new SessionFactoryWrapper(
+				(SessionFactoryImplementor)entityManagerFactory);
 		metadata = entityManagerFactoryBuilder.getMetadata();
 		getProperties().putAll(entityManagerFactory.getProperties());
 	}
