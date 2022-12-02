@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MappingException;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
@@ -21,6 +22,14 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 
 	public Map<String, CollectionPersister> getAllCollectionMetadata() {
 		return getMetamodel().collectionPersisters();
+	}
+
+	public EntityPersister getClassMetadata(String string) {
+		return getAllClassMetadata().get(string);
+	}
+	
+	public EntityPersister getClassMetadata(Class<?> clazz) {
+		return getClassMetadata(clazz.getName());
 	}
 	
 }

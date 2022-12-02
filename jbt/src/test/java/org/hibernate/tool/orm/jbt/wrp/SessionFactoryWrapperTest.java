@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -92,4 +93,12 @@ public class SessionFactoryWrapperTest {
 	}
 	
 
+	@Test
+	public void testGetClassMetadata() throws Exception {
+		assertNull(sessionFactoryWrapper.getClassMetadata("foo"));
+		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class.getName()));
+		assertNull(sessionFactoryWrapper.getClassMetadata(Object.class));
+		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class));
+	}
+	
 }
