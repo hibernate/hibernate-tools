@@ -1,16 +1,19 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,5 +74,14 @@ public class SessionFactoryWrapperTest {
 	public void testConstruction() {
 		assertNotNull(sessionFactoryWrapper);
 	}
+	
+	@Test
+	public void testGetAllClassMetadata() throws Exception {
+		Map<String, EntityPersister> allClassMetadata = sessionFactoryWrapper.getAllClassMetadata();
+		assertNotNull(allClassMetadata);
+		assertEquals(1, allClassMetadata.size());
+		assertNotNull(allClassMetadata.get(Foo.class.getName()));
+	}
+	
 
 }
