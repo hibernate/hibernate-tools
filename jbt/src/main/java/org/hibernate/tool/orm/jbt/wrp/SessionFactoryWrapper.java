@@ -31,5 +31,9 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 	public EntityPersister getClassMetadata(Class<?> clazz) {
 		return getClassMetadata(clazz.getName());
 	}
+
+	public CollectionPersister getCollectionMetadata(String string) {
+		return getAllCollectionMetadata().get(string); 
+	}
 	
 }

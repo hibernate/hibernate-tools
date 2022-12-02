@@ -101,4 +101,10 @@ public class SessionFactoryWrapperTest {
 		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class));
 	}
 	
+	@Test
+	public void testGetCollectionMetadata() throws Exception {
+		assertNull(sessionFactoryWrapper.getCollectionMetadata("bars"));
+		assertNotNull(sessionFactoryWrapper.getCollectionMetadata(Foo.class.getName() + ".bars"));
+	}	
+	
 }
