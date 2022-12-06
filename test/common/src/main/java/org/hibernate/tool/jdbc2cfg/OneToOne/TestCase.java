@@ -146,9 +146,7 @@ public class TestCase {
 	public void testBuildMappings() {	
 		assertNotNull(metadata);		
 	}
-	
-	// TODO HBX-2232: Investigate, fix and reenable failing tests after update to 6.0.0.Beta1
-	@Disabled
+
 	@Test
 	public void testGenerateMappingAndReadable() throws MalformedURLException {
 		HbmExporter hme = new HbmExporter();
