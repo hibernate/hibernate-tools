@@ -18,6 +18,7 @@ public class EntityPersisterWrapperFactory {
 	public static interface EntityPersisterExtension extends EntityPersister {
 		boolean isInstanceOfAbstractEntityPersister();
 		Object getTuplizerPropertyValue(Object entity, int i);
+		Integer getPropertyIndexOrNull(String propertyName);
 	}
 	
 	private static class EntityPersisterInvocationHandler implements InvocationHandler {
@@ -34,6 +35,8 @@ public class EntityPersisterWrapperFactory {
 				return true;
 			} else if ("getTuplizerPropertyValue".equals(method.getName())) {
 				return delegate.getValue(args[0], (int)args[1]);
+			} else if ("getPropertyIndexOrNull".equals(method.getName())) {
+				return delegate.getEntityMetamodel().getPropertyIndexOrNull((String)args[0]);
 			} else {
 				return method.invoke(delegate, args);
 			}
