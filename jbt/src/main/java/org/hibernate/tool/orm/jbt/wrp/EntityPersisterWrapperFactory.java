@@ -11,12 +11,13 @@ public class EntityPersisterWrapperFactory {
 	public static Object create(EntityPersister delegate) {
 		return Proxy.newProxyInstance(
 				EntityPersisterWrapperFactory.class.getClassLoader(), 
-				new Class[] { EntityPersister.class, EntityPersisterExtension.class }, 
+				new Class[] { EntityPersisterExtension.class }, 
 				new EntityPersisterInvocationHandler(delegate));
 	}
 	
-	public static interface EntityPersisterExtension {
+	public static interface EntityPersisterExtension extends EntityPersister {
 		boolean isInstanceOfAbstractEntityPersister();
+		Object getTuplizerPropertyValue(Object entity, int i);
 	}
 	
 	private static class EntityPersisterInvocationHandler implements InvocationHandler {
@@ -31,10 +32,12 @@ public class EntityPersisterWrapperFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if ("isInstanceOfAbstractEntityPersister".equals(method.getName())) {
 				return true;
+			} else if ("getTuplizerPropertyValue".equals(method.getName())) {
+				return delegate.getValue(args[0], (int)args[1]);
 			} else {
 				return method.invoke(delegate, args);
 			}
 		}	
 	}
-
+	
 }
