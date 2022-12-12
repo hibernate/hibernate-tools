@@ -91,7 +91,7 @@
         <google-java-format.version>1.15.0</google-java-format.version>
         <h2.version>2.1.214</h2.version>
         <hibernate-commons-annotations.version>6.0.5.Final</hibernate-commons-annotations.version>
-        <hibernate-orm.version>6.1.5.Final</hibernate-orm.version>
+        <hibernate-orm.version>6.1.6.Final</hibernate-orm.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
         <jboss-logging.version>3.5.0.Final</jboss-logging.version>
