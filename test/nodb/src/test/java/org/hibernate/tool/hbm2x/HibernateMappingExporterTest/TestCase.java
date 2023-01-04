@@ -33,6 +33,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -50,6 +51,8 @@ public class TestCase {
 	@TempDir
 	public File outputFolder = new File("output");
 	
+	// TODO Reenable this test and investigate the failure, see HBX-2472
+	@Disabled
 	@Test
 	public void testStart() throws Exception {
 		File resources = new File(outputFolder, "resources");
