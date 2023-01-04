@@ -67,11 +67,8 @@
             	<module>nodb</module>
             	<module>common</module>
             	<module>h2</module>
-<!-- ignore the tests in the maven module after the update to ORM 6.2.0.CR1 
-     this is tracked by HBX-2472, the failure needs to be investigated and fixed 
 				<module>maven</module>
--->
-          	</modules> 
+         	</modules> 
        	</profile>
        	<profile>
      		<id>hsql</id>
