@@ -139,8 +139,6 @@ public class TestCase {
 		assertEquals(node.getAttribute( "access" ),"field");
 	}
 	
-	// TODO Reenable this test and investigate the failure, see HBX-2472
-	@Disabled
 	@Test
 	public void testCollectionId() throws Exception {
 		File outputXml = new File(
