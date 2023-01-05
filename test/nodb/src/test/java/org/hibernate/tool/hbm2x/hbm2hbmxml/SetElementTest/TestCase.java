@@ -87,8 +87,6 @@ public class TestCase {
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml"));
 	}
 
-	// TODO Reenable this test and investigate the failure, see HBX-2472
-	@Disabled
 	@Test
 	public void testReadable() {
         File searchHbmXml =	new File(
