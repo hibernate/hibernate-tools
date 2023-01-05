@@ -94,8 +94,6 @@ public class TestCase {
 				"/org/hibernate/tool/hbm2x/hbm2hbmxml/IdBagTest/Group.hbm.xml"));		
 	}
 	
-	// TODO Reenable this test and investigate the failure, see HBX-2472
-	@Disabled
 	@Test
 	public void testArtifactCollection() {
 		assertEquals(
