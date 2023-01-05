@@ -81,8 +81,6 @@ public class TestCase {
 		hbmexporter.start();
 	}
 	
-	// TODO Reenable this test and investigate the failure, see HBX-2472
-	@Disabled
 	@Test
 	public void testAllFilesExistence() {
 		assertFalse(new File(
