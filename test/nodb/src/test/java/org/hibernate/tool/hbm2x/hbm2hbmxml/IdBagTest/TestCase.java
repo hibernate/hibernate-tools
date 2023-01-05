@@ -101,8 +101,6 @@ public class TestCase {
 				hbmexporter.getArtifactCollector().getFileCount("hbm.xml"));
 	}
 	
-	// TODO Reenable this test and investigate the failure, see HBX-2472
-	@Disabled
 	@Test
 	public void testReadable() {
         ArrayList<File> files = new ArrayList<File>(4); 
