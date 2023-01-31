@@ -8,10 +8,10 @@ import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ public class SessionWrapperFactoryTest {
 	@TempDir
 	public File tempDir;
 	
-	private Session sessionWrapper = null;
+	private SessionImplementor sessionWrapper = null;
 	
 	@BeforeEach
 	public void before() throws Exception {
@@ -64,7 +64,7 @@ public class SessionWrapperFactoryTest {
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		SessionFactoryImplementor sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		SessionImplementor session = sessionFactory.openSession();
 		sessionWrapper = SessionWrapperFactory.createSessionWrapper(session);
 	}
 	

@@ -4,22 +4,22 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.Session;
+import org.hibernate.engine.spi.SessionImplementor;
 
 public class SessionWrapperFactory {
 	
-	public static Session createSessionWrapper(Session session) {
-		return (Session)Proxy.newProxyInstance(
+	public static SessionImplementor createSessionWrapper(SessionImplementor session) {
+		return (SessionImplementor)Proxy.newProxyInstance(
 				SessionWrapperFactory.class.getClassLoader(), 
-				new Class[] { Session.class }, 
+				new Class[] { SessionImplementor.class }, 
 				new SessionWrapperInvocationHandler(session));
 	}
 	
 	private static class SessionWrapperInvocationHandler implements InvocationHandler {
 		
-		private Session session = null;
+		private SessionImplementor session = null;
 		
-		private SessionWrapperInvocationHandler(Session session) {
+		private SessionWrapperInvocationHandler(SessionImplementor session) {
 			this.session = session;
 		}
 
