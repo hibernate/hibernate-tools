@@ -119,5 +119,12 @@ public class SessionWrapperFactoryTest {
 		assertFalse(sessionWrapper.contains(second));
 		assertFalse(sessionWrapper.contains("blah"));
 	}
+	
+	@Test
+	public void testCreateCriteria() {
+		assertNotNull(
+				((SessionWrapperFactory.SessionImplementorExtension)sessionWrapper)
+				.createCriteria(Foo.class));
+	}
 
 }
