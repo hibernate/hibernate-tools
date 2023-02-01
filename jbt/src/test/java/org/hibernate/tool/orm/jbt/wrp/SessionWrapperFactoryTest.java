@@ -1,6 +1,8 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +49,8 @@ public class SessionWrapperFactoryTest {
 	@TempDir
 	public File tempDir;
 	
-	private SessionImplementor sessionWrapper = null;
+	private SessionFactoryImplementor sessionFactory, sessionFactoryWrapper = null;
+	private SessionImplementor session, sessionWrapper = null;
 	
 	@BeforeEach
 	public void before() throws Exception {
@@ -63,14 +66,26 @@ public class SessionWrapperFactoryTest {
 		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		SessionFactoryImplementor sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
-		SessionImplementor session = sessionFactory.openSession();
-		sessionWrapper = SessionWrapperFactory.createSessionWrapper(session);
+		sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
+	    sessionFactoryWrapper = new SessionFactoryWrapper(sessionFactory);
+		session = sessionFactory.openSession();
+		sessionWrapper = SessionWrapperFactory.createSessionWrapper(sessionFactoryWrapper, session);
 	}
 	
 	@Test
 	public void testConstruction() {
+		assertNotNull(sessionFactory);
+		assertNotNull(sessionFactoryWrapper);
+		assertNotNull(session);
 		assertNotNull(sessionWrapper);
+	}
+	
+	@Test
+	public void testGetSessionFactory() {
+		assertSame(sessionFactory, session.getSessionFactory());
+		assertSame(sessionFactoryWrapper, sessionWrapper.getSessionFactory());
+		assertNotSame(sessionFactory, sessionWrapper.getSessionFactory());
+		assertNotSame(sessionFactoryWrapper, session.getSessionFactory());
 	}
 
 }

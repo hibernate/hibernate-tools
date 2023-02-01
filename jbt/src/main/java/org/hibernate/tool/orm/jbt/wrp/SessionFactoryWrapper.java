@@ -17,7 +17,7 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 	
 	@Override
 	public SessionImplementor openSession() {
-		return SessionWrapperFactory.createSessionWrapper(super.openSession());
+		return SessionWrapperFactory.createSessionWrapper(this, super.openSession());
 	}
 	
 	public Map<String, EntityPersister> getAllClassMetadata() {
