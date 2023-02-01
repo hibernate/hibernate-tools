@@ -101,5 +101,12 @@ public class SessionWrapperFactoryTest {
 		session.close();
 		assertFalse(sessionWrapper.isOpen());
 	}
+	
+	@Test
+	public void testClose() {
+		assertTrue(session.isOpen());
+		sessionWrapper.close();
+		assertFalse(session.isOpen());
+	}
 
 }
