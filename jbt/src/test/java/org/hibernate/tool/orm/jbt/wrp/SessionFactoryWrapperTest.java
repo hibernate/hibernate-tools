@@ -3,14 +3,18 @@ package org.hibernate.tool.orm.jbt.wrp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -70,6 +74,14 @@ public class SessionFactoryWrapperTest {
 		configuration.configure(cfgXmlFile);
 		sessionFactoryWrapper = new SessionFactoryWrapper(
 				(SessionFactoryImplementor)configuration.buildSessionFactory());
+	}
+	
+	@Test
+	public void testOpenSession() {
+		Session session = sessionFactoryWrapper.openSession();
+		assertTrue(session instanceof Proxy);
+		InvocationHandler invocationHandler = Proxy.getInvocationHandler(session);
+		assertEquals("org.hibernate.tool.orm.jbt.wrp.SessionWrapperFactory$SessionWrapperInvocationHandler", invocationHandler.getClass().getName());
 	}
 	
 	@Test

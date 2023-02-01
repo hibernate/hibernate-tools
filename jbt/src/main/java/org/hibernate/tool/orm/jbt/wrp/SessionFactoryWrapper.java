@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
 
@@ -12,6 +13,11 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 	
 	public SessionFactoryWrapper(SessionFactory delegate) {
 		super((SessionFactoryImplementor)delegate);
+	}
+	
+	@Override
+	public SessionImplementor openSession() {
+		return SessionWrapperFactory.createSessionWrapper(super.openSession());
 	}
 	
 	public Map<String, EntityPersister> getAllClassMetadata() {
