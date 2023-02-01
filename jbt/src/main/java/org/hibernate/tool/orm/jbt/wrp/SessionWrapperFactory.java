@@ -34,8 +34,22 @@ public class SessionWrapperFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if ("getSessionFactory".equals(method.getName())) {
 				return sessionFactory;
+			} else if ("contains".equals(method.getName())) {
+				return contains(args[0]);
 			}
 			return method.invoke(session, args);
+		}
+		
+		private boolean contains(Object o) {
+			boolean result = false;
+			try {
+				result = session.contains(o);
+			} catch (IllegalArgumentException e) {
+				if (!e.getMessage().startsWith("Not an entity [")) {
+					throw e;
+				}
+			}
+			return result;
 		}
 		
 	}
