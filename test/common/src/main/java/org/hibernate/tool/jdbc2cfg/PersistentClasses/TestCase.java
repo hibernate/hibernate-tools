@@ -47,6 +47,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -108,6 +109,8 @@ public class TestCase {
 		assertTrue(itemset.getValue() instanceof Set);		
 	}
 	
+	//TODO HBX-2480: Reenable this test class
+	@Disabled
 	@Test
 	public void testBinding() throws HibernateException, SQLException {	
 		

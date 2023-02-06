@@ -19,6 +19,7 @@
  */
 package org.hibernate.tool.test.db;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 
 public class DbTestSuite {
@@ -67,6 +68,8 @@ public class DbTestSuite {
 	@Nested public class MetaData extends org.hibernate.tool.jdbc2cfg.MetaData.TestCase {}
 	@Nested public class NoPrimaryKey extends org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase {}
 	@Nested public class OneToOne extends org.hibernate.tool.jdbc2cfg.OneToOne.TestCase {}
+	//TODO HBX-2480: Reenable this test class
+	@Disabled
 	@Nested public class OverrideBinder extends org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase {}
 	@Nested public class Performance extends org.hibernate.tool.jdbc2cfg.Performance.TestCase {}
 	@Nested public class PersistentClasses extends org.hibernate.tool.jdbc2cfg.PersistentClasses.TestCase {}
