@@ -67,8 +67,7 @@
             	<module>nodb</module>
             	<module>common</module>
             	<module>h2</module>
- <!-- TODO HBX-2480: Reenable the Maven test module            	
-				<module>maven</module> -->
+				<module>maven</module> 
          	</modules> 
        	</profile>
        	<profile>
