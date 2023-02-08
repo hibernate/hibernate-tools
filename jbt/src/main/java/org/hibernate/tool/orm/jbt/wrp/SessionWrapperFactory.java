@@ -69,7 +69,7 @@ public class SessionWrapperFactory {
 			CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(persistentClass);
 			Root root = criteriaQuery.from(persistentClass);
 			criteriaQuery.select(root);
-			return session.createQuery(criteriaQuery);
+			return CriteriaWrapperFactory.createCriteriaWrapper(session.createQuery(criteriaQuery));
 		}
 		
 	}

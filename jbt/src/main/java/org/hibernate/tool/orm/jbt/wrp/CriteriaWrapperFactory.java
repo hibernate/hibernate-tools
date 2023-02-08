@@ -22,7 +22,7 @@ public class CriteriaWrapperFactory {
 		}
 	}
 	
-	private static class CriteriaInvocationHandler implements InvocationHandler {
+	static class CriteriaInvocationHandler implements InvocationHandler {
 		
 		Query target = null;
 		

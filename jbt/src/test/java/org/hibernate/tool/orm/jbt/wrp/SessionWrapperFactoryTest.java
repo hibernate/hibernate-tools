@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +23,8 @@ import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import jakarta.persistence.Query;
 
 public class SessionWrapperFactoryTest {
 	
@@ -122,9 +126,11 @@ public class SessionWrapperFactoryTest {
 	
 	@Test
 	public void testCreateCriteria() {
-		assertNotNull(
-				((SessionWrapperFactory.SessionImplementorExtension)sessionWrapper)
-				.createCriteria(Foo.class));
+		Query query = ((SessionWrapperFactory.SessionImplementorExtension)sessionWrapper)
+				.createCriteria(Foo.class);
+		assertTrue(Proxy.isProxyClass(query.getClass()));
+		InvocationHandler invocationHandler = Proxy.getInvocationHandler(query);
+		assertSame(CriteriaWrapperFactory.CriteriaInvocationHandler.class, invocationHandler.getClass());
 	}
 
 }
