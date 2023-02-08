@@ -22,7 +22,7 @@ public class ColumnWrapperTest {
 	private ColumnWrapper columnWrapper = null;
 	
 	@BeforeEach
-	public void beforeEach() throws Exception {
+	public void beforeEach() {
 		columnWrapper = new ColumnWrapper(null);
 	}
 	
@@ -31,7 +31,7 @@ public class ColumnWrapperTest {
 		assertNull(columnWrapper.getSqlType());
 		columnWrapper.setSqlType("foobar");
 		assertEquals("foobar", columnWrapper.getSqlType());
-		columnWrapper.setSqlType(null);
+		columnWrapper = new ColumnWrapper(null);
 		Configuration cfg = new Configuration();
 		cfg.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		cfg.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
