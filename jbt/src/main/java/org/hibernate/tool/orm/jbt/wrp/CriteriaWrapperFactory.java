@@ -16,10 +16,8 @@ public class CriteriaWrapperFactory {
 				new CriteriaInvocationHandler(target));
 	}
 	
-	private static interface CriteriaExtension extends Query {
-		default List<?> list() {
-			return getResultList();
-		}
+	static interface CriteriaExtension extends Query {
+		List<?> list();
 	}
 	
 	static class CriteriaInvocationHandler implements InvocationHandler {
@@ -32,6 +30,9 @@ public class CriteriaWrapperFactory {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			if ("list".equals(method.getName())) {
+				return target.getResultList();
+			}
 			return method.invoke(target, args);
 		}
 		
