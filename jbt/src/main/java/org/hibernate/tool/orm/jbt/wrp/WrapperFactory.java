@@ -2,11 +2,13 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import java.util.Map;
 
+import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -53,6 +55,10 @@ public class WrapperFactory {
 
 	public Object createColumnWrapper(String name) {
 		return new ColumnWrapper(name);
+	}
+
+	public Object createRootClassWrapper() {
+		return new RootClass(DummyMetadataBuildingContext.INSTANCE);
 	}
 
 }
