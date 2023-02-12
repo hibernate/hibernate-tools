@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>5.6.15-SNAPSHOT</version>
+        <version>5.6.15.Final</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-nodb</artifactId>
