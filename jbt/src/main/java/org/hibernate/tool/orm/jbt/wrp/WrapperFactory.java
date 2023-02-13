@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Map;
 
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -59,6 +60,10 @@ public class WrapperFactory {
 
 	public Object createRootClassWrapper() {
 		return new RootClass(DummyMetadataBuildingContext.INSTANCE);
+	}
+
+	public Object createSingleTableSubClassWrapper(Object rootClassWrapper) {
+		return new Subclass((RootClass)rootClassWrapper, DummyMetadataBuildingContext.INSTANCE);
 	}
 
 }
