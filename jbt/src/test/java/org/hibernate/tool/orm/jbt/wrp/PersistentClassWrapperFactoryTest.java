@@ -26,12 +26,10 @@ public class PersistentClassWrapperFactoryTest {
 		InvocationHandler invocationHandler = null;
 		Field wrapperField = PersistentClassWrapperInvocationHandler.class.getDeclaredField("wrapper");
 		wrapperField.setAccessible(true);
-		rootClassWrapper = (PersistentClassWrapper)PersistentClassWrapperFactory
-				.createRootClassWrapper();
+		rootClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		invocationHandler = Proxy.getInvocationHandler(rootClassWrapper);
 		rootClassTarget = (PersistentClass)wrapperField.get(invocationHandler);
-		singleTableSubclassWrapper = (PersistentClassWrapper)PersistentClassWrapperFactory
-				.createSingleTableSubclassWrapper(rootClassWrapper);
+		singleTableSubclassWrapper = PersistentClassWrapperFactory.createSingleTableSubclassWrapper(rootClassWrapper);
 		invocationHandler = Proxy.getInvocationHandler(singleTableSubclassWrapper);
 		singleTableSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
 	}

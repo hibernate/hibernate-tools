@@ -11,15 +11,15 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class PersistentClassWrapperFactory {
 	
-	public static Object createRootClassWrapper() {
-		return Proxy.newProxyInstance(
+	public static PersistentClassWrapper createRootClassWrapper() {
+		return (PersistentClassWrapper)Proxy.newProxyInstance(
 				PersistentClassWrapperFactory.class.getClassLoader(), 
 				new Class[] { PersistentClassWrapper.class }, 
 				new PersistentClassWrapperInvocationHandler(new RootClassWrapperImpl()));
 	}
 	
-	public static Object createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
-		return Proxy.newProxyInstance(
+	public static PersistentClassWrapper createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
+		return (PersistentClassWrapper)Proxy.newProxyInstance(
 				PersistentClassWrapperFactory.class.getClassLoader(), 
 				new Class[] { PersistentClassWrapper.class }, 
 				new PersistentClassWrapperInvocationHandler(
