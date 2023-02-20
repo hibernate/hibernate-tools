@@ -6,6 +6,7 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class PersistentClassWrapperFactory {
@@ -15,6 +16,14 @@ public class PersistentClassWrapperFactory {
 				PersistentClassWrapperFactory.class.getClassLoader(), 
 				new Class[] { PersistentClassWrapper.class }, 
 				new PersistentClassWrapperInvocationHandler(new RootClassWrapperImpl()));
+	}
+	
+	public static Object createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
+		return Proxy.newProxyInstance(
+				PersistentClassWrapperFactory.class.getClassLoader(), 
+				new Class[] { PersistentClassWrapper.class }, 
+				new PersistentClassWrapperInvocationHandler(
+						new SingleTableSubclassWrapperImpl(superClassWrapper.getWrappedObject())));
 	}
 	
 	static class PersistentClassWrapperInvocationHandler implements InvocationHandler {
@@ -42,6 +51,22 @@ public class PersistentClassWrapperFactory {
 		public PersistentClass getWrappedObject() {
 			return this;
 		}
+
+	}
+	
+	static class SingleTableSubclassWrapperImpl 
+			extends SingleTableSubclass 
+			implements PersistentClassWrapper {
+
+		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
+			super(superclass, DummyMetadataBuildingContext.INSTANCE);
+		}
+
+		@Override
+		public PersistentClass getWrappedObject() {
+			return this;
+		}
+		
 	}
 	
 }
