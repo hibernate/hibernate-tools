@@ -4,7 +4,7 @@ import org.hibernate.mapping.PersistentClass;
 
 public interface PersistentClassWrapper {
 
-	PersistentClass getWrappedObject();
+	default PersistentClass getWrappedObject() { return (PersistentClass)this; }
 	String getEntityName();
 	String getClassName();
 

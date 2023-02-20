@@ -47,11 +47,6 @@ public class PersistentClassWrapperFactory {
 			super(DummyMetadataBuildingContext.INSTANCE);
 		}
 
-		@Override
-		public PersistentClass getWrappedObject() {
-			return this;
-		}
-
 	}
 	
 	static class SingleTableSubclassWrapperImpl 
@@ -62,11 +57,6 @@ public class PersistentClassWrapperFactory {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
 
-		@Override
-		public PersistentClass getWrappedObject() {
-			return this;
-		}
-		
 	}
 	
 }
