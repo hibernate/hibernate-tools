@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -150,6 +151,16 @@ public class WrapperFactoryTest {
 		assertNotNull(singleTableSubclassWrapper);
 		assertTrue(singleTableSubclassWrapper instanceof Subclass);
 		assertSame(((Subclass)singleTableSubclassWrapper).getRootClass(), rootClassWrapper);
+	}
+	
+	@Test
+	public void testCreateJoinedSubclassWrapper() {
+		Object rootClassWrapper = wrapperFactory.createRootClassWrapper();
+		Object joinedTableSubclassWrapper = wrapperFactory.createJoinedTableSubClassWrapper(
+				rootClassWrapper);
+		assertNotNull(joinedTableSubclassWrapper);
+		assertTrue(joinedTableSubclassWrapper instanceof JoinedSubclass);
+		assertSame(((Subclass)joinedTableSubclassWrapper).getRootClass(), rootClassWrapper);
 	}
 		
 	@SuppressWarnings("serial")
