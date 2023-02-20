@@ -13,7 +13,9 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -150,9 +152,11 @@ public class WrapperFactoryTest {
 		Object singleTableSubclassWrapper = wrapperFactory.createSingleTableSubClassWrapper(
 				rootClassWrapper);
 		assertNotNull(singleTableSubclassWrapper);
-		assertTrue(singleTableSubclassWrapper instanceof Subclass);
+		assertTrue(singleTableSubclassWrapper instanceof PersistentClassWrapper);
+		PersistentClass persistentClass = ((PersistentClassWrapper)singleTableSubclassWrapper).getWrappedObject();
+		assertTrue(persistentClass instanceof SingleTableSubclass);
 		assertSame(
-				((Subclass)singleTableSubclassWrapper).getRootClass(), 
+				((SingleTableSubclass)persistentClass).getRootClass(), 
 				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
 	}
 	
