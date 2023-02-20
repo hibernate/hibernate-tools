@@ -48,4 +48,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("foo", rootClassWrapper.getEntityName());
 	}
 	
+	@Test
+	public void testGetClassName() {
+		assertNotEquals("foo", rootClassWrapper.getClassName());
+		rootClassTarget.setClassName("foo");
+		assertEquals("foo", rootClassWrapper.getClassName());
+	}
+	
 }

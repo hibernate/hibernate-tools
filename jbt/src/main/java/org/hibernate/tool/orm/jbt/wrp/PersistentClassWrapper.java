@@ -6,5 +6,6 @@ public interface PersistentClassWrapper {
 
 	PersistentClass getWrappedObject();
 	String getEntityName();
+	String getClassName();
 
 }
