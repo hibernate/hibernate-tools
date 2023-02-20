@@ -4,26 +4,24 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class PersistentClassWrapperFactory {
 	
-	public static Object createPersistentClassWrapper(PersistentClass target) {
+	public static Object createRootClassWrapper() {
 		return Proxy.newProxyInstance(
 				PersistentClassWrapperFactory.class.getClassLoader(), 
 				new Class[] { PersistentClassWrapper.class }, 
-				new PersistentClassWrapperInvocationHandler(target));
-	}
-	
-	static interface PersistentClassWrapper {
+				new PersistentClassWrapperInvocationHandler(new RootClassWrapperImpl()));
 	}
 	
 	static class PersistentClassWrapperInvocationHandler implements InvocationHandler {
 		
-		private PersistentClassWrapperImpl wrapper = null;
+		private PersistentClassWrapper wrapper = null;
 
-		public PersistentClassWrapperInvocationHandler(PersistentClass target) {
-			wrapper = new PersistentClassWrapperImpl(target);
+		public PersistentClassWrapperInvocationHandler(PersistentClassWrapper wrapper) {
+			this.wrapper = wrapper;
 		}
 
 		@Override
@@ -33,14 +31,10 @@ public class PersistentClassWrapperFactory {
 		
 	}
 	
-	static class PersistentClassWrapperImpl implements PersistentClassWrapper {
-		
-		private PersistentClass target = null;
-		
-		public PersistentClassWrapperImpl(PersistentClass target) {
-			this.target = target;
+	static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapper {		
+		public RootClassWrapperImpl() {
+			super(DummyMetadataBuildingContext.INSTANCE);
 		}
-
 	}
-
+	
 }
