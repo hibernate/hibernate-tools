@@ -140,7 +140,8 @@ public class WrapperFactoryTest {
 	public void testCreateRootClassWrapper() {
 		Object rootClassWrapper = wrapperFactory.createRootClassWrapper();
 		assertNotNull(rootClassWrapper);
-		assertTrue(rootClassWrapper instanceof RootClass);
+		assertTrue(rootClassWrapper instanceof PersistentClassWrapper);
+		assertTrue(((PersistentClassWrapper)rootClassWrapper).getWrappedObject() instanceof RootClass);
 	}
 	
 	@Test
@@ -150,7 +151,9 @@ public class WrapperFactoryTest {
 				rootClassWrapper);
 		assertNotNull(singleTableSubclassWrapper);
 		assertTrue(singleTableSubclassWrapper instanceof Subclass);
-		assertSame(((Subclass)singleTableSubclassWrapper).getRootClass(), rootClassWrapper);
+		assertSame(
+				((Subclass)singleTableSubclassWrapper).getRootClass(), 
+				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
 	}
 	
 	@Test
@@ -160,7 +163,9 @@ public class WrapperFactoryTest {
 				rootClassWrapper);
 		assertNotNull(joinedTableSubclassWrapper);
 		assertTrue(joinedTableSubclassWrapper instanceof JoinedSubclass);
-		assertSame(((Subclass)joinedTableSubclassWrapper).getRootClass(), rootClassWrapper);
+		assertSame(
+				((Subclass)joinedTableSubclassWrapper).getRootClass(), 
+				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
 	}
 		
 	@SuppressWarnings("serial")
