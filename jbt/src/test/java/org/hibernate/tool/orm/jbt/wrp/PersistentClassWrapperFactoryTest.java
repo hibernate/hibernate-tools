@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -31,6 +32,11 @@ public class PersistentClassWrapperFactoryTest {
 	public void testConstruction() {
 		assertNotNull(rootClassWrapper);
 		assertNotNull(rootClassTarget);
+	}
+	
+	@Test
+	public void testGetWrappedObject() {
+		assertSame(rootClassTarget, rootClassWrapper.getWrappedObject());
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
@@ -32,8 +33,14 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapper {		
+
 		public RootClassWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
+		}
+
+		@Override
+		public PersistentClass getWrappedObject() {
+			return this;
 		}
 	}
 	
