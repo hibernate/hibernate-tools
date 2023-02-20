@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -37,6 +39,13 @@ public class PersistentClassWrapperFactoryTest {
 	@Test
 	public void testGetWrappedObject() {
 		assertSame(rootClassTarget, rootClassWrapper.getWrappedObject());
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		assertNotEquals("foo", rootClassWrapper.getEntityName());
+		rootClassTarget.setEntityName("foo");
+		assertEquals("foo", rootClassWrapper.getEntityName());
 	}
 	
 }
