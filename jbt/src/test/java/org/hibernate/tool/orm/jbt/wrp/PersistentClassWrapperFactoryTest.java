@@ -1,9 +1,11 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -80,6 +82,13 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("foo", rootClassWrapper.getClassName());
 		assertEquals("bar", singleTableSubclassWrapper.getClassName());
 		assertEquals("raz", joinedSubclassWrapper.getClassName());
+	}
+	
+	@Test
+	public void testIsAssignableToRootClass() {
+		assertTrue(rootClassWrapper.isAssignableToRootClass());
+		assertFalse(singleTableSubclassWrapper.isAssignableToRootClass());
+		assertFalse(joinedSubclassWrapper.isAssignableToRootClass());
 	}
 	
 }

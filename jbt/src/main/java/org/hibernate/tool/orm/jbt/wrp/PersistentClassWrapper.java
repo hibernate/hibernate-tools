@@ -7,5 +7,6 @@ public interface PersistentClassWrapper {
 	default PersistentClass getWrappedObject() { return (PersistentClass)this; }
 	String getEntityName();
 	String getClassName();
+	boolean isAssignableToRootClass();
 
 }

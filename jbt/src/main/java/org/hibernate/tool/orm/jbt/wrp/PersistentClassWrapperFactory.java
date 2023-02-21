@@ -54,6 +54,9 @@ public class PersistentClassWrapperFactory {
 		public RootClassWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
 		}
+		public boolean isAssignableToRootClass() {
+			return true;
+		}
 	}
 	
 	static class SingleTableSubclassWrapperImpl 
@@ -61,6 +64,9 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
+		}
+		public boolean isAssignableToRootClass() {
+			return false;
 		}
 	}
 	
@@ -70,7 +76,9 @@ public class PersistentClassWrapperFactory {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
-		
+		public boolean isAssignableToRootClass() {
+			return false;
+		}
 	}
 	
 }
