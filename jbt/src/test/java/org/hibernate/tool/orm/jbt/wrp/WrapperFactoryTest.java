@@ -16,7 +16,6 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.mapping.Subclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -166,9 +165,11 @@ public class WrapperFactoryTest {
 		Object joinedTableSubclassWrapper = wrapperFactory.createJoinedTableSubClassWrapper(
 				rootClassWrapper);
 		assertNotNull(joinedTableSubclassWrapper);
-		assertTrue(joinedTableSubclassWrapper instanceof JoinedSubclass);
+		assertTrue(joinedTableSubclassWrapper instanceof PersistentClassWrapper);
+		PersistentClass persistentClass = ((PersistentClassWrapper)joinedTableSubclassWrapper).getWrappedObject();
+		assertTrue(persistentClass instanceof JoinedSubclass);
 		assertSame(
-				((Subclass)joinedTableSubclassWrapper).getRootClass(), 
+				((JoinedSubclass)persistentClass).getRootClass(), 
 				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
 	}
 		
