@@ -22,5 +22,6 @@ public interface PersistentClassWrapper {
 	PersistentClass getRootClass();
 	Iterator<Property> getPropertyClosureIterator();
 	PersistentClass getSuperclass();
+	Iterator<Property> getPropertyIterator();
 
 }
