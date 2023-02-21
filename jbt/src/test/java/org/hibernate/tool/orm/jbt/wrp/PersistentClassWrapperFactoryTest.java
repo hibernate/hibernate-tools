@@ -121,4 +121,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(rootClassWrapper.hasIdentifierProperty());
 	}
 	
+	@Test
+	public void testIsInstanceOfRootClass() {
+		assertTrue(rootClassWrapper.isInstanceOfRootClass());
+		assertFalse(singleTableSubclassWrapper.isInstanceOfRootClass());
+		assertFalse(joinedSubclassWrapper.isInstanceOfRootClass());
+	}
+	
 }
