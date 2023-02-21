@@ -91,4 +91,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(joinedSubclassWrapper.isAssignableToRootClass());
 	}
 	
+	@Test
+	public void testIsRootClass() {
+		assertTrue(rootClassWrapper.isRootClass());
+		assertFalse(singleTableSubclassWrapper.isRootClass());
+		assertFalse(joinedSubclassWrapper.isRootClass());
+	}
+	
 }
