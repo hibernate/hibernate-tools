@@ -21,5 +21,6 @@ public interface PersistentClassWrapper {
 	default boolean isInstanceOfSubclass() { return Subclass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	PersistentClass getRootClass();
 	Iterator<Property> getPropertyClosureIterator();
+	PersistentClass getSuperclass();
 
 }

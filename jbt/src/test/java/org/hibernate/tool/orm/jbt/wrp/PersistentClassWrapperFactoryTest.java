@@ -154,4 +154,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(property, propertyClosureIterator.next());
 	}
 	
+	@Test
+	public void testGetSuperclass() {
+		assertNull(rootClassWrapper.getSuperclass());
+		assertSame(rootClassTarget, singleTableSubclassTarget.getSuperclass());
+		assertSame(rootClassTarget, joinedSubclassTarget.getSuperclass());
+	}
+	
 }
