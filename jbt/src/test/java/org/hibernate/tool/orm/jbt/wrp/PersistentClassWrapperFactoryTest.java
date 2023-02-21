@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,7 +12,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,10 +50,13 @@ public class PersistentClassWrapperFactoryTest {
 	public void testConstruction() {
 		assertNotNull(rootClassWrapper);
 		assertNotNull(rootClassTarget);
+		assertTrue(rootClassTarget instanceof RootClass);
 		assertNotNull(singleTableSubclassWrapper);
 		assertNotNull(singleTableSubclassTarget);
+		assertTrue(singleTableSubclassTarget instanceof SingleTableSubclass);
 		assertNotNull(joinedSubclassWrapper);
 		assertNotNull(joinedSubclassTarget);
+		assertTrue(joinedSubclassTarget instanceof JoinedSubclass);
 	}
 	
 	@Test
@@ -96,6 +104,14 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(rootClassWrapper.isRootClass());
 		assertFalse(singleTableSubclassWrapper.isRootClass());
 		assertFalse(joinedSubclassWrapper.isRootClass());
+	}
+	
+	@Test
+	public void testGetIdentifierProperty() {
+		assertNull(rootClassWrapper.getIdentifierProperty());
+		Property property = new Property();
+		((RootClass)rootClassTarget).setIdentifierProperty(property);
+		assertSame(property, rootClassWrapper.getIdentifierProperty());
 	}
 	
 }
