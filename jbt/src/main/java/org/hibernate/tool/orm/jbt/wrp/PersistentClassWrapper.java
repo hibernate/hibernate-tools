@@ -17,5 +17,6 @@ public interface PersistentClassWrapper {
 	boolean hasIdentifierProperty();
 	default boolean isInstanceOfRootClass() { return RootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isInstanceOfSubclass() { return Subclass.class.isAssignableFrom(getWrappedObject().getClass()); }
+	PersistentClass getRootClass();
 
 }

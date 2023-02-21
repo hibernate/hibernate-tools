@@ -135,4 +135,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(joinedSubclassWrapper.isInstanceOfSubclass());
 	}
 	
+	@Test
+	public void testGetRootClass() {
+		assertSame(rootClassWrapper.getRootClass(), rootClassTarget);
+		assertSame(singleTableSubclassWrapper.getRootClass(), rootClassTarget);
+		assertSame(joinedSubclassWrapper.getRootClass(), rootClassTarget);
+	}
+	
 }
