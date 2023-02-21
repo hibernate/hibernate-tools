@@ -11,7 +11,7 @@ public interface PersistentClassWrapper {
 	default PersistentClass getWrappedObject() { return (PersistentClass)this; }
 	String getEntityName();
 	String getClassName();
-	boolean isAssignableToRootClass();
+	default boolean isAssignableToRootClass() { return isInstanceOfRootClass(); }
 	default boolean isRootClass() { return getWrappedObject().getClass() == RootClassWrapperImpl.class; }
 	Property getIdentifierProperty();
 	boolean hasIdentifierProperty();
