@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.Iterator;
 
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
@@ -140,6 +141,17 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(rootClassWrapper.getRootClass(), rootClassTarget);
 		assertSame(singleTableSubclassWrapper.getRootClass(), rootClassTarget);
 		assertSame(joinedSubclassWrapper.getRootClass(), rootClassTarget);
+	}
+	
+	@Test
+	public void testGetPropertyClosureIterator() {
+		Iterator<Property> propertyClosureIterator = rootClassWrapper.getPropertyClosureIterator();
+		assertFalse(propertyClosureIterator.hasNext());
+		Property property = new Property();
+		rootClassTarget.addProperty(property);
+		propertyClosureIterator = rootClassWrapper.getPropertyClosureIterator();
+		assertTrue(propertyClosureIterator.hasNext());
+		assertSame(property, propertyClosureIterator.next());
 	}
 	
 }

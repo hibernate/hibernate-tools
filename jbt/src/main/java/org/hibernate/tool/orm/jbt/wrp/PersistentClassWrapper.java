@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -18,5 +20,6 @@ public interface PersistentClassWrapper {
 	default boolean isInstanceOfRootClass() { return RootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isInstanceOfSubclass() { return Subclass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	PersistentClass getRootClass();
+	Iterator<Property> getPropertyClosureIterator();
 
 }
