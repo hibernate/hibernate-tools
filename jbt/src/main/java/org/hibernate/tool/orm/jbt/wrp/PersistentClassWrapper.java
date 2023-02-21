@@ -12,5 +12,6 @@ public interface PersistentClassWrapper {
 	boolean isAssignableToRootClass();
 	default boolean isRootClass() { return getWrappedObject().getClass() == RootClassWrapperImpl.class; }
 	Property getIdentifierProperty();
+	boolean hasIdentifierProperty();
 
 }

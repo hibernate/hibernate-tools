@@ -114,4 +114,11 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(property, rootClassWrapper.getIdentifierProperty());
 	}
 	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertFalse(rootClassWrapper.hasIdentifierProperty());
+		((RootClass)rootClassTarget).setIdentifierProperty(new Property());
+		assertTrue(rootClassWrapper.hasIdentifierProperty());
+	}
+	
 }
