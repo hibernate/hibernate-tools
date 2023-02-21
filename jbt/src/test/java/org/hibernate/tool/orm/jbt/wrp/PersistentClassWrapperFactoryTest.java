@@ -20,6 +20,8 @@ public class PersistentClassWrapperFactoryTest {
 	private PersistentClassWrapper rootClassWrapper = null;
 	private PersistentClass singleTableSubclassTarget = null;
 	private PersistentClassWrapper singleTableSubclassWrapper = null;
+	private PersistentClass joinedSubclassTarget = null;
+	private PersistentClassWrapper joinedSubclassWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -32,6 +34,9 @@ public class PersistentClassWrapperFactoryTest {
 		singleTableSubclassWrapper = PersistentClassWrapperFactory.createSingleTableSubclassWrapper(rootClassWrapper);
 		invocationHandler = Proxy.getInvocationHandler(singleTableSubclassWrapper);
 		singleTableSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		joinedSubclassWrapper = PersistentClassWrapperFactory.createJoinedSubclassWrapper(rootClassWrapper);
+		invocationHandler = Proxy.getInvocationHandler(joinedSubclassWrapper);
+		joinedSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
 	}
 	
 	@Test
@@ -40,32 +45,41 @@ public class PersistentClassWrapperFactoryTest {
 		assertNotNull(rootClassTarget);
 		assertNotNull(singleTableSubclassWrapper);
 		assertNotNull(singleTableSubclassTarget);
+		assertNotNull(joinedSubclassWrapper);
+		assertNotNull(joinedSubclassTarget);
 	}
 	
 	@Test
 	public void testGetWrappedObject() {
 		assertSame(rootClassTarget, rootClassWrapper.getWrappedObject());
 		assertSame(singleTableSubclassTarget, singleTableSubclassWrapper.getWrappedObject());
+		assertSame(joinedSubclassTarget, joinedSubclassWrapper.getWrappedObject());
 	}
 	
 	@Test
 	public void testGetEntityName() {
 		assertNotEquals("foo", rootClassWrapper.getEntityName());
 		assertNotEquals("bar", singleTableSubclassWrapper.getEntityName());
+		assertNotEquals("raz", joinedSubclassWrapper.getEntityName());
 		rootClassTarget.setEntityName("foo");
 		singleTableSubclassTarget.setEntityName("bar");
+		joinedSubclassTarget.setEntityName("raz");
 		assertEquals("foo", rootClassWrapper.getEntityName());
 		assertEquals("bar", singleTableSubclassWrapper.getEntityName());
+		assertEquals("raz", joinedSubclassWrapper.getEntityName());
 	}
 	
 	@Test
 	public void testGetClassName() {
 		assertNotEquals("foo", rootClassWrapper.getClassName());
 		assertNotEquals("bar", singleTableSubclassWrapper.getClassName());
+		assertNotEquals("raz", joinedSubclassWrapper.getClassName());
 		rootClassTarget.setClassName("foo");
 		singleTableSubclassTarget.setClassName("bar");
+		joinedSubclassTarget.setClassName("raz");
 		assertEquals("foo", rootClassWrapper.getClassName());
 		assertEquals("bar", singleTableSubclassWrapper.getClassName());
+		assertEquals("raz", joinedSubclassWrapper.getClassName());
 	}
 	
 }
