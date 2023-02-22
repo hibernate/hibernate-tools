@@ -19,6 +19,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -194,6 +195,14 @@ public class PersistentClassWrapperFactoryTest {
 					"getProperty() is only allowed on SpecialRootClass", 
 					t.getMessage());
 		}
+	}
+	
+	@Test
+	public void testGetTable() {
+		assertNull(rootClassWrapper.getTable());
+		Table table = new Table("test");
+		((RootClass)rootClassTarget).setTable(table);
+		assertSame(table, rootClassWrapper.getTable());
 	}
 	
 }

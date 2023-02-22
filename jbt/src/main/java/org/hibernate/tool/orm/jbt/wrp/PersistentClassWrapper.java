@@ -6,6 +6,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.RootClassWrapperImpl;
 
 public interface PersistentClassWrapper {
@@ -25,5 +26,6 @@ public interface PersistentClassWrapper {
 	Iterator<Property> getPropertyIterator();
 	Property getProperty(String name);
 	default Property getProperty() { throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); }
+	Table getTable();
 
 }
