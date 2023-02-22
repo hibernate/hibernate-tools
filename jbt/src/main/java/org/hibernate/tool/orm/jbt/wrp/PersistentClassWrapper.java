@@ -33,5 +33,6 @@ public interface PersistentClassWrapper {
 	Value getDiscriminator();
 	Value getIdentifier();
 	Iterator<Join> getJoinIterator();
+	Property getVersion();
 
 }
