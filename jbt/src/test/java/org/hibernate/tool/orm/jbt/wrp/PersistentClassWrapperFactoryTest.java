@@ -251,6 +251,13 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(versionTarget, rootClassWrapper.getVersion());
 	}
 	
+	@Test
+	public void testSetClassName() {
+		assertNull(rootClassTarget.getClassName());
+		rootClassWrapper.setClassName("foo");
+		assertEquals("foo", rootClassTarget.getClassName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

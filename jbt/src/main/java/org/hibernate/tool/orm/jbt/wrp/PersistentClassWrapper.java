@@ -34,5 +34,6 @@ public interface PersistentClassWrapper {
 	Value getIdentifier();
 	Iterator<Join> getJoinIterator();
 	Property getVersion();
+	void setClassName(String name);
 
 }
