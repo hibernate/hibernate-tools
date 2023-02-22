@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
+import org.hibernate.MappingException;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -279,6 +280,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(rootClassTarget.isAbstract());
 		rootClassWrapper.setAbstract(false);
 		assertFalse(rootClassTarget.isAbstract());		
+	}
+	
+	@Test
+	public void testAddProperty() {
+		try {
+			rootClassTarget.getProperty("foo");
+			fail();
+		} catch (MappingException e) {
+			assertEquals(
+					"property [foo] not found on entity [null]", 
+					e.getMessage());
+		}
+		Property propertyTarget = new Property();
+		propertyTarget.setName("foo");
+		rootClassWrapper.addProperty(propertyTarget);
+		assertSame(rootClassTarget.getProperty("foo"), propertyTarget);
 	}
 	
 	private KeyValue createValue() {
