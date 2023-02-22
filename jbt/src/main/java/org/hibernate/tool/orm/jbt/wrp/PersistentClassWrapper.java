@@ -36,5 +36,6 @@ public interface PersistentClassWrapper {
 	Property getVersion();
 	void setClassName(String name);
 	void setEntityName(String name);
+	void setDiscriminatorValue(String str);
 
 }
