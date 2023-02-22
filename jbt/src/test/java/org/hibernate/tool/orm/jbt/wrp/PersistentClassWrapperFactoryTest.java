@@ -272,6 +272,15 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("foo", rootClassTarget.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testSetAbstract() {
+		assertNull(rootClassTarget.isAbstract());
+		rootClassWrapper.setAbstract(true);
+		assertTrue(rootClassTarget.isAbstract());
+		rootClassWrapper.setAbstract(false);
+		assertFalse(rootClassTarget.isAbstract());		
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
