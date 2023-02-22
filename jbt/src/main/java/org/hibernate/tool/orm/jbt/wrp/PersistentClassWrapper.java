@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -31,5 +32,6 @@ public interface PersistentClassWrapper {
 	Boolean isAbstract();
 	Value getDiscriminator();
 	Value getIdentifier();
+	Iterator<Join> getJoinIterator();
 
 }

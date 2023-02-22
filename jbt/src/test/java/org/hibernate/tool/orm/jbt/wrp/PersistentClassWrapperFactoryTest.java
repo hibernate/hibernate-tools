@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
@@ -231,6 +232,15 @@ public class PersistentClassWrapperFactoryTest {
 		KeyValue value = createValue();
 		((RootClass)rootClassTarget).setIdentifier(value);
 		assertSame(value, rootClassWrapper.getIdentifier());
+	}
+	
+	@Test
+	public void testGetJoinIterator() {
+		assertFalse(rootClassWrapper.getJoinIterator().hasNext());
+		Join join = new Join();
+		rootClassTarget.addJoin(join);
+		Iterator<Join> joinIterator = rootClassWrapper.getJoinIterator();
+		assertSame(join, joinIterator.next());	
 	}
 	
 	private KeyValue createValue() {
