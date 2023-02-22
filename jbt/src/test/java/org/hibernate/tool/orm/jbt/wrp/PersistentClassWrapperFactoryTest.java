@@ -218,11 +218,19 @@ public class PersistentClassWrapperFactoryTest {
 	}
 	
 	@Test
-	public void testGetDiscriminator() throws Exception {
+	public void testGetDiscriminator() {
 		assertNull(rootClassWrapper.getDiscriminator());
 		Value value = createValue();
 		((RootClass)rootClassTarget).setDiscriminator(value);
 		assertSame(value, rootClassWrapper.getDiscriminator());
+	}
+	
+	@Test
+	public void testGetIdentifier() {
+		assertNull(rootClassWrapper.getIdentifier());
+		KeyValue value = createValue();
+		((RootClass)rootClassTarget).setIdentifier(value);
+		assertSame(value, rootClassWrapper.getIdentifier());
 	}
 	
 	private KeyValue createValue() {

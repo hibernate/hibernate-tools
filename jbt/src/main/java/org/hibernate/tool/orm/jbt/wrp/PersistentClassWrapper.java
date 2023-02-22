@@ -30,5 +30,6 @@ public interface PersistentClassWrapper {
 	Table getTable();
 	Boolean isAbstract();
 	Value getDiscriminator();
+	Value getIdentifier();
 
 }
