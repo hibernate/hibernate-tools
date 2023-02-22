@@ -27,5 +27,6 @@ public interface PersistentClassWrapper {
 	Property getProperty(String name);
 	default Property getProperty() { throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); }
 	Table getTable();
+	Boolean isAbstract();
 
 }

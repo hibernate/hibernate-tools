@@ -205,4 +205,13 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(table, rootClassWrapper.getTable());
 	}
 	
+	@Test 
+	public void testIsAbstract() {
+		assertNull(rootClassWrapper.isAbstract());
+		rootClassTarget.setAbstract(true);
+		assertTrue(rootClassWrapper.isAbstract());
+		rootClassTarget.setAbstract(false);
+		assertFalse(rootClassWrapper.isAbstract());
+	}
+	
 }
