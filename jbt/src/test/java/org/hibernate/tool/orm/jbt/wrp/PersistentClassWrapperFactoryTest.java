@@ -11,15 +11,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -214,4 +217,23 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(rootClassWrapper.isAbstract());
 	}
 	
+	@Test
+	public void testGetDiscriminator() throws Exception {
+		assertNull(rootClassWrapper.getDiscriminator());
+		Value value = createValue();
+		((RootClass)rootClassTarget).setDiscriminator(value);
+		assertSame(value, rootClassWrapper.getDiscriminator());
+	}
+	
+	private KeyValue createValue() {
+		return (KeyValue)Proxy.newProxyInstance(
+				getClass().getClassLoader(), 
+				new Class[] { KeyValue.class }, 
+				new InvocationHandler() {	
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+						return null;
+					}
+		});
+	}
 }
