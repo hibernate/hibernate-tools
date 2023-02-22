@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -45,7 +46,11 @@ public class PersistentClassWrapperFactory {
 		
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return method.invoke(wrapper, args);
+			try {
+				return method.invoke(wrapper, args);
+			} catch (InvocationTargetException t) {
+				throw t.getTargetException();
+			}
 		}	
 		
 	}

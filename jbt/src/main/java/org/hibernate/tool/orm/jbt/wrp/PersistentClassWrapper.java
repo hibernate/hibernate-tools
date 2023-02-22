@@ -23,5 +23,7 @@ public interface PersistentClassWrapper {
 	Iterator<Property> getPropertyClosureIterator();
 	PersistentClass getSuperclass();
 	Iterator<Property> getPropertyIterator();
+	Property getProperty(String name);
+	default Property getProperty() { throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); }
 
 }

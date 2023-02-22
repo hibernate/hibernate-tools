@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -169,6 +170,30 @@ public class PersistentClassWrapperFactoryTest {
 		rootClassTarget.addProperty(property);
 		propertyIterator = rootClassWrapper.getPropertyIterator();
 		assertSame(property, propertyIterator.next());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		try {
+			rootClassWrapper.getProperty("foo");
+			fail();
+		} catch (Throwable t) {
+			assertEquals(
+					"property [foo] not found on entity [null]", 
+					t.getMessage());
+		}
+		Property property = new Property();
+		property.setName("foo");
+		rootClassTarget.addProperty(property);
+		assertSame(property, rootClassWrapper.getProperty("foo"));
+		try {
+			rootClassWrapper.getProperty();
+			fail();
+		} catch (Throwable t) {
+			assertEquals(
+					"getProperty() is only allowed on SpecialRootClass", 
+					t.getMessage());
+		}
 	}
 	
 }
