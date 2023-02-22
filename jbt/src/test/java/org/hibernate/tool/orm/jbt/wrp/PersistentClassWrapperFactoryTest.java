@@ -258,6 +258,13 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("foo", rootClassTarget.getClassName());
 	}
 	
+	@Test
+	public void testSetEntityName() {
+		assertNull(rootClassTarget.getEntityName());
+		rootClassWrapper.setEntityName("foo");
+		assertEquals("foo", rootClassTarget.getEntityName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
