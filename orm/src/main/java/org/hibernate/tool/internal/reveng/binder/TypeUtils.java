@@ -1,5 +1,6 @@
 package org.hibernate.tool.internal.reveng.binder;
 
+import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +71,7 @@ public class TypeUtils {
 				LOGGER.log(
 						Level.INFO,
 						"Sql type mismatch for " + location + " between DB and wanted hibernate type. Sql type set to " + typeCodeName( sqlTypeCode.intValue() ) + " instead of " + typeCodeName(wantedSqlType) );
-				column.setSqlTypeCode(Integer.valueOf(wantedSqlType));
+				forceSqlTypeCode(column, wantedSqlType);
 			}
 			
 		}
@@ -96,5 +97,17 @@ public class TypeUtils {
 		return sqlTypeCode + "(" + JdbcToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode) + ")";
 	}
 
+	private static void forceSqlTypeCode(Column column, int sqlCode) {
+		try {
+			Field sqlCodeField = Column.class.getDeclaredField("sqlTypeCode");
+			sqlCodeField.setAccessible(true);
+			sqlCodeField.set(column, Integer.valueOf(sqlCode));
+		} catch (NoSuchFieldException |
+				 SecurityException | 
+				 IllegalArgumentException | 
+				 IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }
