@@ -11,7 +11,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.RootClassWrapperImpl;
 
-public interface PersistentClassWrapper {
+public interface PersistentClassWrapper extends Wrapper {
 
 	default PersistentClass getWrappedObject() { return (PersistentClass)this; }
 	String getEntityName();
