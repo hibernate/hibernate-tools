@@ -14,6 +14,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -171,6 +172,13 @@ public class WrapperFactoryTest {
 		assertSame(
 				((JoinedSubclass)persistentClass).getRootClass(), 
 				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
+	}
+	
+	@Test
+	public void testCreatePropertyWrapper() {
+		Object propertyWrapper = wrapperFactory.createPropertyWrapper();
+		assertNotNull(propertyWrapper);
+		assertTrue(propertyWrapper instanceof Property);
 	}
 		
 	@SuppressWarnings("serial")

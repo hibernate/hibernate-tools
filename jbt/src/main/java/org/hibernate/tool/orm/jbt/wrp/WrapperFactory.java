@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import java.util.Map;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
@@ -67,6 +68,10 @@ public class WrapperFactory {
 	public Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
 		return PersistentClassWrapperFactory
 				.createJoinedSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
+	public Object createPropertyWrapper() {
+		return new Property();
 	}
 
 }
