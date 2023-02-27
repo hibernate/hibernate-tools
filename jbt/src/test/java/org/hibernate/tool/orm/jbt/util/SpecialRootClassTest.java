@@ -15,12 +15,13 @@ public class SpecialRootClassTest {
 	
 	private SpecialRootClass specialRootClass = null;
 	
+	private Property property = new Property();
+	
 	@BeforeEach 
 	public void beforeEach() {
 		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		Property p = new Property();
-		p.setPersistentClass(pc);
-		specialRootClass = new SpecialRootClass(p);
+		property.setPersistentClass(pc);
+		specialRootClass = new SpecialRootClass(property);
 	}
 	
 	@Test
@@ -29,6 +30,11 @@ public class SpecialRootClassTest {
 		Field field = PersistentClass.class.getDeclaredField("metadataBuildingContext");
 		field.setAccessible(true);
 		assertSame(DummyMetadataBuildingContext.INSTANCE, field.get(specialRootClass));
+	}
+	
+	@Test
+	public void testGetProperty() {
+		assertSame(property, specialRootClass.getProperty());
 	}
 
 }

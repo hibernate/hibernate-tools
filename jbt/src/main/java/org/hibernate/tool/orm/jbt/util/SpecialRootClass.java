@@ -8,9 +8,16 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 
 public class SpecialRootClass extends RootClass {
+	
+	private Property property;
 
 	public SpecialRootClass(Property property) {
 		super(getMetadataBuildingContext(property));
+		this.property = property;
+	}
+	
+	public Property getProperty() {
+		return property;
 	}
 	
 	private static MetadataBuildingContext getMetadataBuildingContext(Property property) {
