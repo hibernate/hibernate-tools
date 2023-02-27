@@ -21,12 +21,14 @@ public class SpecialRootClass extends RootClass {
 	}
 	
 	private static MetadataBuildingContext getMetadataBuildingContext(Property property) {
-		PersistentClass pc = property.getPersistentClass();
-		MetadataBuildingContext result = null;
+		MetadataBuildingContext result = DummyMetadataBuildingContext.INSTANCE;
 		try {
-			Field field = PersistentClass.class.getDeclaredField("metadataBuildingContext");
-			field.setAccessible(true);
-			result = (MetadataBuildingContext)field.get(pc);
+			if (property != null) {
+				PersistentClass pc = property.getPersistentClass();
+				Field field = PersistentClass.class.getDeclaredField("metadataBuildingContext");
+				field.setAccessible(true);
+				result = (MetadataBuildingContext)field.get(pc);
+			}
 		} catch (NoSuchFieldException | 
 				SecurityException | 
 				IllegalArgumentException | 

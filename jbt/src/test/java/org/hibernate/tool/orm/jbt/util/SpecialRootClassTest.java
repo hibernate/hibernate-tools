@@ -26,10 +26,13 @@ public class SpecialRootClassTest {
 	
 	@Test
 	public void testConstruction() throws Exception {
+		// Normal case
 		assertNotNull(specialRootClass);
 		Field field = PersistentClass.class.getDeclaredField("metadataBuildingContext");
 		field.setAccessible(true);
 		assertSame(DummyMetadataBuildingContext.INSTANCE, field.get(specialRootClass));
+		// Property is null
+		assertNotNull(new SpecialRootClass(null));
 	}
 	
 	@Test
