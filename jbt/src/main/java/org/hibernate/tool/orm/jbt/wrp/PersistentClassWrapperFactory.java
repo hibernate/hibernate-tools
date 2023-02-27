@@ -91,7 +91,7 @@ public class PersistentClassWrapperFactory {
 			extends SpecialRootClass
 			implements PersistentClassWrapper {
 		public SpecialRootClassWrapperImpl(Property property) {
-			super(property, DummyMetadataBuildingContext.INSTANCE);
+			super(property);
 		}
 	}
 	

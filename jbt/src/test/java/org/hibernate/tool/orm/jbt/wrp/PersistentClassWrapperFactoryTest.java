@@ -58,6 +58,7 @@ public class PersistentClassWrapperFactoryTest {
 		invocationHandler = Proxy.getInvocationHandler(joinedSubclassWrapper);
 		joinedSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
 		property = new Property();
+		property.setPersistentClass(rootClassTarget);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
 		invocationHandler = Proxy.getInvocationHandler(specialRootClassWrapper);
 		specialRootClassTarget = (PersistentClass)wrapperField.get(invocationHandler);
