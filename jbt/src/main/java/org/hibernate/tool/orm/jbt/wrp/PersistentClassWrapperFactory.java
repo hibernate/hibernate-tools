@@ -7,9 +7,11 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class PersistentClassWrapperFactory {
 	
@@ -34,6 +36,14 @@ public class PersistentClassWrapperFactory {
 				new Class[] { PersistentClassWrapper.class }, 
 				new PersistentClassWrapperInvocationHandler(
 						new JoinedSubclassWrapperImpl(superClassWrapper.getWrappedObject())));
+	}
+	
+	public static PersistentClassWrapper createSpecialRootClassWrapper(Property property) {
+		return (PersistentClassWrapper)Proxy.newProxyInstance(
+				PersistentClassWrapperFactory.class.getClassLoader(), 
+				new Class[] { PersistentClassWrapper.class }, 
+				new PersistentClassWrapperInvocationHandler(
+						new SpecialRootClassWrapperImpl(property)));
 	}
 	
 	static class PersistentClassWrapperInvocationHandler implements InvocationHandler {
@@ -74,6 +84,14 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
+		}
+	}
+	
+	static class SpecialRootClassWrapperImpl 
+			extends SpecialRootClass
+			implements PersistentClassWrapper {
+		public SpecialRootClassWrapperImpl(Property property) {
+			super(property, DummyMetadataBuildingContext.INSTANCE);
 		}
 	}
 	

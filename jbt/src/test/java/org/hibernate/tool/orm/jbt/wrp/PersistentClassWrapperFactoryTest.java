@@ -25,6 +25,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,10 @@ public class PersistentClassWrapperFactoryTest {
 	private PersistentClassWrapper singleTableSubclassWrapper = null;
 	private PersistentClass joinedSubclassTarget = null;
 	private PersistentClassWrapper joinedSubclassWrapper = null;
+	private PersistentClass specialRootClassTarget = null;
+	private PersistentClassWrapper specialRootClassWrapper = null;
+	
+	private Property property = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -52,6 +57,10 @@ public class PersistentClassWrapperFactoryTest {
 		joinedSubclassWrapper = PersistentClassWrapperFactory.createJoinedSubclassWrapper(rootClassWrapper);
 		invocationHandler = Proxy.getInvocationHandler(joinedSubclassWrapper);
 		joinedSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		property = new Property();
+		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
+		invocationHandler = Proxy.getInvocationHandler(specialRootClassWrapper);
+		specialRootClassTarget = (PersistentClass)wrapperField.get(invocationHandler);
 	}
 	
 	@Test
@@ -65,6 +74,9 @@ public class PersistentClassWrapperFactoryTest {
 		assertNotNull(joinedSubclassWrapper);
 		assertNotNull(joinedSubclassTarget);
 		assertTrue(joinedSubclassTarget instanceof JoinedSubclass);
+		assertNotNull(specialRootClassWrapper);
+		assertNotNull(specialRootClassTarget);
+		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
 	}
 	
 	@Test
