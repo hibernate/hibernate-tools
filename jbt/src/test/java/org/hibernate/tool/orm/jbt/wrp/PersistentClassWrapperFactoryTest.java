@@ -84,6 +84,7 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(rootClassTarget, rootClassWrapper.getWrappedObject());
 		assertSame(singleTableSubclassTarget, singleTableSubclassWrapper.getWrappedObject());
 		assertSame(joinedSubclassTarget, joinedSubclassWrapper.getWrappedObject());
+		assertSame(specialRootClassTarget, specialRootClassWrapper.getWrappedObject());
 	}
 	
 	@Test
@@ -91,12 +92,15 @@ public class PersistentClassWrapperFactoryTest {
 		assertNotEquals("foo", rootClassWrapper.getEntityName());
 		assertNotEquals("bar", singleTableSubclassWrapper.getEntityName());
 		assertNotEquals("raz", joinedSubclassWrapper.getEntityName());
+		assertNotEquals("oof", specialRootClassWrapper.getEntityName());
 		rootClassTarget.setEntityName("foo");
 		singleTableSubclassTarget.setEntityName("bar");
 		joinedSubclassTarget.setEntityName("raz");
+		specialRootClassTarget.setEntityName("oof");
 		assertEquals("foo", rootClassWrapper.getEntityName());
 		assertEquals("bar", singleTableSubclassWrapper.getEntityName());
 		assertEquals("raz", joinedSubclassWrapper.getEntityName());
+		assertEquals("oof", specialRootClassWrapper.getEntityName());
 	}
 	
 	@Test
@@ -104,12 +108,15 @@ public class PersistentClassWrapperFactoryTest {
 		assertNotEquals("foo", rootClassWrapper.getClassName());
 		assertNotEquals("bar", singleTableSubclassWrapper.getClassName());
 		assertNotEquals("raz", joinedSubclassWrapper.getClassName());
+		assertNotEquals("oof", specialRootClassWrapper.getClassName());
 		rootClassTarget.setClassName("foo");
 		singleTableSubclassTarget.setClassName("bar");
 		joinedSubclassTarget.setClassName("raz");
+		specialRootClassTarget.setClassName("oof");
 		assertEquals("foo", rootClassWrapper.getClassName());
 		assertEquals("bar", singleTableSubclassWrapper.getClassName());
 		assertEquals("raz", joinedSubclassWrapper.getClassName());
+		assertEquals("oof", specialRootClassWrapper.getClassName());
 	}
 	
 	@Test
@@ -117,6 +124,7 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(rootClassWrapper.isAssignableToRootClass());
 		assertFalse(singleTableSubclassWrapper.isAssignableToRootClass());
 		assertFalse(joinedSubclassWrapper.isAssignableToRootClass());
+		assertTrue(specialRootClassWrapper.isAssignableToRootClass());
 	}
 	
 	@Test
@@ -124,14 +132,23 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(rootClassWrapper.isRootClass());
 		assertFalse(singleTableSubclassWrapper.isRootClass());
 		assertFalse(joinedSubclassWrapper.isRootClass());
+		assertTrue(rootClassWrapper.isRootClass());
 	}
 	
 	@Test
 	public void testGetIdentifierProperty() {
 		assertNull(rootClassWrapper.getIdentifierProperty());
+		assertNull(singleTableSubclassWrapper.getIdentifierProperty());
+		assertNull(joinedSubclassWrapper.getIdentifierProperty());
+		assertNull(specialRootClassWrapper.getIdentifierProperty());
 		Property property = new Property();
 		((RootClass)rootClassTarget).setIdentifierProperty(property);
 		assertSame(property, rootClassWrapper.getIdentifierProperty());
+		assertSame(property, singleTableSubclassWrapper.getIdentifierProperty());
+		assertSame(property, joinedSubclassWrapper.getIdentifierProperty());
+		assertNull(specialRootClassWrapper.getIdentifierProperty());
+		((RootClass)specialRootClassTarget).setIdentifierProperty(property);
+		assertSame(property, specialRootClassWrapper.getIdentifierProperty());
 	}
 	
 	@Test
