@@ -70,6 +70,11 @@ public class WrapperFactory {
 				.createJoinedSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
+	public Object createSpecialRootClassWrapper(Object property) {
+		return PersistentClassWrapperFactory
+				.createSpecialRootClassWrapper((Property)property);
+	}
+
 	public Object createPropertyWrapper() {
 		return new Property();
 	}

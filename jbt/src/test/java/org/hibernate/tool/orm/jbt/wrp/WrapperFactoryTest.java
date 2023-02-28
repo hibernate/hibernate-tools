@@ -27,6 +27,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -172,6 +173,19 @@ public class WrapperFactoryTest {
 		assertSame(
 				((JoinedSubclass)persistentClass).getRootClass(), 
 				((PersistentClassWrapper)rootClassWrapper).getWrappedObject());
+	}
+	
+	@Test
+	public void testCreateSpecialRootClassWrapper() {
+		Object propertyWrapper = wrapperFactory.createPropertyWrapper();
+		Object specialRootClassWrapper = wrapperFactory.createSpecialRootClassWrapper(propertyWrapper);
+		assertNotNull(specialRootClassWrapper);
+		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
+		PersistentClass persistentClass = ((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
+		assertTrue(persistentClass instanceof SpecialRootClass);
+		assertSame(
+				((SpecialRootClass)persistentClass).getProperty(), 
+				propertyWrapper);		
 	}
 	
 	@Test
