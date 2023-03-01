@@ -41,6 +41,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setDiscriminatorValue(String str);
 	void setAbstract(Boolean b);
 	void addProperty(Property p);
-	
+	void setTable(Table table);
 	
 }

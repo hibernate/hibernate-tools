@@ -566,6 +566,28 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(specialRootClassWrapper.isInstanceOfJoinedSubclass());
 	}
 	
+	@Test
+	public void testSetTable() {
+		Table table = new Table("");
+		assertNull(rootClassTarget.getTable());
+		assertNull(singleTableSubclassTarget.getTable());
+		rootClassWrapper.setTable(table);
+		assertSame(table, rootClassTarget.getTable());
+		assertSame(table, singleTableSubclassTarget.getTable());
+		try {
+			singleTableSubclassWrapper.setTable(new Table(""));
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(e.getMessage(), "Method 'setTable' cannot be called for SingleTableSubclass");
+		}
+		assertNull(joinedSubclassTarget.getTable());
+		joinedSubclassWrapper.setTable(table);
+		assertSame(table, joinedSubclassTarget.getTable());
+		assertNull(specialRootClassTarget.getTable());
+		specialRootClassWrapper.setTable(table);
+		assertSame(table, specialRootClassTarget.getTable());
+	}	
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
