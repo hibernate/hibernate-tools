@@ -558,6 +558,14 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(specialRootClassWrapper.getProperty("foo"), propertyTarget);
 	}
 	
+	@Test
+	public void testIsInstanceOfJoinedSubclass() {
+		assertFalse(rootClassWrapper.isInstanceOfJoinedSubclass());
+		assertFalse(singleTableSubclassWrapper.isInstanceOfJoinedSubclass());
+		assertTrue(joinedSubclassWrapper.isInstanceOfJoinedSubclass());
+		assertFalse(specialRootClassWrapper.isInstanceOfJoinedSubclass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

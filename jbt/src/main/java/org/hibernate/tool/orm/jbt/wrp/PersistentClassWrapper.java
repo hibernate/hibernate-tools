@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -22,6 +23,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean hasIdentifierProperty();
 	default boolean isInstanceOfRootClass() { return RootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isInstanceOfSubclass() { return Subclass.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isInstanceOfJoinedSubclass() { return JoinedSubclass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	PersistentClass getRootClass();
 	Iterator<Property> getPropertyClosureIterator();
 	PersistentClass getSuperclass();
@@ -39,5 +41,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setDiscriminatorValue(String str);
 	void setAbstract(Boolean b);
 	void addProperty(Property p);
+	
 	
 }
