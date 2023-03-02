@@ -16,6 +16,7 @@ import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
 import org.hibernate.MappingException;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -25,6 +26,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -610,6 +612,39 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(singleTableSubclassWrapper.isInstanceOfSpecialRootClass());
 		assertFalse(joinedSubclassWrapper.isInstanceOfSpecialRootClass());
 		assertTrue(specialRootClassWrapper.isInstanceOfSpecialRootClass());
+	}
+	
+	@Test
+	public void testGetParentProperty() {
+		try {
+			rootClassWrapper.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		try {
+			singleTableSubclassWrapper.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		try {
+			joinedSubclassWrapper.getParentProperty();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("getParentProperty() is only allowed on SpecialRootClass", e.getMessage());
+		}
+		assertNull(specialRootClassWrapper.getParentProperty());
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, pc);
+		component.setParentProperty("foo");
+		Property property = new Property();
+		property.setValue(component);
+		property.setPersistentClass(pc);
+		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
+		Property parentProperty = specialRootClassWrapper.getParentProperty();
+		assertNotNull(parentProperty);
+		assertEquals("foo", parentProperty.getName());
 	}
 	
 	private KeyValue createValue() {
