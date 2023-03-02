@@ -604,6 +604,14 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(valueTarget, specialRootClassTarget.getKey());
 	}
 	
+	@Test
+	public void testIsInstanceOfSpecialRootClass() {
+		assertFalse(rootClassWrapper.isInstanceOfSpecialRootClass());
+		assertFalse(singleTableSubclassWrapper.isInstanceOfSpecialRootClass());
+		assertFalse(joinedSubclassWrapper.isInstanceOfSpecialRootClass());
+		assertTrue(specialRootClassWrapper.isInstanceOfSpecialRootClass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

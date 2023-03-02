@@ -11,6 +11,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.RootClassWrapperImpl;
 
 public interface PersistentClassWrapper extends Wrapper {
@@ -45,5 +46,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setTable(Table table);
 	void setIdentifier(KeyValue value);
 	default void setKey(KeyValue value) { setIdentifier(value); }
+	default boolean isInstanceOfSpecialRootClass() { return SpecialRootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	
 }
