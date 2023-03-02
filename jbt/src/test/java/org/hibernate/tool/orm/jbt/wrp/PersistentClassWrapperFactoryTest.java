@@ -647,6 +647,28 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("foo", parentProperty.getName());
 	}
 	
+	@Test
+	public void testSetIdentifierProperty() {
+		Property property = new Property();
+		assertNull(rootClassTarget.getIdentifierProperty());
+		rootClassWrapper.setIdentifierProperty(property);
+		assertSame(property, rootClassTarget.getIdentifierProperty());
+		assertNull(specialRootClassTarget.getIdentifierProperty());
+		specialRootClassWrapper.setIdentifierProperty(property);
+		assertSame(property, specialRootClassTarget.getIdentifierProperty());
+		try {
+			singleTableSubclassWrapper.setIdentifierProperty(property);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassWrapper.setIdentifierProperty(property);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+		}
+	}
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

@@ -48,5 +48,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	default void setKey(KeyValue value) { setIdentifier(value); }
 	default boolean isInstanceOfSpecialRootClass() { return SpecialRootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default Property getParentProperty() { throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass"); }
+	default void setIdentifierProperty(Property property) { throw new RuntimeException("setIdentifierProperty is only allowed on RootClass instances"); }
 	
 }
