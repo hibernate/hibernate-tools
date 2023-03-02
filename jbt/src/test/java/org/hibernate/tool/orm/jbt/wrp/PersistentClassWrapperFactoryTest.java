@@ -588,6 +588,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(table, specialRootClassTarget.getTable());
 	}	
 	
+	@Test
+	public void testSetKey() {
+		KeyValue valueTarget = createValue();
+		assertNull(rootClassTarget.getKey());
+		assertNull(singleTableSubclassTarget.getKey());
+		rootClassWrapper.setKey(valueTarget);
+		assertSame(valueTarget, rootClassTarget.getKey());
+		assertSame(valueTarget, singleTableSubclassTarget.getKey());
+		assertNull(joinedSubclassTarget.getKey());
+		joinedSubclassWrapper.setKey(valueTarget);
+		assertSame(valueTarget, joinedSubclassTarget.getKey());
+		assertNull(specialRootClassTarget.getKey());
+		specialRootClassWrapper.setKey(valueTarget);
+		assertSame(valueTarget, specialRootClassTarget.getKey());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

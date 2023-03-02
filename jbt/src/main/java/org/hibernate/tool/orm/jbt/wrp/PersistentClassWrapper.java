@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -42,5 +43,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setAbstract(Boolean b);
 	void addProperty(Property p);
 	void setTable(Table table);
+	void setIdentifier(KeyValue value);
+	default void setKey(KeyValue value) { setIdentifier(value); }
 	
 }

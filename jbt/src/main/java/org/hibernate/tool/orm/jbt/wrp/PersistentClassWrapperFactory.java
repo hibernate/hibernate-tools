@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -81,6 +82,9 @@ public class PersistentClassWrapperFactory {
 		public void setTable(Table table) {
 			throw new RuntimeException("Method 'setTable' cannot be called for SingleTableSubclass");
 		}
+		public void setIdentifier(KeyValue value) {
+			throw new RuntimeException("Method 'setIdentifier' cannot be called for SingleTableSubclass");
+		}
 	}
 	
 	static class JoinedSubclassWrapperImpl
@@ -88,6 +92,9 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
+		}
+		public void setIdentifier(KeyValue value) {
+			super.setKey(value);
 		}
 	}
 	
