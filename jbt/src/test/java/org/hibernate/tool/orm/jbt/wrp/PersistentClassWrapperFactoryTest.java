@@ -738,6 +738,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
 	}
 	
+	@Test
+	public void testSetProxyInterfaceName() {
+		assertNull(rootClassTarget.getProxyInterfaceName());
+		rootClassWrapper.setProxyInterfaceName("foo");
+		assertEquals("foo", rootClassTarget.getProxyInterfaceName());
+		assertNull(singleTableSubclassTarget.getProxyInterfaceName());
+		singleTableSubclassWrapper.setProxyInterfaceName("bar");
+		assertEquals("bar", singleTableSubclassTarget.getProxyInterfaceName());
+		assertNull(joinedSubclassTarget.getProxyInterfaceName());
+		joinedSubclassWrapper.setProxyInterfaceName("oof");
+		assertEquals("oof", joinedSubclassTarget.getProxyInterfaceName());
+		assertNull(specialRootClassTarget.getProxyInterfaceName());
+		specialRootClassWrapper.setProxyInterfaceName("rab");
+		assertEquals("rab", specialRootClassTarget.getProxyInterfaceName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
