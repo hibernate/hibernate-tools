@@ -682,6 +682,34 @@ public class PersistentClassWrapperFactoryTest {
 			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 	}
+
+	@Test
+	public void testSetIdentifier() {
+		KeyValue valueTarget = createValue();
+		assertNull(rootClassTarget.getIdentifier());
+		assertNull(singleTableSubclassTarget.getIdentifier());
+		assertNull(joinedSubclassTarget.getIdentifier());
+		rootClassWrapper.setIdentifier(valueTarget);
+		assertSame(valueTarget, rootClassTarget.getIdentifier());
+		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
+		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
+		try {
+			singleTableSubclassWrapper.setIdentifier(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassWrapper.setIdentifier(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+		}
+		assertNull(specialRootClassTarget.getIdentifier());
+		specialRootClassWrapper.setIdentifier(valueTarget);
+		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
