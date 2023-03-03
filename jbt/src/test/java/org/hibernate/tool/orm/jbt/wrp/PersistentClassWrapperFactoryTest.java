@@ -710,6 +710,34 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
 	}
 	
+	@Test
+	public void testSetDiscriminator() throws Exception {
+		Value valueTarget = createValue();
+		assertNull(rootClassTarget.getDiscriminator());
+		assertNull(singleTableSubclassTarget.getDiscriminator());
+		assertNull(joinedSubclassTarget.getDiscriminator());
+		assertNull(specialRootClassTarget.getDiscriminator());
+		rootClassWrapper.setDiscriminator(valueTarget);
+		assertSame(valueTarget, rootClassTarget.getDiscriminator());
+		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
+		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
+		try {
+			singleTableSubclassWrapper.setDiscriminator(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassWrapper.setDiscriminator(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
+		}
+		assertNull(specialRootClassTarget.getDiscriminator());
+		specialRootClassWrapper.setDiscriminator(valueTarget);
+		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
