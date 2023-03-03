@@ -580,7 +580,7 @@ public class PersistentClassWrapperFactoryTest {
 			singleTableSubclassWrapper.setTable(new Table(""));
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals(e.getMessage(), "Method 'setTable' cannot be called for SingleTableSubclass");
+			assertEquals(e.getMessage(), "Method 'setTable(Table)' is not supported.");
 		}
 		assertNull(joinedSubclassTarget.getTable());
 		joinedSubclassWrapper.setTable(table);

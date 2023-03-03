@@ -10,7 +10,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
@@ -77,9 +76,6 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
-		}
-		public void setTable(Table table) {
-			throw new RuntimeException("Method 'setTable' cannot be called for SingleTableSubclass");
 		}
 	}
 	

@@ -43,7 +43,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setDiscriminatorValue(String str);
 	void setAbstract(Boolean b);
 	void addProperty(Property p);
-	void setTable(Table table);
+	default void setTable(Table table) { throw new RuntimeException("Method 'setTable(Table)' is not supported."); }
 	default void setIdentifier(KeyValue value) { throw new RuntimeException("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances"); }
 	default void setKey(KeyValue value) { throw new RuntimeException("setKey(KeyValue) is only allowed on JoinedSubclass"); }
 	default boolean isInstanceOfSpecialRootClass() { return SpecialRootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
