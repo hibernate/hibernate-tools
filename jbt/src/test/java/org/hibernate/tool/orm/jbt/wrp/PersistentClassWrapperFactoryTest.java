@@ -595,15 +595,28 @@ public class PersistentClassWrapperFactoryTest {
 		KeyValue valueTarget = createValue();
 		assertNull(rootClassTarget.getKey());
 		assertNull(singleTableSubclassTarget.getKey());
-		rootClassWrapper.setKey(valueTarget);
-		assertSame(valueTarget, rootClassTarget.getKey());
-		assertSame(valueTarget, singleTableSubclassTarget.getKey());
 		assertNull(joinedSubclassTarget.getKey());
+		assertNull(specialRootClassTarget.getKey());
+		try {
+			rootClassWrapper.setKey(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
+		try {
+			singleTableSubclassWrapper.setKey(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
 		joinedSubclassWrapper.setKey(valueTarget);
 		assertSame(valueTarget, joinedSubclassTarget.getKey());
-		assertNull(specialRootClassTarget.getKey());
-		specialRootClassWrapper.setKey(valueTarget);
-		assertSame(valueTarget, specialRootClassTarget.getKey());
+		try {
+			specialRootClassWrapper.setKey(valueTarget);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+		}
 	}
 	
 	@Test
@@ -660,13 +673,13 @@ public class PersistentClassWrapperFactoryTest {
 			singleTableSubclassWrapper.setIdentifierProperty(property);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 		try {
 			joinedSubclassWrapper.setIdentifierProperty(property);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setIdentifierProperty is only allowed on RootClass instances", e.getMessage());
+			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 	}
 	private KeyValue createValue() {
