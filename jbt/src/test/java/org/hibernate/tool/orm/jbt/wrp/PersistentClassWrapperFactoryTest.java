@@ -754,6 +754,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("rab", specialRootClassTarget.getProxyInterfaceName());
 	}
 	
+	@Test
+	public void testSetLazy() {
+		rootClassWrapper.setLazy(true);
+		assertTrue(rootClassTarget.isLazy());
+		rootClassWrapper.setLazy(false);
+		assertFalse(rootClassTarget.isLazy());
+		singleTableSubclassWrapper.setLazy(true);
+		assertTrue(singleTableSubclassTarget.isLazy());
+		singleTableSubclassWrapper.setLazy(false);
+		assertFalse(singleTableSubclassTarget.isLazy());
+		joinedSubclassWrapper.setLazy(true);
+		assertTrue(joinedSubclassTarget.isLazy());
+		joinedSubclassWrapper.setLazy(false);
+		assertFalse(joinedSubclassTarget.isLazy());
+		specialRootClassWrapper.setLazy(true);
+		assertTrue(specialRootClassTarget.isLazy());
+		specialRootClassWrapper.setLazy(false);
+		assertFalse(specialRootClassTarget.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

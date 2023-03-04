@@ -51,5 +51,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	default void setIdentifierProperty(Property property) { throw new RuntimeException("setIdentifierProperty(Property) is only allowed on RootClass instances"); }
 	default void setDiscriminator(Value value) { throw new RuntimeException("Method 'setDiscriminator(Value)' can only be called on RootClass instances"); }
 	void setProxyInterfaceName(String name);
+	void setLazy(boolean b);
 	
 }
