@@ -54,5 +54,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setLazy(boolean b);
 	Iterator<Subclass> getSubclassIterator();
 	boolean isCustomDeleteCallable();
+	boolean isCustomInsertCallable();
 	
 }

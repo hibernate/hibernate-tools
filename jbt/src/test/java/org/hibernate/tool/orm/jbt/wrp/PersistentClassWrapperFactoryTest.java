@@ -831,6 +831,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isCustomDeleteCallable());
 	}
 	
+	@Test
+	public void testIsCustomInsertCallable() {
+		rootClassTarget.setCustomSQLInsert("bar", false, null);
+		assertFalse(rootClassWrapper.isCustomInsertCallable());
+		rootClassTarget.setCustomSQLInsert("foo", true, null);
+		assertTrue(rootClassWrapper.isCustomInsertCallable());
+		singleTableSubclassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(singleTableSubclassWrapper.isCustomInsertCallable());
+		singleTableSubclassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(singleTableSubclassWrapper.isCustomInsertCallable());
+		joinedSubclassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(joinedSubclassWrapper.isCustomInsertCallable());
+		joinedSubclassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(joinedSubclassWrapper.isCustomInsertCallable());
+		specialRootClassTarget.setCustomSQLInsert("foo", false, null);
+		assertFalse(specialRootClassWrapper.isCustomInsertCallable());
+		specialRootClassTarget.setCustomSQLInsert("bar", true, null);
+		assertTrue(specialRootClassWrapper.isCustomInsertCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
