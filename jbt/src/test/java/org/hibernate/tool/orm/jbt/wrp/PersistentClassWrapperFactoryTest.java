@@ -906,6 +906,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isDiscriminatorValueNotNull());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueNull() {
+		rootClassTarget.setDiscriminatorValue("not null");
+		assertFalse(rootClassWrapper.isDiscriminatorValueNull());
+		rootClassTarget.setDiscriminatorValue("null");
+		assertTrue(rootClassWrapper.isDiscriminatorValueNull());
+		singleTableSubclassTarget.setDiscriminatorValue("not null");
+		assertFalse(singleTableSubclassWrapper.isDiscriminatorValueNull());
+		singleTableSubclassTarget.setDiscriminatorValue("null");
+		assertTrue(singleTableSubclassWrapper.isDiscriminatorValueNull());
+		joinedSubclassTarget.setDiscriminatorValue("not null");
+		assertFalse(joinedSubclassWrapper.isDiscriminatorValueNull());
+		joinedSubclassTarget.setDiscriminatorValue("null");
+		assertTrue(joinedSubclassWrapper.isDiscriminatorValueNull());
+		specialRootClassTarget.setDiscriminatorValue("not null");
+		assertFalse(specialRootClassWrapper.isDiscriminatorValueNull());
+		specialRootClassTarget.setDiscriminatorValue("null");
+		assertTrue(specialRootClassWrapper.isDiscriminatorValueNull());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
