@@ -57,5 +57,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isCustomInsertCallable();
 	boolean isCustomUpdateCallable();
 	boolean isDiscriminatorInsertable();
+	boolean isDiscriminatorValueNotNull();
 	
 }
