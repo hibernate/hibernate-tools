@@ -24,6 +24,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -772,6 +773,42 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassTarget.isLazy());
 		specialRootClassWrapper.setLazy(false);
 		assertFalse(specialRootClassTarget.isLazy());
+	}
+	
+	@Test
+	public void testGetSubclassIterator() {
+		Iterator<?> subclassIterator = rootClassWrapper.getSubclassIterator();
+		assertFalse(subclassIterator.hasNext());
+		Subclass firstSubclass = new Subclass(rootClassTarget, DummyMetadataBuildingContext.INSTANCE);
+		firstSubclass.setEntityName("first");
+		rootClassTarget.addSubclass(firstSubclass);
+		subclassIterator = rootClassWrapper.getSubclassIterator();
+		assertTrue(subclassIterator.hasNext());
+		assertSame(firstSubclass, subclassIterator.next());
+		subclassIterator = singleTableSubclassWrapper.getSubclassIterator();
+		assertFalse(subclassIterator.hasNext());
+		Subclass secondSubclass = new Subclass(singleTableSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
+		secondSubclass.setEntityName("second");
+		singleTableSubclassTarget.addSubclass(secondSubclass);
+		subclassIterator = singleTableSubclassWrapper.getSubclassIterator();
+		assertTrue(subclassIterator.hasNext());
+		assertSame(secondSubclass, subclassIterator.next());
+		subclassIterator = joinedSubclassWrapper.getSubclassIterator();
+		assertFalse(subclassIterator.hasNext());
+		Subclass thirdSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
+		thirdSubclass.setEntityName("third");
+		joinedSubclassTarget.addSubclass(thirdSubclass);
+		subclassIterator = joinedSubclassWrapper.getSubclassIterator();
+		assertTrue(subclassIterator.hasNext());
+		assertSame(thirdSubclass, subclassIterator.next());
+		subclassIterator = specialRootClassWrapper.getSubclassIterator();
+		assertFalse(subclassIterator.hasNext());
+		Subclass fourthSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
+		fourthSubclass.setEntityName("four");
+		specialRootClassTarget.addSubclass(fourthSubclass);
+		subclassIterator = specialRootClassWrapper.getSubclassIterator();
+		assertTrue(subclassIterator.hasNext());
+		assertSame(fourthSubclass, subclassIterator.next());
 	}
 	
 	private KeyValue createValue() {
