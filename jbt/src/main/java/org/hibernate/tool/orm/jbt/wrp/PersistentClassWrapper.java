@@ -55,5 +55,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	Iterator<Subclass> getSubclassIterator();
 	boolean isCustomDeleteCallable();
 	boolean isCustomInsertCallable();
+	boolean isCustomUpdateCallable();
 	
 }
