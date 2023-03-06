@@ -871,6 +871,21 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isCustomUpdateCallable());
 	}
 	
+	@Test
+	public void testIsDiscriminatorValueInsertable() {
+		assertTrue(rootClassWrapper.isDiscriminatorInsertable());
+		assertTrue(singleTableSubclassWrapper.isDiscriminatorInsertable());
+		assertTrue(joinedSubclassWrapper.isDiscriminatorInsertable());
+		assertTrue(specialRootClassWrapper.isDiscriminatorInsertable());		
+		((RootClass)rootClassTarget).setDiscriminatorInsertable(false);
+		assertFalse(rootClassWrapper.isDiscriminatorInsertable());
+		assertFalse(singleTableSubclassWrapper.isDiscriminatorInsertable());
+		assertFalse(joinedSubclassWrapper.isDiscriminatorInsertable());
+		assertTrue(specialRootClassWrapper.isDiscriminatorInsertable());		
+		((RootClass)specialRootClassTarget).setDiscriminatorInsertable(false);
+		assertFalse(specialRootClassWrapper.isDiscriminatorInsertable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
