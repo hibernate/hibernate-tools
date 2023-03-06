@@ -811,6 +811,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(fourthSubclass, subclassIterator.next());
 	}
 	
+	@Test
+	public void testIsCustomDeleteCallable() {
+		rootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(rootClassWrapper.isCustomDeleteCallable());
+		rootClassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(rootClassWrapper.isCustomDeleteCallable());
+		singleTableSubclassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(singleTableSubclassWrapper.isCustomDeleteCallable());
+		singleTableSubclassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(singleTableSubclassWrapper.isCustomDeleteCallable());
+		joinedSubclassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(joinedSubclassWrapper.isCustomDeleteCallable());
+		joinedSubclassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(joinedSubclassWrapper.isCustomDeleteCallable());
+		specialRootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertFalse(specialRootClassWrapper.isCustomDeleteCallable());
+		specialRootClassTarget.setCustomSQLDelete("bar", true, null);
+		assertTrue(specialRootClassWrapper.isCustomDeleteCallable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

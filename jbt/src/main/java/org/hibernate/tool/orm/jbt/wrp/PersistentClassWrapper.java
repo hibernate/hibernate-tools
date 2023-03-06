@@ -53,5 +53,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void setProxyInterfaceName(String name);
 	void setLazy(boolean b);
 	Iterator<Subclass> getSubclassIterator();
+	boolean isCustomDeleteCallable();
 	
 }
