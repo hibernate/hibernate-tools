@@ -70,5 +70,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isVersioned();
 	int getBatchSize();
 	String getCacheConcurrencyStrategy();
+	String getCustomSQLDelete();
 	
 }

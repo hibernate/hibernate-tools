@@ -1090,6 +1090,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("bar", specialRootClassWrapper.getCacheConcurrencyStrategy());
 	}
 	
+	@Test
+	public void testGetCustomSQLDelete() {
+		assertNull(rootClassWrapper.getCustomSQLDelete());
+		rootClassTarget.setCustomSQLDelete("foo", false, null);
+		assertEquals("foo", rootClassWrapper.getCustomSQLDelete());
+		assertNull(singleTableSubclassWrapper.getCustomSQLDelete());
+		singleTableSubclassTarget.setCustomSQLDelete("bar", false, null);
+		assertEquals("bar", singleTableSubclassWrapper.getCustomSQLDelete());
+		assertNull(joinedSubclassWrapper.getCustomSQLDelete());
+		joinedSubclassTarget.setCustomSQLDelete("oof", false, null);
+		assertEquals("oof", joinedSubclassWrapper.getCustomSQLDelete());
+		assertNull(specialRootClassWrapper.getCustomSQLDelete());
+		specialRootClassTarget.setCustomSQLDelete("rab", false, null);
+		assertEquals("rab", specialRootClassWrapper.getCustomSQLDelete());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
