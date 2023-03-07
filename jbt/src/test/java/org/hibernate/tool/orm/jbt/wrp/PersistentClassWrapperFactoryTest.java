@@ -1030,6 +1030,18 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(specialRootClassWrapper.isMutable());
 	}
 	
+	@Test
+	public void testIsPolymorphic() {
+		assertFalse(rootClassWrapper.isPolymorphic());
+		assertTrue(singleTableSubclassWrapper.isPolymorphic());
+		assertTrue(joinedSubclassWrapper.isPolymorphic());
+		assertFalse(specialRootClassWrapper.isPolymorphic());
+		((RootClass)rootClassTarget).setPolymorphic(true);
+		assertTrue(rootClassWrapper.isPolymorphic());
+		((RootClass)specialRootClassTarget).setPolymorphic(true);
+		assertTrue(specialRootClassWrapper.isPolymorphic());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
