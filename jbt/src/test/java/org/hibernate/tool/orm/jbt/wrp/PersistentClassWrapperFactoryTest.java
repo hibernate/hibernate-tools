@@ -972,6 +972,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(specialRootClassWrapper.isJoinedSubclass());
 	}
 	
+	@Test
+	public void testIsLazy() {
+		rootClassTarget.setLazy(true);
+		assertTrue(rootClassWrapper.isLazy());
+		rootClassTarget.setLazy(false);
+		assertFalse(rootClassWrapper.isLazy());
+		singleTableSubclassTarget.setLazy(true);
+		assertTrue(singleTableSubclassWrapper.isLazy());
+		singleTableSubclassTarget.setLazy(false);
+		assertFalse(singleTableSubclassWrapper.isLazy());
+		joinedSubclassTarget.setLazy(true);
+		assertTrue(joinedSubclassWrapper.isLazy());
+		joinedSubclassTarget.setLazy(false);
+		assertFalse(joinedSubclassWrapper.isLazy());
+		specialRootClassTarget.setLazy(true);
+		assertTrue(specialRootClassWrapper.isLazy());
+		specialRootClassTarget.setLazy(false);
+		assertFalse(specialRootClassWrapper.isLazy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
