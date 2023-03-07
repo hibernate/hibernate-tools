@@ -62,5 +62,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isExplicitPolymorphism();
 	boolean isForceDiscriminator();
 	boolean isInherited();
+	boolean isJoinedSubclass();
 	
 }

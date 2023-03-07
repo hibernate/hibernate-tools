@@ -962,6 +962,16 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(specialRootClassWrapper.isInherited());
 	}
 	
+	@Test
+	public void testIsJoinedSubclass() {
+		rootClassWrapper.setTable(new Table("foo"));
+		joinedSubclassWrapper.setTable(new Table("oof"));
+		assertFalse(rootClassWrapper.isJoinedSubclass());
+		assertFalse(singleTableSubclassWrapper.isJoinedSubclass());
+		assertTrue(joinedSubclassWrapper.isJoinedSubclass());
+		assertFalse(specialRootClassWrapper.isJoinedSubclass());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
