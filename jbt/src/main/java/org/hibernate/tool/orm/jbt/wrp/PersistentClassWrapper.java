@@ -69,5 +69,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isPolymorphic();
 	boolean isVersioned();
 	int getBatchSize();
+	String getCacheConcurrencyStrategy();
 	
 }

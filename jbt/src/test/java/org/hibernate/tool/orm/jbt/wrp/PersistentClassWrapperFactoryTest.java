@@ -1076,6 +1076,20 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals(Integer.MIN_VALUE, specialRootClassWrapper.getBatchSize());
 	}
 	
+	@Test
+	public void testGetCacheConcurrencyStrategy() {
+		assertNull(rootClassWrapper.getCacheConcurrencyStrategy());
+		assertNull(singleTableSubclassWrapper.getCacheConcurrencyStrategy());
+		assertNull(joinedSubclassWrapper.getCacheConcurrencyStrategy());
+		((RootClass)rootClassTarget).setCacheConcurrencyStrategy("foo");
+		assertEquals("foo", rootClassWrapper.getCacheConcurrencyStrategy());
+		assertEquals("foo", singleTableSubclassWrapper.getCacheConcurrencyStrategy());
+		assertEquals("foo", joinedSubclassWrapper.getCacheConcurrencyStrategy());
+		assertNull(specialRootClassWrapper.getCacheConcurrencyStrategy());
+		((RootClass)specialRootClassTarget).setCacheConcurrencyStrategy("bar");
+		assertEquals("bar", specialRootClassWrapper.getCacheConcurrencyStrategy());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
