@@ -954,6 +954,14 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isForceDiscriminator());
 	}
 	
+	@Test
+	public void testIsInherited() {
+		assertFalse(rootClassWrapper.isInherited());
+		assertTrue(singleTableSubclassWrapper.isInherited());
+		assertTrue(joinedSubclassWrapper.isInherited());
+		assertFalse(specialRootClassWrapper.isInherited());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
