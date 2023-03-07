@@ -926,6 +926,20 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isDiscriminatorValueNull());
 	}
 	
+	@Test
+	public void testIsForceDiscriminator() {
+		assertFalse(rootClassWrapper.isForceDiscriminator());
+		assertFalse(singleTableSubclassWrapper.isForceDiscriminator());
+		assertFalse(joinedSubclassWrapper.isForceDiscriminator());
+		((RootClass)rootClassTarget).setForceDiscriminator(true);
+		assertTrue(rootClassWrapper.isForceDiscriminator());
+		assertTrue(singleTableSubclassWrapper.isForceDiscriminator());
+		assertTrue(joinedSubclassWrapper.isForceDiscriminator());
+		assertFalse(specialRootClassWrapper.isForceDiscriminator());
+		((RootClass)specialRootClassTarget).setForceDiscriminator(true);
+		assertTrue(specialRootClassWrapper.isForceDiscriminator());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
