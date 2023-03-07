@@ -992,6 +992,30 @@ public class PersistentClassWrapperFactoryTest {
 		assertFalse(specialRootClassWrapper.isLazy());
 	}
 	
+	@Test
+	public void testIsLazyPropertiesCacheable() {
+		((RootClass)rootClassTarget).setLazyPropertiesCacheable(true);
+		assertTrue(rootClassWrapper.isLazyPropertiesCacheable());
+		((RootClass)rootClassTarget).setLazyPropertiesCacheable(false);
+		assertFalse(rootClassWrapper.isLazyPropertiesCacheable());
+		((RootClass)specialRootClassTarget).setLazyPropertiesCacheable(true);
+		assertTrue(specialRootClassWrapper.isLazyPropertiesCacheable());
+		((RootClass)specialRootClassTarget).setLazyPropertiesCacheable(false);
+		assertFalse(specialRootClassWrapper.isLazyPropertiesCacheable());
+		try {
+			singleTableSubclassWrapper.isLazyPropertiesCacheable();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances", e.getMessage());
+		}
+		try {
+			joinedSubclassWrapper.isLazyPropertiesCacheable();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances", e.getMessage());
+		}
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
