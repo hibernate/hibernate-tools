@@ -1016,6 +1016,20 @@ public class PersistentClassWrapperFactoryTest {
 		}
 	}
 	
+	@Test
+	public void testIsMutable() {
+		assertTrue(rootClassWrapper.isMutable());
+		assertTrue(singleTableSubclassWrapper.isMutable());
+		assertTrue(joinedSubclassWrapper.isMutable());
+		((RootClass)rootClassTarget).setMutable(false);
+		assertFalse(rootClassWrapper.isMutable());
+		assertFalse(singleTableSubclassWrapper.isMutable());
+		assertFalse(joinedSubclassWrapper.isMutable());
+		assertTrue(specialRootClassWrapper.isMutable());
+		((RootClass)specialRootClassTarget).setMutable(false);
+		assertFalse(specialRootClassWrapper.isMutable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

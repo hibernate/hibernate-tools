@@ -65,5 +65,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isJoinedSubclass();
 	boolean isLazy();
 	default boolean isLazyPropertiesCacheable() { throw new RuntimeException("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances"); }
+	boolean isMutable();
 	
 }
