@@ -71,5 +71,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	int getBatchSize();
 	String getCacheConcurrencyStrategy();
 	String getCustomSQLDelete();
+	String getCustomSQLInsert();
 	
 }
