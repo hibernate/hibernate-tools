@@ -1042,6 +1042,20 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isPolymorphic());
 	}
 	
+	@Test
+	public void testIsVersioned() {
+		assertFalse(rootClassWrapper.isVersioned());
+		assertFalse(singleTableSubclassWrapper.isVersioned());
+		assertFalse(joinedSubclassWrapper.isVersioned());
+		((RootClass)rootClassTarget).setVersion(new Property());
+		assertTrue(rootClassWrapper.isVersioned());
+		assertTrue(singleTableSubclassWrapper.isVersioned());
+		assertTrue(joinedSubclassWrapper.isVersioned());
+		assertFalse(specialRootClassWrapper.isVersioned());
+		((RootClass)specialRootClassTarget).setVersion(new Property());
+		assertTrue(specialRootClassWrapper.isVersioned());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
