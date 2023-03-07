@@ -59,6 +59,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isDiscriminatorInsertable();
 	boolean isDiscriminatorValueNotNull();
 	boolean isDiscriminatorValueNull();
+	boolean isExplicitPolymorphism();
 	boolean isForceDiscriminator();
 	
 }
