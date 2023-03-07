@@ -73,5 +73,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	String getCustomSQLDelete();
 	String getCustomSQLInsert();
 	String getCustomSQLUpdate();
+	String getDiscriminatorValue();
 	
 }
