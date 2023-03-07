@@ -68,5 +68,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	boolean isMutable();
 	boolean isPolymorphic();
 	boolean isVersioned();
+	int getBatchSize();
 	
 }

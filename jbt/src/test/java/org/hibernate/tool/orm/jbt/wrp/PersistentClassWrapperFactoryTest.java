@@ -1056,6 +1056,26 @@ public class PersistentClassWrapperFactoryTest {
 		assertTrue(specialRootClassWrapper.isVersioned());
 	}
 	
+	@Test
+	public void testGetBatchSize() {
+		rootClassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, rootClassWrapper.getBatchSize());
+		rootClassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, rootClassWrapper.getBatchSize());
+		singleTableSubclassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, singleTableSubclassWrapper.getBatchSize());
+		singleTableSubclassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, singleTableSubclassWrapper.getBatchSize());
+		joinedSubclassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, joinedSubclassWrapper.getBatchSize());
+		joinedSubclassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, joinedSubclassWrapper.getBatchSize());
+		specialRootClassTarget.setBatchSize(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, specialRootClassWrapper.getBatchSize());
+		specialRootClassTarget.setBatchSize(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, specialRootClassWrapper.getBatchSize());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
