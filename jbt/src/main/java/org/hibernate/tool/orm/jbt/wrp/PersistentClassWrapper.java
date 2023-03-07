@@ -72,5 +72,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	String getCacheConcurrencyStrategy();
 	String getCustomSQLDelete();
 	String getCustomSQLInsert();
+	String getCustomSQLUpdate();
 	
 }

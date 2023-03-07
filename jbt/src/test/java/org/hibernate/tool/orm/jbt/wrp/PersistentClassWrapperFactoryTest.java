@@ -1122,6 +1122,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("rab", specialRootClassWrapper.getCustomSQLInsert());
 	}
 	
+	@Test
+	public void testGetCustomSQLUpdate() {
+		assertNull(rootClassWrapper.getCustomSQLUpdate());
+		rootClassTarget.setCustomSQLUpdate("foo", false, null);
+		assertEquals("foo", rootClassWrapper.getCustomSQLUpdate());
+		assertNull(singleTableSubclassWrapper.getCustomSQLUpdate());
+		singleTableSubclassTarget.setCustomSQLUpdate("bar", false, null);
+		assertEquals("bar", singleTableSubclassWrapper.getCustomSQLUpdate());
+		assertNull(joinedSubclassWrapper.getCustomSQLUpdate());
+		joinedSubclassTarget.setCustomSQLUpdate("oof", false, null);
+		assertEquals("oof", joinedSubclassWrapper.getCustomSQLUpdate());
+		assertNull(specialRootClassWrapper.getCustomSQLUpdate());
+		specialRootClassTarget.setCustomSQLUpdate("rab", false, null);
+		assertEquals("rab", specialRootClassWrapper.getCustomSQLUpdate());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
