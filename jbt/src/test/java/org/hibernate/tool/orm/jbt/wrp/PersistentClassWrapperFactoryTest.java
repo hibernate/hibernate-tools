@@ -16,6 +16,7 @@ import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
 import org.hibernate.MappingException;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
@@ -1168,6 +1169,16 @@ public class PersistentClassWrapperFactoryTest {
 		assertNull(specialRootClassWrapper.getLoaderName());
 		specialRootClassTarget.setLoaderName("rab");
 		assertEquals("rab", specialRootClassWrapper.getLoaderName());
+	}
+	
+	@Test
+	public void testGetOptimisticLockMode() {
+		rootClassTarget.setOptimisticLockStyle(OptimisticLockStyle.NONE);
+		assertEquals(-1, rootClassWrapper.getOptimisticLockMode());
+		assertEquals(-1, singleTableSubclassWrapper.getOptimisticLockMode());
+		assertEquals(-1, joinedSubclassWrapper.getOptimisticLockMode());
+		specialRootClassTarget.setOptimisticLockStyle(OptimisticLockStyle.VERSION);
+		assertEquals(0, specialRootClassWrapper.getOptimisticLockMode());
 	}
 	
 	private KeyValue createValue() {
