@@ -76,5 +76,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	String getDiscriminatorValue();
 	String getLoaderName();
 	int getOptimisticLockMode();
+	String getWhere();
 	
 }

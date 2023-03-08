@@ -1181,6 +1181,20 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals(0, specialRootClassWrapper.getOptimisticLockMode());
 	}
 	
+	@Test
+	public void testGetWhere() {
+		assertNull(rootClassWrapper.getWhere());
+		assertNull(singleTableSubclassWrapper.getWhere());
+		assertNull(joinedSubclassWrapper.getWhere());
+		((RootClass)rootClassTarget).setWhere("foo");
+		assertEquals("foo", rootClassWrapper.getWhere());
+		assertEquals("foo", singleTableSubclassWrapper.getWhere());
+		assertEquals("foo", joinedSubclassWrapper.getWhere());
+		assertNull(specialRootClassWrapper.getWhere());
+		((RootClass)specialRootClassTarget).setWhere("bar");
+		assertEquals("bar", specialRootClassWrapper.getWhere());
+}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
