@@ -1195,6 +1195,21 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("bar", specialRootClassWrapper.getWhere());
 }
 	
+	@Test
+	public void testGetRootTable() throws Exception {
+		Table tableTarget = new Table("");
+		assertNull(rootClassWrapper.getRootTable());
+		assertNull(singleTableSubclassWrapper.getRootTable());
+		assertNull(joinedSubclassWrapper.getRootTable());
+		((RootClass)rootClassTarget).setTable(tableTarget);
+		assertSame(tableTarget, rootClassWrapper.getRootTable());
+		assertSame(tableTarget, singleTableSubclassWrapper.getRootTable());
+		assertSame(tableTarget, joinedSubclassWrapper.getRootTable());
+		assertNull(specialRootClassWrapper.getRootTable());
+		((RootClass)specialRootClassTarget).setTable(tableTarget);
+		assertSame(tableTarget, specialRootClassWrapper.getRootTable());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

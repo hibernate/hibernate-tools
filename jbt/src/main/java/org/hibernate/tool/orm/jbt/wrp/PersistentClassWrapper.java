@@ -77,5 +77,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	String getLoaderName();
 	int getOptimisticLockMode();
 	String getWhere();
+	Table getRootTable();
 	
 }
