@@ -1154,6 +1154,22 @@ public class PersistentClassWrapperFactoryTest {
 		assertEquals("rab", specialRootClassWrapper.getDiscriminatorValue());
 	}
 	
+	@Test
+	public void testGetLoaderName() {
+		assertNull(rootClassWrapper.getLoaderName());
+		rootClassTarget.setLoaderName("foo");
+		assertEquals("foo", rootClassWrapper.getLoaderName());
+		assertNull(singleTableSubclassWrapper.getLoaderName());
+		singleTableSubclassTarget.setLoaderName("bar");
+		assertEquals("bar", singleTableSubclassWrapper.getLoaderName());
+		assertNull(joinedSubclassWrapper.getLoaderName());
+		joinedSubclassTarget.setLoaderName("oof");
+		assertEquals("oof", joinedSubclassWrapper.getLoaderName());
+		assertNull(specialRootClassWrapper.getLoaderName());
+		specialRootClassTarget.setLoaderName("rab");
+		assertEquals("rab", specialRootClassWrapper.getLoaderName());
+	}
+	
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
