@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
