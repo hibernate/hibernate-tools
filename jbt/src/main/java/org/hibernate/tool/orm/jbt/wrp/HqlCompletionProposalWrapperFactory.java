@@ -17,6 +17,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default int getReplaceEnd() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceEnd(); }
 		default String getSimpleName() { return ((HQLCompletionProposal)getWrappedObject()).getSimpleName(); }
 		default int getCompletionKind() { return ((HQLCompletionProposal)getWrappedObject()).getCompletionKind(); }
+		default String getEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getEntityName(); }
 	}
 
 }
