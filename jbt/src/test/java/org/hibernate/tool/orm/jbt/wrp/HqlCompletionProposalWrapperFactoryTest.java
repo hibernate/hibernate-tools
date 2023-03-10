@@ -90,4 +90,9 @@ public class HqlCompletionProposalWrapperFactoryTest {
 		assertSame(propertyTarget, hqlCompletionProposalWrapper.getProperty());
 	}
 	
+	@Test
+	public void testAliasRefKind() {
+		assertSame(HQLCompletionProposal.ALIAS_REF, hqlCompletionProposalWrapper.aliasRefKind());
+	}
+	
 }
