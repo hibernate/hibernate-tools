@@ -19,6 +19,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -193,6 +194,16 @@ public class WrapperFactoryTest {
 		Object propertyWrapper = wrapperFactory.createPropertyWrapper();
 		assertNotNull(propertyWrapper);
 		assertTrue(propertyWrapper instanceof Property);
+	}
+	
+	@Test
+	public void testCreateHqlCompletionProposalWrapper() {
+		HQLCompletionProposal hqlCompletionProposalTarget = 
+				new HQLCompletionProposal(HQLCompletionProposal.PROPERTY, Integer.MAX_VALUE);
+		Object hqlCompletionProposalWrapper = 
+				wrapperFactory.createHqlCompletionProposalWrapper(hqlCompletionProposalTarget);
+		assertNotNull(hqlCompletionProposalWrapper);
+		assertTrue(hqlCompletionProposalWrapper instanceof HqlCompletionProposalWrapper);
 	}
 		
 	@SuppressWarnings("serial")

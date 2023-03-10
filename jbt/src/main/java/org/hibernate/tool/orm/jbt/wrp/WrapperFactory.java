@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -77,6 +78,12 @@ public class WrapperFactory {
 
 	public Object createPropertyWrapper() {
 		return new Property();
+	}
+
+	public Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
+		return HqlCompletionProposalWrapperFactory
+				.createHqlCompletionProposalWrapper(
+						(HQLCompletionProposal)hqlCompletionProposalTarget);
 	}
 
 }
