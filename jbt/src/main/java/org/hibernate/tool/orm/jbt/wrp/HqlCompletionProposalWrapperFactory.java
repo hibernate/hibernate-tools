@@ -12,7 +12,7 @@ public class HqlCompletionProposalWrapperFactory {
 	}
 	
 	public static interface HqlCompletionProposalWrapper extends Wrapper {
-		
+		default String getCompletion() { return ((HQLCompletionProposal)getWrappedObject()).getCompletion(); }
 	}
 
 }

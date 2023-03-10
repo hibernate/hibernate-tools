@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -27,5 +29,13 @@ public class HqlCompletionProposalWrapperFactoryTest {
 		assertNotNull(hqlCompletionProposalTarget);
 		assertNotNull(hqlCompletionProposalWrapper);
 	}
+	
+	@Test
+	public void testGetCompletion() {
+		assertNotEquals("foo", hqlCompletionProposalWrapper.getCompletion());
+		hqlCompletionProposalTarget.setCompletion("foo");
+		assertEquals("foo", hqlCompletionProposalWrapper.getCompletion());
+	}
+	
 
 }
