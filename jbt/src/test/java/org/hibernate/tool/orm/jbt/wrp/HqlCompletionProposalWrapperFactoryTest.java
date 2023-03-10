@@ -44,4 +44,11 @@ public class HqlCompletionProposalWrapperFactoryTest {
 		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalWrapper.getReplaceStart());
 	}
 	
+	@Test
+	public void testGetReplaceEnd() {
+		assertNotEquals(Integer.MIN_VALUE, hqlCompletionProposalWrapper.getReplaceEnd());
+		hqlCompletionProposalTarget.setReplaceEnd(Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalWrapper.getReplaceEnd());
+	}
+	
 }

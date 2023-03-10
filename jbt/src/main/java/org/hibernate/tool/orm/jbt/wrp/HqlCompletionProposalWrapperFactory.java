@@ -14,6 +14,7 @@ public class HqlCompletionProposalWrapperFactory {
 	public static interface HqlCompletionProposalWrapper extends Wrapper {
 		default String getCompletion() { return ((HQLCompletionProposal)getWrappedObject()).getCompletion(); }
 		default int getReplaceStart() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceStart(); }
+		default int getReplaceEnd() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceEnd(); }
 	}
 
 }
