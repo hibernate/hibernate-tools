@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 
 public class HqlCompletionProposalWrapperFactory {
@@ -19,6 +20,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default int getCompletionKind() { return ((HQLCompletionProposal)getWrappedObject()).getCompletionKind(); }
 		default String getEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getEntityName(); }
 		default String getShortEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getShortEntityName(); }
+		default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
 	}
 
 }
