@@ -22,6 +22,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default String getShortEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getShortEntityName(); }
 		default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
 		default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
+		default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
 	}
 
 }
