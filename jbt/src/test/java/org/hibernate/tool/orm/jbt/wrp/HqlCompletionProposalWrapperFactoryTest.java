@@ -100,4 +100,9 @@ public class HqlCompletionProposalWrapperFactoryTest {
 		assertSame(HQLCompletionProposal.ENTITY_NAME, hqlCompletionProposalWrapper.entityNameKind());
 	}
 	
+	@Test
+	public void testPropertyKind() {
+		assertSame(HQLCompletionProposal.PROPERTY, hqlCompletionProposalWrapper.propertyKind());
+	}
+	
 }

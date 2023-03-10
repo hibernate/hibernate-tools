@@ -23,6 +23,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
 		default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
 		default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
+		default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
 	}
 
 }
