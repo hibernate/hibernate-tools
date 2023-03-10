@@ -25,6 +25,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
 		default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
 		default int keywordKind() { return HQLCompletionProposal.KEYWORD; }
+		default int functionKind() { return HQLCompletionProposal.FUNCTION; }
 	}
 
 }
