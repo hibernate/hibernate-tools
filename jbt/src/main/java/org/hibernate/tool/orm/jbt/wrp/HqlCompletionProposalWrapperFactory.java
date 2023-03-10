@@ -24,6 +24,7 @@ public class HqlCompletionProposalWrapperFactory {
 		default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
 		default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
 		default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
+		default int keywordKind() { return HQLCompletionProposal.KEYWORD; }
 	}
 
 }

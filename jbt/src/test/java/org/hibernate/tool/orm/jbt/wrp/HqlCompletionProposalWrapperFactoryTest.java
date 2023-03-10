@@ -105,4 +105,9 @@ public class HqlCompletionProposalWrapperFactoryTest {
 		assertSame(HQLCompletionProposal.PROPERTY, hqlCompletionProposalWrapper.propertyKind());
 	}
 	
+	@Test
+	public void testKeywordKind() {
+		assertSame(HQLCompletionProposal.KEYWORD, hqlCompletionProposalWrapper.keywordKind());
+	}
+	
 }
