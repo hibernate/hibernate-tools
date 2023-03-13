@@ -85,5 +85,9 @@ public class WrapperFactory {
 				.createHqlCompletionProposalWrapper(
 						(HQLCompletionProposal)hqlCompletionProposalTarget);
 	}
+	
+	public Object createArrayWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createArrayWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
 
 }

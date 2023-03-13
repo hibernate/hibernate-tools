@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -207,6 +208,15 @@ public class WrapperFactoryTest {
 		assertTrue(hqlCompletionProposalWrapper instanceof HqlCompletionProposalWrapper);
 	}
 		
+	@Test
+	public void testCreateArrayWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object arrayWrapper = wrapperFactory.createArrayWrapper(persistentClassWrapper);
+		assertTrue(arrayWrapper instanceof Array);
+		assertSame(((Array)arrayWrapper).getOwner(), persistentClassTarget);
+	}
+
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}
 	
