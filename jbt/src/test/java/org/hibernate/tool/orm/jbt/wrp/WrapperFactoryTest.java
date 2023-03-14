@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -215,6 +216,15 @@ public class WrapperFactoryTest {
 		Object arrayWrapper = wrapperFactory.createArrayWrapper(persistentClassWrapper);
 		assertTrue(arrayWrapper instanceof Array);
 		assertSame(((Array)arrayWrapper).getOwner(), persistentClassTarget);
+	}
+
+	@Test
+	public void testCreateBagWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object bagWrapper = wrapperFactory.createBagWrapper(persistentClassWrapper);
+		assertTrue(bagWrapper instanceof Bag);
+		assertSame(((Bag)bagWrapper).getOwner(), persistentClassTarget);
 	}
 
 	@SuppressWarnings("serial")
