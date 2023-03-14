@@ -15,6 +15,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -225,6 +226,15 @@ public class WrapperFactoryTest {
 		Object bagWrapper = wrapperFactory.createBagWrapper(persistentClassWrapper);
 		assertTrue(bagWrapper instanceof Bag);
 		assertSame(((Bag)bagWrapper).getOwner(), persistentClassTarget);
+	}
+
+	@Test
+	public void testCreateListWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object listWrapper = wrapperFactory.createListWrapper(persistentClassWrapper);
+		assertTrue(listWrapper instanceof List);
+		assertSame(((List)listWrapper).getOwner(), persistentClassTarget);
 	}
 
 	@SuppressWarnings("serial")

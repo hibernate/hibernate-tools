@@ -94,4 +94,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createBagWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
+	public Object createListWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createListWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
 }
