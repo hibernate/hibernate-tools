@@ -3,7 +3,9 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -103,6 +105,12 @@ public class WrapperFactory {
 		return DatabaseReaderWrapperFactory.createDatabaseReaderWrapper(
 				properties, 
 				(RevengStrategy)revengStrategy);
+	}
+
+	public Object createTableWrapper(String name) {
+		Table result = new Table("Hibernate Tools", name);
+		result.setPrimaryKey(new PrimaryKey(result));
+		return result;
 	}
 
 }
