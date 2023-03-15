@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
+import java.util.Properties;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
@@ -32,6 +33,7 @@ import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -235,6 +237,17 @@ public class WrapperFactoryTest {
 		Object listWrapper = wrapperFactory.createListWrapper(persistentClassWrapper);
 		assertTrue(listWrapper instanceof List);
 		assertSame(((List)listWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateDatabaseReaderWrapper() {
+		Properties properties = new Properties();
+		properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
+		RevengStrategy strategy = new DefaultStrategy();
+		Object databaseReaderWrapper = wrapperFactory.createDatabaseReaderWrapper(
+				properties, strategy);
+		assertNotNull(databaseReaderWrapper);
+		assertTrue(databaseReaderWrapper instanceof DatabaseReaderWrapper);
 	}
 
 	@SuppressWarnings("serial")

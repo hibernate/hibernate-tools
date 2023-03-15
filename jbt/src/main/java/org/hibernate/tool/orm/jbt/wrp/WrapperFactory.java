@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -96,6 +97,12 @@ public class WrapperFactory {
 
 	public Object createListWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createListWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+	
+	public Object createDatabaseReaderWrapper(Properties properties, Object revengStrategy) {
+		return DatabaseReaderWrapperFactory.createDatabaseReaderWrapper(
+				properties, 
+				(RevengStrategy)revengStrategy);
 	}
 
 }
