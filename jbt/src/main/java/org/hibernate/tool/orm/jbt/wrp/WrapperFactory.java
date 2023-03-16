@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -111,6 +112,10 @@ public class WrapperFactory {
 		Table result = new Table("Hibernate Tools", name);
 		result.setPrimaryKey(new PrimaryKey(result));
 		return result;
+	}
+
+	public Value createManyToOneWrapper(Object table) {
+		return ValueWrapperFactory.createManyToOneWrapper((Table)table);
 	}
 
 }

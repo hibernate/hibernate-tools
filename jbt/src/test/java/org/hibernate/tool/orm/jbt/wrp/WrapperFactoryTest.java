@@ -17,12 +17,14 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -261,6 +263,14 @@ public class WrapperFactoryTest {
 		assertEquals("foo", table.getName());
 		PrimaryKey pk = table.getPrimaryKey();
 		assertSame(table, pk.getTable());
+	}
+
+	@Test
+	public void testCreateManyToOneWrapper() {
+		Table table = new Table("", "foo");
+		Value manyToOneWrapper = wrapperFactory.createManyToOneWrapper(table);
+		assertTrue(manyToOneWrapper instanceof ManyToOne);
+		assertSame(table, manyToOneWrapper.getTable());
 	}
 
 	@SuppressWarnings("serial")
