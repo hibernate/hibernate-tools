@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.List;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +39,14 @@ public class ValueWrapperFactoryTest {
 		Value listWrapper = ValueWrapperFactory.createListWrapper(persistentClassWrapper);
 		assertTrue(listWrapper instanceof List);
 		assertSame(((List)listWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateManyToOneWrapper() {
+		Table table = new Table("", "foo");
+		Value manyToOneWrapper = ValueWrapperFactory.createManyToOneWrapper(table);
+		assertTrue(manyToOneWrapper instanceof ManyToOne);
+		assertSame(table, manyToOneWrapper.getTable());
 	}
 
 }
