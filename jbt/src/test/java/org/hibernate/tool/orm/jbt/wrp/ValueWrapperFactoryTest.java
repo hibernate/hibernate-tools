@@ -7,6 +7,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -49,4 +50,13 @@ public class ValueWrapperFactoryTest {
 		assertSame(table, manyToOneWrapper.getTable());
 	}
 
+	@Test
+	public void testCreateMapWrapper() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Value mapWrapper = ValueWrapperFactory.createMapWrapper(persistentClassWrapper);
+		assertTrue(mapWrapper instanceof Map);
+		assertSame(((Map)mapWrapper).getOwner(), persistentClassTarget);
+	}
+	
 }
