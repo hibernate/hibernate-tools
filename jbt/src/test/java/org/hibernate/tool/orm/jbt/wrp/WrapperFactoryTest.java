@@ -19,6 +19,7 @@ import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -281,6 +282,17 @@ public class WrapperFactoryTest {
 		Object mapWrapper = wrapperFactory.createMapWrapper(persistentClassWrapper);
 		assertTrue(mapWrapper instanceof Map);
 		assertSame(((Map)mapWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateOneToManyWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Table tableWrapper = (Table)wrapperFactory.createTableWrapper("foo");
+		((RootClass)persistentClassTarget).setTable(tableWrapper);
+		Object oneToManyWrapper = wrapperFactory.createOneToManyWrapper(persistentClassWrapper);
+		assertTrue(oneToManyWrapper instanceof OneToMany);
+		assertSame(((OneToMany)oneToManyWrapper).getTable(), tableWrapper);
 	}
 	
 	@SuppressWarnings("serial")
