@@ -118,4 +118,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createManyToOneWrapper((Table)table);
 	}
 
+	public Object createMapWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createMapWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
 }

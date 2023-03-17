@@ -18,6 +18,7 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -273,6 +274,15 @@ public class WrapperFactoryTest {
 		assertSame(table, manyToOneWrapper.getTable());
 	}
 
+	@Test
+	public void testCreateMapWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object mapWrapper = wrapperFactory.createMapWrapper(persistentClassWrapper);
+		assertTrue(mapWrapper instanceof Map);
+		assertSame(((Map)mapWrapper).getOwner(), persistentClassTarget);
+	}
+	
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}
 	
