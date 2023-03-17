@@ -8,7 +8,9 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.junit.jupiter.api.Test;
@@ -57,6 +59,17 @@ public class ValueWrapperFactoryTest {
 		Value mapWrapper = ValueWrapperFactory.createMapWrapper(persistentClassWrapper);
 		assertTrue(mapWrapper instanceof Map);
 		assertSame(((Map)mapWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateOneToManyWrapper() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Table tableTarget = new Table("", "foo");
+		((RootClass)persistentClassTarget).setTable(tableTarget);
+		Value oneToManyWrapper = ValueWrapperFactory.createOneToManywrapper(persistentClassWrapper);
+		assertTrue(oneToManyWrapper instanceof OneToMany);
+		assertSame(((OneToMany)oneToManyWrapper).getTable(), tableTarget);
 	}
 	
 }

@@ -5,6 +5,7 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -29,6 +30,10 @@ public class ValueWrapperFactory {
 
 	public static Value createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new Map(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
+	}
+
+	public static Value createOneToManywrapper(PersistentClassWrapper persistentClassWrapper) {
+		return new OneToMany(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 	}
 
 }
