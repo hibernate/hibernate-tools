@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +10,7 @@ import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -70,6 +72,19 @@ public class ValueWrapperFactoryTest {
 		Value oneToManyWrapper = ValueWrapperFactory.createOneToManywrapper(persistentClassWrapper);
 		assertTrue(oneToManyWrapper instanceof OneToMany);
 		assertSame(((OneToMany)oneToManyWrapper).getTable(), tableTarget);
+	}
+	
+	@Test
+	public void testCreateOneToOneWrapper() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Table tableTarget = new Table("", "foo");
+		((RootClass)persistentClassTarget).setTable(tableTarget);
+		persistentClassTarget.setEntityName("bar");
+		Value oneToOneWrapper = ValueWrapperFactory.createOneToOnewrapper(persistentClassWrapper);
+		assertTrue(oneToOneWrapper instanceof OneToOne);
+		assertEquals(((OneToOne)oneToOneWrapper).getEntityName(), "bar");
+		assertSame(((OneToOne)oneToOneWrapper).getTable(), tableTarget);
 	}
 	
 }
