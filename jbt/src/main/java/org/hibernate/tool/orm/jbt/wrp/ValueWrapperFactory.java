@@ -33,11 +33,11 @@ public class ValueWrapperFactory {
 		return new Map(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 	}
 
-	public static Value createOneToManywrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static Value createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new OneToMany(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 	}
 
-	public static Value createOneToOnewrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static Value createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new OneToOne(
 				DummyMetadataBuildingContext.INSTANCE, 
 				persistentClassWrapper.getWrappedObject().getTable(),

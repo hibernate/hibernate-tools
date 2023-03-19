@@ -20,6 +20,7 @@ import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
@@ -293,6 +294,19 @@ public class WrapperFactoryTest {
 		Object oneToManyWrapper = wrapperFactory.createOneToManyWrapper(persistentClassWrapper);
 		assertTrue(oneToManyWrapper instanceof OneToMany);
 		assertSame(((OneToMany)oneToManyWrapper).getTable(), tableWrapper);
+	}
+	
+	@Test
+	public void testCreateOneToOneWrapper() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Table tableTarget = new Table("", "foo");
+		((RootClass)persistentClassTarget).setTable(tableTarget);
+		persistentClassTarget.setEntityName("bar");
+		Value oneToOneWrapper = wrapperFactory.createOneToOneWrapper(persistentClassWrapper);
+		assertTrue(oneToOneWrapper instanceof OneToOne);
+		assertEquals(((OneToOne)oneToOneWrapper).getEntityName(), "bar");
+		assertSame(((OneToOne)oneToOneWrapper).getTable(), tableTarget);
 	}
 	
 	@SuppressWarnings("serial")
