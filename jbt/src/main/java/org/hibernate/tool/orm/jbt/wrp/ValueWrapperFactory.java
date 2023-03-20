@@ -7,6 +7,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -42,6 +43,10 @@ public class ValueWrapperFactory {
 				DummyMetadataBuildingContext.INSTANCE, 
 				persistentClassWrapper.getWrappedObject().getTable(),
 				persistentClassWrapper.getWrappedObject());
+	}
+
+	public static Value createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return new PrimitiveArray(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 	}
 
 }

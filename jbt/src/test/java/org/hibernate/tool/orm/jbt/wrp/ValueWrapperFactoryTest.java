@@ -12,6 +12,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -85,6 +86,15 @@ public class ValueWrapperFactoryTest {
 		assertTrue(oneToOneWrapper instanceof OneToOne);
 		assertEquals(((OneToOne)oneToOneWrapper).getEntityName(), "bar");
 		assertSame(((OneToOne)oneToOneWrapper).getTable(), tableTarget);
+	}
+	
+	@Test
+	public void testCreatePrimitiveArray() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Value primitiveArrayWrapper = ValueWrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
+		assertTrue(primitiveArrayWrapper instanceof PrimitiveArray);
+		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
 	}
 	
 }
