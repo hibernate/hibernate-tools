@@ -134,4 +134,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createPrimitiveArrayWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
+	public Object createSetWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createSetWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
 }

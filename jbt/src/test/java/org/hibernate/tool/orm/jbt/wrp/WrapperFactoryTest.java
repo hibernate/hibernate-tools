@@ -26,6 +26,7 @@ import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -319,6 +320,15 @@ public class WrapperFactoryTest {
 		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
 	}
 
+	@Test
+	public void testCreateSetWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object setWrapper = wrapperFactory.createSetWrapper(persistentClassWrapper);
+		assertTrue(setWrapper instanceof Set);
+		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
+	}
+	
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}
 	
