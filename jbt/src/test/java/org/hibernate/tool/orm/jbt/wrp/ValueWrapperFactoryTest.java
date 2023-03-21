@@ -111,7 +111,7 @@ public class ValueWrapperFactoryTest {
 	
 	@Test
 	public void testCreateSimpleValueWrapper() {
-		Value simpleValueWrapper = ValueWrapperFactory.createSimpleValue();
+		Value simpleValueWrapper = ValueWrapperFactory.createSimpleValueWrapper();
 		assertNotNull(simpleValueWrapper);
 		assertTrue(simpleValueWrapper instanceof SimpleValue);
 	}

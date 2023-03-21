@@ -27,6 +27,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -327,6 +328,13 @@ public class WrapperFactoryTest {
 		Object setWrapper = wrapperFactory.createSetWrapper(persistentClassWrapper);
 		assertTrue(setWrapper instanceof Set);
 		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateSimpleValueWrapper() {
+		Value simpleValueWrapper = wrapperFactory.createSimpleValueWrapper();
+		assertNotNull(simpleValueWrapper);
+		assertTrue(simpleValueWrapper instanceof SimpleValue);
 	}
 	
 	@SuppressWarnings("serial")

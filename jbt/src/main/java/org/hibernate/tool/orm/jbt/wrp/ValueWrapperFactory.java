@@ -55,7 +55,7 @@ public class ValueWrapperFactory {
 		return new Set(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 	}
 
-	public static Value createSimpleValue() {
+	public static Value createSimpleValueWrapper() {
 		return new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 	}
 

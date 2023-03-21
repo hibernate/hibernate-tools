@@ -138,4 +138,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createSetWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
+	public Value createSimpleValueWrapper() {
+		return ValueWrapperFactory.createSimpleValueWrapper();
+	}
+
 }
