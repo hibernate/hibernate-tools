@@ -23,6 +23,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
@@ -309,6 +310,15 @@ public class WrapperFactoryTest {
 		assertSame(((OneToOne)oneToOneWrapper).getTable(), tableTarget);
 	}
 	
+	@Test
+	public void testCreatePrimitiveArrayWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object primitiveArrayWrapper = wrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
+		assertTrue(primitiveArrayWrapper instanceof PrimitiveArray);
+		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
+	}
+
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}
 	

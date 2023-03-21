@@ -130,4 +130,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createOneToOneWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
+	public Object createPrimitiveArrayWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createPrimitiveArrayWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
 }
