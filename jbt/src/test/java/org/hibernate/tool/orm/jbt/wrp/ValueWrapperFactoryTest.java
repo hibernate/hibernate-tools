@@ -14,6 +14,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,15 @@ public class ValueWrapperFactoryTest {
 		Value primitiveArrayWrapper = ValueWrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
 		assertTrue(primitiveArrayWrapper instanceof PrimitiveArray);
 		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateSetWrapper() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Value setWrapper = ValueWrapperFactory.createSetWrapper(persistentClassWrapper);
+		assertTrue(setWrapper instanceof Set);
+		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
 	}
 	
 }
