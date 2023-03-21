@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -52,6 +53,10 @@ public class ValueWrapperFactory {
 
 	public static Value createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new Set(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
+	}
+
+	public static Value createSimpleValue() {
+		return new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,6 +16,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.junit.jupiter.api.Test;
@@ -105,6 +107,13 @@ public class ValueWrapperFactoryTest {
 		Value setWrapper = ValueWrapperFactory.createSetWrapper(persistentClassWrapper);
 		assertTrue(setWrapper instanceof Set);
 		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateSimpleValueWrapper() {
+		Value simpleValueWrapper = ValueWrapperFactory.createSimpleValue();
+		assertNotNull(simpleValueWrapper);
+		assertTrue(simpleValueWrapper instanceof SimpleValue);
 	}
 	
 }
