@@ -59,6 +59,7 @@ public class ValueWrapperFactory {
 	
 	static interface ValueWrapper extends Value {
 		default boolean isCollection() { return Collection.class.isAssignableFrom(getClass()); }
+		default Value getElement() { return null; }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
