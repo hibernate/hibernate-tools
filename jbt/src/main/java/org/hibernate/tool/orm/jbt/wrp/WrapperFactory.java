@@ -142,4 +142,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createSimpleValueWrapper();
 	}
 
+	public Object createComponentWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createComponentWrapper((PersistentClassWrapper)persistentClassWrapper);
+	}
+
 }

@@ -15,6 +15,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -335,6 +336,15 @@ public class WrapperFactoryTest {
 		Value simpleValueWrapper = wrapperFactory.createSimpleValueWrapper();
 		assertNotNull(simpleValueWrapper);
 		assertTrue(simpleValueWrapper instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testCreateComponentWrapper() {
+		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		Object componentWrapper = wrapperFactory.createComponentWrapper(persistentClassWrapper);
+		assertTrue(componentWrapper instanceof Component);
+		assertSame(((Component)componentWrapper).getOwner(), persistentClassTarget);
 	}
 	
 	@SuppressWarnings("serial")
