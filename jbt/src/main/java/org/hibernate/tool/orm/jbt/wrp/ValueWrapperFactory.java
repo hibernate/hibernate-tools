@@ -4,6 +4,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -57,6 +58,10 @@ public class ValueWrapperFactory {
 		return new SimpleValueWrapperImpl();
 	}
 	
+	public static Value createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return new ComponentWrapperImpl(persistentClassWrapper);
+	}
+
 	static interface ValueWrapper extends Value {
 		default boolean isCollection() { return Collection.class.isAssignableFrom(getClass()); }
 		default boolean isOneToMany() { return OneToMany.class.isAssignableFrom(getClass()); }
@@ -126,6 +131,12 @@ public class ValueWrapperFactory {
 	private static class SimpleValueWrapperImpl extends BasicValue implements ValueWrapper {
 		protected SimpleValueWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
+		}		
+	}
+	
+	private static class ComponentWrapperImpl extends Component implements ValueWrapper {
+		protected ComponentWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
+			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 		}		
 	}
 

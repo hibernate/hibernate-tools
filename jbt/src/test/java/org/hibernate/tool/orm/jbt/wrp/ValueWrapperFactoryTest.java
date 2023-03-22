@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -114,6 +115,15 @@ public class ValueWrapperFactoryTest {
 		Value simpleValueWrapper = ValueWrapperFactory.createSimpleValueWrapper();
 		assertNotNull(simpleValueWrapper);
 		assertTrue(simpleValueWrapper instanceof SimpleValue);
+	}
+	
+	@Test
+	public void testCreateComponentValue() {
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		Value componentWrapper = ValueWrapperFactory.createComponentWrapper(persistentClassWrapper);
+		assertTrue(componentWrapper instanceof Component);
+		assertSame(((Component)componentWrapper).getOwner(), persistentClassTarget);
 	}
 	
 }
