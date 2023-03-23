@@ -13,6 +13,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
@@ -69,6 +70,7 @@ public class ValueWrapperFactory {
 		default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getClass()); }
 		default boolean isMap() { return Map.class.isAssignableFrom(getClass()); }
 		default boolean isEmbedded() { return false; }
+		default boolean isToOne() { return ToOne.class.isAssignableFrom(getClass()); }
 		default Value getElement() { return null; }
 		default Value getCollectionElement() { return getElement(); }
 	}
