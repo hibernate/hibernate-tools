@@ -78,6 +78,7 @@ public class ValueWrapperFactory {
 		default Table getCollectionTable() { return null; }
 		default void setCollectionTable(Table table) {}
 		default Value getCollectionElement() { return getElement(); }
+		default Value getIndex() { return null; }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
