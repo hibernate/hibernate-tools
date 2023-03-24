@@ -69,6 +69,7 @@ public class ValueWrapperFactory {
 		default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getClass()); }
 		default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getClass()); }
 		default boolean isMap() { return Map.class.isAssignableFrom(getClass()); }
+		default boolean isList() { return List.class.isAssignableFrom(getClass()); }
 		default boolean isEmbedded() { return false; }
 		default boolean isToOne() { return ToOne.class.isAssignableFrom(getClass()); }
 		default Value getElement() { return null; }
