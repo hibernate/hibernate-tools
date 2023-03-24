@@ -74,6 +74,7 @@ public class ValueWrapperFactory {
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
 		default Table getCollectionTable() { return null; }
+		default void setCollectionTable(Table table) {}
 		default Value getCollectionElement() { return getElement(); }
 	}
 	
