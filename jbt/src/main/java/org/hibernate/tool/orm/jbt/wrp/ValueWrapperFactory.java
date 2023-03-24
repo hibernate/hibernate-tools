@@ -73,6 +73,7 @@ public class ValueWrapperFactory {
 		default boolean isToOne() { return ToOne.class.isAssignableFrom(getClass()); }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
+		default Table getCollectionTable() { return null; }
 		default Value getCollectionElement() { return getElement(); }
 	}
 	
