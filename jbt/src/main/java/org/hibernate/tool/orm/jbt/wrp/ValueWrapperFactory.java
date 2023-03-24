@@ -80,6 +80,7 @@ public class ValueWrapperFactory {
 		default Value getCollectionElement() { return getElement(); }
 		default void setIndex(Value index) {}
 		default Value getIndex() { return null; }
+		default String getTypeName() { return null; }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
