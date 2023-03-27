@@ -82,6 +82,7 @@ public class ValueWrapperFactory {
 		default Value getIndex() { return null; }
 		default void setTypeName(String name) {}
 		default String getTypeName() { return null; }
+		default String getComponentClassName() { return null; }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
