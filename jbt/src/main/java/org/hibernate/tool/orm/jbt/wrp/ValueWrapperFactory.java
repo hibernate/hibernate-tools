@@ -5,6 +5,7 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -84,6 +85,7 @@ public class ValueWrapperFactory {
 		default String getTypeName() { return null; }
 		default String getComponentClassName() { return null; }
 		default boolean isTypeSpecified() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'isTypeSpecified()'." ); }
+		default KeyValue getKey() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'getKey()'." ); }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
