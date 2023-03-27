@@ -86,6 +86,7 @@ public class ValueWrapperFactory {
 		default String getComponentClassName() { return null; }
 		default boolean isTypeSpecified() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'isTypeSpecified()'." ); }
 		default KeyValue getKey() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'getKey()'." ); }
+		default String getElementClassName() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'getElementClassName()'." ); }
 	}
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
