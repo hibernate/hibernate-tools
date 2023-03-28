@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -20,6 +21,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.Test;
 
 public class ValueWrapperFactoryTest {
@@ -124,6 +126,14 @@ public class ValueWrapperFactoryTest {
 		Value componentWrapper = ValueWrapperFactory.createComponentWrapper(persistentClassWrapper);
 		assertTrue(componentWrapper instanceof Component);
 		assertSame(((Component)componentWrapper).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateValueWrapper() {
+		Value valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		Value valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
+		assertNotNull(valueWrapper);
+		assertSame(valueTarget, ((Wrapper)valueWrapper).getWrappedObject());
 	}
 	
 }

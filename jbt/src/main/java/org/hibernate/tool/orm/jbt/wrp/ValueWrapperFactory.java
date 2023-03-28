@@ -1,5 +1,9 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
@@ -63,16 +67,23 @@ public class ValueWrapperFactory {
 	public static Value createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new ComponentWrapperImpl(persistentClassWrapper);
 	}
+	
+	public static Value createValueWrapper(Value wrappedValue) {
+		return (Value)Proxy.newProxyInstance(
+				ValueWrapperFactory.class.getClassLoader(), 
+				new Class[] { Value.class, ValueExtension.class }, 
+				new ValueWrapperInvocationHandler(wrappedValue));
+	}
 
-	static interface ValueWrapper extends Value {
-		default boolean isCollection() { return Collection.class.isAssignableFrom(getClass()); }
-		default boolean isOneToMany() { return OneToMany.class.isAssignableFrom(getClass()); }
-		default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getClass()); }
-		default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getClass()); }
-		default boolean isMap() { return Map.class.isAssignableFrom(getClass()); }
-		default boolean isList() { return List.class.isAssignableFrom(getClass()); }
+	static interface ValueExtension extends Wrapper {
+		default boolean isCollection() { return Collection.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isOneToMany() { return OneToMany.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isMap() { return Map.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isList() { return List.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
-		default boolean isToOne() { return ToOne.class.isAssignableFrom(getClass()); }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
 		default void setTable(Table table) {}
@@ -84,10 +95,13 @@ public class ValueWrapperFactory {
 		default void setTypeName(String name) {}
 		default String getTypeName() { return null; }
 		default String getComponentClassName() { return null; }
-		default boolean isTypeSpecified() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'isTypeSpecified()'." ); }
-		default KeyValue getKey() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'getKey()'." ); }
-		default String getElementClassName() { throw new UnsupportedOperationException("Class '" + getClass().getName() + "' does not support 'getElementClassName()'." ); }
+		default boolean isTypeSpecified() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isTypeSpecified()'." ); }
+		default KeyValue getKey() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getKey()'." ); }
+		default String getElementClassName() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getElementClassName()'." ); }
 	}
+	
+	static interface ValueWrapper extends Value, ValueExtension {}
+	
 	
 	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
 		protected ArrayWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
@@ -156,5 +170,51 @@ public class ValueWrapperFactory {
 			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
 		}		
 	}
+	
+	private static class ValueExtensionImpl implements ValueExtension, Wrapper {
+		
+		private Value extendedValue = null;
+		
+		public ValueExtensionImpl(Value value) {
+			extendedValue = value;
+		}
+		
+		@Override
+		public Value getWrappedObject() {
+			return extendedValue;
+		}
 
+	}
+	
+	private static class ValueWrapperInvocationHandler implements InvocationHandler {
+		
+		private ValueExtensionImpl valueTarget = null;
+		
+		public ValueWrapperInvocationHandler(Value value) {
+			this.valueTarget = new ValueExtensionImpl(value);
+		}
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			if (isMethodSupportedByValueClass(method)) {
+				return method.invoke(valueTarget.getWrappedObject(), args);
+			} else {
+				return method.invoke(valueTarget, args);
+			}
+		}
+		
+		private boolean isMethodSupportedByValueClass(Method method) {
+			try {
+				valueTarget
+					.getWrappedObject()
+					.getClass()
+					.getMethod(method.getName(), method.getParameterTypes());
+				return true;
+			} catch (NoSuchMethodException e) {
+				return false;
+			}
+		}
+		
+	}
+	
 }
