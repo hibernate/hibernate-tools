@@ -76,6 +76,7 @@ public class ValueWrapperFactory {
 	}
 
 	static interface ValueExtension extends Wrapper {
+		default Value getWrappedObject() { return (Value)this; }
 		default boolean isCollection() { return Collection.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isOneToMany() { return OneToMany.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
