@@ -24,54 +24,54 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class ValueWrapperFactory {
 	
-	public static Value createArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new ArrayWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new BagWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createListWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createListWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new ListWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createManyToOneWrapper(Table table) {
+	public static ValueWrapper createManyToOneWrapper(Table table) {
 		return new ManyToOneWrapperImpl(table);
 	}
 
-	public static Value createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new MapWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new OneToManyWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new OneToOneWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new PrimitiveArrayWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new SetWrapperImpl(persistentClassWrapper);
 	}
 
-	public static Value createSimpleValueWrapper() {
+	public static ValueWrapper createSimpleValueWrapper() {
 		return new SimpleValueWrapperImpl();
 	}
 	
-	public static Value createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return new ComponentWrapperImpl(persistentClassWrapper);
 	}
 	
-	public static Value createValueWrapper(Value wrappedValue) {
-		return (Value)Proxy.newProxyInstance(
+	public static ValueWrapper createValueWrapper(Value wrappedValue) {
+		return (ValueWrapper)Proxy.newProxyInstance(
 				ValueWrapperFactory.class.getClassLoader(), 
-				new Class[] { Value.class, ValueExtension.class }, 
+				new Class[] { ValueWrapper.class }, 
 				new ValueWrapperInvocationHandler(wrappedValue));
 	}
 
@@ -171,7 +171,7 @@ public class ValueWrapperFactory {
 		}		
 	}
 	
-	private static class ValueExtensionImpl implements ValueExtension, Wrapper {
+	private static class ValueExtensionImpl implements ValueExtension {
 		
 		private Value extendedValue = null;
 		
