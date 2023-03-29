@@ -22,6 +22,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.Test;
 
 public class ValueWrapperFactoryTest {
@@ -30,9 +31,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreateArrayWrapper() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value arrayWrapper = ValueWrapperFactory.createArrayWrapper(persistentClassWrapper);
-		assertTrue(arrayWrapper instanceof Array);
-		assertSame(((Array)arrayWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper arrayWrapper = ValueWrapperFactory.createArrayWrapper(persistentClassWrapper);
+		Value wrappedArray = arrayWrapper.getWrappedObject();
+		assertTrue(wrappedArray instanceof Array);
+		assertSame(((Array)wrappedArray).getOwner(), persistentClassTarget);
 	}
 
 	@Test

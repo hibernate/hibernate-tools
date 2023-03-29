@@ -46,6 +46,7 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -228,8 +229,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object arrayWrapper = wrapperFactory.createArrayWrapper(persistentClassWrapper);
-		assertTrue(arrayWrapper instanceof Array);
-		assertSame(((Array)arrayWrapper).getOwner(), persistentClassTarget);
+		Value wrappedArray = ((ValueWrapper)arrayWrapper).getWrappedObject();
+		assertTrue(wrappedArray instanceof Array);
+		assertSame(((Array)wrappedArray).getOwner(), persistentClassTarget);
 	}
 
 	@Test

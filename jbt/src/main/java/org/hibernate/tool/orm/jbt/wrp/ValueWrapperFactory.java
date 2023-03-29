@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -25,7 +26,10 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 public class ValueWrapperFactory {
 	
 	public static ValueWrapper createArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return new ArrayWrapperImpl(persistentClassWrapper);
+		return createValueWrapper(
+				new Array(
+						DummyMetadataBuildingContext.INSTANCE, 
+						persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
@@ -104,12 +108,6 @@ public class ValueWrapperFactory {
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
 	
-	private static class ArrayWrapperImpl extends Array implements ValueWrapper {
-		protected ArrayWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
-			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
-		}		
-	}
-
 	private static class BagWrapperImpl extends Bag implements ValueWrapper {
 		protected BagWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
 			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
@@ -172,50 +170,56 @@ public class ValueWrapperFactory {
 		}		
 	}
 	
-	private static class ValueExtensionImpl implements ValueExtension {
+	private static class ValueWrapperInvocationHandler implements ValueExtension, InvocationHandler {
 		
 		private Value extendedValue = null;
 		
-		public ValueExtensionImpl(Value value) {
+		public ValueWrapperInvocationHandler(Value value) {
 			extendedValue = value;
+		}
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			try {
+				Method valueClassMethod = lookupMethodInValueClass(extendedValue, method);
+				if (valueClassMethod != null) {
+					return valueClassMethod.invoke(extendedValue, args);
+				} else {
+					return method.invoke(this, args);
+				}
+			} catch (InvocationTargetException e) {
+				throw e.getTargetException();
+			}
 		}
 		
 		@Override
 		public Value getWrappedObject() {
 			return extendedValue;
 		}
-
+		
+		@Override
+		public Value getElement() {
+			try {
+				return (Value)extendedValue.getClass().getMethod("getElement", new Class[] {}).invoke(extendedValue);
+			} catch (NoSuchMethodException e) {
+				throw new UnsupportedOperationException("Class '" + extendedValue.getClass().getName() + "' does not support 'isTypeSpecified()'." );
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(e.getTargetException());
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
 	}
 	
-	private static class ValueWrapperInvocationHandler implements InvocationHandler {
-		
-		private ValueExtensionImpl valueTarget = null;
-		
-		public ValueWrapperInvocationHandler(Value value) {
-			this.valueTarget = new ValueExtensionImpl(value);
+	private static Method lookupMethodInValueClass(Value value, Method method) {
+		try {
+			return value
+				.getClass()
+				.getMethod(method.getName(), method.getParameterTypes());
+		} catch (NoSuchMethodException e) {
+			return null;
 		}
-
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			if (isMethodSupportedByValueClass(method)) {
-				return method.invoke(valueTarget.getWrappedObject(), args);
-			} else {
-				return method.invoke(valueTarget, args);
-			}
-		}
-		
-		private boolean isMethodSupportedByValueClass(Method method) {
-			try {
-				valueTarget
-					.getWrappedObject()
-					.getClass()
-					.getMethod(method.getName(), method.getParameterTypes());
-				return true;
-			} catch (NoSuchMethodException e) {
-				return false;
-			}
-		}
-		
 	}
 	
 }
