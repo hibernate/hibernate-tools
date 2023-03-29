@@ -126,7 +126,7 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createOneToManyWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
-	public Value createOneToOneWrapper(Object persistentClassWrapper) {
+	public Object createOneToOneWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createOneToOneWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 

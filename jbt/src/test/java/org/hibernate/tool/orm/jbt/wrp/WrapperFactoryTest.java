@@ -314,10 +314,11 @@ public class WrapperFactoryTest {
 		Table tableTarget = new Table("", "foo");
 		((RootClass)persistentClassTarget).setTable(tableTarget);
 		persistentClassTarget.setEntityName("bar");
-		Value oneToOneWrapper = wrapperFactory.createOneToOneWrapper(persistentClassWrapper);
-		assertTrue(oneToOneWrapper instanceof OneToOne);
-		assertEquals(((OneToOne)oneToOneWrapper).getEntityName(), "bar");
-		assertSame(((OneToOne)oneToOneWrapper).getTable(), tableTarget);
+		Object oneToOneWrapper = wrapperFactory.createOneToOneWrapper(persistentClassWrapper);
+		Value wrappedOneToOne = ((ValueWrapper)oneToOneWrapper).getWrappedObject();
+		assertTrue(wrappedOneToOne instanceof OneToOne);
+		assertEquals(((OneToOne)wrappedOneToOne).getEntityName(), "bar");
+		assertSame(((OneToOne)wrappedOneToOne).getTable(), tableTarget);
 	}
 	
 	@Test
