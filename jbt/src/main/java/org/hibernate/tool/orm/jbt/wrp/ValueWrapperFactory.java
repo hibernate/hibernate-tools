@@ -196,7 +196,9 @@ public class ValueWrapperFactory {
 			try {
 				return (Value)extendedValue.getClass().getMethod("getElement", new Class[] {}).invoke(extendedValue);
 			} catch (NoSuchMethodException e) {
-				throw new UnsupportedOperationException("Class '" + extendedValue.getClass().getName() + "' does not support 'isTypeSpecified()'." );
+				// TODO for now return null, needs to be replaced by throwing UnsupportedOperationException
+				return null;
+				// throw new UnsupportedOperationException("Class '" + extendedValue.getClass().getName() + "' does not support 'isTypeSpecified()'." );
 			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getTargetException());
 			} catch (IllegalAccessException e) {
