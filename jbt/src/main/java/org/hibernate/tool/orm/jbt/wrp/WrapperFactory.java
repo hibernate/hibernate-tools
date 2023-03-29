@@ -114,7 +114,7 @@ public class WrapperFactory {
 		return result;
 	}
 
-	public Value createManyToOneWrapper(Object table) {
+	public Object createManyToOneWrapper(Object table) {
 		return ValueWrapperFactory.createManyToOneWrapper((Table)table);
 	}
 

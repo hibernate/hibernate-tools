@@ -279,9 +279,10 @@ public class WrapperFactoryTest {
 	@Test
 	public void testCreateManyToOneWrapper() {
 		Table table = new Table("", "foo");
-		Value manyToOneWrapper = wrapperFactory.createManyToOneWrapper(table);
-		assertTrue(manyToOneWrapper instanceof ManyToOne);
-		assertSame(table, manyToOneWrapper.getTable());
+		Object manyToOneWrapper = wrapperFactory.createManyToOneWrapper(table);
+		Value wrappedManyToOne = ((ValueWrapper)manyToOneWrapper).getWrappedObject();
+		assertTrue(wrappedManyToOne instanceof ManyToOne);
+		assertSame(table, wrappedManyToOne.getTable());
 	}
 
 	@Test

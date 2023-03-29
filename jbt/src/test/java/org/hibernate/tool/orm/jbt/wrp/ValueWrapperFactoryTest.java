@@ -60,9 +60,10 @@ public class ValueWrapperFactoryTest {
 	@Test
 	public void testCreateManyToOneWrapper() {
 		Table table = new Table("", "foo");
-		Value manyToOneWrapper = ValueWrapperFactory.createManyToOneWrapper(table);
-		assertTrue(manyToOneWrapper instanceof ManyToOne);
-		assertSame(table, manyToOneWrapper.getTable());
+		ValueWrapper manyToOneWrapper = ValueWrapperFactory.createManyToOneWrapper(table);
+		Value wrappedManyToOne = manyToOneWrapper.getWrappedObject();
+		assertTrue(wrappedManyToOne instanceof ManyToOne);
+		assertSame(table, wrappedManyToOne.getTable());
 	}
 
 	@Test
