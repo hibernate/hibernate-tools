@@ -302,8 +302,9 @@ public class WrapperFactoryTest {
 		Table tableWrapper = (Table)wrapperFactory.createTableWrapper("foo");
 		((RootClass)persistentClassTarget).setTable(tableWrapper);
 		Object oneToManyWrapper = wrapperFactory.createOneToManyWrapper(persistentClassWrapper);
-		assertTrue(oneToManyWrapper instanceof OneToMany);
-		assertSame(((OneToMany)oneToManyWrapper).getTable(), tableWrapper);
+		Value wrappedOneToMany = ((ValueWrapper)oneToManyWrapper).getWrappedObject();
+		assertTrue(wrappedOneToMany instanceof OneToMany);
+		assertSame(((OneToMany)wrappedOneToMany).getTable(), tableWrapper);
 	}
 	
 	@Test
