@@ -83,7 +83,10 @@ public class ValueWrapperFactory {
 	}
 
 	public static ValueWrapper createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return new SetWrapperImpl(persistentClassWrapper);
+		return createValueWrapper(
+				new Set(
+						DummyMetadataBuildingContext.INSTANCE, 
+						persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createSimpleValueWrapper() {
@@ -130,12 +133,6 @@ public class ValueWrapperFactory {
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
 	
-	private static class SetWrapperImpl extends Set implements ValueWrapper {
-		protected SetWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
-			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
-		}		
-	}
-
 	private static class SimpleValueWrapperImpl extends BasicValue implements ValueWrapper {
 		protected SimpleValueWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);

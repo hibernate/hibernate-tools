@@ -116,9 +116,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreateSetWrapper() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value setWrapper = ValueWrapperFactory.createSetWrapper(persistentClassWrapper);
-		assertTrue(setWrapper instanceof Set);
-		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper setWrapper = ValueWrapperFactory.createSetWrapper(persistentClassWrapper);
+		Value wrappedSet = setWrapper.getWrappedObject();
+		assertTrue(wrappedSet instanceof Set);
+		assertSame(((Set)wrappedSet).getOwner(), persistentClassTarget);
 	}
 	
 	@Test

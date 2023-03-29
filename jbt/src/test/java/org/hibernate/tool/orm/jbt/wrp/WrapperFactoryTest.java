@@ -336,8 +336,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object setWrapper = wrapperFactory.createSetWrapper(persistentClassWrapper);
-		assertTrue(setWrapper instanceof Set);
-		assertSame(((Set)setWrapper).getOwner(), persistentClassTarget);
+		Value wrappedSet = ((ValueWrapper)setWrapper).getWrappedObject();
+		assertTrue(wrappedSet instanceof Set);
+		assertSame(((Set)wrappedSet).getOwner(), persistentClassTarget);
 	}
 	
 	@Test
