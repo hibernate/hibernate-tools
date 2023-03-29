@@ -33,7 +33,10 @@ public class ValueWrapperFactory {
 	}
 
 	public static ValueWrapper createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return new BagWrapperImpl(persistentClassWrapper);
+		return createValueWrapper(
+				new Bag(
+						DummyMetadataBuildingContext.INSTANCE, 
+						persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createListWrapper(PersistentClassWrapper persistentClassWrapper) {
@@ -108,12 +111,6 @@ public class ValueWrapperFactory {
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
 	
-	private static class BagWrapperImpl extends Bag implements ValueWrapper {
-		protected BagWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
-			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
-		}		
-	}
-
 	private static class ListWrapperImpl extends List implements ValueWrapper {
 		protected ListWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
 			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());

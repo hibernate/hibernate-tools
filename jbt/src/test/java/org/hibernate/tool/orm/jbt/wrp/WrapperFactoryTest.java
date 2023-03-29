@@ -239,8 +239,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object bagWrapper = wrapperFactory.createBagWrapper(persistentClassWrapper);
-		assertTrue(bagWrapper instanceof Bag);
-		assertSame(((Bag)bagWrapper).getOwner(), persistentClassTarget);
+		Value wrappedBag = ((ValueWrapper)bagWrapper).getWrappedObject();
+		assertTrue(wrappedBag instanceof Bag);
+		assertSame(((Bag)wrappedBag).getOwner(), persistentClassTarget);
 	}
 
 	@Test

@@ -41,9 +41,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreateBagWrapper() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value bagWrapper = ValueWrapperFactory.createBagWrapper(persistentClassWrapper);
-		assertTrue(bagWrapper instanceof Bag);
-		assertSame(((Bag)bagWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper bagWrapper = ValueWrapperFactory.createBagWrapper(persistentClassWrapper);
+		Value wrappedBag = bagWrapper.getWrappedObject();
+		assertTrue(wrappedBag instanceof Bag);
+		assertSame(((Bag)wrappedBag).getOwner(), persistentClassTarget);
 	}
 
 	@Test
