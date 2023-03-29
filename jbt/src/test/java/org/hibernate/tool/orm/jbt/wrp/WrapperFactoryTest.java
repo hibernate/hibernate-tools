@@ -326,8 +326,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object primitiveArrayWrapper = wrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
-		assertTrue(primitiveArrayWrapper instanceof PrimitiveArray);
-		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
+		Value wrappedPrimitiveArray = ((ValueWrapper)primitiveArrayWrapper).getWrappedObject();
+		assertTrue(wrappedPrimitiveArray instanceof PrimitiveArray);
+		assertSame(((PrimitiveArray)wrappedPrimitiveArray).getOwner(), persistentClassTarget);
 	}
 
 	@Test

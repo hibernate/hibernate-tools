@@ -106,9 +106,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreatePrimitiveArray() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value primitiveArrayWrapper = ValueWrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
-		assertTrue(primitiveArrayWrapper instanceof PrimitiveArray);
-		assertSame(((PrimitiveArray)primitiveArrayWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper primitiveArrayWrapper = ValueWrapperFactory.createPrimitiveArrayWrapper(persistentClassWrapper);
+		Value wrappedPrimitiveArray = primitiveArrayWrapper.getWrappedObject();
+		assertTrue(wrappedPrimitiveArray instanceof PrimitiveArray);
+		assertSame(((PrimitiveArray)wrappedPrimitiveArray).getOwner(), persistentClassTarget);
 	}
 	
 	@Test
