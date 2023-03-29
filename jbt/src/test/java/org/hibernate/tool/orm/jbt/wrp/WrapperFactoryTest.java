@@ -343,9 +343,9 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateSimpleValueWrapper() {
-		Value simpleValueWrapper = wrapperFactory.createSimpleValueWrapper();
-		assertNotNull(simpleValueWrapper);
-		assertTrue(simpleValueWrapper instanceof SimpleValue);
+		Object simpleValueWrapper = wrapperFactory.createSimpleValueWrapper();
+		Value wrappedSimpleValue = ((ValueWrapper)simpleValueWrapper).getWrappedObject();
+		assertTrue(wrappedSimpleValue instanceof SimpleValue);
 	}
 	
 	@Test

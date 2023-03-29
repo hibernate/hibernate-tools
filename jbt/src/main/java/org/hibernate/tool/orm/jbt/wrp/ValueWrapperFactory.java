@@ -90,7 +90,7 @@ public class ValueWrapperFactory {
 	}
 
 	public static ValueWrapper createSimpleValueWrapper() {
-		return new SimpleValueWrapperImpl();
+		return createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 	}
 	
 	public static ValueWrapper createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
@@ -132,12 +132,6 @@ public class ValueWrapperFactory {
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
-	
-	private static class SimpleValueWrapperImpl extends BasicValue implements ValueWrapper {
-		protected SimpleValueWrapperImpl() {
-			super(DummyMetadataBuildingContext.INSTANCE);
-		}		
-	}
 	
 	private static class ComponentWrapperImpl extends Component implements ValueWrapper {
 		protected ComponentWrapperImpl(PersistentClassWrapper persistentClassWrapper) {

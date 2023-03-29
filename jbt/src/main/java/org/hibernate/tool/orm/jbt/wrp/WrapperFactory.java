@@ -6,7 +6,6 @@ import java.util.Properties;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -138,7 +137,7 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createSetWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
-	public Value createSimpleValueWrapper() {
+	public Object createSimpleValueWrapper() {
 		return ValueWrapperFactory.createSimpleValueWrapper();
 	}
 
