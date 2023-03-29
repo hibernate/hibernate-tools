@@ -290,8 +290,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object mapWrapper = wrapperFactory.createMapWrapper(persistentClassWrapper);
-		assertTrue(mapWrapper instanceof Map);
-		assertSame(((Map)mapWrapper).getOwner(), persistentClassTarget);
+		Value wrappedMap = ((ValueWrapper)mapWrapper).getWrappedObject();
+		assertTrue(wrappedMap instanceof Map);
+		assertSame(((Map)wrappedMap).getOwner(), persistentClassTarget);
 	}
 	
 	@Test

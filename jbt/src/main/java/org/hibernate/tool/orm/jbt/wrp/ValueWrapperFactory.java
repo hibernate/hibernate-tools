@@ -54,7 +54,10 @@ public class ValueWrapperFactory {
 	}
 
 	public static ValueWrapper createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return new MapWrapperImpl(persistentClassWrapper);
+		return createValueWrapper(
+				new Map(
+						DummyMetadataBuildingContext.INSTANCE, 
+						persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
@@ -117,12 +120,6 @@ public class ValueWrapperFactory {
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
 	
-	private static class MapWrapperImpl extends Map implements ValueWrapper {
-		protected MapWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
-			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
-		}		
-	}
-
 	private static class OneToManyWrapperImpl extends OneToMany implements ValueWrapper {
 		protected OneToManyWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
 			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
