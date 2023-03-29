@@ -51,9 +51,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreateListWrapper() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value listWrapper = ValueWrapperFactory.createListWrapper(persistentClassWrapper);
-		assertTrue(listWrapper instanceof List);
-		assertSame(((List)listWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper listWrapper = ValueWrapperFactory.createListWrapper(persistentClassWrapper);
+		Value wrappedList = listWrapper.getWrappedObject();
+		assertTrue(wrappedList instanceof List);
+		assertSame(((List)wrappedList).getOwner(), persistentClassTarget);
 	}
 	
 	@Test

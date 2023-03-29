@@ -40,7 +40,10 @@ public class ValueWrapperFactory {
 	}
 
 	public static ValueWrapper createListWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return new ListWrapperImpl(persistentClassWrapper);
+		return createValueWrapper(
+				new List(
+						DummyMetadataBuildingContext.INSTANCE, 
+						persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createManyToOneWrapper(Table table) {
@@ -111,12 +114,6 @@ public class ValueWrapperFactory {
 	static interface ValueWrapper extends Value, ValueExtension {}
 	
 	
-	private static class ListWrapperImpl extends List implements ValueWrapper {
-		protected ListWrapperImpl(PersistentClassWrapper persistentClassWrapper) {
-			super(DummyMetadataBuildingContext.INSTANCE, persistentClassWrapper.getWrappedObject());
-		}		
-	}
-
 	private static class ManyToOneWrapperImpl extends ManyToOne implements ValueWrapper {
 		protected ManyToOneWrapperImpl(Table table) {
 			super(DummyMetadataBuildingContext.INSTANCE, table);
