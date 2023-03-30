@@ -31,133 +31,135 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 
 public class WrapperFactory {
+	
+	private WrapperFactory() {}
 
-	public Object createArtifactCollectorWrapper() {
+	public static Object createArtifactCollectorWrapper() {
 		return new DefaultArtifactCollector();
 	}
 	
-	public Object createCfg2HbmWrapper() {
+	public static Object createCfg2HbmWrapper() {
 		return new Cfg2HbmTool();
 	}
 
-	public Object createNamingStrategyWrapper(String namingStrategyClassName) {
+	public static Object createNamingStrategyWrapper(String namingStrategyClassName) {
 		return NamingStrategyWrapperFactory.create(namingStrategyClassName);
 	}
 	
-	public Object createOverrideRepositoryWrapper() {
+	public static Object createOverrideRepositoryWrapper() {
 		return new OverrideRepository();
 	}
 	
-	public Object createRevengStrategyWrapper(Object...objects) {
+	public static Object createRevengStrategyWrapper(Object...objects) {
 		return RevengStrategyWrapperFactory.create(objects);
 	}
 
-	public Object createRevengSettingsWrapper(Object revengStrategy) {
+	public static Object createRevengSettingsWrapper(Object revengStrategy) {
 		return new RevengSettings((RevengStrategy)(revengStrategy));
 	}
 	
-	public Object createNativeConfigurationWrapper() {
+	public static Object createNativeConfigurationWrapper() {
 		return new NativeConfiguration();
 	}
 	
-	public Object createRevengConfigurationWrapper() {
+	public static Object createRevengConfigurationWrapper() {
 		return new RevengConfiguration();
 	}
 
-	public Object createJpaConfigurationWrapper(
+	public static Object createJpaConfigurationWrapper(
 			String persistenceUnit, 
 			Map<?,?> properties) {
 		return new JpaConfiguration(persistenceUnit, properties);
 	}
 
-	public Object createColumnWrapper(String name) {
+	public static Object createColumnWrapper(String name) {
 		return new ColumnWrapper(name);
 	}
 
-	public Object createRootClassWrapper() {
+	public static Object createRootClassWrapper() {
 		return PersistentClassWrapperFactory.createRootClassWrapper();
 	}
 
-	public Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
+	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
 		return PersistentClassWrapperFactory
 				.createSingleTableSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
-	public Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
+	public static Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
 		return PersistentClassWrapperFactory
 				.createJoinedSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
-	public Object createSpecialRootClassWrapper(Object property) {
+	public static Object createSpecialRootClassWrapper(Object property) {
 		return PersistentClassWrapperFactory
 				.createSpecialRootClassWrapper((Property)property);
 	}
 
-	public Object createPropertyWrapper() {
+	public static Object createPropertyWrapper() {
 		return new Property();
 	}
 
-	public Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
+	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
 		return HqlCompletionProposalWrapperFactory
 				.createHqlCompletionProposalWrapper(
 						(HQLCompletionProposal)hqlCompletionProposalTarget);
 	}
 	
-	public Object createArrayWrapper(Object persistentClassWrapper) {
+	public static Object createArrayWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new Array(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createBagWrapper(Object persistentClassWrapper) {
+	public static Object createBagWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new Bag(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createListWrapper(Object persistentClassWrapper) {
+	public static Object createListWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new List(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 	
-	public Object createDatabaseReaderWrapper(Properties properties, Object revengStrategy) {
+	public static Object createDatabaseReaderWrapper(Properties properties, Object revengStrategy) {
 		return DatabaseReaderWrapperFactory.createDatabaseReaderWrapper(
 				properties, 
 				(RevengStrategy)revengStrategy);
 	}
 
-	public Object createTableWrapper(String name) {
+	public static Object createTableWrapper(String name) {
 		Table result = new Table("Hibernate Tools", name);
 		result.setPrimaryKey(new PrimaryKey(result));
 		return result;
 	}
 
-	public Object createManyToOneWrapper(Object table) {
+	public static Object createManyToOneWrapper(Object table) {
 		return ValueWrapperFactory.createValueWrapper(
 				new ManyToOne(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)table));
 	}
 
-	public Object createMapWrapper(Object persistentClassWrapper) {
+	public static Object createMapWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new org.hibernate.mapping.Map(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createOneToManyWrapper(Object persistentClassWrapper) {
+	public static Object createOneToManyWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new OneToMany(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createOneToOneWrapper(Object persistentClassWrapper) {
+	public static Object createOneToOneWrapper(Object persistentClassWrapper) {
 		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		return ValueWrapperFactory.createValueWrapper(
 				new OneToOne(
@@ -166,32 +168,32 @@ public class WrapperFactory {
 						pc));
 	}
 
-	public Object createPrimitiveArrayWrapper(Object persistentClassWrapper) {
+	public static Object createPrimitiveArrayWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new PrimitiveArray(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createSetWrapper(Object persistentClassWrapper) {
+	public static Object createSetWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new Set(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public Object createSimpleValueWrapper() {
+	public static Object createSimpleValueWrapper() {
 		return ValueWrapperFactory.createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 	}
 
-	public Object createComponentWrapper(Object persistentClassWrapper) {
+	public static Object createComponentWrapper(Object persistentClassWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new Component(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 	
-	public Object createDependantValueWrapper(Object table, Object valueWrapper) {
+	public static Object createDependantValueWrapper(Object table, Object valueWrapper) {
 		return ValueWrapperFactory.createValueWrapper(
 				new DependantValue(
 						DummyMetadataBuildingContext.INSTANCE, 
