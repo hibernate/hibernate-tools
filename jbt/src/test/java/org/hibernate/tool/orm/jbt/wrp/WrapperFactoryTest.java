@@ -16,6 +16,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -356,6 +357,19 @@ public class WrapperFactoryTest {
 		Value wrappedComponent = ((ValueWrapper)componentWrapper).getWrappedObject();
 		assertTrue(wrappedComponent instanceof Component);
 		assertSame(((Component)wrappedComponent).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateDependantValueWrapper() {
+		Table tableTarget = new Table("", "foo");
+		Object valueWrapper = wrapperFactory.createSimpleValueWrapper();
+		Object dependantValueWrapper = wrapperFactory.createDependantValueWrapper(tableTarget, valueWrapper);
+		Value wrappedDependantValue = ((ValueWrapper)dependantValueWrapper).getWrappedObject();
+		assertTrue(wrappedDependantValue instanceof DependantValue);
+		assertSame(tableTarget, ((DependantValue)wrappedDependantValue).getTable());
+		assertSame(
+				((DependantValue)wrappedDependantValue).getWrappedValue(), 
+				((Wrapper)valueWrapper).getWrappedObject());
 	}
 	
 	@SuppressWarnings("serial")

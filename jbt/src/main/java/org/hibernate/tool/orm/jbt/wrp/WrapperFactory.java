@@ -7,6 +7,8 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
@@ -187,6 +189,14 @@ public class WrapperFactory {
 				new Component(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+	}
+	
+	public Object createDependantValueWrapper(Object table, Object valueWrapper) {
+		return ValueWrapperFactory.createValueWrapper(
+				new DependantValue(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)table, 
+						(KeyValue)((Wrapper)valueWrapper).getWrappedObject()));
 	}
 
 }
