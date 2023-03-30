@@ -134,9 +134,10 @@ public class ValueWrapperFactoryTest {
 	public void testCreateComponentValue() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
-		Value componentWrapper = ValueWrapperFactory.createComponentWrapper(persistentClassWrapper);
-		assertTrue(componentWrapper instanceof Component);
-		assertSame(((Component)componentWrapper).getOwner(), persistentClassTarget);
+		ValueWrapper componentWrapper = ValueWrapperFactory.createComponentWrapper(persistentClassWrapper);
+		Value wrappedComponent = componentWrapper.getWrappedObject();
+		assertTrue(wrappedComponent instanceof Component);
+		assertSame(((Component)wrappedComponent).getOwner(), persistentClassTarget);
 	}
 	
 	@Test

@@ -353,8 +353,9 @@ public class WrapperFactoryTest {
 		Object persistentClassWrapper = wrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		Object componentWrapper = wrapperFactory.createComponentWrapper(persistentClassWrapper);
-		assertTrue(componentWrapper instanceof Component);
-		assertSame(((Component)componentWrapper).getOwner(), persistentClassTarget);
+		Value wrappedComponent = ((ValueWrapper)componentWrapper).getWrappedObject();
+		assertTrue(wrappedComponent instanceof Component);
+		assertSame(((Component)wrappedComponent).getOwner(), persistentClassTarget);
 	}
 	
 	@SuppressWarnings("serial")
