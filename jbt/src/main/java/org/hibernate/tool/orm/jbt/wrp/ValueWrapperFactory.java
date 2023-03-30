@@ -5,100 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.hibernate.mapping.Array;
-import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
-import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class ValueWrapperFactory {
-	
-	public static ValueWrapper createArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new Array(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new Bag(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createListWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new List(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createManyToOneWrapper(Table table) {
-		return createValueWrapper(
-				new ManyToOne(
-						DummyMetadataBuildingContext.INSTANCE, 
-						table));
-	}
-
-	public static ValueWrapper createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new Map(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new OneToMany(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new OneToOne(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject().getTable(),
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new PrimitiveArray(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new Set(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
-
-	public static ValueWrapper createSimpleValueWrapper() {
-		return createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
-	}
-	
-	public static ValueWrapper createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return createValueWrapper(
-				new Component(
-						DummyMetadataBuildingContext.INSTANCE, 
-						persistentClassWrapper.getWrappedObject()));
-	}
 	
 	public static ValueWrapper createValueWrapper(Value wrappedValue) {
 		return (ValueWrapper)Proxy.newProxyInstance(
