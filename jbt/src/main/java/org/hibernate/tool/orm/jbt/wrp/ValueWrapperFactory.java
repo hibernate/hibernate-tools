@@ -9,6 +9,7 @@ import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -44,6 +45,7 @@ public class ValueWrapperFactory {
 		default boolean isSet() {return Set.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isPrimitiveArray() {return PrimitiveArray.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isArray() {return Array.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isIdentifierBag() {return IdentifierBag.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
