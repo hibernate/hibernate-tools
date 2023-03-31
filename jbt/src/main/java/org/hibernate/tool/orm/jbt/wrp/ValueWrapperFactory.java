@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.KeyValue;
@@ -36,6 +37,7 @@ public class ValueWrapperFactory {
 		default boolean isList() { return List.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isAny() {return Any.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
