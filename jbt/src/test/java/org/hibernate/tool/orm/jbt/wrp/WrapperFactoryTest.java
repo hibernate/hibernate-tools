@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Component;
@@ -362,6 +363,15 @@ public class WrapperFactoryTest {
 		assertSame(
 				((DependantValue)wrappedDependantValue).getWrappedValue(), 
 				((Wrapper)valueWrapper).getWrappedObject());
+	}
+	
+	@Test
+	public void testCreateAnyValueWrapper() {
+		Table tableTarget = new Table("", "foo");
+		Object anyValueWrapper = WrapperFactory.createAnyValueWrapper(tableTarget);
+		Value wrappedAnyValue = ((ValueWrapper)anyValueWrapper).getWrappedObject();
+		assertTrue(wrappedAnyValue instanceof Any);
+		assertSame(tableTarget, ((Any)wrappedAnyValue).getTable());
 	}
 	
 	@SuppressWarnings("serial")

@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
@@ -199,6 +200,13 @@ public class WrapperFactory {
 						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)table, 
 						(KeyValue)((Wrapper)valueWrapper).getWrappedObject()));
+	}
+
+	public static Object createAnyValueWrapper(Table table) {
+		return ValueWrapperFactory.createValueWrapper(
+				new Any(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)table));
 	}
 
 }
