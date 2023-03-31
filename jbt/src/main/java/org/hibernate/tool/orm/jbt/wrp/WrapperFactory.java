@@ -9,6 +9,7 @@ import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -202,11 +203,18 @@ public class WrapperFactory {
 						(KeyValue)((Wrapper)valueWrapper).getWrappedObject()));
 	}
 
-	public static Object createAnyValueWrapper(Table table) {
+	public static Object createAnyValueWrapper(Object table) {
 		return ValueWrapperFactory.createValueWrapper(
 				new Any(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)table));
+	}
+
+	public static Object createIdentifierBagValueWrapper(Object persistentClassWrapper) {
+		return ValueWrapperFactory.createValueWrapper(
+				new IdentifierBag(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
 }
