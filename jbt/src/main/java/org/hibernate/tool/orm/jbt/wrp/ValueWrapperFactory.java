@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -34,6 +35,7 @@ public class ValueWrapperFactory {
 		default boolean isMap() { return Map.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isList() { return List.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
