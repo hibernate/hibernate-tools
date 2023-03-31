@@ -14,6 +14,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
@@ -38,6 +39,7 @@ public class ValueWrapperFactory {
 		default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isAny() {return Any.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isSet() {return Set.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
