@@ -7,6 +7,7 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -46,6 +47,7 @@ public class ValueWrapperFactory {
 		default boolean isPrimitiveArray() {return PrimitiveArray.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isArray() {return Array.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isIdentifierBag() {return IdentifierBag.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isBag() {return Bag.class.isAssignableFrom(getWrappedObject().getClass()); }
 		default boolean isEmbedded() { return false; }
 		default Value getElement() { return null; }
 		default void setElement(Value element) {}
