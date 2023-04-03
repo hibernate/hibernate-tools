@@ -71,6 +71,7 @@ public class ValueWrapperFactory {
 		default String getReferencedEntityName() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getReferencedEntityName()'." ); }
 		default String getEntityName() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getEntityName()'." ); }
 		default String getForeignKeyName() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getForeignKeyName()'." ); }
+		default String getParentProperty() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getParentProperty()'." ); }
 		default PersistentClass getOwner() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getOwner()'." ); }
 		default Iterator<Property> getPropertyIterator() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getPropertyIterator()'." ); }
 		default void addColumn(Column column) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'addColumn(Column)'." ); }
