@@ -88,6 +88,7 @@ public class ValueWrapperFactory {
 			}
 		}
 		default boolean isInverse() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isInverse()'." ); }
+		default PersistentClass getAssociatedClass() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getAssociatedClass()'." ); }
 
 	}
 	
