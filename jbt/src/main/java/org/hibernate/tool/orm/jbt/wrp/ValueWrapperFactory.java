@@ -96,6 +96,7 @@ public class ValueWrapperFactory {
 				throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setLazy(boolean)'." ); }
 		}
 		default void setRole(String role) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setRole(String)'." ); }
+		default void setReferencedEntityName(String name) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setReferencedEntityName(String)'." ); }
 	}
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
