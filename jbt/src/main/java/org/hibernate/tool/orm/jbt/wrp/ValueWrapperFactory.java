@@ -77,6 +77,7 @@ public class ValueWrapperFactory {
 		default void addColumn(Column column) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'addColumn(Column)'." ); }
 		default void setTypeParameters(Properties properties) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setTypeParameters(Properties)'." ); }
 		default void setElementClassName(String name) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setElementClassName(String)'." ); }
+		default void setKey(KeyValue key) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setKey(KeyValue)'." ); }
 	}
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
