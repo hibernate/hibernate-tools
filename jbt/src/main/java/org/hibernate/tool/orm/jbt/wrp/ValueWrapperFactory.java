@@ -89,7 +89,12 @@ public class ValueWrapperFactory {
 		}
 		default boolean isInverse() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isInverse()'." ); }
 		default PersistentClass getAssociatedClass() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getAssociatedClass()'." ); }
-
+		default void setLazy(boolean b) { 
+			if (Fetchable.class.isAssignableFrom(getWrappedObject().getClass())) {
+				((Fetchable)getWrappedObject()).setLazy(b);;
+			} else {
+				throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setLazy(boolean)'." ); }
+		}
 	}
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
