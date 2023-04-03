@@ -7,12 +7,14 @@ import java.lang.reflect.Proxy;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Fetchable;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
@@ -78,6 +80,13 @@ public class ValueWrapperFactory {
 		default void setTypeParameters(Properties properties) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setTypeParameters(Properties)'." ); }
 		default void setElementClassName(String name) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setElementClassName(String)'." ); }
 		default void setKey(KeyValue key) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setKey(KeyValue)'." ); }
+		default void setFetchModeJoin() {
+			if (Fetchable.class.isAssignableFrom(getWrappedObject().getClass())) {
+				((Fetchable)getWrappedObject()).setFetchMode(FetchMode.JOIN);
+			} else {
+				throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setFetchModeJoin()'." ); 
+			}
+		}
 	}
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
