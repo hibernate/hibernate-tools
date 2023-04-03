@@ -87,6 +87,8 @@ public class ValueWrapperFactory {
 				throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setFetchModeJoin()'." ); 
 			}
 		}
+		default boolean isInverse() { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isInverse()'." ); }
+
 	}
 	
 	static interface ValueWrapper extends Value, ValueExtension {}
