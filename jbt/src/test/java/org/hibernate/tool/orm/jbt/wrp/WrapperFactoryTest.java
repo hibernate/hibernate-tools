@@ -43,6 +43,7 @@ import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -383,6 +384,13 @@ public class WrapperFactoryTest {
 		Value wrappedIdentifierBagValue = ((ValueWrapper)identifierBagValueWrapper).getWrappedObject();
 		assertTrue(wrappedIdentifierBagValue instanceof IdentifierBag);
 		assertSame(((IdentifierBag)wrappedIdentifierBagValue).getOwner(), persistentClassTarget);
+	}
+	
+	@Test
+	public void testCreateTableFilterWrapper() {
+		Object tableFilterWrapper = WrapperFactory.createTableFilterWrapper();
+		assertNotNull(tableFilterWrapper);
+		assertTrue(tableFilterWrapper instanceof TableFilter);
 	}
 	
 	@SuppressWarnings("serial")

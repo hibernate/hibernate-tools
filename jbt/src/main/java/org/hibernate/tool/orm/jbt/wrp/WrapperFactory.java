@@ -27,6 +27,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
@@ -215,6 +216,10 @@ public class WrapperFactory {
 				new IdentifierBag(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+	}
+
+	public static Object createTableFilterWrapper() {
+		return new TableFilter();
 	}
 
 }
