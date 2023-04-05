@@ -12,8 +12,12 @@ public class TypeFactory {
 		return BooleanType.INSTANCE;
 	}
 
-	public Object getByteType() {
+	public Type getByteType() {
 		return ByteType.INSTANCE;
+	}
+
+	public Type getBigIntegerType() {
+		return BigIntegerType.INSTANCE;
 	};
 	
 }

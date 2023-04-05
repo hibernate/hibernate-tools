@@ -22,4 +22,9 @@ public class TypeFactoryTest {
 		assertSame(ByteType.INSTANCE, TypeFactory.INSTANCE.getByteType());
 	}
 	
+	@Test
+	public void testGetBigIntegerType() {
+		assertSame(BigIntegerType.INSTANCE, TypeFactory.INSTANCE.getBigIntegerType());
+	}
+	
 }
