@@ -37,4 +37,9 @@ public class TypeFactoryTest {
 		assertSame(CalendarType.INSTANCE, TypeFactory.INSTANCE.getCalendarType());
 	}
 	
+	@Test
+	public void testGetCalendarDateType() {
+		assertSame(CalendarDateType.INSTANCE, TypeFactory.INSTANCE.getCalendarDateType());
+	}
+	
 }

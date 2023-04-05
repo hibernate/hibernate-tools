@@ -26,6 +26,10 @@ public class TypeFactory {
 
 	public Type getCalendarType() {
 		return CalendarType.INSTANCE;
+	}
+
+	public Type getCalendarDateType() {
+		return CalendarDateType.INSTANCE;
 	};
 	
 }
