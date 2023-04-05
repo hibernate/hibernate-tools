@@ -44,6 +44,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.type.TypeFactory;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -391,6 +392,12 @@ public class WrapperFactoryTest {
 		Object tableFilterWrapper = WrapperFactory.createTableFilterWrapper();
 		assertNotNull(tableFilterWrapper);
 		assertTrue(tableFilterWrapper instanceof TableFilter);
+	}
+	
+	@Test
+	public void testCreateTypeFactoryWrapper() {
+		Object typeFactoryWrapper = WrapperFactory.createTypeFactoryWrapper();
+		assertSame(TypeFactory.INSTANCE, typeFactoryWrapper);
 	}
 	
 	@SuppressWarnings("serial")
