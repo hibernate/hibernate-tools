@@ -10,6 +10,10 @@ public class TypeFactory {
 
 	public Type getBooleanType() {
 		return BooleanType.INSTANCE;
+	}
+
+	public Object getByteType() {
+		return ByteType.INSTANCE;
 	};
 	
 }

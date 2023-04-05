@@ -17,4 +17,9 @@ public class TypeFactoryTest {
 		assertSame(BooleanType.INSTANCE, TypeFactory.INSTANCE.getBooleanType());
 	}
 	
+	@Test
+	public void testGetByteType() {
+		assertSame(ByteType.INSTANCE, TypeFactory.INSTANCE.getByteType());
+	}
+	
 }
