@@ -27,4 +27,9 @@ public class TypeFactoryTest {
 		assertSame(BigIntegerType.INSTANCE, TypeFactory.INSTANCE.getBigIntegerType());
 	}
 	
+	@Test
+	public void testGetShortType() {
+		assertSame(ShortType.INSTANCE, TypeFactory.INSTANCE.getShortType());
+	}
+	
 }

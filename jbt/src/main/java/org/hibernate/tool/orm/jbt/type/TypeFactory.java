@@ -18,6 +18,10 @@ public class TypeFactory {
 
 	public Type getBigIntegerType() {
 		return BigIntegerType.INSTANCE;
+	}
+
+	public Type getShortType() {
+		return ShortType.INSTANCE;
 	};
 	
 }
