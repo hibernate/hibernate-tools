@@ -22,6 +22,10 @@ public class TypeFactory {
 
 	public Type getShortType() {
 		return ShortType.INSTANCE;
+	}
+
+	public Type getCalendarType() {
+		return CalendarType.INSTANCE;
 	};
 	
 }

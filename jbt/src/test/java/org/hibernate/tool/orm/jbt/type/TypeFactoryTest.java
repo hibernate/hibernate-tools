@@ -32,4 +32,9 @@ public class TypeFactoryTest {
 		assertSame(ShortType.INSTANCE, TypeFactory.INSTANCE.getShortType());
 	}
 	
+	@Test
+	public void testGetCalendarType() {
+		assertSame(CalendarType.INSTANCE, TypeFactory.INSTANCE.getCalendarType());
+	}
+	
 }
