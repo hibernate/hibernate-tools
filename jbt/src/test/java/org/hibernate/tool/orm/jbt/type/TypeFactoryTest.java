@@ -67,4 +67,9 @@ public class TypeFactoryTest {
 		assertSame(CurrencyType.INSTANCE, TypeFactory.INSTANCE.getCurrencyType());
 	}
 	
+	@Test
+	public void testGetDateType() {
+		assertSame(DateType.INSTANCE, TypeFactory.INSTANCE.getDateType());
+	}
+	
 }

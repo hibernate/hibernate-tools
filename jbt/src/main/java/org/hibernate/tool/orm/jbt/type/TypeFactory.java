@@ -50,6 +50,10 @@ public class TypeFactory {
 
 	public Type getCurrencyType() {
 		return CurrencyType.INSTANCE;
-	};
+	}
+
+	public Type getDateType() {
+		return DateType.INSTANCE;
+	}
 	
 }
