@@ -30,6 +30,10 @@ public class TypeFactory {
 
 	public Type getCalendarDateType() {
 		return CalendarDateType.INSTANCE;
+	}
+
+	public Object getIntegerType() {
+		return IntegerType.INSTANCE;
 	};
 	
 }
