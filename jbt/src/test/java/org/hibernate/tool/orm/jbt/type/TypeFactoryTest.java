@@ -72,4 +72,9 @@ public class TypeFactoryTest {
 		assertSame(DateType.INSTANCE, TypeFactory.INSTANCE.getDateType());
 	}
 	
+	@Test
+	public void testGetDoubleType() {
+		assertSame(DoubleType.INSTANCE, TypeFactory.INSTANCE.getDoubleType());
+	}
+	
 }

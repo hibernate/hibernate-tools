@@ -55,5 +55,9 @@ public class TypeFactory {
 	public Type getDateType() {
 		return DateType.INSTANCE;
 	}
+
+	public Type getDoubleType() {
+		return DoubleType.INSTANCE;
+	}
 	
 }
