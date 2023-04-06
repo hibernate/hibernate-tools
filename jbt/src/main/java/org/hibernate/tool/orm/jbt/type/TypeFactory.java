@@ -32,12 +32,16 @@ public class TypeFactory {
 		return CalendarDateType.INSTANCE;
 	}
 
-	public Object getIntegerType() {
+	public Type getIntegerType() {
 		return IntegerType.INSTANCE;
 	}
 
-	public Object getBigDecimalType() {
+	public Type getBigDecimalType() {
 		return BigDecimalType.INSTANCE;
+	}
+
+	public Type getCharacterType() {
+		return CharacterType.INSTANCE;
 	};
 	
 }

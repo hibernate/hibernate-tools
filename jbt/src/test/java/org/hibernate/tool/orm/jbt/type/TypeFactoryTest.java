@@ -52,4 +52,9 @@ public class TypeFactoryTest {
 		assertSame( BigDecimalType.INSTANCE, TypeFactory.INSTANCE.getBigDecimalType());
 	}
 	
+	@Test
+	public void testGetCharacterType() {
+		assertSame(CharacterType.INSTANCE, TypeFactory.INSTANCE.getCharacterType());
+	}
+	
 }
