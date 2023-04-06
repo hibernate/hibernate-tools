@@ -42,6 +42,10 @@ public class TypeFactory {
 
 	public Type getCharacterType() {
 		return CharacterType.INSTANCE;
+	}
+
+	public Type getClassType() {
+		return ClassType.INSTANCE;
 	};
 	
 }

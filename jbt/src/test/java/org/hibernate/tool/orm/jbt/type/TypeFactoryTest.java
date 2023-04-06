@@ -57,4 +57,9 @@ public class TypeFactoryTest {
 		assertSame(CharacterType.INSTANCE, TypeFactory.INSTANCE.getCharacterType());
 	}
 	
+	@Test
+	public void testGetClassType() {
+		assertSame(ClassType.INSTANCE, TypeFactory.INSTANCE.getClassType());
+	}
+	
 }
