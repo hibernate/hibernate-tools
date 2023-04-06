@@ -62,4 +62,9 @@ public class TypeFactoryTest {
 		assertSame(ClassType.INSTANCE, TypeFactory.INSTANCE.getClassType());
 	}
 	
+	@Test
+	public void testGetCurrencyType() {
+		assertSame(CurrencyType.INSTANCE, TypeFactory.INSTANCE.getCurrencyType());
+	}
+	
 }

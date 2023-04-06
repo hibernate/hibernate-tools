@@ -46,6 +46,10 @@ public class TypeFactory {
 
 	public Type getClassType() {
 		return ClassType.INSTANCE;
+	}
+
+	public Type getCurrencyType() {
+		return CurrencyType.INSTANCE;
 	};
 	
 }
