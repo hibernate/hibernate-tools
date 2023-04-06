@@ -34,6 +34,10 @@ public class TypeFactory {
 
 	public Object getIntegerType() {
 		return IntegerType.INSTANCE;
+	}
+
+	public Object getBigDecimalType() {
+		return BigDecimalType.INSTANCE;
 	};
 	
 }

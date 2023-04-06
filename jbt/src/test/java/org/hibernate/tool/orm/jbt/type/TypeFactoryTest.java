@@ -47,4 +47,9 @@ public class TypeFactoryTest {
 		assertSame(IntegerType.INSTANCE, TypeFactory.INSTANCE.getIntegerType());
 	}
 	
+	@Test
+	public void testGetBigDecimalType() {
+		assertSame( BigDecimalType.INSTANCE, TypeFactory.INSTANCE.getBigDecimalType());
+	}
+	
 }
