@@ -131,5 +131,9 @@ public class TypeFactory {
 	public Type getNamedType(String name) {
 		return TYPE_REGISTRY.getRegisteredType(name);
 	}
+
+	public Type getBasicType(String name) {
+		return getNamedType(name);
+	}
 	
 }

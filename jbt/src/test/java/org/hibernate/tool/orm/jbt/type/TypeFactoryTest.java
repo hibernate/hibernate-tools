@@ -132,4 +132,8 @@ public class TypeFactoryTest {
 		assertSame(TypeFactory.STRING_TYPE, TypeFactory.INSTANCE.getNamedType(String.class.getName()));
 	}
 	
+	@Test
+	public void testGetBasicType() {
+		assertSame(TypeFactory.STRING_TYPE, TypeFactory.INSTANCE.getBasicType(String.class.getName()));
+	}
 }
