@@ -67,5 +67,9 @@ public class TypeFactory {
 	public Type getLocaleType() {
 		return LocaleType.INSTANCE;
 	}
+
+	public Type getLongType() {
+		return LongType.INSTANCE;
+	}
 	
 }

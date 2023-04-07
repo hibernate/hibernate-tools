@@ -87,4 +87,9 @@ public class TypeFactoryTest {
 		assertSame(LocaleType.INSTANCE, TypeFactory.INSTANCE.getLocaleType());
 	}
 	
+	@Test
+	public void testGetLongType() {
+		assertSame(LongType.INSTANCE, TypeFactory.INSTANCE.getLongType());
+	}
+	
 }
