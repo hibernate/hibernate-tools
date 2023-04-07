@@ -75,5 +75,9 @@ public class TypeFactory {
 	public Type getStringType() {
 		return StringType.INSTANCE;
 	}
+
+	public Type getTextType() {
+		return TextType.INSTANCE;
+	}
 	
 }

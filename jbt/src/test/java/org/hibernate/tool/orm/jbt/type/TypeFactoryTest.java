@@ -97,4 +97,9 @@ public class TypeFactoryTest {
 		assertSame(StringType.INSTANCE, TypeFactory.INSTANCE.getStringType());
 	}
 	
+	@Test
+	public void testGetTextType() {
+		assertSame(TextType.INSTANCE, TypeFactory.INSTANCE.getTextType());
+	}
+	
 }
