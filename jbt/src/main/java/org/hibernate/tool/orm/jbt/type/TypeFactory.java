@@ -71,5 +71,9 @@ public class TypeFactory {
 	public Type getLongType() {
 		return LongType.INSTANCE;
 	}
+
+	public Type getStringType() {
+		return StringType.INSTANCE;
+	}
 	
 }

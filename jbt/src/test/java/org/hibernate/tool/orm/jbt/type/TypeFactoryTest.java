@@ -92,4 +92,9 @@ public class TypeFactoryTest {
 		assertSame(LongType.INSTANCE, TypeFactory.INSTANCE.getLongType());
 	}
 	
+	@Test
+	public void testGetStringType() {
+		assertSame(StringType.INSTANCE, TypeFactory.INSTANCE.getStringType());
+	}
+	
 }
