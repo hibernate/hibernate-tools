@@ -87,5 +87,9 @@ public class TypeFactory {
 	public Type getTimestampType() {
 		return TimestampType.INSTANCE;
 	}
+
+	public Type getTimezoneType() {
+		return TimeZoneType.INSTANCE;
+	}
 	
 }

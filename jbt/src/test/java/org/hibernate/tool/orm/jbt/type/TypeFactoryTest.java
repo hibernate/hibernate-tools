@@ -112,4 +112,9 @@ public class TypeFactoryTest {
 		assertSame(TimestampType.INSTANCE, TypeFactory.INSTANCE.getTimestampType());
 	}
 	
+	@Test
+	public void testGetTimezoneType() {
+		assertSame(TimeZoneType.INSTANCE, TypeFactory.INSTANCE.getTimezoneType());
+	}
+	
 }
