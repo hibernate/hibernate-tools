@@ -91,5 +91,9 @@ public class TypeFactory {
 	public Type getTimezoneType() {
 		return TimeZoneType.INSTANCE;
 	}
+
+	public Type getTrueFalseType() {
+		return TrueFalseType.INSTANCE;
+	}
 	
 }

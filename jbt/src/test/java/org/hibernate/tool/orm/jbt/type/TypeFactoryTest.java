@@ -117,4 +117,9 @@ public class TypeFactoryTest {
 		assertSame(TimeZoneType.INSTANCE, TypeFactory.INSTANCE.getTimezoneType());
 	}
 	
+	@Test
+	public void testGetTrueFalseType() {
+		assertSame(TrueFalseType.INSTANCE, TypeFactory.INSTANCE.getTrueFalseType());
+	}
+	
 }
