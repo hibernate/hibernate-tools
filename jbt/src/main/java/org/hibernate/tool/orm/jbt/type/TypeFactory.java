@@ -80,8 +80,12 @@ public class TypeFactory {
 		return TextType.INSTANCE;
 	}
 
-	public Object getTimeType() {
+	public Type getTimeType() {
 		return TimeType.INSTANCE;
+	}
+
+	public Type getTimestampType() {
+		return TimestampType.INSTANCE;
 	}
 	
 }

@@ -107,4 +107,9 @@ public class TypeFactoryTest {
 		assertSame(TimeType.INSTANCE, TypeFactory.INSTANCE.getTimeType());
 	}
 	
+	@Test
+	public void testGetTimestampType() {
+		assertSame(TimestampType.INSTANCE, TypeFactory.INSTANCE.getTimestampType());
+	}
+	
 }
