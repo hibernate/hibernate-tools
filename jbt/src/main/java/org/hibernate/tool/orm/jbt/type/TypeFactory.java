@@ -63,5 +63,9 @@ public class TypeFactory {
 	public Type getFloatType() {
 		return FloatType.INSTANCE;
 	}
+
+	public Type getLocaleType() {
+		return LocaleType.INSTANCE;
+	}
 	
 }

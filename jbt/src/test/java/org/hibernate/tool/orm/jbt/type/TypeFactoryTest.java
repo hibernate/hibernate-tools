@@ -82,4 +82,9 @@ public class TypeFactoryTest {
 		assertSame(FloatType.INSTANCE, TypeFactory.INSTANCE.getFloatType());
 	}
 	
+	@Test
+	public void testGetLocaleType() {
+		assertSame(LocaleType.INSTANCE, TypeFactory.INSTANCE.getLocaleType());
+	}
+	
 }
