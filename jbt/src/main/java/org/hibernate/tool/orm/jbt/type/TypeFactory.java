@@ -1,103 +1,131 @@
 package org.hibernate.tool.orm.jbt.type;
 
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
+import org.hibernate.type.spi.TypeConfiguration;
 
 public class TypeFactory {
 	
 	public static final TypeFactory INSTANCE = new TypeFactory();
 	
+	private static BasicTypeRegistry TYPE_REGISTRY = new TypeConfiguration().getBasicTypeRegistry();
+	
+	public static final Type BOOLEAN_TYPE = TYPE_REGISTRY.getRegisteredType("boolean");
+	public static final Type BYTE_TYPE = TYPE_REGISTRY.getRegisteredType("byte");
+	public static final Type BIG_INTEGER_TYPE = TYPE_REGISTRY.getRegisteredType("big_integer");
+	public static final Type SHORT_TYPE = TYPE_REGISTRY.getRegisteredType("short");
+	public static final Type CALENDAR_TYPE = TYPE_REGISTRY.getRegisteredType("calendar");
+	public static final Type CALENDAR_DATE_TYPE = TYPE_REGISTRY.getRegisteredType("calendar_date");
+	public static final Type INTEGER_TYPE = TYPE_REGISTRY.getRegisteredType("integer");
+	public static final Type BIG_DECIMAL_TYPE = TYPE_REGISTRY.getRegisteredType("big_decimal");
+	public static final Type CHARACTER_TYPE = TYPE_REGISTRY.getRegisteredType("character");
+	public static final Type CLASS_TYPE = TYPE_REGISTRY.getRegisteredType("class");
+	public static final Type CURRENCY_TYPE = TYPE_REGISTRY.getRegisteredType("currency");
+	public static final Type DATE_TYPE = TYPE_REGISTRY.getRegisteredType("date");
+	public static final Type DOUBLE_TYPE = TYPE_REGISTRY.getRegisteredType("double");
+	public static final Type FLOAT_TYPE = TYPE_REGISTRY.getRegisteredType("float");
+	public static final Type LOCALE_TYPE = TYPE_REGISTRY.getRegisteredType("locale");
+	public static final Type LONG_TYPE = TYPE_REGISTRY.getRegisteredType("long");
+	public static final Type STRING_TYPE = TYPE_REGISTRY.getRegisteredType("string");
+	public static final Type TEXT_TYPE = TYPE_REGISTRY.getRegisteredType("text");
+	public static final Type TIME_TYPE = TYPE_REGISTRY.getRegisteredType("time");
+	public static final Type TIMESTAMP_TYPE = TYPE_REGISTRY.getRegisteredType("timestamp");
+	public static final Type TIMEZONE_TYPE = TYPE_REGISTRY.getRegisteredType("timezone");
+	public static final Type TRUE_FALSE_TYPE = TYPE_REGISTRY.getRegisteredType("true_false");
+	public static final Type YES_NO_TYPE = TYPE_REGISTRY.getRegisteredType("yes_no");
+	
 	private TypeFactory() {}
 
 	public Type getBooleanType() {
-		return BooleanType.INSTANCE;
+		return BOOLEAN_TYPE;
 	}
 
 	public Type getByteType() {
-		return ByteType.INSTANCE;
+		return BYTE_TYPE;
 	}
 
 	public Type getBigIntegerType() {
-		return BigIntegerType.INSTANCE;
+		return BIG_INTEGER_TYPE;
 	}
 
 	public Type getShortType() {
-		return ShortType.INSTANCE;
+		return SHORT_TYPE;
 	}
 
 	public Type getCalendarType() {
-		return CalendarType.INSTANCE;
+		return CALENDAR_TYPE;
 	}
 
 	public Type getCalendarDateType() {
-		return CalendarDateType.INSTANCE;
+		return CALENDAR_DATE_TYPE;
 	}
 
 	public Type getIntegerType() {
-		return IntegerType.INSTANCE;
+		return INTEGER_TYPE;
 	}
 
 	public Type getBigDecimalType() {
-		return BigDecimalType.INSTANCE;
+		return BIG_DECIMAL_TYPE;
 	}
 
 	public Type getCharacterType() {
-		return CharacterType.INSTANCE;
+		return CHARACTER_TYPE;
 	}
 
 	public Type getClassType() {
-		return ClassType.INSTANCE;
+		return CLASS_TYPE;
 	}
 
 	public Type getCurrencyType() {
-		return CurrencyType.INSTANCE;
+		return CURRENCY_TYPE;
 	}
 
 	public Type getDateType() {
-		return DateType.INSTANCE;
+		return DATE_TYPE;
 	}
 
 	public Type getDoubleType() {
-		return DoubleType.INSTANCE;
+		return DOUBLE_TYPE;
 	}
 
 	public Type getFloatType() {
-		return FloatType.INSTANCE;
+		return FLOAT_TYPE;
 	}
 
 	public Type getLocaleType() {
-		return LocaleType.INSTANCE;
+		return LOCALE_TYPE;
 	}
 
 	public Type getLongType() {
-		return LongType.INSTANCE;
+		return LONG_TYPE;
 	}
 
 	public Type getStringType() {
-		return StringType.INSTANCE;
+		return STRING_TYPE;
 	}
 
 	public Type getTextType() {
-		return TextType.INSTANCE;
+		return TEXT_TYPE;
 	}
 
 	public Type getTimeType() {
-		return TimeType.INSTANCE;
+		return TIME_TYPE;
 	}
 
 	public Type getTimestampType() {
-		return TimestampType.INSTANCE;
+		return TIMESTAMP_TYPE;
 	}
 
 	public Type getTimezoneType() {
-		return TimeZoneType.INSTANCE;
+		return TIMEZONE_TYPE;
 	}
 
 	public Type getTrueFalseType() {
-		return TrueFalseType.INSTANCE;
+		return TRUE_FALSE_TYPE;
 	}
 
 	public Type getYesNoType() {
-		return YesNoType.INSTANCE;
+		return YES_NO_TYPE;
 	}
 	
 }

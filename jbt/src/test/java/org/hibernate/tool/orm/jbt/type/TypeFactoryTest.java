@@ -14,117 +14,117 @@ public class TypeFactoryTest {
 
 	@Test
 	public void testGetBooleanType() {
-		assertSame(BooleanType.INSTANCE, TypeFactory.INSTANCE.getBooleanType());
+		assertSame(TypeFactory.BOOLEAN_TYPE, TypeFactory.INSTANCE.getBooleanType());
 	}
 	
 	@Test
 	public void testGetByteType() {
-		assertSame(ByteType.INSTANCE, TypeFactory.INSTANCE.getByteType());
+		assertSame(TypeFactory.BYTE_TYPE, TypeFactory.INSTANCE.getByteType());
 	}
 	
 	@Test
 	public void testGetBigIntegerType() {
-		assertSame(BigIntegerType.INSTANCE, TypeFactory.INSTANCE.getBigIntegerType());
+		assertSame(TypeFactory.BIG_INTEGER_TYPE, TypeFactory.INSTANCE.getBigIntegerType());
 	}
 	
 	@Test
 	public void testGetShortType() {
-		assertSame(ShortType.INSTANCE, TypeFactory.INSTANCE.getShortType());
+		assertSame(TypeFactory.SHORT_TYPE, TypeFactory.INSTANCE.getShortType());
 	}
 	
 	@Test
 	public void testGetCalendarType() {
-		assertSame(CalendarType.INSTANCE, TypeFactory.INSTANCE.getCalendarType());
+		assertSame(TypeFactory.CALENDAR_TYPE, TypeFactory.INSTANCE.getCalendarType());
 	}
 	
 	@Test
 	public void testGetCalendarDateType() {
-		assertSame(CalendarDateType.INSTANCE, TypeFactory.INSTANCE.getCalendarDateType());
+		assertSame(TypeFactory.CALENDAR_DATE_TYPE, TypeFactory.INSTANCE.getCalendarDateType());
 	}
 	
 	@Test
 	public void testGetIntegerType() {
-		assertSame(IntegerType.INSTANCE, TypeFactory.INSTANCE.getIntegerType());
+		assertSame(TypeFactory.INTEGER_TYPE, TypeFactory.INSTANCE.getIntegerType());
 	}
 	
 	@Test
 	public void testGetBigDecimalType() {
-		assertSame( BigDecimalType.INSTANCE, TypeFactory.INSTANCE.getBigDecimalType());
+		assertSame(TypeFactory.BIG_DECIMAL_TYPE, TypeFactory.INSTANCE.getBigDecimalType());
 	}
 	
 	@Test
 	public void testGetCharacterType() {
-		assertSame(CharacterType.INSTANCE, TypeFactory.INSTANCE.getCharacterType());
+		assertSame(TypeFactory.CHARACTER_TYPE, TypeFactory.INSTANCE.getCharacterType());
 	}
 	
 	@Test
 	public void testGetClassType() {
-		assertSame(ClassType.INSTANCE, TypeFactory.INSTANCE.getClassType());
+		assertSame(TypeFactory.CLASS_TYPE, TypeFactory.INSTANCE.getClassType());
 	}
 	
 	@Test
 	public void testGetCurrencyType() {
-		assertSame(CurrencyType.INSTANCE, TypeFactory.INSTANCE.getCurrencyType());
+		assertSame(TypeFactory.CURRENCY_TYPE, TypeFactory.INSTANCE.getCurrencyType());
 	}
 	
 	@Test
 	public void testGetDateType() {
-		assertSame(DateType.INSTANCE, TypeFactory.INSTANCE.getDateType());
+		assertSame(TypeFactory.DATE_TYPE, TypeFactory.INSTANCE.getDateType());
 	}
 	
 	@Test
 	public void testGetDoubleType() {
-		assertSame(DoubleType.INSTANCE, TypeFactory.INSTANCE.getDoubleType());
+		assertSame(TypeFactory.DOUBLE_TYPE, TypeFactory.INSTANCE.getDoubleType());
 	}
 	
 	@Test
 	public void testGetFloatType() {
-		assertSame(FloatType.INSTANCE, TypeFactory.INSTANCE.getFloatType());
+		assertSame(TypeFactory.FLOAT_TYPE, TypeFactory.INSTANCE.getFloatType());
 	}
 	
 	@Test
 	public void testGetLocaleType() {
-		assertSame(LocaleType.INSTANCE, TypeFactory.INSTANCE.getLocaleType());
+		assertSame(TypeFactory.LOCALE_TYPE, TypeFactory.INSTANCE.getLocaleType());
 	}
 	
 	@Test
 	public void testGetLongType() {
-		assertSame(LongType.INSTANCE, TypeFactory.INSTANCE.getLongType());
+		assertSame(TypeFactory.LONG_TYPE, TypeFactory.INSTANCE.getLongType());
 	}
 	
 	@Test
 	public void testGetStringType() {
-		assertSame(StringType.INSTANCE, TypeFactory.INSTANCE.getStringType());
+		assertSame(TypeFactory.STRING_TYPE, TypeFactory.INSTANCE.getStringType());
 	}
 	
 	@Test
 	public void testGetTextType() {
-		assertSame(TextType.INSTANCE, TypeFactory.INSTANCE.getTextType());
+		assertSame(TypeFactory.TEXT_TYPE, TypeFactory.INSTANCE.getTextType());
 	}
 	
 	@Test
 	public void testGetTimeType() {
-		assertSame(TimeType.INSTANCE, TypeFactory.INSTANCE.getTimeType());
+		assertSame(TypeFactory.TIME_TYPE, TypeFactory.INSTANCE.getTimeType());
 	}
 	
 	@Test
 	public void testGetTimestampType() {
-		assertSame(TimestampType.INSTANCE, TypeFactory.INSTANCE.getTimestampType());
+		assertSame(TypeFactory.TIMESTAMP_TYPE, TypeFactory.INSTANCE.getTimestampType());
 	}
 	
 	@Test
 	public void testGetTimezoneType() {
-		assertSame(TimeZoneType.INSTANCE, TypeFactory.INSTANCE.getTimezoneType());
+		assertSame(TypeFactory.TIMEZONE_TYPE, TypeFactory.INSTANCE.getTimezoneType());
 	}
 	
 	@Test
 	public void testGetTrueFalseType() {
-		assertSame(TrueFalseType.INSTANCE, TypeFactory.INSTANCE.getTrueFalseType());
+		assertSame(TypeFactory.TRUE_FALSE_TYPE, TypeFactory.INSTANCE.getTrueFalseType());
 	}
 	
 	@Test
 	public void testGetYesNoType() {
-		assertSame(YesNoType.INSTANCE, TypeFactory.INSTANCE.getYesNoType());
+		assertSame(TypeFactory.YES_NO_TYPE, TypeFactory.INSTANCE.getYesNoType());
 	}
 	
 }
