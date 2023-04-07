@@ -59,5 +59,9 @@ public class TypeFactory {
 	public Type getDoubleType() {
 		return DoubleType.INSTANCE;
 	}
+
+	public Type getFloatType() {
+		return FloatType.INSTANCE;
+	}
 	
 }

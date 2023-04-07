@@ -77,4 +77,9 @@ public class TypeFactoryTest {
 		assertSame(DoubleType.INSTANCE, TypeFactory.INSTANCE.getDoubleType());
 	}
 	
+	@Test
+	public void testGetFloatType() {
+		assertSame(FloatType.INSTANCE, TypeFactory.INSTANCE.getFloatType());
+	}
+	
 }
