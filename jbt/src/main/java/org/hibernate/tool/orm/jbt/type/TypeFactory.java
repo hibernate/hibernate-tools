@@ -79,5 +79,9 @@ public class TypeFactory {
 	public Type getTextType() {
 		return TextType.INSTANCE;
 	}
+
+	public Object getTimeType() {
+		return TimeType.INSTANCE;
+	}
 	
 }

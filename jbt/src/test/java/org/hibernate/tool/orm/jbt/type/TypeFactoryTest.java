@@ -102,4 +102,9 @@ public class TypeFactoryTest {
 		assertSame(TextType.INSTANCE, TypeFactory.INSTANCE.getTextType());
 	}
 	
+	@Test
+	public void testGetTimeType() {
+		assertSame(TimeType.INSTANCE, TypeFactory.INSTANCE.getTimeType());
+	}
+	
 }
