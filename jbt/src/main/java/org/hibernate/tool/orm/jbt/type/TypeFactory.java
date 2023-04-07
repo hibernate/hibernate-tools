@@ -128,4 +128,8 @@ public class TypeFactory {
 		return YES_NO_TYPE;
 	}
 	
+	public Type getNamedType(String name) {
+		return TYPE_REGISTRY.getRegisteredType(name);
+	}
+	
 }

@@ -127,4 +127,9 @@ public class TypeFactoryTest {
 		assertSame(TypeFactory.YES_NO_TYPE, TypeFactory.INSTANCE.getYesNoType());
 	}
 	
+	@Test 
+	public void testGetNamedType() {
+		assertSame(TypeFactory.STRING_TYPE, TypeFactory.INSTANCE.getNamedType(String.class.getName()));
+	}
+	
 }
