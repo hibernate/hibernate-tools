@@ -95,5 +95,9 @@ public class TypeFactory {
 	public Type getTrueFalseType() {
 		return TrueFalseType.INSTANCE;
 	}
+
+	public Type getYesNoType() {
+		return YesNoType.INSTANCE;
+	}
 	
 }

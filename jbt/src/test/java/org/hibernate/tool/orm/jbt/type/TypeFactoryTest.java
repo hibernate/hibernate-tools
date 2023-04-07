@@ -122,4 +122,9 @@ public class TypeFactoryTest {
 		assertSame(TrueFalseType.INSTANCE, TypeFactory.INSTANCE.getTrueFalseType());
 	}
 	
+	@Test
+	public void testGetYesNoType() {
+		assertSame(YesNoType.INSTANCE, TypeFactory.INSTANCE.getYesNoType());
+	}
+	
 }
