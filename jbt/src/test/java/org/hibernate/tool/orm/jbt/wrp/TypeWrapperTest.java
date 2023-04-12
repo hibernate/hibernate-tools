@@ -55,7 +55,7 @@ public class TypeWrapperTest {
 			arrayTypeWrapper.fromStringValue("just a random string");
 			fail();
 		} catch (UnsupportedOperationException e) {
-			assertTrue(e.getMessage().contains("does not support 'toString(Object)'"));
+			assertTrue(e.getMessage().contains("does not support 'fromStringValue(Object)'"));
 		}
 	}
 	

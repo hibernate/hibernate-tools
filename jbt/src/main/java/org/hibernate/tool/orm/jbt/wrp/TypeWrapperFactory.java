@@ -35,7 +35,7 @@ public class TypeWrapperFactory {
 				throw new UnsupportedOperationException(
 						"Class '" + 
 						getWrappedObject().getClass().getName() + 
-						"' does not support 'toString(Object)'." ); 
+						"' does not support 'fromStringValue(Object)'." ); 
 			}
 		}
 	}
