@@ -10,6 +10,7 @@ import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.OneToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +71,27 @@ public class TypeWrapperTest {
 		TypeWrapper entityTypeWrapper = TypeWrapperFactory.createTypeWrapper(
 				new ManyToOneType((TypeConfiguration)null, null));
 		assertTrue(entityTypeWrapper.isEntityType());
+	}
+	
+	@Test
+	public void testIsOneToOne() {
+		// first try type that is not a one to one type
+		try {
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			classTypeWrapper.isOneToOne();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isOneToOne()'"));
+		}
+		// next try another type that is not a one to one type
+		TypeWrapper entityTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ManyToOneType((TypeConfiguration)null, null));
+		assertFalse(entityTypeWrapper.isOneToOne());
+		// finally try a type that is a one to one type
+		TypeWrapper oneToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new OneToOneType(
+						null, null, null, false, null, false, false, null, null, false));
+		assertTrue(oneToOneTypeWrapper.isOneToOne());
 	}
 	
 	@Test

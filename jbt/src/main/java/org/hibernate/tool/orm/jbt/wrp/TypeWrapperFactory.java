@@ -38,6 +38,12 @@ public class TypeWrapperFactory {
 						"' does not support 'fromStringValue(Object)'." ); 
 			}
 		}
+		default boolean isOneToOne() { 
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'isOneToOne()'." ); 
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}
