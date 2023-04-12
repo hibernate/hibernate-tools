@@ -32,6 +32,17 @@ public class TypeWrapperTest {
 	}
 	
 	@Test
+	public void testGetName() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertEquals("class", classTypeWrapper.getName());
+		// next try a array type
+		TypeWrapper arrayTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
+		assertEquals("[Ljava.lang.String;(foo)", arrayTypeWrapper.getName());
+	}
+	
+	@Test
 	public void testIsAnyType() {
 		// first try type that is not a any type
 		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
