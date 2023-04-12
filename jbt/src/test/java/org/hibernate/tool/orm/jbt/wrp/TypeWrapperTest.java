@@ -9,6 +9,8 @@ import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.junit.jupiter.api.Test;
 
 public class TypeWrapperTest {
@@ -57,6 +59,17 @@ public class TypeWrapperTest {
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'fromStringValue(Object)'"));
 		}
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		// first try type that is not an entity type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertFalse(classTypeWrapper.isEntityType());
+		// next try type that is an entity type
+		TypeWrapper entityTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ManyToOneType((TypeConfiguration)null, null));
+		assertTrue(entityTypeWrapper.isEntityType());
 	}
 	
 	@Test
