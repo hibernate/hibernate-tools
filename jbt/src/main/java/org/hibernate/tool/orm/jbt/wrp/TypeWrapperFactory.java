@@ -28,6 +28,16 @@ public class TypeWrapperFactory {
 						"' does not support 'toString(Object)'." ); 
 			}
 		}
+		default Object fromStringValue(String stringValue) {
+			if (BasicType.class.isAssignableFrom(getWrappedObject().getClass())) {
+				return ((BasicType<?>)getWrappedObject()).getJavaTypeDescriptor().fromString(stringValue);
+			} else {
+				throw new UnsupportedOperationException(
+						"Class '" + 
+						getWrappedObject().getClass().getName() + 
+						"' does not support 'toString(Object)'." ); 
+			}
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}
