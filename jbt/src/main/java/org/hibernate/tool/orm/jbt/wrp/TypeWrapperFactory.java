@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.type.BasicType;
 import org.hibernate.type.Type;
 
 public class TypeWrapperFactory {
@@ -17,7 +18,16 @@ public class TypeWrapperFactory {
 	}
 	
 	static interface TypeExtension extends Wrapper {
-		
+		default public String toString(Object object) { 
+			if (BasicType.class.isAssignableFrom(getWrappedObject().getClass())) {
+				return ((BasicType)getWrappedObject()).getJavaTypeDescriptor().toString(object);
+			} else {
+				throw new UnsupportedOperationException(
+						"Class '" + 
+						getWrappedObject().getClass().getName() + 
+						"' does not support 'toString(Object)'." ); 
+			}
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}
