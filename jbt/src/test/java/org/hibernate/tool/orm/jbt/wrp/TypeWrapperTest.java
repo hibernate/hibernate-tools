@@ -5,11 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.junit.jupiter.api.Test;
 
 public class TypeWrapperTest {
 
+	@Test
+	public void testIsAnyType() {
+		// first try type that is not a any type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertFalse(classTypeWrapper.isAnyType());
+		// next try a any type
+		TypeWrapper anyTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new AnyType(null, null, null, true));
+		assertTrue(anyTypeWrapper.isAnyType());
+	}
+	
 	@Test
 	public void testIsCollectionType() {
 		// first try type that is not a collection type
