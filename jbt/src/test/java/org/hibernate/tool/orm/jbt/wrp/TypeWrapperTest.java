@@ -163,6 +163,22 @@ public class TypeWrapperTest {
 		assertEquals(OrgFooBar.class.getName(), manyToOneTypeWrapper.getReturnedClassName());
 	}
 	
+	@Test
+	public void testGetAssociatedEntityName() {
+		// first try a class type
+		try {
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			classTypeWrapper.getAssociatedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedEntityName()'"));
+		}
+		// next try a many to one type 
+		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ManyToOneType((TypeConfiguration)null, "foo"));
+		assertEquals("foo", manyToOneTypeWrapper.getAssociatedEntityName());
+	}
+	
 	public static class OrgFooBar {}
 	
 }

@@ -48,6 +48,12 @@ public class TypeWrapperFactory {
 			Class<?> returnedClass = ((Type)getWrappedObject()).getReturnedClass();
 			return returnedClass == null ? null : returnedClass.getName();
 		}
+		default String getAssociatedEntityName() {
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'getAssociatedEntityName()'." ); 
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}
