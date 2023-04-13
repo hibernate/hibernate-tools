@@ -11,6 +11,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
+import org.hibernate.tool.orm.jbt.type.StringType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
@@ -203,6 +204,19 @@ public class TypeWrapperTest {
 		TypeWrapper arrayTypeWrapper = 
 				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
 		assertTrue(arrayTypeWrapper.isArrayType());
+	}
+	
+	@Test
+	public void testIsInstanceOfPrimitiveType() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertFalse(classTypeWrapper.isInstanceOfPrimitiveType());
+		// next try a string type
+		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(new StringType());
+		assertFalse(stringTypeWrapper.isInstanceOfPrimitiveType());
+		// finally try a integer type 
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		assertTrue(integerTypeWrapper.isInstanceOfPrimitiveType());
 	}
 	
 	public static class OrgFooBar {}

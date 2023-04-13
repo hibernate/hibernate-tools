@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Set;
 
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
@@ -66,6 +67,12 @@ public class TypeWrapperFactory {
 				return false;
 			}
 		}
+		default boolean isInstanceOfPrimitiveType() {
+			if (!(BasicType.class.isAssignableFrom(getWrappedObject().getClass()))) {
+				return false;
+			}
+			return isPrimitiveClass(((BasicType<?>)getWrappedObject()).getJavaType());
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}
@@ -107,6 +114,20 @@ public class TypeWrapperFactory {
 		} catch (NoSuchMethodException e) {
 			return null;
 		}
+	}
+	
+	private static final Set<Class<?>> PRIMITIVE_CLASSES = Set.of(
+			int.class, Integer.class, 
+			short.class, Short.class, 
+			long.class, Long.class, 
+			double.class, Double.class,
+			float.class, Float.class,
+			char.class, Character.class,
+			byte.class, Byte.class,
+			boolean.class, Boolean.class);
+	
+	private static boolean isPrimitiveClass(Class<?> candidateClass) {
+		return PRIMITIVE_CLASSES.contains(candidateClass);
 	}
 	
 }
