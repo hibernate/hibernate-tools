@@ -7,6 +7,7 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 
 public class TypeWrapperFactory {
@@ -57,6 +58,13 @@ public class TypeWrapperFactory {
 		}
 		default boolean isIntegerType() {
 			return IntegerType.class.isAssignableFrom(getWrappedObject().getClass());
+		}
+		default boolean isArrayType() {
+			if (CollectionType.class.isAssignableFrom(getWrappedObject().getClass())) {
+				return ((CollectionType)getWrappedObject()).isArrayType();
+			} else {
+				return false;
+			}
 		}
 	}
 	
