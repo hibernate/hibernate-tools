@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.Type;
 
@@ -53,6 +54,9 @@ public class TypeWrapperFactory {
 					"Class '" + 
 					getWrappedObject().getClass().getName() + 
 					"' does not support 'getAssociatedEntityName()'." ); 
+		}
+		default boolean isIntegerType() {
+			return IntegerType.class.isAssignableFrom(getWrappedObject().getClass());
 		}
 	}
 	

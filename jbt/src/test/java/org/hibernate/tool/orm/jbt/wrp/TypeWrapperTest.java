@@ -10,6 +10,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
+import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
@@ -177,6 +178,16 @@ public class TypeWrapperTest {
 		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
 				new ManyToOneType((TypeConfiguration)null, "foo"));
 		assertEquals("foo", manyToOneTypeWrapper.getAssociatedEntityName());
+	}
+	
+	@Test
+	public void testIsIntegerType() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertFalse(classTypeWrapper.isIntegerType());
+		// next try a integer type 
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		assertTrue(integerTypeWrapper.isIntegerType());
 	}
 	
 	public static class OrgFooBar {}
