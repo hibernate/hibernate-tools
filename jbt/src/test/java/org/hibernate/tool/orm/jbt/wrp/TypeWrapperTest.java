@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -136,5 +138,31 @@ public class TypeWrapperTest {
 				TypeWrapperFactory.createTypeWrapper(new ArrayType(null, null, String.class));
 		assertTrue(arrayTypeWrapper.isCollectionType());
 	}
+	
+	@Test
+	public void testGetReturnedClassName() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertEquals(Class.class.getName(), classTypeWrapper.getReturnedClassName());
+		// next try an array type of string values
+		TypeWrapper arrayTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ArrayType("foo", "bar", String.class));
+		assertEquals(String[].class.getName(), arrayTypeWrapper.getReturnedClassName());
+		// next try a many to one type 
+		TypeConfiguration typeConfiguration = new TypeConfiguration();
+		MetadataBuildingContext metadataBuildingContext = DummyMetadataBuildingContext.INSTANCE;
+		PersistentClass orgFooBarClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		orgFooBarClass.setEntityName("org.foo.bar");
+		orgFooBarClass.setClassName(OrgFooBar.class.getName());
+		metadataBuildingContext.getMetadataCollector().getEntityBindingMap().put(
+				"org.foo.bar", 
+				orgFooBarClass);
+		typeConfiguration.scope(DummyMetadataBuildingContext.INSTANCE);
+		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+						new ManyToOneType(typeConfiguration, "org.foo.bar"));
+		assertEquals(OrgFooBar.class.getName(), manyToOneTypeWrapper.getReturnedClassName());
+	}
+	
+	public static class OrgFooBar {}
 	
 }
