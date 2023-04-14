@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Set;
+import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
@@ -71,7 +71,22 @@ public class TypeWrapperFactory {
 			if (!(BasicType.class.isAssignableFrom(getWrappedObject().getClass()))) {
 				return false;
 			}
-			return isPrimitiveClass(((BasicType<?>)getWrappedObject()).getJavaType());
+			return isPrimitive(((BasicType<?>)getWrappedObject()).getJavaType());
+		}
+		default Class<?> getPrimitiveClass() {
+			if (!isInstanceOfPrimitiveType()) {
+				throw new UnsupportedOperationException(
+						"Class '" + 
+						getWrappedObject().getClass().getName() + 
+						"' does not support 'getPrimitiveClass()'.");
+			} else {
+				Class<?> javaType = ((BasicType<?>)getWrappedObject()).getJavaType();
+				if (isPrimitiveWrapperClass(javaType)) {
+					return PRIMITIVE_CLASSES_MAP.get(javaType);
+				} else {
+					return javaType;
+				}
+			}
 		}
 	}
 	
@@ -116,18 +131,25 @@ public class TypeWrapperFactory {
 		}
 	}
 	
-	private static final Set<Class<?>> PRIMITIVE_CLASSES = Set.of(
-			int.class, Integer.class, 
-			short.class, Short.class, 
-			long.class, Long.class, 
-			double.class, Double.class,
-			float.class, Float.class,
-			char.class, Character.class,
-			byte.class, Byte.class,
-			boolean.class, Boolean.class);
+	private static final Map<Class<?>, Class<?>> PRIMITIVE_CLASSES_MAP = Map.of(
+			Integer.class, int.class,
+			Short.class, short.class,
+			Long.class, long.class,
+			Double.class, double.class,
+			Float.class, float.class,
+			Character.class, char.class,
+			Byte.class, byte.class,
+			Boolean.class, boolean.class);
 	
+	private static boolean isPrimitiveWrapperClass(Class<?> candidateClass) {
+		return PRIMITIVE_CLASSES_MAP.keySet().contains(candidateClass);
+	}
+		
 	private static boolean isPrimitiveClass(Class<?> candidateClass) {
-		return PRIMITIVE_CLASSES.contains(candidateClass);
+		return PRIMITIVE_CLASSES_MAP.values().contains(candidateClass);
 	}
 	
+	private static boolean isPrimitive(Class<?> candidateClass) {
+		return isPrimitiveWrapperClass(candidateClass) || isPrimitiveClass(candidateClass);
+	}
 }

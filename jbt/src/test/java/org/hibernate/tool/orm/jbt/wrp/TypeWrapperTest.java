@@ -219,6 +219,20 @@ public class TypeWrapperTest {
 		assertTrue(integerTypeWrapper.isInstanceOfPrimitiveType());
 	}
 	
+	@Test
+	public void testGetPrimitiveClass() {
+		// first try a class type
+		try {
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			classTypeWrapper.getPrimitiveClass();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPrimitiveClass()'"));
+		}
+		// next try a integer type 
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		assertEquals(int.class, integerTypeWrapper.getPrimitiveClass());
+	}
+
 	public static class OrgFooBar {}
 	
 }
