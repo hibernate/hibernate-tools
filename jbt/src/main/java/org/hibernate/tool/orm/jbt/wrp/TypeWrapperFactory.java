@@ -88,6 +88,12 @@ public class TypeWrapperFactory {
 				}
 			}
 		}
+		default String getRole() { 
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'getRole()'.");
+		}
 	}
 	
 	static interface TypeWrapper extends Type, TypeExtension {}

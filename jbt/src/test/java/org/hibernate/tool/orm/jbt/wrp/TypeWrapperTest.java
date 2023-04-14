@@ -233,6 +233,21 @@ public class TypeWrapperTest {
 		assertEquals(int.class, integerTypeWrapper.getPrimitiveClass());
 	}
 
+	@Test
+	public void testGetRole() {
+		// first try a class type
+		try {
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			classTypeWrapper.getRole();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getRole()'"));
+		}
+		// finally try a array type
+		TypeWrapper arrayTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
+		assertEquals("foo", arrayTypeWrapper.getRole());
+	}
+	
 	public static class OrgFooBar {}
 	
 }
