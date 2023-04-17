@@ -13,11 +13,6 @@ public class TypeFactoryTest {
 	}
 
 	@Test
-	public void testGetBooleanType() {
-		assertSame(TypeFactory.BOOLEAN_TYPE, TypeFactory.INSTANCE.getBooleanType());
-	}
-	
-	@Test
 	public void testGetByteType() {
 		assertSame(TypeFactory.BYTE_TYPE, TypeFactory.INSTANCE.getByteType());
 	}

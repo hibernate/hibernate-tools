@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.type;
 
+import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;
 import org.hibernate.type.spi.TypeConfiguration;
@@ -10,7 +11,6 @@ public class TypeFactory {
 	
 	private static BasicTypeRegistry TYPE_REGISTRY = new TypeConfiguration().getBasicTypeRegistry();
 	
-	public static final Type BOOLEAN_TYPE = TYPE_REGISTRY.getRegisteredType("boolean");
 	public static final Type BYTE_TYPE = TYPE_REGISTRY.getRegisteredType("byte");
 	public static final Type BIG_INTEGER_TYPE = TYPE_REGISTRY.getRegisteredType("big_integer");
 	public static final Type SHORT_TYPE = TYPE_REGISTRY.getRegisteredType("short");
@@ -37,7 +37,7 @@ public class TypeFactory {
 	private TypeFactory() {}
 
 	public Type getBooleanType() {
-		return BOOLEAN_TYPE;
+		return TypeFactoryWrapper.INSTANCE.getBooleanType();
 	}
 
 	public Type getByteType() {
