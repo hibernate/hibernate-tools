@@ -1,7 +1,14 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Currency;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.BasicTypeRegistry;
@@ -15,7 +22,10 @@ public class TypeFactoryWrapper {
 	private static Map<String, TypeWrapper> TYPE_REGISTRY = null;	
 	private static final BasicTypeRegistry BASIC_TYPE_REGISTRY = new TypeConfiguration().getBasicTypeRegistry();
 	
-	private TypeFactoryWrapper() {}
+	private Map<TypeWrapper, String> typeFormats = null;
+	
+	private TypeFactoryWrapper() {
+	}
 
 	public TypeWrapper getBooleanType() {
 		return typeRegistry().get("boolean");
@@ -125,6 +135,44 @@ public class TypeFactoryWrapper {
 		return getNamedType(name);
 	}
 	
+	public Map<TypeWrapper, String> getTypeFormats() {
+		if (typeFormats == null) {
+			initializeTypeFormats();
+		}
+		return typeFormats;
+	}
+	
+	protected void initializeTypeFormats() {
+		typeFormats = new HashMap<>();
+		addTypeFormat(getBooleanType(), Boolean.TRUE);
+		addTypeFormat(getByteType(), Byte.valueOf((byte) 42));
+		addTypeFormat(getBigIntegerType(), BigInteger.valueOf(42));
+		addTypeFormat(getShortType(), Short.valueOf((short) 42));
+		addTypeFormat(getCalendarType(), new GregorianCalendar());
+		addTypeFormat(getCalendarDateType(), new GregorianCalendar());
+		addTypeFormat(getIntegerType(), Integer.valueOf(42));
+		addTypeFormat(getBigDecimalType(), new BigDecimal(42.0));
+		addTypeFormat(getCharacterType(), Character.valueOf('h'));
+		addTypeFormat(getClassType(), Class.class);
+		addTypeFormat(getCurrencyType(), Currency.getInstance(Locale.getDefault()));
+		addTypeFormat(getDateType(), new Date());
+		addTypeFormat(getDoubleType(), Double.valueOf(42.42));
+		addTypeFormat(getFloatType(), Float.valueOf((float)42.42));
+		addTypeFormat(getLocaleType(), Locale.getDefault());
+		addTypeFormat(getLongType(), Long.valueOf(42));
+		addTypeFormat(getStringType(), "a string"); //$NON-NLS-1$
+		addTypeFormat(getTextType(), "a text"); //$NON-NLS-1$
+		addTypeFormat(getTimeType(), new Date());
+		addTypeFormat(getTimestampType(), new Date());
+		addTypeFormat(getTimezoneType(), TimeZone.getDefault());
+		addTypeFormat(getTrueFalseType(), Boolean.TRUE);
+		addTypeFormat(getYesNoType(), Boolean.TRUE);
+	}
+	
+	protected void addTypeFormat(TypeWrapper type, Object value) {
+		typeFormats.put(type, type.toString(value));
+	}
+	
 	private static Map<String, TypeWrapper> typeRegistry() {
 		if (TYPE_REGISTRY == null) {
 			createTypeRegistry();
@@ -158,5 +206,5 @@ public class TypeFactoryWrapper {
 		TYPE_REGISTRY.put("true_false", TypeWrapperFactory.createTypeWrapper(BASIC_TYPE_REGISTRY.getRegisteredType("true_false")));
 		TYPE_REGISTRY.put("yes_no", TypeWrapperFactory.createTypeWrapper(BASIC_TYPE_REGISTRY.getRegisteredType("yes_no")));
 	}
-	
+
 }

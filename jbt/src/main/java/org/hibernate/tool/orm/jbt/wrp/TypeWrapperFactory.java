@@ -4,12 +4,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+import org.hibernate.type.descriptor.java.CalendarJavaType;
+import org.hibernate.type.descriptor.java.JavaType;
 
 public class TypeWrapperFactory {
 	
@@ -23,7 +27,13 @@ public class TypeWrapperFactory {
 	static interface TypeExtension extends Wrapper {
 		default public String toString(Object object) { 
 			if (BasicType.class.isAssignableFrom(getWrappedObject().getClass())) {
-				return ((BasicType)getWrappedObject()).getJavaTypeDescriptor().toString(object);
+				JavaType javaType = ((BasicType<?>)getWrappedObject()).getJavaTypeDescriptor();
+				if (javaType instanceof CalendarJavaType && object instanceof Calendar) {
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					return simpleDateFormat.format(((Calendar)object).getTime());
+				} else {
+					return javaType.toString(object);
+				}
 			} else {
 				throw new UnsupportedOperationException(
 						"Class '" + 

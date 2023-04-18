@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class TypeWrapperFactoryTest {
 
 	@Test
-	public void testCreateTyperapper() {
+	public void testCreateTypeWrapper() {
 		TypeWrapper typeWrapper = TypeWrapperFactory.createTypeWrapper(TypeFactoryWrapper.INSTANCE.getStringType());
 		assertNotNull(typeWrapper);
 		assertEquals("string", ((Type)((Wrapper)typeWrapper).getWrappedObject()).getName());
