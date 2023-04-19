@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -28,6 +29,9 @@ public class ForeignKeyWrapperFactory {
 		}
 		default boolean isReferenceToPrimaryKey() {
 			return ((ForeignKey)getWrappedObject()).isReferenceToPrimaryKey();
+		}
+		default List<Column> getReferencedColumns() {
+			return ((ForeignKey)getWrappedObject()).getReferencedColumns();
 		}
 	}
 	
