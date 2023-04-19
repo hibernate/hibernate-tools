@@ -33,6 +33,9 @@ public class ForeignKeyWrapperFactory {
 		default List<Column> getReferencedColumns() {
 			return ((ForeignKey)getWrappedObject()).getReferencedColumns();
 		}
+		default boolean containsColumn(Column column) {
+			return ((ForeignKey)getWrappedObject()).containsColumn(column);
+		}
 	}
 	
 	static interface ForeignKeyWrapper extends ForeignKeyExtension {}
