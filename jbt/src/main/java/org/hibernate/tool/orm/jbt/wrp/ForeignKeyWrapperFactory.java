@@ -26,6 +26,9 @@ public class ForeignKeyWrapperFactory {
 		default Table getReferencedTable() {
 			return ((ForeignKey)getWrappedObject()).getReferencedTable();
 		}
+		default boolean isReferenceToPrimaryKey() {
+			return ((ForeignKey)getWrappedObject()).isReferenceToPrimaryKey();
+		}
 	}
 	
 	static interface ForeignKeyWrapper extends ForeignKeyExtension {}
