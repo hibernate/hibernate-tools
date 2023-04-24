@@ -31,6 +31,7 @@ public class PrimaryKeyWrapperFactory {
 		default Iterator<Column> columnIterator() { 
 			return getWrappedObject().getColumns().iterator();
 		}
+		default String getName() { return getWrappedObject().getName(); }
 	}
 	
 	private static class PrimaryKeyWrapperInvocationHandler implements PrimaryKeyWrapper, InvocationHandler {
