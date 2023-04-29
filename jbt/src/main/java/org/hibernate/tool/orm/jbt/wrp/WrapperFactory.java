@@ -226,4 +226,8 @@ public class WrapperFactory {
 		return TypeFactoryWrapper.INSTANCE;
 	}
 
+	public static Object createEnvironmentWrapper() {
+		return EnvironmentWrapper.INSTANCE;
+	}
+
 }

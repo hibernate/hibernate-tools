@@ -399,6 +399,13 @@ public class WrapperFactoryTest {
 		assertSame(TypeFactoryWrapper.INSTANCE, typeFactoryWrapper);
 	}
 	
+	@Test
+	public void testCreateEnvironmentWrapper() {
+		Object environmentWrapper = WrapperFactory.createEnvironmentWrapper();
+		assertNotNull(environmentWrapper);
+		assertSame(environmentWrapper, EnvironmentWrapper.INSTANCE);
+	}
+		
 	@SuppressWarnings("serial")
 	public static class TestNamingStrategy extends DefaultNamingStrategy {}
 	

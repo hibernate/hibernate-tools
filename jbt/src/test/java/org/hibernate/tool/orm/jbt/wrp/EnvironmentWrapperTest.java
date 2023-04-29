@@ -11,7 +11,7 @@ public class EnvironmentWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		environmentWrapper = new EnvironmentWrapper();
+		environmentWrapper = EnvironmentWrapper.INSTANCE;
 	}
 	
 	@Test
