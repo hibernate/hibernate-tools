@@ -65,4 +65,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.password", environmentWrapper.getPass());
 	}
 	
+	@Test
+	public void testGetSessionFactoryName() {
+		assertEquals("hibernate.session_factory_name", environmentWrapper.getSessionFactoryName());
+	}
+	
 }

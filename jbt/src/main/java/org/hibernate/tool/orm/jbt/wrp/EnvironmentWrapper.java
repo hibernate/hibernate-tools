@@ -26,4 +26,6 @@ public class EnvironmentWrapper {
 
 	public String getPass() { return Environment.PASS; }
 
+	public String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
+
 }
