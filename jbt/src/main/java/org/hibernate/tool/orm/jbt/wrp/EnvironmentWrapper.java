@@ -12,4 +12,6 @@ public class EnvironmentWrapper {
 
 	public Object getDriver() { return Environment.DRIVER; }
 
+	public Object getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
+
 }

@@ -30,4 +30,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.driver_class", environmentWrapper.getDriver());
 	}
 	
+	@Test
+	public void testGetHBM2DDLAuto() {
+		assertEquals("hibernate.hbm2ddl.auto", environmentWrapper.getHBM2DDLAuto());
+	}
+	
 }
