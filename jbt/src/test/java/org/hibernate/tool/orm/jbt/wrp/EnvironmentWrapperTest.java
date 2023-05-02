@@ -25,4 +25,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.transaction.coordinator_class", environmentWrapper.getTransactionManagerStrategy());
 	}
 	
+	@Test
+	public void testGetDriver() {
+		assertEquals("hibernate.connection.driver_class", environmentWrapper.getDriver());
+	}
+	
 }
