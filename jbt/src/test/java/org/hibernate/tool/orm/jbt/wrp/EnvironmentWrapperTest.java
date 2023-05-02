@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,4 +20,9 @@ public class EnvironmentWrapperTest {
 		assertNotNull(environmentWrapper);
 	}
 
+	@Test
+	public void testGetTransactionManagerStrategy() {
+		assertEquals("hibernate.transaction.coordinator_class", environmentWrapper.getTransactionManagerStrategy());
+	}
+	
 }

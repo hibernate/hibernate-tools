@@ -6,4 +6,6 @@ public class EnvironmentWrapper {
 	
 	private EnvironmentWrapper() {}
 
+	public String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
+
 }
