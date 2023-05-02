@@ -35,4 +35,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.hbm2ddl.auto", environmentWrapper.getHBM2DDLAuto());
 	}
 	
+	@Test
+	public void testGetDialect() {
+		assertEquals("hibernate.dialect", environmentWrapper.getDialect());
+	}
+	
 }

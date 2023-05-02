@@ -14,4 +14,6 @@ public class EnvironmentWrapper {
 
 	public Object getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
 
+	public Object getDialect() { return Environment.DIALECT; }
+
 }
