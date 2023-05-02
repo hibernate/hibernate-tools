@@ -28,4 +28,6 @@ public class EnvironmentWrapper {
 
 	public String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
 
+	public String getDefaultCatalog() { return Environment.DEFAULT_CATALOG; }
+
 }

@@ -70,4 +70,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.session_factory_name", environmentWrapper.getSessionFactoryName());
 	}
 	
+	@Test
+	public void testGetDefaultCatalog() {
+		assertEquals("hibernate.default_catalog", environmentWrapper.getDefaultCatalog());
+	}
+	
 }
