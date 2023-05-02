@@ -50,4 +50,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.provider_class", environmentWrapper.getConnectionProvider());
 	}
 	
+	@Test
+	public void testGetURL() {
+		assertEquals("hibernate.connection.url", environmentWrapper.getURL());
+	}
+	
 }

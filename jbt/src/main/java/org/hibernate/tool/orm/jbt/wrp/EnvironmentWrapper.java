@@ -10,14 +10,16 @@ public class EnvironmentWrapper {
 
 	public String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
 
-	public Object getDriver() { return Environment.DRIVER; }
+	public String getDriver() { return Environment.DRIVER; }
 
-	public Object getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
+	public String getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
 
-	public Object getDialect() { return Environment.DIALECT; }
+	public String getDialect() { return Environment.DIALECT; }
 
-	public Object getDataSource() { return Environment.DATASOURCE; }
+	public String getDataSource() { return Environment.DATASOURCE; }
 
-	public Object getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
+	public String getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
+
+	public String getURL() { return Environment.URL; }
 
 }
