@@ -30,4 +30,6 @@ public class EnvironmentWrapper {
 
 	public String getDefaultCatalog() { return Environment.DEFAULT_CATALOG; }
 
+	public String getDefaultSchema() { return Environment.DEFAULT_SCHEMA; }
+
 }

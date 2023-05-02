@@ -75,4 +75,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.default_catalog", environmentWrapper.getDefaultCatalog());
 	}
 	
+	@Test
+	public void testGetDefaultSchema() {
+		assertEquals("hibernate.default_schema", environmentWrapper.getDefaultSchema());
+	}
+	
 }
