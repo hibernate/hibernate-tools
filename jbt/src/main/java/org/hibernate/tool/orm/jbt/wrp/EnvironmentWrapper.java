@@ -32,4 +32,6 @@ public class EnvironmentWrapper {
 
 	public String getDefaultSchema() { return Environment.DEFAULT_SCHEMA; }
 
+	public Class<Environment> getWrappedClass() { return Environment.class; }
+
 }

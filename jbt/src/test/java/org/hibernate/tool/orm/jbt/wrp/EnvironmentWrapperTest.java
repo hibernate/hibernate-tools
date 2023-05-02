@@ -2,7 +2,9 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -78,6 +80,11 @@ public class EnvironmentWrapperTest {
 	@Test
 	public void testGetDefaultSchema() {
 		assertEquals("hibernate.default_schema", environmentWrapper.getDefaultSchema());
+	}
+	
+	@Test
+	public void testGetWrappedClass() {
+		assertSame(Environment.class, environmentWrapper.getWrappedClass());
 	}
 	
 }
