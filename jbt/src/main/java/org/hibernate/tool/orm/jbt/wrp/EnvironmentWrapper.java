@@ -22,4 +22,6 @@ public class EnvironmentWrapper {
 
 	public String getURL() { return Environment.URL; }
 
+	public String getUser() { return Environment.USER; }
+
 }

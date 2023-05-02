@@ -55,4 +55,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.url", environmentWrapper.getURL());
 	}
 	
+	@Test
+	public void testGetUser() {
+		assertEquals("hibernate.connection.username", environmentWrapper.getUser());
+	}
+	
 }
