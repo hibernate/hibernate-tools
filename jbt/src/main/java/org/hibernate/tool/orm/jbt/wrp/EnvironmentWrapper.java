@@ -18,4 +18,6 @@ public class EnvironmentWrapper {
 
 	public Object getDataSource() { return Environment.DATASOURCE; }
 
+	public Object getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
+
 }

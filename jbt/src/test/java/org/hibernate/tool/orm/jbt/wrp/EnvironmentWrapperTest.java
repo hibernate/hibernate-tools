@@ -45,4 +45,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.datasource", environmentWrapper.getDataSource());
 	}
 	
+	@Test
+	public void testGetConnectionProvider() {
+		assertEquals("hibernate.connection.provider_class", environmentWrapper.getConnectionProvider());
+	}
+	
 }
