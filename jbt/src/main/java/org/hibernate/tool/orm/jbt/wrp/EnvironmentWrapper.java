@@ -24,4 +24,6 @@ public class EnvironmentWrapper {
 
 	public String getUser() { return Environment.USER; }
 
+	public String getPass() { return Environment.PASS; }
+
 }

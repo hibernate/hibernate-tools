@@ -60,4 +60,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.connection.username", environmentWrapper.getUser());
 	}
 	
+	@Test
+	public void testGetPass() {
+		assertEquals("hibernate.connection.password", environmentWrapper.getPass());
+	}
+	
 }
