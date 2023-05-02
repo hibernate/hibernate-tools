@@ -40,4 +40,9 @@ public class EnvironmentWrapperTest {
 		assertEquals("hibernate.dialect", environmentWrapper.getDialect());
 	}
 	
+	@Test
+	public void testGetDataSource() {
+		assertEquals("hibernate.connection.datasource", environmentWrapper.getDataSource());
+	}
+	
 }

@@ -16,4 +16,6 @@ public class EnvironmentWrapper {
 
 	public Object getDialect() { return Environment.DIALECT; }
 
+	public Object getDataSource() { return Environment.DATASOURCE; }
+
 }
