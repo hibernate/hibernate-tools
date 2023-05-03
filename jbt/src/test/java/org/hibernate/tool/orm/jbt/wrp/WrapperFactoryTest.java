@@ -411,7 +411,7 @@ public class WrapperFactoryTest {
 	public void testCreateSchemaExport() {
 		Object schemaExport = WrapperFactory.createSchemaExport();
 		assertNotNull(schemaExport);
-		assertTrue(schemaExport instanceof SchemaExport);
+		assertTrue(schemaExport instanceof SchemaExportWrapper);
 	}
 		
 	@SuppressWarnings("serial")
