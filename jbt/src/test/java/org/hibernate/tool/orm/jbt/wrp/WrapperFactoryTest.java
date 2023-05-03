@@ -37,6 +37,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -404,6 +405,13 @@ public class WrapperFactoryTest {
 		Object environmentWrapper = WrapperFactory.createEnvironmentWrapper();
 		assertNotNull(environmentWrapper);
 		assertSame(environmentWrapper, EnvironmentWrapper.INSTANCE);
+	}
+	
+	@Test
+	public void testCreateSchemaExport() {
+		Object schemaExport = WrapperFactory.createSchemaExport();
+		assertNotNull(schemaExport);
+		assertTrue(schemaExport instanceof SchemaExport);
 	}
 		
 	@SuppressWarnings("serial")

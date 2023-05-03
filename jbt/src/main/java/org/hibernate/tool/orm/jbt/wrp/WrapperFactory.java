@@ -23,6 +23,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -228,6 +229,10 @@ public class WrapperFactory {
 
 	public static Object createEnvironmentWrapper() {
 		return EnvironmentWrapper.INSTANCE;
+	}
+
+	public static Object createSchemaExport() {
+		return new SchemaExport();
 	}
 
 }
