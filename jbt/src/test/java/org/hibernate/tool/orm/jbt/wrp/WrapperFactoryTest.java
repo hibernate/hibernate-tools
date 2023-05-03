@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Any;
@@ -37,7 +38,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -408,10 +408,14 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateSchemaExport() {
-		Object schemaExport = WrapperFactory.createSchemaExport();
+	public void testCreateSchemaExport() throws Exception {
+		Configuration configuration = new Configuration();
+		Object schemaExport = WrapperFactory.createSchemaExport(configuration);
 		assertNotNull(schemaExport);
 		assertTrue(schemaExport instanceof SchemaExportWrapper);
+		Field configurationField = SchemaExportWrapper.class.getDeclaredField("configuration");
+		configurationField.setAccessible(true);
+		assertSame(configuration, configurationField.get(schemaExport));
 	}
 		
 	@SuppressWarnings("serial")

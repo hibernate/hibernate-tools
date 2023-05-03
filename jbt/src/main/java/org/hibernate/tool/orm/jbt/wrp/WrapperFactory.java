@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -230,8 +231,8 @@ public class WrapperFactory {
 		return EnvironmentWrapper.INSTANCE;
 	}
 
-	public static Object createSchemaExport() {
-		return new SchemaExportWrapper();
+	public static Object createSchemaExport(Object configuration) {
+		return new SchemaExportWrapper((Configuration)configuration);
 	}
 
 }
