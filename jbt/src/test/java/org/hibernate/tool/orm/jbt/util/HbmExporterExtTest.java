@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.util;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,6 +42,16 @@ public class HbmExporterExtTest {
 		Field configurationField = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		configurationField.setAccessible(true);
 		assertSame(cfg, configurationField.get(descriptor));
+	}
+	
+	@Test
+	public void testSetDelegate() throws Exception {
+		Object delegate = new Object();
+		Field delegateField = HbmExporterExt.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		assertNull(delegateField.get(hbmExporterExt));
+		hbmExporterExt.setDelegate(delegate);
+		assertSame(delegate, delegateField.get(hbmExporterExt));
 	}
 
 }

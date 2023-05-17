@@ -7,6 +7,8 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 
 public class HbmExporterExt extends HbmExporter {
 	
+	private Object delegateExporter;
+
 	public HbmExporterExt(Configuration cfg, File file) {
 		getProperties().put(
 				METADATA_DESCRIPTOR, 
@@ -16,4 +18,8 @@ public class HbmExporterExt extends HbmExporter {
 		}
 	}
 	
+	public void setDelegate(Object delegate) {
+		delegateExporter = delegate;
+	}
+
 }
