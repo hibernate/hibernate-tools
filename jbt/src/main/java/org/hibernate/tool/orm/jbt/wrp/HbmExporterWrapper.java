@@ -9,11 +9,11 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 
-public class HbmExporterExt extends HbmExporter {
+public class HbmExporterWrapper extends HbmExporter {
 	
 	private Object delegateExporter;
 
-	public HbmExporterExt(Configuration cfg, File file) {
+	public HbmExporterWrapper(Configuration cfg, File file) {
 		getProperties().put(
 				METADATA_DESCRIPTOR, 
 				new ConfigurationMetadataDescriptor(cfg));

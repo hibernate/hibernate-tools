@@ -28,9 +28,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class HbmExporterExtTest {
+public class HbmExporterWrapperTest {
 	
-	private HbmExporterExt hbmExporterExt = null;
+	private HbmExporterWrapper hbmExporterWrapper = null;
 	private Configuration cfg = null;
 	private File f = null;
 	private boolean templateProcessed = false;
@@ -43,16 +43,16 @@ public class HbmExporterExtTest {
 	public void beforeEach() {
 		cfg = new Configuration();
 		f = new File(tempFolder, "foo");
-		hbmExporterExt = new HbmExporterExt(cfg, f);
+		hbmExporterWrapper = new HbmExporterWrapper(cfg, f);
 	}
 	
 	@Test
 	public void testConstruction() throws Exception {
 		assertTrue(tempFolder.exists());
 		assertFalse(f.exists());
-		assertNotNull(hbmExporterExt);
-		assertSame(f, hbmExporterExt.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
-		ConfigurationMetadataDescriptor descriptor = (ConfigurationMetadataDescriptor)hbmExporterExt
+		assertNotNull(hbmExporterWrapper);
+		assertSame(f, hbmExporterWrapper.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		ConfigurationMetadataDescriptor descriptor = (ConfigurationMetadataDescriptor)hbmExporterWrapper
 				.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(descriptor);
 		Field configurationField = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
@@ -63,11 +63,11 @@ public class HbmExporterExtTest {
 	@Test
 	public void testSetDelegate() throws Exception {
 		Object delegate = new Object();
-		Field delegateField = HbmExporterExt.class.getDeclaredField("delegateExporter");
+		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
 		delegateField.setAccessible(true);
-		assertNull(delegateField.get(hbmExporterExt));
-		hbmExporterExt.setDelegate(delegate);
-		assertSame(delegate, delegateField.get(hbmExporterExt));
+		assertNull(delegateField.get(hbmExporterWrapper));
+		hbmExporterWrapper.setDelegate(delegate);
+		assertSame(delegate, delegateField.get(hbmExporterWrapper));
 	}
 	
 	@Test
@@ -86,10 +86,10 @@ public class HbmExporterExtTest {
 		templateHelper.init(null, new String[] {});
 		Field templateHelperField = AbstractExporter.class.getDeclaredField("vh");
 		templateHelperField.setAccessible(true);
-		templateHelperField.set(hbmExporterExt, templateHelper);
+		templateHelperField.set(hbmExporterWrapper, templateHelper);
 		assertFalse(templateProcessed);
 		assertFalse(delegateHasExported);
-		hbmExporterExt.exportPOJO(context, pojoClass);
+		hbmExporterWrapper.exportPOJO(context, pojoClass);
 		assertTrue(templateProcessed);
 		assertFalse(delegateHasExported);
 		// now with a delegate exporter
@@ -103,10 +103,10 @@ public class HbmExporterExtTest {
 				delegateHasExported = true;
 			}
 		};
-		hbmExporterExt.setDelegate(delegateExporter);
+		hbmExporterWrapper.setDelegate(delegateExporter);
 		assertFalse(templateProcessed);
 		assertFalse(delegateHasExported);
-		hbmExporterExt.exportPOJO(context, pojoClass);
+		hbmExporterWrapper.exportPOJO(context, pojoClass);
 		assertFalse(templateProcessed);
 		assertTrue(delegateHasExported);
 	}
@@ -127,10 +127,10 @@ public class HbmExporterExtTest {
 		templateHelper.init(null, new String[] {});
 		Field templateHelperField = AbstractExporter.class.getDeclaredField("vh");
 		templateHelperField.setAccessible(true);
-		templateHelperField.set(hbmExporterExt, templateHelper);
+		templateHelperField.set(hbmExporterWrapper, templateHelper);
 		assertFalse(templateProcessed);
 		assertFalse(delegateHasExported);
-		hbmExporterExt.superExportPOJO(context, pojoClass);
+		hbmExporterWrapper.superExportPOJO(context, pojoClass);
 		assertTrue(templateProcessed);
 		assertFalse(delegateHasExported);
 		// now with a delegate exporter
@@ -144,10 +144,10 @@ public class HbmExporterExtTest {
 				delegateHasExported = true;
 			}
 		};
-		hbmExporterExt.setDelegate(delegateExporter);
+		hbmExporterWrapper.setDelegate(delegateExporter);
 		assertFalse(templateProcessed);
 		assertFalse(delegateHasExported);
-		hbmExporterExt.superExportPOJO(context, pojoClass);
+		hbmExporterWrapper.superExportPOJO(context, pojoClass);
 		assertTrue(templateProcessed);
 		assertFalse(delegateHasExported);
 	}
