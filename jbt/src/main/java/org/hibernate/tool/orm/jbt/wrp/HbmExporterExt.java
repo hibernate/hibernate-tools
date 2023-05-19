@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.wrp;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -7,6 +7,7 @@ import java.util.Map;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 
 public class HbmExporterExt extends HbmExporter {
 	
