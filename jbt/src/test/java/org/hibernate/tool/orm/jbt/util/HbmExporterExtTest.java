@@ -108,5 +108,46 @@ public class HbmExporterExtTest {
 		assertFalse(templateProcessed);
 		assertTrue(delegateHasExported);
 	}
+	
+	@Test
+	public void testSuperExportPOJO() throws Exception {
+		// first without a delegate exporter
+		Map<String, Object> context = new HashMap<>();
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		pc.setEntityName("foo");
+		pc.setClassName("foo");
+		POJOClass pojoClass = new EntityPOJOClass(pc, new Cfg2JavaTool());
+		TemplateHelper templateHelper = new TemplateHelper() {
+		    public void processTemplate(String templateName, Writer output, String rootContext) {
+		    	templateProcessed = true;
+		    }
+		};
+		templateHelper.init(null, new String[] {});
+		Field templateHelperField = AbstractExporter.class.getDeclaredField("vh");
+		templateHelperField.setAccessible(true);
+		templateHelperField.set(hbmExporterExt, templateHelper);
+		assertFalse(templateProcessed);
+		assertFalse(delegateHasExported);
+		hbmExporterExt.superExportPOJO(context, pojoClass);
+		assertTrue(templateProcessed);
+		assertFalse(delegateHasExported);
+		// now with a delegate exporter
+		templateProcessed = false;
+		Object delegateExporter = new Object() {
+			@SuppressWarnings("unused")
+			public void exportPojo(Map<Object, Object> map, Object object, String string) {
+				assertSame(map, context);
+				assertSame(object, pojoClass);
+				assertEquals(string, pojoClass.getQualifiedDeclarationName());
+				delegateHasExported = true;
+			}
+		};
+		hbmExporterExt.setDelegate(delegateExporter);
+		assertFalse(templateProcessed);
+		assertFalse(delegateHasExported);
+		hbmExporterExt.superExportPOJO(context, pojoClass);
+		assertTrue(templateProcessed);
+		assertFalse(delegateHasExported);
+	}
 
 }

@@ -25,6 +25,10 @@ public class HbmExporterExt extends HbmExporter {
 		delegateExporter = delegate;
 	}
 
+	public void superExportPOJO(Map<String, Object> map, POJOClass pojoClass) {
+		super.exportPOJO(map, pojoClass);
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void exportPOJO(Map map, POJOClass pojoClass) {
