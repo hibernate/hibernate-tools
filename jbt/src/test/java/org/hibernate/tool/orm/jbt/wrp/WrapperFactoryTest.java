@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -36,6 +37,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -45,6 +47,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -416,6 +419,23 @@ public class WrapperFactoryTest {
 		Field configurationField = SchemaExportWrapper.class.getDeclaredField("configuration");
 		configurationField.setAccessible(true);
 		assertSame(configuration, configurationField.get(schemaExport));
+	}
+	
+	@Test
+	public void testCreateHbmExporterWrapper() throws Exception {
+		Configuration configuration = new Configuration();
+		File file = new File("foo");
+		Object hbmExporterWrapper = WrapperFactory.createHbmExporterWrapper(configuration, file);
+		assertNotNull(hbmExporterWrapper);
+		assertSame(file, ((HbmExporterWrapper)hbmExporterWrapper)
+				.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		ConfigurationMetadataDescriptor descriptor = 
+				(ConfigurationMetadataDescriptor)((HbmExporterWrapper)hbmExporterWrapper)
+					.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(descriptor);
+		Field configurationField = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
+		configurationField.setAccessible(true);
+		assertSame(configuration, configurationField.get(descriptor));
 	}
 		
 	@SuppressWarnings("serial")

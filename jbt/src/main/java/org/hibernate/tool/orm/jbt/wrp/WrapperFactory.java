@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -233,6 +234,10 @@ public class WrapperFactory {
 
 	public static Object createSchemaExport(Object configuration) {
 		return new SchemaExportWrapper((Configuration)configuration);
+	}
+	
+	public static Object createHbmExporterWrapper(Object configuration, File file) {
+		return new HbmExporterWrapper((Configuration)configuration, file);
 	}
 
 }
