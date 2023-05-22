@@ -160,4 +160,12 @@ public class HbmExporterWrapperTest {
 		assertSame(file, hbmExporterWrapper.getOutputDirectory());
 	}
 	
+	@Test
+	public void testSetOutputDirectory() {
+		assertNull(hbmExporterWrapper.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+		File file = new File("testSetOutputDirectory");
+		hbmExporterWrapper.setOutputDirectory(file);
+		assertSame(file, hbmExporterWrapper.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+	}
+	
 }

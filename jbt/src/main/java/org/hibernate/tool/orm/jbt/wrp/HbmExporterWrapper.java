@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
@@ -34,6 +35,10 @@ public class HbmExporterWrapper extends HbmExporter {
 	@Override
 	public File getOutputDirectory() {
 		return super.getOutputDirectory();
+	}
+
+	public void setOutputDirectory(File file) {
+		getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);	
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
