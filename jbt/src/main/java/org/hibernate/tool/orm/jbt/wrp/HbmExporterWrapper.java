@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
@@ -29,6 +30,11 @@ public class HbmExporterWrapper extends HbmExporter {
 	public void superExportPOJO(Map<String, Object> map, POJOClass pojoClass) {
 		super.exportPOJO(map, pojoClass);
 	}
+	
+	@Override
+	public File getOutputDirectory() {
+		return super.getOutputDirectory();
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -48,10 +54,11 @@ public class HbmExporterWrapper extends HbmExporter {
 			POJOClass pojoClass, 
 			String qualifiedDeclarationName) {
 		try {
-			delegateExporter
-				.getClass()
-				.getMethod("exportPojo", Map.class, Object.class, String.class)
-				.invoke(delegateExporter, map, pojoClass, qualifiedDeclarationName);
+			Method method = delegateExporter
+					.getClass()
+					.getDeclaredMethod("exportPojo", Map.class, Object.class, String.class);
+			method.setAccessible(true);
+			method.invoke(delegateExporter, map, pojoClass, qualifiedDeclarationName);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}

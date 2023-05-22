@@ -96,7 +96,7 @@ public class HbmExporterWrapperTest {
 		templateProcessed = false;
 		Object delegateExporter = new Object() {
 			@SuppressWarnings("unused")
-			public void exportPojo(Map<Object, Object> map, Object object, String string) {
+			private void exportPojo(Map<Object, Object> map, Object object, String string) {
 				assertSame(map, context);
 				assertSame(object, pojoClass);
 				assertEquals(string, pojoClass.getQualifiedDeclarationName());
@@ -152,4 +152,12 @@ public class HbmExporterWrapperTest {
 		assertFalse(delegateHasExported);
 	}
 
+	@Test
+	public void testGetOutputDirectory() {
+		assertNull(hbmExporterWrapper.getOutputDirectory());
+		File file = new File("testGetOutputDirectory");
+		hbmExporterWrapper.getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);
+		assertSame(file, hbmExporterWrapper.getOutputDirectory());
+	}
+	
 }
