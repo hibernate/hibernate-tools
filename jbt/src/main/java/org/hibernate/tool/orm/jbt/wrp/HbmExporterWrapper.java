@@ -47,7 +47,7 @@ public class HbmExporterWrapper extends HbmExporter {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected void exportPOJO(Map map, POJOClass pojoClass) {
+	public void exportPOJO(Map map, POJOClass pojoClass) {
 		if (delegateExporter == null) {
 			super.exportPOJO(map, pojoClass);
 		} else {

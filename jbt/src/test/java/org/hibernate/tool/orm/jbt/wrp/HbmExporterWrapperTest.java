@@ -171,6 +171,7 @@ public class HbmExporterWrapperTest {
 	@Test
 	public void testSetExportPOJODelegate() throws Exception {
 		Object delegate = new Object() {			
+			@SuppressWarnings("unused")
 			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
 		};
 		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
