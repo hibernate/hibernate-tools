@@ -41,6 +41,10 @@ public class HbmExporterWrapper extends HbmExporter {
 		getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);	
 	}
 
+	public void setExportPOJODelegate(Object delegate) {
+		setDelegate(delegate);
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void exportPOJO(Map map, POJOClass pojoClass) {
@@ -68,4 +72,5 @@ public class HbmExporterWrapper extends HbmExporter {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

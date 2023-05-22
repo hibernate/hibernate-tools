@@ -168,4 +168,16 @@ public class HbmExporterWrapperTest {
 		assertSame(file, hbmExporterWrapper.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
 	}
 	
+	@Test
+	public void testSetExportPOJODelegate() throws Exception {
+		Object delegate = new Object() {			
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
+		};
+		Field delegateField = HbmExporterWrapper.class.getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		assertNull(delegateField.get(hbmExporterWrapper));
+		hbmExporterWrapper.setExportPOJODelegate(delegate);
+		assertSame(delegate, delegateField.get(hbmExporterWrapper));
+	}
+	
 }
