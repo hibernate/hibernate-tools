@@ -9,4 +9,8 @@ public class GenericExporterWrapper extends GenericExporter {
 		getProperties().setProperty(ExporterConstants.FILE_PATTERN, filePattern);
 	}
 
+	public void setTemplateName(String templateName) {
+		getProperties().setProperty(ExporterConstants.TEMPLATE_NAME, templateName);
+	}
+
 }
