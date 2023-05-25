@@ -1,8 +1,11 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +22,13 @@ public class GenericExporterWrapperTest {
 	public void testConstruction() {
 		assertNotNull(genericExporterWrapper);
 		assertTrue(genericExporterWrapper instanceof GenericExporterWrapper);
+	}
+	
+	@Test
+	public void testSetFilePattern() {
+		assertNull(genericExporterWrapper.getProperties().get(ExporterConstants.FILE_PATTERN));
+		genericExporterWrapper.setFilePattern("foobar");
+		assertEquals("foobar", genericExporterWrapper.getProperties().get(ExporterConstants.FILE_PATTERN));
 	}
 	
 }
