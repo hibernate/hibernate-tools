@@ -13,4 +13,8 @@ public class GenericExporterWrapper extends GenericExporter {
 		getProperties().setProperty(ExporterConstants.TEMPLATE_NAME, templateName);
 	}
 
+	public void setForEach(String forEach) {
+		getProperties().setProperty(ExporterConstants.FOR_EACH, forEach);
+	}
+
 }

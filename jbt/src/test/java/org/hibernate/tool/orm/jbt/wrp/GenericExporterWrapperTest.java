@@ -38,4 +38,11 @@ public class GenericExporterWrapperTest {
 		assertEquals("barfoo", genericExporterWrapper.getProperties().get(ExporterConstants.TEMPLATE_NAME));
 	}
 	
+	@Test
+	public void testSetForEach() {
+		assertNull(genericExporterWrapper.getProperties().get(ExporterConstants.FOR_EACH));
+		genericExporterWrapper.setForEach("foobar");
+		assertEquals("foobar", genericExporterWrapper.getProperties().get(ExporterConstants.FOR_EACH));
+	}
+	
 }
