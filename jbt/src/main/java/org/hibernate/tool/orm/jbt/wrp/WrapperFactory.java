@@ -27,6 +27,7 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -242,6 +243,10 @@ public class WrapperFactory {
 
 	public static Object createGenericExporterWrapper() {
 		return new GenericExporterWrapper();
+	}
+
+	public static Object createDdlExporterWrapper() {
+		return new DdlExporter();
 	}
 
 }
