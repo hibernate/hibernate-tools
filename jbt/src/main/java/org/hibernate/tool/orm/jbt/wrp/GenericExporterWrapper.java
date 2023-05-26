@@ -20,5 +20,10 @@ public class GenericExporterWrapper extends GenericExporter {
 	public String getFilePattern() {
 		return getProperties().getProperty(ExporterConstants.FILE_PATTERN);
 	}
+	
+	@Override 
+	public String getTemplateName() {
+		return super.getTemplateName();
+	}
 
 }
