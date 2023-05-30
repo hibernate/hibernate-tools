@@ -43,6 +43,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -450,6 +451,13 @@ public class WrapperFactoryTest {
 		Object ddlExporterWrapper = WrapperFactory.createDdlExporterWrapper();
 		assertNotNull(ddlExporterWrapper);
 		assertTrue(ddlExporterWrapper instanceof DdlExporterWrapper);
+	}
+	
+	@Test
+	public void testCreateQueryExporterWrapper() {
+		Object queryExporterWrapper = WrapperFactory.createQueryExporterWrapper();
+		assertNotNull(queryExporterWrapper);
+		assertTrue(queryExporterWrapper instanceof QueryExporter);
 	}
 		
 	@SuppressWarnings("serial")

@@ -27,8 +27,8 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
-import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -247,6 +247,10 @@ public class WrapperFactory {
 
 	public static Object createDdlExporterWrapper() {
 		return new DdlExporterWrapper();
+	}
+
+	public static Object createQueryExporterWrapper() {
+		return new QueryExporter();
 	}
 
 }
