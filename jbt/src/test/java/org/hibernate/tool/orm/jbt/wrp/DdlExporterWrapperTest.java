@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ public class DdlExporterWrapperTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(ddlExporterWrapper);
-		assertTrue(ddlExporterWrapper instanceof DdlExporterWrapper);
+		assertTrue(ddlExporterWrapper instanceof DdlExporter);
 	}
 	
 	@Test
