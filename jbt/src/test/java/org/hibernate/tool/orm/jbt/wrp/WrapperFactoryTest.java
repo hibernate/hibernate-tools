@@ -457,7 +457,7 @@ public class WrapperFactoryTest {
 	public void testCreateQueryExporterWrapper() {
 		Object queryExporterWrapper = WrapperFactory.createQueryExporterWrapper();
 		assertNotNull(queryExporterWrapper);
-		assertTrue(queryExporterWrapper instanceof QueryExporter);
+		assertTrue(queryExporterWrapper instanceof QueryExporterWrapper);
 	}
 		
 	@SuppressWarnings("serial")
