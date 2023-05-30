@@ -246,7 +246,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createDdlExporterWrapper() {
-		return new DdlExporter();
+		return new DdlExporterWrapper();
 	}
 
 }
