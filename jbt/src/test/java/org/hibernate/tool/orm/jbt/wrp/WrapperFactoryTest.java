@@ -42,8 +42,8 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
-import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -54,6 +54,7 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
+import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.Test;
@@ -458,6 +459,13 @@ public class WrapperFactoryTest {
 		Object queryExporterWrapper = WrapperFactory.createQueryExporterWrapper();
 		assertNotNull(queryExporterWrapper);
 		assertTrue(queryExporterWrapper instanceof QueryExporterWrapper);
+	}
+	
+	@Test
+	public void testCreateExporterWrapper() {
+		Object exporterWrapper = WrapperFactory.createExporterWrapper(DdlExporter.class.getName());
+		assertNotNull(exporterWrapper);
+		assertTrue(exporterWrapper instanceof ExporterWrapper);
 	}
 		
 	@SuppressWarnings("serial")

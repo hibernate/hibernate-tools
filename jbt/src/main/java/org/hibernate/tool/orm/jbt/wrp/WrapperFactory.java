@@ -252,4 +252,8 @@ public class WrapperFactory {
 		return new QueryExporterWrapper();
 	}
 
+	public static Object createExporterWrapper(String exporterClassName) {
+		return ExporterWrapperFactory.create(exporterClassName);
+	}
+
 }
