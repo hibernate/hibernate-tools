@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -50,6 +51,9 @@ public class ExporterWrapperFactory {
 			getWrappedObject().getProperties().put(
 					ExporterConstants.ARTIFACT_COLLECTOR,
 					artifactCollector);
+		}
+		default void setOutputDirectory(File dir) {
+			getWrappedObject().getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);
 		}
 	}
 	
