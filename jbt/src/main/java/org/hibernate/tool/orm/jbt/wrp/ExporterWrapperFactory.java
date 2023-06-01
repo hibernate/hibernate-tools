@@ -4,7 +4,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class ExporterWrapperFactory {
@@ -31,7 +35,17 @@ public class ExporterWrapperFactory {
 		
 	}
 	
-	static interface ExporterWrapper extends Wrapper {}
+	static interface ExporterWrapper extends Wrapper {
+		@Override Exporter getWrappedObject();
+		default void setConfiguration(Configuration configuration) {
+			if (CfgExporter.class.isAssignableFrom(getWrappedObject().getClass())) {
+				((CfgExporter)getWrappedObject()).setCustomProperties(configuration.getProperties());
+			}
+			getWrappedObject().getProperties().put(
+					ExporterConstants.METADATA_DESCRIPTOR, 
+					new ConfigurationMetadataDescriptor(configuration));
+		}
+	}
 	
 	static class ExporterWrapperImpl implements ExporterWrapper {
 		private Exporter delegateExporter = null;
