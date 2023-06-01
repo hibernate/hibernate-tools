@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
@@ -44,6 +45,11 @@ public class ExporterWrapperFactory {
 			getWrappedObject().getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR, 
 					new ConfigurationMetadataDescriptor(configuration));
+		}
+		default void setArtifactCollector(ArtifactCollector artifactCollector) {
+			getWrappedObject().getProperties().put(
+					ExporterConstants.ARTIFACT_COLLECTOR,
+					artifactCollector);
 		}
 	}
 	
