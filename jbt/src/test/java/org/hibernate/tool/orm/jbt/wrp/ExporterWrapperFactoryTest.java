@@ -17,7 +17,6 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
-import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
