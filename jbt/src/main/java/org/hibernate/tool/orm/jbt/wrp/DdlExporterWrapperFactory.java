@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Properties;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
@@ -35,6 +36,9 @@ public class DdlExporterWrapperFactory {
 		@Override DdlExporter getWrappedObject();
 		default void setExport(boolean b) {
 			getWrappedObject().getProperties().put(ExporterConstants.EXPORT_TO_DATABASE, b);
+		}
+		default Properties getProperties() {
+			return getWrappedObject().getProperties();
 		}
 		
 	}
