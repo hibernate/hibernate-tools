@@ -444,7 +444,7 @@ public class WrapperFactoryTest {
 	public void testCreateGenericExporterWrapper() {
 		Object genericExporterWrapper = WrapperFactory.createGenericExporterWrapper();
 		assertNotNull(genericExporterWrapper);
-		assertTrue(genericExporterWrapper instanceof GenericExporterWrapper);
+		assertTrue(genericExporterWrapper instanceof GenericExporterWrapperFactory.GenericExporterWrapper);
 	}
 	
 	@Test
