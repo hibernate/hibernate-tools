@@ -97,6 +97,17 @@ public class ExporterWrapperFactoryTest {
 		assertTrue(((TestExporter)exporterWrapper.getWrappedObject()).started);
 	}
 	
+	@Test
+	public void testGetProperties() throws Exception {
+		Field propertiesField = AbstractExporter.class.getDeclaredField("properties");
+		propertiesField.setAccessible(true);
+		Properties properties = new Properties();
+		assertNotNull(exporterWrapper.getProperties());
+		assertNotSame(properties, exporterWrapper.getProperties());
+		propertiesField.set(exporterWrapper.getWrappedObject(), properties);
+		assertSame(properties, exporterWrapper.getProperties());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		@Override protected void doStart() {}

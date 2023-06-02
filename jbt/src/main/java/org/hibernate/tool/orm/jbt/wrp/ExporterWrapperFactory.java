@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.ArtifactCollector;
@@ -43,23 +44,24 @@ public class ExporterWrapperFactory {
 			if (CfgExporter.class.isAssignableFrom(getWrappedObject().getClass())) {
 				((CfgExporter)getWrappedObject()).setCustomProperties(configuration.getProperties());
 			}
-			getWrappedObject().getProperties().put(
+			getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR, 
 					new ConfigurationMetadataDescriptor(configuration));
 		}
 		default void setArtifactCollector(ArtifactCollector artifactCollector) {
-			getWrappedObject().getProperties().put(
-					ExporterConstants.ARTIFACT_COLLECTOR,
-					artifactCollector);
+			getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
 		}
 		default void setOutputDirectory(File dir) {
-			getWrappedObject().getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);
+			getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);
 		}
 		default void setTemplatePath(String[] templatePath) {
-			getWrappedObject().getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
+			getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
 		}
 		default void start() {
 			getWrappedObject().start();
+		}
+		default Properties getProperties() {
+			return getWrappedObject().getProperties();
 		}
 	}
 	
