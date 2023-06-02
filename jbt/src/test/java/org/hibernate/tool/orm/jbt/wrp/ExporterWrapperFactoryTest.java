@@ -70,4 +70,13 @@ public class ExporterWrapperFactoryTest {
 		assertSame(file, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
 	}
 	
+	@Test
+	public void testSetTemplatePath() {
+		String[] templatePath = new String[] {};
+		exporterWrapper = ExporterWrapperFactory.create(DdlExporter.class.getName());
+		assertNotSame(templatePath, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+		exporterWrapper.setTemplatePath(templatePath);
+		assertSame(templatePath, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+	}
+	
 }
