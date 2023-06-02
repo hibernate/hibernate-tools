@@ -39,6 +39,9 @@ public class GenericExporterWrapperFactory {
 		default void setTemplateName(String templateName) {
 			getWrappedObject().getProperties().setProperty(ExporterConstants.TEMPLATE_NAME, templateName);
 		}
+		default void setForEach(String forEach) {
+			getWrappedObject().getProperties().setProperty(ExporterConstants.FOR_EACH, forEach);
+		}
 	}
 	
 	static class GenericExporterWrapperImpl implements GenericExporterWrapper {
