@@ -45,6 +45,9 @@ public class GenericExporterWrapperFactory {
 		default String getFilePattern() {
 			return getWrappedObject().getProperties().getProperty(ExporterConstants.FILE_PATTERN);
 		}
+		default String getTemplateName() {
+			return getWrappedObject().getProperties().getProperty(ExporterConstants.TEMPLATE_NAME);
+		}
 	}
 	
 	static class GenericExporterWrapperImpl implements GenericExporterWrapper {

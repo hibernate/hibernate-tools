@@ -55,4 +55,11 @@ public class GenericExporterWrapperFactoryTest {
 		assertEquals("foobar", genericExporterWrapper.getFilePattern());
 	}
 	
+	@Test
+	public void testGetTemplateName() {
+		assertNull(genericExporterWrapper.getTemplateName());
+		wrappedGenericExporter.getProperties().put(ExporterConstants.TEMPLATE_NAME, "foobar");
+		assertEquals("foobar", genericExporterWrapper.getTemplateName());
+	}
+	
 }
