@@ -58,6 +58,9 @@ public class ExporterWrapperFactory {
 		default void setTemplatePath(String[] templatePath) {
 			getWrappedObject().getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
 		}
+		default void start() {
+			getWrappedObject().start();
+		}
 	}
 	
 	static class ExporterWrapperImpl implements ExporterWrapper {
