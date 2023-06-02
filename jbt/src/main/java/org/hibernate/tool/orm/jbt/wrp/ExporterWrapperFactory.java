@@ -11,8 +11,10 @@ import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
+import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
 
 public class ExporterWrapperFactory {
 	
@@ -62,6 +64,13 @@ public class ExporterWrapperFactory {
 		}
 		default Properties getProperties() {
 			return getWrappedObject().getProperties();
+		}
+		default GenericExporterWrapper getGenericExporter() {
+			if (getWrappedObject() instanceof GenericExporter) {
+				return GenericExporterWrapperFactory.create((GenericExporter)getWrappedObject());
+			} else {
+				return null;
+			}
 		}
 	}
 	
