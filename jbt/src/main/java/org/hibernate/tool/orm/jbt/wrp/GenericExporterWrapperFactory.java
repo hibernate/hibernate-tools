@@ -42,6 +42,9 @@ public class GenericExporterWrapperFactory {
 		default void setForEach(String forEach) {
 			getWrappedObject().getProperties().setProperty(ExporterConstants.FOR_EACH, forEach);
 		}
+		default String getFilePattern() {
+			return getWrappedObject().getProperties().getProperty(ExporterConstants.FILE_PATTERN);
+		}
 	}
 	
 	static class GenericExporterWrapperImpl implements GenericExporterWrapper {
