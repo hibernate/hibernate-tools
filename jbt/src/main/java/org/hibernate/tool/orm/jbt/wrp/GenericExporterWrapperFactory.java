@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 
 public class GenericExporterWrapperFactory {
@@ -31,7 +32,10 @@ public class GenericExporterWrapperFactory {
 	}
 	
 	static interface GenericExporterWrapper extends Wrapper {
-		
+		@Override GenericExporter getWrappedObject();
+		default void setFilePattern(String filePattern) {
+			getWrappedObject().getProperties().setProperty(ExporterConstants.FILE_PATTERN, filePattern);
+		}	
 	}
 	
 	static class GenericExporterWrapperImpl implements GenericExporterWrapper {
