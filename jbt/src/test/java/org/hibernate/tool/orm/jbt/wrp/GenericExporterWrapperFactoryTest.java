@@ -7,13 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
+import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GenericExporterWrapperFactoryTest {
 
 	private GenericExporter wrappedGenericExporter = null;
-	private GenericExporterWrapperFactory.GenericExporterWrapper genericExporterWrapper = null;
+	private GenericExporterWrapper genericExporterWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
