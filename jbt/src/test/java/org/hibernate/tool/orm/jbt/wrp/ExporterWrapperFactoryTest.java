@@ -18,7 +18,9 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
+import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -120,6 +122,19 @@ public class ExporterWrapperFactoryTest {
 		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
 		Object genericExporterTarget = ((Wrapper)genericExporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, genericExporterTarget);
+	}
+	
+	@Test
+	public void testGetHbm2DDlExporter() {
+		// TestExporter should not return a GenericExporterFacade instance
+		assertNull(exporterWrapper.getHbm2DDLExporter());
+		// try now with a GenericExporter
+		exporterWrapper = ExporterWrapperFactory.create(DdlExporter.class.getName());
+		DdlExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
+		assertNotNull(ddlExporterWrapper);
+		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
+		Object ddlExporterTarget = ((Wrapper)ddlExporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, ddlExporterTarget);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
