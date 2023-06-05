@@ -13,13 +13,14 @@ import java.util.Properties;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DdlExporterWrapperFactoryTest {
 
 	private DdlExporter wrappedDdlExporter = null;
-	private DdlExporterWrapperFactory.DdlExporterWrapper ddlExporterWrapper = null;
+	private DdlExporterWrapper ddlExporterWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
