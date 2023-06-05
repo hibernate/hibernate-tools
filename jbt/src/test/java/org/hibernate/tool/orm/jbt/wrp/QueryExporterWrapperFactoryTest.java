@@ -11,13 +11,14 @@ import java.util.List;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
+import org.hibernate.tool.orm.jbt.wrp.QueryExporterWrapperFactory.QueryExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class QueryExporterWrapperFactoryTest {
 
 	private QueryExporter wrappedQueryExporter = null;
-	private QueryExporterWrapperFactory.QueryExporterWrapper queryExporterWrapper = null;
+	private QueryExporterWrapper queryExporterWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
