@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 import org.hibernate.tool.internal.export.query.QueryExporter;
 
@@ -31,6 +32,10 @@ public class QueryExporterWrapperFactory {
 	}
 	
 	static interface QueryExporterWrapper extends Wrapper {
+		@Override QueryExporter getWrappedObject();
+		default void setQueries(List<String> queries) {
+			getWrappedObject().setQueries(queries);
+		}
 		
 	}
 

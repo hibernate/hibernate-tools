@@ -1,8 +1,13 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,5 +28,13 @@ public class QueryExporterWrapperFactoryTest {
 		assertNotNull(queryExporterWrapper);
 		assertSame(wrappedQueryExporter, queryExporterWrapper.getWrappedObject());
 	}
+	
+	@Test
+	public void testSetQueries() {
+		List<String> queries = Collections.emptyList();
+		assertNotSame(queries, wrappedQueryExporter.getProperties().get(ExporterConstants.QUERY_LIST));
+		queryExporterWrapper.setQueries(queries);
+		assertSame(queries, wrappedQueryExporter.getProperties().get(ExporterConstants.QUERY_LIST));
+	}	
 
 }
