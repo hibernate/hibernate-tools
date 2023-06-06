@@ -13,10 +13,12 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
+import org.hibernate.tool.orm.jbt.wrp.QueryExporterWrapperFactory.QueryExporterWrapper;
 
 public class ExporterWrapperFactory {
 	
@@ -77,6 +79,13 @@ public class ExporterWrapperFactory {
 		default DdlExporterWrapper getHbm2DDLExporter() {
 			if (getWrappedObject() instanceof DdlExporter) {
 				return DdlExporterWrapperFactory.create((DdlExporter)getWrappedObject());
+			} else {
+				return null;
+			}
+		}
+		default QueryExporterWrapper getQueryExporter() {
+			if (getWrappedObject() instanceof QueryExporter) {
+				return QueryExporterWrapperFactory.create((QueryExporter)getWrappedObject());
 			} else {
 				return null;
 			}

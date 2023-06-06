@@ -19,10 +19,12 @@ import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
+import org.hibernate.tool.orm.jbt.wrp.QueryExporterWrapperFactory.QueryExporterWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -128,13 +130,26 @@ public class ExporterWrapperFactoryTest {
 	public void testGetHbm2DDlExporter() {
 		// TestExporter should not return a GenericExporterFacade instance
 		assertNull(exporterWrapper.getHbm2DDLExporter());
-		// try now with a GenericExporter
+		// try now with a DdlExporter
 		exporterWrapper = ExporterWrapperFactory.create(DdlExporter.class.getName());
 		DdlExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
 		assertNotNull(ddlExporterWrapper);
 		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
 		Object ddlExporterTarget = ((Wrapper)ddlExporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, ddlExporterTarget);
+	}
+	
+	@Test
+	public void testGetQueryExporter() {
+		// TestExporter should not return a GenericExporterFacade instance
+		assertNull(exporterWrapper.getQueryExporter());
+		// try now with a QueryExporter
+		exporterWrapper = ExporterWrapperFactory.create(QueryExporter.class.getName());
+		QueryExporterWrapper queryExporterWrapper = exporterWrapper.getQueryExporter();
+		assertNotNull(queryExporterWrapper);
+		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
+		Object queryExporterTarget = ((Wrapper)queryExporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, queryExporterTarget);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
