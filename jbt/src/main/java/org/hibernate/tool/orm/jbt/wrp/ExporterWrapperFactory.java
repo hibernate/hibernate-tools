@@ -15,6 +15,7 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
@@ -23,10 +24,21 @@ import org.hibernate.tool.orm.jbt.wrp.QueryExporterWrapperFactory.QueryExporterW
 public class ExporterWrapperFactory {
 	
 	public static ExporterWrapper create(String className) {
-		return (ExporterWrapper)Proxy.newProxyInstance( 
+		ExporterWrapper result = (ExporterWrapper)Proxy.newProxyInstance( 
 				ExporterWrapperFactory.class.getClassLoader(), 
 				new Class[] { ExporterWrapper.class }, 
 				new ExporterInvocationHandler(className));
+		Exporter wrappedExporter = result.getWrappedObject();
+		if (CfgExporter.class.isAssignableFrom(wrappedExporter.getClass())) {
+			wrappedExporter.getProperties().put(
+					ExporterConstants.METADATA_DESCRIPTOR, 
+					new DummyMetadataDescriptor());
+		} else {
+			wrappedExporter.getProperties().put(
+					ExporterConstants.METADATA_DESCRIPTOR,
+					new ConfigurationMetadataDescriptor(new Configuration()));
+		}
+		return result;
 	}
 	
 	private static class ExporterInvocationHandler implements InvocationHandler {

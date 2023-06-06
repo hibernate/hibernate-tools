@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.ArtifactCollector;
+import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
@@ -21,6 +22,7 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.GenericExporterWrapperFactory.GenericExporterWrapper;
@@ -39,9 +41,21 @@ public class ExporterWrapperFactoryTest {
 	
 	@Test
 	public void testCreate() {
+		Exporter wrappedExporter = null;
+		Object metadataDescriptor = null;
+		// first try the default TestExporter
 		assertNotNull(exporterWrapper);
-		Object wrappedExporter = exporterWrapper.getWrappedObject();
+		wrappedExporter = exporterWrapper.getWrappedObject();
 		assertTrue(wrappedExporter instanceof TestExporter);
+		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
+		// next try the CfgExporter
+		exporterWrapper = ExporterWrapperFactory.create(CfgExporter.class.getName());
+		assertNotNull(exporterWrapper);
+		wrappedExporter = exporterWrapper.getWrappedObject();
+		assertTrue(wrappedExporter instanceof CfgExporter);
+		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertTrue(metadataDescriptor instanceof DummyMetadataDescriptor);
 	}
 
 	@Test
@@ -53,7 +67,10 @@ public class ExporterWrapperFactoryTest {
 		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		field.setAccessible(true);
 		// First use the TestExporter 
-		assertNull(exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
+		metadataDescriptor = exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
+		assertNotSame(configuration, field.get(metadataDescriptor));
 		exporterWrapper.setConfiguration(configuration);	
 		metadataDescriptor = exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
@@ -62,7 +79,9 @@ public class ExporterWrapperFactoryTest {
 		// Now test with a CfgExporter
 		exporterWrapper = ExporterWrapperFactory.create(CfgExporter.class.getName());
 		assertNotSame(properties, ((CfgExporter)exporterWrapper.getWrappedObject()).getCustomProperties());
-		assertNull(exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR));
+		metadataDescriptor = exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+		assertNotNull(metadataDescriptor);
+		assertTrue(metadataDescriptor instanceof DummyMetadataDescriptor);
 		exporterWrapper.setConfiguration(configuration);	
 		assertSame(properties, ((CfgExporter)exporterWrapper.getWrappedObject()).getCustomProperties());
 		metadataDescriptor = exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
