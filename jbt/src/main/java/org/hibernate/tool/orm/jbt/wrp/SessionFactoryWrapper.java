@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;
@@ -21,11 +22,12 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 	}
 	
 	public Map<String, EntityPersister> getAllClassMetadata() {
-		Map<String, EntityPersister> result = getMetamodel().entityPersisters();
-		for (String key : result.keySet()) {
-			result.put(key, (EntityPersister)EntityPersisterWrapperFactory.create(result.get(key)));
+		Map<String, EntityPersister> origin = getMetamodel().entityPersisters();
+		Map<String, EntityPersister> result = new HashMap<String, EntityPersister>(origin.size());
+		for (String key : origin.keySet()) {
+			result.put(key, (EntityPersister)EntityPersisterWrapperFactory.create(origin.get(key)));
 		}
-		return getMetamodel().entityPersisters();
+		return result;
 	}
 
 	public Map<String, CollectionPersister> getAllCollectionMetadata() {

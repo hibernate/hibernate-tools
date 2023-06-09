@@ -94,7 +94,9 @@ public class SessionFactoryWrapperTest {
 		Map<String, EntityPersister> allClassMetadata = sessionFactoryWrapper.getAllClassMetadata();
 		assertNotNull(allClassMetadata);
 		assertEquals(1, allClassMetadata.size());
-		assertNotNull(allClassMetadata.get(Foo.class.getName()));
+		EntityPersister fooPersister = allClassMetadata.get(Foo.class.getName());
+		assertNotNull(fooPersister);
+		assertTrue(fooPersister instanceof EntityPersisterWrapperFactory.EntityPersisterExtension);
 	}
 	
 	@Test
@@ -108,9 +110,13 @@ public class SessionFactoryWrapperTest {
 	@Test
 	public void testGetClassMetadata() throws Exception {
 		assertNull(sessionFactoryWrapper.getClassMetadata("foo"));
-		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class.getName()));
+		EntityPersister fooPersister = sessionFactoryWrapper.getClassMetadata(Foo.class.getName());
+		assertNotNull(fooPersister);
+		assertTrue(fooPersister instanceof EntityPersisterWrapperFactory.EntityPersisterExtension);
 		assertNull(sessionFactoryWrapper.getClassMetadata(Object.class));
-		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class));
+		fooPersister = sessionFactoryWrapper.getClassMetadata(Foo.class);
+		assertNotNull(fooPersister);
+		assertTrue(fooPersister instanceof EntityPersisterWrapperFactory.EntityPersisterExtension);
 	}
 	
 	@Test
