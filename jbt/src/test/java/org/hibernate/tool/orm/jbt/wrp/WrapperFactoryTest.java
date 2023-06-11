@@ -441,13 +441,6 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateGenericExporterWrapper() {
-		Object genericExporterWrapper = WrapperFactory.createGenericExporterWrapper();
-		assertNotNull(genericExporterWrapper);
-		assertTrue(genericExporterWrapper instanceof GenericExporterWrapperFactory.GenericExporterWrapper);
-	}
-	
-	@Test
 	public void testCreateDdlExporterWrapper() {
 		Object ddlExporterWrapper = WrapperFactory.createDdlExporterWrapper();
 		assertNotNull(ddlExporterWrapper);
