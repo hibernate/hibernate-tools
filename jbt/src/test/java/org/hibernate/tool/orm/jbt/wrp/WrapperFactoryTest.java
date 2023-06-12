@@ -441,13 +441,6 @@ public class WrapperFactoryTest {
 	}
 	
 	@Test
-	public void testCreateDdlExporterWrapper() {
-		Object ddlExporterWrapper = WrapperFactory.createDdlExporterWrapper();
-		assertNotNull(ddlExporterWrapper);
-		assertTrue(ddlExporterWrapper instanceof DdlExporterWrapperFactory.DdlExporterWrapper);
-	}
-	
-	@Test
 	public void testCreateQueryExporterWrapper() {
 		Object queryExporterWrapper = WrapperFactory.createQueryExporterWrapper();
 		assertNotNull(queryExporterWrapper);
