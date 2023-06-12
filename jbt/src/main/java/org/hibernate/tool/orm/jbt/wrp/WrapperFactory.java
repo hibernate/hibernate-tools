@@ -28,7 +28,6 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
-import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -239,10 +238,6 @@ public class WrapperFactory {
 	
 	public static Object createHbmExporterWrapper(Object configuration, File file) {
 		return new HbmExporterWrapper((Configuration)configuration, file);
-	}
-
-	public static Object createQueryExporterWrapper() {
-		return QueryExporterWrapperFactory.create(new QueryExporter());
 	}
 
 	public static Object createExporterWrapper(String exporterClassName) {
