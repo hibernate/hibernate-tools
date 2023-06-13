@@ -25,6 +25,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -32,6 +33,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
+import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 
@@ -242,6 +244,10 @@ public class WrapperFactory {
 
 	public static Object createExporterWrapper(String exporterClassName) {
 		return ExporterWrapperFactory.create(exporterClassName);
+	}
+	
+	public static Object createHqlCodeAssistWrapper(Object configuration) {
+		return new HQLCodeAssist(MetadataHelper.getMetadata((Configuration)configuration));
 	}
 
 }
