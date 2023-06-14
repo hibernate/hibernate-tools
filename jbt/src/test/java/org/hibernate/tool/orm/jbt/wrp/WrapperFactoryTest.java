@@ -458,6 +458,7 @@ public class WrapperFactoryTest {
 		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		Object hqlCodeAssistWrapper = WrapperFactory.createHqlCodeAssistWrapper(configuration);
+		assertTrue(hqlCodeAssistWrapper instanceof HqlCodeAssistWrapper);
 		Field metadataField = HQLCodeAssist.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
 		assertSame(metadata, metadataField.get(hqlCodeAssistWrapper));

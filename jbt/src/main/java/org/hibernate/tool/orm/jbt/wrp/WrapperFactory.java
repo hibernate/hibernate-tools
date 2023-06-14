@@ -247,7 +247,7 @@ public class WrapperFactory {
 	}
 	
 	public static Object createHqlCodeAssistWrapper(Object configuration) {
-		return new HQLCodeAssist(MetadataHelper.getMetadata((Configuration)configuration));
+		return new HqlCodeAssistWrapper(MetadataHelper.getMetadata((Configuration)configuration));
 	}
 
 }
