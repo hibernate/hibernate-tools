@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
@@ -54,7 +53,6 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
@@ -455,7 +453,7 @@ public class WrapperFactoryTest {
 	@Test
 	public void testCreateHqlCodeAssistWrapper() throws Exception {
 		Configuration configuration = new NativeConfiguration();
-		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
 		Metadata metadata = MetadataHelper.getMetadata(configuration);
 		Object hqlCodeAssistWrapper = WrapperFactory.createHqlCodeAssistWrapper(configuration);
 		assertTrue(hqlCodeAssistWrapper instanceof HqlCodeAssistWrapper);
