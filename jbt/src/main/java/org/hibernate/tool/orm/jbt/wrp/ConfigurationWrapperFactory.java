@@ -38,6 +38,7 @@ public class ConfigurationWrapperFactory {
 
 	static interface ConfigurationWrapper extends Wrapper {
 		@Override default Configuration getWrappedObject() { return (Configuration)this; }
+		String getProperty(String name);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
