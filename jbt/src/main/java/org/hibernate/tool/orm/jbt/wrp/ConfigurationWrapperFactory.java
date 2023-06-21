@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,6 +40,7 @@ public class ConfigurationWrapperFactory {
 	static interface ConfigurationWrapper extends Wrapper {
 		@Override default Configuration getWrappedObject() { return (Configuration)this; }
 		String getProperty(String name);
+		Configuration addFile(File file);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
