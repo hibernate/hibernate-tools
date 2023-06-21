@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 
 public class ConfigurationWrapperFactory {
 	
@@ -16,7 +18,15 @@ public class ConfigurationWrapperFactory {
 				new ConfigurationWrapperInvocationHandler(new NativeConfigurationWrapperImpl()));
 	}
 	
+	public static ConfigurationWrapper createRevengConfigurationWrapper() {
+		return (ConfigurationWrapper)Proxy.newProxyInstance(
+				ConfigurationWrapperFactory.class.getClassLoader(), 
+				new Class[] { ConfigurationWrapper.class }, 
+				new ConfigurationWrapperInvocationHandler(new RevengConfigurationWrapperImpl()));
+	}
+
 	static interface ConfigurationWrapper extends Wrapper {
+		@Override default PersistentClass getWrappedObject() { return (PersistentClass)this; }
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
@@ -43,4 +53,8 @@ public class ConfigurationWrapperFactory {
 			implements ConfigurationWrapper {
 	}
 
+	static class RevengConfigurationWrapperImpl 
+			extends RevengConfiguration 
+			implements ConfigurationWrapper {
+}
 }

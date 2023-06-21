@@ -9,15 +9,18 @@ import org.junit.jupiter.api.Test;
 public class ConfigurationWrapperFactoryTest {
 	
 	private ConfigurationWrapper nativeConfigurationWrapper = null;
+	private ConfigurationWrapper revengConfigurationWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
 		nativeConfigurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		revengConfigurationWrapper = ConfigurationWrapperFactory.createRevengConfigurationWrapper();
 	}
 	
 	@Test
 	public void testConstruction() {
 		assertNotNull(nativeConfigurationWrapper);
+		assertNotNull(revengConfigurationWrapper);
 	}
 
 }
