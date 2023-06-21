@@ -48,6 +48,7 @@ public class ConfigurationWrapperFactory {
 		Configuration setProperties(Properties properties);
 		void setEntityResolver(EntityResolver testResolver);
 		void setNamingStrategy(NamingStrategy namingStrategy);
+		Properties getProperties();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

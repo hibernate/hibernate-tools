@@ -213,4 +213,21 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 	
+	@Test
+	public void testGetProperties() {
+		Properties testProperties = new Properties();
+		// For native configuration
+		assertNotSame(testProperties, nativeConfigurationWrapper.getProperties());
+		wrappedNativeConfiguration.setProperties(testProperties);
+		assertSame(testProperties, nativeConfigurationWrapper.getProperties());
+		// For reveng configuration
+		assertNotSame(testProperties, revengConfigurationWrapper.getProperties());
+		wrappedRevengConfiguration.setProperties(testProperties);
+		assertSame(testProperties, revengConfigurationWrapper.getProperties());
+		// For jpa configuration
+		assertNotSame(testProperties, jpaConfigurationWrapper.getProperties());
+		wrappedJpaConfiguration.setProperties(testProperties);
+		assertSame(testProperties, jpaConfigurationWrapper.getProperties());
+	}
+	
 }
