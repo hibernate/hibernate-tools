@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -42,6 +43,7 @@ public class ConfigurationWrapperFactory {
 		String getProperty(String name);
 		Configuration addFile(File file);
 		Configuration setProperty(String name, String value);
+		Configuration setProperties(Properties properties);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
