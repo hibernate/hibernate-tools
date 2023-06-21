@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -46,6 +47,7 @@ public class ConfigurationWrapperFactory {
 		Configuration setProperty(String name, String value);
 		Configuration setProperties(Properties properties);
 		void setEntityResolver(EntityResolver testResolver);
+		void setNamingStrategy(NamingStrategy namingStrategy);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

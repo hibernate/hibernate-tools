@@ -17,6 +17,8 @@ import java.util.Properties;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.ConfigurationWrapper;
@@ -178,6 +180,36 @@ public class ConfigurationWrapperFactoryTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setEntityResolver' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
+	}
+	
+	@Test
+	public void testSetNamingStrategy() throws Exception {
+		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		// For native configuration
+		Field namingStrategyField = NativeConfiguration.class.getDeclaredField("namingStrategy");
+		namingStrategyField.setAccessible(true);
+		assertNull(namingStrategyField.get(wrappedNativeConfiguration));
+		nativeConfigurationWrapper.setNamingStrategy(namingStrategy);
+		assertNotNull(namingStrategyField.get(wrappedNativeConfiguration));
+		assertSame(namingStrategyField.get(wrappedNativeConfiguration), namingStrategy);
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.setNamingStrategy(namingStrategy);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.setNamingStrategy(namingStrategy);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setNamingStrategy' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
 		}
 	}
 	
