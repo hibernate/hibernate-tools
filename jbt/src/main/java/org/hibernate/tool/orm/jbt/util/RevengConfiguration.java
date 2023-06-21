@@ -3,8 +3,8 @@ package org.hibernate.tool.orm.jbt.util;
 import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Properties;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
@@ -15,32 +15,10 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.xml.sax.EntityResolver;
 
-public class RevengConfiguration {
+public class RevengConfiguration extends Configuration {
 
-	Properties properties = new Properties();
 	RevengStrategy revengStrategy;
 	Metadata metadata;
-
-	public Properties getProperties() {
-		return properties;
-	}
-	
-	public RevengConfiguration setProperties(Properties properties) {
-		this.properties = properties;
-		return this;
-	}
-	
-	public Object getProperty(String key) {
-		return this.properties.get(key);
-	}
-	
-	public void setProperty(String key, String value) {
-		properties.put(key, value);
-	}
-
-	public void addProperties(Properties properties) {
-		this.properties.putAll(properties);
-	}
 
 	public Object getReverseEngineeringStrategy() {
 		return revengStrategy;
@@ -51,14 +29,14 @@ public class RevengConfiguration {
 	}
 
 	public boolean preferBasicCompositeIds() {
-		Object preferBasicCompositeIds = properties.get(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS);
-		return preferBasicCompositeIds == null ? true : ((Boolean)preferBasicCompositeIds).booleanValue();
+		String preferBasicCompositeIds = getProperty(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS);
+		return preferBasicCompositeIds == null ? true : Boolean.getBoolean(preferBasicCompositeIds);
 	}
 
 	public void setPreferBasicCompositeIds(boolean preferBasicCompositeIds) {
-		properties.put(
+		setProperty(
 				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, 
-				Boolean.valueOf(preferBasicCompositeIds));
+				Boolean.toString(preferBasicCompositeIds));
 	}
 
 	public Metadata getMetadata() {
@@ -67,7 +45,7 @@ public class RevengConfiguration {
 
 	public void readFromJDBC() {
 		metadata = MetadataDescriptorFactory
-				.createReverseEngineeringDescriptor(revengStrategy, properties)
+				.createReverseEngineeringDescriptor(revengStrategy, getProperties())
 				.createMetadata();
 	}
 	
@@ -97,7 +75,8 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 	
-	public Configuration addClass(Class<?> file) {
+	@SuppressWarnings("rawtypes")
+	public Configuration addClass(Class file) {
 		throw new RuntimeException(
 				"Method 'addClass' should not be called on instances of " +
 				this.getClass().getName());
@@ -121,13 +100,19 @@ public class RevengConfiguration {
 				this.getClass().getName());
 	}
 		
+	public Configuration configure() {
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public void buildMappings() {
 		throw new RuntimeException(
 				"Method 'buildMappings' should not be called on instances of " +
 				this.getClass().getName());
 	}
 		
-	public void buildSessionFactory() {
+	public SessionFactory buildSessionFactory() {
 		throw new RuntimeException(
 				"Method 'buildSessionFactory' should not be called on instances of " +
 				this.getClass().getName());
