@@ -12,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.xml.sax.EntityResolver;
 
 public class ConfigurationWrapperFactory {
 	
@@ -44,6 +45,7 @@ public class ConfigurationWrapperFactory {
 		Configuration addFile(File file);
 		Configuration setProperty(String name, String value);
 		Configuration setProperties(Properties properties);
+		void setEntityResolver(EntityResolver testResolver);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
