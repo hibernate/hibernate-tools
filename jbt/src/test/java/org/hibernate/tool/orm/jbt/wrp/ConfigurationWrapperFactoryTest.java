@@ -82,7 +82,7 @@ public class ConfigurationWrapperFactoryTest {
 		assertTrue(metadataSources.getXmlBindings().isEmpty());
 		assertSame(
 				wrappedNativeConfiguration,
-				wrappedNativeConfiguration.addFile(testFile));
+				nativeConfigurationWrapper.addFile(testFile));
 		assertFalse(metadataSources.getXmlBindings().isEmpty());
 		Binding<?> binding = metadataSources.getXmlBindings().iterator().next();
 		assertEquals(testFile.getAbsolutePath(), binding.getOrigin().getName());
@@ -106,4 +106,20 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 	
+	@Test 
+	public void testSetProperty() {
+		// For native configuration
+		assertNull(wrappedNativeConfiguration.getProperty("foo"));
+		nativeConfigurationWrapper.setProperty("foo", "bar");
+		assertEquals("bar", wrappedNativeConfiguration.getProperty("foo"));
+		// For reveng configuration
+		assertNull(wrappedRevengConfiguration.getProperty("foo"));
+		revengConfigurationWrapper.setProperty("foo", "bar");
+		assertEquals("bar", wrappedRevengConfiguration.getProperty("foo"));
+		// For jpa configuration
+		assertNull(wrappedJpaConfiguration.getProperty("foo"));
+		jpaConfigurationWrapper.setProperty("foo", "bar");
+		assertEquals("bar", wrappedJpaConfiguration.getProperty("foo"));
+	}
+
 }

@@ -41,6 +41,7 @@ public class ConfigurationWrapperFactory {
 		@Override default Configuration getWrappedObject() { return (Configuration)this; }
 		String getProperty(String name);
 		Configuration addFile(File file);
+		Configuration setProperty(String name, String value);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
