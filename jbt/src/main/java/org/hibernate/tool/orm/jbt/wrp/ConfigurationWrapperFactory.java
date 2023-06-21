@@ -4,8 +4,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
-import org.hibernate.mapping.PersistentClass;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 
@@ -25,8 +27,17 @@ public class ConfigurationWrapperFactory {
 				new ConfigurationWrapperInvocationHandler(new RevengConfigurationWrapperImpl()));
 	}
 
+	public static ConfigurationWrapper createJpaConfigurationWrapper(
+			String persistenceUnit, Map<?, ?> properties) {
+		return (ConfigurationWrapper)Proxy.newProxyInstance(
+				ConfigurationWrapperFactory.class.getClassLoader(), 
+				new Class[] { ConfigurationWrapper.class }, 
+				new ConfigurationWrapperInvocationHandler(
+						new JpaConfigurationWrapperImpl(persistenceUnit, properties)));
+	}
+
 	static interface ConfigurationWrapper extends Wrapper {
-		@Override default PersistentClass getWrappedObject() { return (PersistentClass)this; }
+		@Override default Configuration getWrappedObject() { return (Configuration)this; }
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
@@ -56,5 +67,14 @@ public class ConfigurationWrapperFactory {
 	static class RevengConfigurationWrapperImpl 
 			extends RevengConfiguration 
 			implements ConfigurationWrapper {
-}
+	}
+
+	static class JpaConfigurationWrapperImpl 
+			extends JpaConfiguration 
+			implements ConfigurationWrapper {
+		public JpaConfigurationWrapperImpl(String persistenceUnit, Map<?, ?> properties) {
+			super(persistenceUnit, properties);
+		}
+	}
+
 }
