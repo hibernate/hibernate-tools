@@ -54,6 +54,7 @@ public class ConfigurationWrapperFactory {
 		Configuration configure(Document document);
 		Configuration configure(File cfgXmlFile);
 		Configuration configure();
+		Configuration addClass(Class<?> class1);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

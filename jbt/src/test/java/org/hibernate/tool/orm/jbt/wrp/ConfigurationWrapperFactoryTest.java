@@ -413,4 +413,49 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 
+	@Test
+	public void testAddClass() throws Exception {
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/wrp";
+		String fooHbmXmlFileName = "ConfigurationWrapperFactoryTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		// For native configuration		
+		Metadata metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(wrappedNativeConfiguration, null);
+		nativeConfigurationWrapper.addClass(Foo.class);
+		metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.addClass(Foo.class);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.addClass(Foo.class);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'addClass' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
+	}
+	
 }
