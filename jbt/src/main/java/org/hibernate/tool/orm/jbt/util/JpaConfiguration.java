@@ -15,6 +15,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -89,6 +90,12 @@ public class JpaConfiguration extends Configuration {
 		return this.configure(new Object());
 	}
 	
+	public Configuration configure(Document document) {
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
 	public Configuration configure(Object... object) {
 		throw new RuntimeException(
 				"Method 'configure' should not be called on instances of " +

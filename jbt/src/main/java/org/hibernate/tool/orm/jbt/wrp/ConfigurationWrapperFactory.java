@@ -13,6 +13,7 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class ConfigurationWrapperFactory {
@@ -50,6 +51,7 @@ public class ConfigurationWrapperFactory {
 		void setNamingStrategy(NamingStrategy namingStrategy);
 		Properties getProperties();
 		Configuration addProperties(Properties testProperties);
+		Configuration configure(Document document);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

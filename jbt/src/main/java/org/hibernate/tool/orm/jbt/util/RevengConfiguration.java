@@ -13,6 +13,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class RevengConfiguration extends Configuration {
@@ -95,6 +96,12 @@ public class RevengConfiguration extends Configuration {
 	}
 		
 	public Configuration configure(Object... object) {
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
+	}
+		
+	public Configuration configure(Document document) {
 		throw new RuntimeException(
 				"Method 'configure' should not be called on instances of " +
 				this.getClass().getName());

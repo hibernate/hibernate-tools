@@ -10,33 +10,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
+import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.JpaConfigurationWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.RevengConfigurationWrapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationWrapperFactoryTest {
 	
 	private static final String TEST_HBM_XML_STRING =
-			"<hibernate-mapping package='org.jboss.tools.hibernate.orm.runtime.exp.internal'>" +
+			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.wrp'>" +
 			"  <class name='ConfigurationWrapperFactoryTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
+	
+	static class Foo {
+		public String id;
+	}
 	
 	private ConfigurationWrapper nativeConfigurationWrapper = null;
 	private Configuration wrappedNativeConfiguration = null;
@@ -49,6 +63,8 @@ public class ConfigurationWrapperFactoryTest {
 	public void beforeEach() {
 		nativeConfigurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		wrappedNativeConfiguration = nativeConfigurationWrapper.getWrappedObject();
+		wrappedNativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		wrappedNativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		revengConfigurationWrapper = ConfigurationWrapperFactory.createRevengConfigurationWrapper();
 		wrappedRevengConfiguration = revengConfigurationWrapper.getWrappedObject();
 		jpaConfigurationWrapper = ConfigurationWrapperFactory.createJpaConfigurationWrapper(null, null);
@@ -246,6 +262,56 @@ public class ConfigurationWrapperFactoryTest {
 		assertNull(wrappedJpaConfiguration.getProperty("foo"));
 		jpaConfigurationWrapper.addProperties(testProperties);
 		assertEquals("bar", wrappedJpaConfiguration.getProperty("foo"));
+	}
+	
+	@Test
+	public void testConfigureDocument() throws Exception {
+		Document document = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.newDocument();
+		Element hibernateConfiguration = document.createElement("hibernate-configuration");
+		document.appendChild(hibernateConfiguration);
+		Element sessionFactory = document.createElement("session-factory");
+		sessionFactory.setAttribute("name", "bar");
+		hibernateConfiguration.appendChild(sessionFactory);
+		Element mapping = document.createElement("mapping");
+		mapping.setAttribute("resource", "Foo.hbm.xml");
+		sessionFactory.appendChild(mapping);
+		
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		
+		// For native configuration
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		nativeConfigurationWrapper.configure(document);
+		metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.configure(document);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.configure(document);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
 	}
 	
 }
