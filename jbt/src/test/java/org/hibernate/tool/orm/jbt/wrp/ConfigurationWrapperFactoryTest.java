@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -516,6 +517,30 @@ public class ConfigurationWrapperFactoryTest {
 		assertNotNull(metadataField.get(wrappedJpaConfiguration));
 	}
 
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		// For native configuration
+		SessionFactory sessionFactory = 
+				nativeConfigurationWrapper.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
+		sessionFactory = null;
+		assertNull(sessionFactory);
+		// For reveng configuration 
+		try {
+			revengConfigurationWrapper.buildSessionFactory();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildSessionFactory' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		sessionFactory = jpaConfigurationWrapper.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

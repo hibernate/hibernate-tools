@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -56,6 +57,7 @@ public class ConfigurationWrapperFactory {
 		Configuration configure();
 		Configuration addClass(Class<?> class1);
 		void buildMappings();
+		SessionFactory buildSessionFactory();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
