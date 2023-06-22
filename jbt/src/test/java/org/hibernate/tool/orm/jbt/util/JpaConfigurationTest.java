@@ -234,7 +234,7 @@ public class JpaConfigurationTest {
 	public void testConfigure() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
 		try {
-			jpaConfiguration.configure(new Object());
+			jpaConfiguration.configure(new File(""));
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(

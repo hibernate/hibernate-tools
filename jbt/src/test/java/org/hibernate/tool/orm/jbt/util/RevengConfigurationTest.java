@@ -268,7 +268,7 @@ public class RevengConfigurationTest {
 	@Test
 	public void testConfigure() {
 		try {
-			revengConfiguration.configure(new Object());
+			revengConfiguration.configure(new File(""));
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(

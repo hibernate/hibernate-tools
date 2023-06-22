@@ -87,7 +87,9 @@ public class JpaConfiguration extends Configuration {
 	
 	@Override
 	public Configuration configure() {
-		return this.configure(new Object());
+		throw new RuntimeException(
+				"Method 'configure' should not be called on instances of " +
+				this.getClass().getName());
 	}
 	
 	public Configuration configure(Document document) {
@@ -96,7 +98,7 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
-	public Configuration configure(Object... object) {
+	public Configuration configure(File file) {
 		throw new RuntimeException(
 				"Method 'configure' should not be called on instances of " +
 				this.getClass().getName());

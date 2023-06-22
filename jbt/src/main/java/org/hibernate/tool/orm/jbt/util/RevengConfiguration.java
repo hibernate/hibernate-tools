@@ -95,7 +95,7 @@ public class RevengConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
-	public Configuration configure(Object... object) {
+	public Configuration configure(File object) {
 		throw new RuntimeException(
 				"Method 'configure' should not be called on instances of " +
 				this.getClass().getName());
