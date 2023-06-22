@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,6 +27,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -32,12 +35,17 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.JpaConfigurationWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.RevengConfigurationWrapperImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.helpers.DefaultHandler;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 public class ConfigurationWrapperFactoryTest {
 	
@@ -55,9 +63,33 @@ public class ConfigurationWrapperFactoryTest {
 			"  </session-factory>" +
 			"</hibernate-configuration>";
 	
+	private static final String PERSISTENCE_XML = 
+			"<persistence version='2.2'" +
+	        "  xmlns='http://xmlns.jcp.org/xml/ns/persistence'" +
+		    "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'" +
+	        "  xsi:schemaLocation='http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd'>" +
+	        "  <persistence-unit name='foobar'>" +
+	        "    <class>"+ FooBar.class.getName()  +"</class>" +
+	        "    <properties>" +
+	        "      <property name='" + AvailableSettings.DIALECT + "' value='" + MockDialect.class.getName() + "'/>" +
+	        "      <property name='" + AvailableSettings.CONNECTION_PROVIDER + "' value='" + MockConnectionProvider.class.getName() + "'/>" +
+	        "      <property name='foo' value='bar'/>" +
+	        "    </properties>" +
+	        "  </persistence-unit>" +
+			"</persistence>";
+	
 	static class Foo {
 		public String id;
 	}
+	
+	@Entity public class FooBar {
+		@Id public int id;
+	}
+
+	private ClassLoader original = null;
+
+	@TempDir
+	public File tempRoot;
 	
 	private ConfigurationWrapper nativeConfigurationWrapper = null;
 	private Configuration wrappedNativeConfiguration = null;
@@ -67,15 +99,16 @@ public class ConfigurationWrapperFactoryTest {
 	private Configuration wrappedJpaConfiguration = null;
 	
 	@BeforeEach
-	public void beforeEach() {
-		nativeConfigurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
-		wrappedNativeConfiguration = nativeConfigurationWrapper.getWrappedObject();
-		wrappedNativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
-		wrappedNativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		revengConfigurationWrapper = ConfigurationWrapperFactory.createRevengConfigurationWrapper();
-		wrappedRevengConfiguration = revengConfigurationWrapper.getWrappedObject();
-		jpaConfigurationWrapper = ConfigurationWrapperFactory.createJpaConfigurationWrapper(null, null);
-		wrappedJpaConfiguration = jpaConfigurationWrapper.getWrappedObject();
+	public void beforeEach() throws Exception {
+		tempRoot = Files.createTempDirectory("temp").toFile();
+		createPersistenceXml();
+		swapClassLoader();
+		initializeFacadesAndTargets();
+	}
+	
+	@AfterEach
+	public void afterEach() {
+		Thread.currentThread().setContextClassLoader(original);
 	}
 	
 	@Test
@@ -456,6 +489,60 @@ public class ConfigurationWrapperFactoryTest {
 					e.getMessage(),
 					"Method 'addClass' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
 		}
+	}
+	
+	@Test
+	public void testBuildMappings() throws Exception {
+		// For native configuration
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(wrappedNativeConfiguration));
+		nativeConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedNativeConfiguration));
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.buildMappings();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildMappings' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		metadataField = JpaConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(wrappedJpaConfiguration));
+		jpaConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedJpaConfiguration));
+	}
+
+	private void createPersistenceXml() throws Exception {
+		File metaInf = new File(tempRoot, "META-INF");
+		metaInf.mkdirs();
+		File persistenceXml = new File(metaInf, "persistence.xml");
+		persistenceXml.createNewFile();
+		FileWriter fileWriter = new FileWriter(persistenceXml);
+		fileWriter.write(PERSISTENCE_XML);
+		fileWriter.close();
+	}
+	
+	private void swapClassLoader() throws Exception {
+		original = Thread.currentThread().getContextClassLoader();
+		ClassLoader urlCl = URLClassLoader.newInstance(
+				new URL[] { new URL(tempRoot.toURI().toURL().toString())} , 
+				original);
+		Thread.currentThread().setContextClassLoader(urlCl);
+	}
+	
+	private void initializeFacadesAndTargets() {
+		nativeConfigurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		wrappedNativeConfiguration = nativeConfigurationWrapper.getWrappedObject();
+		wrappedNativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		wrappedNativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+		revengConfigurationWrapper = ConfigurationWrapperFactory.createRevengConfigurationWrapper();
+		wrappedRevengConfiguration = revengConfigurationWrapper.getWrappedObject();
+		jpaConfigurationWrapper = ConfigurationWrapperFactory.createJpaConfigurationWrapper(null, null);
+		wrappedJpaConfiguration = jpaConfigurationWrapper.getWrappedObject();
 	}
 	
 }
