@@ -53,6 +53,7 @@ public class ConfigurationWrapperFactory {
 		Configuration addProperties(Properties testProperties);
 		Configuration configure(Document document);
 		Configuration configure(File cfgXmlFile);
+		Configuration configure();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

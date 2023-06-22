@@ -367,4 +367,50 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 	
+	@Test
+	public void testConfigureDefault() throws Exception {
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "hibernate.cfg.xml");
+		cfgXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		hbmXmlFile.deleteOnExit();
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		
+		// For native configuration
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(wrappedNativeConfiguration, null);
+		nativeConfigurationWrapper.configure();
+		metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.configure();
+			fail();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.configure();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
+	}
+
 }
