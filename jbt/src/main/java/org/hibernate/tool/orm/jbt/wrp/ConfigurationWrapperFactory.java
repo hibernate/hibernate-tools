@@ -61,6 +61,7 @@ public class ConfigurationWrapperFactory {
 		void buildMappings();
 		SessionFactory buildSessionFactory();
 		Iterator<PersistentClass> getClassMappings();
+		void setPreferBasicCompositeIds(boolean b);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {

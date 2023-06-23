@@ -42,6 +42,7 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.JpaConfigurationWrapperImpl;
+import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.NativeConfigurationWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.RevengConfigurationWrapperImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -603,6 +604,33 @@ public class ConfigurationWrapperFactoryTest {
 		assertTrue(classMappings.hasNext());
 		fooClassFacade = classMappings.next();
 		assertEquals(fooClassFacade.getEntityName(), FooBar.class.getName());
+	}
+	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		// For native configuration 
+		try {
+			nativeConfigurationWrapper.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + NativeConfigurationWrapperImpl.class.getName());
+		}
+		// For reveng configuration
+		// the default is true
+		assertTrue(((RevengConfiguration)wrappedRevengConfiguration).preferBasicCompositeIds());
+		revengConfigurationWrapper.setPreferBasicCompositeIds(false);
+		assertFalse(((RevengConfiguration)wrappedRevengConfiguration).preferBasicCompositeIds());
+		// For jpa configuration 
+		try {
+			jpaConfigurationWrapper.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
 	}
 	
 	private void createPersistenceXml() throws Exception {
