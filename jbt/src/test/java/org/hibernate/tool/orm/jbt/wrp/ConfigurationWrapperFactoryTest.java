@@ -34,6 +34,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -630,6 +632,37 @@ public class ConfigurationWrapperFactoryTest {
 			assertEquals(
 					e.getMessage(),
 					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
+	}
+	
+	@Test
+	public void testSetReverseEngineeringStrategy() {
+		RevengStrategy reverseEngineeringStrategy = new DefaultStrategy();
+		// For native configuration 
+		try {
+			nativeConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + NativeConfigurationWrapperImpl.class.getName());
+		}
+		// For reveng configuration
+		assertNotSame(
+				reverseEngineeringStrategy,
+				((RevengConfiguration)wrappedRevengConfiguration).getReverseEngineeringStrategy());
+		revengConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+		assertSame(
+				reverseEngineeringStrategy, 
+				((RevengConfiguration)wrappedRevengConfiguration).getReverseEngineeringStrategy());
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setReverseEngineeringStrategy' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
 		}
 	}
 	
