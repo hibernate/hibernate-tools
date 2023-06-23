@@ -666,6 +666,44 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 	
+	@Test
+	public void testReadFromJDBC() throws Exception {
+		// For native configuration 
+		try {
+			nativeConfigurationWrapper.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + NativeConfigurationWrapperImpl.class.getName());
+		}
+		// For reveng configuration
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		Metadata metadata = ((RevengConfiguration)wrappedRevengConfiguration).getMetadata();
+		assertNull(metadata);
+		revengConfigurationWrapper.readFromJDBC();
+		metadata = ((RevengConfiguration)wrappedRevengConfiguration).getMetadata();
+		Iterator<PersistentClass> iterator = metadata.getEntityBindings().iterator();
+		PersistentClass persistentClass = iterator.next();
+		assertEquals("Foo", persistentClass.getClassName());
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.readFromJDBC();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'readFromJDBC' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
+		}
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();
