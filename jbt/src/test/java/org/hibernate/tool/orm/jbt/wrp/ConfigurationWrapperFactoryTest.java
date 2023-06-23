@@ -704,6 +704,45 @@ public class ConfigurationWrapperFactoryTest {
 		}
 	}
 	
+	@Test
+	public void testGetClassMapping() throws Exception {
+		// For native configuration
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/wrp";
+		String fooHbmXmlFileName = "ConfigurationWrapperFactoryTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(nativeConfigurationWrapper.getClassMapping("Foo"));
+		metadataField.set(wrappedNativeConfiguration, null);
+		wrappedNativeConfiguration.addClass(Foo.class);
+		assertNotNull(nativeConfigurationWrapper.getClassMapping(fooClassName));
+		// For reveng configuration
+		assertNull(revengConfigurationWrapper.getClassMapping("Foo"));
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		((RevengConfiguration)wrappedRevengConfiguration).readFromJDBC();
+		assertNotNull(revengConfigurationWrapper.getClassMapping("Foo"));
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+		// For jpa configuration
+		assertNull(jpaConfigurationWrapper.getClassMapping("Bar"));
+		assertNotNull(jpaConfigurationWrapper.getClassMapping(FooBar.class.getName()));
+	}
+
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

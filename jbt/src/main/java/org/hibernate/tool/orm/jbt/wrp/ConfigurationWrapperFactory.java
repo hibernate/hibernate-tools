@@ -65,6 +65,7 @@ public class ConfigurationWrapperFactory {
 		void setPreferBasicCompositeIds(boolean b);
 		void setReverseEngineeringStrategy(RevengStrategy reverseEngineeringStrategy);
 		void readFromJDBC();
+		PersistentClass getClassMapping(String string);
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
