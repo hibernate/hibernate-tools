@@ -131,7 +131,7 @@ public class RevengConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 		
-	public void getEntityResolver() {
+	public EntityResolver getEntityResolver() {
 		throw new RuntimeException(
 				"Method 'getEntityResolver' should not be called on instances of " +
 				this.getClass().getName());

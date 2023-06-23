@@ -67,6 +67,7 @@ public class ConfigurationWrapperFactory {
 		void readFromJDBC();
 		PersistentClass getClassMapping(String string);
 		NamingStrategy getNamingStrategy();
+		EntityResolver getEntityResolver();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
