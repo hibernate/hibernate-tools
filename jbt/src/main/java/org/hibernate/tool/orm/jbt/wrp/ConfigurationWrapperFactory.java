@@ -66,6 +66,7 @@ public class ConfigurationWrapperFactory {
 		void setReverseEngineeringStrategy(RevengStrategy reverseEngineeringStrategy);
 		void readFromJDBC();
 		PersistentClass getClassMapping(String string);
+		NamingStrategy getNamingStrategy();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
