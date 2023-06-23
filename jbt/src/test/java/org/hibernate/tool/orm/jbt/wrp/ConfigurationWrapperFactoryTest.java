@@ -34,6 +34,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -798,6 +799,59 @@ public class ConfigurationWrapperFactoryTest {
 					e.getMessage(),
 					"Method 'getEntityResolver' should not be called on instances of " + JpaConfigurationWrapperImpl.class.getName());
 		}
+	}
+	
+	@Test
+	public void testGetTableMappings() throws Exception {
+		// For native configuration
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/wrp";
+		String fooHbmXmlFileName = "ConfigurationWrapperFactoryTest$Foo.hbm.xml";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		wrappedNativeConfiguration.addClass(Foo.class);
+		Iterator<Table> tableMappings = nativeConfigurationWrapper.getTableMappings();
+		assertTrue(tableMappings.hasNext());
+		Table fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "ConfigurationWrapperFactoryTest$Foo");
+		tableMappings = null;
+		assertNull(tableMappings);
+		fooTableFacade = null;
+		assertNull(fooTableFacade);
+		// For reveng configuration
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		tableMappings = revengConfigurationWrapper.getTableMappings();
+		assertNotNull(tableMappings);
+		assertFalse(tableMappings.hasNext());
+		((RevengConfiguration)wrappedRevengConfiguration).readFromJDBC();
+		tableMappings = revengConfigurationWrapper.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "FOO");
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+		tableMappings = null;
+		assertNull(tableMappings);
+		fooTableFacade = null;
+		assertNull(fooTableFacade);
+		// For jpa configuration
+		tableMappings = jpaConfigurationWrapper.getTableMappings();
+		assertNotNull(tableMappings);
+		assertTrue(tableMappings.hasNext());
+		fooTableFacade = tableMappings.next();
+		assertEquals(fooTableFacade.getName(), "ConfigurationWrapperFactoryTest$FooBar");
 	}
 	
 	private void createPersistenceXml() throws Exception {

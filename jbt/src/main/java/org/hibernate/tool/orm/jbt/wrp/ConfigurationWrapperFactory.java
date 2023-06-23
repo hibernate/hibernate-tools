@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
@@ -68,6 +69,7 @@ public class ConfigurationWrapperFactory {
 		PersistentClass getClassMapping(String string);
 		NamingStrategy getNamingStrategy();
 		EntityResolver getEntityResolver();
+		Iterator<Table> getTableMappings();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
