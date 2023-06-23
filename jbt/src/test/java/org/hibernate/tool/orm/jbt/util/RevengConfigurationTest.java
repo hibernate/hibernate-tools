@@ -197,7 +197,6 @@ public class RevengConfigurationTest {
 		((Properties)propertyField.get(revengConfiguration)).put("hibernate.connection.url", "jdbc:h2:mem:test");
 		((Properties)propertyField.get(revengConfiguration)).put("hibernate.default_schema", "PUBLIC");
 		revengConfiguration.revengStrategy = new DefaultStrategy();
-		Iterator<PersistentClass> classMappings = revengConfiguration.getClassMappings();
 		assertNull(revengConfiguration.getClassMapping("Foo"));
 		revengConfiguration.readFromJDBC();
 		assertNotNull(revengConfiguration.getClassMapping("Foo"));

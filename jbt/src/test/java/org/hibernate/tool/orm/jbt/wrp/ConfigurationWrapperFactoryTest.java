@@ -16,10 +16,15 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -28,15 +33,18 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.JpaConfigurationWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactory.RevengConfigurationWrapperImpl;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -85,6 +93,11 @@ public class ConfigurationWrapperFactoryTest {
 	
 	@Entity public class FooBar {
 		@Id public int id;
+	}
+
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
 	}
 
 	private ClassLoader original = null;
@@ -539,6 +552,57 @@ public class ConfigurationWrapperFactoryTest {
 		sessionFactory = jpaConfigurationWrapper.buildSessionFactory();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
+	}
+	
+	@Test
+	public void testGetClassMappings() throws Exception {
+		// For native configuration
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/wrp";
+		String fooHbmXmlFileName = "ConfigurationWrapperFactoryTest$Foo.hbm.xml";
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest$Foo";
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
+		hbmXmlFileDir.deleteOnExit();
+		hbmXmlFileDir.mkdirs();
+		File hbmXmlFile = new File(hbmXmlFileDir, fooHbmXmlFileName);
+		hbmXmlFile.deleteOnExit();
+		FileWriter fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		wrappedNativeConfiguration.addClass(Foo.class);
+		Iterator<PersistentClass> classMappings = nativeConfigurationWrapper.getClassMappings();
+		assertTrue(classMappings.hasNext());
+		PersistentClass fooClassFacade = classMappings.next();
+		assertSame(fooClassFacade.getEntityName(), fooClassName);
+		classMappings = null;
+		assertNull(classMappings);
+		// For reveng configuration
+		Connection connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		Statement statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bar varchar(255))");
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		classMappings = revengConfigurationWrapper.getClassMappings();
+		assertNotNull(classMappings);
+		assertFalse(classMappings.hasNext());
+		((RevengConfiguration)wrappedRevengConfiguration).readFromJDBC();
+		classMappings = revengConfigurationWrapper.getClassMappings();
+		assertNotNull(classMappings);
+		assertTrue(classMappings.hasNext());
+		fooClassFacade = classMappings.next();
+		assertEquals(fooClassFacade.getEntityName(), "Foo");
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
+		classMappings = null;
+		assertNull(classMappings);
+		// For jpa configuration
+		classMappings = jpaConfigurationWrapper.getClassMappings();
+		assertNotNull(classMappings);
+		assertTrue(classMappings.hasNext());
+		fooClassFacade = classMappings.next();
+		assertEquals(fooClassFacade.getEntityName(), FooBar.class.getName());
 	}
 	
 	private void createPersistenceXml() throws Exception {

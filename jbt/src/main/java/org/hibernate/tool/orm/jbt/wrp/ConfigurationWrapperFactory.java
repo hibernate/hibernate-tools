@@ -5,12 +5,14 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -58,6 +60,7 @@ public class ConfigurationWrapperFactory {
 		Configuration addClass(Class<?> class1);
 		void buildMappings();
 		SessionFactory buildSessionFactory();
+		Iterator<PersistentClass> getClassMappings();
 	}
 	
 	static class ConfigurationWrapperInvocationHandler implements InvocationHandler {
