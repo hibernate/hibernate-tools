@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryImplementor;
 
 public class QueryWrapperFactory {
 	
@@ -15,7 +16,7 @@ public class QueryWrapperFactory {
 				new QueryWrapperInvocationHandler(query));
 	}
 	
-    static interface QueryWrapper<T> extends Query<T>, Wrapper {
+    static interface QueryWrapper<T> extends QueryImplementor<T>, Wrapper {
 		
 	}
     
