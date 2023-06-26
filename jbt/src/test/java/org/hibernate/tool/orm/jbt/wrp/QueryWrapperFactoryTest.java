@@ -97,6 +97,14 @@ public class QueryWrapperFactoryTest {
 		assertEquals("bars", foo.bars);
 	}
 	
+	@Test
+	public void testSetMaxResults() {
+		queryWrapper.setMaxResults(1);
+		assertEquals(1, wrappedQuery.getMaxResults());
+		queryWrapper.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, wrappedQuery.getMaxResults());
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
