@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 import org.h2.Driver;
 import org.hibernate.SessionFactory;
@@ -33,7 +35,7 @@ public class QueryWrapperFactoryTest {
 	
 	private static final String TEST_HBM_XML_STRING =
 			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.wrp'>" +
-			"  <class name='QueryWrapperFactoryTest$Foo'>" + 
+			"  <class name='QueryWrapperFactoryTest$Foo' table='FOO'>" + 
 			"    <id name='id' access='field' />" +
 			"    <property name='bars' access='field' type='string'/>" +
 			"  </class>" +
@@ -79,6 +81,20 @@ public class QueryWrapperFactoryTest {
 	public void testCreateQueryWrapper() {
 		assertNotNull(queryWrapper);
 		assertTrue(queryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+	}
+	
+	@Test
+	public void testList() throws Exception {
+		List<?> result = queryWrapper.list();
+		assertTrue(result.isEmpty());
+		statement.execute("INSERT INTO FOO VALUES(1, 'bars')");
+		result = queryWrapper.list();
+		assertEquals(1, result.size());
+		Object obj = result.get(0);
+		assertTrue(obj instanceof Foo);
+		Foo foo = (Foo)obj;
+		assertEquals(1, foo.id);
+		assertEquals("bars", foo.bars);
 	}
 	
 	private void createDatabase() throws Exception {
