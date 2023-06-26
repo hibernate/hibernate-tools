@@ -94,6 +94,7 @@ public class SessionWrapperFactoryTest {
 	public void testCreateQuery() {
 		Query<?> query = sessionWrapper.createQuery("from " + Foo.class.getName());
 		assertNotNull(query);
+		assertTrue(query instanceof QueryWrapperFactory.QueryWrapper);
 	}
 	
 	@Test

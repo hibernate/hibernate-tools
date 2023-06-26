@@ -7,6 +7,7 @@ import java.lang.reflect.Proxy;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.tool.orm.jbt.wrp.QueryWrapperFactory.QueryWrapper;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -72,6 +73,11 @@ public class SessionWrapperFactory {
 			Root root = criteriaQuery.from(persistentClass);
 			criteriaQuery.select(root);
 			return CriteriaWrapperFactory.createCriteriaWrapper(delegate().createQuery(criteriaQuery));
+		}
+		
+		@Override
+		public QueryWrapper<?> createQuery(String queryString) {
+			return QueryWrapperFactory.createQueryWrapper(delegate().createQuery(queryString, null));
 		}
 		
 		@Override
