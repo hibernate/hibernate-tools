@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,12 +11,15 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 import org.h2.Driver;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryParameterBinding;
+import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.QueryWrapperFactory.QueryWrapper;
 import org.junit.jupiter.api.AfterEach;
@@ -54,8 +58,11 @@ public class QueryWrapperFactoryTest {
 	@TempDir
 	public File tempDir;
 	
-	private QueryWrapper<?> queryWrapper = null;
-	private Query<?> wrappedQuery = null;
+	private QueryWrapper<?> simpleQueryWrapper = null;
+	private Query<?> wrappedSimpleQuery = null;
+	
+	private QueryWrapper<?> parameterizedQueryWrapper = null;
+	private Query<?> wrappedParameterizedQuery = null;
 	
 	private SessionFactory sessionFactory = null;
 	private Connection connection = null;
@@ -68,8 +75,14 @@ public class QueryWrapperFactoryTest {
 		tempDir = Files.createTempDirectory("temp").toFile();
 		createDatabase();
 		createSessionFactory();
-		wrappedQuery = sessionFactory.openSession().createQuery("from " + Foo.class.getName());
-		queryWrapper = QueryWrapperFactory.createQueryWrapper(wrappedQuery);
+		simpleQueryWrapper = (QueryWrapper<?>)sessionFactory
+				.openSession()
+				.createQuery("from " + Foo.class.getName());
+		wrappedSimpleQuery = simpleQueryWrapper.getWrappedObject();
+		parameterizedQueryWrapper = (QueryWrapper<?>)sessionFactory
+				.openSession()
+				.createQuery("from " + Foo.class.getName() + " where id = :foo");
+		wrappedParameterizedQuery = parameterizedQueryWrapper.getWrappedObject();
 	}
 	
 	@AfterEach
@@ -79,16 +92,16 @@ public class QueryWrapperFactoryTest {
 	
 	@Test
 	public void testCreateQueryWrapper() {
-		assertNotNull(queryWrapper);
-		assertTrue(queryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+		assertNotNull(simpleQueryWrapper);
+		assertTrue(simpleQueryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
 	}
 	
 	@Test
 	public void testList() throws Exception {
-		List<?> result = queryWrapper.list();
+		List<?> result = simpleQueryWrapper.list();
 		assertTrue(result.isEmpty());
 		statement.execute("INSERT INTO FOO VALUES(1, 'bars')");
-		result = queryWrapper.list();
+		result = simpleQueryWrapper.list();
 		assertEquals(1, result.size());
 		Object obj = result.get(0);
 		assertTrue(obj instanceof Foo);
@@ -99,10 +112,19 @@ public class QueryWrapperFactoryTest {
 	
 	@Test
 	public void testSetMaxResults() {
-		queryWrapper.setMaxResults(1);
-		assertEquals(1, wrappedQuery.getMaxResults());
-		queryWrapper.setMaxResults(Integer.MAX_VALUE);
-		assertEquals(Integer.MAX_VALUE, wrappedQuery.getMaxResults());
+		simpleQueryWrapper.setMaxResults(1);
+		assertEquals(1, wrappedSimpleQuery.getMaxResults());
+		simpleQueryWrapper.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, wrappedSimpleQuery.getMaxResults());
+	}
+	
+	@Test
+	public void testSetParameterList() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)wrappedParameterizedQuery).getParameterBindings().getBinding("foo");
+		assertFalse(binding.isBound());
+		parameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
+		assertTrue(binding.isBound());
 	}
 	
 	private void createDatabase() throws Exception {
