@@ -6,16 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
-import org.hibernate.cfg.AvailableSettings;
+import org.h2.Driver;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.query.Query;
+import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.QueryWrapperFactory.QueryWrapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -25,8 +27,7 @@ public class QueryWrapperFactoryTest {
 	private static final String TEST_CFG_XML_STRING =
 			"<hibernate-configuration>" +
 			"  <session-factory>" + 
-			"    <property name='" + AvailableSettings.DIALECT + "'>" + MockDialect.class.getName() + "</property>" +
-			"    <property name='" + AvailableSettings.CONNECTION_PROVIDER + "'>" + MockConnectionProvider.class.getName() + "</property>" +
+			"    <property name='hibernate.connection.url'>jdbc:h2:mem:test</property>" +
 			"  </session-factory>" +
 			"</hibernate-configuration>";
 	
@@ -34,26 +35,59 @@ public class QueryWrapperFactoryTest {
 			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.wrp'>" +
 			"  <class name='QueryWrapperFactoryTest$Foo'>" + 
 			"    <id name='id' access='field' />" +
-			"    <set name='bars' access='field' >" +
-			"      <key column='barId' />" +
-			"      <element column='barVal' type='string' />" +
-			"    </set>" +
+			"    <property name='bars' access='field' type='string'/>" +
 			"  </class>" +
 			"</hibernate-mapping>";
 	
 	static class Foo {
-		public String id;
-		public Set<String> bars = new HashSet<String>();
+		public int id;
+		public String bars;
 	}
 	
+	@BeforeAll
+	public static void beforeAll() throws Exception {
+		DriverManager.registerDriver(new Driver());		
+	}
+
 	@TempDir
 	public File tempDir;
 	
 	private QueryWrapper<?> queryWrapper = null;
+	private Query<?> wrappedQuery = null;
 	
+	private SessionFactory sessionFactory = null;
+	private Connection connection = null;
+	private Statement statement = null;
+	
+	
+	@SuppressWarnings("deprecation")
 	@BeforeEach
 	public void before() throws Exception {
 		tempDir = Files.createTempDirectory("temp").toFile();
+		createDatabase();
+		createSessionFactory();
+		wrappedQuery = sessionFactory.openSession().createQuery("from " + Foo.class.getName());
+		queryWrapper = QueryWrapperFactory.createQueryWrapper(wrappedQuery);
+	}
+	
+	@AfterEach
+	public void afterEach() throws Exception {
+		dropDatabase();
+	}
+	
+	@Test
+	public void testCreateQueryWrapper() {
+		assertNotNull(queryWrapper);
+		assertTrue(queryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+	}
+	
+	private void createDatabase() throws Exception {
+		connection = DriverManager.getConnection("jdbc:h2:mem:test");
+		statement = connection.createStatement();
+		statement.execute("CREATE TABLE FOO(id int primary key, bars varchar(255))");
+	}
+	
+	private void createSessionFactory() throws Exception {
 		File cfgXmlFile = new File(tempDir, "hibernate.cfg.xml");
 		FileWriter fileWriter = new FileWriter(cfgXmlFile);
 		fileWriter.write(TEST_CFG_XML_STRING);
@@ -62,20 +96,16 @@ public class QueryWrapperFactoryTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		Configuration configuration = new Configuration();
+		Configuration configuration = new NativeConfiguration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		SessionFactoryImplementor sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
-		SessionFactoryImplementor sessionFactoryWrapper = new SessionFactoryWrapper(sessionFactory);
-	    SessionImplementor session = sessionFactory.openSession();
-	    SessionImplementor sessionWrapper = SessionWrapperFactory.createSessionWrapper(sessionFactoryWrapper, session);
-	    queryWrapper = QueryWrapperFactory.createQueryWrapper(sessionWrapper.createQuery("from " + Foo.class.getName(), null));
+		sessionFactory = new SessionFactoryWrapper(configuration.buildSessionFactory());
 	}
 	
-	@Test
-	public void testConstruction() {
-		assertNotNull(queryWrapper);
-		assertTrue(queryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+	private void dropDatabase() throws Exception {
+		statement.execute("DROP TABLE FOO");
+		statement.close();
+		connection.close();
 	}
-	
+		
 }
