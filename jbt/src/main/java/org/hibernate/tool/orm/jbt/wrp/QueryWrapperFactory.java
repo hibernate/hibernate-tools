@@ -22,12 +22,15 @@ public class QueryWrapperFactory {
     
     private static class QueryWrapperInvocationHandler implements InvocationHandler {
     	
+    	private Query<?> query = null;
+    	
     	private QueryWrapperInvocationHandler(Query<?> q) {
+    		query = q;
     	}
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			return null;
+			return method.invoke(query, args);
 		}
     	
     }
