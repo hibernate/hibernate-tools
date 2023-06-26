@@ -2,7 +2,6 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,13 +17,14 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.SessionWrapperFactory.SessionWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import jakarta.persistence.Query;
 
 public class SessionWrapperFactoryTest {
 	
@@ -55,8 +55,9 @@ public class SessionWrapperFactoryTest {
 	@TempDir
 	public File tempDir;
 	
-	private SessionFactoryImplementor sessionFactory, sessionFactoryWrapper = null;
-	private SessionImplementor session, sessionWrapper = null;
+	private SessionFactoryImplementor sessionFactory = null;
+	private SessionImplementor session = null;
+	private SessionWrapper  sessionWrapper = null;
 	
 	@BeforeEach
 	public void before() throws Exception {
@@ -73,15 +74,12 @@ public class SessionWrapperFactoryTest {
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
-	    sessionFactoryWrapper = new SessionFactoryWrapper(sessionFactory);
 		session = sessionFactory.openSession();
-		sessionWrapper = SessionWrapperFactory.createSessionWrapper(sessionFactoryWrapper, session);
+		sessionWrapper = SessionWrapperFactory.createSessionWrapper(sessionFactory, session);
 	}
 	
 	@Test
 	public void testConstruction() {
-		assertNotNull(sessionFactory);
-		assertNotNull(sessionFactoryWrapper);
 		assertNotNull(session);
 		assertNotNull(sessionWrapper);
 	}
@@ -89,14 +87,13 @@ public class SessionWrapperFactoryTest {
 	@Test
 	public void testGetSessionFactory() {
 		assertSame(sessionFactory, session.getSessionFactory());
-		assertSame(sessionFactoryWrapper, sessionWrapper.getSessionFactory());
-		assertNotSame(sessionFactory, sessionWrapper.getSessionFactory());
-		assertNotSame(sessionFactoryWrapper, session.getSessionFactory());
+		assertSame(sessionFactory, sessionWrapper.getSessionFactory());
 	}
 	
 	@Test
 	public void testCreateQuery() {
-		assertNotNull(sessionWrapper.createQuery("from " + Foo.class.getName()));
+		Query<?> query = sessionWrapper.createQuery("from " + Foo.class.getName());
+		assertNotNull(query);
 	}
 	
 	@Test
@@ -126,7 +123,7 @@ public class SessionWrapperFactoryTest {
 	
 	@Test
 	public void testCreateCriteria() {
-		Query query = ((SessionWrapperFactory.SessionImplementorExtension)sessionWrapper)
+		jakarta.persistence.Query query = ((SessionWrapperFactory.SessionWrapper)sessionWrapper)
 				.createCriteria(Foo.class);
 		assertTrue(Proxy.isProxyClass(query.getClass()));
 		InvocationHandler invocationHandler = Proxy.getInvocationHandler(query);
