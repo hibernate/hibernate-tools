@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -177,7 +178,7 @@ public class ExporterWrapperFactoryTest {
 		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
 		TestExporter wrappedTestExporter = (TestExporter)exporterWrapper.getWrappedObject();
 		assertNull(wrappedTestExporter.props);
-		exporterWrapper.setCustomProperties(null);
+		exporterWrapper.setCustomProperties(properties);
 		assertNull(wrappedTestExporter.props);
 		// try now with CfgExporter 
 		exporterWrapper = ExporterWrapperFactory.create(CfgExporter.class.getName());
@@ -187,12 +188,30 @@ public class ExporterWrapperFactoryTest {
 		assertSame(properties, wrappedCfgExporter.getCustomProperties());
 	}
 	
+	@Test
+	public void testSetOutput() {
+		StringWriter stringWriter = new StringWriter();
+		// 'setOutput()' should not be called on other exporters than CfgExporter
+		TestExporter wrappedTestExporter = (TestExporter)exporterWrapper.getWrappedObject();
+		assertNull(wrappedTestExporter.output);
+		exporterWrapper.setOutput(stringWriter);
+		assertNull(wrappedTestExporter.output);
+		// try now with CfgExporter 
+		exporterWrapper = ExporterWrapperFactory.create(CfgExporter.class.getName());
+		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
+		assertNotSame(stringWriter, wrappedCfgExporter.getOutput());
+		exporterWrapper.setOutput(stringWriter);
+		assertSame(stringWriter, wrappedCfgExporter.getOutput());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		private Properties props = null;
+		private StringWriter output = null;
 		@Override protected void doStart() {}
 		@Override public void start() { started = true; }		
 		void setCustomProperties(Properties p) { props = p; }
+		void setOutput(StringWriter sw) { output = sw; }
 	}
 	
 }

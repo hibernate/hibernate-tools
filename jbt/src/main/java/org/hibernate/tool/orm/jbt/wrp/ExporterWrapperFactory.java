@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -105,6 +106,11 @@ public class ExporterWrapperFactory {
 		default void setCustomProperties(Properties properties) {
 			if (getWrappedObject() instanceof CfgExporter) {
 				((CfgExporter)getWrappedObject()).setCustomProperties(properties);
+			}
+		}
+		default void setOutput(StringWriter stringWriter) {
+			if (getWrappedObject() instanceof CfgExporter) {
+				((CfgExporter)getWrappedObject()).setOutput(stringWriter);
 			}
 		}
 	}
