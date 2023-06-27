@@ -22,6 +22,7 @@ import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.QueryWrapperFactory.QueryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SessionWrapperFactory.SessionWrapper;
+import org.hibernate.type.Type;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -161,6 +162,13 @@ public class QueryWrapperFactoryTest {
 		String[] aliases = simpleQueryWrapper.getReturnAliases();
 		assertNotNull(aliases);
 		assertEquals(0, aliases.length);
+	}
+	
+	@Test
+	public void testGetReturnTypes() {
+		Type[] returnTypes = simpleQueryWrapper.getReturnTypes();
+		assertNotNull(returnTypes);
+		assertEquals(0, returnTypes.length);
 	}
 	
 	private void createDatabase() throws Exception {
