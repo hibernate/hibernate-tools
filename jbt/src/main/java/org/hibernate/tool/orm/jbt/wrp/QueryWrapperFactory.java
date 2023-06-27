@@ -17,54 +17,67 @@ public class QueryWrapperFactory {
 				new QueryWrapperInvocationHandler(query));
 	}
 	
-    static interface QueryWrapper<T> extends QueryImplementor<T>, Wrapper {
-    	@Override default Query<?> getWrappedObject() { return (Query<?>)this; }
+    static interface QueryExtension<T> extends Wrapper {
+    	@Override Query<T> getWrappedObject();
 		void setParameterList(String name, List<Object> list, Object anything);
 		void setParameter(String string, Object value, Object anything);
 		void setParameter(int i, Object value, Object anything);
-	}
+		default String[] getReturnAliases() {
+			return new String[0];
+		}
+    }
     
-    private static class QueryWrapperInvocationHandler implements InvocationHandler {
+    
+    static interface QueryWrapper<T> extends QueryExtension<T>, QueryImplementor<T> {}
+    
+    private static class QueryWrapperInvocationHandler<T> implements InvocationHandler, QueryExtension<T> {
     	
-    	private Query<?> query = null;
+    	private Query<T> query = null;
     	
-    	private QueryWrapperInvocationHandler(Query<?> q) {
+    	private QueryWrapperInvocationHandler(Query<T> q) {
     		query = q;
     	}
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			if (isSetParamterListMethod(method, args)) {
-				return query.setParameterList((String)args[0], (List<?>)args[1]);
-			} else if (isNamedSetParameterMethod(method, args)) {
-				return query.setParameter((String)args[0], args[1]);
-			} else if (isPositionedSetParameterMethod(method, args)) {
-				return query.setParameter((int)args[0], args[1]);
-			} else if (method.getName().equals("getWrappedObject") && (args == null || args.length == 0)) {
-				return query;
+			if (isQueryExtensionMethod(method)) {
+				return method.invoke(this, args);
+			} else {
+				return method.invoke(query, args);
 			}
-			return method.invoke(query, args);
 		}
 		
-		private boolean isSetParamterListMethod(Method m, Object[] args) {
-			return m.getName().equals("setParameterList")
-					&& args.length == 3
-					&& args[0] instanceof String 
-					&& args[1] instanceof List<?>;
+		@Override
+		public void setParameterList(String name, List<Object> list, Object anything) {
+			query.setParameterList(name, list);
 		}
-    	
-		private boolean isNamedSetParameterMethod(Method m, Object[] args) {
-			return m.getName().equals("setParameter")
-					&& args.length == 3
-					&& args[0] instanceof String;
+
+		@Override
+		public void setParameter(String name, Object value, Object anything) {
+			query.setParameter(name, value);
+;		}
+
+		@Override
+		public void setParameter(int position, Object value, Object anything) {
+			query.setParameter(position, value);
 		}
+		
+    	@Override 
+    	public Query<T> getWrappedObject() { return query; }
+
     	
-		private boolean isPositionedSetParameterMethod(Method m, Object[] args) {
-			return m.getName().equals("setParameter")
-					&& args.length == 3
-					&& args[0] instanceof Integer;
+    }
+    
+    private static boolean isQueryExtensionMethod(Method m) {
+    	boolean result = true;
+    	try {
+			QueryExtension.class.getMethod(m.getName(), m.getParameterTypes());
+		} catch (NoSuchMethodException e) {
+			result = false;
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
 		}
-    	
+    	return result;
     }
 
 }
