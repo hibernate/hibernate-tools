@@ -127,6 +127,15 @@ public class QueryWrapperFactoryTest {
 		assertTrue(binding.isBound());
 	}
 	
+	@Test
+	public void testSetParameter() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)wrappedParameterizedQuery).getParameterBindings().getBinding("foo");
+		assertFalse(binding.isBound());
+		parameterizedQueryWrapper.setParameter("foo", 1, new Object());
+		assertTrue(binding.isBound());
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();

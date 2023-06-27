@@ -19,9 +19,8 @@ public class QueryWrapperFactory {
 	
     static interface QueryWrapper<T> extends QueryImplementor<T>, Wrapper {
     	@Override default Query<?> getWrappedObject() { return (Query<?>)this; }
-		default void setParameterList(String name, List<Object> list, Object anything) {
-			getWrappedObject().setParameterList(name, list);
-		}
+		void setParameterList(String name, List<Object> list, Object anything);
+		void setParameter(String string, Object value, Object anything);
 	}
     
     private static class QueryWrapperInvocationHandler implements InvocationHandler {
@@ -36,6 +35,8 @@ public class QueryWrapperFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (isSetParamterListMethod(method, args)) {
 				return query.setParameterList((String)args[0], (List<?>)args[1]);
+			} else if (isSetParameterMethod(method, args)) {
+				return query.setParameter((String)args[0], args[1]);
 			} else if (method.getName().equals("getWrappedObject") && (args == null || args.length == 0)) {
 				return query;
 			}
@@ -47,6 +48,12 @@ public class QueryWrapperFactory {
 					&& args.length == 3
 					&& args[0] instanceof String 
 					&& args[1] instanceof List<?>;
+		}
+    	
+		private boolean isSetParameterMethod(Method m, Object[] args) {
+			return m.getName().equals("setParameter")
+					&& args.length == 3
+					&& args[0] instanceof String;
 		}
     	
     }
