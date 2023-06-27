@@ -171,10 +171,28 @@ public class ExporterWrapperFactoryTest {
 		assertSame(exporterTarget, queryExporterTarget);
 	}
 	
+	@Test
+	public void testSetCustomProperties() {
+		Properties properties = new Properties();
+		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
+		TestExporter wrappedTestExporter = (TestExporter)exporterWrapper.getWrappedObject();
+		assertNull(wrappedTestExporter.props);
+		exporterWrapper.setCustomProperties(null);
+		assertNull(wrappedTestExporter.props);
+		// try now with CfgExporter 
+		exporterWrapper = ExporterWrapperFactory.create(CfgExporter.class.getName());
+		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
+		assertNotSame(properties, wrappedCfgExporter.getCustomProperties());
+		exporterWrapper.setCustomProperties(properties);
+		assertSame(properties, wrappedCfgExporter.getCustomProperties());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
+		private Properties props = null;
 		@Override protected void doStart() {}
 		@Override public void start() { started = true; }		
+		void setCustomProperties(Properties p) { props = p; }
 	}
 	
 }

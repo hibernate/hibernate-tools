@@ -102,6 +102,11 @@ public class ExporterWrapperFactory {
 				return null;
 			}
 		}
+		default void setCustomProperties(Properties properties) {
+			if (getWrappedObject() instanceof CfgExporter) {
+				((CfgExporter)getWrappedObject()).setCustomProperties(properties);
+			}
+		}
 	}
 	
 	static class ExporterWrapperImpl implements ExporterWrapper {
