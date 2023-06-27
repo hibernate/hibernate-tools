@@ -21,6 +21,7 @@ public class QueryWrapperFactory {
     	@Override default Query<?> getWrappedObject() { return (Query<?>)this; }
 		void setParameterList(String name, List<Object> list, Object anything);
 		void setParameter(String string, Object value, Object anything);
+		void setParameter(int i, Object value, Object anything);
 	}
     
     private static class QueryWrapperInvocationHandler implements InvocationHandler {
@@ -35,8 +36,10 @@ public class QueryWrapperFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (isSetParamterListMethod(method, args)) {
 				return query.setParameterList((String)args[0], (List<?>)args[1]);
-			} else if (isSetParameterMethod(method, args)) {
+			} else if (isNamedSetParameterMethod(method, args)) {
 				return query.setParameter((String)args[0], args[1]);
+			} else if (isPositionedSetParameterMethod(method, args)) {
+				return query.setParameter((int)args[0], args[1]);
 			} else if (method.getName().equals("getWrappedObject") && (args == null || args.length == 0)) {
 				return query;
 			}
@@ -50,10 +53,16 @@ public class QueryWrapperFactory {
 					&& args[1] instanceof List<?>;
 		}
     	
-		private boolean isSetParameterMethod(Method m, Object[] args) {
+		private boolean isNamedSetParameterMethod(Method m, Object[] args) {
 			return m.getName().equals("setParameter")
 					&& args.length == 3
 					&& args[0] instanceof String;
+		}
+    	
+		private boolean isPositionedSetParameterMethod(Method m, Object[] args) {
+			return m.getName().equals("setParameter")
+					&& args.length == 3
+					&& args[0] instanceof Integer;
 		}
     	
     }

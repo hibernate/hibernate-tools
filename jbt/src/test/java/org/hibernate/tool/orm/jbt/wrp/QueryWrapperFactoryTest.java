@@ -15,13 +15,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.h2.Driver;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.query.spi.QueryParameterBinding;
 import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.QueryWrapperFactory.QueryWrapper;
+import org.hibernate.tool.orm.jbt.wrp.SessionWrapperFactory.SessionWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,10 +61,13 @@ public class QueryWrapperFactoryTest {
 	private QueryWrapper<?> simpleQueryWrapper = null;
 	private Query<?> wrappedSimpleQuery = null;
 	
-	private QueryWrapper<?> parameterizedQueryWrapper = null;
-	private Query<?> wrappedParameterizedQuery = null;
+	private QueryWrapper<?> namedParameterizedQueryWrapper = null;
+	private Query<?> wrappedNamedParameterizedQuery = null;
 	
-	private SessionFactory sessionFactory = null;
+	private QueryWrapper<?> positionalParameterizedQueryWrapper = null;
+	private Query<?> wrappedPositionalParameterizedQuery = null;
+	
+	private SessionFactoryWrapper sessionFactory = null;
 	private Connection connection = null;
 	private Statement statement = null;
 	
@@ -75,14 +78,16 @@ public class QueryWrapperFactoryTest {
 		tempDir = Files.createTempDirectory("temp").toFile();
 		createDatabase();
 		createSessionFactory();
-		simpleQueryWrapper = (QueryWrapper<?>)sessionFactory
-				.openSession()
+		SessionWrapper session = (SessionWrapper)sessionFactory.openSession();
+		simpleQueryWrapper = (QueryWrapper<?>)session
 				.createQuery("from " + Foo.class.getName());
 		wrappedSimpleQuery = simpleQueryWrapper.getWrappedObject();
-		parameterizedQueryWrapper = (QueryWrapper<?>)sessionFactory
-				.openSession()
+		namedParameterizedQueryWrapper = (QueryWrapper<?>)session
 				.createQuery("from " + Foo.class.getName() + " where id = :foo");
-		wrappedParameterizedQuery = parameterizedQueryWrapper.getWrappedObject();
+		wrappedNamedParameterizedQuery = namedParameterizedQueryWrapper.getWrappedObject();
+		positionalParameterizedQueryWrapper = (QueryWrapper<?>)session
+				.createQuery("from " + Foo.class.getName() + " where id = ?1");
+		wrappedPositionalParameterizedQuery = positionalParameterizedQueryWrapper.getWrappedObject();
 	}
 	
 	@AfterEach
@@ -94,6 +99,10 @@ public class QueryWrapperFactoryTest {
 	public void testCreateQueryWrapper() {
 		assertNotNull(simpleQueryWrapper);
 		assertTrue(simpleQueryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+		assertNotNull(namedParameterizedQueryWrapper);
+		assertTrue(namedParameterizedQueryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
+		assertNotNull(positionalParameterizedQueryWrapper);
+		assertTrue(positionalParameterizedQueryWrapper instanceof QueryWrapperFactory.QueryWrapper<?>);
 	}
 	
 	@Test
@@ -121,19 +130,30 @@ public class QueryWrapperFactoryTest {
 	@Test
 	public void testSetParameterList() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedParameterizedQuery).getParameterBindings().getBinding("foo");
+				((QuerySqmImpl<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
 		assertFalse(binding.isBound());
-		parameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
+		namedParameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
 		assertTrue(binding.isBound());
 	}
 	
 	@Test
-	public void testSetParameter() {
+	public void testSetNamedParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedParameterizedQuery).getParameterBindings().getBinding("foo");
+				((QuerySqmImpl<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
 		assertFalse(binding.isBound());
-		parameterizedQueryWrapper.setParameter("foo", 1, new Object());
+		namedParameterizedQueryWrapper.setParameter("foo", 1, new Object());
 		assertTrue(binding.isBound());
+		assertEquals(1, binding.getBindValue());
+	}
+	
+	@Test
+	public void testSetPositionalParameter() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)wrappedPositionalParameterizedQuery).getParameterBindings().getBinding(1);
+		assertFalse(binding.isBound());
+		positionalParameterizedQueryWrapper.setParameter(1, 1, new Object());
+		assertTrue(binding.isBound());
+		assertEquals(1, binding.getBindValue());
 	}
 	
 	private void createDatabase() throws Exception {
