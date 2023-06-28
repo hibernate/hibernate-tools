@@ -118,7 +118,7 @@ public class RevengConfigurationTest {
 	public void testPreferBasicCompositeIds() throws Exception {
 		assertTrue(revengConfiguration.preferBasicCompositeIds());
 		((Properties)propertyField.get(revengConfiguration)).put(
-				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, "false");		
+				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, false);		
 		assertFalse(revengConfiguration.preferBasicCompositeIds());
 	}
 	
@@ -129,7 +129,7 @@ public class RevengConfigurationTest {
 						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
 		revengConfiguration.setPreferBasicCompositeIds(true);
 		assertEquals(
-				"true", 
+				true, 
 				((Properties)propertyField.get(revengConfiguration)).get(
 						MetadataConstants.PREFER_BASIC_COMPOSITE_IDS));
 	}
@@ -297,15 +297,12 @@ public class RevengConfigurationTest {
 	}
 
 	@Test
-	public void testBuildMappings() {
-		try {
-			revengConfiguration.buildMappings();
-			fail();
-		} catch (RuntimeException e) {
-			assertEquals(
-					e.getMessage(),
-					"Method 'buildMappings' should not be called on instances of " + RevengConfiguration.class.getName());
-		}
+	public void testBuildMappings() throws Exception {
+		((Properties)propertyField.get(revengConfiguration)).put("hibernate.connection.url", "jdbc:h2:mem:test");
+		((Properties)propertyField.get(revengConfiguration)).put("hibernate.default_schema", "PUBLIC");
+		assertNull(revengConfiguration.metadata);
+		revengConfiguration.buildMappings();
+		assertNotNull(revengConfiguration.metadata);
 	}
 
 	@Test

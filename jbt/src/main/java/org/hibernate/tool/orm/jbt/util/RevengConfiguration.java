@@ -30,14 +30,14 @@ public class RevengConfiguration extends Configuration {
 	}
 
 	public boolean preferBasicCompositeIds() {
-		String preferBasicCompositeIds = getProperty(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS);
-		return preferBasicCompositeIds == null ? true : Boolean.getBoolean(preferBasicCompositeIds);
+		Boolean preferBasicCompositeIds = (Boolean)getProperties().get(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS);
+		return preferBasicCompositeIds == null ? Boolean.TRUE : preferBasicCompositeIds;
 	}
 
 	public void setPreferBasicCompositeIds(boolean preferBasicCompositeIds) {
-		setProperty(
+		getProperties().put(
 				MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, 
-				Boolean.toString(preferBasicCompositeIds));
+				Boolean.valueOf(preferBasicCompositeIds));
 	}
 
 	public Metadata getMetadata() {
@@ -114,11 +114,11 @@ public class RevengConfiguration extends Configuration {
 	}
 		
 	public void buildMappings() {
-		throw new RuntimeException(
-				"Method 'buildMappings' should not be called on instances of " +
-				this.getClass().getName());
+		if (metadata == null) {
+			readFromJDBC();
+		}
 	}
-		
+	
 	public SessionFactory buildSessionFactory() {
 		throw new RuntimeException(
 				"Method 'buildSessionFactory' should not be called on instances of " +

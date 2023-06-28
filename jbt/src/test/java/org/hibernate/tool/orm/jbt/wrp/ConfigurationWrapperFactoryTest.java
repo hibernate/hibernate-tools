@@ -518,14 +518,13 @@ public class ConfigurationWrapperFactoryTest {
 		nativeConfigurationWrapper.buildMappings();
 		assertNotNull(metadataField.get(wrappedNativeConfiguration));
 		// For reveng configuration
-		try {
-			revengConfigurationWrapper.buildMappings();
-			fail();
-		} catch (RuntimeException e) {
-			assertEquals(
-					e.getMessage(),
-					"Method 'buildMappings' should not be called on instances of " + RevengConfigurationWrapperImpl.class.getName());
-		}
+		metadataField = RevengConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		assertNull(metadataField.get(wrappedRevengConfiguration));
+		revengConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedRevengConfiguration));
 		// For jpa configuration
 		metadataField = JpaConfiguration.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
