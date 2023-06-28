@@ -96,6 +96,13 @@ public class EntityPersisterWrapperFactoryTest {
 		assertEquals("id", entityPersisterWrapper.getIdentifierPropertyName());
 	}
 	
+	@Test
+	public void testGetPropertyNames() {
+		String[] propertyNames = entityPersisterWrapper.getPropertyNames();
+ 		assertEquals(1, propertyNames.length);
+ 		assertEquals("bars", propertyNames[0]);
+	}
+	
 	
 
 	
