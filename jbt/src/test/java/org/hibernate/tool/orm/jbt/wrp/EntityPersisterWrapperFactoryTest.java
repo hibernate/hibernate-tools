@@ -91,6 +91,11 @@ public class EntityPersisterWrapperFactoryTest {
 		assertEquals(Foo.class.getName(), entityPersisterWrapper.getEntityName());
 	}
 	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("id", entityPersisterWrapper.getIdentifierPropertyName());
+	}
+	
 	
 
 	
