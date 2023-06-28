@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,6 +23,7 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.EntityPersisterWrapperFactory.EntityPersisterExtension;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -53,6 +55,42 @@ public class EntityPersisterWrapperFactoryTest {
 	
 	@TempDir
 	public File tempDir;
+	
+	private EntityPersister entityPersisterWrapper = null;
+	private EntityPersister wrappedEntityPersister = null;
+	
+	private SessionFactoryWrapper sessionFactory = null;
+	
+	@BeforeEach
+	public void beforeEach() throws Exception {
+		tempDir = Files.createTempDirectory("temp").toFile();
+		File cfgXmlFile = new File(tempDir, "hibernate.cfg.xml");
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(tempDir, "Foo.hbm.xml");
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+		Configuration configuration = (Configuration)WrapperFactory.createNativeConfigurationWrapper();
+		configuration.addFile(hbmXmlFile);
+		configuration.configure(cfgXmlFile);
+		sessionFactory = (SessionFactoryWrapper)configuration.buildSessionFactory();
+	    entityPersisterWrapper = sessionFactory.getClassMetadata(Foo.class.getName());
+	    wrappedEntityPersister = (EntityPersister)((Wrapper)entityPersisterWrapper).getWrappedObject();
+	}
+	
+	@Test
+	public void testConstruction() {
+		assertNotNull(entityPersisterWrapper);
+		assertNotNull(wrappedEntityPersister);
+	}
+	
+	
+
+	
+	
+	
 	
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() throws Exception {
