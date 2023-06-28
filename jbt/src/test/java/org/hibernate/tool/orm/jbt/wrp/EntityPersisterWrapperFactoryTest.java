@@ -86,6 +86,11 @@ public class EntityPersisterWrapperFactoryTest {
 		assertNotNull(wrappedEntityPersister);
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		assertEquals(Foo.class.getName(), entityPersisterWrapper.getEntityName());
+	}
+	
 	
 
 	
