@@ -11,17 +11,24 @@ public class EntityPersisterWrapperFactory {
 	public static Object create(EntityPersister delegate) {
 		return Proxy.newProxyInstance(
 				EntityPersisterWrapperFactory.class.getClassLoader(), 
-				new Class[] { EntityPersisterExtension.class }, 
+				new Class[] { EntityPersisterWrapper.class }, 
 				new EntityPersisterInvocationHandler(delegate));
 	}
 	
-	public static interface EntityPersisterExtension extends EntityPersister {
-		boolean isInstanceOfAbstractEntityPersister();
-		Object getTuplizerPropertyValue(Object entity, int i);
-		Integer getPropertyIndexOrNull(String propertyName);
+	static interface EntityPersisterExtension extends Wrapper {
+		@Override EntityPersister getWrappedObject();
+		default boolean isInstanceOfAbstractEntityPersister() { return true; }
+		default Object getTuplizerPropertyValue(Object entity, int i) { 
+			return getWrappedObject().getValue(entity, i); 
+		}
+		default Integer getPropertyIndexOrNull(String propertyName) {
+			return getWrappedObject().getEntityMetamodel().getPropertyIndexOrNull(propertyName);
+		}
 	}
 	
-	private static class EntityPersisterInvocationHandler implements InvocationHandler {
+	static interface EntityPersisterWrapper extends EntityPersister, EntityPersisterExtension {}
+	
+	static class EntityPersisterInvocationHandler implements InvocationHandler, EntityPersisterExtension {
 		
 		private EntityPersister delegate;
 		
@@ -31,16 +38,30 @@ public class EntityPersisterWrapperFactory {
 		
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			if ("isInstanceOfAbstractEntityPersister".equals(method.getName())) {
-				return true;
-			} else if ("getTuplizerPropertyValue".equals(method.getName())) {
-				return delegate.getValue(args[0], (int)args[1]);
-			} else if ("getPropertyIndexOrNull".equals(method.getName())) {
-				return delegate.getEntityMetamodel().getPropertyIndexOrNull((String)args[0]);
+			if (isEntityPersisterExtensionMethod(method)) {
+				return method.invoke(this, args);
 			} else {
 				return method.invoke(delegate, args);
 			}
-		}	
+		}
+
+		@Override
+		public EntityPersister getWrappedObject() {
+			return delegate;
+		}
+
 	}
 	
+    private static boolean isEntityPersisterExtensionMethod(Method m) {
+    	boolean result = true;
+    	try {
+			EntityPersisterExtension.class.getMethod(m.getName(), m.getParameterTypes());
+		} catch (NoSuchMethodException e) {
+			result = false;
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
+		}
+    	return result;
+    }
+
 }
