@@ -16,9 +16,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -150,6 +152,15 @@ public class EntityPersisterWrapperFactoryTest {
 	@Test
 	public void testHasIdentifierProperty() {
 		assertTrue(entityPersisterWrapper.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		SharedSessionContractImplementor sessionFacade = sessionFactory.openSession();
+		Foo foo = new Foo();
+		foo.id = "bar";
+		Object identifier = entityPersisterWrapper.getIdentifier(foo, sessionFacade);
+		assertSame("bar", identifier);
 	}
 	
 
