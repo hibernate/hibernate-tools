@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
+import org.hibernate.type.Type;
 
 public class EntityPersisterWrapperFactory {
 	
@@ -40,6 +42,8 @@ public class EntityPersisterWrapperFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if (isEntityPersisterExtensionMethod(method)) {
 				return method.invoke(this, args);
+			} else if ("getPropertyTypes".equals(method.getName())) {
+				return getPropertyTypes();
 			} else {
 				return method.invoke(delegate, args);
 			}
@@ -50,6 +54,17 @@ public class EntityPersisterWrapperFactory {
 			return delegate;
 		}
 
+		private TypeWrapper[] getPropertyTypes() {
+			Type[] types = getWrappedObject().getPropertyTypes();
+			if (types != null) {
+				TypeWrapper[] result = new TypeWrapper[types.length];
+				for (int i = 0; i < types.length; i++) {
+					result[i] = TypeWrapperFactory.createTypeWrapper(types[i]);
+				}
+				return result;
+			}
+			return null;
+		}
 	}
 	
     private static boolean isEntityPersisterExtensionMethod(Method m) {

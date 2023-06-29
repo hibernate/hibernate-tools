@@ -22,7 +22,10 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.EntityPersisterWrapperFactory.EntityPersisterExtension;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeExtension;
 import org.hibernate.tuple.entity.EntityMetamodel;
+import org.hibernate.type.CollectionType;
+import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -103,7 +106,22 @@ public class EntityPersisterWrapperFactoryTest {
  		assertEquals("bars", propertyNames[0]);
 	}
 	
+	@Test
+	public void testGetPropertyTypes() {
+		Type[] propertyTypeWrappers = entityPersisterWrapper.getPropertyTypes();
+		assertEquals(1, propertyTypeWrappers.length);
+		Type propertyTypeWrapper = propertyTypeWrappers[0];
+		assertTrue(propertyTypeWrapper instanceof Wrapper);
+		assertTrue(propertyTypeWrapper instanceof TypeExtension);
+		Object wrappedPropertyType = ((Wrapper)propertyTypeWrapper).getWrappedObject();
+		assertTrue(wrappedPropertyType instanceof CollectionType);
+		assertTrue(propertyTypeWrapper.isCollectionType());
+		assertEquals(
+				"org.hibernate.tool.orm.jbt.wrp.EntityPersisterWrapperFactoryTest$Foo.bars",
+				((TypeExtension)propertyTypeWrapper).getRole());
+ 	}
 	
+
 
 	
 	
