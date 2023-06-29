@@ -147,6 +147,11 @@ public class EntityPersisterWrapperFactoryTest {
 		assertSame(foobarSet, entityPersisterWrapper.getPropertyValue(foo, "bars"));
 	}
 	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertTrue(entityPersisterWrapper.hasIdentifierProperty());
+	}
+	
 
 
 	
