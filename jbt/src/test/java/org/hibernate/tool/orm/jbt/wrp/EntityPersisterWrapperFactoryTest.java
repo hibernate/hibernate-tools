@@ -121,6 +121,11 @@ public class EntityPersisterWrapperFactoryTest {
 				((TypeExtension)propertyTypeWrapper).getRole());
  	}
 	
+	@Test
+	public void testGetMappedClass() {
+		assertSame(Foo.class, entityPersisterWrapper.getMappedClass());
+	}
+	
 
 
 	
