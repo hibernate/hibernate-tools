@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -136,6 +137,14 @@ public class EntityPersisterWrapperFactoryTest {
 		assertNotNull(wrappedType);
 		assertTrue(wrappedType instanceof NamedBasicTypeImpl);
 		assertSame("string", ((NamedBasicTypeImpl<?>)wrappedType).getName());
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		Foo foo = new Foo();
+		Set<String> foobarSet = new HashSet<String>(Arrays.asList("foo", "bar"));
+		foo.bars = foobarSet;
+		assertSame(foobarSet, entityPersisterWrapper.getPropertyValue(foo, "bars"));
 	}
 	
 
