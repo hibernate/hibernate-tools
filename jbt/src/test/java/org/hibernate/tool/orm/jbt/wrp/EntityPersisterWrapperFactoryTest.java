@@ -26,6 +26,7 @@ import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeExtension;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+import org.hibernate.type.internal.NamedBasicTypeImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -124,6 +125,17 @@ public class EntityPersisterWrapperFactoryTest {
 	@Test
 	public void testGetMappedClass() {
 		assertSame(Foo.class, entityPersisterWrapper.getMappedClass());
+	}
+	
+	@Test
+	public void testGetIdentifierType() {
+		Type typeWrapper = entityPersisterWrapper.getIdentifierType();
+		assertNotNull(typeWrapper);
+		assertTrue(typeWrapper instanceof Wrapper);
+		Object wrappedType = ((Wrapper)typeWrapper).getWrappedObject();
+		assertNotNull(wrappedType);
+		assertTrue(wrappedType instanceof NamedBasicTypeImpl);
+		assertSame("string", ((NamedBasicTypeImpl<?>)wrappedType).getName());
 	}
 	
 

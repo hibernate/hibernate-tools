@@ -44,6 +44,8 @@ public class EntityPersisterWrapperFactory {
 				return method.invoke(this, args);
 			} else if ("getPropertyTypes".equals(method.getName())) {
 				return getPropertyTypes();
+			} else if ("getIdentifierType".equals(method.getName())) {
+				return TypeWrapperFactory.createTypeWrapper(delegate.getIdentifierType());
 			} else {
 				return method.invoke(delegate, args);
 			}
