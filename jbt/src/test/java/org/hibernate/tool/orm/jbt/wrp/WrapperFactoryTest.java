@@ -216,7 +216,7 @@ public class WrapperFactoryTest {
 	public void testCreatePropertyWrapper() {
 		Object propertyWrapper = WrapperFactory.createPropertyWrapper();
 		assertNotNull(propertyWrapper);
-		assertTrue(propertyWrapper instanceof Property);
+		assertTrue(propertyWrapper instanceof PropertyWrapper);
 	}
 	
 	@Test

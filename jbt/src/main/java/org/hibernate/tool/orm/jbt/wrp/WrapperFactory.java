@@ -103,7 +103,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createPropertyWrapper() {
-		return new Property();
+		return new PropertyWrapper();
 	}
 
 	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
