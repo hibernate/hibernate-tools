@@ -10,6 +10,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class SpecialRootClass extends RootClass {
 	
@@ -56,6 +57,9 @@ public class SpecialRootClass extends RootClass {
 		if (property != null) {
 			Value v = property.getValue();
 			if (v != null) {
+				if (v instanceof Wrapper) {
+					v = (Value)((Wrapper)v).getWrappedObject();
+				}
 				if (Collection.class.isAssignableFrom(v.getClass())) {
 					v = ((Collection)v).getElement();
 				}
