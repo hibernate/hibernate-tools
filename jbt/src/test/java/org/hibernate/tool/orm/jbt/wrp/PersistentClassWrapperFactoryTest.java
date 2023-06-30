@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -17,6 +16,7 @@ import java.util.Iterator;
 
 import org.hibernate.MappingException;
 import org.hibernate.engine.OptimisticLockStyle;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
@@ -30,7 +30,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperInvocationHandler;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,23 +49,16 @@ public class PersistentClassWrapperFactoryTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		InvocationHandler invocationHandler = null;
-		Field wrapperField = PersistentClassWrapperInvocationHandler.class.getDeclaredField("wrapper");
-		wrapperField.setAccessible(true);
 		rootClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
-		invocationHandler = Proxy.getInvocationHandler(rootClassWrapper);
-		rootClassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		rootClassTarget = rootClassWrapper.getWrappedObject();
 		singleTableSubclassWrapper = PersistentClassWrapperFactory.createSingleTableSubclassWrapper(rootClassWrapper);
-		invocationHandler = Proxy.getInvocationHandler(singleTableSubclassWrapper);
-		singleTableSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
 		joinedSubclassWrapper = PersistentClassWrapperFactory.createJoinedSubclassWrapper(rootClassWrapper);
-		invocationHandler = Proxy.getInvocationHandler(joinedSubclassWrapper);
-		joinedSubclassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		joinedSubclassTarget = joinedSubclassWrapper.getWrappedObject();
 		property = new Property();
 		property.setPersistentClass(rootClassTarget);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
-		invocationHandler = Proxy.getInvocationHandler(specialRootClassWrapper);
-		specialRootClassTarget = (PersistentClass)wrapperField.get(invocationHandler);
+		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -378,13 +371,21 @@ public class PersistentClassWrapperFactoryTest {
 		assertNull(singleTableSubclassWrapper.getDiscriminator());
 		assertNull(joinedSubclassWrapper.getDiscriminator());
 		assertNull(specialRootClassWrapper.getDiscriminator());
-		Value value = createValue();
+		Value value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		((RootClass)rootClassTarget).setDiscriminator(value);
-		assertSame(value, rootClassWrapper.getDiscriminator());
-		assertSame(value, singleTableSubclassWrapper.getDiscriminator());
-		assertSame(value, joinedSubclassWrapper.getDiscriminator());
+		Value valueWrapper = rootClassWrapper.getDiscriminator();
+		assertTrue(valueWrapper instanceof ValueWrapper);
+		assertSame(value, ((ValueWrapper)valueWrapper).getWrappedObject());
+		valueWrapper = singleTableSubclassWrapper.getDiscriminator();
+		assertTrue(valueWrapper instanceof ValueWrapper);
+		assertSame(value, ((ValueWrapper)valueWrapper).getWrappedObject());
+		valueWrapper = joinedSubclassWrapper.getDiscriminator();
+		assertTrue(valueWrapper instanceof ValueWrapper);
+		assertSame(value, ((ValueWrapper)valueWrapper).getWrappedObject());
 		((RootClass)specialRootClassTarget).setDiscriminator(value);
-		assertSame(value, specialRootClassWrapper.getDiscriminator());
+		valueWrapper = specialRootClassWrapper.getDiscriminator();
+		assertTrue(valueWrapper instanceof ValueWrapper);
+		assertSame(value, ((ValueWrapper)valueWrapper).getWrappedObject());
 	}
 	
 	@Test
@@ -1213,7 +1214,7 @@ public class PersistentClassWrapperFactoryTest {
 	private KeyValue createValue() {
 		return (KeyValue)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
-				new Class[] { KeyValue.class }, 
+				new Class[] { KeyValue.class, ValueWrapper.class }, 
 				new InvocationHandler() {	
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

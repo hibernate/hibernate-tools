@@ -10,6 +10,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
@@ -69,6 +70,10 @@ public class PersistentClassWrapperFactory {
 		public RootClassWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
 		}
+		@Override
+		public Value getDiscriminator() {
+			return wrapValueIfNeeded(super.getDiscriminator());
+		}
 	}
 	
 	static class SingleTableSubclassWrapperImpl 
@@ -76,6 +81,10 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
+		}
+		@Override
+		public Value getDiscriminator() {
+			return wrapValueIfNeeded(super.getDiscriminator());
 		}
 	}
 	
@@ -85,6 +94,10 @@ public class PersistentClassWrapperFactory {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
+		@Override
+		public Value getDiscriminator() {
+			return wrapValueIfNeeded(super.getDiscriminator());
+		}
 	}
 	
 	static class SpecialRootClassWrapperImpl 
@@ -93,6 +106,14 @@ public class PersistentClassWrapperFactory {
 		public SpecialRootClassWrapperImpl(Property property) {
 			super(property);
 		}
+		@Override
+		public Value getDiscriminator() {
+			return wrapValueIfNeeded(super.getDiscriminator());
+		}
+	}
+	
+	private static Value wrapValueIfNeeded(Value v) {
+		return (v != null) && !(v instanceof Wrapper) ? ValueWrapperFactory.createValueWrapper(v) : v;
 	}
 	
 }
