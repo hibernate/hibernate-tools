@@ -394,13 +394,13 @@ public class PersistentClassWrapperFactoryTest {
 		assertNull(singleTableSubclassWrapper.getIdentifier());
 		assertNull(joinedSubclassWrapper.getIdentifier());
 		assertNull(specialRootClassWrapper.getIdentifier());
-		KeyValue value = createValue();
+		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		((RootClass)rootClassTarget).setIdentifier(value);
-		assertSame(value, rootClassWrapper.getIdentifier());
-		assertSame(value, singleTableSubclassWrapper.getIdentifier());
-		assertSame(value, joinedSubclassWrapper.getIdentifier());
+		assertSame(value, ((Wrapper)rootClassWrapper.getIdentifier()).getWrappedObject());
+		assertSame(value, ((Wrapper)singleTableSubclassWrapper.getIdentifier()).getWrappedObject());
+		assertSame(value, ((Wrapper)joinedSubclassWrapper.getIdentifier()).getWrappedObject());
 		((RootClass)specialRootClassTarget).setIdentifier(value);
-		assertSame(value, specialRootClassWrapper.getIdentifier());
+		assertSame(value, ((Wrapper)specialRootClassWrapper.getIdentifier()).getWrappedObject());
 	}
 	
 	@Test

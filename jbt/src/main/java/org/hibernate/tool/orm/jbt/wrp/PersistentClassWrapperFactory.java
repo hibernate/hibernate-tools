@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -74,6 +75,10 @@ public class PersistentClassWrapperFactory {
 		public Value getDiscriminator() {
 			return wrapValueIfNeeded(super.getDiscriminator());
 		}
+		@Override
+		public KeyValue getIdentifier() {
+			return (KeyValue)wrapValueIfNeeded(super.getIdentifier());
+		}
 	}
 	
 	static class SingleTableSubclassWrapperImpl 
@@ -82,10 +87,6 @@ public class PersistentClassWrapperFactory {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
-		@Override
-		public Value getDiscriminator() {
-			return wrapValueIfNeeded(super.getDiscriminator());
-		}
 	}
 	
 	static class JoinedSubclassWrapperImpl
@@ -93,10 +94,6 @@ public class PersistentClassWrapperFactory {
 			implements PersistentClassWrapper {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
-		}
-		@Override
-		public Value getDiscriminator() {
-			return wrapValueIfNeeded(super.getDiscriminator());
 		}
 	}
 	
@@ -109,6 +106,10 @@ public class PersistentClassWrapperFactory {
 		@Override
 		public Value getDiscriminator() {
 			return wrapValueIfNeeded(super.getDiscriminator());
+		}
+		@Override
+		public KeyValue getIdentifier() {
+			return (KeyValue)wrapValueIfNeeded(super.getIdentifier());
 		}
 	}
 	

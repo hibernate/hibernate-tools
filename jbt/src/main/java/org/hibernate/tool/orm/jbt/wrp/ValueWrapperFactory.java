@@ -36,7 +36,7 @@ public class ValueWrapperFactory {
 	public static ValueWrapper createValueWrapper(Value wrappedValue) {
 		return (ValueWrapper)Proxy.newProxyInstance(
 				ValueWrapperFactory.class.getClassLoader(), 
-				new Class[] { ValueWrapper.class }, 
+				new Class[] { ValueWrapper.class, KeyValue.class }, 
 				new ValueWrapperInvocationHandler(wrappedValue));
 	}
 
