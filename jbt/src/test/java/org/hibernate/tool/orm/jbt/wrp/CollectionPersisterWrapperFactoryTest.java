@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,6 +14,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
+import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -74,6 +77,12 @@ public class CollectionPersisterWrapperFactoryTest {
 	public void testConstruction() {
 		assertNotNull(collectionPersisterWrapper);
 		assertNotNull(wrappedCollectionPersister);
+	}
+	
+	@Test
+	public void testGetElementType() {
+		Type elementType = collectionPersisterWrapper.getElementType();
+		assertTrue(elementType instanceof TypeWrapper);
 	}
 	
 }
