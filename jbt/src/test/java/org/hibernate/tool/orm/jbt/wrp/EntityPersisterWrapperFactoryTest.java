@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -162,12 +161,6 @@ public class EntityPersisterWrapperFactoryTest {
 		Object identifier = entityPersisterWrapper.getIdentifier(foo, sessionFacade);
 		assertSame("bar", identifier);
 	}
-	
-
-
-	
-	
-	
 	
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() throws Exception {

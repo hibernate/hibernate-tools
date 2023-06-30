@@ -31,7 +31,12 @@ public class SessionFactoryWrapper extends SessionFactoryDelegatingImpl {
 	}
 
 	public Map<String, CollectionPersister> getAllCollectionMetadata() {
-		return getMetamodel().collectionPersisters();
+		Map<String, CollectionPersister> origin = getMetamodel().collectionPersisters();
+		Map<String, CollectionPersister> result = new HashMap<String, CollectionPersister>(origin.size());
+		for (String key : origin.keySet()) {
+			result.put(key, (CollectionPersister)CollectionPersisterWrapperFactory.create(origin.get(key)));
+		}
+		return result;
 	}
 
 	public EntityPersister getClassMetadata(String string) {

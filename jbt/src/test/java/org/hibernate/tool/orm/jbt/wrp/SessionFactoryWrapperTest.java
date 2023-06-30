@@ -103,7 +103,9 @@ public class SessionFactoryWrapperTest {
 	public void testGetAllCollectionMetadata() throws Exception {
 		Map<String, CollectionPersister> allCollectionMetadata = sessionFactoryWrapper.getAllCollectionMetadata();
 		assertEquals(1, allCollectionMetadata.size());
-		assertNotNull(allCollectionMetadata.get(Foo.class.getName() + ".bars"));
+		CollectionPersister barsPersister = allCollectionMetadata.get(Foo.class.getName() + ".bars");
+		assertNotNull(barsPersister);
+		assertTrue(barsPersister instanceof Wrapper);
 	}
 	
 
@@ -122,7 +124,9 @@ public class SessionFactoryWrapperTest {
 	@Test
 	public void testGetCollectionMetadata() throws Exception {
 		assertNull(sessionFactoryWrapper.getCollectionMetadata("bars"));
-		assertNotNull(sessionFactoryWrapper.getCollectionMetadata(Foo.class.getName() + ".bars"));
+		CollectionPersister barsPersister = sessionFactoryWrapper.getCollectionMetadata(Foo.class.getName() + ".bars");
+		assertNotNull(barsPersister);
+		assertTrue(barsPersister instanceof Wrapper);
 	}	
 	
 }
