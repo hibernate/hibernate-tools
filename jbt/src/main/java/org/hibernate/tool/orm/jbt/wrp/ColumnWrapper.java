@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.type.spi.TypeConfiguration;
 
@@ -54,6 +55,15 @@ public class ColumnWrapper extends Column {
 
 	public int getDefaultScale() {
 		return DEFAULT_SCALE;
+	}
+	
+	@Override
+	public Value getValue() {
+		Value val = super.getValue();
+		if (val != null) {
+			val = ValueWrapperFactory.createValueWrapper(val);
+		}
+		return val;
 	}
 
 	private Dialect buildDialect(Configuration configuration) {

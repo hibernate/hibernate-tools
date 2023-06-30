@@ -1,7 +1,10 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -14,6 +17,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -79,6 +83,17 @@ public class ColumnWrapperTest {
 		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
 		defaultScaleField.setAccessible(true);
 		assertEquals(defaultScaleField.get(null), columnWrapper.getDefaultScale());
+	}
+	
+	@Test
+	public void testGetValue() {
+		Value v = createValue();
+		assertNull(columnWrapper.getValue());
+		columnWrapper.setValue(v);
+		Value valueWrapper = columnWrapper.getValue();
+		assertNotNull(valueWrapper);
+		assertTrue(valueWrapper instanceof ValueWrapper);
+		assertSame(v, ((ValueWrapper)valueWrapper).getWrappedObject());
 	}
 	
 	private Value createValue() {
