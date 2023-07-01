@@ -25,7 +25,6 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
@@ -140,7 +139,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createTableWrapper(String name) {
-		Table result = new Table("Hibernate Tools", name);
+		TableWrapper result = new TableWrapper(name);
 		result.setPrimaryKey(new PrimaryKey(result));
 		return result;
 	}

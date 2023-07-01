@@ -274,8 +274,8 @@ public class WrapperFactoryTest {
 	public void testCreateTableWrapper() {
 		Object tableWrapper = WrapperFactory.createTableWrapper("foo");
 		assertNotNull(tableWrapper);
-		assertTrue(tableWrapper instanceof Table);
-		Table table = (Table)tableWrapper;
+		assertTrue(tableWrapper instanceof TableWrapper);
+		Table table = (Table)((TableWrapper)tableWrapper).getWrappedObject();
 		assertEquals("foo", table.getName());
 		PrimaryKey pk = table.getPrimaryKey();
 		assertSame(table, pk.getTable());
