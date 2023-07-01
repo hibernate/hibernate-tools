@@ -115,20 +115,26 @@ public class ValueWrapperFactory {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			Object result = null;
 			try {
 				Method valueClassMethod = lookupMethodInValueClass(extendedValue, method);
 				if (valueClassMethod != null) {
-					Object result = valueClassMethod.invoke(extendedValue, args);
+					result = valueClassMethod.invoke(extendedValue, args);
 					if (result != null && valueClassMethod.getReturnType().isAssignableFrom(Value.class)) {
 						result = ValueWrapperFactory.createValueWrapper((Value)result);
 					}
-					return result;
 				} else {
-					return method.invoke(this, args);
+					result = method.invoke(this, args);
+					if (!"getWrappedObject".equals(method.getName()) 
+							&& result != null 
+							&& method.getReturnType().isAssignableFrom(Value.class)) {
+						result = ValueWrapperFactory.createValueWrapper((Value)result);
+					}
 				}
 			} catch (InvocationTargetException e) {
 				throw e.getTargetException();
 			}
+			return result;
 		}
 		
 		@Override

@@ -32,4 +32,15 @@ public class ValueWrapperFactoryTest {
 		assertNull(valueWrapper.getElement());
 	}
 	
+	@Test
+	public void testGetCollectionElement() {
+		List valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		Value basicValue = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
+		valueTarget.setElement(basicValue);
+		assertSame(basicValue, ((Wrapper)valueWrapper.getCollectionElement()).getWrappedObject());
+		valueTarget.setElement(null);
+		assertNull(valueWrapper.getCollectionElement());
+	}
+	
 }
