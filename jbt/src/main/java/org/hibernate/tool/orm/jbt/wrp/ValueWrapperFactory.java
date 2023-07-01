@@ -118,7 +118,11 @@ public class ValueWrapperFactory {
 			try {
 				Method valueClassMethod = lookupMethodInValueClass(extendedValue, method);
 				if (valueClassMethod != null) {
-					return valueClassMethod.invoke(extendedValue, args);
+					Object result = valueClassMethod.invoke(extendedValue, args);
+					if (result != null && valueClassMethod.getReturnType().isAssignableFrom(Value.class)) {
+						result = ValueWrapperFactory.createValueWrapper((Value)result);
+					}
+					return result;
 				} else {
 					return method.invoke(this, args);
 				}
