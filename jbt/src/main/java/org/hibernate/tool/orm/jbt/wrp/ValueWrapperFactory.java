@@ -120,7 +120,7 @@ public class ValueWrapperFactory {
 				Method valueClassMethod = lookupMethodInValueClass(extendedValue, method);
 				if (valueClassMethod != null) {
 					result = valueClassMethod.invoke(extendedValue, args);
-					if (result != null && valueClassMethod.getReturnType().isAssignableFrom(Value.class)) {
+					if (result != null && Value.class.isAssignableFrom(method.getReturnType())) {
 						result = ValueWrapperFactory.createValueWrapper((Value)result);
 					}
 				} else {

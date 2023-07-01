@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -41,6 +42,17 @@ public class ValueWrapperFactoryTest {
 		assertSame(basicValue, ((Wrapper)valueWrapper.getCollectionElement()).getWrappedObject());
 		valueTarget.setElement(null);
 		assertNull(valueWrapper.getCollectionElement());
+	}
+	
+	@Test
+	public void testGetKey() {
+		List valueTarget = new List(DummyMetadataBuildingContext.INSTANCE, null);
+		KeyValue keyValue = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
+		valueTarget.setKey(keyValue);
+		assertSame(keyValue, ((Wrapper)valueWrapper.getKey()).getWrappedObject());
+		valueTarget.setKey(null);
+		assertNull(valueWrapper.getKey());
 	}
 	
 }
