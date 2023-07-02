@@ -46,6 +46,10 @@ public class PropertyWrapperFactory {
 		default String getPropertyAccessorName() {
 			return getWrappedObject().getPropertyAccessorName();
 		}
+
+		default String getName() {
+			return getWrappedObject().getName();
+		}
 		
 	}
 	
