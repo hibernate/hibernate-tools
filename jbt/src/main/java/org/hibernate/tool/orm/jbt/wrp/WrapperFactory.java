@@ -98,7 +98,7 @@ public class WrapperFactory {
 
 	public static Object createSpecialRootClassWrapper(Object property) {
 		return PersistentClassWrapperFactory
-				.createSpecialRootClassWrapper((Property)property);
+				.createSpecialRootClassWrapper((PropertyWrapper)property);
 	}
 
 	public static Object createPropertyWrapper() {
