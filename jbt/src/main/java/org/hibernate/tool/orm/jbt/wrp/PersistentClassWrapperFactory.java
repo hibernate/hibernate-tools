@@ -30,11 +30,7 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	public static PersistentClassWrapper createSpecialRootClassWrapper(Property property) {
-		return (PersistentClassWrapper)Proxy.newProxyInstance(
-				PersistentClassWrapperFactory.class.getClassLoader(), 
-				new Class[] { PersistentClassWrapper.class }, 
-				new PersistentClassWrapperInvocationHandler(
-						new SpecialRootClassWrapperImpl(property)));
+		return new SpecialRootClassWrapperImpl(property);
 	}
 	
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClassWrapper persistentClassWrapper) {
