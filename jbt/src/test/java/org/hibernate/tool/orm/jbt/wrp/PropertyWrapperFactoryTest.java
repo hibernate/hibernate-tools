@@ -82,4 +82,11 @@ public class PropertyWrapperFactoryTest {
 		assertTrue(propertyWrapper.isComposite());
 	}
 	
+	@Test
+	public void testGetPropetyAccessorName() {
+		assertNotEquals("foo", propertyWrapper.getPropertyAccessorName());
+		wrappedProperty.setPropertyAccessorName("foo");
+		assertEquals("foo", propertyWrapper.getPropertyAccessorName());
+	}
+	
 }

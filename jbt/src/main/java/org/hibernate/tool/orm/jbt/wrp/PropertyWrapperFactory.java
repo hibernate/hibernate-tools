@@ -42,6 +42,10 @@ public class PropertyWrapperFactory {
 		default boolean isComposite() {
 			return getWrappedObject().isComposite();
 		}
+
+		default String getPropertyAccessorName() {
+			return getWrappedObject().getPropertyAccessorName();
+		}
 		
 	}
 	
