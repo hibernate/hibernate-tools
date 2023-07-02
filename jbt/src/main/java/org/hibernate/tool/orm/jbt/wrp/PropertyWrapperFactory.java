@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
@@ -60,6 +61,10 @@ public class PropertyWrapperFactory {
 				result = t == null ? null : TypeWrapperFactory.createTypeWrapper(t);
 			}
 			return result;
+		}
+
+		default void setValue(BasicValue value) {
+			getWrappedObject().setValue(value);
 		}
 		
 	}
