@@ -7,9 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.BasicValue;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,10 +50,19 @@ public class PropertyWrapperFactoryTest {
 	
 	@Test
 	public void testSetPersistentClass() {
+		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
 		assertNull(wrappedProperty.getPersistentClass());
-		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		propertyWrapper.setPersistentClass(pc);
-		assertSame(pc, wrappedProperty.getPersistentClass());
+		propertyWrapper.setPersistentClass(persistentClass.getWrappedObject());
+		assertSame(persistentClass.getWrappedObject(), wrappedProperty.getPersistentClass());
+	}
+	
+	@Test
+	public void testGetPersistentClass() {
+		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
+		assertNull(propertyWrapper.getPersistentClass());
+		wrappedProperty.setPersistentClass(persistentClass.getWrappedObject());
+		PersistentClassWrapper persistentClassWrapper = propertyWrapper.getPersistentClass();
+		assertSame(persistentClass.getWrappedObject(), persistentClassWrapper.getWrappedObject());
 	}
 	
 }

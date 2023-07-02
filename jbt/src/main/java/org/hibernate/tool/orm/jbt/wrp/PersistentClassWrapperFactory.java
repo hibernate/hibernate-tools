@@ -48,6 +48,14 @@ public class PersistentClassWrapperFactory {
 						new SpecialRootClassWrapperImpl(property)));
 	}
 	
+	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return (PersistentClassWrapper)Proxy.newProxyInstance(
+				PersistentClassWrapperFactory.class.getClassLoader(), 
+				new Class[] { PersistentClassWrapper.class }, 
+				new PersistentClassWrapperInvocationHandler(
+						persistentClassWrapper));
+	}
+	
 	static class PersistentClassWrapperInvocationHandler implements InvocationHandler {
 		
 		private PersistentClassWrapper wrapper = null;

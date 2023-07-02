@@ -33,6 +33,11 @@ public class PropertyWrapperFactory {
 		default void setPersistentClass(PersistentClass pc) {
 			getWrappedObject().setPersistentClass(pc);
 		}
+
+		default PersistentClassWrapper getPersistentClass() {
+			PersistentClassWrapper pc = (PersistentClassWrapper)getWrappedObject().getPersistentClass();
+			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
+		}
 		
 	}
 	
