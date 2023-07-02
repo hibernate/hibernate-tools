@@ -22,11 +22,7 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	public static PersistentClassWrapper createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
-		return (PersistentClassWrapper)Proxy.newProxyInstance(
-				PersistentClassWrapperFactory.class.getClassLoader(), 
-				new Class[] { PersistentClassWrapper.class }, 
-				new PersistentClassWrapperInvocationHandler(
-						new SingleTableSubclassWrapperImpl(superClassWrapper.getWrappedObject())));
+		return new SingleTableSubclassWrapperImpl(superClassWrapper.getWrappedObject());
 	}
 	
 	public static PersistentClassWrapper createJoinedSubclassWrapper(PersistentClassWrapper superClassWrapper) {
