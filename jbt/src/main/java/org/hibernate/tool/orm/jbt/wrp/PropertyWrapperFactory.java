@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Value;
 
 public class PropertyWrapperFactory {
 	
@@ -16,7 +17,14 @@ public class PropertyWrapperFactory {
 	}
 
 	static interface PropertyWrapper extends Wrapper{
-		@Override Property getWrappedObject();	
+		
+		@Override Property getWrappedObject();
+		
+		default Value getValue() { 
+			Value v = getWrappedObject().getValue();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
+		}	
+		
 	}
 	
 	static class PropertyWrapperInvocationHandler implements InvocationHandler, PropertyWrapper {
