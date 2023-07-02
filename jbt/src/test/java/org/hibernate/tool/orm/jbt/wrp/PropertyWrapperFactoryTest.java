@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -144,6 +145,19 @@ public class PropertyWrapperFactoryTest {
 		assertTrue(propertyWrapper.isSelectable());
 		wrappedProperty.setSelectable(false);
 		assertFalse(propertyWrapper.isSelectable());
+	}
+	
+	@Test
+	public void testIsUpdateable() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTable(new Table(""));
+		Column c = new Column();
+		v.addColumn(c);
+		wrappedProperty.setValue(v);
+		wrappedProperty.setUpdateable(false);
+		assertFalse(propertyWrapper.isUpdateable());
+		wrappedProperty.setUpdateable(true);
+		assertTrue(propertyWrapper.isUpdateable());
 	}
 	
 }

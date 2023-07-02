@@ -83,6 +83,10 @@ public class PropertyWrapperFactory {
 		default boolean isSelectable() {
 			return getWrappedObject().isSelectable();
 		}
+
+		default boolean isUpdateable() {
+			return getWrappedObject().isUpdateable();
+		}
 		
 	}
 	
