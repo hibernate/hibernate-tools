@@ -175,4 +175,13 @@ public class PropertyWrapperFactoryTest {
 		assertFalse(propertyWrapper.isLazy());
 	}
 	
+	@Test
+	public void testIsOptional() {
+		wrappedProperty.setValue(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
+		wrappedProperty.setOptional(true);
+		assertTrue(propertyWrapper.isOptional());
+		wrappedProperty.setOptional(false);
+		assertFalse(propertyWrapper.isOptional());
+	}
+	
 }
