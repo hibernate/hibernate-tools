@@ -107,6 +107,10 @@ public class PropertyWrapperFactory {
 		default boolean isOptimisticLocked() {
 			return getWrappedObject().isOptimisticLocked();
 		}
+
+		default boolean isInsertable() {
+			return getWrappedObject().isInsertable();
+		}
 		
 	}
 	

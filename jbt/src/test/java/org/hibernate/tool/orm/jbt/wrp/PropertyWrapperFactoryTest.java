@@ -148,6 +148,19 @@ public class PropertyWrapperFactoryTest {
 	}
 	
 	@Test
+	public void testIsInsertable() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTable(new Table(""));
+		Column c = new Column();
+		v.addColumn(c);
+		wrappedProperty.setValue(v);
+		wrappedProperty.setInsertable(true);
+		assertTrue(propertyWrapper.isInsertable());
+		wrappedProperty.setInsertable(false);
+		assertFalse(propertyWrapper.isInsertable());
+	}
+	
+	@Test
 	public void testIsUpdateable() {
 		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		v.setTable(new Table(""));
