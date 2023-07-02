@@ -15,6 +15,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -94,6 +95,17 @@ public class PropertyWrapperFactoryTest {
 		assertNotEquals("foo", propertyWrapper.getName());
 		wrappedProperty.setName("foo");
 		assertEquals("foo", propertyWrapper.getName());
+	}
+	
+	@Test
+	public void testGetType() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTypeName("int");
+		assertNull(propertyWrapper.getType());
+		wrappedProperty.setValue(v);
+		TypeWrapper typeWrapper = (TypeWrapper)propertyWrapper.getType();
+		assertEquals("integer", typeWrapper.getName());
+		assertSame(v.getType(), typeWrapper.getWrappedObject());
 	}
 	
 }

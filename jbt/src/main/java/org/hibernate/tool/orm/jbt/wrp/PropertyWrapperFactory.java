@@ -7,6 +7,8 @@ import java.lang.reflect.Proxy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
+import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
 	
@@ -49,6 +51,15 @@ public class PropertyWrapperFactory {
 
 		default String getName() {
 			return getWrappedObject().getName();
+		}
+
+		default Type getType() {
+			TypeWrapper result = null;
+			if (getWrappedObject().getValue() != null) {
+				Type t = getWrappedObject().getType();
+				result = t == null ? null : TypeWrapperFactory.createTypeWrapper(t);
+			}
+			return result;
 		}
 		
 	}
