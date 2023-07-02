@@ -116,4 +116,11 @@ public class PropertyWrapperFactoryTest {
 		assertSame(value, wrappedProperty.getValue());
 	}
 	
+	@Test
+	public void testSetPropertyAccessorName() {
+		assertNotEquals("foo", wrappedProperty.getPropertyAccessorName());
+		propertyWrapper.setPropertyAccessorName("foo");
+		assertEquals("foo", wrappedProperty.getPropertyAccessorName());
+	}
+	
 }

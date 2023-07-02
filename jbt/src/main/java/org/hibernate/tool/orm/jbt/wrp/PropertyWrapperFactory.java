@@ -66,6 +66,10 @@ public class PropertyWrapperFactory {
 		default void setValue(BasicValue value) {
 			getWrappedObject().setValue(value);
 		}
+
+		default void setPropertyAccessorName(String name) {
+			getWrappedObject().setPropertyAccessorName(name);
+		}
 		
 	}
 	
