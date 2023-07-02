@@ -18,10 +18,7 @@ import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 public class PersistentClassWrapperFactory {
 	
 	public static PersistentClassWrapper createRootClassWrapper() {
-		return (PersistentClassWrapper)Proxy.newProxyInstance(
-				PersistentClassWrapperFactory.class.getClassLoader(), 
-				new Class[] { PersistentClassWrapper.class }, 
-				new PersistentClassWrapperInvocationHandler(new RootClassWrapperImpl()));
+		return new RootClassWrapperImpl();
 	}
 	
 	public static PersistentClassWrapper createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
