@@ -3,7 +3,6 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.function.BooleanSupplier;
 
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
@@ -90,6 +89,10 @@ public class PropertyWrapperFactory {
 
 		default String getCascade() {
 			return getWrappedObject().getCascade();
+		}
+
+		default boolean isLazy() {
+			return getWrappedObject().isLazy();
 		}
 		
 	}
