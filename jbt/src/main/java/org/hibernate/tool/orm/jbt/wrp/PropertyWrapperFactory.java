@@ -38,6 +38,10 @@ public class PropertyWrapperFactory {
 			PersistentClassWrapper pc = (PersistentClassWrapper)getWrappedObject().getPersistentClass();
 			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
 		}
+
+		default boolean isComposite() {
+			return getWrappedObject().isComposite();
+		}
 		
 	}
 	
