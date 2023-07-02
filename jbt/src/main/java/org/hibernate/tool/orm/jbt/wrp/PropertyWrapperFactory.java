@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 
@@ -27,6 +28,10 @@ public class PropertyWrapperFactory {
 
 		default void setName(String name) {
 			getWrappedObject().setName(name);
+		}
+
+		default void setPersistentClass(PersistentClass pc) {
+			getWrappedObject().setPersistentClass(pc);
 		}
 		
 	}

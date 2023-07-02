@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +48,14 @@ public class PropertyWrapperFactoryTest {
 		assertNotEquals("foo", wrappedProperty.getName());
 		propertyWrapper.setName("foo");
 		assertEquals("foo", wrappedProperty.getName());
+	}
+	
+	@Test
+	public void testSetPersistentClass() {
+		assertNull(wrappedProperty.getPersistentClass());
+		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		propertyWrapper.setPersistentClass(pc);
+		assertSame(pc, wrappedProperty.getPersistentClass());
 	}
 	
 }
