@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
@@ -128,6 +129,13 @@ public class PropertyWrapperFactoryTest {
 		assertNotEquals("foo", wrappedProperty.getCascade());
 		propertyWrapper.setCascade("foo");
 		assertEquals("foo", wrappedProperty.getCascade());
+	}
+	
+	@Test
+	public void testIsBackRef() throws Exception {
+		assertFalse(propertyWrapper.isBackRef());
+		propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(new Backref());
+		assertTrue(propertyWrapper.isBackRef());
 	}
 	
 }
