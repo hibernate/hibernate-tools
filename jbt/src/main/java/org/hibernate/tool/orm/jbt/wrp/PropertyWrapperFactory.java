@@ -99,6 +99,10 @@ public class PropertyWrapperFactory {
 		default boolean isOptional() {
 			return getWrappedObject().isOptional();
 		}
+
+		default boolean isNaturalIdentifier() {
+			return getWrappedObject().isNaturalIdentifier();
+		}
 		
 	}
 	

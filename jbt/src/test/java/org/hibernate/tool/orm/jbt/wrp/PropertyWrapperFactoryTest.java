@@ -184,4 +184,12 @@ public class PropertyWrapperFactoryTest {
 		assertFalse(propertyWrapper.isOptional());
 	}
 	
+	@Test
+	public void testIsNaturalIdentifier() {
+		wrappedProperty.setNaturalIdentifier(true);
+		assertTrue(propertyWrapper.isNaturalIdentifier());
+		wrappedProperty.setNaturalIdentifier(false);
+		assertFalse(propertyWrapper.isNaturalIdentifier());
+	}
+	
 }
