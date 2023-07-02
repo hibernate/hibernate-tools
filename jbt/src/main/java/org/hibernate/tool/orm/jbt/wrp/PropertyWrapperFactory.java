@@ -23,7 +23,11 @@ public class PropertyWrapperFactory {
 		default Value getValue() { 
 			Value v = getWrappedObject().getValue();
 			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
-		}	
+		}
+
+		default void setName(String name) {
+			getWrappedObject().setName(name);
+		}
 		
 	}
 	
