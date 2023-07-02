@@ -26,11 +26,7 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	public static PersistentClassWrapper createJoinedSubclassWrapper(PersistentClassWrapper superClassWrapper) {
-		return (PersistentClassWrapper)Proxy.newProxyInstance(
-				PersistentClassWrapperFactory.class.getClassLoader(), 
-				new Class[] { PersistentClassWrapper.class }, 
-				new PersistentClassWrapperInvocationHandler(
-						new JoinedSubclassWrapperImpl(superClassWrapper.getWrappedObject())));
+		return new JoinedSubclassWrapperImpl(superClassWrapper.getWrappedObject());
 	}
 	
 	public static PersistentClassWrapper createSpecialRootClassWrapper(Property property) {
