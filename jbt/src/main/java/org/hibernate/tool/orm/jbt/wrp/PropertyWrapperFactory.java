@@ -79,6 +79,10 @@ public class PropertyWrapperFactory {
 		default boolean isBackRef() {
 			return getWrappedObject().isBackRef();
 		}
+
+		default boolean isSelectable() {
+			return getWrappedObject().isSelectable();
+		}
 		
 	}
 	

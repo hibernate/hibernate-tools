@@ -138,4 +138,12 @@ public class PropertyWrapperFactoryTest {
 		assertTrue(propertyWrapper.isBackRef());
 	}
 	
+	@Test
+	public void testIsSelectable() {
+		wrappedProperty.setSelectable(true);
+		assertTrue(propertyWrapper.isSelectable());
+		wrappedProperty.setSelectable(false);
+		assertFalse(propertyWrapper.isSelectable());
+	}
+	
 }
