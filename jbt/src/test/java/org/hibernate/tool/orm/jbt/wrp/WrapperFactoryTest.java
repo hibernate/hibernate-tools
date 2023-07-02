@@ -210,7 +210,7 @@ public class WrapperFactoryTest {
 		assertTrue(persistentClass instanceof SpecialRootClass);
 		assertSame(
 				((SpecialRootClass)persistentClass).getProperty(), 
-				propertyWrapper.getWrappedObject());		
+				propertyWrapper);		
 	}
 	
 	@Test

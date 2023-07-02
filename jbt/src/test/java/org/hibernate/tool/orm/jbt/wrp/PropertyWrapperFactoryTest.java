@@ -17,6 +17,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,12 @@ import org.junit.jupiter.api.Test;
 public class PropertyWrapperFactoryTest {
 	
 	private Property wrappedProperty = null;
-	private PropertyWrapperFactory.PropertyWrapper propertyWrapper = null;
+	private PropertyWrapper propertyWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
 		wrappedProperty = new Property();
-		propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(wrappedProperty);
+		propertyWrapper = (PropertyWrapper)PropertyWrapperFactory.createPropertyWrapper(wrappedProperty);
 	}
 
 	@Test
@@ -69,7 +70,7 @@ public class PropertyWrapperFactoryTest {
 		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
 		assertNull(propertyWrapper.getPersistentClass());
 		wrappedProperty.setPersistentClass(persistentClass.getWrappedObject());
-		PersistentClassWrapper persistentClassWrapper = propertyWrapper.getPersistentClass();
+		PersistentClassWrapper persistentClassWrapper = (PersistentClassWrapper)propertyWrapper.getPersistentClass();
 		assertSame(persistentClass.getWrappedObject(), persistentClassWrapper.getWrappedObject());
 	}
 	
@@ -135,7 +136,7 @@ public class PropertyWrapperFactoryTest {
 	@Test
 	public void testIsBackRef() throws Exception {
 		assertFalse(propertyWrapper.isBackRef());
-		propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(new Backref());
+		propertyWrapper = (PropertyWrapper)PropertyWrapperFactory.createPropertyWrapper(new Backref());
 		assertTrue(propertyWrapper.isBackRef());
 	}
 	

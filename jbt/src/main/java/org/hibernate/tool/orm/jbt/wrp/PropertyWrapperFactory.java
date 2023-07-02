@@ -1,9 +1,5 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
@@ -12,48 +8,49 @@ import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
 	
-	public static PropertyWrapper createPropertyWrapper(Property wrappedProperty) {
-		return (PropertyWrapper)Proxy.newProxyInstance(
-				ValueWrapperFactory.class.getClassLoader(), 
-				new Class[] { PropertyWrapper.class }, 
-				new PropertyWrapperInvocationHandler(wrappedProperty));
+	public static Property createPropertyWrapper(Property wrappedProperty) {
+		return new DelegatingPropertyWrapperImpl(wrappedProperty);
 	}
 
-	static interface PropertyWrapper extends Wrapper{
+	static interface PropertyWrapper extends Wrapper{		
+		@Override Property getWrappedObject();		
+		Value getValue();
+		Type getType();
+		void setName(String name);
+		void setPersistentClass(PersistentClass pc);
+		PersistentClass getPersistentClass();
+		boolean isComposite();
+		String getPropertyAccessorName();
+		String getName();
+		void setValue(Value value);
+		void setPropertyAccessorName(String name);
+		void setCascade(String c);
+		boolean isBackRef();
+		boolean isSelectable();
+		boolean isUpdateable();
+		String getCascade();
+		boolean isLazy();
+		boolean isOptional();
+		boolean isNaturalIdentifier();
+		boolean isOptimisticLocked();
+		boolean isInsertable();		
+	}
+	
+	static class DelegatingPropertyWrapperImpl extends Property implements PropertyWrapper {
 		
-		@Override Property getWrappedObject();
+		private Property delegate = null;
 		
-		default Value getValue() { 
-			Value v = getWrappedObject().getValue();
-			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
+		public DelegatingPropertyWrapperImpl(Property p) {
+			delegate = p;
 		}
-
-		default void setName(String name) {
-			getWrappedObject().setName(name);
+		
+		@Override
+		public Property getWrappedObject() {
+			return delegate;
 		}
-
-		default void setPersistentClass(PersistentClass pc) {
-			getWrappedObject().setPersistentClass(pc);
-		}
-
-		default PersistentClassWrapper getPersistentClass() {
-			PersistentClassWrapper pc = (PersistentClassWrapper)getWrappedObject().getPersistentClass();
-			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
-		}
-
-		default boolean isComposite() {
-			return getWrappedObject().isComposite();
-		}
-
-		default String getPropertyAccessorName() {
-			return getWrappedObject().getPropertyAccessorName();
-		}
-
-		default String getName() {
-			return getWrappedObject().getName();
-		}
-
-		default Type getType() {
+		
+		@Override
+		public Type getType() {
 			TypeWrapper result = null;
 			if (getWrappedObject().getValue() != null) {
 				Type t = getWrappedObject().getType();
@@ -62,88 +59,102 @@ public class PropertyWrapperFactory {
 			return result;
 		}
 
-		default void setValue(Value value) {
-			getWrappedObject().setValue(value);
+		@Override
+		public Value getValue() { 
+			Value v = getWrappedObject().getValue();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
 		}
 
-		default void setPropertyAccessorName(String name) {
-			getWrappedObject().setPropertyAccessorName(name);
-		}
-
-		default void setCascade(String c) {
-			getWrappedObject().setCascade(c);
-		}
-
-		default boolean isBackRef() {
-			return getWrappedObject().isBackRef();
-		}
-
-		default boolean isSelectable() {
-			return getWrappedObject().isSelectable();
-		}
-
-		default boolean isUpdateable() {
-			return getWrappedObject().isUpdateable();
-		}
-
-		default String getCascade() {
-			return getWrappedObject().getCascade();
-		}
-
-		default boolean isLazy() {
-			return getWrappedObject().isLazy();
-		}
-
-		default boolean isOptional() {
-			return getWrappedObject().isOptional();
-		}
-
-		default boolean isNaturalIdentifier() {
-			return getWrappedObject().isNaturalIdentifier();
-		}
-
-		default boolean isOptimisticLocked() {
-			return getWrappedObject().isOptimisticLocked();
-		}
-
-		default boolean isInsertable() {
-			return getWrappedObject().isInsertable();
-		}
-		
-	}
-	
-	static class PropertyWrapperInvocationHandler implements InvocationHandler, PropertyWrapper {
-		
-		private Property delegate = null;
-		
-		public PropertyWrapperInvocationHandler(Property property) {
-			delegate = property;
+		@Override 
+		public void setName(String name) {
+			getWrappedObject().setName(name);
 		}
 
 		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			Method m = lookupMethodInPropertyWrapperClass(method);
-			if (m != null) {
-				return m.invoke(this, args);
-			} else {
-				return method.invoke(delegate, args);
-			}
+		public void setPersistentClass(PersistentClass pc) {
+			getWrappedObject().setPersistentClass(pc);
 		}
 		
+		@Override
+		public PersistentClass getPersistentClass() {
+			return getWrappedObject().getPersistentClass();
+		}
+
+		@Override
+		public boolean isComposite() {
+			return getWrappedObject().isComposite();
+		}
+
 		@Override 
-		public Property getWrappedObject() {
-			return delegate;
+		public String getPropertyAccessorName() {
+			return getWrappedObject().getPropertyAccessorName();
 		}
-		
-		
+
+		@Override
+		public String getName() {
+			return getWrappedObject().getName();
+		}
+
+		@Override 
+		public void setValue(Value value) {
+			getWrappedObject().setValue(value);
+		}
+
+		@Override
+		public void setPropertyAccessorName(String name) {
+			getWrappedObject().setPropertyAccessorName(name);
+		}
+
+		@Override
+		public void setCascade(String c) {
+			getWrappedObject().setCascade(c);
+		}
+
+		@Override
+		public boolean isBackRef() {
+			return getWrappedObject().isBackRef();
+		}
+
+		@Override
+		public boolean isSelectable() {
+			return getWrappedObject().isSelectable();
+		}
+
+		@Override
+		public boolean isUpdateable() {
+			return getWrappedObject().isUpdateable();
+		}
+
+		@Override
+		public String getCascade() {
+			return getWrappedObject().getCascade();
+		}
+
+		@Override
+		public boolean isLazy() {
+			return getWrappedObject().isLazy();
+		}
+
+		@Override
+		public boolean isOptional() {
+			return getWrappedObject().isOptional();
+		}
+
+		@Override 
+		public boolean isNaturalIdentifier() {
+			return getWrappedObject().isNaturalIdentifier();
+		}
+
+		@Override
+		public boolean isOptimisticLocked() {
+			return getWrappedObject().isOptimisticLocked();
+		}
+
+		@Override
+		public boolean isInsertable() {
+			return getWrappedObject().isInsertable();
+		}
+				
 	}
 	
-	private static Method lookupMethodInPropertyWrapperClass(Method method) {
-		try {
-			return PropertyWrapper.class.getMethod(method.getName(), method.getParameterTypes());
-		} catch (NoSuchMethodException e) {
-			return null;
-		}
-	}
-
 }
