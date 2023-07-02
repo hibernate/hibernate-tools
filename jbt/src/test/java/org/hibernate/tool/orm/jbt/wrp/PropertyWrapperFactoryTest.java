@@ -160,4 +160,11 @@ public class PropertyWrapperFactoryTest {
 		assertTrue(propertyWrapper.isUpdateable());
 	}
 	
+	@Test
+	public void testGetCascade() {
+		assertNotEquals("foo", propertyWrapper.getCascade());
+		wrappedProperty.setCascade("foo");
+		assertEquals("foo", propertyWrapper.getCascade());
+	}
+	
 }

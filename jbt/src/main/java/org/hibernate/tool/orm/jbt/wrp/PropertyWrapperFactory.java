@@ -87,6 +87,10 @@ public class PropertyWrapperFactory {
 		default boolean isUpdateable() {
 			return getWrappedObject().isUpdateable();
 		}
+
+		default String getCascade() {
+			return getWrappedObject().getCascade();
+		}
 		
 	}
 	
