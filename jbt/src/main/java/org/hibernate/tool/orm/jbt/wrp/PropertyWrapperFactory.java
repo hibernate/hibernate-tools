@@ -70,6 +70,10 @@ public class PropertyWrapperFactory {
 		default void setPropertyAccessorName(String name) {
 			getWrappedObject().setPropertyAccessorName(name);
 		}
+
+		default void setCascade(String c) {
+			getWrappedObject().setCascade(c);
+		}
 		
 	}
 	
