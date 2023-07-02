@@ -192,4 +192,12 @@ public class PropertyWrapperFactoryTest {
 		assertFalse(propertyWrapper.isNaturalIdentifier());
 	}
 	
+	@Test
+	public void testIsOptimisticLocked() {
+		wrappedProperty.setOptimisticLocked(true);
+		assertTrue(propertyWrapper.isOptimisticLocked());
+		wrappedProperty.setOptimisticLocked(false);
+		assertFalse(propertyWrapper.isOptimisticLocked());
+	}
+	
 }

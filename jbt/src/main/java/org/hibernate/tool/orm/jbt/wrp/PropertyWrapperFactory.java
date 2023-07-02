@@ -103,6 +103,10 @@ public class PropertyWrapperFactory {
 		default boolean isNaturalIdentifier() {
 			return getWrappedObject().isNaturalIdentifier();
 		}
+
+		default boolean isOptimisticLocked() {
+			return getWrappedObject().isOptimisticLocked();
+		}
 		
 	}
 	
