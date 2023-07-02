@@ -3,9 +3,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.function.BooleanSupplier;
 
-import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
@@ -64,7 +62,7 @@ public class PropertyWrapperFactory {
 			return result;
 		}
 
-		default void setValue(BasicValue value) {
+		default void setValue(Value value) {
 			getWrappedObject().setValue(value);
 		}
 

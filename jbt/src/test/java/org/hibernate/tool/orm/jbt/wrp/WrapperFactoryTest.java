@@ -59,6 +59,7 @@ import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.Test;
 
@@ -201,7 +202,7 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateSpecialRootClassWrapper() {
-		Object propertyWrapper = WrapperFactory.createPropertyWrapper();
+		PropertyWrapper propertyWrapper = (PropertyWrapper)WrapperFactory.createPropertyWrapper();
 		Object specialRootClassWrapper = WrapperFactory.createSpecialRootClassWrapper(propertyWrapper);
 		assertNotNull(specialRootClassWrapper);
 		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
@@ -209,7 +210,7 @@ public class WrapperFactoryTest {
 		assertTrue(persistentClass instanceof SpecialRootClass);
 		assertSame(
 				((SpecialRootClass)persistentClass).getProperty(), 
-				propertyWrapper);		
+				propertyWrapper.getWrappedObject());		
 	}
 	
 	@Test
