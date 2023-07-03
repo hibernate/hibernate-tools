@@ -122,6 +122,8 @@ public class ValueWrapperFactory {
 					result = valueClassMethod.invoke(extendedValue, args);
 					if (result != null && Value.class.isAssignableFrom(method.getReturnType())) {
 						result = ValueWrapperFactory.createValueWrapper((Value)result);
+					} else if ("getPropertyIterator".equals(valueClassMethod.getName())) {
+						result = createWrappedPropertyIterator((Iterator<?>)result);
 					}
 				} else {
 					result = method.invoke(this, args);
@@ -167,6 +169,20 @@ public class ValueWrapperFactory {
 		} catch (NoSuchMethodException e) {
 			return null;
 		}
+	}
+	
+	private static Iterator<Property> createWrappedPropertyIterator(Iterator<?> iterator) {
+		if (iterator == null) return null;
+		return new Iterator<Property>() {
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
+			}
+			@Override
+			public Property next() {
+				return PropertyWrapperFactory.createPropertyWrapper((Property)iterator.next());
+			}			
+		};
 	}
 	
 }
