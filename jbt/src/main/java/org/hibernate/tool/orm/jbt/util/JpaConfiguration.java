@@ -14,6 +14,7 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.wrp.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -120,10 +121,6 @@ public class JpaConfiguration extends Configuration {
 		return persistenceUnit;
 	}
 	
-	public Iterator<PersistentClass> getClassMappings() {
-		return getMetadata().getEntityBindings().iterator();
-	}
-	
 	public void setPreferBasicCompositeIds(boolean b) {
 		throw new RuntimeException(
 				"Method 'setPreferBasicCompositeIds' should not be called on instances of " +
@@ -136,8 +133,24 @@ public class JpaConfiguration extends Configuration {
 				this.getClass().getName());
 	}
 	
+	public Iterator<PersistentClass> getClassMappings() {
+		final Iterator<PersistentClass> iterator = getMetadata().getEntityBindings().iterator();
+		return new Iterator<PersistentClass>() {
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
+			}
+			@Override
+			public PersistentClass next() {
+				return new DelegatingPersistentClassWrapperImpl(iterator.next());
+			}
+			
+		};
+	}
+	
 	public PersistentClass getClassMapping(String name) {
-		return getMetadata().getEntityBinding(name);
+		PersistentClass pc = getMetadata().getEntityBinding(name);
+		return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
 	}
 	
 	public Iterator<Table> getTableMappings() {

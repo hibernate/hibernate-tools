@@ -29,6 +29,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,8 +175,8 @@ public class JpaConfigurationTest {
 		Iterator<PersistentClass> classMappings = jpaConfiguration.getClassMappings();
 		assertNotNull(classMappings);
 		assertTrue(classMappings.hasNext());
-		PersistentClass pc = classMappings.next();
-		assertSame(pc.getMappedClass(), FooBar.class);
+		PersistentClassWrapper pc = (PersistentClassWrapper)classMappings.next();
+		assertSame(pc.getWrappedObject().getMappedClass(), FooBar.class);
 	}
 	
 	@Test
