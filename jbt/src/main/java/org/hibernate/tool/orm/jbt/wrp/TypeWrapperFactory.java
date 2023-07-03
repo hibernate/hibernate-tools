@@ -62,10 +62,7 @@ public class TypeWrapperFactory {
 			return returnedClass == null ? null : returnedClass.getName();
 		}
 		default String getAssociatedEntityName() {
-			throw new UnsupportedOperationException(
-					"Class '" + 
-					getWrappedObject().getClass().getName() + 
-					"' does not support 'getAssociatedEntityName()'." ); 
+			return null; 
 		}
 		default boolean isIntegerType() {
 			return IntegerType.class.isAssignableFrom(getWrappedObject().getClass());

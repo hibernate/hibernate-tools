@@ -49,12 +49,23 @@ public class DelegatingTableWrapperImpl extends Table implements TableWrapper{
 	
 	@Override
 	public PrimaryKey getPrimaryKey() {
-		return delegate.getPrimaryKey();
+		PrimaryKey result = delegate.getPrimaryKey();
+		return result == null ? null : new DelegatingPrimaryKeyWrapperImpl(result);
 	}
 	
 	@Override
 	public Iterator<Column> getColumnIterator() {
-		return delegate.getColumnIterator();
+		final Iterator<Column> iterator = delegate.getColumnIterator();
+		return new Iterator<Column>() {
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
+			}
+			@Override
+			public Column next() {
+				return new DelegatingColumnWrapperImpl(iterator.next());
+			}			
+		};
 	}
 	
 	@Override
@@ -67,7 +78,7 @@ public class DelegatingTableWrapperImpl extends Table implements TableWrapper{
 			}
 			@Override
 			public ForeignKey next() {
-				return (ForeignKey)ForeignKeyWrapperFactory.createForeinKeyWrapper(iterator.next());
+				return new DelegatingForeignKeyWrapperImpl(iterator.next());
 			}		
 		};
 	}

@@ -161,7 +161,7 @@ public class WrapperFactoryTest {
 	public void testCreateColumnWrapper() {
 		Object columnWrapper = WrapperFactory.createColumnWrapper(null);
 		assertNotNull(columnWrapper);
-		assertTrue(columnWrapper instanceof ColumnWrapper);
+		assertTrue(columnWrapper instanceof DelegatingColumnWrapperImpl);
 	}
 	
 	@Test

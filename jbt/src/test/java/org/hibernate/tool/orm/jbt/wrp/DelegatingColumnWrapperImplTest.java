@@ -13,6 +13,7 @@ import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -21,13 +22,13 @@ import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ColumnWrapperTest {
+public class DelegatingColumnWrapperImplTest {
 	
-	private ColumnWrapper columnWrapper = null;
+	private DelegatingColumnWrapperImpl columnWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
-		columnWrapper = new ColumnWrapper(null);
+		columnWrapper = new DelegatingColumnWrapperImpl(new Column());
 	}
 	
 	@Test
@@ -35,24 +36,24 @@ public class ColumnWrapperTest {
 		assertNull(columnWrapper.getSqlType());
 		columnWrapper.setSqlType("foobar");
 		assertEquals("foobar", columnWrapper.getSqlType());
-		columnWrapper = new ColumnWrapper(null);
+		columnWrapper = new DelegatingColumnWrapperImpl(new Column());
 		Configuration cfg = new Configuration();
 		cfg.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		cfg.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		columnWrapper.setValue(createValue());
+		columnWrapper.getWrappedObject().setValue(createValue());
 		assertEquals("integer", columnWrapper.getSqlType(cfg));
 	}
 	
 	@Test
 	public void testGetLength() {
 		assertEquals(Integer.MIN_VALUE, columnWrapper.getLength());
-		columnWrapper.setLength(Integer.MAX_VALUE);
+		columnWrapper.getWrappedObject().setLength(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getLength());
 	}
 	
 	@Test
 	public void testGetDefaultLength() throws Exception {
-		Field defaultLengthField = ColumnWrapper.class.getDeclaredField("DEFAULT_LENGTH");
+		Field defaultLengthField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_LENGTH");
 		defaultLengthField.setAccessible(true);
 		assertEquals(defaultLengthField.get(null), columnWrapper.getDefaultLength());
 	}
@@ -60,13 +61,13 @@ public class ColumnWrapperTest {
 	@Test
 	public void testGetPrecision() {
 		assertEquals(Integer.MIN_VALUE, columnWrapper.getPrecision());
-		columnWrapper.setPrecision(Integer.MAX_VALUE);
+		columnWrapper.getWrappedObject().setPrecision(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getPrecision());
 	}
 	
 	@Test
 	public void testGetDefaultPrecision() throws Exception {
-		Field defaultPrecisionField = ColumnWrapper.class.getDeclaredField("DEFAULT_PRECISION");
+		Field defaultPrecisionField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_PRECISION");
 		defaultPrecisionField.setAccessible(true);
 		assertEquals(defaultPrecisionField.get(null), columnWrapper.getDefaultPrecision());
 	}
@@ -74,13 +75,13 @@ public class ColumnWrapperTest {
 	@Test
 	public void testGetScale() {
 		assertEquals(Integer.MIN_VALUE, columnWrapper.getScale());
-		columnWrapper.setScale(Integer.MAX_VALUE);
+		columnWrapper.getWrappedObject().setScale(Integer.MAX_VALUE);
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getScale());
 	}
 	
 	@Test
 	public void testGetDefaultScale() throws Exception {
-		Field defaultScaleField = ColumnWrapper.class.getDeclaredField("DEFAULT_SCALE");
+		Field defaultScaleField = DelegatingColumnWrapperImpl.class.getDeclaredField("DEFAULT_SCALE");
 		defaultScaleField.setAccessible(true);
 		assertEquals(defaultScaleField.get(null), columnWrapper.getDefaultScale());
 	}
@@ -89,7 +90,7 @@ public class ColumnWrapperTest {
 	public void testGetValue() {
 		Value v = createValue();
 		assertNull(columnWrapper.getValue());
-		columnWrapper.setValue(v);
+		columnWrapper.getWrappedObject().setValue(v);
 		Value valueWrapper = columnWrapper.getValue();
 		assertNotNull(valueWrapper);
 		assertTrue(valueWrapper instanceof ValueWrapper);

@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.wrp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -169,13 +170,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testGetAssociatedEntityName() {
 		// first try a class type
-		try {
-			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
-			classTypeWrapper.getAssociatedEntityName();
-			fail();
-		} catch (UnsupportedOperationException e) {
-			assertTrue(e.getMessage().contains("does not support 'getAssociatedEntityName()'"));
-		}
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		assertNull(classTypeWrapper.getAssociatedEntityName());
 		// next try a many to one type 
 		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
 				new ManyToOneType((TypeConfiguration)null, "foo"));

@@ -9,6 +9,7 @@ import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -79,7 +80,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createColumnWrapper(String name) {
-		return new ColumnWrapper(name);
+		return new DelegatingColumnWrapperImpl(new Column(name));
 	}
 
 	public static Object createRootClassWrapper() {
