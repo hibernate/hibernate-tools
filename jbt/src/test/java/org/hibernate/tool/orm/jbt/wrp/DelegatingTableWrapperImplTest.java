@@ -6,17 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.KeyValue;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TableWrapperTest {
+public class DelegatingTableWrapperImplTest {
 	
-	private TableWrapper tableWrapper = null;
+	private DelegatingTableWrapperImpl tableWrapper = null;
 	
 	@BeforeEach
 	public void beforeEach() {
-		tableWrapper = new TableWrapper("foo");
+		tableWrapper = new DelegatingTableWrapperImpl(new Table("Hibernate Tools", "foo"));
 		KeyValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		tableWrapper.setIdentifierValue(v);
 	}
@@ -30,7 +31,7 @@ public class TableWrapperTest {
 	@Test
 	public void testGetIdentifierValue() {
 		KeyValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
-		tableWrapper.setIdentifierValue(v);
+		tableWrapper.getWrappedObject().setIdentifierValue(v);
 		assertSame(v,  ((Wrapper)tableWrapper.getIdentifierValue()).getWrappedObject());
 	}
 

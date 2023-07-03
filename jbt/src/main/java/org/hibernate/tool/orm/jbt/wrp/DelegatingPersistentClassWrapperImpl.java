@@ -48,7 +48,12 @@ public class DelegatingPersistentClassWrapperImpl extends RootClass implements P
 
 	@Override 
 	public RootClass getRootClass() {
-		return delegate.getRootClass();
+		RootClass result = delegate.getRootClass();
+		if (result == delegate) {
+			return this;
+		} else {
+			return result == null ? null : new DelegatingPersistentClassWrapperImpl(result);
+		}
 	}
 
 	@Override 
@@ -84,7 +89,8 @@ public class DelegatingPersistentClassWrapperImpl extends RootClass implements P
 
 	@Override 
 	public Table getTable() {
-		return delegate.getTable();
+		Table result = delegate.getTable();
+		return result == null ? null : new DelegatingTableWrapperImpl(result);
 	}
 
 	@Override 

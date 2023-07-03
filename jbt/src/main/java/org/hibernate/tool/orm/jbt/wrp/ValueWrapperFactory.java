@@ -124,6 +124,8 @@ public class ValueWrapperFactory {
 						result = ValueWrapperFactory.createValueWrapper((Value)result);
 					} else if ("getPropertyIterator".equals(valueClassMethod.getName())) {
 						result = createWrappedPropertyIterator((Iterator<?>)result);
+					} else if (result != null && "getAssociatedClass".equals(valueClassMethod.getName())) {
+						result = new DelegatingPersistentClassWrapperImpl((PersistentClass)result);
 					}
 				} else {
 					result = method.invoke(this, args);

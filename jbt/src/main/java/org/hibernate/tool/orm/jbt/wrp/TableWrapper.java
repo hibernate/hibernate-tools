@@ -1,18 +1,28 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.Table;
+import java.util.Iterator;
 
-public class TableWrapper extends Table implements Wrapper {
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Value;
+
+public interface TableWrapper extends Wrapper {
 	
-	public TableWrapper(String name) {
-		super("HibernateTools", name);
-	}
-	
-	@Override
-	public KeyValue getIdentifierValue() {
-		KeyValue result = super.getIdentifierValue();
-		return result == null ? null : (KeyValue)ValueWrapperFactory.createValueWrapper(result);
-	}
+	String getName();
+	void addColumn(Column column);
+	String getCatalog();
+	String getSchema();
+	PrimaryKey getPrimaryKey();
+	Iterator<Column> getColumnIterator();
+	Iterator<ForeignKey> getForeignKeyIterator();
+	String getComment();
+	String getRowId();
+	String getSubselect();
+	boolean hasDenormalizedTables();
+	boolean isAbstract();
+	boolean isAbstractUnionTable();
+	boolean isPhysicalTable();
+	Value getIdentifierValue();
 
 }

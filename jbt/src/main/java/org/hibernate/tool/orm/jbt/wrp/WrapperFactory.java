@@ -139,8 +139,9 @@ public class WrapperFactory {
 	}
 
 	public static Object createTableWrapper(String name) {
-		TableWrapper result = new TableWrapper(name);
-		result.setPrimaryKey(new PrimaryKey(result));
+		Table t = new Table("Hibernate Tools", name);
+		t.setPrimaryKey(new PrimaryKey(t));
+		DelegatingTableWrapperImpl result = new DelegatingTableWrapperImpl(t);
 		return result;
 	}
 
