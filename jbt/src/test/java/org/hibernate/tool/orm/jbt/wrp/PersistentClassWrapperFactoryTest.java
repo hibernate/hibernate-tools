@@ -30,6 +30,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ public class PersistentClassWrapperFactoryTest {
 	private PersistentClass specialRootClassTarget = null;
 	private PersistentClassWrapper specialRootClassWrapper = null;
 	
-	private Property property = null;
+	private PropertyWrapper property = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -55,7 +56,7 @@ public class PersistentClassWrapperFactoryTest {
 		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
 		joinedSubclassWrapper = PersistentClassWrapperFactory.createJoinedSubclassWrapper(rootClassWrapper);
 		joinedSubclassTarget = joinedSubclassWrapper.getWrappedObject();
-		property = new Property();
+		property = (PropertyWrapper)WrapperFactory.createPropertyWrapper();
 		property.setPersistentClass(rootClassTarget);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
 		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
@@ -212,7 +213,7 @@ public class PersistentClassWrapperFactoryTest {
 		specialRootClassTarget.addProperty(property);
 		propertyClosureIterator = specialRootClassWrapper.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());	
-		assertSame(property, propertyClosureIterator.next());
+		assertSame(property, ((Wrapper)propertyClosureIterator.next()).getWrappedObject());
 	}
 	
 	@Test
@@ -320,7 +321,9 @@ public class PersistentClassWrapperFactoryTest {
 					"getProperty() is only allowed on SpecialRootClass", 
 					t.getMessage());
 		}
-		assertSame(property, specialRootClassWrapper.getProperty());
+		assertSame(
+				((Wrapper)property).getWrappedObject(), 
+				((Wrapper)specialRootClassWrapper.getProperty()).getWrappedObject());
 	}
 	
 	@Test
@@ -654,7 +657,7 @@ public class PersistentClassWrapperFactoryTest {
 		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, pc);
 		component.setParentProperty("foo");
-		Property property = new Property();
+		PropertyWrapper property = (PropertyWrapper)WrapperFactory.createPropertyWrapper();
 		property.setValue(component);
 		property.setPersistentClass(pc);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);

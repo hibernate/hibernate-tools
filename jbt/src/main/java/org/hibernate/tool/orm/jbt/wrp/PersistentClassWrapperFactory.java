@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Iterator;
 
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -14,6 +15,8 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.DelegatingPropertyWrapperImpl;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 
 public class PersistentClassWrapperFactory {
 	
@@ -29,8 +32,8 @@ public class PersistentClassWrapperFactory {
 		return new JoinedSubclassWrapperImpl(superClassWrapper.getWrappedObject());
 	}
 	
-	public static PersistentClassWrapper createSpecialRootClassWrapper(Property property) {
-		return new SpecialRootClassWrapperImpl(property);
+	public static PersistentClassWrapper createSpecialRootClassWrapper(PropertyWrapper property) {
+		return new SpecialRootClassWrapperImpl(property.getWrappedObject());
 	}
 	
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClassWrapper persistentClassWrapper) {
@@ -104,10 +107,38 @@ public class PersistentClassWrapperFactory {
 		public KeyValue getIdentifier() {
 			return (KeyValue)wrapValueIfNeeded(super.getIdentifier());
 		}
+		@Override
+		public Property getProperty() {
+			return wrapPropertyIfNeeded(super.getProperty());
+		}
+		@Override
+		public Property getParentProperty() {
+			return wrapPropertyIfNeeded(super.getParentProperty());
+		}
+		@Override 
+		public Iterator<Property> getPropertyIterator() {
+			final Iterator<Property> iterator = super.getPropertyIterator();
+			return new Iterator<Property>() {
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+				@Override
+				public Property next() {
+					return wrapPropertyIfNeeded(iterator.next());
+				}
+				
+			};
+		}
+
 	}
 	
 	private static Value wrapValueIfNeeded(Value v) {
 		return (v != null) && !(v instanceof Wrapper) ? ValueWrapperFactory.createValueWrapper(v) : v;
+	}
+	
+	private static Property wrapPropertyIfNeeded(Property p) {
+		return (p != null) && !(p instanceof Wrapper) ? PropertyWrapperFactory.createPropertyWrapper(p) : p;
 	}
 	
 }

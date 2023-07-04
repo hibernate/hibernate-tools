@@ -209,8 +209,8 @@ public class WrapperFactoryTest {
 		PersistentClass persistentClass = ((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
 		assertTrue(persistentClass instanceof SpecialRootClass);
 		assertSame(
-				((SpecialRootClass)persistentClass).getProperty(), 
-				propertyWrapper);		
+				((Wrapper)((SpecialRootClass)persistentClass).getProperty()).getWrappedObject(), 
+				((Wrapper)propertyWrapper).getWrappedObject());		
 	}
 	
 	@Test
