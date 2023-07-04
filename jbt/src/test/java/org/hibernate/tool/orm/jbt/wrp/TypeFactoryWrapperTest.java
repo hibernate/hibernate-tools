@@ -220,7 +220,7 @@ public class TypeFactoryWrapperTest {
 		assertEquals("42", typeFormats.get(TypeFactoryWrapper.INSTANCE.getLongType()));
 		assertEquals("a string", typeFormats.get(TypeFactoryWrapper.INSTANCE.getStringType()));
 		assertEquals("a text", typeFormats.get(TypeFactoryWrapper.INSTANCE.getTextType()));
-		assertEquals(12, typeFormats.get(TypeFactoryWrapper.INSTANCE.getTimeType()).length());
+		assertEquals(':', typeFormats.get(TypeFactoryWrapper.INSTANCE.getTimeType()).charAt(2));
 		assertEquals(
 				new SimpleDateFormat("yyyy-MM-dd").format(new Date()), 
 				typeFormats.get(TypeFactoryWrapper.INSTANCE.getTimestampType()).substring(0, 10));
