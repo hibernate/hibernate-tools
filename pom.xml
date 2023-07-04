@@ -76,6 +76,7 @@
 
     <modules>
         <module>orm</module>
+        <module>jbt</module>
         <module>maven</module>
         <module>ant</module>
         <module>test</module>

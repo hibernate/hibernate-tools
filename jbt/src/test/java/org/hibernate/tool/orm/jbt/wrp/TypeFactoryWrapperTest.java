@@ -12,9 +12,24 @@ import java.util.TimeZone;
 
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.Type;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class TypeFactoryWrapperTest {
+	
+	private static Locale SAVED_LOCALE = null;
+	
+	@BeforeAll
+	public static void beforeAll() {
+		SAVED_LOCALE = Locale.getDefault();
+		Locale.setDefault(new Locale("nl", "BE"));
+	}
+	
+	@AfterAll
+	public static void afterAll() {
+		Locale.setDefault(SAVED_LOCALE);
+	}
 	
 	@Test
 	public void testConstruction() {
