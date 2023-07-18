@@ -76,7 +76,9 @@ public class WrapperFactoryTest {
 	public void testCreateCfg2HbmWrapper() {
 		Object cfg2HbmWrapper = WrapperFactory.createCfg2HbmWrapper();
 		assertNotNull(cfg2HbmWrapper);
-		assertTrue(cfg2HbmWrapper instanceof Cfg2HbmTool);
+		assertTrue(cfg2HbmWrapper instanceof Wrapper);
+		Object cfg2HbmTool = ((Wrapper)cfg2HbmWrapper).getWrappedObject();
+		assertTrue(cfg2HbmTool instanceof Cfg2HbmTool);
 	}
 	
 	@Test
