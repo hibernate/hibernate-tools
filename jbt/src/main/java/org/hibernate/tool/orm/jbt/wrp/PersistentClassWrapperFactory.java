@@ -15,7 +15,6 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.DelegatingPropertyWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 
 public class PersistentClassWrapperFactory {
@@ -75,6 +74,13 @@ public class PersistentClassWrapperFactory {
 		public KeyValue getIdentifier() {
 			return (KeyValue)wrapValueIfNeeded(super.getIdentifier());
 		}
+		@Override
+		public void setIdentifier(Value v) {
+			if (v instanceof Wrapper) {
+				v = (Value)((Wrapper)v).getWrappedObject();
+			} 
+			super.setIdentifier(((KeyValue)v));
+		}
 	}
 	
 	static class SingleTableSubclassWrapperImpl 
@@ -91,6 +97,13 @@ public class PersistentClassWrapperFactory {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
+		@Override
+		public void setKey(Value v) {
+			if (v instanceof Wrapper) {
+				v = (Value)((Wrapper)v).getWrappedObject();
+			} 
+			super.setKey(((KeyValue)v));
+		}
 	}
 	
 	static class SpecialRootClassWrapperImpl 
@@ -106,6 +119,13 @@ public class PersistentClassWrapperFactory {
 		@Override
 		public KeyValue getIdentifier() {
 			return (KeyValue)wrapValueIfNeeded(super.getIdentifier());
+		}
+		@Override
+		public void setIdentifier(Value v) {
+			if (v instanceof Wrapper) {
+				v = (Value)((Wrapper)v).getWrappedObject();
+			} 
+			super.setIdentifier(((KeyValue)v));
 		}
 		@Override
 		public Property getProperty() {

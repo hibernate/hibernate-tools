@@ -9,9 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
 import org.hibernate.MappingException;
@@ -598,7 +595,7 @@ public class PersistentClassWrapperFactoryTest {
 	
 	@Test
 	public void testSetKey() {
-		KeyValue valueTarget = createValue();
+		Value valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(rootClassTarget.getKey());
 		assertNull(singleTableSubclassTarget.getKey());
 		assertNull(joinedSubclassTarget.getKey());
@@ -607,13 +604,13 @@ public class PersistentClassWrapperFactoryTest {
 			rootClassWrapper.setKey(valueTarget);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 		try {
 			singleTableSubclassWrapper.setKey(valueTarget);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 		joinedSubclassWrapper.setKey(valueTarget);
 		assertSame(valueTarget, joinedSubclassTarget.getKey());
@@ -621,7 +618,7 @@ public class PersistentClassWrapperFactoryTest {
 			specialRootClassWrapper.setKey(valueTarget);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("setKey(KeyValue) is only allowed on JoinedSubclass", e.getMessage());
+			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 	}
 	
@@ -691,42 +688,42 @@ public class PersistentClassWrapperFactoryTest {
 
 	@Test
 	public void testSetIdentifier() {
-		KeyValue valueTarget = createValue();
+		KeyValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(rootClassTarget.getIdentifier());
 		assertNull(singleTableSubclassTarget.getIdentifier());
 		assertNull(joinedSubclassTarget.getIdentifier());
 		rootClassWrapper.setIdentifier(valueTarget);
-		assertSame(valueTarget, rootClassTarget.getIdentifier());
-		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
-		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
+		assertSame(valueTarget, ((Wrapper)rootClassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getIdentifier()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getIdentifier()).getWrappedObject());
 		try {
 			singleTableSubclassWrapper.setIdentifier(valueTarget);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		try {
 			joinedSubclassWrapper.setIdentifier(valueTarget);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances", e.getMessage());
+			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		assertNull(specialRootClassTarget.getIdentifier());
 		specialRootClassWrapper.setIdentifier(valueTarget);
-		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
+		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getIdentifier()).getWrappedObject());
 	}
 	
 	@Test
 	public void testSetDiscriminator() throws Exception {
-		Value valueTarget = createValue();
+		KeyValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(rootClassTarget.getDiscriminator());
 		assertNull(singleTableSubclassTarget.getDiscriminator());
 		assertNull(joinedSubclassTarget.getDiscriminator());
 		assertNull(specialRootClassTarget.getDiscriminator());
 		rootClassWrapper.setDiscriminator(valueTarget);
-		assertSame(valueTarget, rootClassTarget.getDiscriminator());
-		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
-		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
+		assertSame(valueTarget, ((Wrapper)rootClassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)singleTableSubclassTarget.getDiscriminator()).getWrappedObject());
+		assertSame(valueTarget, ((Wrapper)joinedSubclassTarget.getDiscriminator()).getWrappedObject());
 		try {
 			singleTableSubclassWrapper.setDiscriminator(valueTarget);
 			fail();
@@ -741,7 +738,7 @@ public class PersistentClassWrapperFactoryTest {
 		}
 		assertNull(specialRootClassTarget.getDiscriminator());
 		specialRootClassWrapper.setDiscriminator(valueTarget);
-		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
+		assertSame(valueTarget, ((Wrapper)specialRootClassTarget.getDiscriminator()).getWrappedObject());
 	}
 	
 	@Test
@@ -1214,15 +1211,4 @@ public class PersistentClassWrapperFactoryTest {
 		assertSame(tableTarget, specialRootClassWrapper.getRootTable());
 	}
 	
-	private KeyValue createValue() {
-		return (KeyValue)Proxy.newProxyInstance(
-				getClass().getClassLoader(), 
-				new Class[] { KeyValue.class, ValueWrapper.class }, 
-				new InvocationHandler() {	
-					@Override
-					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-						return null;
-					}
-		});
-	}
 }

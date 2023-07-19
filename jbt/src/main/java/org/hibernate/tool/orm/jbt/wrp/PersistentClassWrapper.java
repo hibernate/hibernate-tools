@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -24,8 +23,8 @@ public interface PersistentClassWrapper extends Wrapper {
 	default boolean isInstanceOfJoinedSubclass() { return JoinedSubclass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default Property getProperty() { throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); }
 	default void setTable(Table table) { throw new RuntimeException("Method 'setTable(Table)' is not supported."); }
-	default void setIdentifier(KeyValue value) { throw new RuntimeException("Method 'setIdentifier(KeyValue)' can only be called on RootClass instances"); }
-	default void setKey(KeyValue value) { throw new RuntimeException("setKey(KeyValue) is only allowed on JoinedSubclass"); }
+	default void setIdentifier(Value value) { throw new RuntimeException("Method 'setIdentifier(Value)' can only be called on RootClass instances"); }
+	default void setKey(Value value) { throw new RuntimeException("setKey(Value) is only allowed on JoinedSubclass"); }
 	default boolean isInstanceOfSpecialRootClass() { return SpecialRootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default Property getParentProperty() { throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass"); }
 	default void setIdentifierProperty(Property property) { throw new RuntimeException("setIdentifierProperty(Property) is only allowed on RootClass instances"); }
