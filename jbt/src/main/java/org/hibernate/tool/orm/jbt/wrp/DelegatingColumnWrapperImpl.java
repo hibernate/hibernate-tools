@@ -23,6 +23,7 @@ public class DelegatingColumnWrapperImpl extends Column implements ColumnWrapper
 	private Column delegate = null;
 	
 	public DelegatingColumnWrapperImpl(Column c) {
+		super(c.getName());
 		delegate = c;
 	}
 	
