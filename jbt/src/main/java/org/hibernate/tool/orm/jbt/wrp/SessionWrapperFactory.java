@@ -86,7 +86,8 @@ public class SessionWrapperFactory {
 			try {
 				result = delegate().contains(o);
 			} catch (IllegalArgumentException e) {
-				if (!e.getMessage().startsWith("Not an entity [")) {
+				String message = e.getMessage();
+				if (!(message.startsWith("Class '") && message.endsWith("' is not an entity class"))) {
 					throw e;
 				}
 			}
