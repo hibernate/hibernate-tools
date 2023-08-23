@@ -12,7 +12,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
 import org.hibernate.tool.orm.jbt.type.IntegerType;
-import org.hibernate.tool.orm.jbt.type.StringType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
@@ -22,9 +21,17 @@ import org.hibernate.type.ComponentType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TypeWrapperTest {
+	
+	private TypeConfiguration typeConfiguration = null;
+	
+	@BeforeEach
+	public void beforeEach() {
+		typeConfiguration = new TypeConfiguration();
+	}
 
 	@Test
 	public void testToString() {
@@ -208,7 +215,7 @@ public class TypeWrapperTest {
 		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
 		assertFalse(classTypeWrapper.isInstanceOfPrimitiveType());
 		// next try a string type
-		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(new StringType());
+		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(String.class));
 		assertFalse(stringTypeWrapper.isInstanceOfPrimitiveType());
 		// finally try a integer type 
 		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
