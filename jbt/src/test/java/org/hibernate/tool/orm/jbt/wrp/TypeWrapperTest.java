@@ -11,7 +11,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.type.ClassType;
-import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.TypeWrapperFactory.TypeWrapper;
 import org.hibernate.type.AnyType;
@@ -191,7 +190,7 @@ public class TypeWrapperTest {
 		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
 		assertFalse(classTypeWrapper.isIntegerType());
 		// next try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertTrue(integerTypeWrapper.isIntegerType());
 	}
 	
@@ -218,7 +217,7 @@ public class TypeWrapperTest {
 		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(String.class));
 		assertFalse(stringTypeWrapper.isInstanceOfPrimitiveType());
 		// finally try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertTrue(integerTypeWrapper.isInstanceOfPrimitiveType());
 	}
 	
@@ -232,7 +231,7 @@ public class TypeWrapperTest {
 			assertTrue(e.getMessage().contains("does not support 'getPrimitiveClass()'"));
 		}
 		// next try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(new IntegerType());
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertEquals(int.class, integerTypeWrapper.getPrimitiveClass());
 	}
 

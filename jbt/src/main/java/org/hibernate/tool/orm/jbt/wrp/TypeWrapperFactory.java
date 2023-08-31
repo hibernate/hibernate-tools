@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
@@ -65,7 +64,7 @@ public class TypeWrapperFactory {
 			return null; 
 		}
 		default boolean isIntegerType() {
-			return IntegerType.class.isAssignableFrom(getWrappedObject().getClass());
+			return Integer.class.isAssignableFrom(((Type)getWrappedObject()).getReturnedClass());
 		}
 		default boolean isArrayType() {
 			if (CollectionType.class.isAssignableFrom(getWrappedObject().getClass())) {
