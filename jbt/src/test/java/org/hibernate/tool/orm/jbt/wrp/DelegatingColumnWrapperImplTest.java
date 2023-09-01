@@ -15,10 +15,10 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.type.IntegerType;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -106,7 +106,7 @@ public class DelegatingColumnWrapperImplTest {
 					public Object invoke(Object proxy, Method method, Object[] args) 
 							throws Throwable {
 						if (method.getName().equals("getType")) {
-							return IntegerType.INSTANCE;
+							return new TypeConfiguration().getBasicTypeForJavaType(Integer.class);
 						}
 						return null;
 					}
