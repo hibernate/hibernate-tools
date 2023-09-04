@@ -73,6 +73,7 @@
 
     <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
     <maven-plugin-api.version>3.5.2</maven-plugin-api.version>
+    <maven-project.version>3.0-alpha-2</maven-project.version>
 
     <!-- Plugin versions -->
     <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
@@ -87,6 +88,12 @@
       <artifactId>hibernate-tools-orm</artifactId>
     </dependency>
     <!-- Maven Plugins -->
+    <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-project</artifactId>
+        <version>${maven-project.version}</version>
+        <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
