@@ -35,7 +35,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testToString() {
 		// first try type that is string representable
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertEquals(
 				TypeWrapperTest.class.getName(), 
 				classTypeWrapper.toString(TypeWrapperTest.class));
@@ -53,7 +54,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testGetName() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertEquals("class", classTypeWrapper.getName());
 		// next try a array type
 		TypeWrapper arrayTypeWrapper = 
@@ -63,7 +65,8 @@ public class TypeWrapperTest {
 	
 	@Test
 	public void testFromStringValue() {
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertEquals(
 				TypeWrapperTest.class, 
 				classTypeWrapper.fromStringValue(TypeWrapperTest.class.getName()));
@@ -81,7 +84,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testIsEntityType() {
 		// first try type that is not an entity type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isEntityType());
 		// next try type that is an entity type
 		TypeWrapper entityTypeWrapper = TypeWrapperFactory.createTypeWrapper(
@@ -93,7 +97,8 @@ public class TypeWrapperTest {
 	public void testIsOneToOne() {
 		// first try type that is not a one to one type
 		try {
-			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+					typeConfiguration.getBasicTypeForJavaType(Class.class));
 			classTypeWrapper.isOneToOne();
 			fail();
 		} catch (UnsupportedOperationException e) {
@@ -113,7 +118,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testIsAnyType() {
 		// first try type that is not a any type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isAnyType());
 		// next try a any type
 		TypeWrapper anyTypeWrapper = 
@@ -124,7 +130,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testIsComponentType() {
 		// first try type that is not a component type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isComponentType());
 		// next try a component type
 		Component component = new Component(
@@ -141,7 +148,8 @@ public class TypeWrapperTest {
 	public void testIsCollectionType() {
 		// first try type that is not a collection type
 		TypeWrapper classTypeWrapper = 
-				TypeWrapperFactory.createTypeWrapper(new ClassType());
+				TypeWrapperFactory.createTypeWrapper(
+						typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isCollectionType());
 		// next try a collection type
 		TypeWrapper arrayTypeWrapper = 
@@ -152,7 +160,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testGetReturnedClassName() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertEquals(Class.class.getName(), classTypeWrapper.getReturnedClassName());
 		// next try an array type of string values
 		TypeWrapper arrayTypeWrapper = TypeWrapperFactory.createTypeWrapper(
@@ -176,7 +185,8 @@ public class TypeWrapperTest {
 	@Test
 	public void testGetAssociatedEntityName() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertNull(classTypeWrapper.getAssociatedEntityName());
 		// next try a many to one type 
 		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
@@ -187,17 +197,20 @@ public class TypeWrapperTest {
 	@Test
 	public void testIsIntegerType() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isIntegerType());
 		// next try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertTrue(integerTypeWrapper.isIntegerType());
 	}
 	
 	@Test
 	public void testIsArrayType() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isArrayType());
 		// next try a bag type
 		TypeWrapper bagTypeWrapper = TypeWrapperFactory.createTypeWrapper(new BagType(null, null));
@@ -211,13 +224,16 @@ public class TypeWrapperTest {
 	@Test
 	public void testIsInstanceOfPrimitiveType() {
 		// first try a class type
-		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
 		assertFalse(classTypeWrapper.isInstanceOfPrimitiveType());
 		// next try a string type
-		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(String.class));
+		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(String.class));
 		assertFalse(stringTypeWrapper.isInstanceOfPrimitiveType());
 		// finally try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertTrue(integerTypeWrapper.isInstanceOfPrimitiveType());
 	}
 	
@@ -225,13 +241,15 @@ public class TypeWrapperTest {
 	public void testGetPrimitiveClass() {
 		// first try a class type
 		try {
-			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+					typeConfiguration.getBasicTypeForJavaType(Class.class));
 			classTypeWrapper.getPrimitiveClass();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getPrimitiveClass()'"));
 		}
 		// next try a integer type 
-		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(typeConfiguration.getBasicTypeForJavaType(Integer.class));
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertEquals(int.class, integerTypeWrapper.getPrimitiveClass());
 	}
 
@@ -239,7 +257,8 @@ public class TypeWrapperTest {
 	public void testGetRole() {
 		// first try a class type
 		try {
-			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(new ClassType());
+			TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+					typeConfiguration.getBasicTypeForJavaType(Class.class));
 			classTypeWrapper.getRole();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'getRole()'"));
