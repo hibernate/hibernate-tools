@@ -32,6 +32,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	default void setDiscriminator(Value value) { throw new RuntimeException("Method 'setDiscriminator(Value)' can only be called on RootClass instances"); }
 	default boolean isLazyPropertiesCacheable() { throw new RuntimeException("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances"); }
 	default Iterator<Property> getPropertyIterator() { return getProperties().iterator(); }
+	default Iterator<Join> getJoinIterator() { return getJoins().iterator(); }
 
 	String getEntityName();
 	String getClassName();
@@ -45,7 +46,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	Boolean isAbstract();
 	Value getDiscriminator();
 	Value getIdentifier();
-	Iterator<Join> getJoinIterator();
 	Property getVersion();
 	void setClassName(String name);
 	void setEntityName(String name);
@@ -80,5 +80,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	String getWhere();
 	Table getRootTable();
 	List<Property> getProperties();
+	List<Join> getJoins();
 	
 }
