@@ -155,7 +155,7 @@ public class DelegatingPersistentClassWrapperImpl extends RootClass implements P
 
 	@Override 
 	public Iterator<Subclass> getSubclassIterator() {
-		return delegate.getSubclassIterator();
+		return delegate.getSubclasses().iterator();
 	}
 
 	@Override 
