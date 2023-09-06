@@ -137,7 +137,7 @@ public class PersistentClassWrapperFactory {
 		}
 		@Override 
 		public Iterator<Property> getPropertyIterator() {
-			final Iterator<Property> iterator = super.getPropertyIterator();
+			final Iterator<Property> iterator = getProperties().iterator();
 			return new Iterator<Property>() {
 				@Override
 				public boolean hasNext() {
