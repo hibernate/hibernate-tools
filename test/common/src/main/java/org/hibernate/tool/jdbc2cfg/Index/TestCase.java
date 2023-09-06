@@ -83,7 +83,7 @@ public class TestCase {
 				JdbcUtil.toIdentifier(this, "WITH_INDEX"), 
 				JdbcUtil.toIdentifier(this, table.getName()));	
 		assertNull(table.getPrimaryKey(), "there should be no pk" );
-		Iterator<Index> iterator = table.getIndexIterator();
+		Iterator<Index> iterator = table.getIndexes().values().iterator();
 		int cnt=0;
 		while(iterator.hasNext() ) {
 			iterator.next();
