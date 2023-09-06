@@ -34,13 +34,13 @@ public interface PersistentClassWrapper extends Wrapper {
 	default Iterator<Property> getPropertyIterator() { return getProperties().iterator(); }
 	default Iterator<Join> getJoinIterator() { return getJoins().iterator(); }
 	default Iterator<Subclass> getSubclassIterator() { return getSubclasses().iterator(); }
+	default Iterator<Property> getPropertyClosureIterator() { return getPropertyClosure().iterator(); }
 
 	String getEntityName();
 	String getClassName();
 	Property getIdentifierProperty();
 	boolean hasIdentifierProperty();
 	PersistentClass getRootClass();
-	Iterator<Property> getPropertyClosureIterator();
 	PersistentClass getSuperclass();
 	Property getProperty(String name);
 	Table getTable();
@@ -82,5 +82,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	List<Property> getProperties();
 	List<Join> getJoins();
 	List<Subclass> getSubclasses();
+	List<Property> getPropertyClosure();
 	
 }
