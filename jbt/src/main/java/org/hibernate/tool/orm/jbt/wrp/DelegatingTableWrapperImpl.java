@@ -55,7 +55,7 @@ public class DelegatingTableWrapperImpl extends Table implements TableWrapper{
 	
 	@Override
 	public Iterator<Column> getColumnIterator() {
-		final Iterator<Column> iterator = delegate.getColumnIterator();
+		final Iterator<Column> iterator = delegate.getColumns().iterator();
 		return new Iterator<Column>() {
 			@Override
 			public boolean hasNext() {
