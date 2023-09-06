@@ -33,6 +33,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	default boolean isLazyPropertiesCacheable() { throw new RuntimeException("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances"); }
 	default Iterator<Property> getPropertyIterator() { return getProperties().iterator(); }
 	default Iterator<Join> getJoinIterator() { return getJoins().iterator(); }
+	default Iterator<Subclass> getSubclassIterator() { return getSubclasses().iterator(); }
 
 	String getEntityName();
 	String getClassName();
@@ -54,7 +55,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	void addProperty(Property p);
 	void setProxyInterfaceName(String name);
 	void setLazy(boolean b);
-	Iterator<Subclass> getSubclassIterator();
 	boolean isCustomDeleteCallable();
 	boolean isCustomInsertCallable();
 	boolean isCustomUpdateCallable();
@@ -81,5 +81,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	Table getRootTable();
 	List<Property> getProperties();
 	List<Join> getJoins();
+	List<Subclass> getSubclasses();
 	
 }
