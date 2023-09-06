@@ -110,7 +110,7 @@ public class DelegatingPersistentClassWrapperImpl extends RootClass implements P
 
 	@Override 
 	public Iterator<Join> getJoinIterator() {
-		return delegate.getJoinIterator();
+		return delegate.getJoins().iterator();
 	}
 
 	@Override 
