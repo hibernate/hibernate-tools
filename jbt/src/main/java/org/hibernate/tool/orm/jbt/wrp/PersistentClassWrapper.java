@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.wrp;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
@@ -30,6 +31,7 @@ public interface PersistentClassWrapper extends Wrapper {
 	default void setIdentifierProperty(Property property) { throw new RuntimeException("setIdentifierProperty(Property) is only allowed on RootClass instances"); }
 	default void setDiscriminator(Value value) { throw new RuntimeException("Method 'setDiscriminator(Value)' can only be called on RootClass instances"); }
 	default boolean isLazyPropertiesCacheable() { throw new RuntimeException("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances"); }
+	default Iterator<Property> getPropertyIterator() { return getProperties().iterator(); }
 
 	String getEntityName();
 	String getClassName();
@@ -38,7 +40,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	PersistentClass getRootClass();
 	Iterator<Property> getPropertyClosureIterator();
 	PersistentClass getSuperclass();
-	Iterator<Property> getPropertyIterator();
 	Property getProperty(String name);
 	Table getTable();
 	Boolean isAbstract();
@@ -78,5 +79,6 @@ public interface PersistentClassWrapper extends Wrapper {
 	int getOptimisticLockMode();
 	String getWhere();
 	Table getRootTable();
+	List<Property> getProperties();
 	
 }
