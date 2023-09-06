@@ -68,7 +68,7 @@ public class DelegatingPersistentClassWrapperImpl extends RootClass implements P
 	
 	@Override 
 	public Iterator<Property> getPropertyIterator() {
-		final Iterator<Property> iterator = delegate.getPropertyIterator();
+		final Iterator<Property> iterator = delegate.getProperties().iterator();
 		return new Iterator<Property>() {
 			@Override
 			public boolean hasNext() {
