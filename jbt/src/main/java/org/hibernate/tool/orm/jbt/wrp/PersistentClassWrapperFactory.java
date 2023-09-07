@@ -150,6 +150,21 @@ public class PersistentClassWrapperFactory {
 				
 			};
 		}
+		@Override 
+		public Iterator<Property> getPropertyClosureIterator() {
+			final Iterator<Property> iterator = getPropertyClosure().iterator();
+			return new Iterator<Property>() {
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+				@Override
+				public Property next() {
+					return wrapPropertyIfNeeded(iterator.next());
+				}
+				
+			};
+		}
 
 	}
 	
