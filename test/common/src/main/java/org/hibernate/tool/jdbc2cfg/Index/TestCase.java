@@ -97,7 +97,7 @@ public class TestCase {
 				JdbcUtil.toIdentifier(this, index.getName()));	
 		assertEquals(2, index.getColumnSpan() );	
 		assertSame(index.getTable(), table);
-		Iterator<Column> cols = index.getColumnIterator();
+		Iterator<Column> cols = index.getColumns().iterator();
 		Column col1 = cols.next();
 		Column col2 = cols.next();	
 		assertEquals(
