@@ -175,11 +175,11 @@ public class ${declarationName}Home {
 <#else>
                    .add( ${pojo.importType("org.hibernate.criterion.Restrictions")}.naturalId()
 </#if>                    
-<#foreach property in pojo.getAllPropertiesIterator()>
+<#list pojo.getAllPropertiesIterator() as property>
 <#if property.isNaturalIdentifier()>
                             .set("${property.name}", ${property.name})
 </#if>
-</#foreach>
+</#list>
                         )
                     .uniqueResult();
             if (instance==null) {
@@ -223,7 +223,7 @@ public class ${declarationName}Home {
             throw re;
         }
     } 
-<#foreach query in daoHelper.getNamedHqlQueryDefinitions(md)>
+<#list daoHelper.getNamedHqlQueryDefinitions(md) as query>
 <#assign queryName = query.registrationName>
 <#if queryName.startsWith(clazz.entityName + ".")>
 <#assign methname = c2j.unqualify(queryName)>
@@ -247,7 +247,7 @@ public class ${declarationName}Home {
 </#if>
     }
 </#if>
-</#foreach></#if>
+</#list></#if>
 }
 </#assign>
 
