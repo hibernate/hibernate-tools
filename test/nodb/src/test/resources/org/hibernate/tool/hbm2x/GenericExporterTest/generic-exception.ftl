@@ -1,9 +1,9 @@
 ${pojo.getShortName()}
 ${pojo.shortName}
 
-<#foreach cl in [1,2,3]>
+<#list [1,2,3] as cl>
  <@greet person=cl/>
-</#foreach>
+</#list>
 
 
 <#macro greet person>
