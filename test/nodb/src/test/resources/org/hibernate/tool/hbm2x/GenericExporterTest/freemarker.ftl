@@ -2,11 +2,11 @@
 ${pojo.getShortName()}
 ${pojo.shortName}
 
-<#foreach cl in [1,2,3]>
+<#list [1,2,3] as cl>
 <#include "freeinc.ftl"/> 
 <#include "freeinc.ftl"/> 
 <@greet person=cl/>
-</#foreach>
+</#list>
 
 
 <#macro greet person>
