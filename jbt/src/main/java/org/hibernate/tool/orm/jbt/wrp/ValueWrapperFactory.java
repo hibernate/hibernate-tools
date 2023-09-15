@@ -26,6 +26,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
@@ -107,6 +108,9 @@ public class ValueWrapperFactory {
 		}
 		default void setRole(String role) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setRole(String)'." ); }
 		default void setReferencedEntityName(String name) { throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setReferencedEntityName(String)'." ); }
+		default Iterator<Selectable> getColumnIterator() { 
+			return getWrappedObject().getSelectables().iterator();
+		}
 	}
 	
 	static interface ValueWrapper extends KeyValue, ValueExtension {}
