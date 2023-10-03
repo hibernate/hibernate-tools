@@ -29,6 +29,10 @@ import java.util.Properties;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
+import org.hibernate.resource.transaction.spi.TransactionCoordinator;
+import org.hibernate.resource.transaction.spi.TransactionCoordinatorBuilder;
+import org.hibernate.resource.transaction.spi.TransactionCoordinatorOwner;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -49,6 +53,22 @@ import org.junit.jupiter.api.io.TempDir;
  */
 public class TestCase {
 
+	@SuppressWarnings("serial")
+	public static class FakeTransactionManagerLookup implements TransactionCoordinatorBuilder {
+		@Override
+		public TransactionCoordinator buildTransactionCoordinator(TransactionCoordinatorOwner owner, Options options) {
+			return null;
+		}
+		@Override
+		public boolean isJta() {
+			return false;
+		}
+		@Override
+		public PhysicalConnectionHandlingMode getDefaultConnectionHandlingMode() {
+			return PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_RELEASE_AFTER_STATEMENT;
+		}		
+	}
+	
 	private static final String[] HBM_XML_FILES = new String[] {
 			"HelloWorld.hbm.xml"
 	};
@@ -114,7 +134,7 @@ public class TestCase {
 			   FileUtil.findFirstString( Environment.HBM2DDL_AUTO, file ));
 	   exporter = ExporterFactory.createExporter(ExporterType.CFG);
 	   properties = exporter.getProperties();
-	   properties.put( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "org.hibernate.console.FakeTransactionManagerLookup"); // Hack for seam-gen console configurations
+	   properties.put( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, FakeTransactionManagerLookup.class.getName()); // Hack for seam-gen console configurations
 	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
 	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 	   exporter.getProperties().put(
@@ -122,10 +142,10 @@ public class TestCase {
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
 	   exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 	   exporter.start();
-	   assertNull(
+	   assertNotNull(
 			   FileUtil.findFirstString( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, file ));
 	}
-	
+		
 	@Test
 	public void testFileExistence() {
 		JUnitUtil.assertIsNonEmptyFile(new File(srcDir, "hibernate.cfg.xml") );		

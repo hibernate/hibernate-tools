@@ -68,6 +68,9 @@ public class QueryWrapperFactoryTest {
 	private QueryWrapper<?> positionalParameterizedQueryWrapper = null;
 	private Query<?> wrappedPositionalParameterizedQuery = null;
 	
+	private QueryWrapper<?> collectionParameterizedQueryWrapper = null;
+	private Query<?> wrappedCollectionParameterizedQuery = null;
+	
 	private SessionFactoryWrapper sessionFactory = null;
 	private Connection connection = null;
 	private Statement statement = null;
@@ -89,6 +92,9 @@ public class QueryWrapperFactoryTest {
 		positionalParameterizedQueryWrapper = (QueryWrapper<?>)session
 				.createQuery("from " + Foo.class.getName() + " where id = ?1");
 		wrappedPositionalParameterizedQuery = positionalParameterizedQueryWrapper.getWrappedObject();
+		collectionParameterizedQueryWrapper = (QueryWrapper<?>)session
+				.createQuery("from " + Foo.class.getName() + " where id in :foo");
+		wrappedCollectionParameterizedQuery = collectionParameterizedQueryWrapper.getWrappedObject();
 	}
 	
 	@AfterEach
@@ -131,9 +137,9 @@ public class QueryWrapperFactoryTest {
 	@Test
 	public void testSetParameterList() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
+				((QuerySqmImpl<?>)wrappedCollectionParameterizedQuery).getParameterBindings().getBinding("foo");
 		assertFalse(binding.isBound());
-		namedParameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
+		collectionParameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
 		assertTrue(binding.isBound());
 	}
 	
