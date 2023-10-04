@@ -30,7 +30,7 @@ public class DatabaseReaderWrapperFactory {
 	}
 	
 	static interface DatabaseReaderWrapper extends Wrapper {
-		Map<String, List<Table>> collectDatabaseTables();
+		Map<String, List<TableWrapper>> collectDatabaseTables();
 	}
 	
 	static class DatabaseReaderWrapperImpl implements DatabaseReaderWrapper {
@@ -62,9 +62,9 @@ public class DatabaseReaderWrapperFactory {
 		    revengMetadataCollector = new RevengMetadataCollector(metadataBuildingContext);
 		}
 		
-		public Map<String, List<Table>> collectDatabaseTables() {
+		public Map<String, List<TableWrapper>> collectDatabaseTables() {
 			databaseReader.readDatabaseSchema(revengMetadataCollector);
-			Map<String, List<Table>> result = new HashMap<String, List<Table>>();
+			Map<String, List<TableWrapper>> result = new HashMap<String, List<TableWrapper>>();
 			for (Table table : revengMetadataCollector.getTables()) {
 				String qualifier = "";
 				if (table.getCatalog() != null) {
@@ -76,12 +76,12 @@ public class DatabaseReaderWrapperFactory {
 					}
 					qualifier += table.getSchema();
 				}
-				List<Table> list = result.get(qualifier);
+				List<TableWrapper> list = result.get(qualifier);
 				if (list == null) {
-					list = new ArrayList<Table>();
+					list = new ArrayList<TableWrapper>();
 					result.put(qualifier, list);
 				}
-				list.add(table);
+				list.add(new DelegatingTableWrapperImpl(table));
 			}			
 			return result;
 		}
