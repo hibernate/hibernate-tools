@@ -469,26 +469,6 @@
 		</pluginManagement>
 	</build>
 
-	<repositories>
-                <repository>
-                        <id>jboss-public-repository-group</id>
-                        <name>JBoss Public Repository Group</name>
-                        <url>http://repository.jboss.org/nexus/content/groups/public</url>
-                        <releases>
-                                <enabled>true</enabled>
-                        </releases>
-                        <snapshots>
-                                <enabled>true</enabled>
-                        </snapshots>
-                </repository>
-		<!--
-			To build Hibernate Tools Core you have to add the JBoss Maven
-			repository to your settings.xml See also
-			http://community.jboss.org/wiki/ContributingtoHibernateSearch
-		-->
-	</repositories>
-
-
 	<profiles>
 		
 		<!-- =============================== -->
@@ -825,6 +805,25 @@
 		</profile>
 
 	</profiles>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ossrh-releases-repository</id>
+            <name>Sonatype OSSRH Releases</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+       <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>ossrh-snapshots-repository</id>
+            <name>Sonatype OSSRH Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
 
     <distributionManagement>
       <repository>
