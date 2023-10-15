@@ -825,7 +825,9 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 			return false;
 		}
 		if(field.getValue()!=null) {			
-			if (!field.isOptional() && (field.getValueGenerationStrategy() == null || field.getValueGenerationStrategy().getGenerationTiming().equals(GenerationTiming.NEVER))) {				
+			if (!(field.isOptional() || field.getValue().isNullable()) && 
+					(field.getValueGenerationStrategy() == null || 
+					 field.getValueGenerationStrategy().getGenerationTiming().equals(GenerationTiming.NEVER))) {				
 				return true;
 			} else if (field.getValue() instanceof Component) {
 				Component c = (Component) field.getValue();
