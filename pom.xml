@@ -25,7 +25,7 @@
     </modules>
 
     <properties>
-	    <ant.version>1.10.12</ant.version>
+	    <ant.version>1.10.14</ant.version>
 	    <commons-collections.version>4.4</commons-collections.version>
  	    <freemarker.version>2.3.31</freemarker.version>
         <!-- 1.7 is the last google-java-format version that is compiled against Java 1.8 -->
