@@ -85,7 +85,7 @@
     <properties>
 
         <ant.version>1.10.14</ant.version>
-        <antlr.version>4.10.1</antlr.version>
+        <antlr.version>4.13.1</antlr.version>
         <commons-collections.version>4.4</commons-collections.version>
         <freemarker.version>2.3.31</freemarker.version>
         <google-java-format.version>1.15.0</google-java-format.version>
