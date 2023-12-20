@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -221,8 +223,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("a string", typeFormats.get(TypeFactoryWrapper.INSTANCE.getStringType()));
 		assertEquals("a text", typeFormats.get(TypeFactoryWrapper.INSTANCE.getTextType()));
 		assertEquals(':', typeFormats.get(TypeFactoryWrapper.INSTANCE.getTimeType()).charAt(2));
-		assertEquals(
-				new SimpleDateFormat("yyyy-MM-dd").format(new Date()), 
+    //JdbcTimestampJavaType uses timezone UTC+0 for the string format vs the system default tz for JdbcDateJavaType.
+    SimpleDateFormat utcDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    utcDateFormat.setTimeZone(TimeZone.getTimeZone(ZoneId.from( ZoneOffset.UTC )));
+		assertEquals(utcDateFormat.format(new Date()).substring(0, 10),
 				typeFormats.get(TypeFactoryWrapper.INSTANCE.getTimestampType()).substring(0, 10));
 		assertEquals(
 				TimeZone.getDefault().getID(), 
