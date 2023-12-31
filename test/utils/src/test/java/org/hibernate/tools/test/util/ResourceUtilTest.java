@@ -58,4 +58,9 @@ public class ResourceUtilTest {
 				.contains("HelloWorld"));
 	}
 
+  @Test
+	public void testFindResourceFile() {
+    File resourceFile = ResourceUtil.resolveResourceFile(this.getClass(), "FileUtilTest.resource");
+    assertTrue(resourceFile.exists());
+  }
 }
