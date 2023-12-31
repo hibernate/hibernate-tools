@@ -35,13 +35,25 @@ import java.util.Properties;
 public class JdbcUtil {
 	
 	static HashMap<Object, Connection> CONNECTION_TABLE = new HashMap<>();
-	
-	public static Properties getConnectionProperties() {
+
+  /**
+   * Obtain the database connection properties.
+   * @param test object residing in the package of an optional alternate hibernate.properties.
+   * Set null for the default hibernate.properties.
+   * @return
+   */
+	public static Properties getConnectionProperties(Object test) {
 		Properties properties = new Properties();
-		InputStream inputStream = Thread
+    InputStream inputStream = null;
+    if (test != null) {
+      inputStream = getAlternateHibernateProperties(test);
+    }
+    if (inputStream == null) {
+		  inputStream = Thread
 				.currentThread()
 				.getContextClassLoader()
 				.getResourceAsStream("hibernate.properties");
+    }
 		try {
 			properties.load(inputStream);
 		} catch (IOException e) {
@@ -59,10 +71,21 @@ public class JdbcUtil {
 				properties.getProperty("hibernate.connection.password"));
 		return connectionProperties;
 	}
-	
+
+	public static InputStream getAlternateHibernateProperties(Object test) {
+      InputStream inputStream = ResourceUtil.resolveResourceLocation(
+        test.getClass(), "hibernate.properties");
+      return inputStream;
+  }
+
+  /**
+   * Create a database connection associated  with a test object.
+   * @param test object as key to stored connection. Test object package may also contain
+   * an optional hibernate.properties.
+   */
 	public static void establishJdbcConnection(Object test) {
 		try {
-			CONNECTION_TABLE.put(test, createJdbcConnection());
+			CONNECTION_TABLE.put(test, createJdbcConnection(test));
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -102,10 +125,10 @@ public class JdbcUtil {
 		}
 	}
 	
-	public static boolean isDatabaseOnline() {
+	public static boolean isDatabaseOnline(Object test) {
 		boolean result = false;
 		try {
-			Connection connection = createJdbcConnection();
+			Connection connection = createJdbcConnection(test);
 			result = connection.isValid(1);
 			connection.commit();
 			connection.close();
@@ -115,15 +138,30 @@ public class JdbcUtil {
 		return result;
 	}
 	
+  /**
+   * Establish a connection and execute create.sql.
+   *
+   * @param Object residing in the package of create.sql and optional alternate hibernate.properties.
+   */
 	public static void createDatabase(Object test) {
 		establishJdbcConnection(test);
 		executeSql(test, getSqls(test, "create.sql"));
 	}
 	
+  /**
+   * Using an established connection, execute data.sql.
+   *
+   * @param Object residing in the package of data.sql resource.
+   */
 	public static void populateDatabase(Object test) {
 		executeSql(test, getSqls(test, "data.sql"));
 	}
-	
+
+	 /**
+   * Using an established connection, execute drop.sql.
+   *
+   * @param Object residing in the package of drop.sql resource.
+   */
 	public static void dropDatabase(Object test) {
 		executeSql(test, getSqls(test, "drop.sql"));
 		releaseJdbcConnection(test);
@@ -149,9 +187,14 @@ public class JdbcUtil {
 		return result;
 	}
 	
-	private static Connection createJdbcConnection() 
+  /**
+   * Obtain a connection to a database.
+   * @param test object as key to stored connection. Test object package may also contain
+   * an optional hibernate.properties.
+   */
+	private static Connection createJdbcConnection(Object test)
 			throws SQLException {
-		Properties connectionProperties = getConnectionProperties();
+		Properties connectionProperties = getConnectionProperties(test);
 		String connectionUrl = (String)connectionProperties.remove("url");
 		return DriverManager
 				.getDriver(connectionUrl)
