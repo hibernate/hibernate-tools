@@ -60,10 +60,10 @@ public class JdbcUtilTest {
 		clearConnectionTable();
 		restoreClassLoader();
 	}
-	
+
 	@Test
-	public void testGetConnectionProperties() throws Exception {
-		Properties properties = JdbcUtil.getConnectionProperties();
+	public void testGetConnectionPropertiesForTest() throws Exception {
+		Properties properties = JdbcUtil.getConnectionProperties(null);
 		assertEquals("jdbc:h2:mem:test", properties.get("url"));
 		assertEquals("sa", properties.get("user"));
 		assertEquals("", properties.get("password"));
@@ -128,10 +128,10 @@ public class JdbcUtilTest {
 	
 	@Test
 	public void testIsDatabaseOnline() throws Exception {
-			assertTrue(JdbcUtil.isDatabaseOnline());
+			assertTrue(JdbcUtil.isDatabaseOnline(null));
 			new File(outputFolder, "hibernate.properties").delete();
 			createHibernateProperties("foo", "bar", "jdbc:sqlserver://org.foo.bar:1433");
-			assertFalse(JdbcUtil.isDatabaseOnline());
+			assertFalse(JdbcUtil.isDatabaseOnline(null));
 	}
 	
 	private void clearConnectionTable() throws Exception {
