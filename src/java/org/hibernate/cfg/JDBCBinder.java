@@ -24,7 +24,7 @@ import org.hibernate.cfg.binder.PropertyBinder;
 import org.hibernate.cfg.reveng.AssociationInfo;
 import org.hibernate.cfg.reveng.DatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
-import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
+import org.hibernate.cfg.reveng.JdbcToHibernateTypeHelper;
 import org.hibernate.cfg.reveng.MappingsDatabaseCollector;
 import org.hibernate.cfg.reveng.RevEngUtils;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -900,7 +900,7 @@ public class JDBCBinder {
 	}
 
 	private String typeCodeName(int sqlTypeCode) {
-		return sqlTypeCode + "(" + JDBCToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode) + ")";
+		return sqlTypeCode + "(" + JdbcToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode) + ")";
 	}
 
 	/**
