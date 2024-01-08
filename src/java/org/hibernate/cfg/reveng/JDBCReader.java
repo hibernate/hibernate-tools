@@ -631,15 +631,15 @@ public class JDBCReader {
 				column.setComment(comment);
 				column.setSqlTypeCode(new Integer(sqlType) );
                 if(intBounds(size) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasLength(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasLength(sqlType) ) {
                 		column.setLength(size);
                 	} 
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
                 		column.setPrecision(size); 
                 	}
 				} 
                 if(intBounds(decimalDigits) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
                 		column.setScale(decimalDigits);
                 	}
 				}
