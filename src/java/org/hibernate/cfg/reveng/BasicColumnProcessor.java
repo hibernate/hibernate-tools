@@ -82,15 +82,15 @@ public class BasicColumnProcessor {
 				column.setComment(comment);
 				column.setSqlTypeCode(new Integer(sqlType) );
                 if(intBounds(size) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasLength(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasLength(sqlType) ) {
                 		column.setLength(size);
                 	} 
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasPrecision(sqlType) ) {
                 		column.setPrecision(size); 
                 	}
 				} 
                 if(intBounds(decimalDigits) ) {
-                	if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlType) ) {
+                	if(JdbcToHibernateTypeHelper.typeHasScale(sqlType) ) {
                 		column.setScale(decimalDigits);
                 	}
 				}
