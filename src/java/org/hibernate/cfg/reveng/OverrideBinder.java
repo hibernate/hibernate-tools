@@ -312,7 +312,7 @@ public final class OverrideBinder {
 			column.setName( element.attributeValue("name") );
 			String attributeValue = element.attributeValue("jdbc-type");
 			if(StringHelper.isNotEmpty(attributeValue)) {
-				column.setSqlTypeCode(new Integer(JDBCToHibernateTypeHelper.getJDBCType(attributeValue)));
+				column.setSqlTypeCode(new Integer(JdbcToHibernateTypeHelper.getJDBCType(attributeValue)));
 			}
 						
 			TableIdentifier tableIdentifier = TableIdentifier.create(table);
@@ -399,7 +399,7 @@ public final class OverrideBinder {
 		
 		while (iterator.hasNext() ) {
 			Element element = (Element) iterator.next();
-			int jdbcType = JDBCToHibernateTypeHelper.getJDBCType(element.attributeValue("jdbc-type") );
+			int jdbcType = JdbcToHibernateTypeHelper.getJDBCType(element.attributeValue("jdbc-type") );
 			SQLTypeMapping mapping = new SQLTypeMapping(jdbcType );
 			mapping.setHibernateType( getHibernateType( element ) );			
 			mapping.setLength(getInteger(element.attributeValue("length"), SQLTypeMapping.UNKNOWN_LENGTH) );
