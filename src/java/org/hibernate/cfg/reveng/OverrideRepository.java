@@ -312,7 +312,7 @@ public class OverrideRepository  {
 			public String columnToHibernateTypeName(TableIdentifier table, String columnName, int sqlType, int length, int precision, int scale, boolean nullable, boolean generatedIdentifier) {
 				String result = null;
 				String location = "";
-				String info = " t:" + JDBCToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
+				String info = " t:" + JdbcToHibernateTypeHelper.getJDBCTypeName( sqlType ) + " l:" + length + " p:" + precision + " s:" + scale + " n:" + nullable + " id:" + generatedIdentifier;
 				if(table!=null) {
 					location = Table.qualify(table.getCatalog(), table.getSchema(), table.getName() ) + "." + columnName;
 				} else {
