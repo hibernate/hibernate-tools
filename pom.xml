@@ -95,7 +95,7 @@
         <hibernate-orm.version>6.3.3-SNAPSHOT</hibernate-orm.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
-        <jboss-logging.version>3.5.0.Final</jboss-logging.version>
+        <jboss-logging.version>3.5.3.Final</jboss-logging.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
