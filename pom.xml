@@ -28,7 +28,7 @@
     
     <groupId>org.hibernate.tool</groupId>
     <artifactId>hibernate-tools-parent</artifactId>
-    <version>6.2.21-SNAPSHOT</version>
+    <version>6.2.21.Final</version>
 
     <packaging>pom</packaging>
  
