@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>6.4.4-SNAPSHOT</version>
+        <version>6.4.4.Final</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-h2</artifactId>
