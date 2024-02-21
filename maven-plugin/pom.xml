@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-tools-parent</artifactId>
-    <version>5.3.36.Final</version>
+    <version>5.3.37-SNAPSHOT</version>
   </parent>
 
   <artifactId>hibernate-tools-maven-plugin</artifactId>
