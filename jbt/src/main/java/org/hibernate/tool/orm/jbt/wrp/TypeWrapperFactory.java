@@ -56,10 +56,6 @@ public class TypeWrapperFactory {
 					getWrappedObject().getClass().getName() + 
 					"' does not support 'isOneToOne()'." ); 
 		}
-		default String getReturnedClassName() {
-			Class<?> returnedClass = ((Type)getWrappedObject()).getReturnedClass();
-			return returnedClass == null ? null : returnedClass.getName();
-		}
 		default String getAssociatedEntityName() {
 			return null; 
 		}
