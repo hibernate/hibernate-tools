@@ -15,6 +15,7 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
+import org.hibernate.tool.orm.jbt.api.ArtifactCollectorWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
@@ -67,8 +68,8 @@ public class ExporterWrapperFactory {
 					ExporterConstants.METADATA_DESCRIPTOR, 
 					new ConfigurationMetadataDescriptor(configuration));
 		}
-		default void setArtifactCollector(ArtifactCollector artifactCollector) {
-			getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollector);
+		default void setArtifactCollector(ArtifactCollectorWrapper artifactCollectorWrapper) {
+			getProperties().put(ExporterConstants.ARTIFACT_COLLECTOR, artifactCollectorWrapper.getWrappedObject());
 		}
 		default void setOutputDirectory(File dir) {
 			getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);

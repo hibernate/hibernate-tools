@@ -38,6 +38,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -69,7 +70,9 @@ public class WrapperFactoryTest {
 	public void testCreateArtifactCollectorWrapper() {
 		Object artifactCollectorWrapper = WrapperFactory.createArtifactCollectorWrapper();
 		assertNotNull(artifactCollectorWrapper);
-		assertTrue(artifactCollectorWrapper instanceof DefaultArtifactCollector);
+		assertTrue(artifactCollectorWrapper instanceof Wrapper);
+		Object wrappedArtifactCollector = ((Wrapper)artifactCollectorWrapper).getWrappedObject();
+		assertTrue(wrappedArtifactCollector instanceof ArtifactCollector);
 	}
 	
 	@Test

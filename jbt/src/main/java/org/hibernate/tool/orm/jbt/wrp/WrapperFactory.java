@@ -27,9 +27,9 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -42,7 +42,7 @@ public class WrapperFactory {
 	private WrapperFactory() {}
 
 	public static Object createArtifactCollectorWrapper() {
-		return new DefaultArtifactCollector();
+		return ArtifactCollectorWrapperFactory.createArtifactCollectorWrapper();
 	}
 	
 	public static Object createCfg2HbmWrapper() {

@@ -13,15 +13,15 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
-import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
+import org.hibernate.tool.orm.jbt.api.ArtifactCollectorWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.DdlExporterWrapperFactory.DdlExporterWrapper;
@@ -93,10 +93,11 @@ public class ExporterWrapperFactoryTest {
 	
 	@Test
 	public void testSetArtifactCollector() {
-		ArtifactCollector artifactCollector = new DefaultArtifactCollector();
-		assertNotSame(artifactCollector, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
-		exporterWrapper.setArtifactCollector(artifactCollector);
-		assertSame(artifactCollector, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		ArtifactCollectorWrapper artifactCollectorWrapper = ArtifactCollectorWrapperFactory.createArtifactCollectorWrapper();
+		Object wrappedArtifactCollector = artifactCollectorWrapper.getWrappedObject();
+		assertNotSame(wrappedArtifactCollector, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		exporterWrapper.setArtifactCollector(artifactCollectorWrapper);
+		assertSame(wrappedArtifactCollector, exporterWrapper.getWrappedObject().getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
 	
 	@Test
