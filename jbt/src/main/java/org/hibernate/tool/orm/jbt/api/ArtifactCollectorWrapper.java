@@ -8,9 +8,8 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface ArtifactCollectorWrapper extends Wrapper {
 
-	default ArtifactCollector getWrappedObject() { return (ArtifactCollector)getWrappedObject();}
-	default Set<String> getFileTypes() { return getWrappedObject().getFileTypes(); }
-	default void formatFiles() { getWrappedObject().formatFiles(); }
-	default File[] getFiles(String string) { return getWrappedObject().getFiles(string); }
+	default Set<String> getFileTypes() { return ((ArtifactCollector)getWrappedObject()).getFileTypes(); }
+	default void formatFiles() { ((ArtifactCollector)getWrappedObject()).formatFiles(); }
+	default File[] getFiles(String string) { return ((ArtifactCollector)getWrappedObject()).getFiles(string); }
 
 }

@@ -36,7 +36,7 @@ public class ArtifactCollectorWrapperTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		wrapper = ArtifactCollectorWrapperFactory.createArtifactCollectorWrapper();
-		ArtifactCollector wrapped = wrapper.getWrappedObject();
+		ArtifactCollector wrapped = (ArtifactCollector)wrapper.getWrappedObject();
 		Field filesField = wrapped.getClass().getDeclaredField("files");
 		filesField.setAccessible(true);
 		filesMap = (Map<String, List<File>>)filesField.get(wrapped);
