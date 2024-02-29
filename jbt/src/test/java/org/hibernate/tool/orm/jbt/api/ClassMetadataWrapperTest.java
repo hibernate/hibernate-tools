@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -73,6 +74,11 @@ public class ClassMetadataWrapperTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(classMetadataWrapper);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		assertEquals(Foo.class.getName(), classMetadataWrapper.getEntityName());
 	}
 	
 }
