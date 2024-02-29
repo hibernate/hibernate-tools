@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -106,5 +107,10 @@ public class ClassMetadataWrapperTest {
 				"org.hibernate.tool.orm.jbt.api.ClassMetadataWrapperTest$Foo.bars",
 				((CollectionType)type).getRole());
  	}
+	
+	@Test
+	public void testGetMappedClass() {
+		assertSame(Foo.class, classMetadataWrapper.getMappedClass());
+	}
 	
 }
