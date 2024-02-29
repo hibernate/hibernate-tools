@@ -20,6 +20,7 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
+import org.hibernate.type.internal.NamedBasicTypeImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -111,6 +112,14 @@ public class ClassMetadataWrapperTest {
 	@Test
 	public void testGetMappedClass() {
 		assertSame(Foo.class, classMetadataWrapper.getMappedClass());
+	}
+	
+	@Test
+	public void testGetIdentifierType() {
+		Type identifierType = classMetadataWrapper.getIdentifierType();
+		assertNotNull(identifierType);
+		assertTrue(identifierType instanceof NamedBasicTypeImpl);
+		assertSame("string", ((NamedBasicTypeImpl<?>)identifierType).getName());
 	}
 	
 }
