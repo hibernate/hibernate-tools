@@ -20,5 +20,6 @@ public interface ClassMetadataWrapper extends Wrapper {
 	default Object getIdentifier(Object object, Session session) { return ((EntityPersister)getWrappedObject()).getIdentifier(object, (SharedSessionContractImplementor)session); }
 	default boolean isInstanceOfAbstractEntityPersister() { return (EntityPersister)getWrappedObject() instanceof AbstractEntityPersister; }
 	default Integer getPropertyIndexOrNull(String id) { return ((EntityPersister)getWrappedObject()).getEntityMetamodel().getPropertyIndexOrNull(id); }
+	default Object getTuplizerPropertyValue(Object entity, int i) { return ((EntityPersister)getWrappedObject()).getValue(entity, i); }
 
 }

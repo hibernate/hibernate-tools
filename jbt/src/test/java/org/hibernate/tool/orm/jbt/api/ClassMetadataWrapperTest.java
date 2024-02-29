@@ -160,4 +160,12 @@ public class ClassMetadataWrapperTest {
 		assertNull(classMetadataWrapper.getPropertyIndexOrNull("foo"));
 	}
 	
+	@Test
+	public void testGetTuplizerPropertyValue() {
+		Foo foo = new Foo();
+		Set<String> bars = Set.of("foo", "bar");
+		foo.bars = bars;
+		assertSame(bars, classMetadataWrapper.getTuplizerPropertyValue(foo, 0));
+	}
+	
 }
