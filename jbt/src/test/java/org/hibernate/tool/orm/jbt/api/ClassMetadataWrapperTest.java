@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -120,6 +121,14 @@ public class ClassMetadataWrapperTest {
 		assertNotNull(identifierType);
 		assertTrue(identifierType instanceof NamedBasicTypeImpl);
 		assertSame("string", ((NamedBasicTypeImpl<?>)identifierType).getName());
+	}
+	
+	@Test
+	public void testGetPropertyValue() {
+		Foo foo = new Foo();
+		Set<String> foobarSet = new HashSet<String>(Arrays.asList("foo", "bar"));
+		foo.bars = foobarSet;
+		assertSame(foobarSet, classMetadataWrapper.getPropertyValue(foo, "bars"));
 	}
 	
 }
