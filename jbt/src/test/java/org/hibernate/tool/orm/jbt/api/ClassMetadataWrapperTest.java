@@ -81,4 +81,9 @@ public class ClassMetadataWrapperTest {
 		assertEquals(Foo.class.getName(), classMetadataWrapper.getEntityName());
 	}
 	
+	@Test
+	public void testGetIdentifierPropertyName() {
+		assertEquals("id", classMetadataWrapper.getIdentifierPropertyName());
+	}
+	
 }
