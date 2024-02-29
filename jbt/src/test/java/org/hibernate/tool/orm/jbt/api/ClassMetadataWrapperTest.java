@@ -148,4 +148,9 @@ public class ClassMetadataWrapperTest {
 		assertSame("bar", identifier);
 	}
 	
+	@Test
+	public void testIsInstanceOfAbstractEntityPersister() {
+		assertTrue(classMetadataWrapper.isInstanceOfAbstractEntityPersister());
+	}
+	
 }
