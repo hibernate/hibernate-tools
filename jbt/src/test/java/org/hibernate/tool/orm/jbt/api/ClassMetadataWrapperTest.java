@@ -131,4 +131,9 @@ public class ClassMetadataWrapperTest {
 		assertSame(foobarSet, classMetadataWrapper.getPropertyValue(foo, "bars"));
 	}
 	
+	@Test
+	public void testHasIdentifierProperty() {
+		assertTrue(classMetadataWrapper.hasIdentifierProperty());
+	}
+	
 }
