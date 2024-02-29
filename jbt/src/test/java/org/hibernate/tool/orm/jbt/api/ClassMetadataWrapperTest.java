@@ -86,4 +86,11 @@ public class ClassMetadataWrapperTest {
 		assertEquals("id", classMetadataWrapper.getIdentifierPropertyName());
 	}
 	
+	@Test
+	public void testGetPropertyNames() {
+		String[] propertyNames = classMetadataWrapper.getPropertyNames();
+ 		assertEquals(1, propertyNames.length);
+ 		assertEquals("bars", propertyNames[0]);
+	}
+	
 }

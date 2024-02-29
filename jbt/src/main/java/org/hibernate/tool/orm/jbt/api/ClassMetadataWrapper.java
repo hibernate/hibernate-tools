@@ -7,5 +7,6 @@ public interface ClassMetadataWrapper extends Wrapper {
 
 	default String getEntityName() { return ((EntityPersister)getWrappedObject()).getEntityName(); }
 	default String getIdentifierPropertyName() { return ((EntityPersister)getWrappedObject()).getIdentifierPropertyName(); }
+	default String[] getPropertyNames() { return ((EntityPersister)getWrappedObject()).getPropertyNames(); }
 
 }
