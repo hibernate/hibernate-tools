@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -151,6 +152,12 @@ public class ClassMetadataWrapperTest {
 	@Test
 	public void testIsInstanceOfAbstractEntityPersister() {
 		assertTrue(classMetadataWrapper.isInstanceOfAbstractEntityPersister());
+	}
+	
+	@Test
+	public void testGetPropertyIndexOrNull() {
+		assertSame(0, classMetadataWrapper.getPropertyIndexOrNull("bars"));
+		assertNull(classMetadataWrapper.getPropertyIndexOrNull("foo"));
 	}
 	
 }

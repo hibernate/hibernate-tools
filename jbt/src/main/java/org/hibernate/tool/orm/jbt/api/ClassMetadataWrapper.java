@@ -19,5 +19,6 @@ public interface ClassMetadataWrapper extends Wrapper {
 	default boolean hasIdentifierProperty() { return ((EntityPersister)getWrappedObject()).hasIdentifierProperty(); }
 	default Object getIdentifier(Object object, Session session) { return ((EntityPersister)getWrappedObject()).getIdentifier(object, (SharedSessionContractImplementor)session); }
 	default boolean isInstanceOfAbstractEntityPersister() { return (EntityPersister)getWrappedObject() instanceof AbstractEntityPersister; }
+	default Integer getPropertyIndexOrNull(String id) { return ((EntityPersister)getWrappedObject()).getEntityMetamodel().getPropertyIndexOrNull(id); }
 
 }
