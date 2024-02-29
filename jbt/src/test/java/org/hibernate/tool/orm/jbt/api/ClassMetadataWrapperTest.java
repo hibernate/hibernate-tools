@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -56,6 +58,7 @@ public class ClassMetadataWrapperTest {
 	public File tempDir;
 	
 	private ClassMetadataWrapper classMetadataWrapper = null;
+	private SessionFactory sessionFactory = null;
 		
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -71,8 +74,8 @@ public class ClassMetadataWrapperTest {
 		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		SessionFactoryImplementor sessionFactory = (SessionFactoryImplementor)configuration.buildSessionFactory();
-		EntityPersister entityPersister = sessionFactory
+		sessionFactory = configuration.buildSessionFactory();
+		EntityPersister entityPersister = ((SessionFactoryImplementor)sessionFactory)
 				.getMappingMetamodel().getEntityDescriptor(Foo.class.getName());
 		classMetadataWrapper = ClassMetadataWrapperFactory.createClassMetadataWrapper(entityPersister);
 	}
@@ -134,6 +137,15 @@ public class ClassMetadataWrapperTest {
 	@Test
 	public void testHasIdentifierProperty() {
 		assertTrue(classMetadataWrapper.hasIdentifierProperty());
+	}
+	
+	@Test 
+	public void testGetIdentifier() {
+		Session session = sessionFactory.openSession();
+		Foo foo = new Foo();
+		foo.id = "bar";
+		Object identifier = classMetadataWrapper.getIdentifier(foo, session);
+		assertSame("bar", identifier);
 	}
 	
 }
