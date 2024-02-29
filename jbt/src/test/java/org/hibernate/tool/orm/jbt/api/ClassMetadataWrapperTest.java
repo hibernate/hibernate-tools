@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +17,8 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.ClassMetadataWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.type.CollectionType;
+import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -92,5 +95,16 @@ public class ClassMetadataWrapperTest {
  		assertEquals(1, propertyNames.length);
  		assertEquals("bars", propertyNames[0]);
 	}
+	
+	@Test
+	public void testGetPropertyTypes() {
+		Type[] types = classMetadataWrapper.getPropertyTypes();
+		assertEquals(1, types.length);
+		Type type = types[0];
+		assertTrue(type.isCollectionType());
+		assertEquals(
+				"org.hibernate.tool.orm.jbt.api.ClassMetadataWrapperTest$Foo.bars",
+				((CollectionType)type).getRole());
+ 	}
 	
 }
