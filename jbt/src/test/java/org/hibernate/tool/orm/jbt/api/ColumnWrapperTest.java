@@ -32,4 +32,11 @@ public class ColumnWrapperTest {
 		assertEquals("foobar", columnWrapper.getName());
 	}
 	
+	@Test
+	public void testGetSqlTypeCode() {
+		assertNull(columnWrapper.getSqlTypeCode());
+		wrappedColumn.setSqlTypeCode(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnWrapper.getSqlTypeCode().intValue());
+	}
+
 }
