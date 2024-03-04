@@ -7,6 +7,8 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface ColumnWrapper extends Wrapper {
 	
+	static final int DEFAULT_LENGTH = 255;
+	
 	default String getName() { return ((Column)getWrappedObject()).getName(); }
 	default Integer getSqlTypeCode() { return ((Column)getWrappedObject()).getSqlTypeCode(); }
 	default String getSqlType() { return ((Column)getWrappedObject()).getSqlType(); }
@@ -17,5 +19,6 @@ public interface ColumnWrapper extends Wrapper {
 		Long length = ((Column)getWrappedObject()).getLength();
 		return length == null ? Integer.MIN_VALUE : length.longValue(); 
 		}
+	default int getDefaultLength() { return DEFAULT_LENGTH; }
 	
 }

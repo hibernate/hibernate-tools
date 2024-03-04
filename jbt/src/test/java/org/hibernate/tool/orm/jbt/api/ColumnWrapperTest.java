@@ -72,6 +72,11 @@ public class ColumnWrapperTest {
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getLength());
 	}
 	
+	@Test
+	public void testGetDefaultLength() throws Exception {
+		assertEquals(255, columnWrapper.getDefaultLength());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
