@@ -65,6 +65,13 @@ public class ColumnWrapperTest {
 		assertEquals("integer", columnWrapper.getSqlType(configuration));
 	}
 	
+	@Test
+	public void testGetLength() {
+		assertEquals(Integer.MIN_VALUE, columnWrapper.getLength());
+		wrappedColumn.setLength(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnWrapper.getLength());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
