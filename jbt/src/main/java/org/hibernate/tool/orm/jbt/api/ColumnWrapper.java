@@ -8,6 +8,7 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 public interface ColumnWrapper extends Wrapper {
 	
 	static final int DEFAULT_LENGTH = 255;
+	static final int DEFAULT_PRECISION = 19;
 	
 	default String getName() { return ((Column)getWrappedObject()).getName(); }
 	default Integer getSqlTypeCode() { return ((Column)getWrappedObject()).getSqlTypeCode(); }
@@ -24,5 +25,6 @@ public interface ColumnWrapper extends Wrapper {
 		Integer precision = ((Column)getWrappedObject()).getPrecision();
 		return precision == null ? Integer.MIN_VALUE : precision;
 	}
+	default int getDefaultPrecision() { return DEFAULT_PRECISION; }
 	
 }
