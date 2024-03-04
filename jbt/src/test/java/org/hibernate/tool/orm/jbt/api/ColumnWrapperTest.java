@@ -96,6 +96,11 @@ public class ColumnWrapperTest {
 		assertEquals(Integer.MAX_VALUE, columnWrapper.getScale());
 	}
 	
+	@Test
+	public void testGetDefaultScale() throws Exception {
+		assertEquals(2, columnWrapper.getDefaultScale());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

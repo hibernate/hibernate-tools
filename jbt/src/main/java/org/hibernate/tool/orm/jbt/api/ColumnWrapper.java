@@ -9,6 +9,7 @@ public interface ColumnWrapper extends Wrapper {
 	
 	static final int DEFAULT_LENGTH = 255;
 	static final int DEFAULT_PRECISION = 19;
+	static final int DEFAULT_SCALE = 2;
 	
 	default String getName() { return ((Column)getWrappedObject()).getName(); }
 	default Integer getSqlTypeCode() { return ((Column)getWrappedObject()).getSqlTypeCode(); }
@@ -29,7 +30,7 @@ public interface ColumnWrapper extends Wrapper {
 	default int getScale() {
 		Integer scale = ((Column)getWrappedObject()).getScale();
 		return scale == null ? Integer.MIN_VALUE : scale;
-		
-	}
+		}
+	default int getDefaultScale() { return DEFAULT_SCALE; }
 	
 }
