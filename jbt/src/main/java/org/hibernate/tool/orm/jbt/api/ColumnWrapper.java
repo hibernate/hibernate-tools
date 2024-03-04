@@ -35,5 +35,6 @@ public interface ColumnWrapper extends Wrapper {
 	default int getDefaultScale() { return DEFAULT_SCALE; }
 	default boolean isNullable() { return ((Column)getWrappedObject()).isNullable(); }
 	default Value getValue() { return ((Column)getWrappedObject()).getValue(); 	}
+	default boolean isUnique() { return ((Column)getWrappedObject()).isUnique(); }
 	
 }
