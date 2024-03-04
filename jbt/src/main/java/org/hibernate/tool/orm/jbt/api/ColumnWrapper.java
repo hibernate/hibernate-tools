@@ -16,15 +16,20 @@ public interface ColumnWrapper extends Wrapper {
 	default String getSqlType(Configuration configuration) { 
 		return ((Column)getWrappedObject()).getSqlType(MetadataHelper.getMetadata(configuration)); 
 		}
-	default Long getLength() { 
+	default long getLength() { 
 		Long length = ((Column)getWrappedObject()).getLength();
 		return length == null ? Integer.MIN_VALUE : length; 
 		}
 	default int getDefaultLength() { return DEFAULT_LENGTH; }
-	default Integer getPrecision() {
+	default int getPrecision() {
 		Integer precision = ((Column)getWrappedObject()).getPrecision();
 		return precision == null ? Integer.MIN_VALUE : precision;
 	}
 	default int getDefaultPrecision() { return DEFAULT_PRECISION; }
+	default int getScale() {
+		Integer scale = ((Column)getWrappedObject()).getScale();
+		return scale == null ? Integer.MIN_VALUE : scale;
+		
+	}
 	
 }
