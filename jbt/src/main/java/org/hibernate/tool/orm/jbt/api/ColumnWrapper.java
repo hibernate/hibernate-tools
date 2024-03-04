@@ -17,8 +17,12 @@ public interface ColumnWrapper extends Wrapper {
 		}
 	default Long getLength() { 
 		Long length = ((Column)getWrappedObject()).getLength();
-		return length == null ? Integer.MIN_VALUE : length.longValue(); 
+		return length == null ? Integer.MIN_VALUE : length; 
 		}
 	default int getDefaultLength() { return DEFAULT_LENGTH; }
+	default Integer getPrecision() {
+		Integer precision = ((Column)getWrappedObject()).getPrecision();
+		return precision == null ? Integer.MIN_VALUE : precision;
+	}
 	
 }

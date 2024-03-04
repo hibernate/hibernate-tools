@@ -77,6 +77,13 @@ public class ColumnWrapperTest {
 		assertEquals(255, columnWrapper.getDefaultLength());
 	}
 	
+	@Test
+	public void testGetPrecision() {
+		assertEquals(Integer.MIN_VALUE, columnWrapper.getPrecision());
+		wrappedColumn.setPrecision(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, columnWrapper.getPrecision());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 
