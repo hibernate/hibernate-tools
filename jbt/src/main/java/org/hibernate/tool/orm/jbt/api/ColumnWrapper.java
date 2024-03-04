@@ -32,5 +32,6 @@ public interface ColumnWrapper extends Wrapper {
 		return scale == null ? Integer.MIN_VALUE : scale;
 		}
 	default int getDefaultScale() { return DEFAULT_SCALE; }
+	default boolean isNullable() { return ((Column)getWrappedObject()).isNullable(); }
 	
 }

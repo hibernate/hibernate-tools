@@ -1,8 +1,10 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -99,6 +101,14 @@ public class ColumnWrapperTest {
 	@Test
 	public void testGetDefaultScale() throws Exception {
 		assertEquals(2, columnWrapper.getDefaultScale());
+	}
+	
+	@Test
+	public void testIsNullable() {
+		wrappedColumn.setNullable(true);
+		assertTrue(columnWrapper.isNullable());
+		wrappedColumn.setNullable(false);
+		assertFalse(columnWrapper.isNullable());
 	}
 	
 	private Value createValue() {
