@@ -134,6 +134,13 @@ public class ColumnWrapperTest {
 		assertFalse(columnWrapper.isUnique());
 	}
 	
+	@Test
+	public void testSetSqlType() {
+		assertNull(wrappedColumn.getSqlType());
+		columnWrapper.setSqlType("blah");
+		assertEquals("blah", wrappedColumn.getSqlType());
+	}
+	
 	private Value createValue() {
 		return (Value)Proxy.newProxyInstance(
 				getClass().getClassLoader(), 

@@ -36,5 +36,6 @@ public interface ColumnWrapper extends Wrapper {
 	default boolean isNullable() { return ((Column)getWrappedObject()).isNullable(); }
 	default Value getValue() { return ((Column)getWrappedObject()).getValue(); 	}
 	default boolean isUnique() { return ((Column)getWrappedObject()).isUnique(); }
+	default void setSqlType(String sqlType) { ((Column)getWrappedObject()).setSqlType(sqlType); }
 	
 }
