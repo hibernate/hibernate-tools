@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
@@ -33,5 +34,6 @@ public interface ColumnWrapper extends Wrapper {
 		}
 	default int getDefaultScale() { return DEFAULT_SCALE; }
 	default boolean isNullable() { return ((Column)getWrappedObject()).isNullable(); }
+	default Value getValue() { return ((Column)getWrappedObject()).getValue(); 	}
 	
 }

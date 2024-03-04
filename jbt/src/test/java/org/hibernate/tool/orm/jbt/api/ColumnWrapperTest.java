@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
@@ -109,6 +110,19 @@ public class ColumnWrapperTest {
 		assertTrue(columnWrapper.isNullable());
 		wrappedColumn.setNullable(false);
 		assertFalse(columnWrapper.isNullable());
+	}
+	
+	@Test
+	public void testGetValue() {
+		Value v = createValue();
+		assertNull(columnWrapper.getValue());
+		wrappedColumn.setValue(v);
+		Value value = columnWrapper.getValue();
+		assertNotNull(value);
+		assertSame(value, v);
+		wrappedColumn.setValue(null);
+		value = columnWrapper.getValue();
+		assertNull(value);
 	}
 	
 	private Value createValue() {
