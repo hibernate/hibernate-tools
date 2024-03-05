@@ -9,5 +9,6 @@ public interface ConfigurationWrapper extends Wrapper {
 
 	default String getProperty(String property) { return ((Configuration)getWrappedObject()).getProperty(property); }
 	default ConfigurationWrapper addFile(File file) { ((Configuration)getWrappedObject()).addFile(file); return this; }
+	default void setProperty(String name, String value) { ((Configuration)getWrappedObject()).setProperty(name, value); }
 	
 }
