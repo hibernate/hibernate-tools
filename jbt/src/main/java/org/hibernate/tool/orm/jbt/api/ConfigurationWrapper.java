@@ -30,5 +30,6 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).setNamingStrategy(namingStrategy);
 	}
 	default Properties getProperties() { return ((Configuration)getWrappedObject()).getProperties(); }
+	default void addProperties(Properties properties) { ((Configuration)getWrappedObject()).addProperties(properties); }
 	
 }

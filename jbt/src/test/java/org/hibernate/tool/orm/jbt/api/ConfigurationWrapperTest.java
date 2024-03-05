@@ -236,4 +236,22 @@ public class ConfigurationWrapperTest {
 		assertSame(testProperties, jpaConfigurationWrapper.getProperties());
 	}
 	
+	@Test
+	public void testAddProperties() {
+		Properties testProperties = new Properties();
+		testProperties.put("foo", "bar");
+		// For native configuration
+		assertNull(wrappedNativeConfiguration.getProperty("foo"));
+		nativeConfigurationWrapper.addProperties(testProperties);
+		assertEquals("bar", wrappedNativeConfiguration.getProperty("foo"));
+		// For reveng configuration
+		assertNull(wrappedRevengConfiguration.getProperty("foo"));
+		revengConfigurationWrapper.addProperties(testProperties);
+		assertEquals("bar", wrappedRevengConfiguration.getProperty("foo"));
+		// For jpa configuration
+		assertNull(wrappedJpaConfiguration.getProperty("foo"));
+		jpaConfigurationWrapper.addProperties(testProperties);
+		assertEquals("bar", wrappedJpaConfiguration.getProperty("foo"));
+	}
+	
 }
