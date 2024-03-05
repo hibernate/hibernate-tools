@@ -9,6 +9,7 @@ import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public interface ConfigurationWrapper extends Wrapper {
@@ -31,5 +32,12 @@ public interface ConfigurationWrapper extends Wrapper {
 	}
 	default Properties getProperties() { return ((Configuration)getWrappedObject()).getProperties(); }
 	default void addProperties(Properties properties) { ((Configuration)getWrappedObject()).addProperties(properties); }
+	default ConfigurationWrapper configure(Document document) {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).configure(document);
+		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).configure(document);
+		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).configure(document);
+		return this;		
+	}
 	
 }
