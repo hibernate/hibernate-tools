@@ -1,6 +1,8 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -35,11 +37,27 @@ public class ConfigurationWrapperTest {
 
 	private void initializeFacadesAndTargets() {
 		wrappedNativeConfiguration = new NativeConfiguration();
-		nativeConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedJpaConfiguration);
+		nativeConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedNativeConfiguration);
 		wrappedRevengConfiguration = new RevengConfiguration();
 		revengConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedRevengConfiguration);
 		wrappedJpaConfiguration = new JpaConfiguration(null, null);
 		jpaConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedJpaConfiguration);
 	}
 	
+	@Test
+	public void testGetProperty() {
+		// For native configuration
+		assertNull(nativeConfigurationWrapper.getProperty("foo"));
+		wrappedNativeConfiguration.setProperty("foo", "bar");
+		assertEquals("bar", nativeConfigurationWrapper.getProperty("foo"));
+		// For reveng configuration
+		assertNull(revengConfigurationWrapper.getProperty("foo"));
+		wrappedRevengConfiguration.setProperty("foo", "bar");
+		assertEquals("bar", revengConfigurationWrapper.getProperty("foo"));
+		// For jpa configuration
+		assertNull(jpaConfigurationWrapper.getProperty("foo"));
+		wrappedJpaConfiguration.setProperty("foo", "bar");
+		assertEquals("bar", jpaConfigurationWrapper.getProperty("foo"));
+	}
+
 }
