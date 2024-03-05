@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -129,4 +131,27 @@ public class ConfigurationWrapperTest {
 		assertEquals("bar", wrappedJpaConfiguration.getProperty("foo"));
 	}
 
+	@Test 
+	public void testSetProperties() {
+		Properties testProperties = new Properties();
+		// For native configuration
+		assertNotSame(testProperties, wrappedNativeConfiguration.getProperties());
+		assertSame(
+				nativeConfigurationWrapper, 
+				nativeConfigurationWrapper.setProperties(testProperties));
+		assertSame(testProperties, wrappedNativeConfiguration.getProperties());
+		// For reveng configuration
+		assertNotSame(testProperties, wrappedRevengConfiguration.getProperties());
+		assertSame(
+				revengConfigurationWrapper, 
+				revengConfigurationWrapper.setProperties(testProperties));
+		assertSame(testProperties, wrappedRevengConfiguration.getProperties());
+		// For jpa configuration
+		assertNotSame(testProperties, wrappedJpaConfiguration.getProperties());
+		assertSame(
+				jpaConfigurationWrapper, 
+				jpaConfigurationWrapper.setProperties(testProperties));
+		assertSame(testProperties, wrappedJpaConfiguration.getProperties());
+	}
+	
 }
