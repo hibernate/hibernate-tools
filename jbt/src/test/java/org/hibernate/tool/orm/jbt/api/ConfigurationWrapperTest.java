@@ -47,6 +47,13 @@ public class ConfigurationWrapperTest {
 			"  </class>" +
 			"</hibernate-mapping>";
 	
+	private static final String TEST_CFG_XML_STRING =
+			"<hibernate-configuration>" +
+			"  <session-factory name='bar'>" + 
+			"    <mapping resource='Foo.hbm.xml' />" +
+			"  </session-factory>" +
+			"</hibernate-configuration>";
+	
 	static class Foo {
 		public String id;
 	}
@@ -301,6 +308,52 @@ public class ConfigurationWrapperTest {
 		// For jpa configuration
 		try {
 			jpaConfigurationWrapper.configure(document);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+	
+	@Test
+	public void testConfigureFile() throws Exception {
+		// For native configuration
+		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
+		File cfgXmlFile = new File(new File(url.toURI()), "foobarfile.cfg.xml");
+		FileWriter fileWriter = new FileWriter(cfgXmlFile);
+		fileWriter.write(TEST_CFG_XML_STRING);
+		fileWriter.close();
+		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		fileWriter = new FileWriter(hbmXmlFile);
+		fileWriter.write(TEST_HBM_XML_STRING);
+		fileWriter.close();
+
+		String fooClassName = 
+				"org.hibernate.tool.orm.jbt.api.ConfigurationWrapperTest$Foo";
+		Metadata metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNull(metadata.getEntityBinding(fooClassName));
+		Field metadataField = NativeConfiguration.class.getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		metadataField.set(wrappedNativeConfiguration, null);
+		nativeConfigurationWrapper.configure(cfgXmlFile);
+		metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
+		assertNotNull(metadata.getEntityBinding(fooClassName));
+		assertTrue(cfgXmlFile.delete());
+		assertTrue(hbmXmlFile.delete());
+
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.configure(cfgXmlFile);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'configure' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.configure(cfgXmlFile);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(

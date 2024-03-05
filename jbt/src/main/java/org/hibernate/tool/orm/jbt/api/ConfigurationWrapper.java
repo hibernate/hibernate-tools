@@ -39,5 +39,6 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).configure(document);
 		return this;		
 	}
+	default ConfigurationWrapper configure(File file) { ((Configuration)getWrappedObject()).configure(file); return this; }
 	
 }
