@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.boot.MetadataSources;
@@ -22,6 +23,8 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class ConfigurationWrapperTest {
 
@@ -152,6 +155,36 @@ public class ConfigurationWrapperTest {
 				jpaConfigurationWrapper, 
 				jpaConfigurationWrapper.setProperties(testProperties));
 		assertSame(testProperties, wrappedJpaConfiguration.getProperties());
+	}
+	
+	@Test
+	public void testSetEntityResolver() throws Exception {
+		EntityResolver testResolver = new DefaultHandler();
+		// For native configuration
+		Field entityResolverField = wrappedNativeConfiguration.getClass().getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		assertNull(entityResolverField.get(wrappedNativeConfiguration));
+		nativeConfigurationWrapper.setEntityResolver(testResolver);
+		assertNotNull(entityResolverField.get(wrappedNativeConfiguration));
+		assertSame(testResolver, entityResolverField.get(wrappedNativeConfiguration));
+		// For reveng configuration
+		try {
+			revengConfigurationWrapper.setEntityResolver(testResolver);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.setEntityResolver(testResolver);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
 	}
 	
 }
