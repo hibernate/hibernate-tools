@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -33,6 +34,7 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest.FooBar;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -509,6 +511,30 @@ public class ConfigurationWrapperTest {
 		assertNotNull(metadataField.get(wrappedJpaConfiguration));
 	}
 
+	@Test
+	public void testBuildSessionFactory() throws Throwable {
+		// For native configuration
+		SessionFactory sessionFactory = 
+				nativeConfigurationWrapper.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
+		sessionFactory = null;
+		assertNull(sessionFactory);
+		// For reveng configuration 
+		try {
+			revengConfigurationWrapper.buildSessionFactory();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'buildSessionFactory' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		sessionFactory = jpaConfigurationWrapper.buildSessionFactory();
+		assertNotNull(sessionFactory);
+		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

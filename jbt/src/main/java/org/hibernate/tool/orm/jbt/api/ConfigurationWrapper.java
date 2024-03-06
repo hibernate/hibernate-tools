@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.io.File;
 import java.util.Properties;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
@@ -49,5 +50,6 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).buildMappings();
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).buildMappings();
 	}
+	default SessionFactory buildSessionFactory() { return ((Configuration)getWrappedObject()).buildSessionFactory(); }
 	
 }
