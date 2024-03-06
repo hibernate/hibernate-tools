@@ -43,5 +43,11 @@ public interface ConfigurationWrapper extends Wrapper {
 	default ConfigurationWrapper configure(File file) { ((Configuration)getWrappedObject()).configure(file); return this; }
 	default ConfigurationWrapper configure() { ((Configuration)getWrappedObject()).configure(); return this; }
 	default void addClass(Class<?> clazz) { ((Configuration)getWrappedObject()).addClass(clazz); }
+	default void buildMappings() {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).buildMappings();
+		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).buildMappings();
+		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).buildMappings();
+	}
 	
 }

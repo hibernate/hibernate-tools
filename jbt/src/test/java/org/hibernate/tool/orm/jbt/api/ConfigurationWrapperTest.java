@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,8 +33,11 @@ import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.wrp.ConfigurationWrapperFactoryTest.FooBar;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
@@ -54,10 +59,30 @@ public class ConfigurationWrapperTest {
 			"  </session-factory>" +
 			"</hibernate-configuration>";
 	
+	private static final String PERSISTENCE_XML = 
+			"<persistence version='2.2'" +
+	        "  xmlns='http://xmlns.jcp.org/xml/ns/persistence'" +
+		    "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'" +
+	        "  xsi:schemaLocation='http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd'>" +
+	        "  <persistence-unit name='foobar'>" +
+	        "    <class>"+ FooBar.class.getName()  +"</class>" +
+	        "    <properties>" +
+	        "      <property name='" + AvailableSettings.DIALECT + "' value='" + MockDialect.class.getName() + "'/>" +
+	        "      <property name='" + AvailableSettings.CONNECTION_PROVIDER + "' value='" + MockConnectionProvider.class.getName() + "'/>" +
+	        "      <property name='foo' value='bar'/>" +
+	        "    </properties>" +
+	        "  </persistence-unit>" +
+			"</persistence>";
+	
 	static class Foo {
 		public String id;
 	}
 	
+	@TempDir
+	public File tempRoot;
+	
+	private ClassLoader original = null;
+
 	private ConfigurationWrapper nativeConfigurationWrapper = null;
 	private NativeConfiguration wrappedNativeConfiguration = null;
 	private ConfigurationWrapper revengConfigurationWrapper = null;
@@ -67,8 +92,16 @@ public class ConfigurationWrapperTest {
 
 	@BeforeEach
 	public void beforeEach() throws Exception {
+		tempRoot = Files.createTempDirectory("temp").toFile();
+		swapClassLoader();
+		createPersistenceXml();
 		initializeFacadesAndTargets();
 	}	
+	
+	@AfterEach
+	public void afterEach() {
+		Thread.currentThread().setContextClassLoader(original);
+	}
 	
 	@Test
 	public void testConstruction() {
@@ -450,6 +483,48 @@ public class ConfigurationWrapperTest {
 					e.getMessage(),
 					"Method 'addClass' should not be called on instances of " + JpaConfiguration.class.getName());
 		}
+	}
+	
+	@Test
+	public void testBuildMappings() throws Exception {
+		// For native configuration
+		Field metadataField = wrappedNativeConfiguration.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(wrappedNativeConfiguration));
+		nativeConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedNativeConfiguration));
+		// For reveng configuration
+		metadataField = wrappedRevengConfiguration.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		wrappedRevengConfiguration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		wrappedRevengConfiguration.setProperty("hibernate.default_schema", "PUBLIC");
+		assertNull(metadataField.get(wrappedRevengConfiguration));
+		revengConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedRevengConfiguration));
+		// For jpa configuration
+		metadataField = wrappedJpaConfiguration.getClass().getDeclaredField("metadata");
+		metadataField.setAccessible(true);
+		assertNull(metadataField.get(wrappedJpaConfiguration));
+		jpaConfigurationWrapper.buildMappings();
+		assertNotNull(metadataField.get(wrappedJpaConfiguration));
+	}
+
+	private void createPersistenceXml() throws Exception {
+		File metaInf = new File(tempRoot, "META-INF");
+		metaInf.mkdirs();
+		File persistenceXml = new File(metaInf, "persistence.xml");
+		persistenceXml.createNewFile();
+		FileWriter fileWriter = new FileWriter(persistenceXml);
+		fileWriter.write(PERSISTENCE_XML);
+		fileWriter.close();
+	}
+	
+	private void swapClassLoader() throws Exception {
+		original = Thread.currentThread().getContextClassLoader();
+		ClassLoader urlCl = URLClassLoader.newInstance(
+				new URL[] { new URL(tempRoot.toURI().toURL().toString())} , 
+				original);
+		Thread.currentThread().setContextClassLoader(urlCl);
 	}
 	
 	private void initializeFacadesAndTargets() {
