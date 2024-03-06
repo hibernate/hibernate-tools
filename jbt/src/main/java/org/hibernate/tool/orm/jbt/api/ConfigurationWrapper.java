@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -41,5 +42,6 @@ public interface ConfigurationWrapper extends Wrapper {
 	}
 	default ConfigurationWrapper configure(File file) { ((Configuration)getWrappedObject()).configure(file); return this; }
 	default ConfigurationWrapper configure() { ((Configuration)getWrappedObject()).configure(); return this; }
+	default void addClass(Class<?> clazz) { ((Configuration)getWrappedObject()).addClass(clazz); }
 	
 }
