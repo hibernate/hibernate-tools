@@ -591,6 +591,33 @@ public class ConfigurationWrapperTest {
 		assertEquals(fooClassFacade.getEntityName(), FooBar.class.getName());
 	}
 	
+	@Test
+	public void testSetPreferBasicCompositeIds() {
+		// For native configuration 
+		try {
+			nativeConfigurationWrapper.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + NativeConfiguration.class.getName());
+		}
+		// For reveng configuration
+		// the default is true
+		assertTrue(((RevengConfiguration)wrappedRevengConfiguration).preferBasicCompositeIds());
+		revengConfigurationWrapper.setPreferBasicCompositeIds(false);
+		assertFalse(((RevengConfiguration)wrappedRevengConfiguration).preferBasicCompositeIds());
+		// For jpa configuration 
+		try {
+			jpaConfigurationWrapper.setPreferBasicCompositeIds(false);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'setPreferBasicCompositeIds' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

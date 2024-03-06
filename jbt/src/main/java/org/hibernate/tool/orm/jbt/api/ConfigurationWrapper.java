@@ -59,5 +59,11 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getClassMappings();
 		return null;
 	}
+	default void setPreferBasicCompositeIds(boolean b) {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
+		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
+		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
+	}
 	
 }
