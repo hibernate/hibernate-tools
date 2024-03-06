@@ -40,5 +40,6 @@ public interface ConfigurationWrapper extends Wrapper {
 		return this;		
 	}
 	default ConfigurationWrapper configure(File file) { ((Configuration)getWrappedObject()).configure(file); return this; }
+	default ConfigurationWrapper configure() { ((Configuration)getWrappedObject()).configure(); return this; }
 	
 }
