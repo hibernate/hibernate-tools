@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
@@ -51,5 +52,12 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).buildMappings();
 	}
 	default SessionFactory buildSessionFactory() { return ((Configuration)getWrappedObject()).buildSessionFactory(); }
+	default Iterator<PersistentClass> getClassMappings() { 
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) return ((NativeConfiguration)wrappedObject).getClassMappings();
+		if (wrappedObject instanceof RevengConfiguration) return ((RevengConfiguration)wrappedObject).getClassMappings();
+		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getClassMappings();
+		return null;
+	}
 	
 }
