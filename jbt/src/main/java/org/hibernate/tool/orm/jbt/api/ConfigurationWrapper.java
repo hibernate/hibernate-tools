@@ -72,5 +72,11 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).setReverseEngineeringStrategy(strategy);
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).setReverseEngineeringStrategy(strategy);
 	}
+	default void readFromJDBC() {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).readFromJDBC();
+		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).readFromJDBC();
+		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).readFromJDBC();
+	}
 	
 }
