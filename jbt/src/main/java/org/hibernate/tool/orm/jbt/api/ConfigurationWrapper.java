@@ -78,5 +78,12 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).readFromJDBC();
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).readFromJDBC();
 	}
+	default PersistentClass getClassMapping(String string) { 
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) return ((NativeConfiguration)wrappedObject).getClassMapping(string);
+		if (wrappedObject instanceof RevengConfiguration) return ((RevengConfiguration)wrappedObject).getClassMapping(string);
+		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getClassMapping(string);
+		return null;
+	}
 	
 }
