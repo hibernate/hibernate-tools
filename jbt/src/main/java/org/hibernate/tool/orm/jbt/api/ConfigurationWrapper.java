@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -64,6 +65,12 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
 		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
 		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).setPreferBasicCompositeIds(b);
+	}
+	default void setReverseEngineeringStrategy(RevengStrategy strategy) {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) ((NativeConfiguration)wrappedObject).setReverseEngineeringStrategy(strategy);
+		if (wrappedObject instanceof RevengConfiguration) ((RevengConfiguration)wrappedObject).setReverseEngineeringStrategy(strategy);
+		if (wrappedObject instanceof JpaConfiguration) ((JpaConfiguration)wrappedObject).setReverseEngineeringStrategy(strategy);
 	}
 	
 }
