@@ -728,6 +728,34 @@ public class ConfigurationWrapperTest {
 		assertNotNull(jpaConfigurationWrapper.getClassMapping(FooBar.class.getName()));
 	}
 
+	@Test
+	public void testGetNamingStrategy() {
+		// For native configuration 
+		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		assertNull(nativeConfigurationWrapper.getNamingStrategy());
+		((NativeConfiguration)wrappedNativeConfiguration).setNamingStrategy(namingStrategy);
+		assertSame(nativeConfigurationWrapper.getNamingStrategy(), namingStrategy);
+		// For reveng configuration 
+		try {
+			revengConfigurationWrapper.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration
+		try {
+			jpaConfigurationWrapper.getNamingStrategy();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getNamingStrategy' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+		
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

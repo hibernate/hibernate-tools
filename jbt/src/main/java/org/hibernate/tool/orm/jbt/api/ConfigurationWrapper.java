@@ -85,5 +85,12 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getClassMapping(string);
 		return null;
 	}
+	default NamingStrategy getNamingStrategy() {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) return ((NativeConfiguration)wrappedObject).getNamingStrategy();
+		if (wrappedObject instanceof RevengConfiguration) return ((RevengConfiguration)wrappedObject).getNamingStrategy();
+		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getNamingStrategy();
+		return null;
+	}
 	
 }
