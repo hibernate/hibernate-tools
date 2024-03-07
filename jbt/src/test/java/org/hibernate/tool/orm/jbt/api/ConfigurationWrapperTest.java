@@ -756,6 +756,35 @@ public class ConfigurationWrapperTest {
 		
 	}
 	
+	@Test
+	public void testGetEntityResolver() throws Exception {
+		// For native configuration
+		Field entityResolverField = NativeConfiguration.class.getDeclaredField("entityResolver");
+		entityResolverField.setAccessible(true);
+		EntityResolver testResolver = new DefaultHandler();
+		assertNotSame(testResolver, nativeConfigurationWrapper.getEntityResolver());
+		entityResolverField.set(wrappedNativeConfiguration, testResolver);
+		assertSame(testResolver, nativeConfigurationWrapper.getEntityResolver());
+		// For reveng configuration 
+		try {
+			revengConfigurationWrapper.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + RevengConfiguration.class.getName());
+		}
+		// For jpa configuration 
+		try {
+			jpaConfigurationWrapper.getEntityResolver();
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(
+					e.getMessage(),
+					"Method 'getEntityResolver' should not be called on instances of " + JpaConfiguration.class.getName());
+		}
+	}
+	
 	private void createPersistenceXml() throws Exception {
 		File metaInf = new File(tempRoot, "META-INF");
 		metaInf.mkdirs();

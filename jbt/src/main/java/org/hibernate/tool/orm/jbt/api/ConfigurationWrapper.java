@@ -92,5 +92,12 @@ public interface ConfigurationWrapper extends Wrapper {
 		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getNamingStrategy();
 		return null;
 	}
+	default EntityResolver getEntityResolver() {
+		Object wrappedObject = getWrappedObject();
+		if (wrappedObject instanceof NativeConfiguration) return ((NativeConfiguration)wrappedObject).getEntityResolver();
+		if (wrappedObject instanceof RevengConfiguration) return ((RevengConfiguration)wrappedObject).getEntityResolver();
+		if (wrappedObject instanceof JpaConfiguration) return ((JpaConfiguration)wrappedObject).getEntityResolver();
+		return null;
+	}
 	
 }
