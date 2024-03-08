@@ -1,37 +1,34 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import org.hibernate.cfg.Environment;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
-public class EnvironmentWrapper {
+public interface EnvironmentWrapper extends Wrapper {
 	
-	public static EnvironmentWrapper INSTANCE = new EnvironmentWrapper();
-	
-	private EnvironmentWrapper() {}
+	default String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
 
-	public String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
+	default String getDriver() { return Environment.DRIVER; }
 
-	public String getDriver() { return Environment.DRIVER; }
+	default String getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
 
-	public String getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
+	default String getDialect() { return Environment.DIALECT; }
 
-	public String getDialect() { return Environment.DIALECT; }
+	default String getDataSource() { return Environment.DATASOURCE; }
 
-	public String getDataSource() { return Environment.DATASOURCE; }
+	default String getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
 
-	public String getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
+	default String getURL() { return Environment.URL; }
 
-	public String getURL() { return Environment.URL; }
+	default String getUser() { return Environment.USER; }
 
-	public String getUser() { return Environment.USER; }
+	default String getPass() { return Environment.PASS; }
 
-	public String getPass() { return Environment.PASS; }
+	default String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
 
-	public String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
+	default String getDefaultCatalog() { return Environment.DEFAULT_CATALOG; }
 
-	public String getDefaultCatalog() { return Environment.DEFAULT_CATALOG; }
+	default String getDefaultSchema() { return Environment.DEFAULT_SCHEMA; }
 
-	public String getDefaultSchema() { return Environment.DEFAULT_SCHEMA; }
-
-	public Class<Environment> getWrappedClass() { return Environment.class; }
+	default Class<Environment> getWrappedClass() { return Environment.class; }
 
 }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.cfg.Environment;
-import org.hibernate.tool.orm.jbt.api.EnvironmentWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class EnvironmentWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		environmentWrapper = EnvironmentWrapper.INSTANCE;
+		environmentWrapper = EnvironmentWrapperFactory.createEnvironmentWrapper();
 	}
 	
 	@Test
