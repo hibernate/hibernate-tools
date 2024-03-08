@@ -29,9 +29,9 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.api.EnvironmentWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -234,7 +234,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createEnvironmentWrapper() {
-		return EnvironmentWrapper.INSTANCE;
+		return EnvironmentWrapperFactory.createEnvironmentWrapper();
 	}
 
 	public static Object createSchemaExport(Object configuration) {
