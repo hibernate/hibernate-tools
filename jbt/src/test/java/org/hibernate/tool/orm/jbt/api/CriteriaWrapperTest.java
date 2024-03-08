@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.InvocationHandler;
@@ -31,6 +33,13 @@ public class CriteriaWrapperTest {
 	public void testConstruction() {
 		assertNotNull(wrappedCriteria);
 		assertNotNull(criteriaWrapper);
+	}
+	
+	@Test
+	public void testSetMaxResults() {
+		assertNotEquals(wrappedCriteria.getMaxResults(), Integer.MAX_VALUE);
+		criteriaWrapper.setMaxResults(Integer.MAX_VALUE);
+		assertEquals(wrappedCriteria.getMaxResults(), Integer.MAX_VALUE);
 	}
 	
 	private Query createQuery() {
