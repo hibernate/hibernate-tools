@@ -102,7 +102,7 @@ public class MockConnectionProvider extends UserSuppliedConnectionProviderImpl {
 		@Override public boolean nullsAreSortedAtStart() throws SQLException { return false; }
 		@Override public boolean nullsAreSortedAtEnd() throws SQLException { return false; }
 		@Override public String getDatabaseProductName() throws SQLException { return null; }
-		@Override public String getDatabaseProductVersion() throws SQLException { return null; }
+		@Override public String getDatabaseProductVersion() throws SQLException { return ""; }
 		@Override public String getDriverName() throws SQLException { return null; }
 		@Override public String getDriverVersion() throws SQLException { return null; }
 		@Override public int getDriverMajorVersion() { return 0; }
