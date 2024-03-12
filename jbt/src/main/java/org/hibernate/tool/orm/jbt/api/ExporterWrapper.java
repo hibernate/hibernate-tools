@@ -17,5 +17,12 @@ public interface ExporterWrapper extends Wrapper {
 				ExporterConstants.METADATA_DESCRIPTOR, 
 				new ConfigurationMetadataDescriptor(configuration));
 	}
+	
+	default void setArtifactCollector(ArtifactCollectorWrapper artifactCollectorWrapper) {
+		((Exporter)getWrappedObject()).getProperties().put(
+				ExporterConstants.ARTIFACT_COLLECTOR, 
+				artifactCollectorWrapper.getWrappedObject());
+	}
+
 
 }

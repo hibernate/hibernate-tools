@@ -14,6 +14,7 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
+import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
@@ -68,6 +69,15 @@ public class ExporterWrapperTest {
 		assertNotNull(metadataDescriptor);
 		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
 		assertSame(configuration, field.get(metadataDescriptor));
+	}
+	
+	@Test
+	public void testSetArtifactCollector() {
+		ArtifactCollectorWrapper artifactCollectorWrapper = ArtifactCollectorWrapperFactory.createArtifactCollectorWrapper();
+		Object wrappedArtifactCollector = artifactCollectorWrapper.getWrappedObject();
+		assertNotSame(wrappedArtifactCollector, wrappedExporter.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+		exporterWrapper.setArtifactCollector(artifactCollectorWrapper);
+		assertSame(wrappedArtifactCollector, wrappedExporter.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 	}
 	
 	public static class TestExporter extends AbstractExporter {
