@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Properties;
@@ -78,6 +79,14 @@ public class ExporterWrapperTest {
 		assertNotSame(wrappedArtifactCollector, wrappedExporter.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
 		exporterWrapper.setArtifactCollector(artifactCollectorWrapper);
 		assertSame(wrappedArtifactCollector, wrappedExporter.getProperties().get(ExporterConstants.ARTIFACT_COLLECTOR));
+	}
+	
+	@Test
+	public void testSetOutputDirectory() {
+		File file = new File("");
+		assertNotSame(file, wrappedExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
+		exporterWrapper.setOutputDirectory(file);
+		assertSame(file, wrappedExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
 	}
 	
 	public static class TestExporter extends AbstractExporter {

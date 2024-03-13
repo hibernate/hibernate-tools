@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.io.File;
+
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -22,6 +24,10 @@ public interface ExporterWrapper extends Wrapper {
 		((Exporter)getWrappedObject()).getProperties().put(
 				ExporterConstants.ARTIFACT_COLLECTOR, 
 				artifactCollectorWrapper.getWrappedObject());
+	}
+	
+	default void setOutputDirectory(File dir) {
+		((Exporter)getWrappedObject()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);
 	}
 
 
