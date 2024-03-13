@@ -70,4 +70,10 @@ public interface ExporterWrapper extends Wrapper {
 		}
 	}
 
+	default void setCustomProperties(Properties properties) {
+		if (getWrappedObject() instanceof CfgExporter) {
+			((CfgExporter)getWrappedObject()).setCustomProperties(properties);
+		}
+	}
+
 }

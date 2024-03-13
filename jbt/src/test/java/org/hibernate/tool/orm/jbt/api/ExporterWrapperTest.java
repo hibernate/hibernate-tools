@@ -25,6 +25,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactoryTest.TestExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -155,6 +156,22 @@ public class ExporterWrapperTest {
 		assertNotNull(queryExporter);
 		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, queryExporter);
+	}
+	
+	@Test
+	public void testSetCustomProperties() {
+		Properties properties = new Properties();
+		// 'setCustomProperties()' should not be called on other exporters than CfgExporter
+		TestExporter wrappedTestExporter = (TestExporter)exporterWrapper.getWrappedObject();
+		assertNull(wrappedTestExporter.props);
+		exporterWrapper.setCustomProperties(properties);
+		assertNull(wrappedTestExporter.props);
+		// try now with CfgExporter 
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new CfgExporter());
+		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
+		assertNotSame(properties, wrappedCfgExporter.getCustomProperties());
+		exporterWrapper.setCustomProperties(properties);
+		assertSame(properties, wrappedCfgExporter.getCustomProperties());
 	}
 	
 	public static class TestExporter extends AbstractExporter {
