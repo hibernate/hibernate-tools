@@ -18,5 +18,6 @@ public interface ForeignKeyWrapper extends Wrapper {
 	
 	default List<Column> getReferencedColumns() { return ((ForeignKey)getWrappedObject()).getReferencedColumns(); }
 
+	default boolean containsColumn(Column column) { return ((ForeignKey)getWrappedObject()).containsColumn(column); }
 
 }

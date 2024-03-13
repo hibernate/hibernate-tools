@@ -77,4 +77,12 @@ public class ForeignKeyWrapperTest {
 		assertSame(column, list.get(0));
 	}
 	
+	@Test
+	public void testContainsColumn() throws Exception {
+		Column column = new Column("foo");
+		assertFalse(foreignKeyWrapper.containsColumn(column));
+		wrappedForeignKey.addColumn(column);
+		assertTrue(foreignKeyWrapper.containsColumn(column));
+	}
+	
 }
