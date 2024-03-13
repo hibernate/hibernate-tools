@@ -12,6 +12,8 @@ public interface ForeignKeyWrapper extends Wrapper {
 	default Table getReferencedTable() { return ((ForeignKey)getWrappedObject()).getReferencedTable(); }
 	
 	default Iterator<Column> columnIterator() { return ((ForeignKey)getWrappedObject()).getColumns().iterator(); }
+	
+	default boolean isReferenceToPrimaryKey() { return ((ForeignKey)getWrappedObject()).isReferenceToPrimaryKey(); }
 
 
 }

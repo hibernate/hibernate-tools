@@ -3,7 +3,9 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
@@ -48,6 +50,16 @@ public class ForeignKeyWrapperTest {
 		Column c = iterator.next();
 		assertSame(c, column);
 		assertFalse(iterator.hasNext());
+	}
+	
+	@Test
+	public void testIsReferenceToPrimaryKey() {
+		assertTrue(foreignKeyWrapper.isReferenceToPrimaryKey());
+		ArrayList<Column> list = new ArrayList<Column>();
+		Column column = new Column();
+		list.add(column);
+		wrappedForeignKey.addReferencedColumns(list);
+		assertFalse(foreignKeyWrapper.isReferenceToPrimaryKey());
 	}
 	
 }
