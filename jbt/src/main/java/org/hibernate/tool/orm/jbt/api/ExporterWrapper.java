@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.Exporter;
@@ -36,6 +37,10 @@ public interface ExporterWrapper extends Wrapper {
 
 	default void start() {
 		((Exporter)getWrappedObject()).start();
+	}
+
+	default Properties getProperties() {
+		return ((Exporter)getWrappedObject()).getProperties();
 	}
 
 }
