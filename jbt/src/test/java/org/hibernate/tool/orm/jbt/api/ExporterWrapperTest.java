@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -19,6 +20,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFacto
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactoryTest.TestExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -95,6 +97,13 @@ public class ExporterWrapperTest {
 		assertNotSame(templatePath, wrappedExporter.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
 		exporterWrapper.setTemplatePath(templatePath);
 		assertSame(templatePath, wrappedExporter.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+	}
+	
+	@Test
+	public void testStart() throws Exception {
+		assertFalse(((TestExporter)exporterWrapper.getWrappedObject()).started);
+		exporterWrapper.start();
+		assertTrue(((TestExporter)exporterWrapper.getWrappedObject()).started);
 	}
 	
 	public static class TestExporter extends AbstractExporter {

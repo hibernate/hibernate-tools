@@ -34,4 +34,8 @@ public interface ExporterWrapper extends Wrapper {
 		((Exporter)getWrappedObject()).getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
 	}
 
+	default void start() {
+		((Exporter)getWrappedObject()).start();
+	}
+
 }
