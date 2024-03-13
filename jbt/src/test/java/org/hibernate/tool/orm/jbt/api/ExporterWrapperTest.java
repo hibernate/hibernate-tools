@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,11 +17,12 @@ import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactoryTest.TestExporter;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -115,6 +117,18 @@ public class ExporterWrapperTest {
 		assertNotSame(properties, exporterWrapper.getProperties());
 		propertiesField.set(exporterWrapper.getWrappedObject(), properties);
 		assertSame(properties, exporterWrapper.getProperties());
+	}
+	
+	@Test
+	public void testGetGenericExporter() {
+		// TestExporter should not return a GenericExporterFacade instance
+		assertNull(exporterWrapper.getGenericExporter());
+		// try now with a GenericExporter
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new GenericExporter());
+		GenericExporter genericExporter = exporterWrapper.getGenericExporter();
+		assertNotNull(genericExporter);
+		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, genericExporter);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
