@@ -9,6 +9,7 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
@@ -56,6 +57,14 @@ public interface ExporterWrapper extends Wrapper {
 	default DdlExporter getHbm2DDLExporter() {
 		if (getWrappedObject() instanceof DdlExporter) {
 			return (DdlExporter)getWrappedObject();
+		} else {
+			return null;
+		}
+	}
+
+	default QueryExporter getQueryExporter() {
+		if (getWrappedObject() instanceof QueryExporter) {
+			return (QueryExporter)getWrappedObject();
 		} else {
 			return null;
 		}

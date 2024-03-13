@@ -19,6 +19,7 @@ import org.hibernate.tool.internal.export.cfg.CfgExporter;
 import org.hibernate.tool.internal.export.common.AbstractExporter;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
+import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
@@ -142,6 +143,18 @@ public class ExporterWrapperTest {
 		assertNotNull(ddlExporter);
 		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
 		assertSame(exporterTarget, ddlExporter);
+	}
+	
+	@Test
+	public void testGetQueryExporter() {
+		// TestExporter should not return a GenericExporterFacade instance
+		assertNull(exporterWrapper.getQueryExporter());
+		// try now with a QueryExporter
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new QueryExporter());
+		QueryExporter queryExporter = exporterWrapper.getQueryExporter();
+		assertNotNull(queryExporter);
+		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
+		assertSame(exporterTarget, queryExporter);
 	}
 	
 	public static class TestExporter extends AbstractExporter {
