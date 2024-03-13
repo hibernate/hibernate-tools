@@ -174,6 +174,22 @@ public class ExporterWrapperTest {
 		assertSame(properties, wrappedCfgExporter.getCustomProperties());
 	}
 	
+	@Test
+	public void testSetOutput() {
+		StringWriter stringWriter = new StringWriter();
+		// 'setOutput()' should not be called on other exporters than CfgExporter
+		TestExporter wrappedTestExporter = (TestExporter)exporterWrapper.getWrappedObject();
+		assertNull(wrappedTestExporter.output);
+		exporterWrapper.setOutput(stringWriter);
+		assertNull(wrappedTestExporter.output);
+		// try now with CfgExporter 
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new CfgExporter());
+		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
+		assertNotSame(stringWriter, wrappedCfgExporter.getOutput());
+		exporterWrapper.setOutput(stringWriter);
+		assertSame(stringWriter, wrappedCfgExporter.getOutput());
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		private Properties props = null;

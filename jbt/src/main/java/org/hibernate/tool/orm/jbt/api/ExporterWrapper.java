@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -73,6 +74,12 @@ public interface ExporterWrapper extends Wrapper {
 	default void setCustomProperties(Properties properties) {
 		if (getWrappedObject() instanceof CfgExporter) {
 			((CfgExporter)getWrappedObject()).setCustomProperties(properties);
+		}
+	}
+
+	default void setOutput(StringWriter stringWriter) {
+		if (getWrappedObject() instanceof CfgExporter) {
+			((CfgExporter)getWrappedObject()).setOutput(stringWriter);
 		}
 	}
 
