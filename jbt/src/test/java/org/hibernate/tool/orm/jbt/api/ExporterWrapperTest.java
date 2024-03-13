@@ -89,6 +89,14 @@ public class ExporterWrapperTest {
 		assertSame(file, wrappedExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));		
 	}
 	
+	@Test
+	public void testSetTemplatePath() {
+		String[] templatePath = new String[] {};
+		assertNotSame(templatePath, wrappedExporter.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+		exporterWrapper.setTemplatePath(templatePath);
+		assertSame(templatePath, wrappedExporter.getProperties().get(ExporterConstants.TEMPLATE_PATH));		
+	}
+	
 	public static class TestExporter extends AbstractExporter {
 		private boolean started = false;
 		private Properties props = null;

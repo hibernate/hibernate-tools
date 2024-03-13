@@ -30,5 +30,8 @@ public interface ExporterWrapper extends Wrapper {
 		((Exporter)getWrappedObject()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, dir);
 	}
 
+	default void setTemplatePath(String[] templatePath) {
+		((Exporter)getWrappedObject()).getProperties().put(ExporterConstants.TEMPLATE_PATH, templatePath);
+	}
 
 }
