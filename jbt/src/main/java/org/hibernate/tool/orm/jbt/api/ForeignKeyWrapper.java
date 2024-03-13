@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -14,6 +15,8 @@ public interface ForeignKeyWrapper extends Wrapper {
 	default Iterator<Column> columnIterator() { return ((ForeignKey)getWrappedObject()).getColumns().iterator(); }
 	
 	default boolean isReferenceToPrimaryKey() { return ((ForeignKey)getWrappedObject()).isReferenceToPrimaryKey(); }
+	
+	default List<Column> getReferencedColumns() { return ((ForeignKey)getWrappedObject()).getReferencedColumns(); }
 
 
 }
