@@ -20,5 +20,10 @@ public interface GenericExporterWrapper extends Wrapper {
 		((GenericExporter)getWrappedObject()).getProperties().setProperty(
 				ExporterConstants.FOR_EACH, forEach);
 	}
+	
+	default String getFilePattern() {
+		return ((GenericExporter)getWrappedObject()).getProperties().getProperty(
+				ExporterConstants.FILE_PATTERN);
+	}
 
 }
