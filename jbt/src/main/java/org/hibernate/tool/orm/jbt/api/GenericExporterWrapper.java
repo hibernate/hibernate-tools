@@ -15,5 +15,10 @@ public interface GenericExporterWrapper extends Wrapper {
 		((GenericExporter)getWrappedObject()).getProperties().setProperty(
 				ExporterConstants.TEMPLATE_NAME, templateName);
 	}
+	
+	default void setForEach(String forEach) {
+		((GenericExporter)getWrappedObject()).getProperties().setProperty(
+				ExporterConstants.FOR_EACH, forEach);
+	}
 
 }
