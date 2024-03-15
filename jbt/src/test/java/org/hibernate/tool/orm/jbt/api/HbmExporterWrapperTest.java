@@ -174,6 +174,19 @@ public class HbmExporterWrapperTest {
 		assertTrue(delegateHasExported);
 	}
 	
+	@Test
+	public void testSetExportPOJODelegate() throws Exception {
+		Object delegate = new Object() {			
+			@SuppressWarnings("unused")
+			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) { }
+		};
+		Field delegateField = wrappedHbmExporter.getClass().getDeclaredField("delegateExporter");
+		delegateField.setAccessible(true);
+		assertNull(delegateField.get(wrappedHbmExporter));
+		hbmExporterWrapper.setExportPOJODelegate(delegate);
+		assertSame(delegate, delegateField.get(wrappedHbmExporter));
+	}
+
 	private static class TestMetadataDescriptor implements MetadataDescriptor {
 		@Override
 		public Metadata createMetadata() {

@@ -26,5 +26,9 @@ public interface HbmExporterWrapper extends Wrapper {
 	default void exportPOJO(Map<Object, Object> map, Object pojoClass) {
 		((HbmExporterExtension)getWrappedObject()).exportPOJO(map, (POJOClass)pojoClass);
 	}
+	
+	default void setExportPOJODelegate(Object delegate) {
+		((HbmExporterExtension)getWrappedObject()).delegateExporter = delegate;
+	}
 
 }

@@ -22,7 +22,7 @@ public class HbmExporterWrapperFactory {
 	
 	public static class HbmExporterExtension extends HbmExporter {
 		
-		private Object delegateExporter = null;
+		public Object delegateExporter = null;
 		
 		private HbmExporterExtension(Configuration cfg, File f) {
 			getProperties().put(
