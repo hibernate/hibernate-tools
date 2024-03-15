@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -85,6 +86,7 @@ public class HbmExporterWrapperTest {
 		assertTrue(fooHbmXml.delete());
 		// Now set a 'delegate' and invoke 'start' again
 		Object delegate = new Object() {			
+			@SuppressWarnings("unused")
 			public void exportPojo(Map<Object, Object> map, Object pojoClass, String qualifiedDeclarationName) {
 				try {
 					FileWriter fw = new FileWriter(fooHbmXml);
@@ -102,6 +104,14 @@ public class HbmExporterWrapperTest {
 		assertFalse(delegateHasExported);
 		hbmExporterWrapper.start();
 		assertTrue(delegateHasExported);
+	}
+	
+	@Test
+	public void testGetOutputDirectory() {
+		assertNull(hbmExporterWrapper.getOutputDirectory());
+		File file = new File("testGetOutputDirectory");
+		wrappedHbmExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, file);
+		assertSame(file, hbmExporterWrapper.getOutputDirectory());
 	}
 	
 	private static class TestMetadataDescriptor implements MetadataDescriptor {
