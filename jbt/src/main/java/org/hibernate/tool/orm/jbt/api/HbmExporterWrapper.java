@@ -1,9 +1,12 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.io.File;
+import java.util.Map;
 
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
+import org.hibernate.tool.internal.export.java.POJOClass;
+import org.hibernate.tool.orm.jbt.internal.factory.HbmExporterWrapperFactory.HbmExporterExtension;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface HbmExporterWrapper extends Wrapper {
@@ -18,6 +21,10 @@ public interface HbmExporterWrapper extends Wrapper {
 	
 	default void setOutputDirectory(File f) {
 		((HbmExporter)getWrappedObject()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, f);
+	}
+	
+	default void exportPOJO(Map<Object, Object> map, Object pojoClass) {
+		((HbmExporterExtension)getWrappedObject()).exportPOJO(map, (POJOClass)pojoClass);
 	}
 
 }

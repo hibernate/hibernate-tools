@@ -20,7 +20,7 @@ public class HbmExporterWrapperFactory {
 		};
 	}
 	
-	private static class HbmExporterExtension extends HbmExporter {
+	public static class HbmExporterExtension extends HbmExporter {
 		
 		private Object delegateExporter = null;
 		
