@@ -15,5 +15,9 @@ public interface HbmExporterWrapper extends Wrapper {
 	default File getOutputDirectory() {
 		return (File)((HbmExporter)getWrappedObject()).getProperties().get(ExporterConstants.DESTINATION_FOLDER);
 	}
+	
+	default void setOutputDirectory(File f) {
+		((HbmExporter)getWrappedObject()).getProperties().put(ExporterConstants.DESTINATION_FOLDER, f);
+	}
 
 }

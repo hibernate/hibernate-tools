@@ -114,6 +114,14 @@ public class HbmExporterWrapperTest {
 		assertSame(file, hbmExporterWrapper.getOutputDirectory());
 	}
 	
+	@Test
+	public void testSetOutputDirectory() {
+		assertNull(wrappedHbmExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+		File file = new File("testSetOutputDirectory");
+		hbmExporterWrapper.setOutputDirectory(file);
+		assertSame(file, wrappedHbmExporter.getProperties().get(ExporterConstants.DESTINATION_FOLDER));
+	}
+	
 	private static class TestMetadataDescriptor implements MetadataDescriptor {
 		@Override
 		public Metadata createMetadata() {
