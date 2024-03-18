@@ -58,4 +58,11 @@ public class HqlCompletionProposalWrapperTest {
 		assertEquals("foo", hqlCompletionProposalWrapper.getSimpleName());
 	}
 	
+	@Test
+	public void testGetCompletionKind() {
+		assertEquals(HQLCompletionProposal.PROPERTY, hqlCompletionProposalWrapper.getCompletionKind());
+		wrappedHqlCompletionProposal.setCompletionKind(HQLCompletionProposal.KEYWORD);
+		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalWrapper.getCompletionKind());
+	}
+	
 }

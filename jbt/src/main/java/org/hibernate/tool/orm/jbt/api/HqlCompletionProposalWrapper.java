@@ -13,4 +13,6 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default String getSimpleName() { return ((HQLCompletionProposal)getWrappedObject()).getSimpleName(); }
 
+	default int getCompletionKind() { return ((HQLCompletionProposal)getWrappedObject()).getCompletionKind(); }
+
 }
