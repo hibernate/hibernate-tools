@@ -22,4 +22,6 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
 
+	default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
+
 }
