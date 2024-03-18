@@ -51,4 +51,11 @@ public class HqlCompletionProposalWrapperTest {
 		assertEquals(Integer.MIN_VALUE, hqlCompletionProposalWrapper.getReplaceEnd());
 	}
 	
+	@Test
+	public void testGetSimpleName() {
+		assertNotEquals("foo", hqlCompletionProposalWrapper.getSimpleName());
+		wrappedHqlCompletionProposal.setSimpleName("foo");
+		assertEquals("foo", hqlCompletionProposalWrapper.getSimpleName());
+	}
+	
 }
