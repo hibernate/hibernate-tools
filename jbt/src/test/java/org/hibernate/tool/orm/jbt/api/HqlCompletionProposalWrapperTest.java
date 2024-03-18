@@ -3,7 +3,10 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.internal.factory.HqlCompletionProposalWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,6 +80,14 @@ public class HqlCompletionProposalWrapperTest {
 		assertNotEquals("foo", hqlCompletionProposalWrapper.getShortEntityName());
 		wrappedHqlCompletionProposal.setShortEntityName("foo");
 		assertEquals("foo", hqlCompletionProposalWrapper.getShortEntityName());
+	}
+	
+	@Test
+	public void testGetProperty() {
+		Property propertyTarget = new Property();
+		assertNull(hqlCompletionProposalWrapper.getProperty());
+		wrappedHqlCompletionProposal.setProperty(propertyTarget);
+		assertSame(propertyTarget, hqlCompletionProposalWrapper.getProperty());
 	}
 	
 }

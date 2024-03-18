@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
@@ -18,5 +19,7 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 	default String getEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getEntityName(); }
 
 	default String getShortEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getShortEntityName(); }
+
+	default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
 
 }
