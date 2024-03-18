@@ -17,4 +17,6 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default String getEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getEntityName(); }
 
+	default String getShortEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getShortEntityName(); }
+
 }

@@ -72,4 +72,11 @@ public class HqlCompletionProposalWrapperTest {
 		assertEquals("foo", hqlCompletionProposalWrapper.getEntityName());
 	}
 	
+	@Test
+	public void testGetShortEntityName() {
+		assertNotEquals("foo", hqlCompletionProposalWrapper.getShortEntityName());
+		wrappedHqlCompletionProposal.setShortEntityName("foo");
+		assertEquals("foo", hqlCompletionProposalWrapper.getShortEntityName());
+	}
+	
 }
