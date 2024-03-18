@@ -110,4 +110,9 @@ public class HqlCompletionProposalWrapperTest {
 		assertSame(HQLCompletionProposal.KEYWORD, hqlCompletionProposalWrapper.keywordKind());
 	}
 	
+	@Test
+	public void testFunctionKind() {
+		assertSame(HQLCompletionProposal.FUNCTION, hqlCompletionProposalWrapper.functionKind());
+	}
+	
 }
