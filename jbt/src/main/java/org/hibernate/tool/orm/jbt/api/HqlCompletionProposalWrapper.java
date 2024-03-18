@@ -24,4 +24,6 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
 
+	default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
+
 }

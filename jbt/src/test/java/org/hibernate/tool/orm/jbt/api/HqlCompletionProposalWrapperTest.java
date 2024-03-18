@@ -95,4 +95,9 @@ public class HqlCompletionProposalWrapperTest {
 		assertSame(HQLCompletionProposal.ALIAS_REF, hqlCompletionProposalWrapper.aliasRefKind());
 	}
 	
+	@Test
+	public void testEntityNameKind() {
+		assertSame(HQLCompletionProposal.ENTITY_NAME, hqlCompletionProposalWrapper.entityNameKind());
+	}
+	
 }
