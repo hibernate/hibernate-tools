@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.internal.util;
 
+import java.lang.reflect.Method;
+
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 
@@ -14,10 +16,11 @@ public class HqlCompletionRequestor implements IHQLCompletionRequestor {
 	@Override
 	public boolean accept(HQLCompletionProposal proposal) {
 		try {
-			return (boolean)handler
+			Method m = handler
 					.getClass()
-					.getMethod("accept", new Class[] { Object.class })
-					.invoke(handler, proposal);
+					.getMethod("accept", new Class[] { Object.class });
+			m.setAccessible(true);
+			return (boolean)m.invoke(handler, proposal);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
@@ -26,9 +29,11 @@ public class HqlCompletionRequestor implements IHQLCompletionRequestor {
 	@Override
 	public void completionFailure(String errorMessage) {
 		try {
-			handler.getClass()
-					.getMethod("completionFailure", new Class[] { String.class })
-					.invoke(handler, errorMessage);
+			Method m = handler
+					.getClass()
+					.getMethod("completionFailure", new Class[] { String.class });
+			m.setAccessible(true);
+			m.invoke(handler, errorMessage);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
