@@ -13,8 +13,14 @@ public class HqlCompletionRequestor implements IHQLCompletionRequestor {
 
 	@Override
 	public boolean accept(HQLCompletionProposal proposal) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			return (boolean)handler
+					.getClass()
+					.getMethod("accept", new Class[] { Object.class })
+					.invoke(handler, proposal);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 
 	@Override
