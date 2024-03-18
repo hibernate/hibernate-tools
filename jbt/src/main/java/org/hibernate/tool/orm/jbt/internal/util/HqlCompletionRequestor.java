@@ -25,8 +25,13 @@ public class HqlCompletionRequestor implements IHQLCompletionRequestor {
 
 	@Override
 	public void completionFailure(String errorMessage) {
-		// TODO Auto-generated method stub
-		
+		try {
+			handler.getClass()
+					.getMethod("completionFailure", new Class[] { String.class })
+					.invoke(handler, errorMessage);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 
 }
