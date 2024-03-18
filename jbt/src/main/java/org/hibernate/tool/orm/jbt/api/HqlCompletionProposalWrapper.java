@@ -26,4 +26,6 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
 
+	default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
+
 }
