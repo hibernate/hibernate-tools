@@ -65,4 +65,11 @@ public class HqlCompletionProposalWrapperTest {
 		assertEquals(HQLCompletionProposal.KEYWORD, hqlCompletionProposalWrapper.getCompletionKind());
 	}
 	
+	@Test
+	public void testGetEntityName() {
+		assertNotEquals("foo", hqlCompletionProposalWrapper.getEntityName());
+		wrappedHqlCompletionProposal.setEntityName("foo");
+		assertEquals("foo", hqlCompletionProposalWrapper.getEntityName());
+	}
+	
 }
