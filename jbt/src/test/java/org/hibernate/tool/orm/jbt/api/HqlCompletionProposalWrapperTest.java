@@ -37,4 +37,11 @@ public class HqlCompletionProposalWrapperTest {
 		assertEquals("foo", hqlCompletionProposalWrapper.getCompletion());
 	}
 	
+	@Test
+	public void testGetReplaceStart() {
+		assertNotEquals(Integer.MAX_VALUE, hqlCompletionProposalWrapper.getReplaceStart());
+		wrappedHqlCompletionProposal.setReplaceStart(Integer.MAX_VALUE);
+		assertEquals(Integer.MAX_VALUE, hqlCompletionProposalWrapper.getReplaceStart());
+	}
+	
 }
