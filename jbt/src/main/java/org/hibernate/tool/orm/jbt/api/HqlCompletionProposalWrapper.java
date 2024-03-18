@@ -28,4 +28,5 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
 
+	default int keywordKind() { return HQLCompletionProposal.KEYWORD; }
 }
