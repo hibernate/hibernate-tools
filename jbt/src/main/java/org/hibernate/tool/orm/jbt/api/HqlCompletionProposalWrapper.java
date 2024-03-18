@@ -9,4 +9,5 @@ public interface HqlCompletionProposalWrapper extends Wrapper {
 
 	default int getReplaceStart() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceStart(); }
 
+	default int getReplaceEnd() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceEnd(); }
 }
