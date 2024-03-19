@@ -18,5 +18,9 @@ public interface NamingStrategyWrapper extends Wrapper {
 				associatedEntityTable, 
 				propertyName);
 	}
+	
+	default String columnName(String specifiedName) {
+		return ((NamingStrategy)getWrappedObject()).columnName(specifiedName);
+	}
 
 }

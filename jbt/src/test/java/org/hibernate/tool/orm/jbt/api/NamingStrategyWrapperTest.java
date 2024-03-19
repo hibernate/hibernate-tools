@@ -37,6 +37,11 @@ public class NamingStrategyWrapperTest {
 		assertEquals("FooBarCollectionTableName", tableName);
 	}
 	
+	@Test
+	public void testColumnName() {
+		assertEquals("FooBarColumnName", namingStrategyWrapper.columnName("foo"));
+	}
+	
 	public static class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
@@ -47,6 +52,10 @@ public class NamingStrategyWrapperTest {
 				String associatedEntityTable,
 				String propertyName) {
 			return "FooBarCollectionTableName";
+		}
+		@Override
+		public String columnName(String columnName) {
+			return "FooBarColumnName";
 		}
 	}
 
