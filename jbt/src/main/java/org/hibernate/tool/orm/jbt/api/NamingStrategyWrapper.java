@@ -26,5 +26,9 @@ public interface NamingStrategyWrapper extends Wrapper {
 	default String propertyToColumnName(String name) {
 		return ((NamingStrategy)getWrappedObject()).propertyToColumnName(name);
 	}
+	
+	default String tableName(String name) {
+		return ((NamingStrategy)getWrappedObject()).tableName(name);
+	}
 
 }
