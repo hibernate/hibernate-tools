@@ -42,6 +42,11 @@ public class NamingStrategyWrapperTest {
 		assertEquals("FooBarColumnName", namingStrategyWrapper.columnName("foo"));
 	}
 	
+	@Test
+	public void testPropertyToColumnName() {
+		assertEquals("BarFooPropertyColumn", namingStrategyWrapper.propertyToColumnName("bar"));
+	}
+	
 	public static class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
@@ -57,6 +62,11 @@ public class NamingStrategyWrapperTest {
 		public String columnName(String columnName) {
 			return "FooBarColumnName";
 		}
+		@Override
+		public String propertyToColumnName(String propertyName) {
+			return "BarFooPropertyColumn";
+		}
+
 	}
 
 }
