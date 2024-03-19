@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.cfg.DefaultNamingStrategy;
@@ -15,7 +16,7 @@ public class NamingStrategyWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedNamingStrategy = new DefaultNamingStrategy();
+		wrappedNamingStrategy = new TestNamingStrategy();
 		namingStrategyWrapper = NamingStrategyWrapperFactory.createNamingStrategyWrapper(wrappedNamingStrategy);
 	}
 	
@@ -25,4 +26,28 @@ public class NamingStrategyWrapperTest {
 		assertNotNull(namingStrategyWrapper);
 	}
 	
+	@Test
+	public void testCollectionTableName() {
+		String tableName = namingStrategyWrapper.collectionTableName(
+				"FooEntity", 
+				"FooTable", 
+				"BarEntity", 
+				"BarTable", 
+				"FooBarProperty");
+		assertEquals("FooBarCollectionTableName", tableName);
+	}
+	
+	public static class TestNamingStrategy extends DefaultNamingStrategy {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String collectionTableName(
+				String ownerEntity, 
+				String ownerEntityTable, 
+				String associatedEntity, 
+				String associatedEntityTable,
+				String propertyName) {
+			return "FooBarCollectionTableName";
+		}
+	}
+
 }
