@@ -62,6 +62,11 @@ public class NamingStrategyWrapperTest {
 		assertEquals("FooBarClassTable", namingStrategyWrapper.classToTableName("foobar"));
 	}
 	
+	@Test
+	public void testGetStrategyClassName() {
+		assertEquals(TestNamingStrategy.class.getName(), namingStrategyWrapper.getStrategyClassName());
+	}
+	
 	public static class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override

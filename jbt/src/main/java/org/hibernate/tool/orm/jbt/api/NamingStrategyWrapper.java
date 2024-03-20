@@ -42,5 +42,9 @@ public interface NamingStrategyWrapper extends Wrapper {
 	default String classToTableName(String name) {
 		return ((NamingStrategy)getWrappedObject()).classToTableName(name);
 	}
+	
+	default String getStrategyClassName() {
+		return getWrappedObject().getClass().getName();
+	}
 
 }
