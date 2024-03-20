@@ -30,5 +30,14 @@ public interface NamingStrategyWrapper extends Wrapper {
 	default String tableName(String name) {
 		return ((NamingStrategy)getWrappedObject()).tableName(name);
 	}
+	
+	default String joinKeyColumnName(
+			String primaryKeyColumnName,
+			String primaryTableName) {
+		return ((NamingStrategy)getWrappedObject()).joinKeyColumnName(
+				primaryKeyColumnName,
+				primaryTableName);
+		
+	}
 
 }

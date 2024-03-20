@@ -52,6 +52,11 @@ public class NamingStrategyWrapperTest {
 		assertEquals("BarFooTable", namingStrategyWrapper.tableName("foobar"));
 	}
 	
+	@Test
+	public void testJoinKeyColumnName() {
+		assertEquals("FooBarJoinKeyColumnName", namingStrategyWrapper.joinKeyColumnName("foo", "bar"));
+	}
+	
 	public static class TestNamingStrategy extends DefaultNamingStrategy {
 		private static final long serialVersionUID = 1L;
 		@Override
@@ -74,6 +79,10 @@ public class NamingStrategyWrapperTest {
 		@Override
 		public String tableName(String tableName) {
 			return "BarFooTable";
+		}
+		@Override
+		public String joinKeyColumnName(String joinedColumn, String joinedTable) {
+			return "FooBarJoinKeyColumnName";
 		}
 	}
 
