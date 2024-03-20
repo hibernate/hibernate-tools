@@ -37,7 +37,10 @@ public interface NamingStrategyWrapper extends Wrapper {
 		return ((NamingStrategy)getWrappedObject()).joinKeyColumnName(
 				primaryKeyColumnName,
 				primaryTableName);
-		
+	}
+	
+	default String classToTableName(String name) {
+		return ((NamingStrategy)getWrappedObject()).classToTableName(name);
 	}
 
 }
