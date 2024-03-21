@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -11,6 +12,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +67,16 @@ public class OverrideRepositoryWrapperTest {
 		Table table = (Table)tables.get(0);
 		assertNotNull(table);
 		assertEquals("FOO", table.getName());
+	}
+	
+	@Test
+	public void testGetReverseEngineeringStrategy() throws Exception {
+		RevengStrategy rev = new DefaultStrategy();
+		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
+		delegateField.setAccessible(true);
+		RevengStrategy delegatingStrategy = overrideRepositoryWrapper.getReverseEngineeringStrategy(rev);
+		assertNotNull(delegatingStrategy);
+		assertSame(rev, delegateField.get(delegatingStrategy));
 	}
 	
 }
