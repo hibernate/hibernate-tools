@@ -16,6 +16,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
+import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,6 +78,18 @@ public class OverrideRepositoryWrapperTest {
 		RevengStrategy delegatingStrategy = overrideRepositoryWrapper.getReverseEngineeringStrategy(rev);
 		assertNotNull(delegatingStrategy);
 		assertSame(rev, delegateField.get(delegatingStrategy));
+	}
+	
+	@Test
+	public void testAddTableFilter() throws Exception {
+		TableFilter tableFilter = new TableFilter();
+		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
+		tableFiltersField.setAccessible(true);
+		List<?> tableFilters = (List<?>)tableFiltersField.get(wrappedOverrideRepository);
+		assertTrue(tableFilters.isEmpty());
+		overrideRepositoryWrapper.addTableFilter(tableFilter);
+		tableFilters = (List<?>)tableFiltersField.get(wrappedOverrideRepository);
+		assertSame(tableFilter, tableFilters.get(0));		
 	}
 	
 }
