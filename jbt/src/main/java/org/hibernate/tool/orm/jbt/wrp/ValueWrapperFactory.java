@@ -114,7 +114,7 @@ public class ValueWrapperFactory {
 		}
 	}
 	
-	static interface ValueWrapper extends KeyValue, ValueExtension {}
+	public static interface ValueWrapper extends KeyValue, ValueExtension {}
 	
 	
 	private static class ValueWrapperInvocationHandler implements ValueExtension, InvocationHandler {
