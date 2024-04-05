@@ -12,7 +12,7 @@ public class PropertyWrapperFactory {
 		return new DelegatingPropertyWrapperImpl(wrappedProperty);
 	}
 
-	static interface PropertyWrapper extends Wrapper{		
+	public static interface PropertyWrapper extends Wrapper{		
 		@Override Property getWrappedObject();		
 		Value getValue();
 		Type getType();

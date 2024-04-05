@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.internal.factory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -13,9 +13,13 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class PersistentClassWrapperFactory {
 	
@@ -62,7 +66,7 @@ public class PersistentClassWrapperFactory {
 		
 	}
 	
-	static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapper {		
+	public static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapper {		
 		public RootClassWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
 		}
@@ -83,7 +87,7 @@ public class PersistentClassWrapperFactory {
 		}
 	}
 	
-	static class SingleTableSubclassWrapperImpl 
+	public static class SingleTableSubclassWrapperImpl 
 			extends SingleTableSubclass 
 			implements PersistentClassWrapper {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
@@ -91,7 +95,7 @@ public class PersistentClassWrapperFactory {
 		}
 	}
 	
-	static class JoinedSubclassWrapperImpl
+	public static class JoinedSubclassWrapperImpl
 			extends JoinedSubclass
 			implements PersistentClassWrapper {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
@@ -106,7 +110,7 @@ public class PersistentClassWrapperFactory {
 		}
 	}
 	
-	static class SpecialRootClassWrapperImpl 
+	public static class SpecialRootClassWrapperImpl 
 			extends SpecialRootClass
 			implements PersistentClassWrapper {
 		public SpecialRootClassWrapperImpl(Property property) {

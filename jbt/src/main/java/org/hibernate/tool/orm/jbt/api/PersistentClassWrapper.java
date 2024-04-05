@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +11,9 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.RootClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.RootClassWrapperImpl;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface PersistentClassWrapper extends Wrapper {
 

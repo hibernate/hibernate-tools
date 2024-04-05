@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import java.util.Iterator;
 
@@ -10,7 +10,12 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.DelegatingTableWrapperImpl;
+import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory;
+import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class DelegatingPersistentClassWrapperImpl extends RootClass implements PersistentClassWrapper {
 	
