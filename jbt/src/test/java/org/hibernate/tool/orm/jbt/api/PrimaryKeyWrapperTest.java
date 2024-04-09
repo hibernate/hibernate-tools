@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -56,6 +57,21 @@ public class PrimaryKeyWrapperTest {
 		assertNotNull(columns);
 		assertEquals(1, columns.size());
 		assertSame(column, columns.get(0));
+	}
+	
+	@Test
+	public void testGetColumn() throws Exception {
+		try {
+			primaryKeyWrapper.getColumn(0);
+			fail();
+		} catch (IndexOutOfBoundsException e) {
+			assertTrue(e.getMessage().contains("Index 0 out of bounds for length 0"));
+		}
+		Column column = new Column();
+		wrappedPrimaryKey.addColumn(column);
+		Column c = primaryKeyWrapper.getColumn(0);
+		assertNotNull(c);
+		assertSame(column, c);
 	}
 	
 }
