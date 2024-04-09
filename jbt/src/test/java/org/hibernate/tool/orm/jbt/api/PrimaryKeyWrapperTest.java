@@ -38,4 +38,11 @@ public class PrimaryKeyWrapperTest {
 		assertSame(column, wrappedPrimaryKey.getColumns().get(0));
 	}
 	
+	@Test
+	public void testGetColumnSpan() {
+		assertEquals(0, primaryKeyWrapper.getColumnSpan());
+		wrappedPrimaryKey.addColumn(new Column());
+		assertEquals(1, primaryKeyWrapper.getColumnSpan());
+	}
+	
 }

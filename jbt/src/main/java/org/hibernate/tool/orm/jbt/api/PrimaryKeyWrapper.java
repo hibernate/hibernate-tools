@@ -7,5 +7,6 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 public interface PrimaryKeyWrapper extends Wrapper {
 
 	default void addColumn(Column column) { ((PrimaryKey)getWrappedObject()).addColumn(column); }
+	default int getColumnSpan() { return ((PrimaryKey)getWrappedObject()).getColumnSpan(); }
 
 }
