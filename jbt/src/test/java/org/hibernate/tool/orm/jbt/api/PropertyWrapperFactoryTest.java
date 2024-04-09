@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -36,6 +38,13 @@ public class PropertyWrapperFactoryTest {
 		wrappedProperty.setValue(value);
 		Value v = propertyWrapper.getValue();
 		assertSame(value, v);
+	}
+	
+	@Test
+	public void testSetName() {
+		assertNotEquals("foo", wrappedProperty.getName());
+		propertyWrapper.setName("foo");
+		assertEquals("foo", wrappedProperty.getName());
 	}
 	
 }
