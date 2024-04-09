@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -72,6 +73,14 @@ public class PrimaryKeyWrapperTest {
 		Column c = primaryKeyWrapper.getColumn(0);
 		assertNotNull(c);
 		assertSame(column, c);
+	}
+	
+	@Test
+	public void testGetTable() throws Exception {
+		Table table = new Table("foo");
+		assertNotSame(table, primaryKeyWrapper.getTable());
+		wrappedPrimaryKey.setTable(table);
+		assertSame(table, primaryKeyWrapper.getTable());
 	}
 	
 }
