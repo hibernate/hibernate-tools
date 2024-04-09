@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -90,6 +91,16 @@ public class PrimaryKeyWrapperTest {
 		assertFalse(primaryKeyWrapper.containsColumn(column));
 		wrappedPrimaryKey.addColumn(column);
 		assertTrue(primaryKeyWrapper.containsColumn(column));
+	}
+	
+	@Test
+	public void testColumnIterator() throws Exception {
+		assertFalse(primaryKeyWrapper.columnIterator().hasNext());
+		Column column = new Column();
+		wrappedPrimaryKey.addColumn(column);
+		Iterator<Column> columnIterator = primaryKeyWrapper.columnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(column, columnIterator.next());
 	}
 	
 }

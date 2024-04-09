@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
@@ -15,5 +16,6 @@ public interface PrimaryKeyWrapper extends Wrapper {
 	default Column getColumn(int i) { return ((PrimaryKey)getWrappedObject()).getColumn(i); }
 	default Table getTable() { return ((PrimaryKey)getWrappedObject()).getTable(); }
 	default boolean containsColumn(Column column) { return ((PrimaryKey)getWrappedObject()).containsColumn(column); }
+	default Iterator<Column> columnIterator() { return getColumns().iterator(); }
 
 }
