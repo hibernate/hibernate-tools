@@ -14,7 +14,7 @@ import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PropertyWrapperFactoryTest {
+public class PropertyWrapperTest {
 
 	private Property wrappedProperty = null;
 	private PropertyWrapper propertyWrapper = null;
