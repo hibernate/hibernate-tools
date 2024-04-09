@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -101,6 +102,13 @@ public class PrimaryKeyWrapperTest {
 		Iterator<Column> columnIterator = primaryKeyWrapper.columnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(column, columnIterator.next());
+	}
+	
+	@Test
+	public void testGetName() {
+		assertNotEquals("foo", primaryKeyWrapper.getName());
+		wrappedPrimaryKey.setName("foo");
+		assertEquals("foo", primaryKeyWrapper.getName());
 	}
 	
 }

@@ -17,5 +17,6 @@ public interface PrimaryKeyWrapper extends Wrapper {
 	default Table getTable() { return ((PrimaryKey)getWrappedObject()).getTable(); }
 	default boolean containsColumn(Column column) { return ((PrimaryKey)getWrappedObject()).containsColumn(column); }
 	default Iterator<Column> columnIterator() { return getColumns().iterator(); }
+	default String getName() { return ((PrimaryKey)getWrappedObject()).getName(); }
 
 }
