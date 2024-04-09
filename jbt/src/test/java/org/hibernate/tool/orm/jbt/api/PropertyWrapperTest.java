@@ -88,4 +88,11 @@ public class PropertyWrapperTest {
 		assertEquals("foo", propertyWrapper.getPropertyAccessorName());
 	}
 	
+	@Test
+	public void testGetName() {
+		assertNotEquals("foo", propertyWrapper.getName());
+		wrappedProperty.setName("foo");
+		assertEquals("foo", propertyWrapper.getName());
+	}
+	
 }

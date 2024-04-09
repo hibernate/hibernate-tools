@@ -13,5 +13,6 @@ public interface PropertyWrapper extends Wrapper {
 	default PersistentClass getPersistentClass() { return ((Property)getWrappedObject()).getPersistentClass(); }
 	default boolean isComposite() { return ((Property)getWrappedObject()).isComposite(); }
 	default String getPropertyAccessorName() { return ((Property)getWrappedObject()).getPropertyAccessorName(); }
+	default String getName() { return ((Property)getWrappedObject()).getName(); }
 
 }
