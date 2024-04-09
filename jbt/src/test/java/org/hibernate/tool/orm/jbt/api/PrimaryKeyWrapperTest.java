@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
@@ -43,6 +45,17 @@ public class PrimaryKeyWrapperTest {
 		assertEquals(0, primaryKeyWrapper.getColumnSpan());
 		wrappedPrimaryKey.addColumn(new Column());
 		assertEquals(1, primaryKeyWrapper.getColumnSpan());
+	}
+	
+	@Test
+	public void testGetColumns() throws Exception {
+		Column column = new Column("foo");
+		assertTrue(primaryKeyWrapper.getColumns().isEmpty());
+		wrappedPrimaryKey.addColumn(column);
+		List<Column> columns = primaryKeyWrapper.getColumns();
+		assertNotNull(columns);
+		assertEquals(1, columns.size());
+		assertSame(column, columns.get(0));
 	}
 	
 }
