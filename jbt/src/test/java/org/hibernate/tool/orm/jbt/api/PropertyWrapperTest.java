@@ -107,4 +107,12 @@ public class PropertyWrapperTest {
 		assertSame(v.getType(), t);
 	}
 	
+	@Test
+	public void testSetValue() {
+		assertNull(wrappedProperty.getValue());	
+		BasicValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		propertyWrapper.setValue(value);
+		assertSame(value, wrappedProperty.getValue());
+	}
+	
 }

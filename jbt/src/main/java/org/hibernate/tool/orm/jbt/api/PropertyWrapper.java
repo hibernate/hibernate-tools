@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
@@ -19,5 +20,6 @@ public interface PropertyWrapper extends Wrapper {
 		Value v = ((Property)getWrappedObject()).getValue();
 		return v == null ? null : v.getType();
 	}
+	default void setValue(BasicValue value) { ((Property)getWrappedObject()).setValue(value); }
 
 }
