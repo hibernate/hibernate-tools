@@ -4,6 +4,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.type.Type;
 
 public interface PropertyWrapper extends Wrapper {
 
@@ -14,5 +15,9 @@ public interface PropertyWrapper extends Wrapper {
 	default boolean isComposite() { return ((Property)getWrappedObject()).isComposite(); }
 	default String getPropertyAccessorName() { return ((Property)getWrappedObject()).getPropertyAccessorName(); }
 	default String getName() { return ((Property)getWrappedObject()).getName(); }
+	default Type getType() { 
+		Value v = ((Property)getWrappedObject()).getValue();
+		return v == null ? null : v.getType();
+	}
 
 }
