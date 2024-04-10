@@ -30,5 +30,6 @@ public interface PropertyWrapper extends Wrapper {
 	default String getCascade() { return ((Property)getWrappedObject()).getCascade(); }
 	default boolean isLazy() { return ((Property)getWrappedObject()).isLazy(); }
 	default boolean isOptional() { return ((Property)getWrappedObject()).isOptional(); }
+	default boolean isNaturalIdentifier() { return ((Property)getWrappedObject()).isNaturalIdentifier(); }
 
 }
