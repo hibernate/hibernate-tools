@@ -21,5 +21,6 @@ public interface PropertyWrapper extends Wrapper {
 		return v == null ? null : v.getType();
 	}
 	default void setValue(BasicValue value) { ((Property)getWrappedObject()).setValue(value); }
+	default void setPropertyAccessorName(String s) { ((Property)getWrappedObject()).setPropertyAccessorName(s); }
 
 }
