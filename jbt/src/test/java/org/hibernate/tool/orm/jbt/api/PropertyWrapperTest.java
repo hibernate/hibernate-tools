@@ -159,4 +159,17 @@ public class PropertyWrapperTest {
 		assertFalse(propertyWrapper.isInsertable());
 	}
 	
+	@Test
+	public void testIsUpdateable() {
+		BasicValue v = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		v.setTable(new Table(""));
+		Column c = new Column();
+		v.addColumn(c);
+		wrappedProperty.setValue(v);
+		wrappedProperty.setUpdateable(false);
+		assertFalse(propertyWrapper.isUpdateable());
+		wrappedProperty.setUpdateable(true);
+		assertTrue(propertyWrapper.isUpdateable());
+	}
+	
 }

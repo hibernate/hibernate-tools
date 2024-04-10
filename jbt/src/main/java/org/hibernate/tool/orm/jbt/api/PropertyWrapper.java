@@ -26,5 +26,6 @@ public interface PropertyWrapper extends Wrapper {
 	default boolean isBackRef() { return ((Property)getWrappedObject()).isBackRef(); }
 	default boolean isSelectable() { return ((Property)getWrappedObject()).isSelectable(); }
 	default boolean isInsertable() { return ((Property)getWrappedObject()).isInsertable(); }
+	default boolean isUpdateable() { return ((Property)getWrappedObject()).isUpdateable(); }
 
 }
