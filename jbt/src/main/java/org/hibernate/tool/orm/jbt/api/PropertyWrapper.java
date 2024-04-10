@@ -24,5 +24,6 @@ public interface PropertyWrapper extends Wrapper {
 	default void setPropertyAccessorName(String s) { ((Property)getWrappedObject()).setPropertyAccessorName(s); }
 	default void setCascade(String s) { ((Property)getWrappedObject()).setCascade(s); }
 	default boolean isBackRef() { return ((Property)getWrappedObject()).isBackRef(); }
+	default boolean isSelectable() { return ((Property)getWrappedObject()).isSelectable(); }
 
 }
