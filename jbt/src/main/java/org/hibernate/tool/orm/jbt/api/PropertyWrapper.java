@@ -31,5 +31,6 @@ public interface PropertyWrapper extends Wrapper {
 	default boolean isLazy() { return ((Property)getWrappedObject()).isLazy(); }
 	default boolean isOptional() { return ((Property)getWrappedObject()).isOptional(); }
 	default boolean isNaturalIdentifier() { return ((Property)getWrappedObject()).isNaturalIdentifier(); }
+	default boolean isOptimisticLocked() { return ((Property)getWrappedObject()).isOptimisticLocked(); }
 
 }
