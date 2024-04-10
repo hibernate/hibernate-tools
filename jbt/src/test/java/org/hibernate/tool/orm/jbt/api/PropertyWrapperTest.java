@@ -179,4 +179,12 @@ public class PropertyWrapperTest {
 		assertEquals("foo", propertyWrapper.getCascade());
 	}
 	
+	@Test
+	public void testIsLazy() {
+		wrappedProperty.setLazy(true);
+		assertTrue(propertyWrapper.isLazy());
+		wrappedProperty.setLazy(false);
+		assertFalse(propertyWrapper.isLazy());
+	}
+	
 }
