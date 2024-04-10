@@ -122,4 +122,11 @@ public class PropertyWrapperTest {
 		assertEquals("foo", wrappedProperty.getPropertyAccessorName());
 	}
 	
+	@Test
+	public void testSetCascade() {
+		assertNotEquals("foo", wrappedProperty.getCascade());
+		propertyWrapper.setCascade("foo");
+		assertEquals("foo", wrappedProperty.getCascade());
+	}
+	
 }

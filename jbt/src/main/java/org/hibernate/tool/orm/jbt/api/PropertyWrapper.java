@@ -22,5 +22,6 @@ public interface PropertyWrapper extends Wrapper {
 	}
 	default void setValue(BasicValue value) { ((Property)getWrappedObject()).setValue(value); }
 	default void setPropertyAccessorName(String s) { ((Property)getWrappedObject()).setPropertyAccessorName(s); }
+	default void setCascade(String s) { ((Property)getWrappedObject()).setCascade(s); }
 
 }
