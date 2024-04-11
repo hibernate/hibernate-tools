@@ -1,6 +1,8 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,6 +10,7 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 import org.h2.Driver;
 import org.hibernate.Session;
@@ -109,6 +112,20 @@ public class QueryWrapperTest {
 		assertNotNull(positionalParameterizedQueryWrapper);
 		assertNotNull(wrappedCollectionParameterizedQuery);
 		assertNotNull(collectionParameterizedQueryWrapper);
+	}
+	
+	@Test
+	public void testList() throws Exception {
+		List<?> result = simpleQueryWrapper.list();
+		assertTrue(result.isEmpty());
+		statement.execute("INSERT INTO FOO VALUES(1, 'bars')");
+		result = simpleQueryWrapper.list();
+		assertEquals(1, result.size());
+		Object obj = result.get(0);
+		assertTrue(obj instanceof Foo);
+		Foo foo = (Foo)obj;
+		assertEquals(1, foo.id);
+		assertEquals("bars", foo.bars);
 	}
 	
 	private void createDatabase() throws Exception {
