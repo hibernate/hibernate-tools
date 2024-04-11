@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -38,4 +40,11 @@ public class QueryExporterWrapperTest {
 		assertSame(queries, wrappedQueryExporter.getProperties().get(ExporterConstants.QUERY_LIST));
 	}	
 
+	@Test
+	public void testSetFileName() {
+		assertNotEquals("foo", wrappedQueryExporter.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		queryExporterWrapper.setFilename("foo");
+		assertEquals("foo", wrappedQueryExporter.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+	}
+	
 }
