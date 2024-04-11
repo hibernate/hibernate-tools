@@ -15,5 +15,8 @@ public interface QueryWrapper extends Wrapper {
 	default void setParameter(String parameter, Object value, Object anything) {
 		((Query<?>)getWrappedObject()).setParameter(parameter, value);
 	}
+	default void setParameter(int position, Object value, Object anything) {
+		((Query<?>)getWrappedObject()).setParameter(position, value);
+	}
 	
 }
