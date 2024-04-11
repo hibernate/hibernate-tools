@@ -1,7 +1,9 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 import org.h2.Driver;
@@ -17,8 +20,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryParameterBinding;
+import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.internal.factory.QueryWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -136,6 +140,17 @@ public class QueryWrapperTest {
 		assertEquals(Integer.MAX_VALUE, wrappedSimpleQuery.getMaxResults());
 	}
 	
+	@Test
+	public void testSetParameterList() {
+		QueryParameterBinding<?> foo = null;
+		assertNull(foo);
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)wrappedCollectionParameterizedQuery).getParameterBindings().getBinding("foo");
+		assertFalse(binding.isBound());
+		collectionParameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
+		assertTrue(binding.isBound());
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
@@ -151,7 +166,7 @@ public class QueryWrapperTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		Configuration configuration = new NativeConfiguration();
+		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
 		sessionFactory = configuration.buildSessionFactory();
