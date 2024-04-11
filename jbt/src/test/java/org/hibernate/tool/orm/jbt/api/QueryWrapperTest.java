@@ -151,6 +151,16 @@ public class QueryWrapperTest {
 		assertTrue(binding.isBound());
 	}
 	
+	@Test
+	public void testSetNamedParameter() {
+		QueryParameterBinding<?> binding = 
+				((QuerySqmImpl<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
+		assertFalse(binding.isBound());
+		namedParameterizedQueryWrapper.setParameter("foo", 1, new Object());
+		assertTrue(binding.isBound());
+		assertEquals(1, binding.getBindValue());
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
