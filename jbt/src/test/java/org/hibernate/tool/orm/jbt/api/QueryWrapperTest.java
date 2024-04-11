@@ -171,6 +171,13 @@ public class QueryWrapperTest {
 		assertEquals(1, binding.getBindValue());
 	}
 	
+	@Test
+	public void testGetReturnAliases() {
+		String[] aliases = simpleQueryWrapper.getReturnAliases();
+		assertNotNull(aliases);
+		assertEquals(0, aliases.length);
+	}
+	
 	private void createDatabase() throws Exception {
 		connection = DriverManager.getConnection("jdbc:h2:mem:test");
 		statement = connection.createStatement();
