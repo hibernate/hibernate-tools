@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -22,6 +23,14 @@ public class RevengSettingsWrapperTest {
 	public void testConstruction() {
 		assertNotNull(wrappedRevengSettings);
 		assertNotNull(revengSettingsWrapper);
+	}
+	
+	
+	@Test
+	public void testSetDefaultPackageName() {
+		assertEquals("", wrappedRevengSettings.getDefaultPackageName());
+		revengSettingsWrapper.setDefaultPackageName("foo");
+		assertEquals("foo", wrappedRevengSettings.getDefaultPackageName());
 	}
 	
 }
