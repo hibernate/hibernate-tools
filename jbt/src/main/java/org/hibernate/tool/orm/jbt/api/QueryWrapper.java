@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.type.Type;
 
 public interface QueryWrapper extends Wrapper {
 
@@ -19,5 +20,6 @@ public interface QueryWrapper extends Wrapper {
 		((Query<?>)getWrappedObject()).setParameter(position, value);
 	}
 	default String[] getReturnAliases() { return new String[0]; }
+	default Type[] getReturnTypes() {return new Type[0]; }
 	
 }
