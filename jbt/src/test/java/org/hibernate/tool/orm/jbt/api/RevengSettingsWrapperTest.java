@@ -49,4 +49,11 @@ public class RevengSettingsWrapperTest {
 		assertFalse(wrappedRevengSettings.getDetectOneToOne());
 	}
 	
+	@Test
+	public void testSetDetectOptimisticLock() {
+		assertTrue(wrappedRevengSettings.getDetectOptimsticLock());
+		revengSettingsWrapper.setDetectOptimisticLock(false);
+		assertFalse(wrappedRevengSettings.getDetectOptimsticLock());
+	}
+	
 }
