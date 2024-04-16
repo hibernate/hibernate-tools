@@ -42,4 +42,11 @@ public class RevengSettingsWrapperTest {
 		assertFalse(wrappedRevengSettings.getDetectManyToMany());
 	}
 	
+	@Test
+	public void testSetDetectOneToOne() {
+		assertTrue(wrappedRevengSettings.getDetectOneToOne());
+		revengSettingsWrapper.setDetectOneToOne(false);
+		assertFalse(wrappedRevengSettings.getDetectOneToOne());
+	}
+	
 }
