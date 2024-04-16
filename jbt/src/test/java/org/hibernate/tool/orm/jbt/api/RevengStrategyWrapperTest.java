@@ -1,8 +1,14 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import java.lang.reflect.Field;
+
+import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,5 +31,15 @@ public class RevengStrategyWrapperTest {
 		assertNotNull(revengStrategyWrapper);
 	}
 	
+	
+	@Test
+	public void testSetSettings() throws Exception {
+		RevengSettings revengSettings = new RevengSettings(null);
+		Field field = AbstractStrategy.class.getDeclaredField("settings");
+		field.setAccessible(true);
+		assertNotSame(field.get(wrappedRevengStrategy), revengSettings);
+		revengStrategyWrapper.setSettings(revengSettings);
+		assertSame(field.get(wrappedRevengStrategy), revengSettings);
+	}
 	
 }
