@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.util.EnumSet;
+import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -16,5 +17,7 @@ public interface SchemaExportWrapper extends Wrapper {
 				TargetType.DATABASE), 
 				MetadataHelper.getMetadata(getConfiguration()));
 	}
+	@SuppressWarnings("unchecked")
+	default List<Throwable> getExceptions() { return ((SchemaExport)getWrappedObject()).getExceptions(); }
 
 }

@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
@@ -47,6 +49,20 @@ public class SchemaExportWrapperTest {
 		assertFalse(((TestSchemaExport)wrappedSchemaExport).created);
 		schemaExportWrapper.create();
 		assertTrue(((TestSchemaExport)wrappedSchemaExport).created);
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		Field exceptionsField = SchemaExport.class.getDeclaredField("exceptions");
+		exceptionsField.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<Throwable> exceptionList = (List<Throwable>)exceptionsField.get(wrappedSchemaExport);
+		assertTrue(exceptionList.isEmpty());
+		Throwable t = new RuntimeException("foobar");
+		exceptionList.add(t);
+		List<Throwable> list = schemaExportWrapper.getExceptions();
+		assertSame(list, exceptionList);
+		assertTrue(list.contains(t));
 	}
 	
 	private class TestSchemaExport extends SchemaExport {
