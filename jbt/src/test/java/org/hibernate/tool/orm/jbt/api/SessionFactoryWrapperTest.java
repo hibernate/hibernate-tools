@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,11 +9,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -81,6 +84,14 @@ public class SessionFactoryWrapperTest {
 		assertFalse(wrappedSessionFactory.isClosed());
 		sessionFactoryWrapper.close();
 		assertTrue(wrappedSessionFactory.isClosed());
+	}
+	
+	@Test
+	public void testGetAllClassMetadata() throws Exception {
+		Map<String, EntityPersister> allClassMetadata = sessionFactoryWrapper.getAllClassMetadata();
+		assertNotNull(allClassMetadata);
+		assertEquals(1, allClassMetadata.size());
+		assertNotNull(allClassMetadata.get(Foo.class.getName()));
 	}
 	
 }
