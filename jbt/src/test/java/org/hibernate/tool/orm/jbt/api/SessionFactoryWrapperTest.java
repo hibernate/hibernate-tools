@@ -15,6 +15,7 @@ import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
@@ -92,6 +93,15 @@ public class SessionFactoryWrapperTest {
 		assertNotNull(allClassMetadata);
 		assertEquals(1, allClassMetadata.size());
 		assertNotNull(allClassMetadata.get(Foo.class.getName()));
+	}
+	
+	@Test
+	public void testGetAllCollectionMetadata() throws Exception {
+		Map<String, CollectionPersister> allCollectionMetadata = sessionFactoryWrapper.getAllCollectionMetadata();
+		assertNotNull(allCollectionMetadata);
+		assertEquals(1, allCollectionMetadata.size());
+		CollectionPersister barsPersister = allCollectionMetadata.get(Foo.class.getName() + ".bars");
+		assertNotNull(barsPersister);
 	}
 	
 }

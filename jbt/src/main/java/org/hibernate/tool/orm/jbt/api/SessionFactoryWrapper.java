@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.tool.orm.jbt.wrp.CollectionPersisterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.EntityPersisterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
@@ -20,6 +22,15 @@ public interface SessionFactoryWrapper extends Wrapper {
 			result.put(key, (EntityPersister)EntityPersisterWrapperFactory.create(origin.get(key)));
 		}
 		return result;
-	};
+	}
+
+	default Map<String, CollectionPersister> getAllCollectionMetadata() {
+		Map<String, CollectionPersister> origin = ((SessionFactoryImplementor)getWrappedObject()).getMetamodel().collectionPersisters();
+		Map<String, CollectionPersister> result = new HashMap<String, CollectionPersister>(origin.size());
+		for (String key : origin.keySet()) {
+			result.put(key, (CollectionPersister)CollectionPersisterWrapperFactory.create(origin.get(key)));
+		}
+		return result;
+	}
 
 }
