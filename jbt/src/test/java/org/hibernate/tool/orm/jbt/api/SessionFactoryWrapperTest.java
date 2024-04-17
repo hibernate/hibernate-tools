@@ -1,6 +1,8 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +49,7 @@ public class SessionFactoryWrapperTest {
 	@TempDir
 	public File tempDir;
 	
-	private SessionFactory sessionFactory = null;
+	private SessionFactory wrappedSessionFactory = null;
 	private SessionFactoryWrapper sessionFactoryWrapper = null;
 	
 	@BeforeEach 
@@ -64,14 +66,21 @@ public class SessionFactoryWrapperTest {
 		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		sessionFactory = configuration.buildSessionFactory();
-		sessionFactoryWrapper = SessionFactoryWrapperFactory.createSessionFactoryWrapper(sessionFactory);
+		wrappedSessionFactory = configuration.buildSessionFactory();
+		sessionFactoryWrapper = SessionFactoryWrapperFactory.createSessionFactoryWrapper(wrappedSessionFactory);
 	}
 	
 	@Test
 	public void testConstruction() {
-		assertNotNull(sessionFactory);
+		assertNotNull(wrappedSessionFactory);
 		assertNotNull(sessionFactoryWrapper);
+	}
+	
+	@Test
+	public void testClose() {
+		assertFalse(wrappedSessionFactory.isClosed());
+		sessionFactoryWrapper.close();
+		assertTrue(wrappedSessionFactory.isClosed());
 	}
 	
 }
