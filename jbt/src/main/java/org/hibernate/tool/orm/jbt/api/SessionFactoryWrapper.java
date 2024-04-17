@@ -38,6 +38,8 @@ public interface SessionFactoryWrapper extends Wrapper {
 
 	default EntityPersister getClassMetadata(String s) { return getAllClassMetadata().get(s); }
 
-	default Object getClassMetadata(Class<?> c) { return getAllClassMetadata().get(c.getName()); }
+	default EntityPersister getClassMetadata(Class<?> c) { return getAllClassMetadata().get(c.getName()); }
+
+	default CollectionPersister getCollectionMetadata(String s) { return getAllCollectionMetadata().get(s); }
 
 }
