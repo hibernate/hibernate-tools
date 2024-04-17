@@ -3,15 +3,19 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -102,6 +106,13 @@ public class SessionFactoryWrapperTest {
 		assertEquals(1, allCollectionMetadata.size());
 		CollectionPersister barsPersister = allCollectionMetadata.get(Foo.class.getName() + ".bars");
 		assertNotNull(barsPersister);
+	}
+	
+	@Test
+	public void testOpenSession() {
+		Session session = sessionFactoryWrapper.openSession();
+		assertNotNull(session);
+		assertSame(session.getSessionFactory(), wrappedSessionFactory);
 	}
 	
 }

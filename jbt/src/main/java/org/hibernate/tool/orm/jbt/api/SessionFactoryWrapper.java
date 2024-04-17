@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
@@ -32,5 +33,7 @@ public interface SessionFactoryWrapper extends Wrapper {
 		}
 		return result;
 	}
+
+	default Session openSession() { return ((SessionFactory)getWrappedObject()).openSession(); }
 
 }
