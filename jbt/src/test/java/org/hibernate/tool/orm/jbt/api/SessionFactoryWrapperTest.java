@@ -3,13 +3,12 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
@@ -113,6 +112,16 @@ public class SessionFactoryWrapperTest {
 		Session session = sessionFactoryWrapper.openSession();
 		assertNotNull(session);
 		assertSame(session.getSessionFactory(), wrappedSessionFactory);
+	}
+	
+	@Test
+	public void testGetClassMetadata() throws Exception {
+		// first 'getClassMetadata(String)'
+		assertNull(sessionFactoryWrapper.getClassMetadata("foo"));
+		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class.getName()));
+		// then "getClassMetadata(Class)'
+		assertNull(sessionFactoryWrapper.getClassMetadata(Object.class));
+		assertNotNull(sessionFactoryWrapper.getClassMetadata(Foo.class));
 	}
 	
 }
