@@ -108,9 +108,20 @@ public class SessionWrapperTest {
 	
 	@Test
 	public void testClose() {
-		assertTrue(sessionWrapper.isOpen());
+		assertTrue(wrappedSession.isOpen());
 		sessionWrapper.close();
-		assertFalse(sessionWrapper.isOpen());
+		assertFalse(wrappedSession.isOpen());
+	}
+	
+	@Test
+	public void testContains() {
+		Foo first = new Foo();
+		first.id = "1";
+		wrappedSession.persist(first);
+		Foo second = new Foo();
+		assertTrue(sessionWrapper.contains(first));
+		assertFalse(sessionWrapper.contains(second));
+		assertFalse(sessionWrapper.contains("blah"));
 	}
 	
 }

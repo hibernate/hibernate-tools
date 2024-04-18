@@ -17,4 +17,17 @@ public interface SessionWrapper extends Wrapper {
 
 	default void close() { ((Session)getWrappedObject()).close(); }
 
+	default boolean contains(Object o) { 
+		boolean result = false;
+		try {
+			result = ((Session)getWrappedObject()).contains(o);
+		} catch (IllegalArgumentException e) {
+			String message = e.getMessage();
+			if (!(message.startsWith("Class '") && message.endsWith("' is not an entity class"))) {
+				throw e;
+			}
+		}
+		return result;
+	}
+
 }
