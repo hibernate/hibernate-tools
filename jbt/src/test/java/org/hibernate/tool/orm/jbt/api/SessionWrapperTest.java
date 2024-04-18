@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -74,6 +75,14 @@ public class SessionWrapperTest {
 	public void testConstruction() {
 		assertNotNull(wrappedSession);
 		assertNotNull(sessionWrapper);
+	}
+	
+	@Test
+	public void testGetEntityName() {
+		Foo foo = new Foo();
+		foo.id = "bar";
+		wrappedSession.persist(foo);
+		assertEquals(Foo.class.getName(), sessionWrapper.getEntityName(foo));
 	}
 	
 }
