@@ -124,4 +124,10 @@ public class SessionWrapperTest {
 		assertFalse(sessionWrapper.contains("blah"));
 	}
 	
+	@Test
+	public void testCreateCriteria() {
+		jakarta.persistence.Query query = sessionWrapper.createCriteria(Foo.class);
+		assertNotNull(query);
+	}
+
 }

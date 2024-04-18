@@ -5,6 +5,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
 public interface SessionWrapper extends Wrapper {
 
 	default String getEntityName(Object o) { return ((Session)getWrappedObject()).getEntityName(o); }
@@ -28,6 +32,14 @@ public interface SessionWrapper extends Wrapper {
 			}
 		}
 		return result;
+	}
+
+	default jakarta.persistence.Query createCriteria(Class<?> c) {
+		CriteriaBuilder criteriaBuilder = ((Session)getWrappedObject()).getCriteriaBuilder();
+		CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(c);
+		Root root = criteriaQuery.from(c);
+		criteriaQuery.select(root);
+		return ((Session)getWrappedObject()).createQuery(criteriaQuery);
 	}
 
 }
