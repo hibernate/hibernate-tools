@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -83,6 +84,12 @@ public class SessionWrapperTest {
 		foo.id = "bar";
 		wrappedSession.persist(foo);
 		assertEquals(Foo.class.getName(), sessionWrapper.getEntityName(foo));
+	}
+	
+	@Test
+	public void testGetSessionFactory() {
+		SessionFactory sessionFactory = wrappedSession.getSessionFactory();
+		assertSame(sessionFactory, sessionWrapper.getSessionFactory());
 	}
 	
 }
