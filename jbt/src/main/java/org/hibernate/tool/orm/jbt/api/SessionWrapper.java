@@ -13,4 +13,6 @@ public interface SessionWrapper extends Wrapper {
 
 	default Query<?> createQuery(String s) { return ((Session)getWrappedObject()).createQuery(s); }
 
+	default boolean isOpen() { return ((Session)getWrappedObject()).isOpen(); }
+
 }

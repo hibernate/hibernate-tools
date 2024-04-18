@@ -1,8 +1,10 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -95,6 +97,13 @@ public class SessionWrapperTest {
 	@Test
 	public void testCreateQuery() {
 		assertNotNull(sessionWrapper.createQuery("from " + Foo.class.getName()));
+	}
+	
+	@Test
+	public void testIsOpen() {
+		assertTrue(sessionWrapper.isOpen());
+		wrappedSession.close();
+		assertFalse(sessionWrapper.isOpen());
 	}
 	
 }
