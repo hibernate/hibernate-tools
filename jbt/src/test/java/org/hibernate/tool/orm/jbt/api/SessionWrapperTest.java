@@ -92,4 +92,9 @@ public class SessionWrapperTest {
 		assertSame(sessionFactory, sessionWrapper.getSessionFactory());
 	}
 	
+	@Test
+	public void testCreateQuery() {
+		assertNotNull(sessionWrapper.createQuery("from " + Foo.class.getName()));
+	}
+	
 }
