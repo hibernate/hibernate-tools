@@ -15,4 +15,6 @@ public interface SessionWrapper extends Wrapper {
 
 	default boolean isOpen() { return ((Session)getWrappedObject()).isOpen(); }
 
+	default void close() { ((Session)getWrappedObject()).close(); }
+
 }

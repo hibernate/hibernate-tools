@@ -106,4 +106,11 @@ public class SessionWrapperTest {
 		assertFalse(sessionWrapper.isOpen());
 	}
 	
+	@Test
+	public void testClose() {
+		assertTrue(sessionWrapper.isOpen());
+		sessionWrapper.close();
+		assertFalse(sessionWrapper.isOpen());
+	}
+	
 }
