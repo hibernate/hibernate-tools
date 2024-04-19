@@ -1,9 +1,13 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -64,6 +68,17 @@ public class TableWrapperTest {
 		assertNull(tableWrapper.getPrimaryKey());
 		wrappedTable.setPrimaryKey(primaryKey);
 		assertSame(primaryKey, tableWrapper.getPrimaryKey());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		Column column = new Column("Hibernate Tools");
+		Iterator<Column> columnIterator = tableWrapper.getColumnIterator();
+		assertFalse(columnIterator.hasNext());
+		wrappedTable.addColumn(column);
+		columnIterator = tableWrapper.getColumnIterator();
+		assertTrue(columnIterator.hasNext());
+		assertSame(column, columnIterator.next());
 	}
 	
 }

@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
@@ -16,5 +18,7 @@ public interface TableWrapper extends Wrapper {
 	default String getSchema() { return ((Table)getWrappedObject()).getSchema(); }
 
 	default PrimaryKey getPrimaryKey() { return ((Table)getWrappedObject()).getPrimaryKey(); }
+
+	default Iterator<Column> getColumnIterator() { return ((Table)getWrappedObject()).getColumns().iterator(); }
 
 }
