@@ -50,4 +50,11 @@ public class TableWrapperTest {
 		assertEquals("foo", tableWrapper.getCatalog());
 	}
 	
+	@Test
+	public void testGetSchema() {
+		assertNull(tableWrapper.getSchema());
+		wrappedTable.setSchema("foo");
+		assertEquals("foo", tableWrapper.getSchema());
+	}
+	
 }

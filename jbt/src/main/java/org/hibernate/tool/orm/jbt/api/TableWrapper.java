@@ -12,4 +12,6 @@ public interface TableWrapper extends Wrapper {
 
 	default String getCatalog() { return ((Table)getWrappedObject()).getCatalog(); }
 
+	default String getSchema() { return ((Table)getWrappedObject()).getSchema(); }
+
 }
