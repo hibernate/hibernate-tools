@@ -56,4 +56,11 @@ public class TableFilterWrapperTest {
 		assertEquals("foo", wrappedTableFilter.getMatchName());
 	}
 		
+	@Test
+	public void testGetExclude() {
+		assertNull(tableFilterWrapper.getExclude());
+		wrappedTableFilter.setExclude(true);
+		assertTrue(tableFilterWrapper.getExclude());
+	}
+		
 }

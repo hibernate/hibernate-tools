@@ -13,4 +13,6 @@ public interface TableFilterWrapper extends Wrapper {
 
 	default void setMatchName(String s) { ((TableFilter)getWrappedObject()).setMatchName(s); }
 
+	default Boolean getExclude() { return ((TableFilter)getWrappedObject()).getExclude(); }
+
 }
