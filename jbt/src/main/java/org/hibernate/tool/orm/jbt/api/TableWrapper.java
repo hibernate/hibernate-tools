@@ -21,4 +21,6 @@ public interface TableWrapper extends Wrapper {
 
 	default Iterator<Column> getColumnIterator() { return ((Table)getWrappedObject()).getColumns().iterator(); }
 
+	default String getComment() { return ((Table)getWrappedObject()).getComment(); }
+
 }

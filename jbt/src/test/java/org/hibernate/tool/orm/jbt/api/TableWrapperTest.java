@@ -81,4 +81,11 @@ public class TableWrapperTest {
 		assertSame(column, columnIterator.next());
 	}
 	
+	@Test
+	public void testGetComment() {
+		assertNull(tableWrapper.getComment());
+		wrappedTable.setComment("foo");
+		assertEquals("foo", tableWrapper.getComment());
+	}
+	
 }
