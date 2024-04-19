@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,14 @@ public class TableWrapperTest {
 		assertNull(tableWrapper.getSchema());
 		wrappedTable.setSchema("foo");
 		assertEquals("foo", tableWrapper.getSchema());
+	}
+	
+	@Test
+	public void testGetPrimaryKey() {
+		PrimaryKey primaryKey = new PrimaryKey(wrappedTable);
+		assertNull(tableWrapper.getPrimaryKey());
+		wrappedTable.setPrimaryKey(primaryKey);
+		assertSame(primaryKey, tableWrapper.getPrimaryKey());
 	}
 	
 }
