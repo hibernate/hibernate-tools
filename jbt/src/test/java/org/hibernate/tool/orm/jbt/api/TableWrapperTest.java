@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
@@ -100,6 +101,17 @@ public class TableWrapperTest {
 		assertNull(tableWrapper.getSubselect());		
 		wrappedTable.setSubselect("foo");
 		assertEquals("foo", tableWrapper.getSubselect());
+	}
+	
+	@Test
+	public void testHasDenormalizedTables() throws Exception {
+		assertFalse(tableWrapper.hasDenormalizedTables());
+		Method method = Table.class.getDeclaredMethod(
+				"setHasDenormalizedTables", 
+				new Class[] { });
+		method.setAccessible(true);
+		method.invoke(wrappedTable, new Object[] { });
+		assertTrue(tableWrapper.hasDenormalizedTables());
 	}
 	
 }

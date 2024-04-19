@@ -27,4 +27,6 @@ public interface TableWrapper extends Wrapper {
 
 	default String getSubselect() { return ((Table)getWrappedObject()).getSubselect(); }
 
+	default boolean hasDenormalizedTables() { return ((Table)getWrappedObject()).hasDenormalizedTables(); }
+
 }
