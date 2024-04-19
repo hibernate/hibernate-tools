@@ -15,4 +15,6 @@ public interface TableFilterWrapper extends Wrapper {
 
 	default Boolean getExclude() { return ((TableFilter)getWrappedObject()).getExclude(); }
 
+	default String getMatchCatalog() { return ((TableFilter)getWrappedObject()).getMatchCatalog(); }
+
 }
