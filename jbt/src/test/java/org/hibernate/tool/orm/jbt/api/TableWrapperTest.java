@@ -114,4 +114,12 @@ public class TableWrapperTest {
 		assertTrue(tableWrapper.hasDenormalizedTables());
 	}
 	
+	@Test
+	public void testIsAbstract() {
+		wrappedTable.setAbstract(true);
+		assertTrue(tableWrapper.isAbstract());		
+		wrappedTable.setAbstract(false);
+		assertFalse(tableWrapper.isAbstract());		
+	}
+	
 }

@@ -29,4 +29,6 @@ public interface TableWrapper extends Wrapper {
 
 	default boolean hasDenormalizedTables() { return ((Table)getWrappedObject()).hasDenormalizedTables(); }
 
+	default boolean isAbstract() { return ((Table)getWrappedObject()).isAbstract(); }
+
 }
