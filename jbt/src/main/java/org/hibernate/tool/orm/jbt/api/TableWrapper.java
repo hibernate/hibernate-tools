@@ -31,4 +31,6 @@ public interface TableWrapper extends Wrapper {
 
 	default boolean isAbstract() { return ((Table)getWrappedObject()).isAbstract(); }
 
+	default boolean isAbstractUnionTable() { return ((Table)getWrappedObject()).isAbstractUnionTable(); }
+
 }

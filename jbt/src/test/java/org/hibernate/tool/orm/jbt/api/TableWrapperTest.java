@@ -122,4 +122,18 @@ public class TableWrapperTest {
 		assertFalse(tableWrapper.isAbstract());		
 	}
 	
+	@Test
+	public void testIsAbstractUnionTable() throws Exception {
+		wrappedTable.setAbstract(false);
+		assertFalse(tableWrapper.isAbstractUnionTable());	
+		wrappedTable.setAbstract(true);
+		assertFalse(tableWrapper.isAbstractUnionTable());	
+		Method method = Table.class.getDeclaredMethod(
+				"setHasDenormalizedTables", 
+				new Class[] { });
+		method.setAccessible(true);
+		method.invoke(wrappedTable, new Object[] { });
+		assertTrue(tableWrapper.isAbstractUnionTable());
+	}
+	
 }
