@@ -7,4 +7,6 @@ public interface TableFilterWrapper extends Wrapper {
 
 	default void setExclude(boolean b) { ((TableFilter)getWrappedObject()).setExclude(b); }
 
+	default void setMatchCatalog(String s) { ((TableFilter)getWrappedObject()).setMatchCatalog(s); }
+
 }

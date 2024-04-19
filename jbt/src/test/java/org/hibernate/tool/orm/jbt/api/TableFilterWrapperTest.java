@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,4 +35,11 @@ public class TableFilterWrapperTest {
 		assertTrue(wrappedTableFilter.getExclude());
 	}
 	
+	@Test
+	public void testSetMatchCatalog() {
+		assertNotEquals("foo", wrappedTableFilter.getMatchCatalog());
+		tableFilterWrapper.setMatchCatalog("foo");
+		assertEquals("foo", wrappedTableFilter.getMatchCatalog());
+	}
+		
 }
