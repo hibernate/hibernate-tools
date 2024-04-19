@@ -10,10 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -142,6 +145,14 @@ public class TableWrapperTest {
 		assertFalse(tableWrapper.isPhysicalTable());	
 		wrappedTable.setSubselect(null);
 		assertTrue(tableWrapper.isPhysicalTable());
+	}
+	
+	@Test
+	public void testGetIdentifierValue() {
+		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		assertNull(tableWrapper.getIdentifierValue());
+		wrappedTable.setIdentifierValue(value);
+		assertSame(value, tableWrapper.getIdentifierValue());
 	}
 	
 }

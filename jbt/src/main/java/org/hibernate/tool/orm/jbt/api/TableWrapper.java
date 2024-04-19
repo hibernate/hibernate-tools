@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
@@ -34,5 +35,7 @@ public interface TableWrapper extends Wrapper {
 	default boolean isAbstractUnionTable() { return ((Table)getWrappedObject()).isAbstractUnionTable(); }
 
 	default boolean isPhysicalTable() { return ((Table)getWrappedObject()).isPhysicalTable(); }
+
+	default KeyValue getIdentifierValue() { return ((Table)getWrappedObject()).getIdentifierValue(); }
 
 }
