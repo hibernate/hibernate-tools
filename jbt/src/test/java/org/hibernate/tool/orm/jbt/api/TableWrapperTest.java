@@ -88,4 +88,11 @@ public class TableWrapperTest {
 		assertEquals("foo", tableWrapper.getComment());
 	}
 	
+	@Test
+	public void testGetRowId() {
+		assertNull(tableWrapper.getRowId());
+		wrappedTable.setRowId("foo");
+		assertEquals("foo", tableWrapper.getRowId());
+	}
+	
 }

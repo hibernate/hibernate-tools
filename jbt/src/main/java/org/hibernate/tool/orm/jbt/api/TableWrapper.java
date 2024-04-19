@@ -23,4 +23,6 @@ public interface TableWrapper extends Wrapper {
 
 	default String getComment() { return ((Table)getWrappedObject()).getComment(); }
 
+	default String getRowId() { return ((Table)getWrappedObject()).getRowId(); }
+
 }
