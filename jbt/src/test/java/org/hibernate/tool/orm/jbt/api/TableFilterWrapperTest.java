@@ -42,4 +42,11 @@ public class TableFilterWrapperTest {
 		assertEquals("foo", wrappedTableFilter.getMatchCatalog());
 	}
 		
+	@Test
+	public void testSetMatchSchema() {
+		assertNotEquals("foo", wrappedTableFilter.getMatchSchema());
+		tableFilterWrapper.setMatchSchema("foo");
+		assertEquals("foo", wrappedTableFilter.getMatchSchema());
+	}
+		
 }
