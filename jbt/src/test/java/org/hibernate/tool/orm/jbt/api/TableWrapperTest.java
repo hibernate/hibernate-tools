@@ -2,7 +2,10 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +33,14 @@ public class TableWrapperTest {
 		assertEquals("foo", tableWrapper.getName());
 		wrappedTable.setName("bar");
 		assertEquals("bar", tableWrapper.getName());
+	}
+	
+	@Test
+	public void testAddColumn() {
+		Column column = new Column("foo");
+		assertNull(wrappedTable.getColumn(column));
+		tableWrapper.addColumn(column);
+		assertSame(column, wrappedTable.getColumn(column));
 	}
 	
 }
