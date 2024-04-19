@@ -10,4 +10,6 @@ public interface TableWrapper extends Wrapper {
 
 	default void addColumn(Column column) { ((Table)getWrappedObject()).addColumn(column); }
 
+	default String getCatalog() { return ((Table)getWrappedObject()).getCatalog(); }
+
 }

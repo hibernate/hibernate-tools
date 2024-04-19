@@ -43,4 +43,11 @@ public class TableWrapperTest {
 		assertSame(column, wrappedTable.getColumn(column));
 	}
 	
+	@Test
+	public void testGetCatalog() {
+		assertNull(tableWrapper.getCatalog());
+		wrappedTable.setCatalog("foo");
+		assertEquals("foo", tableWrapper.getCatalog());
+	}
+	
 }
