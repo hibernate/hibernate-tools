@@ -11,4 +11,6 @@ public interface TableFilterWrapper extends Wrapper {
 
 	default void setMatchSchema(String s) { ((TableFilter)getWrappedObject()).setMatchSchema(s); }
 
+	default void setMatchName(String s) { ((TableFilter)getWrappedObject()).setMatchName(s); }
+
 }
