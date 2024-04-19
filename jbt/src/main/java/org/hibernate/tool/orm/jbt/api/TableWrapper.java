@@ -25,4 +25,6 @@ public interface TableWrapper extends Wrapper {
 
 	default String getRowId() { return ((Table)getWrappedObject()).getRowId(); }
 
+	default String getSubselect() { return ((Table)getWrappedObject()).getSubselect(); }
+
 }

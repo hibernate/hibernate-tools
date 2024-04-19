@@ -95,4 +95,11 @@ public class TableWrapperTest {
 		assertEquals("foo", tableWrapper.getRowId());
 	}
 	
+	@Test
+	public void testGetSubselect() {
+		assertNull(tableWrapper.getSubselect());		
+		wrappedTable.setSubselect("foo");
+		assertEquals("foo", tableWrapper.getSubselect());
+	}
+	
 }
