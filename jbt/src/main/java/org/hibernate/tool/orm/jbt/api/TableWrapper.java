@@ -33,4 +33,6 @@ public interface TableWrapper extends Wrapper {
 
 	default boolean isAbstractUnionTable() { return ((Table)getWrappedObject()).isAbstractUnionTable(); }
 
+	default boolean isPhysicalTable() { return ((Table)getWrappedObject()).isPhysicalTable(); }
+
 }

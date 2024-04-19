@@ -136,4 +136,12 @@ public class TableWrapperTest {
 		assertTrue(tableWrapper.isAbstractUnionTable());
 	}
 	
+	@Test
+	public void testIsPhysicalTable() {
+		wrappedTable.setSubselect("foo");
+		assertFalse(tableWrapper.isPhysicalTable());	
+		wrappedTable.setSubselect(null);
+		assertTrue(tableWrapper.isPhysicalTable());
+	}
+	
 }
