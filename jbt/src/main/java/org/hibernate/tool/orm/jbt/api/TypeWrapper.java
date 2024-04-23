@@ -30,4 +30,15 @@ public interface TypeWrapper extends Wrapper {
 
 	default public String getName() { return ((Type)getWrappedObject()).getName(); }
 
+	default Object fromStringValue(String stringValue) {
+		if (BasicType.class.isAssignableFrom(getWrappedObject().getClass())) {
+			return ((BasicType<?>)getWrappedObject()).getJavaTypeDescriptor().fromString(stringValue);
+		} else {
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'fromStringValue(Object)'." ); 
+		}
+	}
+
 }

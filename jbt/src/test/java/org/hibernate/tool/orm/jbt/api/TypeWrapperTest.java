@@ -58,4 +58,22 @@ public class TypeWrapperTest {
 		assertEquals("[Ljava.lang.String;(foo)", arrayTypeWrapper.getName());
 	}
 	
+	@Test
+	public void testFromStringValue() {
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertEquals(
+				TypeWrapperTest.class, 
+				classTypeWrapper.fromStringValue(TypeWrapperTest.class.getName()));
+		// next try type that is not string representable
+		try {
+			TypeWrapper arrayTypeWrapper = 
+					TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
+			arrayTypeWrapper.fromStringValue("just a random string");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'fromStringValue(Object)'"));
+		}
+	}
+	
 }
