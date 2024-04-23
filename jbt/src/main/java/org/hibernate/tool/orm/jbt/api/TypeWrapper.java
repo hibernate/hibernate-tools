@@ -41,4 +41,6 @@ public interface TypeWrapper extends Wrapper {
 		}
 	}
 
+	default public boolean isEntityType() { return ((Type)getWrappedObject()).isEntityType(); }
+
 }

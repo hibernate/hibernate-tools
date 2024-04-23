@@ -1,12 +1,14 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,6 +76,18 @@ public class TypeWrapperTest {
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'fromStringValue(Object)'"));
 		}
+	}
+	
+	@Test
+	public void testIsEntityType() {
+		// first try type that is not an entity type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isEntityType());
+		// next try type that is an entity type
+		TypeWrapper entityTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ManyToOneType((TypeConfiguration)null, null));
+		assertTrue(entityTypeWrapper.isEntityType());
 	}
 	
 }
