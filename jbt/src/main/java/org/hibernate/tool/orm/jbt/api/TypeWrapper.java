@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.BasicType;
+import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.CalendarJavaType;
 import org.hibernate.type.descriptor.java.JavaType;
@@ -42,5 +43,16 @@ public interface TypeWrapper extends Wrapper {
 	}
 
 	default public boolean isEntityType() { return ((Type)getWrappedObject()).isEntityType(); }
+
+	default boolean isOneToOne() { 
+		if (EntityType.class.isAssignableFrom(getWrappedObject().getClass())) {
+			return ((EntityType)getWrappedObject()).isOneToOne();
+		} else {
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'isOneToOne()'." ); 
+		}
+	}
 
 }
