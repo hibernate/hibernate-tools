@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
+import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
@@ -111,6 +112,18 @@ public class TypeWrapperTest {
 				new OneToOneType(
 						null, null, null, false, null, false, false, null, null, false));
 		assertTrue(oneToOneTypeWrapper.isOneToOne());
+	}
+	
+	@Test
+	public void testIsAnyType() {
+		// first try type that is not a any type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isAnyType());
+		// next try a any type
+		TypeWrapper anyTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new AnyType(null, null, null, true));
+		assertTrue(anyTypeWrapper.isAnyType());
 	}
 	
 }
