@@ -147,4 +147,17 @@ public class TypeWrapperTest {
 		assertTrue(anyTypeWrapper.isComponentType());
 	}
 	
+	@Test
+	public void testIsCollectionType() {
+		// first try type that is not a collection type
+		TypeWrapper classTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(
+						typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isCollectionType());
+		// next try a collection type
+		TypeWrapper arrayTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType(null, null, String.class));
+		assertTrue(arrayTypeWrapper.isCollectionType());
+	}
+	
 }

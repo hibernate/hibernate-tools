@@ -59,4 +59,6 @@ public interface TypeWrapper extends Wrapper {
 
 	default boolean isComponentType() { return ((Type)getWrappedObject()).isComponentType(); }
 
+	default boolean isCollectionType() { return ((Type)getWrappedObject()).isCollectionType(); }
+
 }
