@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.BasicType;
+import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.CalendarJavaType;
 import org.hibernate.type.descriptor.java.JavaType;
 
@@ -26,5 +27,7 @@ public interface TypeWrapper extends Wrapper {
 					"' does not support 'toString(Object)'." ); 
 		}
 	}
+
+	default public String getName() { return ((Type)getWrappedObject()).getName(); }
 
 }

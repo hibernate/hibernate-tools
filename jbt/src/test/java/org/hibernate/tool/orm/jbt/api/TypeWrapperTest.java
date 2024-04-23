@@ -46,4 +46,16 @@ public class TypeWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetName() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertEquals("class", classTypeWrapper.getName());
+		// next try a array type
+		TypeWrapper arrayTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
+		assertEquals("[Ljava.lang.String;(foo)", arrayTypeWrapper.getName());
+	}
+	
 }
