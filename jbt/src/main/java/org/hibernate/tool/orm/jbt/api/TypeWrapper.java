@@ -57,4 +57,6 @@ public interface TypeWrapper extends Wrapper {
 
 	default boolean isAnyType() { return ((Type)getWrappedObject()).isAnyType(); }
 
+	default boolean isComponentType() { return ((Type)getWrappedObject()).isComponentType(); }
+
 }

@@ -6,9 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.ComponentType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.spi.TypeConfiguration;
@@ -124,6 +128,23 @@ public class TypeWrapperTest {
 		TypeWrapper anyTypeWrapper = 
 				TypeWrapperFactory.createTypeWrapper(new AnyType(null, null, null, true));
 		assertTrue(anyTypeWrapper.isAnyType());
+	}
+	
+	@Test
+	public void testIsComponentType() {
+		// first try type that is not a component type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isComponentType());
+		// next try a component type
+		Component component = new Component(
+				DummyMetadataBuildingContext.INSTANCE, 
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
+		component.setComponentClassName("java.lang.Object");
+		TypeWrapper anyTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(
+						new ComponentType(component, null, DummyMetadataBuildingContext.INSTANCE));
+		assertTrue(anyTypeWrapper.isComponentType());
 	}
 	
 }
