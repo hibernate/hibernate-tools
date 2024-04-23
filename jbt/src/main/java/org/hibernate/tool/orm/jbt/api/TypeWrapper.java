@@ -61,4 +61,12 @@ public interface TypeWrapper extends Wrapper {
 
 	default boolean isCollectionType() { return ((Type)getWrappedObject()).isCollectionType(); }
 
+	default String getAssociatedEntityName() { 
+		if (isEntityType()) {
+			return ((EntityType)getWrappedObject()).getAssociatedEntityName();
+		} else {
+			return null;
+		}
+	}
+
 }

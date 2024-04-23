@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -158,6 +159,18 @@ public class TypeWrapperTest {
 		TypeWrapper arrayTypeWrapper = 
 				TypeWrapperFactory.createTypeWrapper(new ArrayType(null, null, String.class));
 		assertTrue(arrayTypeWrapper.isCollectionType());
+	}
+	
+	@Test
+	public void testGetAssociatedEntityName() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertNull(classTypeWrapper.getAssociatedEntityName());
+		// next try a many to one type 
+		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ManyToOneType((TypeConfiguration)null, "foo"));
+		assertEquals("foo", manyToOneTypeWrapper.getAssociatedEntityName());
 	}
 	
 }
