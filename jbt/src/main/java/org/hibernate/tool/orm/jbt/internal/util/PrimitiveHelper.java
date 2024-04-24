@@ -14,7 +14,7 @@ public class PrimitiveHelper {
 			Byte.class, byte.class,
 			Boolean.class, boolean.class);
 	
-	private static boolean isPrimitiveWrapperClass(Class<?> candidateClass) {
+	public static boolean isPrimitiveWrapperClass(Class<?> candidateClass) {
 		return PRIMITIVE_CLASSES_MAP.keySet().contains(candidateClass);
 	}
 		

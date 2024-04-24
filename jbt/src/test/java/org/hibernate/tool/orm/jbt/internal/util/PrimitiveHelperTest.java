@@ -8,6 +8,13 @@ import org.junit.jupiter.api.Test;
 public class PrimitiveHelperTest {
 	
 	@Test
+	public void testIsPrimitiveWrapperClass() {
+		assertFalse(PrimitiveHelper.isPrimitiveWrapperClass(int.class));
+		assertTrue(PrimitiveHelper.isPrimitiveWrapperClass(Integer.class));
+		assertFalse(PrimitiveHelper.isPrimitiveWrapperClass(Object.class));
+	}
+	
+	@Test
 	public void testIsPrimitive() {
 		assertTrue(PrimitiveHelper.isPrimitive(int.class));
 		assertTrue(PrimitiveHelper.isPrimitive(Integer.class));
