@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.BasicType;
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.java.CalendarJavaType;
@@ -71,6 +72,14 @@ public interface TypeWrapper extends Wrapper {
 
 	default boolean isIntegerType() { 
 		return Integer.class.isAssignableFrom(((Type)getWrappedObject()).getReturnedClass());
+	}
+
+	default boolean isArrayType() {
+		if (CollectionType.class.isAssignableFrom(getWrappedObject().getClass())) {
+			return ((CollectionType)getWrappedObject()).isArrayType();
+		} else {
+			return false;
+		}
 	}
 
 }

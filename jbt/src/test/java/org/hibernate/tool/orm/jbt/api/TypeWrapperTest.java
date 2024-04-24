@@ -13,6 +13,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.OneToOneType;
@@ -183,6 +184,21 @@ public class TypeWrapperTest {
 		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
 				typeConfiguration.getBasicTypeForJavaType(Integer.class));
 		assertTrue(integerTypeWrapper.isIntegerType());
+	}
+	
+	@Test
+	public void testIsArrayType() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isArrayType());
+		// next try a bag type
+		TypeWrapper bagTypeWrapper = TypeWrapperFactory.createTypeWrapper(new BagType(null, null));
+		assertFalse(bagTypeWrapper.isArrayType());
+		// finally try a array type
+		TypeWrapper arrayTypeWrapper = 
+				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
+		assertTrue(arrayTypeWrapper.isArrayType());
 	}
 	
 }
