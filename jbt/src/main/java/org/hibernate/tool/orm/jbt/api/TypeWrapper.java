@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.hibernate.tool.orm.jbt.internal.util.PrimitiveHelper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;
@@ -80,6 +81,13 @@ public interface TypeWrapper extends Wrapper {
 		} else {
 			return false;
 		}
+	}
+
+	default boolean isInstanceOfPrimitiveType() {
+		if (!(BasicType.class.isAssignableFrom(getWrappedObject().getClass()))) {
+			return false;
+		}
+		return PrimitiveHelper.isPrimitive(((BasicType<?>)getWrappedObject()).getJavaType());
 	}
 
 }

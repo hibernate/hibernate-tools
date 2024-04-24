@@ -201,4 +201,20 @@ public class TypeWrapperTest {
 		assertTrue(arrayTypeWrapper.isArrayType());
 	}
 	
+	@Test
+	public void testIsInstanceOfPrimitiveType() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isInstanceOfPrimitiveType());
+		// next try a string type
+		TypeWrapper stringTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(String.class));
+		assertFalse(stringTypeWrapper.isInstanceOfPrimitiveType());
+		// finally try a integer type 
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Integer.class));
+		assertTrue(integerTypeWrapper.isInstanceOfPrimitiveType());
+	}
+	
 }
