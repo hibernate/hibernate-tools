@@ -173,4 +173,16 @@ public class TypeWrapperTest {
 		assertEquals("foo", manyToOneTypeWrapper.getAssociatedEntityName());
 	}
 	
+	@Test
+	public void testIsIntegerType() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertFalse(classTypeWrapper.isIntegerType());
+		// next try a integer type 
+		TypeWrapper integerTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Integer.class));
+		assertTrue(integerTypeWrapper.isIntegerType());
+	}
+	
 }

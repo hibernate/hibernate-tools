@@ -69,4 +69,8 @@ public interface TypeWrapper extends Wrapper {
 		}
 	}
 
+	default boolean isIntegerType() { 
+		return Integer.class.isAssignableFrom(((Type)getWrappedObject()).getReturnedClass());
+	}
+
 }
