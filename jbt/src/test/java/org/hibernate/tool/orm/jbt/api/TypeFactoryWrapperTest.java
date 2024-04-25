@@ -51,4 +51,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("calendar", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetCalendarDateType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getCalendarDateType();
+		assertEquals("calendar_date", typeWrapper.getName());
+	}
+	
 }

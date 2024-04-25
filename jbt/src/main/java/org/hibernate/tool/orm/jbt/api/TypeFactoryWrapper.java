@@ -9,5 +9,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getBigIntegerType() { return TypeFactoryWrapperHelper.typeRegistry().get("big_integer"); }
 	default TypeWrapper getShortType() { return TypeFactoryWrapperHelper.typeRegistry().get("short"); }
 	default TypeWrapper getCalendarType() { return TypeFactoryWrapperHelper.typeRegistry().get("calendar"); }
+	default TypeWrapper getCalendarDateType() { return TypeFactoryWrapperHelper.typeRegistry().get("calendar_date"); }
 
 }
