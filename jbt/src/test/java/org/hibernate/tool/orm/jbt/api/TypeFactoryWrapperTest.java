@@ -93,4 +93,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("date", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetDoubleType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getDoubleType();
+		assertEquals("double", typeWrapper.getName());
+	}
+	
 }

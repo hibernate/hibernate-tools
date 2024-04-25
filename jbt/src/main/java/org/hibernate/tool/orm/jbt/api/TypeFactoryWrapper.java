@@ -16,5 +16,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getClassType() { return TypeFactoryWrapperHelper.typeRegistry().get("class"); }
 	default TypeWrapper getCurrencyType() { return TypeFactoryWrapperHelper.typeRegistry().get("currency"); }
 	default TypeWrapper getDateType() { return TypeFactoryWrapperHelper.typeRegistry().get("date"); }
+	default TypeWrapper getDoubleType() { return TypeFactoryWrapperHelper.typeRegistry().get("double"); }
 
 }
