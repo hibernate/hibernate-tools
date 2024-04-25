@@ -81,4 +81,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("class", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetCurrencyType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getCurrencyType();
+		assertEquals("currency", typeWrapper.getName());
+	}
+	
 }

@@ -14,5 +14,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getBigDecimalType() { return TypeFactoryWrapperHelper.typeRegistry().get("big_decimal"); }
 	default TypeWrapper getCharacterType() { return TypeFactoryWrapperHelper.typeRegistry().get("character"); }
 	default TypeWrapper getClassType() { return TypeFactoryWrapperHelper.typeRegistry().get("class"); }
+	default TypeWrapper getCurrencyType() { return TypeFactoryWrapperHelper.typeRegistry().get("currency"); }
 
 }
