@@ -1,0 +1,23 @@
+package org.hibernate.tool.orm.jbt.api;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class TypeFactoryWrapperTest {
+	
+	private TypeFactoryWrapper typeFactoryWrapper = null;
+	
+	@BeforeEach
+	public void beforeEach() {
+		typeFactoryWrapper = TypeFactoryWrapperFactory.createTypeFactoryWrapper();
+	}
+	
+	@Test
+	public void testConstruction() {
+		assertNotNull(typeFactoryWrapper);
+	}
+
+}
