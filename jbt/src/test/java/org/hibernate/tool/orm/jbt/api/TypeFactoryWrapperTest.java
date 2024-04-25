@@ -39,4 +39,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("big_integer", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetShortType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getShortType();
+		assertEquals("short", typeWrapper.getName());
+	}
+	
 }
