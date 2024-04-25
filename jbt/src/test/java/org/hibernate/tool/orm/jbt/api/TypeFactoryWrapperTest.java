@@ -105,4 +105,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("float", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetLocaleType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getLocaleType();
+		assertEquals("locale", typeWrapper.getName());
+	}
+	
 }

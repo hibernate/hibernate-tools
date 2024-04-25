@@ -18,5 +18,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getDateType() { return TypeFactoryWrapperHelper.typeRegistry().get("date"); }
 	default TypeWrapper getDoubleType() { return TypeFactoryWrapperHelper.typeRegistry().get("double"); }
 	default TypeWrapper getFloatType() { return TypeFactoryWrapperHelper.typeRegistry().get("float"); }
+	default TypeWrapper getLocaleType() { return TypeFactoryWrapperHelper.typeRegistry().get("locale"); }
 
 }
