@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -248,5 +250,32 @@ public class TypeWrapperTest {
 				TypeWrapperFactory.createTypeWrapper(new ArrayType("foo", "bar", String.class));
 		assertEquals("foo", arrayTypeWrapper.getRole());
 	}
+
+	@Test
+	public void testGetReturnedClassName() {
+		// first try a class type
+		TypeWrapper classTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				typeConfiguration.getBasicTypeForJavaType(Class.class));
+		assertEquals(Class.class.getName(), classTypeWrapper.getReturnedClassName());
+		// next try an array type of string values
+		TypeWrapper arrayTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+				new ArrayType("foo", "bar", String.class));
+		assertEquals(String[].class.getName(), arrayTypeWrapper.getReturnedClassName());
+		// next try a many to one type 
+		TypeConfiguration typeConfiguration = new TypeConfiguration();
+		MetadataBuildingContext metadataBuildingContext = DummyMetadataBuildingContext.INSTANCE;
+		PersistentClass orgFooBarClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		orgFooBarClass.setEntityName("org.foo.bar");
+		orgFooBarClass.setClassName(OrgFooBar.class.getName());
+		metadataBuildingContext.getMetadataCollector().getEntityBindingMap().put(
+				"org.foo.bar", 
+				orgFooBarClass);
+		typeConfiguration.scope(DummyMetadataBuildingContext.INSTANCE);
+		TypeWrapper manyToOneTypeWrapper = TypeWrapperFactory.createTypeWrapper(
+						new ManyToOneType(typeConfiguration, "org.foo.bar"));
+		assertEquals(OrgFooBar.class.getName(), manyToOneTypeWrapper.getReturnedClassName());
+	}
+	
+	public static class OrgFooBar {}
 
 }

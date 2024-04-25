@@ -116,6 +116,10 @@ public interface TypeWrapper extends Wrapper {
 			return ((CollectionType)getWrappedObject()).getRole();
 		}
 	}
+
+	default String getReturnedClassName() {
+		return ((Type)getWrappedObject()).getReturnedClassName();
+	}
 }
 
 
