@@ -25,5 +25,9 @@ public class PrimitiveHelper {
 	public static boolean isPrimitive(Class<?> candidateClass) {
 		return isPrimitiveWrapperClass(candidateClass) || isPrimitiveClass(candidateClass);
 	}
+	
+	public static Class<?> getPrimitiveClass(Class<?> candidateClass) {
+		return PRIMITIVE_CLASSES_MAP.get(candidateClass);
+	}
 
 }
