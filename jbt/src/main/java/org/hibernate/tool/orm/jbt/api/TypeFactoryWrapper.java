@@ -15,5 +15,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getCharacterType() { return TypeFactoryWrapperHelper.typeRegistry().get("character"); }
 	default TypeWrapper getClassType() { return TypeFactoryWrapperHelper.typeRegistry().get("class"); }
 	default TypeWrapper getCurrencyType() { return TypeFactoryWrapperHelper.typeRegistry().get("currency"); }
+	default TypeWrapper getDateType() { return TypeFactoryWrapperHelper.typeRegistry().get("date"); }
 
 }
