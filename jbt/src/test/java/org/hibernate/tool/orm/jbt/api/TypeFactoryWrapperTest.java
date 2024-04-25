@@ -27,4 +27,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("boolean", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetByteType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getByteType();
+		assertEquals("byte", typeWrapper.getName());
+	}
+	
 }
