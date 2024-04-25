@@ -8,5 +8,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getByteType() { return TypeFactoryWrapperHelper.typeRegistry().get("byte"); }
 	default TypeWrapper getBigIntegerType() { return TypeFactoryWrapperHelper.typeRegistry().get("big_integer"); }
 	default TypeWrapper getShortType() { return TypeFactoryWrapperHelper.typeRegistry().get("short"); }
+	default TypeWrapper getCalendarType() { return TypeFactoryWrapperHelper.typeRegistry().get("calendar"); }
 
 }
