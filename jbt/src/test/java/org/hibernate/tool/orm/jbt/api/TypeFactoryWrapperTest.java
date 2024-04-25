@@ -33,4 +33,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("byte", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetBigIntegerType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getBigIntegerType();
+		assertEquals("big_integer", typeWrapper.getName());
+	}
+	
 }
