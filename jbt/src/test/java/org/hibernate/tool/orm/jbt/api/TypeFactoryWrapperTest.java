@@ -69,4 +69,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("big_decimal", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetCharacterType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getCharacterType();
+		assertEquals("character", typeWrapper.getName());
+	}
+	
 }

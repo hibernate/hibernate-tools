@@ -12,5 +12,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getCalendarDateType() { return TypeFactoryWrapperHelper.typeRegistry().get("calendar_date"); }
 	default TypeWrapper getIntegerType() { return TypeFactoryWrapperHelper.typeRegistry().get("integer"); }
 	default TypeWrapper getBigDecimalType() { return TypeFactoryWrapperHelper.typeRegistry().get("big_decimal"); }
+	default TypeWrapper getCharacterType() { return TypeFactoryWrapperHelper.typeRegistry().get("character"); }
 
 }
