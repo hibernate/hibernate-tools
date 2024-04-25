@@ -75,4 +75,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("character", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetClassType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getClassType();
+		assertEquals("class", typeWrapper.getName());
+	}
+	
 }
