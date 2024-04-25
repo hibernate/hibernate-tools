@@ -99,4 +99,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("double", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetFloatType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getFloatType();
+		assertEquals("float", typeWrapper.getName());
+	}
+	
 }
