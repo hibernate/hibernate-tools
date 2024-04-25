@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
@@ -20,4 +21,10 @@ public class TypeFactoryWrapperTest {
 		assertNotNull(typeFactoryWrapper);
 	}
 
+	@Test
+	public void testGetBooleanType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getBooleanType();
+		assertEquals("boolean", typeWrapper.getName());
+	}
+	
 }
