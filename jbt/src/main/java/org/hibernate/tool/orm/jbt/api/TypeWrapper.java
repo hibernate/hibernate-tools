@@ -90,4 +90,19 @@ public interface TypeWrapper extends Wrapper {
 		return PrimitiveHelper.isPrimitive(((BasicType<?>)getWrappedObject()).getJavaType());
 	}
 
+	default Class<?> getPrimitiveClass() {
+		if (!isInstanceOfPrimitiveType()) {
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'getPrimitiveClass()'.");
+		} else {
+			Class<?> javaType = ((BasicType<?>)getWrappedObject()).getJavaType();
+			if (PrimitiveHelper.isPrimitiveWrapperClass(javaType)) {
+				return PrimitiveHelper.getPrimitiveClass(javaType);
+			} else {
+				return javaType;
+			}
+		}
+	}
 }
