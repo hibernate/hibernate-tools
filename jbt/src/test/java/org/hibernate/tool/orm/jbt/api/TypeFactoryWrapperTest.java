@@ -63,4 +63,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("integer", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetBigDecimalType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getBigDecimalType();
+		assertEquals("big_decimal", typeWrapper.getName());
+	}
+	
 }
