@@ -105,4 +105,17 @@ public interface TypeWrapper extends Wrapper {
 			}
 		}
 	}
+
+	default String getRole() { 
+		if (!isCollectionType()) {
+			throw new UnsupportedOperationException(
+					"Class '" + 
+					getWrappedObject().getClass().getName() + 
+					"' does not support 'getRole()'.");
+		} else {
+			return ((CollectionType)getWrappedObject()).getRole();
+		}
+	}
 }
+
+
