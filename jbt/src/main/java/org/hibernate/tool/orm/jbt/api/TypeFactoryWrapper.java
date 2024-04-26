@@ -26,5 +26,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getTimestampType() { return TypeFactoryWrapperHelper.typeRegistry().get("timestamp"); }
 	default TypeWrapper getTimezoneType() { return TypeFactoryWrapperHelper.typeRegistry().get("timezone"); }
 	default TypeWrapper getTrueFalseType() { return TypeFactoryWrapperHelper.typeRegistry().get("true_false"); }
+	default TypeWrapper getYesNoType() { return TypeFactoryWrapperHelper.typeRegistry().get("true_false"); }
 
 }
