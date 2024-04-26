@@ -111,4 +111,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("locale", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetLongType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getLongType();
+		assertEquals("long", typeWrapper.getName());
+	}
+	
 }
