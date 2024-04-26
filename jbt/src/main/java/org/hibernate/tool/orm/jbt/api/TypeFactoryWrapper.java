@@ -21,5 +21,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getLocaleType() { return TypeFactoryWrapperHelper.typeRegistry().get("locale"); }
 	default TypeWrapper getLongType() { return TypeFactoryWrapperHelper.typeRegistry().get("long"); }
 	default TypeWrapper getStringType() { return TypeFactoryWrapperHelper.typeRegistry().get("string"); }
+	default TypeWrapper getTextType() { return TypeFactoryWrapperHelper.typeRegistry().get("text"); }
 
 }

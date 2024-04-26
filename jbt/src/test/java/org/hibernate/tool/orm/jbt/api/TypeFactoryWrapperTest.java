@@ -123,4 +123,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("string", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetTextType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getTextType();
+		assertEquals("text", typeWrapper.getName());
+	}
+		
 }
