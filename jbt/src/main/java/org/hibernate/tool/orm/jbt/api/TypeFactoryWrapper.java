@@ -22,5 +22,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getLongType() { return TypeFactoryWrapperHelper.typeRegistry().get("long"); }
 	default TypeWrapper getStringType() { return TypeFactoryWrapperHelper.typeRegistry().get("string"); }
 	default TypeWrapper getTextType() { return TypeFactoryWrapperHelper.typeRegistry().get("text"); }
+	default TypeWrapper getTimeType() { return TypeFactoryWrapperHelper.typeRegistry().get("time"); }
 
 }
