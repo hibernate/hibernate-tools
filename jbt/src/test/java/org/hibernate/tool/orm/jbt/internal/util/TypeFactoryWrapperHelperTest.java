@@ -12,7 +12,7 @@ public class TypeFactoryWrapperHelperTest {
 	
 	@Test
 	public void testTypeRegistry() {
-		Map<String, TypeWrapper> typeRegistry = TypeFactoryWrapperHelper.typeRegistry();
+		Map<String, TypeWrapper> typeRegistry = TypeRegistry.typeRegistry();
 		assertNotNull(typeRegistry);
 		assertEquals(23, typeRegistry.size());
 	}
