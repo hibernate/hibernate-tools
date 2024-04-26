@@ -23,5 +23,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getStringType() { return TypeFactoryWrapperHelper.typeRegistry().get("string"); }
 	default TypeWrapper getTextType() { return TypeFactoryWrapperHelper.typeRegistry().get("text"); }
 	default TypeWrapper getTimeType() { return TypeFactoryWrapperHelper.typeRegistry().get("time"); }
+	default TypeWrapper getTimestampType() { return TypeFactoryWrapperHelper.typeRegistry().get("timestamp"); }
 
 }

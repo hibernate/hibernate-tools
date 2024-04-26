@@ -135,4 +135,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("time", typeWrapper.getName());
 	}
 		
+	@Test
+	public void testGetTimestampType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getTimestampType();
+		assertEquals("timestamp", typeWrapper.getName());
+	}
+		
 }
