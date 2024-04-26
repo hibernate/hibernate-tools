@@ -117,4 +117,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("long", typeWrapper.getName());
 	}
 	
+	@Test
+	public void testGetStringType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getStringType();
+		assertEquals("string", typeWrapper.getName());
+	}
+	
 }

@@ -20,5 +20,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getFloatType() { return TypeFactoryWrapperHelper.typeRegistry().get("float"); }
 	default TypeWrapper getLocaleType() { return TypeFactoryWrapperHelper.typeRegistry().get("locale"); }
 	default TypeWrapper getLongType() { return TypeFactoryWrapperHelper.typeRegistry().get("long"); }
+	default TypeWrapper getStringType() { return TypeFactoryWrapperHelper.typeRegistry().get("string"); }
 
 }
