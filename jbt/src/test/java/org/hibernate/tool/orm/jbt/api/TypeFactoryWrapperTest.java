@@ -147,4 +147,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("timezone", typeWrapper.getName());
 	}
 		
+	@Test
+	public void testGetTrueFalseType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getTrueFalseType();
+		assertEquals("true_false", typeWrapper.getName());
+	}
+		
 }
