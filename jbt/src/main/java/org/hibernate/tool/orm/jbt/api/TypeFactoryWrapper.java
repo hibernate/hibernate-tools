@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.util.Map;
+
 import org.hibernate.tool.orm.jbt.internal.util.TypeRegistry;
 
 public interface TypeFactoryWrapper {
@@ -29,5 +31,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getYesNoType() { return TypeRegistry.getType("true_false"); }
 	default TypeWrapper getNamedType(String name) { return TypeRegistry.getType(name); }
 	default TypeWrapper getBasicType(String name) { return getNamedType(name); }
+	default Map<TypeWrapper, String> getTypeFormats() { return TypeRegistry.getTypeFormats(); }
 
 }
