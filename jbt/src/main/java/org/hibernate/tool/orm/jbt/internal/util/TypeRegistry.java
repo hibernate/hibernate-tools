@@ -21,6 +21,10 @@ public class TypeRegistry {
 		return TYPE_REGISTRY;
 	}
 	
+	public static TypeWrapper getType(String name) {
+		return TYPE_REGISTRY.get(name);
+	}
+	
 	private static Map<String, TypeWrapper> createTypeRegistry() {
 		HashMap<String, TypeWrapper> result = new HashMap<String, TypeWrapper>();
 		result.put("boolean", TypeWrapperFactory.createTypeWrapper(BASIC_TYPE_REGISTRY.getRegisteredType("boolean")));
