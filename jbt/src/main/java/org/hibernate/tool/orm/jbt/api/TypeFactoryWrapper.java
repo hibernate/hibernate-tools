@@ -27,5 +27,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getTimezoneType() { return TypeRegistry.getType("timezone"); }
 	default TypeWrapper getTrueFalseType() { return TypeRegistry.getType("true_false"); }
 	default TypeWrapper getYesNoType() { return TypeRegistry.getType("true_false"); }
+	default TypeWrapper getNamedType(String name) { return TypeRegistry.getType(name); }
 
 }

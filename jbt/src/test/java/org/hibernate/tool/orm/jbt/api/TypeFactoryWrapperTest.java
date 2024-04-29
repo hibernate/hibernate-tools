@@ -159,4 +159,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("true_false", typeWrapper.getName());
 	}
 		
+	@Test
+	public void testGetNamedType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getNamedType(String.class.getName());
+		assertEquals("string", typeWrapper.getName());
+	}
+		
 }
