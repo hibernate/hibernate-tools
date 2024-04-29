@@ -17,10 +17,6 @@ public class TypeRegistry {
 		TYPE_REGISTRY = createTypeRegistry();
 	}
 	
-	public static Map<String, TypeWrapper> typeRegistry() {
-		return TYPE_REGISTRY;
-	}
-	
 	public static TypeWrapper getType(String name) {
 		return TYPE_REGISTRY.get(name);
 	}

@@ -4,28 +4,28 @@ import org.hibernate.tool.orm.jbt.internal.util.TypeRegistry;
 
 public interface TypeFactoryWrapper {
 
-	default TypeWrapper getBooleanType() { return TypeRegistry.typeRegistry().get("boolean"); }
-	default TypeWrapper getByteType() { return TypeRegistry.typeRegistry().get("byte"); }
-	default TypeWrapper getBigIntegerType() { return TypeRegistry.typeRegistry().get("big_integer"); }
-	default TypeWrapper getShortType() { return TypeRegistry.typeRegistry().get("short"); }
-	default TypeWrapper getCalendarType() { return TypeRegistry.typeRegistry().get("calendar"); }
-	default TypeWrapper getCalendarDateType() { return TypeRegistry.typeRegistry().get("calendar_date"); }
-	default TypeWrapper getIntegerType() { return TypeRegistry.typeRegistry().get("integer"); }
-	default TypeWrapper getBigDecimalType() { return TypeRegistry.typeRegistry().get("big_decimal"); }
-	default TypeWrapper getCharacterType() { return TypeRegistry.typeRegistry().get("character"); }
-	default TypeWrapper getClassType() { return TypeRegistry.typeRegistry().get("class"); }
-	default TypeWrapper getCurrencyType() { return TypeRegistry.typeRegistry().get("currency"); }
-	default TypeWrapper getDateType() { return TypeRegistry.typeRegistry().get("date"); }
-	default TypeWrapper getDoubleType() { return TypeRegistry.typeRegistry().get("double"); }
-	default TypeWrapper getFloatType() { return TypeRegistry.typeRegistry().get("float"); }
-	default TypeWrapper getLocaleType() { return TypeRegistry.typeRegistry().get("locale"); }
-	default TypeWrapper getLongType() { return TypeRegistry.typeRegistry().get("long"); }
-	default TypeWrapper getStringType() { return TypeRegistry.typeRegistry().get("string"); }
-	default TypeWrapper getTextType() { return TypeRegistry.typeRegistry().get("text"); }
-	default TypeWrapper getTimeType() { return TypeRegistry.typeRegistry().get("time"); }
-	default TypeWrapper getTimestampType() { return TypeRegistry.typeRegistry().get("timestamp"); }
-	default TypeWrapper getTimezoneType() { return TypeRegistry.typeRegistry().get("timezone"); }
-	default TypeWrapper getTrueFalseType() { return TypeRegistry.typeRegistry().get("true_false"); }
-	default TypeWrapper getYesNoType() { return TypeRegistry.typeRegistry().get("true_false"); }
+	default TypeWrapper getBooleanType() { return TypeRegistry.getType("boolean"); }
+	default TypeWrapper getByteType() { return TypeRegistry.getType("byte"); }
+	default TypeWrapper getBigIntegerType() { return TypeRegistry.getType("big_integer"); }
+	default TypeWrapper getShortType() { return TypeRegistry.getType("short"); }
+	default TypeWrapper getCalendarType() { return TypeRegistry.getType("calendar"); }
+	default TypeWrapper getCalendarDateType() { return TypeRegistry.getType("calendar_date"); }
+	default TypeWrapper getIntegerType() { return TypeRegistry.getType("integer"); }
+	default TypeWrapper getBigDecimalType() { return TypeRegistry.getType("big_decimal"); }
+	default TypeWrapper getCharacterType() { return TypeRegistry.getType("character"); }
+	default TypeWrapper getClassType() { return TypeRegistry.getType("class"); }
+	default TypeWrapper getCurrencyType() { return TypeRegistry.getType("currency"); }
+	default TypeWrapper getDateType() { return TypeRegistry.getType("date"); }
+	default TypeWrapper getDoubleType() { return TypeRegistry.getType("double"); }
+	default TypeWrapper getFloatType() { return TypeRegistry.getType("float"); }
+	default TypeWrapper getLocaleType() { return TypeRegistry.getType("locale"); }
+	default TypeWrapper getLongType() { return TypeRegistry.getType("long"); }
+	default TypeWrapper getStringType() { return TypeRegistry.getType("string"); }
+	default TypeWrapper getTextType() { return TypeRegistry.getType("text"); }
+	default TypeWrapper getTimeType() { return TypeRegistry.getType("time"); }
+	default TypeWrapper getTimestampType() { return TypeRegistry.getType("timestamp"); }
+	default TypeWrapper getTimezoneType() { return TypeRegistry.getType("timezone"); }
+	default TypeWrapper getTrueFalseType() { return TypeRegistry.getType("true_false"); }
+	default TypeWrapper getYesNoType() { return TypeRegistry.getType("true_false"); }
 
 }
