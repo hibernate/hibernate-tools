@@ -165,4 +165,10 @@ public class TypeFactoryWrapperTest {
 		assertEquals("string", typeWrapper.getName());
 	}
 		
+	@Test
+	public void testGetBasicType() {
+		TypeWrapper typeWrapper = typeFactoryWrapper.getBasicType(String.class.getName());
+		assertEquals("string", typeWrapper.getName());
+	}
+		
 }

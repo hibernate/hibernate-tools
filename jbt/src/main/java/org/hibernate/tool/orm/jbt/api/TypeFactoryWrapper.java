@@ -28,5 +28,6 @@ public interface TypeFactoryWrapper {
 	default TypeWrapper getTrueFalseType() { return TypeRegistry.getType("true_false"); }
 	default TypeWrapper getYesNoType() { return TypeRegistry.getType("true_false"); }
 	default TypeWrapper getNamedType(String name) { return TypeRegistry.getType(name); }
+	default TypeWrapper getBasicType(String name) { return getNamedType(name); }
 
 }
