@@ -1,7 +1,11 @@
 package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.junit.jupiter.api.Test;
 
 public class TypeRegistryTest {
@@ -31,6 +35,16 @@ public class TypeRegistryTest {
 		assertEquals("timezone", TypeRegistry.getType("timezone").getName());
 		assertEquals("true_false", TypeRegistry.getType("true_false").getName());
 		assertEquals("yes_no", TypeRegistry.getType("yes_no").getName());
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()));
+		TypeWrapper stringWrapper = TypeRegistry.getType(String.class.getName());
+		assertNotNull(stringWrapper);
+		assertSame(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()), stringWrapper);
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
+		TypeWrapper fooWrapper = TypeRegistry.getType(Foo.class.getName());
+		assertNull(fooWrapper);
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
 	}
+	
+	private class Foo {}
 
 }

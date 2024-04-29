@@ -6,11 +6,12 @@ import java.util.Map;
 import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
 import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.Type;
 import org.hibernate.type.spi.TypeConfiguration;
 
 public class TypeRegistry {
 
-	private static Map<String, TypeWrapper> TYPE_REGISTRY = null;	
+	static Map<String, TypeWrapper> TYPE_REGISTRY = null;	
 	private static final BasicTypeRegistry BASIC_TYPE_REGISTRY = new TypeConfiguration().getBasicTypeRegistry();
 	
 	static {
@@ -18,6 +19,14 @@ public class TypeRegistry {
 	}
 	
 	public static TypeWrapper getType(String name) {
+		if (!TYPE_REGISTRY.containsKey(name)) {
+			Type basicType = BASIC_TYPE_REGISTRY.getRegisteredType(name);
+			if (basicType != null) {
+				TYPE_REGISTRY.put(name, TypeWrapperFactory.createTypeWrapper(basicType));
+			} else {
+				TYPE_REGISTRY.put(name, null);
+			}
+		}
 		return TYPE_REGISTRY.get(name);
 	}
 	
