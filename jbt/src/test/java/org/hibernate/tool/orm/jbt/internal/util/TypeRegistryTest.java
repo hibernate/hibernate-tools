@@ -8,7 +8,7 @@ import java.util.Map;
 import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.junit.jupiter.api.Test;
 
-public class TypeFactoryWrapperHelperTest {
+public class TypeRegistryTest {
 	
 	@Test
 	public void testTypeRegistry() {
@@ -16,5 +16,5 @@ public class TypeFactoryWrapperHelperTest {
 		assertNotNull(typeRegistry);
 		assertEquals(23, typeRegistry.size());
 	}
-
+	
 }
