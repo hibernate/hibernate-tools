@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -15,12 +16,34 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TypeRegistryTest {
 	
+	@BeforeAll
+	public static void beforeAll() {
+		Locale.setDefault(new Locale("nl", "BE"));
+	}
+	
+	@BeforeEach
+	public void beforeEach() {
+		TypeRegistry.TYPE_REGISTRY.clear();
+		TypeRegistry.TYPE_FORMATS = null;
+	}
+	
 	@Test
 	public void testGetType() {
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()));
+		TypeWrapper stringWrapper = TypeRegistry.getType(String.class.getName());
+		assertNotNull(stringWrapper);
+		assertSame(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()), stringWrapper);
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
+		TypeWrapper fooWrapper = TypeRegistry.getType(Foo.class.getName());
+		assertNull(fooWrapper);
+		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
+		assertNull(TypeRegistry.getType("foo"));
 		assertEquals("boolean", TypeRegistry.getType("boolean").getName());
 		assertEquals("byte", TypeRegistry.getType("byte").getName());
 		assertEquals("big_integer", TypeRegistry.getType("big_integer").getName());
@@ -44,18 +67,11 @@ public class TypeRegistryTest {
 		assertEquals("timezone", TypeRegistry.getType("timezone").getName());
 		assertEquals("true_false", TypeRegistry.getType("true_false").getName());
 		assertEquals("yes_no", TypeRegistry.getType("yes_no").getName());
-		assertNull(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()));
-		TypeWrapper stringWrapper = TypeRegistry.getType(String.class.getName());
-		assertNotNull(stringWrapper);
-		assertSame(TypeRegistry.TYPE_REGISTRY.get(String.class.getName()), stringWrapper);
-		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
-		TypeWrapper fooWrapper = TypeRegistry.getType(Foo.class.getName());
-		assertNull(fooWrapper);
-		assertNull(TypeRegistry.TYPE_REGISTRY.get(Foo.class.getName()));
 	}
 	
 	@Test
 	public void testGetTypeFormats() {
+		assertTrue(true);
 		Map<TypeWrapper, String> typeFormats = TypeRegistry.getTypeFormats();
 		assertEquals(23, typeFormats.size());
 		assertEquals("true", typeFormats.get(TypeRegistry.getType("boolean")));

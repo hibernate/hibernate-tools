@@ -14,12 +14,18 @@ import java.util.TimeZone;
 
 import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.TypeRegistry;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TypeFactoryWrapperTest {
 	
 	private TypeFactoryWrapper typeFactoryWrapper = null;
+	
+	@BeforeAll
+	public static void beforeAll() {
+		Locale.setDefault(new Locale("nl", "BE"));
+	}
 	
 	@BeforeEach
 	public void beforeEach() {
