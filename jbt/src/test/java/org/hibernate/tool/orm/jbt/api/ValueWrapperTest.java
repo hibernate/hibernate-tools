@@ -309,4 +309,24 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isComponent());
 	}
 
+	@Test 
+	public void testIsEmbedded() {
+		assertFalse(arrayValueWrapper.isEmbedded());
+		assertFalse(bagValueWrapper.isEmbedded());
+		assertFalse(listValueWrapper.isEmbedded());
+		assertFalse(manyToOneValueWrapper.isEmbedded());
+		assertFalse(mapValueWrapper.isEmbedded());
+		assertFalse(oneToManyValueWrapper.isEmbedded());
+		assertFalse(oneToOneValueWrapper.isEmbedded());
+		assertFalse(primitiveArrayValueWrapper.isEmbedded());
+		assertFalse(setValueWrapper.isEmbedded());
+		assertFalse(simpleValueWrapper.isEmbedded());
+		assertFalse(componentValueWrapper.isEmbedded());
+		((Component)wrappedComponentValue).setEmbedded(true);
+		assertTrue(componentValueWrapper.isEmbedded());
+		assertFalse(dependantValueWrapper.isEmbedded());
+		assertFalse(anyValueWrapper.isEmbedded());
+		assertFalse(identifierBagValueWrapper.isEmbedded());
+	}
+
 }
