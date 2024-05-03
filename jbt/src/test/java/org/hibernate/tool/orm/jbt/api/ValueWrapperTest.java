@@ -255,4 +255,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isManyToOne());
 	}
 
+	@Test 
+	public void testIsOneToOne() {
+		assertFalse(arrayValueWrapper.isOneToOne());
+		assertFalse(bagValueWrapper.isOneToOne());
+		assertFalse(listValueWrapper.isOneToOne());
+		assertFalse(manyToOneValueWrapper.isOneToOne());
+		assertFalse(mapValueWrapper.isOneToOne());
+		assertFalse(oneToManyValueWrapper.isOneToOne());
+		assertTrue(oneToOneValueWrapper.isOneToOne());
+		assertFalse(primitiveArrayValueWrapper.isOneToOne());
+		assertFalse(setValueWrapper.isOneToOne());
+		assertFalse(simpleValueWrapper.isOneToOne());
+		assertFalse(componentValueWrapper.isOneToOne());
+		assertFalse(dependantValueWrapper.isOneToOne());
+		assertFalse(anyValueWrapper.isOneToOne());
+		assertFalse(identifierBagValueWrapper.isOneToOne());
+	}
+
 }
