@@ -329,4 +329,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isEmbedded());
 	}
 
+	@Test
+	public void testIsToOne() {
+		assertFalse(arrayValueWrapper.isToOne());
+		assertFalse(bagValueWrapper.isToOne());
+		assertFalse(listValueWrapper.isToOne());
+		assertTrue(manyToOneValueWrapper.isToOne());
+		assertFalse(mapValueWrapper.isToOne());
+		assertFalse(oneToManyValueWrapper.isToOne());
+		assertTrue(oneToOneValueWrapper.isToOne());
+		assertFalse(primitiveArrayValueWrapper.isToOne());
+		assertFalse(setValueWrapper.isToOne());
+		assertFalse(simpleValueWrapper.isToOne());
+		assertFalse(componentValueWrapper.isToOne());
+		assertFalse(dependantValueWrapper.isToOne());
+		assertFalse(anyValueWrapper.isToOne());
+		assertFalse(identifierBagValueWrapper.isToOne());
+	}
+	
 }
