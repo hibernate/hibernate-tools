@@ -1,6 +1,8 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -143,6 +145,24 @@ public class ValueWrapperTest {
 		assertNotNull(wrappedAnyValue);
 		assertNotNull(identifierBagValueWrapper);
 		assertNotNull(wrappedIdentifierBagValue);
+	}
+
+	@Test
+	public void testIsSimpleValue() {
+		assertFalse(arrayValueWrapper.isSimpleValue());
+		assertFalse(bagValueWrapper.isSimpleValue());
+		assertFalse(listValueWrapper.isSimpleValue());
+		assertTrue(manyToOneValueWrapper.isSimpleValue());
+		assertFalse(mapValueWrapper.isSimpleValue());
+		assertFalse(oneToManyValueWrapper.isSimpleValue());
+		assertTrue(oneToOneValueWrapper.isSimpleValue());
+		assertFalse(primitiveArrayValueWrapper.isSimpleValue());
+		assertFalse(setValueWrapper.isSimpleValue());
+		assertTrue(simpleValueWrapper.isSimpleValue());
+		assertTrue(componentValueWrapper.isSimpleValue());
+		assertTrue(dependantValueWrapper.isSimpleValue());
+		assertTrue(anyValueWrapper.isSimpleValue());
+		assertFalse(identifierBagValueWrapper.isSimpleValue());
 	}
 
 }
