@@ -273,4 +273,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isOneToOne());
 	}
 
+	@Test 
+	public void testIsMap() {
+		assertFalse(arrayValueWrapper.isMap());
+		assertFalse(bagValueWrapper.isMap());
+		assertFalse(listValueWrapper.isMap());
+		assertFalse(manyToOneValueWrapper.isMap());
+		assertTrue(mapValueWrapper.isMap());
+		assertFalse(oneToManyValueWrapper.isMap());
+		assertFalse(oneToOneValueWrapper.isMap());
+		assertFalse(primitiveArrayValueWrapper.isMap());
+		assertFalse(setValueWrapper.isMap());
+		assertFalse(simpleValueWrapper.isMap());
+		assertFalse(componentValueWrapper.isMap());
+		assertFalse(dependantValueWrapper.isMap());
+		assertFalse(anyValueWrapper.isMap());
+		assertFalse(identifierBagValueWrapper.isMap());
+	}
+	
 }
