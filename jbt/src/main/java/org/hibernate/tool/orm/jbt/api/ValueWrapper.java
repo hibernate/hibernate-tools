@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
@@ -18,5 +19,6 @@ public interface ValueWrapper extends Wrapper {
 		return null;
 	}
 	default boolean isOneToMany() { return OneToMany.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 
 }
