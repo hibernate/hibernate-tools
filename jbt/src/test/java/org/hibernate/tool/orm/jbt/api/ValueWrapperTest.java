@@ -291,4 +291,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isMap());
 	}
 	
+	@Test
+	public void testIsComponent() {
+		assertFalse(arrayValueWrapper.isComponent());
+		assertFalse(bagValueWrapper.isComponent());
+		assertFalse(listValueWrapper.isComponent());
+		assertFalse(manyToOneValueWrapper.isComponent());
+		assertFalse(mapValueWrapper.isComponent());
+		assertFalse(oneToManyValueWrapper.isComponent());
+		assertFalse(oneToOneValueWrapper.isComponent());
+		assertFalse(primitiveArrayValueWrapper.isComponent());
+		assertFalse(setValueWrapper.isComponent());
+		assertFalse(simpleValueWrapper.isComponent());
+		assertTrue(componentValueWrapper.isComponent());
+		assertFalse(dependantValueWrapper.isComponent());
+		assertFalse(anyValueWrapper.isComponent());
+		assertFalse(identifierBagValueWrapper.isComponent());
+	}
+
 }

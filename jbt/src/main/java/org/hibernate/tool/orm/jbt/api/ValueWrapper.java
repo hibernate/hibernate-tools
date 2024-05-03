@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
@@ -24,5 +25,6 @@ public interface ValueWrapper extends Wrapper {
 	default boolean isManyToOne() { return ManyToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isMap() { return Map.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isComponent() { return Component.class.isAssignableFrom(getWrappedObject().getClass()); }
 
 }
