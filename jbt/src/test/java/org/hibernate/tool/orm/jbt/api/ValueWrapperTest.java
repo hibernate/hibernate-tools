@@ -165,4 +165,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isSimpleValue());
 	}
 
+	@Test
+	public void testIsCollection() {
+		assertTrue(arrayValueWrapper.isCollection());
+		assertTrue(bagValueWrapper.isCollection());
+		assertTrue(listValueWrapper.isCollection());
+		assertFalse(manyToOneValueWrapper.isCollection());
+		assertTrue(mapValueWrapper.isCollection());
+		assertFalse(oneToManyValueWrapper.isCollection());
+		assertFalse(oneToOneValueWrapper.isCollection());
+		assertTrue(primitiveArrayValueWrapper.isCollection());
+		assertTrue(setValueWrapper.isCollection());
+		assertFalse(simpleValueWrapper.isCollection());
+		assertFalse(componentValueWrapper.isCollection());
+		assertFalse(dependantValueWrapper.isCollection());
+		assertFalse(anyValueWrapper.isCollection());
+		assertTrue(identifierBagValueWrapper.isCollection());
+	}
+	
 }
