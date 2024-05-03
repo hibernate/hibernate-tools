@@ -219,4 +219,22 @@ public class ValueWrapperTest {
 		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getCollectionElement().getWrappedObject());
 	}
 
+	@Test 
+	public void testIsOneToMany() {
+		assertFalse(arrayValueWrapper.isOneToMany());
+		assertFalse(bagValueWrapper.isOneToMany());
+		assertFalse(listValueWrapper.isOneToMany());
+		assertFalse(manyToOneValueWrapper.isOneToMany());
+		assertFalse(mapValueWrapper.isOneToMany());
+		assertTrue(oneToManyValueWrapper.isOneToMany());
+		assertFalse(oneToOneValueWrapper.isOneToMany());
+		assertFalse(primitiveArrayValueWrapper.isOneToMany());
+		assertFalse(setValueWrapper.isOneToMany());
+		assertFalse(simpleValueWrapper.isOneToMany());
+		assertFalse(componentValueWrapper.isOneToMany());
+		assertFalse(dependantValueWrapper.isOneToMany());
+		assertFalse(anyValueWrapper.isOneToMany());
+		assertFalse(identifierBagValueWrapper.isOneToMany());
+	}
+	
 }
