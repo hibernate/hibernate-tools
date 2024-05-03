@@ -26,5 +26,11 @@ public interface ValueWrapper extends Wrapper {
 	default boolean isOneToOne() { return OneToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isMap() { return Map.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isComponent() { return Component.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isEmbedded() { 
+		if (isComponent()) {
+			return ((Component)getWrappedObject()).isEmbedded();
+		}
+		return false;
+	}
 
 }
