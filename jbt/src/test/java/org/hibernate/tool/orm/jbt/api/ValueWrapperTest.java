@@ -23,6 +23,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
@@ -65,14 +66,14 @@ public class ValueWrapperTest {
 	private PersistentClassWrapper persistentClassWrapper = null;
 	private PersistentClass wrappedPersistentClass = null;
 
-	private Table table = null;
+	private Table wrappedTable = null;
 
 	@BeforeEach
 	public void beforeEach() {
 		persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
 		wrappedPersistentClass = persistentClassWrapper.getWrappedObject();
 
-		table = new Table("HT");
+		wrappedTable = new Table("HT");
 
 		wrappedArrayValue = new Array(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		arrayValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedArrayValue);
@@ -83,7 +84,7 @@ public class ValueWrapperTest {
 		wrappedListValue = new List(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		listValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedListValue);
 
-		wrappedManyToOneValue = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, table);
+		wrappedManyToOneValue = new ManyToOne(DummyMetadataBuildingContext.INSTANCE, wrappedTable);
 		manyToOneValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedManyToOneValue);
 
 		wrappedMapValue = new Map(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
@@ -92,7 +93,7 @@ public class ValueWrapperTest {
 		wrappedOneToManyValue = new OneToMany(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		oneToManyValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedOneToManyValue);
 
-		wrappedOneToOneValue = new OneToOne(DummyMetadataBuildingContext.INSTANCE, table, wrappedPersistentClass);
+		wrappedOneToOneValue = new OneToOne(DummyMetadataBuildingContext.INSTANCE, wrappedTable, wrappedPersistentClass);
 		oneToOneValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedOneToOneValue);
 
 		wrappedPrimitiveArrayValue = new PrimitiveArray(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
@@ -107,11 +108,11 @@ public class ValueWrapperTest {
 		wrappedComponentValue = new Component(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		componentValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedComponentValue);
 
-		wrappedDependantValue = new DependantValue(DummyMetadataBuildingContext.INSTANCE, table,
+		wrappedDependantValue = new DependantValue(DummyMetadataBuildingContext.INSTANCE, wrappedTable,
 				(KeyValue) wrappedSimpleValue);
 		dependantValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedDependantValue);
 
-		wrappedAnyValue = new Any(DummyMetadataBuildingContext.INSTANCE, table);
+		wrappedAnyValue = new Any(DummyMetadataBuildingContext.INSTANCE, wrappedTable);
 		anyValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedAnyValue);
 
 		wrappedIdentifierBagValue = new IdentifierBag(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
@@ -347,4 +348,63 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isToOne());
 	}
 	
+	@Test
+	public void testGetTable() {
+		persistentClassWrapper.setTable(null);
+		assertNull(arrayValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, arrayValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(bagValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, bagValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(listValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, listValueWrapper.getTable());
+		((ManyToOne)wrappedManyToOneValue).setTable(null);
+		assertNull(manyToOneValueWrapper.getTable());
+		((ManyToOne)wrappedManyToOneValue).setTable(wrappedTable);
+		assertSame(wrappedTable, manyToOneValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(mapValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, mapValueWrapper.getTable());
+		assertNull(oneToManyValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		wrappedOneToManyValue = new OneToMany(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
+		oneToManyValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedOneToManyValue);
+		assertSame(wrappedTable, oneToManyValueWrapper.getTable());
+		assertSame(wrappedTable, oneToOneValueWrapper.getTable());
+		((OneToOne)wrappedOneToOneValue).setTable(null);
+		assertNull(oneToOneValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(primitiveArrayValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, primitiveArrayValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(setValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, setValueWrapper.getTable());
+		((SimpleValue)wrappedSimpleValue).setTable(null);
+		assertNull(simpleValueWrapper.getTable());
+		((SimpleValue)wrappedSimpleValue).setTable(wrappedTable);
+		assertSame(wrappedTable, simpleValueWrapper.getTable());
+		((Component)wrappedComponentValue).setTable(null);
+		assertNull(componentValueWrapper.getTable());
+		((Component)wrappedComponentValue).setTable(wrappedTable);
+		assertSame(wrappedTable, componentValueWrapper.getTable());
+		((SimpleValue)wrappedDependantValue).setTable(null);
+		assertNull(dependantValueWrapper.getTable());
+		((SimpleValue)wrappedDependantValue).setTable(wrappedTable);
+		assertSame(wrappedTable, dependantValueWrapper.getTable());
+		assertSame(wrappedTable, anyValueWrapper.getTable());
+		((Any)wrappedAnyValue).setTable(null);
+		assertNull(anyValueWrapper.getTable());
+		persistentClassWrapper.setTable(null);
+		assertNull(identifierBagValueWrapper.getTable());
+		persistentClassWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, identifierBagValueWrapper.getTable());
+	}
+
 }
