@@ -475,4 +475,43 @@ public class ValueWrapperTest {
 		assertTrue(type instanceof IdentifierBagType);
 	}
 	
+	@Test
+	public void testSetElement() {
+		assertNull(((Collection)wrappedArrayValue).getElement());
+		arrayValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedArrayValue).getElement());
+		assertNull(((Collection)wrappedBagValue).getElement());
+		bagValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedBagValue).getElement());
+		assertNull(((Collection)wrappedListValue).getElement());
+		listValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedListValue).getElement());
+		// next call has no effect
+		manyToOneValueWrapper.setElement(wrappedSimpleValue);
+		assertNull(((Collection)wrappedMapValue).getElement());
+		mapValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedMapValue).getElement());
+		// next call has no effect
+		oneToManyValueWrapper.setElement(wrappedSimpleValue);
+		// next call has no effect
+		oneToOneValueWrapper.setElement(wrappedSimpleValue);
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getElement());
+		primitiveArrayValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedPrimitiveArrayValue).getElement());
+		assertNull(((Collection)wrappedSetValue).getElement());
+		setValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedSetValue).getElement());
+		// next call has no effect
+		simpleValueWrapper.setElement(wrappedArrayValue);
+		// next call has no effect
+		componentValueWrapper.setElement(wrappedArrayValue);
+		// next call has no effect
+		dependantValueWrapper.setElement(wrappedArrayValue);
+		// next call has no effect
+		anyValueWrapper.setElement(wrappedArrayValue);
+		assertNull(((Collection)wrappedIdentifierBagValue).getElement());
+		identifierBagValueWrapper.setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedIdentifierBagValue).getElement());
+	}
+	
 }
