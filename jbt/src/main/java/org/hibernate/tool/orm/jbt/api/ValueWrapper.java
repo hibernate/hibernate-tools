@@ -11,6 +11,7 @@ import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.type.Type;
 
 public interface ValueWrapper extends Wrapper {
 
@@ -36,5 +37,6 @@ public interface ValueWrapper extends Wrapper {
 	}
 	default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default Table getTable() { return ((Value)getWrappedObject()).getTable(); }
+	default Type getType() { return ((Value)getWrappedObject()).getType(); }
 
 }

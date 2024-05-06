@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -29,6 +30,18 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.type.AnyType;
+import org.hibernate.type.ArrayType;
+import org.hibernate.type.BagType;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.ComponentType;
+import org.hibernate.type.IdentifierBagType;
+import org.hibernate.type.ListType;
+import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.MapType;
+import org.hibernate.type.OneToOneType;
+import org.hibernate.type.SetType;
+import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -407,4 +420,59 @@ public class ValueWrapperTest {
 		assertSame(wrappedTable, identifierBagValueWrapper.getTable());
 	}
 
+	@Test
+	public void testGetType() {
+		((SimpleValue)wrappedSimpleValue).setTypeName("java.lang.Integer");
+		Type type = simpleValueWrapper.getType();
+		assertEquals("integer", type.getName());
+		((Collection)wrappedArrayValue).setElement(wrappedSimpleValue);
+		type = wrappedArrayValue.getType();
+		assertEquals("[Ljava.lang.Integer;(null)", type.getName());
+		assertTrue(type instanceof ArrayType);
+		((Collection)wrappedBagValue).setElement(wrappedSimpleValue);
+		type = wrappedBagValue.getType();
+		assertEquals("java.util.Collection(null)", type.getName());
+		assertTrue(type instanceof BagType);
+		((Collection)wrappedListValue).setElement(wrappedSimpleValue);
+		type = listValueWrapper.getType();
+		assertEquals("java.util.List(null)", type.getName());
+		assertTrue(type instanceof ListType);
+		type = manyToOneValueWrapper.getType();
+		assertEquals(null, type.getName());
+		assertTrue(type instanceof ManyToOneType);
+		((Collection)wrappedMapValue).setElement(wrappedSimpleValue);
+		type = mapValueWrapper.getType();
+		assertEquals("java.util.Map(null)", type.getName());
+		assertTrue(type instanceof MapType);
+		type = oneToManyValueWrapper.getType();
+		assertEquals(null, type.getName());
+		assertTrue(type instanceof ManyToOneType);
+		type = oneToOneValueWrapper.getType();
+		assertEquals(null, type.getName());
+		assertTrue(type instanceof OneToOneType);
+		((Collection)wrappedPrimitiveArrayValue).setElement(wrappedSimpleValue);
+		type = wrappedPrimitiveArrayValue.getType();
+		assertEquals("[I(null)", type.getName());
+		assertTrue(type instanceof ArrayType);
+		((Collection)wrappedSetValue).setElement(wrappedSimpleValue);
+		type = setValueWrapper.getType();
+		assertEquals("java.util.Set(null)", type.getName());
+		assertTrue(type instanceof SetType);
+		((Component)wrappedComponentValue).setComponentClassName("java.lang.String");
+		type = componentValueWrapper.getType();
+		assertEquals("component[]", type.getName());
+		assertTrue(type instanceof ComponentType);
+		type = dependantValueWrapper.getType();
+		assertEquals("integer", type.getName());
+		assertTrue(type instanceof BasicType);
+		((Any)wrappedAnyValue).setIdentifierType("java.lang.Integer");
+		type = anyValueWrapper.getType();
+		assertEquals("object", type.getName());
+		assertTrue(type instanceof AnyType);
+		((Collection)wrappedIdentifierBagValue).setElement(wrappedSimpleValue);
+		type = identifierBagValueWrapper.getType();
+		assertEquals("java.util.Collection(null)", type.getName());
+		assertTrue(type instanceof IdentifierBagType);
+	}
+	
 }
