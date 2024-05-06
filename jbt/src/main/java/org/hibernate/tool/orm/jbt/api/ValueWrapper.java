@@ -43,5 +43,10 @@ public interface ValueWrapper extends Wrapper {
 				((Collection)getWrappedObject()).setElement(v);
 		}
 	}
+	default void setCollectionTable(Table table) {
+		if (isCollection()) {
+			((Collection)getWrappedObject()).setCollectionTable(table);
+		}
+	}
 
 }
