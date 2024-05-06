@@ -514,4 +514,43 @@ public class ValueWrapperTest {
 		assertSame(wrappedSimpleValue, ((Collection)wrappedIdentifierBagValue).getElement());
 	}
 	
+	@Test
+	public void testSetCollectionTable() {
+		assertNull(((Collection)wrappedArrayValue).getCollectionTable());
+		arrayValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedArrayValue).getCollectionTable());
+		assertNull(((Collection)wrappedBagValue).getCollectionTable());
+		bagValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedBagValue).getCollectionTable());
+		assertNull(((Collection)wrappedListValue).getCollectionTable());
+		listValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedListValue).getCollectionTable());
+		// next call has no effect
+		manyToOneValueWrapper.setCollectionTable(wrappedTable);
+		assertNull(((Collection)wrappedMapValue).getCollectionTable());
+		mapValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedMapValue).getCollectionTable());
+		// next call has no effect
+		oneToManyValueWrapper.setCollectionTable(wrappedTable);
+		// next call has no effect
+		oneToOneValueWrapper.setCollectionTable(wrappedTable);
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getCollectionTable());
+		primitiveArrayValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedPrimitiveArrayValue).getCollectionTable());
+		assertNull(((Collection)wrappedSetValue).getCollectionTable());
+		setValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedSetValue).getCollectionTable());
+		// next call has no effect
+		simpleValueWrapper.setCollectionTable(wrappedTable);
+		// next call has no effect
+		componentValueWrapper.setCollectionTable(wrappedTable);
+		// next call has no effect
+		dependantValueWrapper.setCollectionTable(wrappedTable);
+		// next call has no effect
+		anyValueWrapper.setCollectionTable(wrappedTable);
+		assertNull(((Collection)wrappedIdentifierBagValue).getCollectionTable());
+		identifierBagValueWrapper.setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, ((Collection)wrappedIdentifierBagValue).getCollectionTable());
+	}
+	
 }
