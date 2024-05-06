@@ -1,11 +1,15 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.util.function.BooleanSupplier;
+
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
@@ -48,5 +52,11 @@ public interface ValueWrapper extends Wrapper {
 			((Collection)getWrappedObject()).setCollectionTable(table);
 		}
 	}
+	default void setTable(Table table) {
+		if (isSimpleValue()) {
+			((SimpleValue)getWrappedObject()).setTable(table);
+		}
+	}
+	default boolean isList() { return List.class.isAssignableFrom(getWrappedObject().getClass()); }
 
 }
