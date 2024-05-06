@@ -553,4 +553,68 @@ public class ValueWrapperTest {
 		assertSame(wrappedTable, ((Collection)wrappedIdentifierBagValue).getCollectionTable());
 	}
 	
+	@Test
+	public void testSetTable() {
+		assertNull(wrappedArrayValue.getTable());
+		arrayValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedArrayValue.getTable());
+		assertNull(wrappedBagValue.getTable());
+		bagValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedBagValue.getTable());
+		assertNull(wrappedListValue.getTable());
+		listValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedListValue.getTable());
+		assertSame(wrappedTable, wrappedManyToOneValue.getTable());
+		manyToOneValueWrapper.setTable(null);
+		assertNull(wrappedManyToOneValue.getTable());
+		assertNull(wrappedMapValue.getTable());
+		mapValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedMapValue.getTable());
+		assertNull(wrappedOneToManyValue.getTable());
+		oneToManyValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedOneToManyValue.getTable());
+		assertSame(wrappedTable, wrappedOneToOneValue.getTable());
+		oneToOneValueWrapper.setTable(null);
+		assertNull(wrappedOneToOneValue.getTable());
+		assertNull(wrappedPrimitiveArrayValue.getTable());
+		primitiveArrayValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedPrimitiveArrayValue.getTable());
+		assertNull(wrappedSetValue.getTable());
+		setValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedSetValue.getTable());
+		assertNull(wrappedSimpleValue.getTable());
+		simpleValueWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, wrappedSimpleValue.getTable());
+		assertNull(wrappedComponentValue.getTable());
+		componentValueWrapper.setTable(wrappedTable);
+		assertSame(wrappedTable, wrappedComponentValue.getTable());
+		assertSame(wrappedTable, wrappedDependantValue.getTable());
+		dependantValueWrapper.setTable(null);
+		assertNull(wrappedDependantValue.getTable());
+		assertSame(wrappedTable, wrappedAnyValue.getTable());
+		anyValueWrapper.setTable(null);
+		assertNull(wrappedAnyValue.getTable());
+		assertNull(wrappedIdentifierBagValue.getTable());
+		identifierBagValueWrapper.setTable(wrappedTable);
+		assertNull(wrappedIdentifierBagValue.getTable());
+	}
+	
+	@Test 
+	public void testIsList() {
+		assertTrue(arrayValueWrapper.isList());
+		assertFalse(bagValueWrapper.isList());
+		assertTrue(listValueWrapper.isList());
+		assertFalse(manyToOneValueWrapper.isList());
+		assertFalse(mapValueWrapper.isList());
+		assertFalse(oneToManyValueWrapper.isList());
+		assertFalse(oneToOneValueWrapper.isList());
+		assertTrue(primitiveArrayValueWrapper.isList());
+		assertFalse(setValueWrapper.isList());
+		assertFalse(simpleValueWrapper.isList());
+		assertFalse(componentValueWrapper.isList());
+		assertFalse(dependantValueWrapper.isList());
+		assertFalse(anyValueWrapper.isList());
+		assertFalse(identifierBagValueWrapper.isList());
+	}
+	
 }
