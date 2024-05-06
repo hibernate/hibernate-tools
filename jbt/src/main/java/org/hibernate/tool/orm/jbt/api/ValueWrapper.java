@@ -38,5 +38,10 @@ public interface ValueWrapper extends Wrapper {
 	default boolean isToOne() { return ToOne.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default Table getTable() { return ((Value)getWrappedObject()).getTable(); }
 	default Type getType() { return ((Value)getWrappedObject()).getType(); }
+	default void setElement(Value v) { 
+		if (isCollection()) {
+				((Collection)getWrappedObject()).setElement(v);
+		}
+	}
 
 }
