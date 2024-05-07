@@ -1,9 +1,8 @@
 package org.hibernate.tool.orm.jbt.api;
 
-import java.util.function.BooleanSupplier;
-
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -58,5 +57,10 @@ public interface ValueWrapper extends Wrapper {
 		}
 	}
 	default boolean isList() { return List.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default void setIndex(Value v) {
+		if (IndexedCollection.class.isAssignableFrom(getWrappedObject().getClass())) {
+			((IndexedCollection)getWrappedObject()).setIndex(v);
+		}
+	}
 
 }

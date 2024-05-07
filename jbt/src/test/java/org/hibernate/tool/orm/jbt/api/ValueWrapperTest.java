@@ -15,6 +15,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
+import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -615,6 +616,42 @@ public class ValueWrapperTest {
 		assertFalse(dependantValueWrapper.isList());
 		assertFalse(anyValueWrapper.isList());
 		assertFalse(identifierBagValueWrapper.isList());
+	}
+	
+	@Test
+	public void testSetIndex() {
+		assertNull(((IndexedCollection)wrappedArrayValue).getIndex());
+		arrayValueWrapper.setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue,((IndexedCollection)wrappedArrayValue).getIndex());
+		// next call has no effect
+		bagValueWrapper.setIndex(wrappedSimpleValue);
+		assertNull(((IndexedCollection)wrappedListValue).getIndex());
+		listValueWrapper.setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedListValue).getIndex());
+		// next call has no effect
+		manyToOneValueWrapper.setIndex(wrappedSimpleValue);
+		assertNull(((IndexedCollection)wrappedMapValue).getIndex());
+		mapValueWrapper.setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedMapValue).getIndex());
+		// next call has no effect
+		oneToManyValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		oneToOneValueWrapper.setIndex(wrappedSimpleValue);
+		assertNull(((IndexedCollection)wrappedPrimitiveArrayValue).getIndex());
+		primitiveArrayValueWrapper.setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedPrimitiveArrayValue).getIndex());
+		// next call has no effect
+		setValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		simpleValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		componentValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		dependantValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		anyValueWrapper.setIndex(wrappedSimpleValue);
+		// next call has no effect
+		identifierBagValueWrapper.setIndex(wrappedSimpleValue);
 	}
 	
 }
