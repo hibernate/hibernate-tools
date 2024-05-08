@@ -654,4 +654,49 @@ public class ValueWrapperTest {
 		identifierBagValueWrapper.setIndex(wrappedSimpleValue);
 	}
 	
+	@Test
+	public void testSetTypeName() {
+		assertNull(((Collection)wrappedArrayValue).getTypeName());
+		arrayValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedArrayValue).getTypeName());
+		assertNull(((Collection)wrappedBagValue).getTypeName());
+		bagValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedBagValue).getTypeName());
+		assertNull(((Collection)wrappedListValue).getTypeName());
+		listValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedListValue).getTypeName());
+		assertNull(((SimpleValue)wrappedManyToOneValue).getTypeName());
+		manyToOneValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedManyToOneValue).getTypeName());
+		assertNull(((Collection)wrappedMapValue).getTypeName());
+		mapValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedMapValue).getTypeName());
+		// next call has no effect
+		oneToManyValueWrapper.setTypeName("foobar");
+		assertNull(((SimpleValue)wrappedOneToOneValue).getTypeName());
+		oneToOneValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedOneToOneValue).getTypeName());
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getTypeName());
+		primitiveArrayValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedPrimitiveArrayValue).getTypeName());
+		assertNull(((Collection)wrappedSetValue).getTypeName());
+		setValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedSetValue).getTypeName());
+		assertNull(((SimpleValue)wrappedSimpleValue).getTypeName());
+		simpleValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedSimpleValue).getTypeName());
+		assertNull(((SimpleValue)wrappedComponentValue).getTypeName());
+		componentValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedComponentValue).getTypeName());
+		assertNull(((SimpleValue)wrappedDependantValue).getTypeName());
+		dependantValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedDependantValue).getTypeName());
+		assertNull(((SimpleValue)wrappedAnyValue).getTypeName());
+		anyValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((SimpleValue)wrappedAnyValue).getTypeName());
+		assertNull(((Collection)wrappedIdentifierBagValue).getTypeName());
+		identifierBagValueWrapper.setTypeName("foobar");
+		assertEquals("foobar", ((Collection)wrappedIdentifierBagValue).getTypeName());
+	}
+	
 }
