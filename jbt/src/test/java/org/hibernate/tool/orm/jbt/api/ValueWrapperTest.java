@@ -699,4 +699,24 @@ public class ValueWrapperTest {
 		assertEquals("foobar", ((Collection)wrappedIdentifierBagValue).getTypeName());
 	}
 	
+	@Test
+	public void testGetComponentClassName() {
+		assertNull(arrayValueWrapper.getComponentClassName());
+		assertNull(bagValueWrapper.getComponentClassName());
+		assertNull(listValueWrapper.getComponentClassName());
+		assertNull(manyToOneValueWrapper.getComponentClassName());
+		assertNull(mapValueWrapper.getComponentClassName());
+		assertNull(oneToManyValueWrapper.getComponentClassName());
+		assertNull(oneToOneValueWrapper.getComponentClassName());
+		assertNull(primitiveArrayValueWrapper.getComponentClassName());
+		assertNull(setValueWrapper.getComponentClassName());
+		assertNull(simpleValueWrapper.getComponentClassName());
+		assertNull(componentValueWrapper.getComponentClassName());
+		((Component)wrappedComponentValue).setComponentClassName("foobar");
+		assertEquals("foobar", componentValueWrapper.getComponentClassName());
+		assertNull(dependantValueWrapper.getComponentClassName());
+		assertNull(anyValueWrapper.getComponentClassName());
+		assertNull(identifierBagValueWrapper.getComponentClassName());
+	}
+	
 }

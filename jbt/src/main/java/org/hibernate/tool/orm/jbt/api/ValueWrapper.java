@@ -69,5 +69,11 @@ public interface ValueWrapper extends Wrapper {
 			((SimpleValue)getWrappedObject()).setTypeName(s);
 		}
 	}
+	default String getComponentClassName() { 
+		if ((isComponent())) {
+			return ((Component)getWrappedObject()).getComponentClassName();
+		}
+		return null;
+	};
 
 }
