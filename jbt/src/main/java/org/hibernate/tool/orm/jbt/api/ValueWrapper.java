@@ -62,5 +62,12 @@ public interface ValueWrapper extends Wrapper {
 			((IndexedCollection)getWrappedObject()).setIndex(v);
 		}
 	}
+	default void setTypeName(String s) { 
+		if (isCollection()) {
+			((Collection)getWrappedObject()).setTypeName(s);
+		} else if (isSimpleValue()) {
+			((SimpleValue)getWrappedObject()).setTypeName(s);
+		}
+	}
 
 }
