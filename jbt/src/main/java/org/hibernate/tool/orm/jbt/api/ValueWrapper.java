@@ -205,5 +205,11 @@ public interface ValueWrapper extends Wrapper {
 			return null; 
 		}
 	}
-	
+	default String getParentProperty() { 
+		if (isComponent()) {
+			return ((Component)getWrappedObject()).getParentProperty();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getParentProperty()'." ); 
+		}
+	}
 }

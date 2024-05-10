@@ -1779,4 +1779,89 @@ public class ValueWrapperTest {
 		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getElement());
 	}
 	
+	@Test
+	public void testGetParentProperty() {
+		assertNull(componentValueWrapper.getParentProperty());
+		((Component)wrappedComponentValue).setParentProperty("foo");
+		assertEquals("foo", componentValueWrapper.getParentProperty());
+		try {
+			arrayValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			bagValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			listValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			manyToOneValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			oneToOneValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			mapValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			oneToManyValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			setValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			simpleValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			dependantValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			anyValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+		try {
+			identifierBagValueWrapper.getParentProperty();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getParentProperty()'"));
+		}
+	}
+	
 }
