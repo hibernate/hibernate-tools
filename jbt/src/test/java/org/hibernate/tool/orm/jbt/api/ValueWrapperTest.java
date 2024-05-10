@@ -1173,4 +1173,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isSet());
 	}
 	
+	@Test
+	public void testIsPrimitiveArray() {
+		assertFalse(arrayValueWrapper.isPrimitiveArray());
+		assertFalse(bagValueWrapper.isPrimitiveArray());
+		assertFalse(listValueWrapper.isPrimitiveArray());
+		assertFalse(manyToOneValueWrapper.isPrimitiveArray());
+		assertFalse(mapValueWrapper.isPrimitiveArray());
+		assertFalse(oneToManyValueWrapper.isPrimitiveArray());
+		assertFalse(oneToOneValueWrapper.isPrimitiveArray());
+		assertTrue(primitiveArrayValueWrapper.isPrimitiveArray());
+		assertFalse(setValueWrapper.isPrimitiveArray());
+		assertFalse(simpleValueWrapper.isPrimitiveArray());
+		assertFalse(componentValueWrapper.isPrimitiveArray());
+		assertFalse(dependantValueWrapper.isPrimitiveArray());
+		assertFalse(anyValueWrapper.isPrimitiveArray());
+		assertFalse(identifierBagValueWrapper.isPrimitiveArray());
+	}
+		
 }
