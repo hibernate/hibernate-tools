@@ -992,4 +992,87 @@ public class ValueWrapperTest {
 		assertNull(identifierBagValueWrapper.getIndex());
 	}	
 	
+	@Test
+	public void testGetElementClassName() {
+		// only supported by array values
+		assertNull(arrayValueWrapper.getElementClassName());
+		((Array)wrappedArrayValue).setElementClassName("foo");
+		assertEquals("foo", arrayValueWrapper.getElementClassName());
+		assertNull(primitiveArrayValueWrapper.getElementClassName());
+		((PrimitiveArray)wrappedPrimitiveArrayValue).setElementClassName("foo");
+		assertEquals("foo", primitiveArrayValueWrapper.getElementClassName());
+		try {
+			bagValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			listValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			setValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			mapValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			simpleValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			manyToOneValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			oneToOneValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			oneToManyValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			componentValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			dependantValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			anyValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+		try {
+			identifierBagValueWrapper.getElementClassName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getElementClassName()'"));
+		}
+	}
+		
 }
