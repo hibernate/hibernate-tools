@@ -905,4 +905,65 @@ public class ValueWrapperTest {
 		assertSame(wrappedTable, identifierBagValueWrapper.getCollectionTable());
 	}
 	
+	@Test
+	public void testGetKey() {
+		assertNull(arrayValueWrapper.getKey());
+		((Collection)wrappedArrayValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getKey());
+		assertNull(bagValueWrapper.getKey());
+		((Collection)wrappedBagValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, bagValueWrapper.getKey());
+		assertNull(listValueWrapper.getKey());
+		((Collection)wrappedListValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, listValueWrapper.getKey());
+		assertNull(mapValueWrapper.getKey());
+		((Collection)wrappedMapValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, mapValueWrapper.getKey());
+		assertNull(primitiveArrayValueWrapper.getKey());
+		((Collection)wrappedPrimitiveArrayValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getKey());
+		assertNull(setValueWrapper.getKey());
+		((Collection)wrappedSetValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, setValueWrapper.getKey());
+		assertNull(identifierBagValueWrapper.getKey());
+		((Collection)wrappedIdentifierBagValue).setKey((KeyValue)wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getKey());
+		try {
+			simpleValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			manyToOneValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			oneToOneValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			componentValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			dependantValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+		try {
+			anyValueWrapper.getKey();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getKey()'"));
+		}
+	}
+	
 }
