@@ -118,6 +118,15 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getElementClassName()'." );
 		}
 	}
+	default String getTypeName() { 
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).getTypeName();
+		} else if (isSimpleValue()) {
+			return ((SimpleValue)getWrappedObject()).getTypeName();
+		} else { 
+			return null; 
+		}
+	}
 		
 
 }
