@@ -1245,4 +1245,83 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isBag());
 	}
 
+	@Test
+	public void testGetReferencedEntityName() {
+		assertNull(manyToOneValueWrapper.getReferencedEntityName());
+		((ManyToOne)wrappedManyToOneValue).setReferencedEntityName("foobar");
+		assertEquals("foobar", manyToOneValueWrapper.getReferencedEntityName());
+		assertNull(oneToManyValueWrapper.getReferencedEntityName());
+		((OneToMany)wrappedOneToManyValue).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToManyValueWrapper.getReferencedEntityName());
+		assertNull(oneToOneValueWrapper.getReferencedEntityName());
+		((OneToOne)wrappedOneToOneValue).setReferencedEntityName("foobar");
+		assertEquals("foobar", oneToOneValueWrapper.getReferencedEntityName());
+		try {
+			arrayValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			bagValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			listValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			mapValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			setValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			simpleValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			componentValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			dependantValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			anyValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+		try {
+			identifierBagValueWrapper.getReferencedEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getReferencedEntityName()'"));
+		}
+	}
+
 }
