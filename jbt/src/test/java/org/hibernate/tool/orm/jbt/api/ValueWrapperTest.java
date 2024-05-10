@@ -1324,4 +1324,91 @@ public class ValueWrapperTest {
 		}
 	}
 
+	@Test
+	public void testGetEntityName() {
+		try {
+			arrayValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			bagValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			listValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			manyToOneValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			mapValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			oneToManyValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		assertNull(oneToOneValueWrapper.getEntityName());
+		wrappedPersistentClass.setEntityName("foobar");
+		wrappedOneToOneValue = new OneToOne(DummyMetadataBuildingContext.INSTANCE, wrappedTable, wrappedPersistentClass);
+		oneToOneValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedOneToOneValue);
+		assertEquals("foobar", oneToOneValueWrapper.getEntityName());
+		try {
+			primitiveArrayValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			setValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			simpleValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			componentValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			dependantValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			anyValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+		try {
+			identifierBagValueWrapper.getEntityName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getEntityName()'"));
+		}
+	}
+	
 }

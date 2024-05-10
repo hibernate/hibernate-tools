@@ -149,6 +149,11 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getReferencedEntityName()'." ); 
 		}
 	}
-		
+	default String getEntityName() { 
+		if (isOneToOne()) {
+			return ((OneToOne)getWrappedObject()).getEntityName();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getEntityName()'." ); }
+	}
 
 }
