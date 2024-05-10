@@ -1155,4 +1155,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isAny());
 	}
 	
+	@Test
+	public void testIsSet() {
+		assertFalse(arrayValueWrapper.isSet());
+		assertFalse(bagValueWrapper.isSet());
+		assertFalse(listValueWrapper.isSet());
+		assertFalse(manyToOneValueWrapper.isSet());
+		assertFalse(mapValueWrapper.isSet());
+		assertFalse(oneToManyValueWrapper.isSet());
+		assertFalse(oneToOneValueWrapper.isSet());
+		assertFalse(primitiveArrayValueWrapper.isSet());
+		assertTrue(setValueWrapper.isSet());
+		assertFalse(simpleValueWrapper.isSet());
+		assertFalse(componentValueWrapper.isSet());
+		assertFalse(dependantValueWrapper.isSet());
+		assertFalse(anyValueWrapper.isSet());
+		assertFalse(identifierBagValueWrapper.isSet());
+	}
+	
 }
