@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
@@ -127,6 +128,7 @@ public interface ValueWrapper extends Wrapper {
 			return null; 
 		}
 	}
+	default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
 		
 
 }
