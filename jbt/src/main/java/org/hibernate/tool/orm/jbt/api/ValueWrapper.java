@@ -15,6 +15,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.Selectable;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
@@ -131,6 +132,7 @@ public interface ValueWrapper extends Wrapper {
 	}
 	default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isAny() {return Any.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isSet() {return Set.class.isAssignableFrom(getWrappedObject().getClass()); }
 		
 
 }
