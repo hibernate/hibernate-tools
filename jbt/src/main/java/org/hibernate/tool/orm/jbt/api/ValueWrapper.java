@@ -181,5 +181,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setTypeParameters(Properties)'." );		
 		}
 	}
+	default String getForeignKeyName() { 
+		if (isSimpleValue()) {
+			return ((SimpleValue)getWrappedObject()).getForeignKeyName();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getForeignKeyName()'." ); 
+		}
+	}
 	
 }
