@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
@@ -108,6 +109,13 @@ public interface ValueWrapper extends Wrapper {
 			return ((IndexedCollection)getWrappedObject()).getIndex();
 		} else {
 			return null;
+		}
+	}
+	default String getElementClassName() {
+		if (Array.class.isAssignableFrom(getWrappedObject().getClass())) {
+			return ((Array)getWrappedObject()).getElementClassName();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getElementClassName()'." );
 		}
 	}
 		
