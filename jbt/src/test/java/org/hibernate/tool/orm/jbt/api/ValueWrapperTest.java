@@ -873,4 +873,36 @@ public class ValueWrapperTest {
 		assertTrue(anyValueWrapper.isTypeSpecified());
 	}
 	
+	@Test
+	public void testGetCollectionTable() {
+		assertNull(arrayValueWrapper.getCollectionTable());
+		((Collection)wrappedArrayValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, arrayValueWrapper.getCollectionTable());
+		assertNull(bagValueWrapper.getCollectionTable());
+		((Collection)wrappedBagValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, bagValueWrapper.getCollectionTable());
+		assertNull(listValueWrapper.getCollectionTable());
+		((Collection)wrappedListValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, listValueWrapper.getCollectionTable());
+		assertNull(manyToOneValueWrapper.getCollectionTable());
+		assertNull(mapValueWrapper.getCollectionTable());
+		((Collection)wrappedMapValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, mapValueWrapper.getCollectionTable());
+		assertNull(oneToManyValueWrapper.getCollectionTable());
+		assertNull(oneToOneValueWrapper.getCollectionTable());
+		assertNull(primitiveArrayValueWrapper.getCollectionTable());
+		((Collection)wrappedPrimitiveArrayValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, primitiveArrayValueWrapper.getCollectionTable());
+		assertNull(setValueWrapper.getCollectionTable());
+		((Collection)wrappedSetValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, setValueWrapper.getCollectionTable());
+		assertNull(simpleValueWrapper.getCollectionTable());
+		assertNull(componentValueWrapper.getCollectionTable());
+		assertNull(dependantValueWrapper.getCollectionTable());
+		assertNull(anyValueWrapper.getCollectionTable());
+		assertNull(identifierBagValueWrapper.getCollectionTable());
+		((Collection)wrappedIdentifierBagValue).setCollectionTable(wrappedTable);
+		assertSame(wrappedTable, identifierBagValueWrapper.getCollectionTable());
+	}
+	
 }
