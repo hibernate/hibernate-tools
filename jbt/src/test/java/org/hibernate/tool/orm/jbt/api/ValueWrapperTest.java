@@ -1411,4 +1411,96 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetPropertyIterator() {
+		// only the component values have properties
+		Iterator<Property> propertyIterator = componentValueWrapper.getPropertyIterator();
+		assertFalse(propertyIterator.hasNext());
+		Property p = new Property();
+		((Component)wrappedComponentValue).addProperty(p);
+		propertyIterator = componentValueWrapper.getPropertyIterator();
+		Property wrappedProperty = propertyIterator.next();
+		assertFalse(propertyIterator.hasNext());
+		assertSame(p, wrappedProperty);
+		// other values do not support 'getPropertyIterator()'
+		try {
+			arrayValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			bagValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			listValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			manyToOneValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			mapValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			oneToManyValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			oneToOneValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			setValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			simpleValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			dependantValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			anyValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+		try {
+			identifierBagValueWrapper.getPropertyIterator();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getPropertyIterator()'"));
+		}
+	}
+	
 }

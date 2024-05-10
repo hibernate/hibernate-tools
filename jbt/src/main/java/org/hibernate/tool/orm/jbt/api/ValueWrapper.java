@@ -17,6 +17,7 @@ import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
@@ -154,6 +155,13 @@ public interface ValueWrapper extends Wrapper {
 			return ((OneToOne)getWrappedObject()).getEntityName();
 		} else {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getEntityName()'." ); }
+	}
+	default Iterator<Property> getPropertyIterator() { 
+		if (isComponent()) {
+			return ((Component)getWrappedObject()).getProperties().iterator();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getPropertyIterator()'." ); 
+		}
 	}
 
 }
