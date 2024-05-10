@@ -1137,4 +1137,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isDependantValue());
 	}
 	
+	@Test
+	public void testIsAny() {
+		assertFalse(arrayValueWrapper.isAny());
+		assertFalse(bagValueWrapper.isAny());
+		assertFalse(listValueWrapper.isAny());
+		assertFalse(manyToOneValueWrapper.isAny());
+		assertFalse(mapValueWrapper.isAny());
+		assertFalse(oneToManyValueWrapper.isAny());
+		assertFalse(oneToOneValueWrapper.isAny());
+		assertFalse(primitiveArrayValueWrapper.isAny());
+		assertFalse(setValueWrapper.isAny());
+		assertFalse(simpleValueWrapper.isAny());
+		assertFalse(componentValueWrapper.isAny());
+		assertFalse(dependantValueWrapper.isAny());
+		assertTrue(anyValueWrapper.isAny());
+		assertFalse(identifierBagValueWrapper.isAny());
+	}
+	
 }
