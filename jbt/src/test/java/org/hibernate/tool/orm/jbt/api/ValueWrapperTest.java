@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -1575,6 +1576,56 @@ public class ValueWrapperTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+	}
+	
+	@Test
+	public void testSetTypeParameters() {
+		Properties properties = new Properties();
+		assertNull(((Collection)wrappedArrayValue).getTypeParameters());
+		arrayValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedArrayValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedBagValue).getTypeParameters());
+		bagValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedBagValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedListValue).getTypeParameters());
+		listValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedListValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedManyToOneValue).getTypeParameters());
+		manyToOneValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedManyToOneValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedMapValue).getTypeParameters());
+		mapValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedMapValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedOneToOneValue).getTypeParameters());
+		oneToOneValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedOneToOneValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getTypeParameters());
+		primitiveArrayValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedPrimitiveArrayValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedSetValue).getTypeParameters());
+		setValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedSetValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedSimpleValue).getTypeParameters());
+		simpleValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedSimpleValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedComponentValue).getTypeParameters());
+		componentValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedComponentValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedDependantValue).getTypeParameters());
+		dependantValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedDependantValue).getTypeParameters(), properties);
+		assertNull(((SimpleValue)wrappedAnyValue).getTypeParameters());
+		anyValueWrapper.setTypeParameters(properties);
+		assertSame(((SimpleValue)wrappedAnyValue).getTypeParameters(), properties);
+		assertNull(((Collection)wrappedIdentifierBagValue).getTypeParameters());
+		identifierBagValueWrapper.setTypeParameters(properties);
+		assertSame(((Collection)wrappedIdentifierBagValue).getTypeParameters(), properties);
+		try {
+			oneToManyValueWrapper.setTypeParameters(properties);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setTypeParameters(Properties)'"));
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
@@ -169,6 +170,15 @@ public interface ValueWrapper extends Wrapper {
 			((SimpleValue)getWrappedObject()).addColumn(column);
 		} else {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'addColumn(Column)'." ); 
+		}
+	}
+	default void setTypeParameters(Properties properties) {
+		if (isCollection()) {
+			((Collection)getWrappedObject()).setTypeParameters(properties);
+		} else if (isSimpleValue()) {
+			((SimpleValue)getWrappedObject()).setTypeParameters(properties);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setTypeParameters(Properties)'." );		
 		}
 	}
 	
