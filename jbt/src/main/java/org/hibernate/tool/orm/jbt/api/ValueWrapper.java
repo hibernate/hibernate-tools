@@ -81,5 +81,13 @@ public interface ValueWrapper extends Wrapper {
 	default Iterator<Selectable> getColumnIterator() {
 		return ((Value)getWrappedObject()).getSelectables().iterator();
 	}
+	default boolean isTypeSpecified() { 
+		if (isSimpleValue()) {
+			return ((SimpleValue)getWrappedObject()).isTypeSpecified();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isTypeSpecified()'." );
+		}
+	}
+		
 
 }

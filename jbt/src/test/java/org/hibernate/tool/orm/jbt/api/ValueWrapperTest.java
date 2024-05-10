@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
@@ -796,6 +797,80 @@ public class ValueWrapperTest {
 		s = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
 		assertSame(s, column);
+	}
+	
+	@Test
+	public void testIsTypeSpecified() {
+		try {
+			arrayValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			bagValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			listValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			mapValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			oneToManyValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			setValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		try {
+			identifierBagValueWrapper.isTypeSpecified();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isTypeSpecified()'"));
+		}
+		assertFalse(manyToOneValueWrapper.isTypeSpecified());
+		((ManyToOne)wrappedManyToOneValue).setTypeName("foo");
+		assertFalse(manyToOneValueWrapper.isTypeSpecified());
+		((ManyToOne)wrappedManyToOneValue).setReferencedEntityName("foo");
+		assertTrue(manyToOneValueWrapper.isTypeSpecified());
+		assertFalse(oneToOneValueWrapper.isTypeSpecified());
+		((OneToOne)wrappedOneToOneValue).setTypeName("foo");
+		assertFalse(oneToOneValueWrapper.isTypeSpecified());
+		((OneToOne)wrappedOneToOneValue).setReferencedEntityName("foo");
+		assertTrue(manyToOneValueWrapper.isTypeSpecified());
+		assertFalse(simpleValueWrapper.isTypeSpecified());
+		((SimpleValue)wrappedSimpleValue).setTypeName("foo");
+		assertTrue(simpleValueWrapper.isTypeSpecified());
+		assertFalse(componentValueWrapper.isTypeSpecified());
+		((Component)wrappedComponentValue).setTypeName("foo");
+		assertTrue(componentValueWrapper.isTypeSpecified());
+		assertFalse(dependantValueWrapper.isTypeSpecified());
+		((DependantValue)wrappedDependantValue).setTypeName("foo");
+		assertTrue(dependantValueWrapper.isTypeSpecified());
+		assertFalse(anyValueWrapper.isTypeSpecified());
+		((Any)wrappedAnyValue).setTypeName("foo");
+		assertTrue(anyValueWrapper.isTypeSpecified());
 	}
 	
 }
