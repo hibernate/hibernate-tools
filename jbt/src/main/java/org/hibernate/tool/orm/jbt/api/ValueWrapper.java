@@ -140,6 +140,15 @@ public interface ValueWrapper extends Wrapper {
 	default boolean isArray() {return Array.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isIdentifierBag() {return IdentifierBag.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isBag() {return Bag.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default String getReferencedEntityName() { 
+		if (isManyToOne() || isOneToOne()) {
+			return ((ToOne)getWrappedObject()).getReferencedEntityName();
+		} else if (isOneToMany()) {
+			return ((OneToMany)getWrappedObject()).getReferencedEntityName();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getReferencedEntityName()'." ); 
+		}
+	}
 		
 
 }
