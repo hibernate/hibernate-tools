@@ -1747,4 +1747,36 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetElement() {
+		assertNull(arrayValueWrapper.getElement());
+		((Collection)wrappedArrayValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getElement());
+		assertNull(bagValueWrapper.getElement());
+		((Collection)wrappedBagValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, bagValueWrapper.getElement());
+		assertNull(listValueWrapper.getElement());
+		((Collection)wrappedListValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, listValueWrapper.getElement());
+		assertNull(manyToOneValueWrapper.getElement());
+		assertNull(mapValueWrapper.getElement());
+		((Collection)wrappedMapValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, mapValueWrapper.getElement());
+		assertNull(oneToManyValueWrapper.getElement());
+		assertNull(oneToOneValueWrapper.getElement());
+		assertNull(primitiveArrayValueWrapper.getElement());
+		((Collection)wrappedPrimitiveArrayValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getElement());
+		assertNull(setValueWrapper.getElement());
+		((Collection)wrappedSetValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, setValueWrapper.getElement());
+		assertNull(simpleValueWrapper.getElement());
+		assertNull(componentValueWrapper.getElement());
+		assertNull(dependantValueWrapper.getElement());
+		assertNull(anyValueWrapper.getElement());
+		assertNull(identifierBagValueWrapper.getElement());
+		((Collection)wrappedIdentifierBagValue).setElement(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getElement());
+	}
+	
 }

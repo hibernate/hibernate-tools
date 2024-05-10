@@ -198,5 +198,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getOwner()'." ); 
 		}
 	}
+	default Value getElement() { 
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).getElement();
+		} else {
+			return null; 
+		}
+	}
 	
 }
