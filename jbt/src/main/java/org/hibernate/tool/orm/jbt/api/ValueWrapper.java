@@ -135,6 +135,7 @@ public interface ValueWrapper extends Wrapper {
 	default boolean isAny() {return Any.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isSet() {return Set.class.isAssignableFrom(getWrappedObject().getClass()); }
 	default boolean isPrimitiveArray() {return PrimitiveArray.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isArray() {return Array.class.isAssignableFrom(getWrappedObject().getClass()); }
 		
 
 }
