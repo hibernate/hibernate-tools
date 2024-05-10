@@ -966,4 +966,30 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetIndex() {
+		assertNull(arrayValueWrapper.getIndex());
+		((IndexedCollection)wrappedArrayValue).setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getIndex());
+		assertNull(bagValueWrapper.getIndex());
+		assertNull(listValueWrapper.getIndex());
+		((IndexedCollection)wrappedListValue).setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, listValueWrapper.getIndex());
+		assertNull(manyToOneValueWrapper.getIndex());
+		assertNull(mapValueWrapper.getIndex());
+		((IndexedCollection)wrappedMapValue).setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, mapValueWrapper.getIndex());
+		assertNull(oneToManyValueWrapper.getIndex());
+		assertNull(oneToOneValueWrapper.getIndex());
+		assertNull(primitiveArrayValueWrapper.getIndex());
+		((IndexedCollection)wrappedPrimitiveArrayValue).setIndex(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getIndex());
+		assertNull(setValueWrapper.getIndex());
+		assertNull(simpleValueWrapper.getIndex());
+		assertNull(componentValueWrapper.getIndex());
+		assertNull(dependantValueWrapper.getIndex());
+		assertNull(anyValueWrapper.getIndex());
+		assertNull(identifierBagValueWrapper.getIndex());
+	}	
+	
 }
