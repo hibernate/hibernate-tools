@@ -1209,4 +1209,22 @@ public class ValueWrapperTest {
 		assertFalse(identifierBagValueWrapper.isArray());
 	}
 		
+	@Test
+	public void testIsIdentifierBag() {
+		assertFalse(arrayValueWrapper.isIdentifierBag());
+		assertFalse(bagValueWrapper.isIdentifierBag());
+		assertFalse(listValueWrapper.isIdentifierBag());
+		assertFalse(manyToOneValueWrapper.isIdentifierBag());
+		assertFalse(mapValueWrapper.isIdentifierBag());
+		assertFalse(oneToManyValueWrapper.isIdentifierBag());
+		assertFalse(oneToOneValueWrapper.isIdentifierBag());
+		assertFalse(primitiveArrayValueWrapper.isIdentifierBag());
+		assertFalse(setValueWrapper.isIdentifierBag());
+		assertFalse(simpleValueWrapper.isIdentifierBag());
+		assertFalse(componentValueWrapper.isIdentifierBag());
+		assertFalse(dependantValueWrapper.isIdentifierBag());
+		assertFalse(anyValueWrapper.isIdentifierBag());
+		assertTrue(identifierBagValueWrapper.isIdentifierBag());
+	}
+	
 }
