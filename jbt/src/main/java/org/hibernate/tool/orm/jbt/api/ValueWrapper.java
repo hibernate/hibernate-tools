@@ -1,5 +1,7 @@
 package org.hibernate.tool.orm.jbt.api;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
@@ -8,6 +10,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
@@ -74,6 +77,9 @@ public interface ValueWrapper extends Wrapper {
 			return ((Component)getWrappedObject()).getComponentClassName();
 		}
 		return null;
-	};
+	}
+	default Iterator<Selectable> getColumnIterator() {
+		return ((Value)getWrappedObject()).getSelectables().iterator();
+	}
 
 }

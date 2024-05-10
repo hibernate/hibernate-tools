@@ -7,11 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -24,6 +27,9 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
@@ -717,6 +723,79 @@ public class ValueWrapperTest {
 		assertNull(dependantValueWrapper.getComponentClassName());
 		assertNull(anyValueWrapper.getComponentClassName());
 		assertNull(identifierBagValueWrapper.getComponentClassName());
+	}
+	
+	@Test
+	public void testGetColumnIterator() {
+		Iterator<Selectable> columnIterator = null;
+		Column column = new Column("foo");
+		// collection values have no columns
+		assertFalse(arrayValueWrapper.getColumnIterator().hasNext());
+		assertFalse(bagValueWrapper.getColumnIterator().hasNext());
+		assertFalse(listValueWrapper.getColumnIterator().hasNext());
+		assertFalse(mapValueWrapper.getColumnIterator().hasNext());
+		assertFalse(primitiveArrayValueWrapper.getColumnIterator().hasNext());
+		assertFalse(setValueWrapper.getColumnIterator().hasNext());
+		assertFalse(identifierBagValueWrapper.getColumnIterator().hasNext());
+		// one to many value columns are the ones of the associated class
+		RootClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		BasicValue kv = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		kv.setTable(new Table(""));
+		pc.setIdentifier(kv);
+		((OneToMany)wrappedOneToManyValue).setAssociatedClass(pc);
+		assertFalse(oneToManyValueWrapper.getColumnIterator().hasNext());
+		kv.addColumn(column);
+		columnIterator = oneToManyValueWrapper.getColumnIterator();
+		Selectable s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// simple value case
+		((SimpleValue)wrappedSimpleValue).setTable(new Table(""));
+		assertFalse(simpleValueWrapper.getColumnIterator().hasNext());
+		((SimpleValue)wrappedSimpleValue).addColumn(column);
+		columnIterator = simpleValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// component value case
+		assertFalse(componentValueWrapper.getColumnIterator().hasNext());
+		Property p = new Property();
+		p.setValue(kv);
+		((Component)wrappedComponentValue).addProperty(p);
+		columnIterator = componentValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// many to one value
+		assertFalse(manyToOneValueWrapper.getColumnIterator().hasNext());
+		((ManyToOne)wrappedManyToOneValue).addColumn(column);
+		columnIterator = manyToOneValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// one to one value
+		assertFalse(oneToOneValueWrapper.getColumnIterator().hasNext());
+		((OneToOne)wrappedOneToOneValue).addColumn(column);
+		columnIterator = oneToOneValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// dependant value case
+		((DependantValue)wrappedDependantValue).setTable(new Table(""));
+		assertFalse(dependantValueWrapper.getColumnIterator().hasNext());
+		((DependantValue)wrappedDependantValue).addColumn(column);
+		columnIterator = dependantValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
+		// any value case
+		((Any)wrappedAnyValue).setTable(new Table(""));
+		assertFalse(anyValueWrapper.getColumnIterator().hasNext());
+		((Any)wrappedAnyValue).addColumn(column);
+		columnIterator = anyValueWrapper.getColumnIterator();
+		s = columnIterator.next();
+		assertFalse(columnIterator.hasNext());
+		assertSame(s, column);
 	}
 	
 }
