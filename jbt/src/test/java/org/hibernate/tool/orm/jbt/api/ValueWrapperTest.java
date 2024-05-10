@@ -1629,4 +1629,74 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetForeignKeyName() {
+		assertNull(manyToOneValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedManyToOneValue).setForeignKeyName("foo");
+		assertEquals("foo", manyToOneValueWrapper.getForeignKeyName());
+		assertNull(oneToOneValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedOneToOneValue).setForeignKeyName("foo");
+		assertEquals("foo", oneToOneValueWrapper.getForeignKeyName());
+		assertNull(simpleValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedSimpleValue).setForeignKeyName("foo");
+		assertEquals("foo", simpleValueWrapper.getForeignKeyName());
+		assertNull(componentValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedComponentValue).setForeignKeyName("foo");
+		assertEquals("foo", componentValueWrapper.getForeignKeyName());
+		assertNull(dependantValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedDependantValue).setForeignKeyName("foo");
+		assertEquals("foo", dependantValueWrapper.getForeignKeyName());
+		assertNull(anyValueWrapper.getForeignKeyName());
+		((SimpleValue)wrappedAnyValue).setForeignKeyName("foo");
+		assertEquals("foo", anyValueWrapper.getForeignKeyName());
+		try {
+			arrayValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			bagValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			listValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			mapValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			oneToManyValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			setValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+		try {
+			identifierBagValueWrapper.getForeignKeyName();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getForeignKeyName()'"));
+		}
+	}
+	
 }
