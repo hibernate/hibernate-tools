@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.IndexedCollection;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -93,6 +94,13 @@ public interface ValueWrapper extends Wrapper {
 			return ((Collection)getWrappedObject()).getCollectionTable();
 		} else {
 			return null;
+		}
+	}
+	default KeyValue getKey() { 
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).getKey();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getKey()'." ); 
 		}
 	}
 		
