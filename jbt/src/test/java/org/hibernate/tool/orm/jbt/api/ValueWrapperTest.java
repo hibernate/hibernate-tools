@@ -1227,4 +1227,22 @@ public class ValueWrapperTest {
 		assertTrue(identifierBagValueWrapper.isIdentifierBag());
 	}
 	
+	@Test
+	public void testIsBag() {
+		assertFalse(arrayValueWrapper.isBag());
+		assertTrue(bagValueWrapper.isBag());
+		assertFalse(listValueWrapper.isBag());
+		assertFalse(manyToOneValueWrapper.isBag());
+		assertFalse(mapValueWrapper.isBag());
+		assertFalse(oneToManyValueWrapper.isBag());
+		assertFalse(oneToOneValueWrapper.isBag());
+		assertFalse(primitiveArrayValueWrapper.isBag());
+		assertFalse(setValueWrapper.isBag());
+		assertFalse(simpleValueWrapper.isBag());
+		assertFalse(componentValueWrapper.isBag());
+		assertFalse(dependantValueWrapper.isBag());
+		assertFalse(anyValueWrapper.isBag());
+		assertFalse(identifierBagValueWrapper.isBag());
+	}
+
 }
