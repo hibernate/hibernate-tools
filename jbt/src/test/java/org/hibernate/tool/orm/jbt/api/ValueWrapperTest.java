@@ -1699,4 +1699,52 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetOwner() {
+		assertSame(wrappedPersistentClass, arrayValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, bagValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, listValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, mapValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, primitiveArrayValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, setValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, identifierBagValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, componentValueWrapper.getOwner());
+		try {
+			manyToOneValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			oneToManyValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			oneToOneValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			simpleValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			dependantValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+		try {
+			anyValueWrapper.getOwner();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getOwner()'"));
+		}
+	}
+	
 }

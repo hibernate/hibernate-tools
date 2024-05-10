@@ -18,6 +18,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Selectable;
@@ -186,6 +187,15 @@ public interface ValueWrapper extends Wrapper {
 			return ((SimpleValue)getWrappedObject()).getForeignKeyName();
 		} else {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getForeignKeyName()'." ); 
+		}
+	}
+	default PersistentClass getOwner() { 
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).getOwner();
+		} else if (isComponent()) {
+			return ((Component)getWrappedObject()).getOwner();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getOwner()'." ); 
 		}
 	}
 	
