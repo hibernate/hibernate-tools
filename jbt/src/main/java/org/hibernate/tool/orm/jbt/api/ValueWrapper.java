@@ -88,6 +88,13 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isTypeSpecified()'." );
 		}
 	}
+	default Table getCollectionTable() {
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).getCollectionTable();
+		} else {
+			return null;
+		}
+	}
 		
 
 }
