@@ -103,6 +103,13 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getKey()'." ); 
 		}
 	}
+	default Value getIndex() {
+		if (IndexedCollection.class.isAssignableFrom(getWrappedObject().getClass())) {
+			return ((IndexedCollection)getWrappedObject()).getIndex();
+		} else {
+			return null;
+		}
+	}
 		
 
 }
