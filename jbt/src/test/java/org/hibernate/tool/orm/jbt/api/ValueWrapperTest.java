@@ -1503,4 +1503,79 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testAddColumn() {
+		Column column = new Column("foo");
+		assertFalse(wrappedManyToOneValue.getColumns().contains(column));
+		manyToOneValueWrapper.addColumn(column);
+		assertTrue(wrappedManyToOneValue.getColumns().contains(column));
+		assertFalse(wrappedOneToOneValue.getColumns().contains(column));
+		oneToOneValueWrapper.addColumn(column);
+		assertTrue(wrappedOneToOneValue.getColumns().contains(column));
+		((BasicValue)wrappedSimpleValue).setTable(wrappedTable);
+		assertFalse(wrappedSimpleValue.getColumns().contains(column));
+		simpleValueWrapper.addColumn(column);
+		assertTrue(wrappedSimpleValue.getColumns().contains(column));
+		assertFalse(wrappedDependantValue.getColumns().contains(column));
+		dependantValueWrapper.addColumn(column);
+		assertTrue(wrappedDependantValue.getColumns().contains(column));
+		assertFalse(wrappedAnyValue.getColumns().contains(column));
+		anyValueWrapper.addColumn(column);
+		assertTrue(wrappedAnyValue.getColumns().contains(column));
+		try {
+			arrayValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			bagValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			listValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			mapValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			oneToManyValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			primitiveArrayValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			setValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+		try {
+			componentValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("Cant add a column to a component"));
+		}
+		try {
+			identifierBagValueWrapper.addColumn(column);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
+		}
+	}
+	
 }
