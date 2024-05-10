@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
 
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -129,6 +130,7 @@ public interface ValueWrapper extends Wrapper {
 		}
 	}
 	default boolean isDependantValue() { return DependantValue.class.isAssignableFrom(getWrappedObject().getClass()); }
+	default boolean isAny() {return Any.class.isAssignableFrom(getWrappedObject().getClass()); }
 		
 
 }
