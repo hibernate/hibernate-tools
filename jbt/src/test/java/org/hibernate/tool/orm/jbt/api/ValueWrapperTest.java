@@ -1119,4 +1119,22 @@ public class ValueWrapperTest {
 		assertEquals("foobar", identifierBagValueWrapper.getTypeName());
 	}
 	
+	@Test
+	public void testIsDependantValue() {
+		assertFalse(arrayValueWrapper.isDependantValue());
+		assertFalse(bagValueWrapper.isDependantValue());
+		assertFalse(listValueWrapper.isDependantValue());
+		assertFalse(manyToOneValueWrapper.isDependantValue());
+		assertFalse(mapValueWrapper.isDependantValue());
+		assertFalse(oneToManyValueWrapper.isDependantValue());
+		assertFalse(oneToOneValueWrapper.isDependantValue());
+		assertFalse(primitiveArrayValueWrapper.isDependantValue());
+		assertFalse(setValueWrapper.isDependantValue());
+		assertFalse(simpleValueWrapper.isDependantValue());
+		assertFalse(componentValueWrapper.isDependantValue());
+		assertTrue(dependantValueWrapper.isDependantValue());
+		assertFalse(anyValueWrapper.isDependantValue());
+		assertFalse(identifierBagValueWrapper.isDependantValue());
+	}
+	
 }
