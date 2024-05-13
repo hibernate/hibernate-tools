@@ -219,4 +219,11 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setElementClassName(String)'." ); 
 		}
 	}
+	default void setKey(Value value) {
+		if (isCollection()) {
+			((Collection)getWrappedObject()).setKey((KeyValue)value);
+		} else {
+			 throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setKey(KeyValue)'." );
+		}
+	}
 }

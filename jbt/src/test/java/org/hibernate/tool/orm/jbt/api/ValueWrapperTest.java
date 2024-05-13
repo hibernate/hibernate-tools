@@ -1946,4 +1946,71 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testSetKey() {
+		assertNull(((Collection)wrappedArrayValue).getKey());
+		arrayValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue,((Collection)wrappedArrayValue).getKey());
+		assertNull(((Collection)wrappedBagValue).getKey());
+		bagValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedBagValue).getKey());
+		assertNull(((Collection)wrappedListValue).getKey());
+		listValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue,((Collection)wrappedListValue).getKey());
+		assertNull(((Collection)wrappedMapValue).getKey());
+		mapValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedMapValue).getKey());
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getKey());
+		primitiveArrayValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedPrimitiveArrayValue).getKey());
+		assertNull(((Collection)wrappedSetValue).getKey());
+		setValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedSetValue).getKey());
+		assertNull(((Collection)wrappedIdentifierBagValue).getKey());
+		identifierBagValueWrapper.setKey(wrappedSimpleValue);
+		assertSame(wrappedSimpleValue, ((Collection)wrappedIdentifierBagValue).getKey());
+		try {
+			manyToOneValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			oneToManyValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			oneToOneValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			simpleValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			componentValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			dependantValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+		try {
+			anyValueWrapper.setKey(wrappedSimpleValue);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+	}
+	
 }
