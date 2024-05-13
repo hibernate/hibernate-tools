@@ -242,5 +242,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isInverse()'." ); 
 		}
 	}
+	default PersistentClass getAssociatedClass() { 
+		if (isOneToMany()) {
+			return ((OneToMany)getWrappedObject()).getAssociatedClass();
+		} else {
+		throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getAssociatedClass()'." ); 
+		}
+	}
 
 }

@@ -2143,4 +2143,89 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testGetAssociatedClass() {
+		try {
+			arrayValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			bagValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			listValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			setValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			primitiveArrayValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			mapValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			identifierBagValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			manyToOneValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			oneToOneValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			simpleValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			componentValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			anyValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		try {
+			dependantValueWrapper.getAssociatedClass();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'getAssociatedClass()'"));
+		}
+		assertNull(oneToManyValueWrapper.getAssociatedClass());
+		((OneToMany)wrappedOneToManyValue).setAssociatedClass(wrappedPersistentClass);
+		assertSame(wrappedPersistentClass, oneToManyValueWrapper.getAssociatedClass());
+	}
+	
 }
