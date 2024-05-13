@@ -266,5 +266,14 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setRole(String)'." ); 
 		}
 	}
+	default void setReferencedEntityName(String name) { 
+		if (isToOne()) {
+			((ToOne)getWrappedObject()).setReferencedEntityName(name); 
+		} else if (isOneToMany()) {
+			((OneToMany)getWrappedObject()).setReferencedEntityName(name);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setReferencedEntityName(String)'." );
+		}
+	}
 
 }
