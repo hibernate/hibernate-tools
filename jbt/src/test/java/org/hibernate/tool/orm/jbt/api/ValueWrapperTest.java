@@ -1864,4 +1864,86 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testSetElementClassName() {
+		assertNull(((Array)wrappedArrayValue).getElementClassName());
+		arrayValueWrapper.setElementClassName("foo");
+		assertEquals("foo", ((Array)wrappedArrayValue).getElementClassName());
+		assertNull(((Array)wrappedPrimitiveArrayValue).getElementClassName());
+		primitiveArrayValueWrapper.setElementClassName("foo");
+		assertEquals("foo", ((Array)wrappedPrimitiveArrayValue).getElementClassName());
+		try {
+			bagValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			listValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			manyToOneValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			mapValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			oneToManyValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			oneToOneValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			setValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			simpleValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			componentValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			dependantValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			anyValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+		try {
+			identifierBagValueWrapper.setElementClassName("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setElementClassName(String)'"));
+		}
+	}
+	
 }
