@@ -259,5 +259,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setLazy(boolean)'." ); 
 		}
 	}
+	default void setRole(String role) { 
+		if (isCollection()) {
+			((Collection)getWrappedObject()).setRole(role);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setRole(String)'." ); 
+		}
+	}
 
 }
