@@ -275,5 +275,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setReferencedEntityName(String)'." );
 		}
 	}
+	default void setAssociatedClass(PersistentClass pc) {
+		if (isOneToMany()) {
+			((OneToMany)getWrappedObject()).setAssociatedClass(pc);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setAssociatedClass(PersistentClass)'." );
+		}
+	}
 
 }
