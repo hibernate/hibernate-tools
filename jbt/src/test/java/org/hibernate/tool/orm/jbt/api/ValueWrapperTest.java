@@ -2364,4 +2364,83 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testSetReferencedEntityName() {
+		assertNull(((ManyToOne)wrappedManyToOneValue).getReferencedEntityName());
+		manyToOneValueWrapper.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((ManyToOne)wrappedManyToOneValue).getReferencedEntityName());
+		assertNull(((OneToMany)wrappedOneToManyValue).getReferencedEntityName());
+		oneToManyValueWrapper.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((OneToMany)wrappedOneToManyValue).getReferencedEntityName());
+		assertNull(((OneToOne)wrappedOneToOneValue).getReferencedEntityName());
+		oneToOneValueWrapper.setReferencedEntityName("foobar");
+		assertEquals("foobar", ((OneToOne)wrappedOneToOneValue).getReferencedEntityName());
+		try {
+			arrayValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			bagValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			listValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			mapValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			primitiveArrayValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			setValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			simpleValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			componentValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			dependantValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			anyValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+		try {
+			identifierBagValueWrapper.setReferencedEntityName("foobar");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setReferencedEntityName(String)'"));
+		}
+	}
+	
 }
