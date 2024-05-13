@@ -2443,4 +2443,89 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testSetAssociatedClass() {
+		try {
+			arrayValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			bagValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			listValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			setValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			primitiveArrayValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			mapValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			identifierBagValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			manyToOneValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			oneToOneValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			simpleValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			componentValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			anyValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		try {
+			dependantValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
+		}
+		assertNull(((OneToMany)wrappedOneToManyValue).getAssociatedClass());
+		oneToManyValueWrapper.setAssociatedClass(wrappedPersistentClass);
+		assertSame(wrappedPersistentClass, ((OneToMany)wrappedOneToManyValue).getAssociatedClass());
+	}
+	
 }
