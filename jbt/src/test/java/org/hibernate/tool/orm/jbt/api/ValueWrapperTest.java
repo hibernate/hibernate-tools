@@ -2076,4 +2076,71 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testIsInverse() {
+		assertFalse(arrayValueWrapper.isInverse());
+		((Collection)wrappedArrayValue).setInverse(true);
+		assertTrue(arrayValueWrapper.isInverse());
+		assertFalse(bagValueWrapper.isInverse());
+		((Collection)wrappedBagValue).setInverse(true);
+		assertTrue(bagValueWrapper.isInverse());
+		assertFalse(listValueWrapper.isInverse());
+		((Collection)wrappedListValue).setInverse(true);
+		assertTrue(listValueWrapper.isInverse());
+		assertFalse(mapValueWrapper.isInverse());
+		((Collection)wrappedMapValue).setInverse(true);
+		assertTrue(mapValueWrapper.isInverse());
+		assertFalse(setValueWrapper.isInverse());
+		((Collection)wrappedSetValue).setInverse(true);
+		assertTrue(setValueWrapper.isInverse());
+		assertFalse(identifierBagValueWrapper.isInverse());
+		((Collection)wrappedIdentifierBagValue).setInverse(true);
+		assertTrue(identifierBagValueWrapper.isInverse());
+		assertFalse(primitiveArrayValueWrapper.isInverse());
+		((Collection)wrappedPrimitiveArrayValue).setInverse(true);
+		assertTrue(primitiveArrayValueWrapper.isInverse());
+		try {
+			manyToOneValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			oneToManyValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			oneToOneValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			simpleValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			componentValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			anyValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+		try {
+			dependantValueWrapper.isInverse();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'isInverse()'"));
+		}
+	}
+	
 }
