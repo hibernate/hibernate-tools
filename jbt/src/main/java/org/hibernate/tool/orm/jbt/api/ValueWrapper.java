@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -10,6 +11,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Fetchable;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
@@ -226,4 +228,12 @@ public interface ValueWrapper extends Wrapper {
 			 throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setKey(KeyValue)'." );
 		}
 	}
+	default void setFetchModeJoin() {
+		if (Fetchable.class.isAssignableFrom(getWrappedObject().getClass())) {
+			((Fetchable)getWrappedObject()).setFetchMode(FetchMode.JOIN);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setFetchModeJoin()'." ); 
+		}
+	}
+
 }

@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -2010,6 +2012,67 @@ public class ValueWrapperTest {
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
+		}
+	}
+	
+	@Test
+	public void testSetFetchModeJoin() {
+		assertNotEquals(FetchMode.JOIN, wrappedArrayValue.getFetchMode());
+		arrayValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedArrayValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedBagValue.getFetchMode());
+		bagValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedBagValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedListValue.getFetchMode());
+		listValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedListValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedManyToOneValue.getFetchMode());
+		manyToOneValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedManyToOneValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedOneToOneValue.getFetchMode());
+		oneToOneValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedOneToOneValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedMapValue.getFetchMode());
+		mapValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedMapValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedPrimitiveArrayValue.getFetchMode());
+		primitiveArrayValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedPrimitiveArrayValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedSetValue.getFetchMode());
+		setValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedSetValue.getFetchMode());
+		assertNotEquals(FetchMode.JOIN, wrappedIdentifierBagValue.getFetchMode());
+		identifierBagValueWrapper.setFetchModeJoin();
+		assertEquals(FetchMode.JOIN, wrappedIdentifierBagValue.getFetchMode());
+		try {
+			oneToManyValueWrapper.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			simpleValueWrapper.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			componentValueWrapper.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			dependantValueWrapper.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
+		}
+		try {
+			anyValueWrapper.setFetchModeJoin();
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setFetchModeJoin()'"));
 		}
 	}
 	
