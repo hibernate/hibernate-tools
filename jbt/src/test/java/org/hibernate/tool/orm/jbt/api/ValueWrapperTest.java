@@ -21,6 +21,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Fetchable;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.KeyValue;
@@ -2226,6 +2227,74 @@ public class ValueWrapperTest {
 		assertNull(oneToManyValueWrapper.getAssociatedClass());
 		((OneToMany)wrappedOneToManyValue).setAssociatedClass(wrappedPersistentClass);
 		assertSame(wrappedPersistentClass, oneToManyValueWrapper.getAssociatedClass());
+	}
+	
+	@Test
+	public void testSetLazy() {
+		arrayValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedArrayValue).isLazy());
+		arrayValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedArrayValue).isLazy());
+		bagValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedBagValue).isLazy());
+		bagValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedBagValue).isLazy());
+		listValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedListValue).isLazy());
+		listValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedListValue).isLazy());
+		primitiveArrayValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedPrimitiveArrayValue).isLazy());
+		primitiveArrayValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedPrimitiveArrayValue).isLazy());
+		setValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedSetValue).isLazy());
+		setValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedSetValue).isLazy());
+		mapValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedMapValue).isLazy());
+		mapValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedMapValue).isLazy());
+		identifierBagValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedIdentifierBagValue).isLazy());
+		identifierBagValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedIdentifierBagValue).isLazy());
+		anyValueWrapper.setLazy(true);
+		assertTrue(((Any)wrappedAnyValue).isLazy());
+		anyValueWrapper.setLazy(false);
+		assertFalse(((Any)wrappedAnyValue).isLazy());
+		manyToOneValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedManyToOneValue).isLazy());
+		manyToOneValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedManyToOneValue).isLazy());
+		oneToOneValueWrapper.setLazy(true);
+		assertTrue(((Fetchable)wrappedOneToOneValue).isLazy());
+		oneToOneValueWrapper.setLazy(false);
+		assertFalse(((Fetchable)wrappedOneToOneValue).isLazy());
+		try {
+			simpleValueWrapper.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			componentValueWrapper.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			dependantValueWrapper.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
+		try {
+			oneToManyValueWrapper.setLazy(true);
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setLazy(boolean)'"));
+		}
 	}
 	
 }
