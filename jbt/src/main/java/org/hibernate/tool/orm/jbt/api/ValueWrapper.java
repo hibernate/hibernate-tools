@@ -235,5 +235,12 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setFetchModeJoin()'." ); 
 		}
 	}
+	default boolean isInverse() { 
+		if (isCollection()) {
+			return ((Collection)getWrappedObject()).isInverse();
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'isInverse()'." ); 
+		}
+	}
 
 }
