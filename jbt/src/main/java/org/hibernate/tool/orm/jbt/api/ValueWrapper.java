@@ -212,4 +212,11 @@ public interface ValueWrapper extends Wrapper {
 			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'getParentProperty()'." ); 
 		}
 	}
+	default void setElementClassName(String name) { 
+		if (isArray()) {
+			((Array)getWrappedObject()).setElementClassName(name);
+		} else {
+			throw new UnsupportedOperationException("Class '" + getWrappedObject().getClass().getName() + "' does not support 'setElementClassName(String)'." ); 
+		}
+	}
 }
