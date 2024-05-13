@@ -2297,4 +2297,71 @@ public class ValueWrapperTest {
 		}
 	}
 	
+	@Test
+	public void testSetRole() {
+		assertNull(((Collection)wrappedArrayValue).getRole());
+		arrayValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedArrayValue).getRole());
+		assertNull(((Collection)wrappedBagValue).getRole());
+		bagValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedBagValue).getRole());
+		assertNull(((Collection)wrappedListValue).getRole());
+		listValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedListValue).getRole());
+		assertNull(((Collection)wrappedMapValue).getRole());
+		mapValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedMapValue).getRole());
+		assertNull(((Collection)wrappedPrimitiveArrayValue).getRole());
+		primitiveArrayValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedPrimitiveArrayValue).getRole());
+		assertNull(((Collection)wrappedSetValue).getRole());
+		setValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedSetValue).getRole());
+		assertNull(((Collection)wrappedIdentifierBagValue).getRole());
+		identifierBagValueWrapper.setRole("foo");
+		assertEquals("foo", ((Collection)wrappedIdentifierBagValue).getRole());
+		try {
+			manyToOneValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			oneToManyValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			oneToOneValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			simpleValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			componentValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			dependantValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+		try {
+			anyValueWrapper.setRole("foo");
+			fail();
+		} catch (UnsupportedOperationException e) {
+			assertTrue(e.getMessage().contains("does not support 'setRole(String)'"));
+		}
+	}
+	
 }
