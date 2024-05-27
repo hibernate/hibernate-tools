@@ -1,10 +1,11 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
-import org.hibernate.Session;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.api.ClassMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.SessionWrapper;
+import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.hibernate.type.Type;
 
 public class ClassMetadataWrapperFactory {
@@ -16,6 +17,8 @@ public class ClassMetadataWrapperFactory {
 	private static class ClassMetadataWrapperImpl implements ClassMetadataWrapper {
 		
 		private EntityPersister wrappedClassMetadata = null;
+		private TypeWrapper[] propertyTypeWrappers = null;
+		private TypeWrapper identifierTypeWrapper = null;
 		
 		private ClassMetadataWrapperImpl(EntityPersister entityPersister) {
 			wrappedClassMetadata = entityPersister;
@@ -42,8 +45,13 @@ public class ClassMetadataWrapperFactory {
 		}
 		
 		@Override 
-		public Type[] getPropertyTypes() { 
-			return wrappedClassMetadata.getPropertyTypes(); 
+		public TypeWrapper[] getPropertyTypes() { 
+			if (propertyTypeWrappers == null) {
+				initPropertyTypeWrappers();
+			} else {
+				syncPropertyTypeWrappers();
+			}
+			return propertyTypeWrappers; 
 		}
 		
 		@Override
@@ -52,8 +60,12 @@ public class ClassMetadataWrapperFactory {
 		}
 		
 		@Override 
-		public Type getIdentifierType() { 
-			return wrappedClassMetadata.getIdentifierType(); 
+		public TypeWrapper getIdentifierType() { 
+			Type identifierType = wrappedClassMetadata.getIdentifierType();
+			if (identifierTypeWrapper == null || identifierTypeWrapper.getWrappedObject() != identifierType) {
+				identifierTypeWrapper = TypeWrapperFactory.createTypeWrapper(identifierType);
+			}
+			return identifierTypeWrapper; 
 		}
 		
 		@Override 
@@ -67,8 +79,8 @@ public class ClassMetadataWrapperFactory {
 		}
 		
 		@Override 
-		public Object getIdentifier(Object object, Session session) { 
-			return wrappedClassMetadata.getIdentifier(object, (SharedSessionContractImplementor)session); 
+		public Object getIdentifier(Object object, SessionWrapper sessionWrapper) { 
+			return wrappedClassMetadata.getIdentifier(object, (SharedSessionContractImplementor)sessionWrapper.getWrappedObject()); 
 		}
 		
 		@Override 
@@ -84,6 +96,27 @@ public class ClassMetadataWrapperFactory {
 		@Override 
 		public Object getTuplizerPropertyValue(Object entity, int i) { 
 			return wrappedClassMetadata.getValue(entity, i); 
+		}
+		
+		private void initPropertyTypeWrappers() {	
+			Type[] propertyTypes = wrappedClassMetadata.getPropertyTypes();
+			propertyTypeWrappers = new TypeWrapper[propertyTypes.length];
+			for (int i = 0; i < propertyTypes.length; i++) {
+				propertyTypeWrappers[i] = TypeWrapperFactory.createTypeWrapper(propertyTypes[i]);
+			}
+ 		}
+		
+		private void syncPropertyTypeWrappers() {
+			Type[] propertyTypes = wrappedClassMetadata.getPropertyTypes();
+			if (propertyTypeWrappers.length != propertyTypes.length) {
+				initPropertyTypeWrappers();
+			} else {
+				for (int i = 0; i < propertyTypes.length; i++) {
+					if (propertyTypeWrappers[i].getWrappedObject() != propertyTypes[i]) {
+						propertyTypeWrappers[i] = TypeWrapperFactory.createTypeWrapper(propertyTypes[i]);
+					}
+				}
+			}
 		}
 
 	}
