@@ -1,15 +1,57 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.hbm.HBMTagForValueVisitor;
 import org.hibernate.tool.orm.jbt.api.Cfg2HbmToolWrapper;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class Cfg2HbmToolWrapperFactory {
 
 	public static Cfg2HbmToolWrapper createCfg2HbmToolWrapper() {
-		Cfg2HbmTool wrappedCfg2HbmTool = new Cfg2HbmTool();
-		return new Cfg2HbmToolWrapper() {
-			@Override public Cfg2HbmTool getWrappedObject() { return wrappedCfg2HbmTool; }
-		};
+		return new Cfg2HbmToolWrapperImpl();
+	}
+	
+	private static class Cfg2HbmToolWrapperImpl implements Cfg2HbmToolWrapper {
+		
+		private Cfg2HbmTool wrappedCfg2HbmTool = new Cfg2HbmTool();
+		
+		@Override 
+		public Cfg2HbmTool getWrappedObject() { 
+			return wrappedCfg2HbmTool; 
+		}
+
+		public String getTag(PersistentClassWrapper pcw) {
+			return wrappedCfg2HbmTool.getTag(pcw.getWrappedObject());
+		}
+		
+		public String getTag(PropertyWrapper pw) {
+			PersistentClass persistentClass = pw.getPersistentClass();
+			if(persistentClass!=null) {
+				Property v = persistentClass.getVersion();
+				if (v instanceof Wrapper) {
+					v = (Property)((Wrapper)v).getWrappedObject();
+				}
+				if(v==pw.getWrappedObject()) {
+					String typeName = ((SimpleValue)pw.getValue()).getTypeName();
+					if("timestamp".equals(typeName) || "dbtimestamp".equals(typeName)) {
+						return "timestamp";
+					} else {
+						return "version";
+					}
+				}
+			}
+			String toolTag = (String) pw.getValue().accept(HBMTagForValueVisitor.INSTANCE);
+			if ("component".equals(toolTag) && "embedded".equals(pw.getPropertyAccessorName())){
+				toolTag = "properties";
+			}
+			return toolTag;
+		}
+		
 	}
 
 }
