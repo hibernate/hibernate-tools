@@ -9,21 +9,18 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface Cfg2HbmToolWrapper extends Wrapper {
 
-	default String getTag(PersistentClass pc) {
-		return ((Cfg2HbmTool)getWrappedObject()).getTag(pc);
+	default String getTag(PersistentClassWrapper pcw) {
+		return ((Cfg2HbmTool)getWrappedObject()).getTag(pcw.getWrappedObject());
 	}
-	default String getTag(Property p) {
-		if (p instanceof Wrapper) {
-			p = (Property)((Wrapper)p).getWrappedObject();
-		}
-		PersistentClass persistentClass = p.getPersistentClass();
+	default String getTag(PropertyWrapper pw) {
+		PersistentClass persistentClass = pw.getPersistentClass();
 		if(persistentClass!=null) {
 			Property v = persistentClass.getVersion();
 			if (v instanceof Wrapper) {
 				v = (Property)((Wrapper)v).getWrappedObject();
 			}
-			if(v==p) {
-				String typeName = ((SimpleValue)p.getValue()).getTypeName();
+			if(v==pw.getWrappedObject()) {
+				String typeName = ((SimpleValue)pw.getValue()).getTypeName();
 				if("timestamp".equals(typeName) || "dbtimestamp".equals(typeName)) {
 					return "timestamp";
 				} else {
@@ -31,8 +28,8 @@ public interface Cfg2HbmToolWrapper extends Wrapper {
 				}
 			}
 		}
-		String toolTag = (String) p.getValue().accept(HBMTagForValueVisitor.INSTANCE);
-		if ("component".equals(toolTag) && "embedded".equals(p.getPropertyAccessorName())){
+		String toolTag = (String) pw.getValue().accept(HBMTagForValueVisitor.INSTANCE);
+		if ("component".equals(toolTag) && "embedded".equals(pw.getPropertyAccessorName())){
 			toolTag = "properties";
 		}
 		return toolTag;
