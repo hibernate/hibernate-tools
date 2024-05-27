@@ -1,7 +1,5 @@
 package org.hibernate.tool.orm.jbt.api;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface ColumnWrapper extends Wrapper {
@@ -13,7 +11,7 @@ public interface ColumnWrapper extends Wrapper {
 	String getName();
 	Integer getSqlTypeCode();
 	String getSqlType();
-	String getSqlType(Configuration configuration);
+	String getSqlType(ConfigurationWrapper configurationWrapper);
 	long getLength();
 	int getDefaultLength();
 	int getPrecision();
@@ -21,7 +19,7 @@ public interface ColumnWrapper extends Wrapper {
 	int getScale();
 	int getDefaultScale();
 	boolean isNullable();
-	Value getValue();
+	ValueWrapper getValue();
 	boolean isUnique();
 	void setSqlType(String sqlType);
 	
