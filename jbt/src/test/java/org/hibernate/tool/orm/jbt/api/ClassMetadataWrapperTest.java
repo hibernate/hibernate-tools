@@ -13,17 +13,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.ClassMetadataWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.SessionWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.type.CollectionType;
-import org.hibernate.type.Type;
 import org.hibernate.type.internal.NamedBasicTypeImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,13 +104,13 @@ public class ClassMetadataWrapperTest {
 	
 	@Test
 	public void testGetPropertyTypes() {
-		Type[] types = classMetadataWrapper.getPropertyTypes();
+		TypeWrapper[] types = classMetadataWrapper.getPropertyTypes();
 		assertEquals(1, types.length);
-		Type type = types[0];
+		TypeWrapper type = types[0];
 		assertTrue(type.isCollectionType());
 		assertEquals(
 				"org.hibernate.tool.orm.jbt.api.ClassMetadataWrapperTest$Foo.bars",
-				((CollectionType)type).getRole());
+				((CollectionType)type.getWrappedObject()).getRole());
  	}
 	
 	@Test
@@ -121,10 +120,10 @@ public class ClassMetadataWrapperTest {
 	
 	@Test
 	public void testGetIdentifierType() {
-		Type identifierType = classMetadataWrapper.getIdentifierType();
+		TypeWrapper identifierType = classMetadataWrapper.getIdentifierType();
 		assertNotNull(identifierType);
-		assertTrue(identifierType instanceof NamedBasicTypeImpl);
-		assertSame("string", ((NamedBasicTypeImpl<?>)identifierType).getName());
+		assertTrue(identifierType.getWrappedObject() instanceof NamedBasicTypeImpl);
+		assertSame("string", ((NamedBasicTypeImpl<?>)identifierType.getWrappedObject()).getName());
 	}
 	
 	@Test
@@ -142,10 +141,10 @@ public class ClassMetadataWrapperTest {
 	
 	@Test 
 	public void testGetIdentifier() {
-		Session session = sessionFactory.openSession();
+		SessionWrapper sessionWrapper = SessionWrapperFactory.createSessionWrapper(sessionFactory.openSession());
 		Foo foo = new Foo();
 		foo.id = "bar";
-		Object identifier = classMetadataWrapper.getIdentifier(foo, session);
+		Object identifier = classMetadataWrapper.getIdentifier(foo, sessionWrapper);
 		assertSame("bar", identifier);
 	}
 	
