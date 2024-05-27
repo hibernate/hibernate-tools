@@ -4,10 +4,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 
 public class ColumnWrapperFactory {
-
+	
 	public static ColumnWrapper createColumnWrapper(final String name) {
 		return new ColumnWrapperImpl(name);
 	}
@@ -16,6 +18,8 @@ public class ColumnWrapperFactory {
 		
 		private Column wrappedColumn = null;
 		
+		private ValueWrapper valueWrapper = null;
+
 		private ColumnWrapperImpl(String name) {
 			wrappedColumn = new Column(name);
 		}
@@ -41,8 +45,8 @@ public class ColumnWrapperFactory {
 		}
 		
 		@Override
-		public String getSqlType(Configuration configuration) { 
-			return wrappedColumn.getSqlType(MetadataHelper.getMetadata(configuration)); 
+		public String getSqlType(ConfigurationWrapper configurationWrapper) { 
+			return wrappedColumn.getSqlType(MetadataHelper.getMetadata((Configuration)configurationWrapper.getWrappedObject())); 
 		}
 		
 		@Override
@@ -84,8 +88,16 @@ public class ColumnWrapperFactory {
 		}
 		
 		@Override
-		public Value getValue() { 
-			return wrappedColumn.getValue(); 	
+		public ValueWrapper getValue() { 
+			Value v = wrappedColumn.getValue();
+			if (valueWrapper ==  null || valueWrapper.getWrappedObject() != v) {
+				if (v != null) {
+					valueWrapper = ValueWrapperFactory.createValueWrapper(v);
+				} else {
+					valueWrapper = null;
+				}
+			}
+			return valueWrapper; 	
 		}
 		
 		@Override

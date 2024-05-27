@@ -16,6 +16,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.type.spi.TypeConfiguration;
@@ -65,7 +66,8 @@ public class ColumnWrapperTest {
 		Configuration configuration = new Configuration();
 		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		assertEquals("integer", columnWrapper.getSqlType(configuration));
+		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(configuration);
+		assertEquals("integer", columnWrapper.getSqlType(configurationWrapper));
 	}
 	
 	@Test
@@ -117,12 +119,12 @@ public class ColumnWrapperTest {
 		Value v = createValue();
 		assertNull(columnWrapper.getValue());
 		wrappedColumn.setValue(v);
-		Value value = columnWrapper.getValue();
-		assertNotNull(value);
-		assertSame(value, v);
+		ValueWrapper valueWrapper = columnWrapper.getValue();
+		assertNotNull(valueWrapper);
+		assertSame(valueWrapper.getWrappedObject(), v);
 		wrappedColumn.setValue(null);
-		value = columnWrapper.getValue();
-		assertNull(value);
+		valueWrapper = columnWrapper.getValue();
+		assertNull(valueWrapper);
 	}
 	
 	@Test
