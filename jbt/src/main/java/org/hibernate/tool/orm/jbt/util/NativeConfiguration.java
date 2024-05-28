@@ -20,12 +20,13 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class NativeConfiguration extends Configuration {
+public class NativeConfiguration extends Configuration implements ExtendedConfiguration {
 	
 	@SuppressWarnings("unused")
 	private EntityResolver entityResolver = null;

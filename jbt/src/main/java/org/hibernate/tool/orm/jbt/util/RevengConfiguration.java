@@ -14,10 +14,11 @@ import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
+import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-public class RevengConfiguration extends Configuration {
+public class RevengConfiguration extends Configuration implements ExtendedConfiguration {
 
 	RevengStrategy revengStrategy;
 	Metadata metadata;
