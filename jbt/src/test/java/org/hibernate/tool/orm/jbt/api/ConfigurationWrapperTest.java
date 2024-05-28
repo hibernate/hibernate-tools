@@ -24,7 +24,6 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
@@ -32,17 +31,17 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
-import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -253,16 +252,17 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testSetNamingStrategy() throws Exception {
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		NamingStrategyWrapper namingStrategyWrapper = NamingStrategyWrapperFactory.createNamingStrategyWrapper(namingStrategy);
 		// For native configuration
 		Field namingStrategyField = wrappedNativeConfiguration.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);
 		assertNull(namingStrategyField.get(wrappedNativeConfiguration));
-		nativeConfigurationWrapper.setNamingStrategy(namingStrategy);
+		nativeConfigurationWrapper.setNamingStrategy(namingStrategyWrapper);
 		assertNotNull(namingStrategyField.get(wrappedNativeConfiguration));
 		assertSame(namingStrategyField.get(wrappedNativeConfiguration), namingStrategy);
 		// For reveng configuration
 		try {
-			revengConfigurationWrapper.setNamingStrategy(namingStrategy);
+			revengConfigurationWrapper.setNamingStrategy(namingStrategyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(
@@ -271,7 +271,7 @@ public class ConfigurationWrapperTest {
 		}
 		// For jpa configuration
 		try {
-			jpaConfigurationWrapper.setNamingStrategy(namingStrategy);
+			jpaConfigurationWrapper.setNamingStrategy(namingStrategyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(
@@ -528,7 +528,7 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testBuildSessionFactory() throws Throwable {
 		// For native configuration
-		SessionFactory sessionFactory = 
+		SessionFactoryWrapper sessionFactory = 
 				nativeConfigurationWrapper.buildSessionFactory();
 		assertNotNull(sessionFactory);
 		assertTrue(sessionFactory instanceof SessionFactoryWrapper);
@@ -566,9 +566,9 @@ public class ConfigurationWrapperTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		wrappedNativeConfiguration.addClass(Foo.class);
-		Iterator<PersistentClass> classMappings = nativeConfigurationWrapper.getClassMappings();
+		Iterator<PersistentClassWrapper> classMappings = nativeConfigurationWrapper.getClassMappings();
 		assertTrue(classMappings.hasNext());
-		PersistentClass fooClassFacade = classMappings.next();
+		PersistentClassWrapper fooClassFacade = classMappings.next();
 		assertSame(fooClassFacade.getEntityName(), fooClassName);
 		classMappings = null;
 		assertNull(classMappings);
@@ -630,9 +630,10 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testSetReverseEngineeringStrategy() {
 		RevengStrategy reverseEngineeringStrategy = new DefaultStrategy();
+		RevengStrategyWrapper revengStrategyWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper(reverseEngineeringStrategy);
 		// For native configuration 
 		try {
-			nativeConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+			nativeConfigurationWrapper.setReverseEngineeringStrategy(revengStrategyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(
@@ -643,13 +644,13 @@ public class ConfigurationWrapperTest {
 		assertNotSame(
 				reverseEngineeringStrategy,
 				((RevengConfiguration)wrappedRevengConfiguration).getReverseEngineeringStrategy());
-		revengConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+		revengConfigurationWrapper.setReverseEngineeringStrategy(revengStrategyWrapper);
 		assertSame(
 				reverseEngineeringStrategy, 
 				((RevengConfiguration)wrappedRevengConfiguration).getReverseEngineeringStrategy());
 		// For jpa configuration
 		try {
-			jpaConfigurationWrapper.setReverseEngineeringStrategy(reverseEngineeringStrategy);
+			jpaConfigurationWrapper.setReverseEngineeringStrategy(revengStrategyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(
@@ -741,7 +742,7 @@ public class ConfigurationWrapperTest {
 		NamingStrategy namingStrategy = new DefaultNamingStrategy();
 		assertNull(nativeConfigurationWrapper.getNamingStrategy());
 		((NativeConfiguration)wrappedNativeConfiguration).setNamingStrategy(namingStrategy);
-		assertSame(nativeConfigurationWrapper.getNamingStrategy(), namingStrategy);
+		assertSame(nativeConfigurationWrapper.getNamingStrategy().getWrappedObject(), namingStrategy);
 		// For reveng configuration 
 		try {
 			revengConfigurationWrapper.getNamingStrategy();
@@ -807,9 +808,9 @@ public class ConfigurationWrapperTest {
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
 		wrappedNativeConfiguration.addClass(Foo.class);
-		Iterator<Table> tableMappings = nativeConfigurationWrapper.getTableMappings();
+		Iterator<TableWrapper> tableMappings = nativeConfigurationWrapper.getTableMappings();
 		assertTrue(tableMappings.hasNext());
-		Table fooTableFacade = tableMappings.next();
+		TableWrapper fooTableFacade = tableMappings.next();
 		assertEquals(fooTableFacade.getName(), "ConfigurationWrapperTest$Foo");
 		tableMappings = null;
 		assertNull(tableMappings);

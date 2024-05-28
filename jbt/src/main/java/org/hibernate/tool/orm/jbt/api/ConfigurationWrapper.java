@@ -4,11 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -20,7 +15,7 @@ public interface ConfigurationWrapper extends Wrapper {
 	void setProperty(String name, String value);
 	ConfigurationWrapper setProperties(Properties properties);
 	void setEntityResolver(EntityResolver entityResolver);
-	void setNamingStrategy(NamingStrategy namingStrategy);
+	void setNamingStrategy(NamingStrategyWrapper namingStrategy);
 	Properties getProperties();
 	void addProperties(Properties properties);
 	ConfigurationWrapper configure(Document document);
@@ -28,14 +23,14 @@ public interface ConfigurationWrapper extends Wrapper {
 	ConfigurationWrapper configure();
 	void addClass(Class<?> clazz);
 	void buildMappings();
-	SessionFactory buildSessionFactory();
-	Iterator<PersistentClass> getClassMappings();
+	SessionFactoryWrapper buildSessionFactory();
+	Iterator<PersistentClassWrapper> getClassMappings();
 	void setPreferBasicCompositeIds(boolean b);
-	void setReverseEngineeringStrategy(RevengStrategy strategy);
+	void setReverseEngineeringStrategy(RevengStrategyWrapper strategy);
 	void readFromJDBC();
-	PersistentClass getClassMapping(String string);
-	NamingStrategy getNamingStrategy();
+	PersistentClassWrapper getClassMapping(String string);
+	NamingStrategyWrapper getNamingStrategy();
 	EntityResolver getEntityResolver();
-	Iterator<Table> getTableMappings();
+	Iterator<TableWrapper> getTableMappings();
 	
 }
