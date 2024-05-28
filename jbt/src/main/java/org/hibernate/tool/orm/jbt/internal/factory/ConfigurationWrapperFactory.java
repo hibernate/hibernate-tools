@@ -4,13 +4,18 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -24,6 +29,8 @@ public class ConfigurationWrapperFactory {
 	private static class ConfigurationWrapperImpl implements ConfigurationWrapper {
 		
 		private Configuration wrappedConfiguration = null;
+		
+		private NamingStrategyWrapper namingStrategyWrapper = null;
 		
 		private ConfigurationWrapperImpl(Configuration configuration) {
 			wrappedConfiguration = configuration;
@@ -62,9 +69,9 @@ public class ConfigurationWrapperFactory {
 		}
 		
 		@Override
-		public void setNamingStrategy(NamingStrategy namingStrategy) {
+		public void setNamingStrategy(NamingStrategyWrapper namingStrategyWrapper) {
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				((ExtendedConfiguration)wrappedConfiguration).setNamingStrategy(namingStrategy);
+				((ExtendedConfiguration)wrappedConfiguration).setNamingStrategy((NamingStrategy)namingStrategyWrapper.getWrappedObject());
 			}
 		}
 		
@@ -111,14 +118,24 @@ public class ConfigurationWrapperFactory {
 		}
 		
 		@Override
-		public SessionFactory buildSessionFactory() { 
-			return ((Configuration)getWrappedObject()).buildSessionFactory(); 
+		public SessionFactoryWrapper buildSessionFactory() { 
+			return SessionFactoryWrapperFactory.createSessionFactoryWrapper(((Configuration)getWrappedObject()).buildSessionFactory()); 
 		}
 		
 		@Override
-		public Iterator<PersistentClass> getClassMappings() { 
+		public Iterator<PersistentClassWrapper> getClassMappings() { 
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				return ((ExtendedConfiguration)wrappedConfiguration).getClassMappings();
+				Iterator<PersistentClass> classMappings = ((ExtendedConfiguration)wrappedConfiguration).getClassMappings();
+				return new Iterator<PersistentClassWrapper>() {
+					@Override
+					public boolean hasNext() {
+						return classMappings.hasNext();
+					}
+					@Override
+					public PersistentClassWrapper next() {
+						return new DelegatingPersistentClassWrapperImpl(classMappings.next());
+					}				
+				};
 			}
 			return null;
 		}
@@ -131,9 +148,9 @@ public class ConfigurationWrapperFactory {
 		}
 		
 		@Override
-		public void setReverseEngineeringStrategy(RevengStrategy strategy) {
+		public void setReverseEngineeringStrategy(RevengStrategyWrapper strategy) {
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				((ExtendedConfiguration)wrappedConfiguration).setReverseEngineeringStrategy(strategy);
+				((ExtendedConfiguration)wrappedConfiguration).setReverseEngineeringStrategy((RevengStrategy)strategy.getWrappedObject());
 			}
 		}
 		
@@ -145,19 +162,30 @@ public class ConfigurationWrapperFactory {
 		}
 		
 		@Override
-		public PersistentClass getClassMapping(String string) { 
+		public PersistentClassWrapper getClassMapping(String string) { 
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				return ((ExtendedConfiguration)wrappedConfiguration).getClassMapping(string);
+				PersistentClass classMapping = ((ExtendedConfiguration)wrappedConfiguration).getClassMapping(string);
+				if (classMapping != null) {
+					return new DelegatingPersistentClassWrapperImpl(classMapping);
+				}
 			}
 			return null;
 		}
 		
 		@Override
-		public NamingStrategy getNamingStrategy() {
+		public NamingStrategyWrapper getNamingStrategy() {
+			NamingStrategy namingStrategy = null;
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				return ((ExtendedConfiguration)wrappedConfiguration).getNamingStrategy();
+				namingStrategy = ((ExtendedConfiguration)wrappedConfiguration).getNamingStrategy();
 			}
-			return null;
+			if (namingStrategyWrapper == null || namingStrategyWrapper.getWrappedObject() != namingStrategy) {
+				if (namingStrategy == null) {
+					namingStrategyWrapper = null;
+				} else {
+					namingStrategyWrapper = NamingStrategyWrapperFactory.createNamingStrategyWrapper(namingStrategy);
+				}
+			}
+			return namingStrategyWrapper;
 		}
 		
 		@Override
@@ -169,9 +197,19 @@ public class ConfigurationWrapperFactory {
 		}
 		
 		@Override
-		public Iterator<Table> getTableMappings() {
+		public Iterator<TableWrapper> getTableMappings() {
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				return ((ExtendedConfiguration)wrappedConfiguration).getTableMappings();
+				Iterator<Table> tableMappings = ((ExtendedConfiguration)wrappedConfiguration).getTableMappings();
+				return new Iterator<TableWrapper>() {
+					@Override
+					public boolean hasNext() {
+						return tableMappings.hasNext();
+					}
+					@Override
+					public TableWrapper next() {
+						return TableWrapperFactory.createTableWrapper(tableMappings.next());
+					}					
+				};
 			}
 			return null;
 		}
