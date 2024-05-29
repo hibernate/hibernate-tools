@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
 import org.hibernate.tool.internal.export.hbm.HBMTagForValueVisitor;
 import org.hibernate.tool.orm.jbt.api.Cfg2HbmToolWrapper;
@@ -37,7 +38,11 @@ public class Cfg2HbmToolWrapperFactory {
 					v = (Property)((Wrapper)v).getWrappedObject();
 				}
 				if(v==pw.getWrappedObject()) {
-					String typeName = ((SimpleValue)pw.getValue()).getTypeName();
+					Value pwv = pw.getValue();
+					if (pwv instanceof Wrapper) {
+						pwv = (Value)((Wrapper)pwv).getWrappedObject();
+					}
+					String typeName = ((SimpleValue)pwv).getTypeName();
 					if("timestamp".equals(typeName) || "dbtimestamp".equals(typeName)) {
 						return "timestamp";
 					} else {
