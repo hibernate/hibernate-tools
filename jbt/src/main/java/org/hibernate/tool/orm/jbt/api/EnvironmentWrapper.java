@@ -1,34 +1,33 @@
 package org.hibernate.tool.orm.jbt.api;
 
-import org.hibernate.cfg.Environment;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface EnvironmentWrapper extends Wrapper {
 	
-	default String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
+	String getTransactionManagerStrategy();
 
-	default String getDriver() { return Environment.DRIVER; }
+	String getDriver();
 
-	default String getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
+	String getHBM2DDLAuto();
 
-	default String getDialect() { return Environment.DIALECT; }
+	String getDialect();
 
-	default String getDataSource() { return Environment.DATASOURCE; }
+	String getDataSource();
 
-	default String getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
+	String getConnectionProvider();
 
-	default String getURL() { return Environment.URL; }
+	String getURL();
 
-	default String getUser() { return Environment.USER; }
+	String getUser();
 
-	default String getPass() { return Environment.PASS; }
+	String getPass();
 
-	default String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
+	String getSessionFactoryName();
 
-	default String getDefaultCatalog() { return Environment.DEFAULT_CATALOG; }
+	String getDefaultCatalog();
 
-	default String getDefaultSchema() { return Environment.DEFAULT_SCHEMA; }
+	String getDefaultSchema();
 
-	default Class<Environment> getWrappedClass() { return Environment.class; }
+	Class<?> getWrappedClass();
 
 }
