@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.api.HbmExporterWrapper;
@@ -14,10 +15,7 @@ import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 public class HbmExporterWrapperFactory {
 
 	public static HbmExporterWrapper createHbmExporterWrapper(Configuration cfg, File f) {
-		final HbmExporterExtension wrappedHbmExporterExtension = new HbmExporterExtension(cfg, f);
-		return new HbmExporterWrapper() {
-			@Override public HbmExporter getWrappedObject() { return wrappedHbmExporterExtension; }
-		};
+		return new HbmExporterWrapperImpl(new HbmExporterExtension(cfg, f)) ;
 	}
 	
 	public static class HbmExporterExtension extends HbmExporter {
@@ -60,6 +58,48 @@ public class HbmExporterWrapperFactory {
 				throw new RuntimeException(e);
 			}
 		}
+	}
+	
+	private static class HbmExporterWrapperImpl implements HbmExporterWrapper {
+		
+		private HbmExporterExtension hbmExporterExtension;
+		
+		private HbmExporterWrapperImpl(HbmExporterExtension hbmExporterExtension) {
+			this.hbmExporterExtension = hbmExporterExtension;
+		}
+		
+		@Override 
+		public HbmExporter getWrappedObject() { 
+			return hbmExporterExtension; 
+		}
+		
+		@Override
+		public void start() {
+			hbmExporterExtension.start();
+		}
+		
+		@Override
+		public File getOutputDirectory() {
+			return (File)hbmExporterExtension.getProperties().get(ExporterConstants.DESTINATION_FOLDER);
+		}
+		
+		@Override
+		public void setOutputDirectory(File f) {
+			hbmExporterExtension.getProperties().put(ExporterConstants.DESTINATION_FOLDER, f);
+		}
+		
+		@Override
+		public void exportPOJO(Map<Object, Object> map, Object pojoClass) {
+			hbmExporterExtension.exportPOJO(map, (POJOClass)pojoClass);
+		}
+		
+		@Override
+		public void setExportPOJODelegate(Object delegate) {
+			hbmExporterExtension.delegateExporter = delegate;
+		}
+
+		
+		
 	}
 	
 }
