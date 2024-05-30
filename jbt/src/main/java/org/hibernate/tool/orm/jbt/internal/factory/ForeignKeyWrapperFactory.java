@@ -1,12 +1,14 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.ForeignKeyWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
 
 public class ForeignKeyWrapperFactory {
 
@@ -18,6 +20,8 @@ public class ForeignKeyWrapperFactory {
 		
 		private ForeignKey foreignKey = null;
 		
+		private List<ColumnWrapper> referencedColumns = null;
+		
 		private ForeignKeyWrapperImpl(ForeignKey foreignKey) {
 			this.foreignKey = foreignKey;
 		}
@@ -28,13 +32,23 @@ public class ForeignKeyWrapperFactory {
 		}
 		
 		@Override
-		public Table getReferencedTable() { 
-			return ((ForeignKey)getWrappedObject()).getReferencedTable(); 
+		public TableWrapper getReferencedTable() { 
+			return TableWrapperFactory.createTableWrapper(foreignKey.getReferencedTable()); 
 		}
 		
 		@Override
-		public Iterator<Column> columnIterator() { 
-			return ((ForeignKey)getWrappedObject()).getColumns().iterator(); 
+		public Iterator<ColumnWrapper> columnIterator() { 
+			Iterator<Column> columnIterator = foreignKey.getColumns().iterator(); 
+			return new Iterator<ColumnWrapper>() {
+				@Override
+				public boolean hasNext() {
+					return columnIterator.hasNext();
+				}
+				@Override
+				public ColumnWrapper next() {
+					return ColumnWrapperFactory.createColumnWrapper(columnIterator.next());
+				}			
+			};
 		}
 		
 		@Override
@@ -43,15 +57,41 @@ public class ForeignKeyWrapperFactory {
 		}
 		
 		@Override
-		public List<Column> getReferencedColumns() { 
-			return ((ForeignKey)getWrappedObject()).getReferencedColumns(); 
+		public List<ColumnWrapper> getReferencedColumns() { 
+			List<Column> columns = foreignKey.getReferencedColumns();
+			if (referencedColumns == null) {
+				initReferencedColumns(columns);
+			} else {
+				if (columns == null) {
+					referencedColumns = null;
+				} else if (referencedColumns.size() != columns.size()) {
+					initReferencedColumns(columns);
+				} else {
+					syncReferencedColumns(columns);
+				}
+			}
+			return referencedColumns; 
 		}
 
 		@Override
-		public boolean containsColumn(Column column) { 
-			return ((ForeignKey)getWrappedObject()).containsColumn(column); 
+		public boolean containsColumn(ColumnWrapper column) { 
+			return ((ForeignKey)getWrappedObject()).containsColumn((Column)column.getWrappedObject()); 
+		}
+		
+		private void initReferencedColumns(List<Column> columns) {
+			referencedColumns = new ArrayList<ColumnWrapper>(columns.size());
+			for (int i = 0; i < columns.size(); i++) {
+				referencedColumns.add(ColumnWrapperFactory.createColumnWrapper(columns.get(i)));
+			}
 		}
 
+		private void syncReferencedColumns(List<Column> columns) {
+			for (int i = 0; i < columns.size(); i++) {
+				if (referencedColumns.get(i).getWrappedObject() != columns.get(i)) {
+					referencedColumns.set(i, ColumnWrapperFactory.createColumnWrapper(columns.get(i)));
+				}
+			}
+		}
 		
 	}
 	
