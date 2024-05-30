@@ -13,6 +13,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ForeignKeyWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,19 +39,19 @@ public class ForeignKeyWrapperTest {
 	public void testGetReferencedTable() {
 		Table table = new Table("");
 		wrappedForeignKey.setReferencedTable(table);
-		Table t = foreignKeyWrapper.getReferencedTable();
-		assertSame(t, table);
+		TableWrapper tableWrapper = foreignKeyWrapper.getReferencedTable();
+		assertSame(tableWrapper.getWrappedObject(), table);
 	}
 	
 	@Test
 	public void testColumnIterator() {
-		Iterator<Column> iterator = foreignKeyWrapper.columnIterator();
+		Iterator<ColumnWrapper> iterator = foreignKeyWrapper.columnIterator();
 		assertFalse(iterator.hasNext());
 		Column column = new Column();
 		wrappedForeignKey.addColumn(column);
 		iterator = foreignKeyWrapper.columnIterator();
-		Column c = iterator.next();
-		assertSame(c, column);
+		ColumnWrapper columnWrapper = iterator.next();
+		assertSame(columnWrapper.getWrappedObject(), column);
 		assertFalse(iterator.hasNext());
 	}
 	
@@ -66,7 +67,7 @@ public class ForeignKeyWrapperTest {
 	
 	@Test
 	public void testGetReferencedColumns() {
-		List<Column> list = foreignKeyWrapper.getReferencedColumns();
+		List<ColumnWrapper> list = foreignKeyWrapper.getReferencedColumns();
 		assertTrue(list.isEmpty());		
 		Column column = new Column();
 		ArrayList<Column> columns = new ArrayList<Column>();
@@ -74,15 +75,16 @@ public class ForeignKeyWrapperTest {
 		wrappedForeignKey.addReferencedColumns(columns);
 		list = foreignKeyWrapper.getReferencedColumns();
 		assertEquals(1, list.size());
-		assertSame(column, list.get(0));
+		assertSame(column, list.get(0).getWrappedObject());
 	}
 	
 	@Test
 	public void testContainsColumn() throws Exception {
 		Column column = new Column("foo");
-		assertFalse(foreignKeyWrapper.containsColumn(column));
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper(column);
+		assertFalse(foreignKeyWrapper.containsColumn(columnWrapper));
 		wrappedForeignKey.addColumn(column);
-		assertTrue(foreignKeyWrapper.containsColumn(column));
+		assertTrue(foreignKeyWrapper.containsColumn(columnWrapper));
 	}
 	
 }

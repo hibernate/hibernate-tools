@@ -30,7 +30,7 @@ public class ColumnWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
-		columnWrapper = ColumnWrapperFactory.createColumnWrapper(null);
+		columnWrapper = ColumnWrapperFactory.createColumnWrapper((String)null);
 		wrappedColumn = (Column)columnWrapper.getWrappedObject();
 	}
 	
@@ -60,7 +60,7 @@ public class ColumnWrapperTest {
 		wrappedColumn.setSqlType("foobar");
 		assertEquals("foobar", columnWrapper.getSqlType());
 		// IColumn#getSqlType(IConfiguration)
-		columnWrapper = ColumnWrapperFactory.createColumnWrapper(null);
+		columnWrapper = ColumnWrapperFactory.createColumnWrapper((String)null);
 		wrappedColumn = (Column)columnWrapper.getWrappedObject();
 		wrappedColumn.setValue(createValue());
 		Configuration configuration = new Configuration();
