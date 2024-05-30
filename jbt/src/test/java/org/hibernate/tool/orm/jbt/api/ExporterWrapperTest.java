@@ -21,11 +21,10 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactoryTest.TestExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +51,7 @@ public class ExporterWrapperTest {
 		Properties properties = new Properties();
 		Configuration configuration = new Configuration();
 		configuration.setProperties(properties);
+		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(configuration);
 		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		field.setAccessible(true);
 		// First use the TestExporter 
@@ -59,7 +59,7 @@ public class ExporterWrapperTest {
 		assertNotNull(metadataDescriptor);
 		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
 		assertNotSame(configuration, field.get(metadataDescriptor));
-		exporterWrapper.setConfiguration(configuration);	
+		exporterWrapper.setConfiguration(configurationWrapper);	
 		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
 		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
@@ -71,7 +71,7 @@ public class ExporterWrapperTest {
 		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
 		assertTrue(metadataDescriptor instanceof DummyMetadataDescriptor);
-		exporterWrapper.setConfiguration(configuration);	
+		exporterWrapper.setConfiguration(configurationWrapper);	
 		assertSame(properties, ((CfgExporter)exporterWrapper.getWrappedObject()).getCustomProperties());
 		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
@@ -128,10 +128,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getGenericExporter());
 		// try now with a GenericExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new GenericExporter());
-		GenericExporter genericExporter = exporterWrapper.getGenericExporter();
-		assertNotNull(genericExporter);
-		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
-		assertSame(exporterTarget, genericExporter);
+		ExporterWrapper genericExporterWrapper = exporterWrapper.getGenericExporter();
+		assertSame(exporterWrapper, genericExporterWrapper);
 	}
 	
 	@Test
@@ -140,10 +138,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getHbm2DDLExporter());
 		// try now with a DdlExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new DdlExporter());
-		DdlExporter ddlExporter = exporterWrapper.getHbm2DDLExporter();
-		assertNotNull(ddlExporter);
-		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
-		assertSame(exporterTarget, ddlExporter);
+		ExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
+		assertSame(exporterWrapper, ddlExporterWrapper);
 	}
 	
 	@Test
@@ -152,10 +148,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getQueryExporter());
 		// try now with a QueryExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new QueryExporter());
-		QueryExporter queryExporter = exporterWrapper.getQueryExporter();
-		assertNotNull(queryExporter);
-		Object exporterTarget = ((Wrapper)exporterWrapper).getWrappedObject();
-		assertSame(exporterTarget, queryExporter);
+		ExporterWrapper queryExporterWrapper = exporterWrapper.getQueryExporter();
+		assertSame(exporterWrapper, queryExporterWrapper);
 	}
 	
 	@Test

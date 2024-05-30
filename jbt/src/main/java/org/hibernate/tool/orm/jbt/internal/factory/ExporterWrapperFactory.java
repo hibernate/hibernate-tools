@@ -12,6 +12,7 @@ import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.api.ArtifactCollectorWrapper;
+import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
@@ -45,13 +46,13 @@ public class ExporterWrapperFactory {
 		}
 		
 		@Override
-		public void setConfiguration(Configuration configuration) {
+		public void setConfiguration(ConfigurationWrapper configuration) {
 			if (CfgExporter.class.isAssignableFrom(exporter.getClass())) {
 				((CfgExporter)exporter).setCustomProperties(configuration.getProperties());
 			}
 			exporter.getProperties().put(
 					ExporterConstants.METADATA_DESCRIPTOR, 
-					new ConfigurationMetadataDescriptor(configuration));
+					new ConfigurationMetadataDescriptor((Configuration)configuration.getWrappedObject()));
 		}
 		
 		@Override
@@ -82,27 +83,27 @@ public class ExporterWrapperFactory {
 		}
 
 		@Override
-		public GenericExporter getGenericExporter() {
+		public ExporterWrapper getGenericExporter() {
 			if (exporter instanceof GenericExporter) {
-				return (GenericExporter)exporter;
+				return this;
 			} else {
 				return null;
 			}
 		}
 
 		@Override
-		public DdlExporter getHbm2DDLExporter() {
+		public ExporterWrapper getHbm2DDLExporter() {
 			if (exporter instanceof DdlExporter) {
-				return (DdlExporter)exporter;
+				return this;
 			} else {
 				return null;
 			}
 		}
 
 		@Override
-		public QueryExporter getQueryExporter() {
+		public ExporterWrapper getQueryExporter() {
 			if (exporter instanceof QueryExporter) {
-				return (QueryExporter)exporter;
+				return this;
 			} else {
 				return null;
 			}
