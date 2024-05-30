@@ -14,12 +14,20 @@ public class ColumnWrapperFactory {
 		return new ColumnWrapperImpl(name);
 	}
 	
+	public static ColumnWrapper createColumnWrapper(final Column column) {
+		return new ColumnWrapperImpl(column);
+	}
+	
 	private static class ColumnWrapperImpl implements ColumnWrapper {
 		
 		private Column wrappedColumn = null;
 		
 		private ValueWrapper valueWrapper = null;
 
+		private ColumnWrapperImpl(Column column) {
+			wrappedColumn = column;
+		}
+		
 		private ColumnWrapperImpl(String name) {
 			wrappedColumn = new Column(name);
 		}
