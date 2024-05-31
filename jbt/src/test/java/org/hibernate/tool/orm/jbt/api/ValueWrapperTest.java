@@ -96,7 +96,7 @@ public class ValueWrapperTest {
 	@BeforeEach
 	public void beforeEach() {
 		persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
-		wrappedPersistentClass = persistentClassWrapper.getWrappedObject();
+		wrappedPersistentClass = (PersistentClass)persistentClassWrapper.getWrappedObject();
 
 		wrappedTable = new Table("HT");
 

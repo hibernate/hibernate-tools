@@ -184,7 +184,7 @@ public class WrapperFactoryTest {
 				rootClassWrapper);
 		assertNotNull(singleTableSubclassWrapper);
 		assertTrue(singleTableSubclassWrapper instanceof PersistentClassWrapper);
-		PersistentClass persistentClass = ((PersistentClassWrapper)singleTableSubclassWrapper).getWrappedObject();
+		PersistentClass persistentClass = (PersistentClass)((PersistentClassWrapper)singleTableSubclassWrapper).getWrappedObject();
 		assertTrue(persistentClass instanceof SingleTableSubclass);
 		assertSame(
 				((SingleTableSubclass)persistentClass).getRootClass(), 
@@ -198,7 +198,7 @@ public class WrapperFactoryTest {
 				rootClassWrapper);
 		assertNotNull(joinedTableSubclassWrapper);
 		assertTrue(joinedTableSubclassWrapper instanceof PersistentClassWrapper);
-		PersistentClass persistentClass = ((PersistentClassWrapper)joinedTableSubclassWrapper).getWrappedObject();
+		PersistentClass persistentClass = (PersistentClass)((PersistentClassWrapper)joinedTableSubclassWrapper).getWrappedObject();
 		assertTrue(persistentClass instanceof JoinedSubclass);
 		assertSame(
 				((JoinedSubclass)persistentClass).getRootClass(), 
@@ -211,7 +211,7 @@ public class WrapperFactoryTest {
 		Object specialRootClassWrapper = WrapperFactory.createSpecialRootClassWrapper(propertyWrapper);
 		assertNotNull(specialRootClassWrapper);
 		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
-		PersistentClass persistentClass = ((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
+		PersistentClass persistentClass = (PersistentClass)((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
 		assertTrue(persistentClass instanceof SpecialRootClass);
 		assertSame(
 				((Wrapper)((SpecialRootClass)persistentClass).getProperty()).getWrappedObject(), 
@@ -321,7 +321,7 @@ public class WrapperFactoryTest {
 	@Test
 	public void testCreateOneToOneWrapper() {
 		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
-		PersistentClass persistentClassTarget = persistentClassWrapper.getWrappedObject();
+		PersistentClass persistentClassTarget = (PersistentClass)persistentClassWrapper.getWrappedObject();
 		Table tableTarget = new Table("", "foo");
 		((RootClass)persistentClassTarget).setTable(tableTarget);
 		persistentClassTarget.setEntityName("bar");

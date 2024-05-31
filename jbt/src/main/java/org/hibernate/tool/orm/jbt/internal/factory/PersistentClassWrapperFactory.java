@@ -6,12 +6,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -28,11 +31,11 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	public static PersistentClassWrapper createSingleTableSubclassWrapper(PersistentClassWrapper superClassWrapper) {
-		return new SingleTableSubclassWrapperImpl(superClassWrapper.getWrappedObject());
+		return new SingleTableSubclassWrapperImpl((PersistentClass)superClassWrapper.getWrappedObject());
 	}
 	
 	public static PersistentClassWrapper createJoinedSubclassWrapper(PersistentClassWrapper superClassWrapper) {
-		return new JoinedSubclassWrapperImpl(superClassWrapper.getWrappedObject());
+		return new JoinedSubclassWrapperImpl((PersistentClass)superClassWrapper.getWrappedObject());
 	}
 	
 	public static PersistentClassWrapper createSpecialRootClassWrapper(PropertyWrapper property) {
@@ -66,7 +69,28 @@ public class PersistentClassWrapperFactory {
 		
 	}
 	
-	public static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapper {		
+	public static interface PersistentClassWrapperExtension extends PersistentClassWrapper {
+		default boolean isAssignableToRootClass() { return isInstanceOfRootClass(); }
+		default boolean isRootClass() { return getWrappedObject().getClass() == RootClassWrapperImpl.class; }
+		default boolean isInstanceOfRootClass() { return RootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isInstanceOfSubclass() { return Subclass.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default boolean isInstanceOfJoinedSubclass() { return JoinedSubclass.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default Property getProperty() { throw new RuntimeException("getProperty() is only allowed on SpecialRootClass"); }
+		default void setTable(Table table) { throw new RuntimeException("Method 'setTable(Table)' is not supported."); }
+		default void setIdentifier(Value value) { throw new RuntimeException("Method 'setIdentifier(Value)' can only be called on RootClass instances"); }
+		default void setKey(Value value) { throw new RuntimeException("setKey(Value) is only allowed on JoinedSubclass"); }
+		default boolean isInstanceOfSpecialRootClass() { return SpecialRootClass.class.isAssignableFrom(getWrappedObject().getClass()); }
+		default Property getParentProperty() { throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass"); }
+		default void setIdentifierProperty(Property property) { throw new RuntimeException("setIdentifierProperty(Property) is only allowed on RootClass instances"); }
+		default void setDiscriminator(Value value) { throw new RuntimeException("Method 'setDiscriminator(Value)' can only be called on RootClass instances"); }
+		default boolean isLazyPropertiesCacheable() { throw new RuntimeException("Method 'isLazyPropertiesCacheable()' can only be called on RootClass instances"); }
+		default Iterator<Property> getPropertyIterator() { return getProperties().iterator(); }
+		default Iterator<Join> getJoinIterator() { return getJoins().iterator(); }
+		default Iterator<Subclass> getSubclassIterator() { return getSubclasses().iterator(); }
+		default Iterator<Property> getPropertyClosureIterator() { return getPropertyClosure().iterator(); }
+	}
+	
+	public static class RootClassWrapperImpl extends RootClass implements PersistentClassWrapperExtension {		
 		public RootClassWrapperImpl() {
 			super(DummyMetadataBuildingContext.INSTANCE);
 		}
@@ -89,7 +113,7 @@ public class PersistentClassWrapperFactory {
 	
 	public static class SingleTableSubclassWrapperImpl 
 			extends SingleTableSubclass 
-			implements PersistentClassWrapper {
+			implements PersistentClassWrapperExtension {
 		public SingleTableSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
@@ -97,7 +121,7 @@ public class PersistentClassWrapperFactory {
 	
 	public static class JoinedSubclassWrapperImpl
 			extends JoinedSubclass
-			implements PersistentClassWrapper {
+			implements PersistentClassWrapperExtension {
 		public JoinedSubclassWrapperImpl(PersistentClass superclass) {
 			super(superclass, DummyMetadataBuildingContext.INSTANCE);
 		}
@@ -112,7 +136,7 @@ public class PersistentClassWrapperFactory {
 	
 	public static class SpecialRootClassWrapperImpl 
 			extends SpecialRootClass
-			implements PersistentClassWrapper {
+			implements PersistentClassWrapperExtension {
 		public SpecialRootClassWrapperImpl(Property property) {
 			super(property);
 		}

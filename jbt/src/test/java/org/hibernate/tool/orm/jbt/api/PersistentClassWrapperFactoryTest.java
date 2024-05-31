@@ -51,15 +51,15 @@ public class PersistentClassWrapperFactoryTest {
 	@BeforeEach
 	public void beforeEach() throws Exception {
 		rootClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
-		rootClassTarget = rootClassWrapper.getWrappedObject();
+		rootClassTarget = (PersistentClass)rootClassWrapper.getWrappedObject();
 		singleTableSubclassWrapper = PersistentClassWrapperFactory.createSingleTableSubclassWrapper(rootClassWrapper);
-		singleTableSubclassTarget = singleTableSubclassWrapper.getWrappedObject();
+		singleTableSubclassTarget = (PersistentClass)singleTableSubclassWrapper.getWrappedObject();
 		joinedSubclassWrapper = PersistentClassWrapperFactory.createJoinedSubclassWrapper(rootClassWrapper);
-		joinedSubclassTarget = joinedSubclassWrapper.getWrappedObject();
+		joinedSubclassTarget = (PersistentClass)joinedSubclassWrapper.getWrappedObject();
 		property = (PropertyWrapper)WrapperFactory.createPropertyWrapper();
 		property.setPersistentClass(rootClassTarget);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
-		specialRootClassTarget = specialRootClassWrapper.getWrappedObject();
+		specialRootClassTarget = (PersistentClass)specialRootClassWrapper.getWrappedObject();
 	}
 	
 	@Test
