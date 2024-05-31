@@ -3,15 +3,7 @@ package org.hibernate.tool.orm.jbt.api;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Selectable;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.type.Type;
 
 public interface ValueWrapper extends Wrapper {
 
@@ -25,20 +17,20 @@ public interface ValueWrapper extends Wrapper {
 	boolean isComponent();
 	boolean isEmbedded();
 	boolean isToOne();
-	Table getTable();
-	Type getType();
-	void setElement(Value v);
-	void setCollectionTable(Table table);
-	void setTable(Table table);
+	TableWrapper getTable();
+	TypeWrapper getType();
+	void setElement(ValueWrapper v);
+	void setCollectionTable(TableWrapper table);
+	void setTable(TableWrapper table);
 	boolean isList();
-	void setIndex(Value v);
+	void setIndex(ValueWrapper v);
 	void setTypeName(String s);
 	String getComponentClassName();
-	Iterator<Selectable> getColumnIterator();
+	Iterator<ColumnWrapper> getColumnIterator();
 	boolean isTypeSpecified();
-	Table getCollectionTable();
-	KeyValue getKey();
-	Value getIndex();
+	TableWrapper getCollectionTable();
+	ValueWrapper getKey();
+	ValueWrapper getIndex();
 	String getElementClassName();
 	String getTypeName();
 	boolean isDependantValue();
@@ -50,21 +42,21 @@ public interface ValueWrapper extends Wrapper {
 	boolean isBag();
 	String getReferencedEntityName();
 	String getEntityName();
-	Iterator<Property> getPropertyIterator();
-	void addColumn(Column column);
+	Iterator<PropertyWrapper> getPropertyIterator();
+	void addColumn(ColumnWrapper column);
 	void setTypeParameters(Properties properties);
 	String getForeignKeyName();
-	PersistentClass getOwner();
-	Value getElement();
+	PersistentClassWrapper getOwner();
+	ValueWrapper getElement();
 	String getParentProperty();
 	void setElementClassName(String name);
-	void setKey(Value value);
+	void setKey(ValueWrapper value);
 	void setFetchModeJoin();
 	boolean isInverse();
-	PersistentClass getAssociatedClass() ;
+	PersistentClassWrapper getAssociatedClass() ;
 	void setLazy(boolean b);
 	void setRole(String role);
 	void setReferencedEntityName(String name);
-	void setAssociatedClass(PersistentClass pc);
+	void setAssociatedClass(PersistentClassWrapper pc);
 
 }
