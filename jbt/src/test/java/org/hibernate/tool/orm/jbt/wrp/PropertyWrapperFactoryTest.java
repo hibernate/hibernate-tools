@@ -12,6 +12,7 @@ import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -63,7 +64,7 @@ public class PropertyWrapperFactoryTest {
 	public void testSetPersistentClass() {
 		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
 		assertNull(wrappedProperty.getPersistentClass());
-		propertyWrapper.setPersistentClass(persistentClass.getWrappedObject());
+		propertyWrapper.setPersistentClass((PersistentClass)persistentClass.getWrappedObject());
 		assertSame(persistentClass.getWrappedObject(), wrappedProperty.getPersistentClass());
 	}
 	
@@ -71,7 +72,7 @@ public class PropertyWrapperFactoryTest {
 	public void testGetPersistentClass() {
 		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
 		assertNull(propertyWrapper.getPersistentClass());
-		wrappedProperty.setPersistentClass(persistentClass.getWrappedObject());
+		wrappedProperty.setPersistentClass((PersistentClass)persistentClass.getWrappedObject());
 		PersistentClassWrapper persistentClassWrapper = (PersistentClassWrapper)propertyWrapper.getPersistentClass();
 		assertSame(persistentClass.getWrappedObject(), persistentClassWrapper.getWrappedObject());
 	}

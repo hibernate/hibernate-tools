@@ -176,7 +176,7 @@ public class JpaConfigurationTest {
 		assertNotNull(classMappings);
 		assertTrue(classMappings.hasNext());
 		PersistentClassWrapper pc = (PersistentClassWrapper)classMappings.next();
-		assertSame(pc.getWrappedObject().getMappedClass(), FooBar.class);
+		assertSame(((PersistentClass)pc.getWrappedObject()).getMappedClass(), FooBar.class);
 	}
 	
 	@Test
