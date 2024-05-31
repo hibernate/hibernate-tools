@@ -34,12 +34,13 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.AnyType;
@@ -53,7 +54,6 @@ import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.MapType;
 import org.hibernate.type.OneToOneType;
 import org.hibernate.type.SetType;
-import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -92,6 +92,7 @@ public class ValueWrapperTest {
 	private PersistentClass wrappedPersistentClass = null;
 
 	private Table wrappedTable = null;
+	private TableWrapper tableWrapper = null;
 
 	@BeforeEach
 	public void beforeEach() {
@@ -99,6 +100,7 @@ public class ValueWrapperTest {
 		wrappedPersistentClass = (PersistentClass)persistentClassWrapper.getWrappedObject();
 
 		wrappedTable = new Table("HT");
+		tableWrapper = TableWrapperFactory.createTableWrapper(wrappedTable);
 
 		wrappedArrayValue = new Array(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		arrayValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedArrayValue);
@@ -375,230 +377,230 @@ public class ValueWrapperTest {
 	
 	@Test
 	public void testGetTable() {
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(arrayValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, arrayValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, arrayValueWrapper.getTable().getWrappedObject());
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(bagValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, bagValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, bagValueWrapper.getTable().getWrappedObject());
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(listValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, listValueWrapper.getTable());
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, listValueWrapper.getTable().getWrappedObject());
 		((ManyToOne)wrappedManyToOneValue).setTable(null);
 		assertNull(manyToOneValueWrapper.getTable());
 		((ManyToOne)wrappedManyToOneValue).setTable(wrappedTable);
-		assertSame(wrappedTable, manyToOneValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		assertSame(wrappedTable, manyToOneValueWrapper.getTable().getWrappedObject());
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(mapValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, mapValueWrapper.getTable());
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, mapValueWrapper.getTable().getWrappedObject());
 		assertNull(oneToManyValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
 		wrappedOneToManyValue = new OneToMany(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		oneToManyValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedOneToManyValue);
-		assertSame(wrappedTable, oneToManyValueWrapper.getTable());
-		assertSame(wrappedTable, oneToOneValueWrapper.getTable());
+		assertSame(wrappedTable, oneToManyValueWrapper.getTable().getWrappedObject());
+		assertSame(wrappedTable, oneToOneValueWrapper.getTable().getWrappedObject());
 		((OneToOne)wrappedOneToOneValue).setTable(null);
 		assertNull(oneToOneValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(primitiveArrayValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, primitiveArrayValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, primitiveArrayValueWrapper.getTable().getWrappedObject());
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(setValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, setValueWrapper.getTable());
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, setValueWrapper.getTable().getWrappedObject());
 		((SimpleValue)wrappedSimpleValue).setTable(null);
 		assertNull(simpleValueWrapper.getTable());
 		((SimpleValue)wrappedSimpleValue).setTable(wrappedTable);
-		assertSame(wrappedTable, simpleValueWrapper.getTable());
+		assertSame(wrappedTable, simpleValueWrapper.getTable().getWrappedObject());
 		((Component)wrappedComponentValue).setTable(null);
 		assertNull(componentValueWrapper.getTable());
 		((Component)wrappedComponentValue).setTable(wrappedTable);
-		assertSame(wrappedTable, componentValueWrapper.getTable());
+		assertSame(wrappedTable, componentValueWrapper.getTable().getWrappedObject());
 		((SimpleValue)wrappedDependantValue).setTable(null);
 		assertNull(dependantValueWrapper.getTable());
 		((SimpleValue)wrappedDependantValue).setTable(wrappedTable);
-		assertSame(wrappedTable, dependantValueWrapper.getTable());
-		assertSame(wrappedTable, anyValueWrapper.getTable());
+		assertSame(wrappedTable, dependantValueWrapper.getTable().getWrappedObject());
+		assertSame(wrappedTable, anyValueWrapper.getTable().getWrappedObject());
 		((Any)wrappedAnyValue).setTable(null);
 		assertNull(anyValueWrapper.getTable());
-		persistentClassWrapper.setTable(null);
+		((RootClass)wrappedPersistentClass).setTable(null);
 		assertNull(identifierBagValueWrapper.getTable());
-		persistentClassWrapper.setTable(wrappedTable);
-		assertSame(wrappedTable, identifierBagValueWrapper.getTable());
+		((RootClass)wrappedPersistentClass).setTable(wrappedTable);
+		assertSame(wrappedTable, identifierBagValueWrapper.getTable().getWrappedObject());
 	}
 
 	@Test
 	public void testGetType() {
 		((SimpleValue)wrappedSimpleValue).setTypeName("java.lang.Integer");
-		Type type = simpleValueWrapper.getType();
+		TypeWrapper type = simpleValueWrapper.getType();
 		assertEquals("integer", type.getName());
 		((Collection)wrappedArrayValue).setElement(wrappedSimpleValue);
-		type = wrappedArrayValue.getType();
+		type = arrayValueWrapper.getType();
 		assertEquals("[Ljava.lang.Integer;(null)", type.getName());
-		assertTrue(type instanceof ArrayType);
+		assertTrue(type.getWrappedObject() instanceof ArrayType);
 		((Collection)wrappedBagValue).setElement(wrappedSimpleValue);
-		type = wrappedBagValue.getType();
+		type = bagValueWrapper.getType();
 		assertEquals("java.util.Collection(null)", type.getName());
-		assertTrue(type instanceof BagType);
+		assertTrue(type.getWrappedObject() instanceof BagType);
 		((Collection)wrappedListValue).setElement(wrappedSimpleValue);
 		type = listValueWrapper.getType();
 		assertEquals("java.util.List(null)", type.getName());
-		assertTrue(type instanceof ListType);
+		assertTrue(type.getWrappedObject() instanceof ListType);
 		type = manyToOneValueWrapper.getType();
 		assertEquals(null, type.getName());
-		assertTrue(type instanceof ManyToOneType);
+		assertTrue(type.getWrappedObject() instanceof ManyToOneType);
 		((Collection)wrappedMapValue).setElement(wrappedSimpleValue);
 		type = mapValueWrapper.getType();
 		assertEquals("java.util.Map(null)", type.getName());
-		assertTrue(type instanceof MapType);
+		assertTrue(type.getWrappedObject() instanceof MapType);
 		type = oneToManyValueWrapper.getType();
 		assertEquals(null, type.getName());
-		assertTrue(type instanceof ManyToOneType);
+		assertTrue(type.getWrappedObject() instanceof ManyToOneType);
 		type = oneToOneValueWrapper.getType();
 		assertEquals(null, type.getName());
-		assertTrue(type instanceof OneToOneType);
+		assertTrue(type.getWrappedObject() instanceof OneToOneType);
 		((Collection)wrappedPrimitiveArrayValue).setElement(wrappedSimpleValue);
-		type = wrappedPrimitiveArrayValue.getType();
+		type = primitiveArrayValueWrapper.getType();
 		assertEquals("[I(null)", type.getName());
-		assertTrue(type instanceof ArrayType);
+		assertTrue(type.getWrappedObject() instanceof ArrayType);
 		((Collection)wrappedSetValue).setElement(wrappedSimpleValue);
 		type = setValueWrapper.getType();
 		assertEquals("java.util.Set(null)", type.getName());
-		assertTrue(type instanceof SetType);
+		assertTrue(type.getWrappedObject() instanceof SetType);
 		((Component)wrappedComponentValue).setComponentClassName("java.lang.String");
 		type = componentValueWrapper.getType();
 		assertEquals("component[]", type.getName());
-		assertTrue(type instanceof ComponentType);
+		assertTrue(type.getWrappedObject() instanceof ComponentType);
 		type = dependantValueWrapper.getType();
 		assertEquals("integer", type.getName());
-		assertTrue(type instanceof BasicType);
+		assertTrue(type.getWrappedObject() instanceof BasicType);
 		((Any)wrappedAnyValue).setIdentifierType("java.lang.Integer");
 		type = anyValueWrapper.getType();
 		assertEquals("object", type.getName());
-		assertTrue(type instanceof AnyType);
+		assertTrue(type.getWrappedObject() instanceof AnyType);
 		((Collection)wrappedIdentifierBagValue).setElement(wrappedSimpleValue);
 		type = identifierBagValueWrapper.getType();
 		assertEquals("java.util.Collection(null)", type.getName());
-		assertTrue(type instanceof IdentifierBagType);
+		assertTrue(type.getWrappedObject() instanceof IdentifierBagType);
 	}
 	
 	@Test
 	public void testSetElement() {
 		assertNull(((Collection)wrappedArrayValue).getElement());
-		arrayValueWrapper.setElement(wrappedSimpleValue);
+		arrayValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedArrayValue).getElement());
 		assertNull(((Collection)wrappedBagValue).getElement());
-		bagValueWrapper.setElement(wrappedSimpleValue);
+		bagValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedBagValue).getElement());
 		assertNull(((Collection)wrappedListValue).getElement());
-		listValueWrapper.setElement(wrappedSimpleValue);
+		listValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedListValue).getElement());
 		// next call has no effect
-		manyToOneValueWrapper.setElement(wrappedSimpleValue);
+		manyToOneValueWrapper.setElement(simpleValueWrapper);
 		assertNull(((Collection)wrappedMapValue).getElement());
-		mapValueWrapper.setElement(wrappedSimpleValue);
+		mapValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedMapValue).getElement());
 		// next call has no effect
-		oneToManyValueWrapper.setElement(wrappedSimpleValue);
+		oneToManyValueWrapper.setElement(simpleValueWrapper);
 		// next call has no effect
-		oneToOneValueWrapper.setElement(wrappedSimpleValue);
+		oneToOneValueWrapper.setElement(simpleValueWrapper);
 		assertNull(((Collection)wrappedPrimitiveArrayValue).getElement());
-		primitiveArrayValueWrapper.setElement(wrappedSimpleValue);
+		primitiveArrayValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedPrimitiveArrayValue).getElement());
 		assertNull(((Collection)wrappedSetValue).getElement());
-		setValueWrapper.setElement(wrappedSimpleValue);
+		setValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedSetValue).getElement());
 		// next call has no effect
-		simpleValueWrapper.setElement(wrappedArrayValue);
+		simpleValueWrapper.setElement(arrayValueWrapper);
 		// next call has no effect
-		componentValueWrapper.setElement(wrappedArrayValue);
+		componentValueWrapper.setElement(arrayValueWrapper);
 		// next call has no effect
-		dependantValueWrapper.setElement(wrappedArrayValue);
+		dependantValueWrapper.setElement(arrayValueWrapper);
 		// next call has no effect
-		anyValueWrapper.setElement(wrappedArrayValue);
+		anyValueWrapper.setElement(arrayValueWrapper);
 		assertNull(((Collection)wrappedIdentifierBagValue).getElement());
-		identifierBagValueWrapper.setElement(wrappedSimpleValue);
+		identifierBagValueWrapper.setElement(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedIdentifierBagValue).getElement());
 	}
 	
 	@Test
 	public void testSetCollectionTable() {
 		assertNull(((Collection)wrappedArrayValue).getCollectionTable());
-		arrayValueWrapper.setCollectionTable(wrappedTable);
+		arrayValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedArrayValue).getCollectionTable());
 		assertNull(((Collection)wrappedBagValue).getCollectionTable());
-		bagValueWrapper.setCollectionTable(wrappedTable);
+		bagValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedBagValue).getCollectionTable());
 		assertNull(((Collection)wrappedListValue).getCollectionTable());
-		listValueWrapper.setCollectionTable(wrappedTable);
+		listValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedListValue).getCollectionTable());
 		// next call has no effect
-		manyToOneValueWrapper.setCollectionTable(wrappedTable);
+		manyToOneValueWrapper.setCollectionTable(tableWrapper);
 		assertNull(((Collection)wrappedMapValue).getCollectionTable());
-		mapValueWrapper.setCollectionTable(wrappedTable);
+		mapValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedMapValue).getCollectionTable());
 		// next call has no effect
-		oneToManyValueWrapper.setCollectionTable(wrappedTable);
+		oneToManyValueWrapper.setCollectionTable(tableWrapper);
 		// next call has no effect
-		oneToOneValueWrapper.setCollectionTable(wrappedTable);
+		oneToOneValueWrapper.setCollectionTable(tableWrapper);
 		assertNull(((Collection)wrappedPrimitiveArrayValue).getCollectionTable());
-		primitiveArrayValueWrapper.setCollectionTable(wrappedTable);
+		primitiveArrayValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedPrimitiveArrayValue).getCollectionTable());
 		assertNull(((Collection)wrappedSetValue).getCollectionTable());
-		setValueWrapper.setCollectionTable(wrappedTable);
+		setValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedSetValue).getCollectionTable());
 		// next call has no effect
-		simpleValueWrapper.setCollectionTable(wrappedTable);
+		simpleValueWrapper.setCollectionTable(tableWrapper);
 		// next call has no effect
-		componentValueWrapper.setCollectionTable(wrappedTable);
+		componentValueWrapper.setCollectionTable(tableWrapper);
 		// next call has no effect
-		dependantValueWrapper.setCollectionTable(wrappedTable);
+		dependantValueWrapper.setCollectionTable(tableWrapper);
 		// next call has no effect
-		anyValueWrapper.setCollectionTable(wrappedTable);
+		anyValueWrapper.setCollectionTable(tableWrapper);
 		assertNull(((Collection)wrappedIdentifierBagValue).getCollectionTable());
-		identifierBagValueWrapper.setCollectionTable(wrappedTable);
+		identifierBagValueWrapper.setCollectionTable(tableWrapper);
 		assertSame(wrappedTable, ((Collection)wrappedIdentifierBagValue).getCollectionTable());
 	}
 	
 	@Test
 	public void testSetTable() {
 		assertNull(wrappedArrayValue.getTable());
-		arrayValueWrapper.setTable(wrappedTable);
+		arrayValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedArrayValue.getTable());
 		assertNull(wrappedBagValue.getTable());
-		bagValueWrapper.setTable(wrappedTable);
+		bagValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedBagValue.getTable());
 		assertNull(wrappedListValue.getTable());
-		listValueWrapper.setTable(wrappedTable);
+		listValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedListValue.getTable());
 		assertSame(wrappedTable, wrappedManyToOneValue.getTable());
 		manyToOneValueWrapper.setTable(null);
 		assertNull(wrappedManyToOneValue.getTable());
 		assertNull(wrappedMapValue.getTable());
-		mapValueWrapper.setTable(wrappedTable);
+		mapValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedMapValue.getTable());
 		assertNull(wrappedOneToManyValue.getTable());
-		oneToManyValueWrapper.setTable(wrappedTable);
+		oneToManyValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedOneToManyValue.getTable());
 		assertSame(wrappedTable, wrappedOneToOneValue.getTable());
 		oneToOneValueWrapper.setTable(null);
 		assertNull(wrappedOneToOneValue.getTable());
 		assertNull(wrappedPrimitiveArrayValue.getTable());
-		primitiveArrayValueWrapper.setTable(wrappedTable);
+		primitiveArrayValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedPrimitiveArrayValue.getTable());
 		assertNull(wrappedSetValue.getTable());
-		setValueWrapper.setTable(wrappedTable);
+		setValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedSetValue.getTable());
 		assertNull(wrappedSimpleValue.getTable());
-		simpleValueWrapper.setTable(wrappedTable);
+		simpleValueWrapper.setTable(tableWrapper);
 		assertSame(wrappedTable, wrappedSimpleValue.getTable());
 		assertNull(wrappedComponentValue.getTable());
-		componentValueWrapper.setTable(wrappedTable);
+		componentValueWrapper.setTable(tableWrapper);
 		assertSame(wrappedTable, wrappedComponentValue.getTable());
 		assertSame(wrappedTable, wrappedDependantValue.getTable());
 		dependantValueWrapper.setTable(null);
@@ -607,7 +609,7 @@ public class ValueWrapperTest {
 		anyValueWrapper.setTable(null);
 		assertNull(wrappedAnyValue.getTable());
 		assertNull(wrappedIdentifierBagValue.getTable());
-		identifierBagValueWrapper.setTable(wrappedTable);
+		identifierBagValueWrapper.setTable(tableWrapper);
 		assertNull(wrappedIdentifierBagValue.getTable());
 	}
 	
@@ -632,37 +634,37 @@ public class ValueWrapperTest {
 	@Test
 	public void testSetIndex() {
 		assertNull(((IndexedCollection)wrappedArrayValue).getIndex());
-		arrayValueWrapper.setIndex(wrappedSimpleValue);
+		arrayValueWrapper.setIndex(simpleValueWrapper);
 		assertSame(wrappedSimpleValue,((IndexedCollection)wrappedArrayValue).getIndex());
 		// next call has no effect
-		bagValueWrapper.setIndex(wrappedSimpleValue);
+		bagValueWrapper.setIndex(simpleValueWrapper);
 		assertNull(((IndexedCollection)wrappedListValue).getIndex());
-		listValueWrapper.setIndex(wrappedSimpleValue);
+		listValueWrapper.setIndex(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedListValue).getIndex());
 		// next call has no effect
-		manyToOneValueWrapper.setIndex(wrappedSimpleValue);
+		manyToOneValueWrapper.setIndex(simpleValueWrapper);
 		assertNull(((IndexedCollection)wrappedMapValue).getIndex());
-		mapValueWrapper.setIndex(wrappedSimpleValue);
+		mapValueWrapper.setIndex(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedMapValue).getIndex());
 		// next call has no effect
-		oneToManyValueWrapper.setIndex(wrappedSimpleValue);
+		oneToManyValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		oneToOneValueWrapper.setIndex(wrappedSimpleValue);
+		oneToOneValueWrapper.setIndex(simpleValueWrapper);
 		assertNull(((IndexedCollection)wrappedPrimitiveArrayValue).getIndex());
-		primitiveArrayValueWrapper.setIndex(wrappedSimpleValue);
+		primitiveArrayValueWrapper.setIndex(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((IndexedCollection)wrappedPrimitiveArrayValue).getIndex());
 		// next call has no effect
-		setValueWrapper.setIndex(wrappedSimpleValue);
+		setValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		simpleValueWrapper.setIndex(wrappedSimpleValue);
+		simpleValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		componentValueWrapper.setIndex(wrappedSimpleValue);
+		componentValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		dependantValueWrapper.setIndex(wrappedSimpleValue);
+		dependantValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		anyValueWrapper.setIndex(wrappedSimpleValue);
+		anyValueWrapper.setIndex(simpleValueWrapper);
 		// next call has no effect
-		identifierBagValueWrapper.setIndex(wrappedSimpleValue);
+		identifierBagValueWrapper.setIndex(simpleValueWrapper);
 	}
 	
 	@Test
@@ -732,7 +734,7 @@ public class ValueWrapperTest {
 	
 	@Test
 	public void testGetColumnIterator() {
-		Iterator<Selectable> columnIterator = null;
+		Iterator<ColumnWrapper> columnIterator = null;
 		Column column = new Column("foo");
 		// collection values have no columns
 		assertFalse(arrayValueWrapper.getColumnIterator().hasNext());
@@ -751,56 +753,56 @@ public class ValueWrapperTest {
 		assertFalse(oneToManyValueWrapper.getColumnIterator().hasNext());
 		kv.addColumn(column);
 		columnIterator = oneToManyValueWrapper.getColumnIterator();
-		Selectable s = columnIterator.next();
+		ColumnWrapper cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// simple value case
 		((SimpleValue)wrappedSimpleValue).setTable(new Table(""));
 		assertFalse(simpleValueWrapper.getColumnIterator().hasNext());
 		((SimpleValue)wrappedSimpleValue).addColumn(column);
 		columnIterator = simpleValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// component value case
 		assertFalse(componentValueWrapper.getColumnIterator().hasNext());
 		Property p = new Property();
 		p.setValue(kv);
 		((Component)wrappedComponentValue).addProperty(p);
 		columnIterator = componentValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// many to one value
 		assertFalse(manyToOneValueWrapper.getColumnIterator().hasNext());
 		((ManyToOne)wrappedManyToOneValue).addColumn(column);
 		columnIterator = manyToOneValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// one to one value
 		assertFalse(oneToOneValueWrapper.getColumnIterator().hasNext());
 		((OneToOne)wrappedOneToOneValue).addColumn(column);
 		columnIterator = oneToOneValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// dependant value case
 		((DependantValue)wrappedDependantValue).setTable(new Table(""));
 		assertFalse(dependantValueWrapper.getColumnIterator().hasNext());
 		((DependantValue)wrappedDependantValue).addColumn(column);
 		columnIterator = dependantValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 		// any value case
 		((Any)wrappedAnyValue).setTable(new Table(""));
 		assertFalse(anyValueWrapper.getColumnIterator().hasNext());
 		((Any)wrappedAnyValue).addColumn(column);
 		columnIterator = anyValueWrapper.getColumnIterator();
-		s = columnIterator.next();
+		cw = columnIterator.next();
 		assertFalse(columnIterator.hasNext());
-		assertSame(s, column);
+		assertSame(cw.getWrappedObject(), column);
 	}
 	
 	@Test
@@ -881,57 +883,57 @@ public class ValueWrapperTest {
 	public void testGetCollectionTable() {
 		assertNull(arrayValueWrapper.getCollectionTable());
 		((Collection)wrappedArrayValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, arrayValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, arrayValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(bagValueWrapper.getCollectionTable());
 		((Collection)wrappedBagValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, bagValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, bagValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(listValueWrapper.getCollectionTable());
 		((Collection)wrappedListValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, listValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, listValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(manyToOneValueWrapper.getCollectionTable());
 		assertNull(mapValueWrapper.getCollectionTable());
 		((Collection)wrappedMapValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, mapValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, mapValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(oneToManyValueWrapper.getCollectionTable());
 		assertNull(oneToOneValueWrapper.getCollectionTable());
 		assertNull(primitiveArrayValueWrapper.getCollectionTable());
 		((Collection)wrappedPrimitiveArrayValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, primitiveArrayValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, primitiveArrayValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(setValueWrapper.getCollectionTable());
 		((Collection)wrappedSetValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, setValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, setValueWrapper.getCollectionTable().getWrappedObject());
 		assertNull(simpleValueWrapper.getCollectionTable());
 		assertNull(componentValueWrapper.getCollectionTable());
 		assertNull(dependantValueWrapper.getCollectionTable());
 		assertNull(anyValueWrapper.getCollectionTable());
 		assertNull(identifierBagValueWrapper.getCollectionTable());
 		((Collection)wrappedIdentifierBagValue).setCollectionTable(wrappedTable);
-		assertSame(wrappedTable, identifierBagValueWrapper.getCollectionTable());
+		assertSame(wrappedTable, identifierBagValueWrapper.getCollectionTable().getWrappedObject());
 	}
 	
 	@Test
 	public void testGetKey() {
 		assertNull(arrayValueWrapper.getKey());
 		((Collection)wrappedArrayValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, arrayValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getKey().getWrappedObject());
 		assertNull(bagValueWrapper.getKey());
 		((Collection)wrappedBagValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, bagValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, bagValueWrapper.getKey().getWrappedObject());
 		assertNull(listValueWrapper.getKey());
 		((Collection)wrappedListValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, listValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, listValueWrapper.getKey().getWrappedObject());
 		assertNull(mapValueWrapper.getKey());
 		((Collection)wrappedMapValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, mapValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, mapValueWrapper.getKey().getWrappedObject());
 		assertNull(primitiveArrayValueWrapper.getKey());
 		((Collection)wrappedPrimitiveArrayValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getKey().getWrappedObject());
 		assertNull(setValueWrapper.getKey());
 		((Collection)wrappedSetValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, setValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, setValueWrapper.getKey().getWrappedObject());
 		assertNull(identifierBagValueWrapper.getKey());
 		((Collection)wrappedIdentifierBagValue).setKey((KeyValue)wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getKey());
+		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getKey().getWrappedObject());
 		try {
 			simpleValueWrapper.getKey();
 			fail();
@@ -974,20 +976,20 @@ public class ValueWrapperTest {
 	public void testGetIndex() {
 		assertNull(arrayValueWrapper.getIndex());
 		((IndexedCollection)wrappedArrayValue).setIndex(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, arrayValueWrapper.getIndex());
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getIndex().getWrappedObject());
 		assertNull(bagValueWrapper.getIndex());
 		assertNull(listValueWrapper.getIndex());
 		((IndexedCollection)wrappedListValue).setIndex(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, listValueWrapper.getIndex());
+		assertSame(wrappedSimpleValue, listValueWrapper.getIndex().getWrappedObject());
 		assertNull(manyToOneValueWrapper.getIndex());
 		assertNull(mapValueWrapper.getIndex());
 		((IndexedCollection)wrappedMapValue).setIndex(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, mapValueWrapper.getIndex());
+		assertSame(wrappedSimpleValue, mapValueWrapper.getIndex().getWrappedObject());
 		assertNull(oneToManyValueWrapper.getIndex());
 		assertNull(oneToOneValueWrapper.getIndex());
 		assertNull(primitiveArrayValueWrapper.getIndex());
 		((IndexedCollection)wrappedPrimitiveArrayValue).setIndex(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getIndex());
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getIndex().getWrappedObject());
 		assertNull(setValueWrapper.getIndex());
 		assertNull(simpleValueWrapper.getIndex());
 		assertNull(componentValueWrapper.getIndex());
@@ -1418,14 +1420,14 @@ public class ValueWrapperTest {
 	@Test
 	public void testGetPropertyIterator() {
 		// only the component values have properties
-		Iterator<Property> propertyIterator = componentValueWrapper.getPropertyIterator();
+		Iterator<PropertyWrapper> propertyIterator = componentValueWrapper.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		Property p = new Property();
 		((Component)wrappedComponentValue).addProperty(p);
 		propertyIterator = componentValueWrapper.getPropertyIterator();
-		Property wrappedProperty = propertyIterator.next();
+		PropertyWrapper propertyWrapper = propertyIterator.next();
 		assertFalse(propertyIterator.hasNext());
-		assertSame(p, wrappedProperty);
+		assertSame(p, propertyWrapper.getWrappedObject());
 		// other values do not support 'getPropertyIterator()'
 		try {
 			arrayValueWrapper.getPropertyIterator();
@@ -1510,72 +1512,73 @@ public class ValueWrapperTest {
 	@Test
 	public void testAddColumn() {
 		Column column = new Column("foo");
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper(column);
 		assertFalse(wrappedManyToOneValue.getColumns().contains(column));
-		manyToOneValueWrapper.addColumn(column);
+		manyToOneValueWrapper.addColumn(columnWrapper);
 		assertTrue(wrappedManyToOneValue.getColumns().contains(column));
 		assertFalse(wrappedOneToOneValue.getColumns().contains(column));
-		oneToOneValueWrapper.addColumn(column);
+		oneToOneValueWrapper.addColumn(columnWrapper);
 		assertTrue(wrappedOneToOneValue.getColumns().contains(column));
 		((BasicValue)wrappedSimpleValue).setTable(wrappedTable);
 		assertFalse(wrappedSimpleValue.getColumns().contains(column));
-		simpleValueWrapper.addColumn(column);
+		simpleValueWrapper.addColumn(columnWrapper);
 		assertTrue(wrappedSimpleValue.getColumns().contains(column));
 		assertFalse(wrappedDependantValue.getColumns().contains(column));
-		dependantValueWrapper.addColumn(column);
+		dependantValueWrapper.addColumn(columnWrapper);
 		assertTrue(wrappedDependantValue.getColumns().contains(column));
 		assertFalse(wrappedAnyValue.getColumns().contains(column));
-		anyValueWrapper.addColumn(column);
+		anyValueWrapper.addColumn(columnWrapper);
 		assertTrue(wrappedAnyValue.getColumns().contains(column));
 		try {
-			arrayValueWrapper.addColumn(column);
+			arrayValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			bagValueWrapper.addColumn(column);
+			bagValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			listValueWrapper.addColumn(column);
+			listValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			mapValueWrapper.addColumn(column);
+			mapValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			oneToManyValueWrapper.addColumn(column);
+			oneToManyValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			primitiveArrayValueWrapper.addColumn(column);
+			primitiveArrayValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			setValueWrapper.addColumn(column);
+			setValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
 		}
 		try {
-			componentValueWrapper.addColumn(column);
+			componentValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("Cant add a column to a component"));
 		}
 		try {
-			identifierBagValueWrapper.addColumn(column);
+			identifierBagValueWrapper.addColumn(columnWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'addColumn(Column)'"));
@@ -1704,14 +1707,14 @@ public class ValueWrapperTest {
 	
 	@Test
 	public void testGetOwner() {
-		assertSame(wrappedPersistentClass, arrayValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, bagValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, listValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, mapValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, primitiveArrayValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, setValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, identifierBagValueWrapper.getOwner());
-		assertSame(wrappedPersistentClass, componentValueWrapper.getOwner());
+		assertSame(wrappedPersistentClass, arrayValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, bagValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, listValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, mapValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, primitiveArrayValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, setValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, identifierBagValueWrapper.getOwner().getWrappedObject());
+		assertSame(wrappedPersistentClass, componentValueWrapper.getOwner().getWrappedObject());
 		try {
 			manyToOneValueWrapper.getOwner();
 			fail();
@@ -1754,32 +1757,32 @@ public class ValueWrapperTest {
 	public void testGetElement() {
 		assertNull(arrayValueWrapper.getElement());
 		((Collection)wrappedArrayValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, arrayValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, arrayValueWrapper.getElement().getWrappedObject());
 		assertNull(bagValueWrapper.getElement());
 		((Collection)wrappedBagValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, bagValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, bagValueWrapper.getElement().getWrappedObject());
 		assertNull(listValueWrapper.getElement());
 		((Collection)wrappedListValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, listValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, listValueWrapper.getElement().getWrappedObject());
 		assertNull(manyToOneValueWrapper.getElement());
 		assertNull(mapValueWrapper.getElement());
 		((Collection)wrappedMapValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, mapValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, mapValueWrapper.getElement().getWrappedObject());
 		assertNull(oneToManyValueWrapper.getElement());
 		assertNull(oneToOneValueWrapper.getElement());
 		assertNull(primitiveArrayValueWrapper.getElement());
 		((Collection)wrappedPrimitiveArrayValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, primitiveArrayValueWrapper.getElement().getWrappedObject());
 		assertNull(setValueWrapper.getElement());
 		((Collection)wrappedSetValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, setValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, setValueWrapper.getElement().getWrappedObject());
 		assertNull(simpleValueWrapper.getElement());
 		assertNull(componentValueWrapper.getElement());
 		assertNull(dependantValueWrapper.getElement());
 		assertNull(anyValueWrapper.getElement());
 		assertNull(identifierBagValueWrapper.getElement());
 		((Collection)wrappedIdentifierBagValue).setElement(wrappedSimpleValue);
-		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getElement());
+		assertSame(wrappedSimpleValue, identifierBagValueWrapper.getElement().getWrappedObject());
 	}
 	
 	@Test
@@ -1952,64 +1955,64 @@ public class ValueWrapperTest {
 	@Test
 	public void testSetKey() {
 		assertNull(((Collection)wrappedArrayValue).getKey());
-		arrayValueWrapper.setKey(wrappedSimpleValue);
+		arrayValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue,((Collection)wrappedArrayValue).getKey());
 		assertNull(((Collection)wrappedBagValue).getKey());
-		bagValueWrapper.setKey(wrappedSimpleValue);
+		bagValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedBagValue).getKey());
 		assertNull(((Collection)wrappedListValue).getKey());
-		listValueWrapper.setKey(wrappedSimpleValue);
+		listValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue,((Collection)wrappedListValue).getKey());
 		assertNull(((Collection)wrappedMapValue).getKey());
-		mapValueWrapper.setKey(wrappedSimpleValue);
+		mapValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedMapValue).getKey());
 		assertNull(((Collection)wrappedPrimitiveArrayValue).getKey());
-		primitiveArrayValueWrapper.setKey(wrappedSimpleValue);
+		primitiveArrayValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedPrimitiveArrayValue).getKey());
 		assertNull(((Collection)wrappedSetValue).getKey());
-		setValueWrapper.setKey(wrappedSimpleValue);
+		setValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedSetValue).getKey());
 		assertNull(((Collection)wrappedIdentifierBagValue).getKey());
-		identifierBagValueWrapper.setKey(wrappedSimpleValue);
+		identifierBagValueWrapper.setKey(simpleValueWrapper);
 		assertSame(wrappedSimpleValue, ((Collection)wrappedIdentifierBagValue).getKey());
 		try {
-			manyToOneValueWrapper.setKey(wrappedSimpleValue);
+			manyToOneValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			oneToManyValueWrapper.setKey(wrappedSimpleValue);
+			oneToManyValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			oneToOneValueWrapper.setKey(wrappedSimpleValue);
+			oneToOneValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			simpleValueWrapper.setKey(wrappedSimpleValue);
+			simpleValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			componentValueWrapper.setKey(wrappedSimpleValue);
+			componentValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			dependantValueWrapper.setKey(wrappedSimpleValue);
+			dependantValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
 		}
 		try {
-			anyValueWrapper.setKey(wrappedSimpleValue);
+			anyValueWrapper.setKey(simpleValueWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setKey(KeyValue)'"));
@@ -2226,7 +2229,7 @@ public class ValueWrapperTest {
 		}
 		assertNull(oneToManyValueWrapper.getAssociatedClass());
 		((OneToMany)wrappedOneToManyValue).setAssociatedClass(wrappedPersistentClass);
-		assertSame(wrappedPersistentClass, oneToManyValueWrapper.getAssociatedClass());
+		assertSame(wrappedPersistentClass, oneToManyValueWrapper.getAssociatedClass().getWrappedObject());
 	}
 	
 	@Test
@@ -2446,85 +2449,85 @@ public class ValueWrapperTest {
 	@Test
 	public void testSetAssociatedClass() {
 		try {
-			arrayValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			arrayValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			bagValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			bagValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			listValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			listValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			setValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			setValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			primitiveArrayValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			primitiveArrayValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			mapValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			mapValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			identifierBagValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			identifierBagValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			manyToOneValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			manyToOneValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			oneToOneValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			oneToOneValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			simpleValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			simpleValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			componentValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			componentValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			anyValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			anyValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		try {
-			dependantValueWrapper.setAssociatedClass(wrappedPersistentClass);
+			dependantValueWrapper.setAssociatedClass(persistentClassWrapper);
 			fail();
 		} catch (UnsupportedOperationException e) {
 			assertTrue(e.getMessage().contains("does not support 'setAssociatedClass(PersistentClass)'"));
 		}
 		assertNull(((OneToMany)wrappedOneToManyValue).getAssociatedClass());
-		oneToManyValueWrapper.setAssociatedClass(wrappedPersistentClass);
+		oneToManyValueWrapper.setAssociatedClass(persistentClassWrapper);
 		assertSame(wrappedPersistentClass, ((OneToMany)wrappedOneToManyValue).getAssociatedClass());
 	}
 	

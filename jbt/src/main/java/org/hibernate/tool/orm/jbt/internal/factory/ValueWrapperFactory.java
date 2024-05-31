@@ -29,8 +29,13 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
-import org.hibernate.type.Type;
+import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 
 public class ValueWrapperFactory {
 
@@ -109,33 +114,35 @@ public class ValueWrapperFactory {
 		
 		
 		@Override
-		public  Table getTable() { 
-			return value.getTable(); 
+		public  TableWrapper getTable() { 
+			return value.getTable() == null ? null : TableWrapperFactory.createTableWrapper(value.getTable()); 
 		}
 		
 		@Override
-		public  Type getType() { 
-			return value.getType(); 
+		public  TypeWrapper getType() { 
+			return value.getType() == null ? null : TypeWrapperFactory.createTypeWrapper(value.getType()); 
 		}
 		
 		@Override
-		public  void setElement(Value v) { 
+		public  void setElement(ValueWrapper v) { 
 			if (isCollection()) {
-					((Collection)value).setElement(v);
+					((Collection)value).setElement((Value)v.getWrappedObject());
 			}
 		}
 		
 		@Override
-		public  void setCollectionTable(Table table) {
+		public  void setCollectionTable(TableWrapper table) {
 			if (isCollection()) {
-				((Collection)value).setCollectionTable(table);
+				Table t = table == null ? null : (Table)table.getWrappedObject();
+				((Collection)value).setCollectionTable(t);
 			}
 		}
 		
 		@Override
-		public  void setTable(Table table) {
+		public  void setTable(TableWrapper table) {
 			if (isSimpleValue()) {
-				((SimpleValue)value).setTable(table);
+				Table t = table == null ? null : (Table)table.getWrappedObject();
+				((SimpleValue)value).setTable(t);
 			}
 		}
 		
@@ -145,9 +152,10 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  void setIndex(Value v) {
+		public  void setIndex(ValueWrapper v) {
 			if (IndexedCollection.class.isAssignableFrom(value.getClass())) {
-				((IndexedCollection)value).setIndex(v);
+				Value val = v == null ? null : (Value)v.getWrappedObject();
+				((IndexedCollection)value).setIndex(val);
 			}
 		}
 		
@@ -169,8 +177,19 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  Iterator<Selectable> getColumnIterator() {
-			return value.getSelectables().iterator();
+		public  Iterator<ColumnWrapper> getColumnIterator() {
+			Iterator<Selectable> iterator = value.getSelectables().iterator();
+			return new Iterator<ColumnWrapper>() {
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+				@Override
+				public ColumnWrapper next() {
+					return ColumnWrapperFactory.createColumnWrapper((Column)iterator.next());
+				}
+				
+			};
 		}
 		
 		@Override
@@ -183,27 +202,30 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  Table getCollectionTable() {
+		public  TableWrapper getCollectionTable() {
 			if (isCollection()) {
-				return ((Collection)value).getCollectionTable();
+				Table t = ((Collection)value).getCollectionTable();
+				return t == null ? null : TableWrapperFactory.createTableWrapper(t);
 			} else {
 				return null;
 			}
 		}
 		
 		@Override
-		public  KeyValue getKey() { 
+		public  ValueWrapper getKey() { 
 			if (isCollection()) {
-				return ((Collection)value).getKey();
+				Value v = ((Collection)value).getKey();
+				return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getKey()'." ); 
 			}
 		}
 		
 		@Override
-		public  Value getIndex() {
+		public  ValueWrapper getIndex() {
 			if (IndexedCollection.class.isAssignableFrom(value.getClass())) {
-				return ((IndexedCollection)value).getIndex();
+				Value v = ((IndexedCollection)value).getIndex();
+				return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 			} else {
 				return null;
 			}
@@ -284,18 +306,28 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  Iterator<Property> getPropertyIterator() { 
+		public  Iterator<PropertyWrapper> getPropertyIterator() { 
 			if (isComponent()) {
-				return ((Component)value).getProperties().iterator();
+				Iterator<Property> iterator = ((Component)value).getProperties().iterator();
+				return new Iterator<PropertyWrapper>() {
+					@Override
+					public boolean hasNext() {
+						return iterator.hasNext();
+					}
+					@Override
+					public PropertyWrapper next() {
+						return PropertyWrapperFactory.createPropertyWrapper(iterator.next());
+					}		
+				};
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getPropertyIterator()'." ); 
 			}
 		}
 		
 		@Override
-		public  void addColumn(Column column) { 
-			if (isSimpleValue()) {
-				((SimpleValue)value).addColumn(column);
+		public  void addColumn(ColumnWrapper column) { 
+			if (isSimpleValue() && column != null) {
+				((SimpleValue)value).addColumn((Column)column.getWrappedObject());
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'addColumn(Column)'." ); 
 			}
@@ -322,20 +354,24 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  PersistentClass getOwner() { 
+		public  PersistentClassWrapper getOwner() { 
+			PersistentClass owner = null;
 			if (isCollection()) {
-				return ((Collection)value).getOwner();
+				owner = ((Collection)value).getOwner();
+				return owner == null ? null : new DelegatingPersistentClassWrapperImpl(owner);
 			} else if (isComponent()) {
-				return ((Component)value).getOwner();
+				owner = ((Component)value).getOwner();
+				return owner == null ? null : new DelegatingPersistentClassWrapperImpl(owner);
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getOwner()'." ); 
 			}
 		}
 		
 		@Override
-		public  Value getElement() { 
+		public  ValueWrapper getElement() { 
 			if (isCollection()) {
-				return ((Collection)value).getElement();
+				Value v = ((Collection)value).getElement();
+				return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 			} else {
 				return null; 
 			}
@@ -360,9 +396,10 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  void setKey(Value v) {
+		public  void setKey(ValueWrapper v) {
 			if (isCollection()) {
-				((Collection)value).setKey((KeyValue)v);
+				KeyValue val = v == null ? null : (KeyValue)v.getWrappedObject();
+				((Collection)value).setKey(val);
 			} else {
 				 throw new UnsupportedOperationException("Class '" + v.getClass().getName() + "' does not support 'setKey(KeyValue)'." );
 			}
@@ -387,9 +424,10 @@ public class ValueWrapperFactory {
 		}
 		
 		@Override
-		public  PersistentClass getAssociatedClass() { 
+		public  PersistentClassWrapper getAssociatedClass() { 
 			if (isOneToMany()) {
-				return ((OneToMany)value).getAssociatedClass();
+				PersistentClass pc = ((OneToMany)value).getAssociatedClass();
+				return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
 			} else {
 			throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getAssociatedClass()'." ); 
 			}
@@ -427,8 +465,9 @@ public class ValueWrapperFactory {
 			}
 		}
 		@Override
-		public  void setAssociatedClass(PersistentClass pc) {
+		public  void setAssociatedClass(PersistentClassWrapper pcw) {
 			if (isOneToMany()) {
+				PersistentClass pc = pcw == null ? null : (PersistentClass)pcw.getWrappedObject();
 				((OneToMany)value).setAssociatedClass(pc);
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'setAssociatedClass(PersistentClass)'." );
