@@ -18,6 +18,8 @@ import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,21 +75,23 @@ public class OverrideRepositoryWrapperTest {
 	@Test
 	public void testGetReverseEngineeringStrategy() throws Exception {
 		RevengStrategy rev = new DefaultStrategy();
+		RevengStrategyWrapper revWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper(rev);
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
-		RevengStrategy delegatingStrategy = overrideRepositoryWrapper.getReverseEngineeringStrategy(rev);
+		RevengStrategyWrapper delegatingStrategy = overrideRepositoryWrapper.getReverseEngineeringStrategy(revWrapper);
 		assertNotNull(delegatingStrategy);
-		assertSame(rev, delegateField.get(delegatingStrategy));
+		assertSame(rev, delegateField.get(delegatingStrategy.getWrappedObject()));
 	}
 	
 	@Test
 	public void testAddTableFilter() throws Exception {
 		TableFilter tableFilter = new TableFilter();
+		TableFilterWrapper tableFilterWrapper = TableFilterWrapperFactory.createTableFilterWrapper(tableFilter);
 		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
 		tableFiltersField.setAccessible(true);
 		List<?> tableFilters = (List<?>)tableFiltersField.get(wrappedOverrideRepository);
 		assertTrue(tableFilters.isEmpty());
-		overrideRepositoryWrapper.addTableFilter(tableFilter);
+		overrideRepositoryWrapper.addTableFilter(tableFilterWrapper);
 		tableFilters = (List<?>)tableFiltersField.get(wrappedOverrideRepository);
 		assertSame(tableFilter, tableFilters.get(0));		
 	}
