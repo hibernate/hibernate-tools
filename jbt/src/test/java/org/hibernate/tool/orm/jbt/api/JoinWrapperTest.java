@@ -32,14 +32,14 @@ public class JoinWrapperTest {
 	
 	@Test
 	public void testGetPropertyIterator() {
-		Iterator<Property> propertyIterator = joinWrapper.getPropertyIterator();
+		Iterator<PropertyWrapper> propertyIterator = joinWrapper.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		Property property = new Property();
 		wrappedJoin.addProperty(property);
 		propertyIterator = joinWrapper.getPropertyIterator();
 		assertTrue(propertyIterator.hasNext());
-		Property p = propertyIterator.next();
-		assertSame(p, property);
+		PropertyWrapper p = propertyIterator.next();
+		assertSame(p.getWrappedObject(), property);
 	}
 
 }
