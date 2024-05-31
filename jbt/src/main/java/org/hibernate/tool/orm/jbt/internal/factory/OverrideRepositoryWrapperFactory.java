@@ -6,6 +6,8 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
+import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.TableFilterWrapper;
 
 public class OverrideRepositoryWrapperFactory {
 
@@ -32,13 +34,14 @@ public class OverrideRepositoryWrapperFactory {
 		}
 		
 		@Override
-		public RevengStrategy getReverseEngineeringStrategy(RevengStrategy res) {
-			return overrideRepository.getReverseEngineeringStrategy(res);
+		public RevengStrategyWrapper getReverseEngineeringStrategy(RevengStrategyWrapper res) {
+			return RevengStrategyWrapperFactory.createRevengStrategyWrapper(
+					overrideRepository.getReverseEngineeringStrategy((RevengStrategy)res.getWrappedObject()));
 		}
 		
 		@Override
-		public void addTableFilter(TableFilter tf) {
-			overrideRepository.addTableFilter(tf);
+		public void addTableFilter(TableFilterWrapper tf) {
+			overrideRepository.addTableFilter((TableFilter)tf.getWrappedObject());
 		}
 
 	}
