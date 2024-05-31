@@ -1,50 +1,28 @@
 package org.hibernate.tool.orm.jbt.api;
 
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface NamingStrategyWrapper extends Wrapper {
 	
-	default String collectionTableName(
+	String collectionTableName(
 			String ownerEntity, 
 			String ownerEntityTable, 
 			String associatedEntity, 
 			String associatedEntityTable,
-			String propertyName) { 
-		return ((NamingStrategy)getWrappedObject()).collectionTableName(
-				ownerEntity, 
-				ownerEntityTable, 
-				associatedEntity, 
-				associatedEntityTable, 
-				propertyName);
-	}
+			String propertyName);
 	
-	default String columnName(String name) {
-		return ((NamingStrategy)getWrappedObject()).columnName(name);
-	}
+	String columnName(String name);
 	
-	default String propertyToColumnName(String name) {
-		return ((NamingStrategy)getWrappedObject()).propertyToColumnName(name);
-	}
+	String propertyToColumnName(String name);
 	
-	default String tableName(String name) {
-		return ((NamingStrategy)getWrappedObject()).tableName(name);
-	}
+	String tableName(String name);
 	
-	default String joinKeyColumnName(
+	String joinKeyColumnName(
 			String primaryKeyColumnName,
-			String primaryTableName) {
-		return ((NamingStrategy)getWrappedObject()).joinKeyColumnName(
-				primaryKeyColumnName,
-				primaryTableName);
-	}
+			String primaryTableName);
 	
-	default String classToTableName(String name) {
-		return ((NamingStrategy)getWrappedObject()).classToTableName(name);
-	}
+	String classToTableName(String name);
 	
-	default String getStrategyClassName() {
-		return getWrappedObject().getClass().getName();
-	}
+	String getStrategyClassName();
 
 }
