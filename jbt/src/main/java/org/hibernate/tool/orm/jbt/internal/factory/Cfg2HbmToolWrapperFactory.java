@@ -27,7 +27,7 @@ public class Cfg2HbmToolWrapperFactory {
 		}
 
 		public String getTag(PersistentClassWrapper pcw) {
-			return wrappedCfg2HbmTool.getTag(pcw.getWrappedObject());
+			return wrappedCfg2HbmTool.getTag((PersistentClass)pcw.getWrappedObject());
 		}
 		
 		public String getTag(PropertyWrapper pw) {
