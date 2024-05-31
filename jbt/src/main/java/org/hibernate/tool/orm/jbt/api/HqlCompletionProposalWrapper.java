@@ -1,35 +1,34 @@
 package org.hibernate.tool.orm.jbt.api;
 
 import org.hibernate.mapping.Property;
-import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface HqlCompletionProposalWrapper extends Wrapper {
 
-	default String getCompletion() { return ((HQLCompletionProposal)getWrappedObject()).getCompletion(); }
+	String getCompletion();
 
-	default int getReplaceStart() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceStart(); }
+	int getReplaceStart();
 
-	default int getReplaceEnd() { return ((HQLCompletionProposal)getWrappedObject()).getReplaceEnd(); }
+	int getReplaceEnd();
 
-	default String getSimpleName() { return ((HQLCompletionProposal)getWrappedObject()).getSimpleName(); }
+	String getSimpleName();
 
-	default int getCompletionKind() { return ((HQLCompletionProposal)getWrappedObject()).getCompletionKind(); }
+	int getCompletionKind();
 
-	default String getEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getEntityName(); }
+	String getEntityName();
 
-	default String getShortEntityName() { return ((HQLCompletionProposal)getWrappedObject()).getShortEntityName(); }
+	String getShortEntityName();
 
-	default Property getProperty() { return ((HQLCompletionProposal)getWrappedObject()).getProperty(); }
+	Property getProperty();
 
-	default int aliasRefKind() { return HQLCompletionProposal.ALIAS_REF; }
+	int aliasRefKind();
 
-	default int entityNameKind() { return HQLCompletionProposal.ENTITY_NAME; }
+	int entityNameKind();
 
-	default int propertyKind() { return HQLCompletionProposal.PROPERTY; }
+	int propertyKind();
 
-	default int keywordKind() { return HQLCompletionProposal.KEYWORD; }
+	int keywordKind();
 
-	default int functionKind() { return HQLCompletionProposal.FUNCTION; }
+	int functionKind();
 
 }
