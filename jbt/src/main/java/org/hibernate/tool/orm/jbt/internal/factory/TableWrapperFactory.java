@@ -3,10 +3,13 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.PrimaryKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.ValueWrapper;
 
 public class TableWrapperFactory {
 
@@ -33,8 +36,8 @@ public class TableWrapperFactory {
 		}
 
 		@Override
-		public void addColumn(Column column) { 
-			table.addColumn(column); 
+		public void addColumn(ColumnWrapper column) { 
+			table.addColumn((Column)column.getWrappedObject()); 
 		}
 
 		@Override
@@ -48,13 +51,25 @@ public class TableWrapperFactory {
 		}
 
 		@Override
-		public PrimaryKey getPrimaryKey() { 
-			return table.getPrimaryKey(); 
+		public PrimaryKeyWrapper getPrimaryKey() { 
+			PrimaryKey pk = table.getPrimaryKey();
+			return pk == null ? null : PrimaryKeyWrapperFactory.createPrimaryKeyWrapper(pk); 
 		}
 
 		@Override
-		public Iterator<Column> getColumnIterator() { 
-			return table.getColumns().iterator(); 
+		public Iterator<ColumnWrapper> getColumnIterator() { 
+			Iterator<Column> iterator = table.getColumns().iterator();
+			return new Iterator<ColumnWrapper>() {
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+				@Override
+				public ColumnWrapper next() {
+					return ColumnWrapperFactory.createColumnWrapper(iterator.next());
+				}
+				
+			};
 		}
 
 		@Override
@@ -93,8 +108,9 @@ public class TableWrapperFactory {
 		}
 
 		@Override
-		public KeyValue getIdentifierValue() { 
-			return table.getIdentifierValue(); 
+		public ValueWrapper getIdentifierValue() { 
+			Value v = table.getIdentifierValue();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
 		}
 
 		
