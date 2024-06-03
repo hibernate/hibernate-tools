@@ -15,6 +15,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +48,9 @@ public class TableWrapperTest {
 	@Test
 	public void testAddColumn() {
 		Column column = new Column("foo");
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper(column);
 		assertNull(wrappedTable.getColumn(column));
-		tableWrapper.addColumn(column);
+		tableWrapper.addColumn(columnWrapper);
 		assertSame(column, wrappedTable.getColumn(column));
 	}
 	
@@ -71,18 +73,18 @@ public class TableWrapperTest {
 		PrimaryKey primaryKey = new PrimaryKey(wrappedTable);
 		assertNull(tableWrapper.getPrimaryKey());
 		wrappedTable.setPrimaryKey(primaryKey);
-		assertSame(primaryKey, tableWrapper.getPrimaryKey());
+		assertSame(primaryKey, tableWrapper.getPrimaryKey().getWrappedObject());
 	}
 	
 	@Test
 	public void testGetColumnIterator() {
 		Column column = new Column("Hibernate Tools");
-		Iterator<Column> columnIterator = tableWrapper.getColumnIterator();
+		Iterator<ColumnWrapper> columnIterator = tableWrapper.getColumnIterator();
 		assertFalse(columnIterator.hasNext());
 		wrappedTable.addColumn(column);
 		columnIterator = tableWrapper.getColumnIterator();
 		assertTrue(columnIterator.hasNext());
-		assertSame(column, columnIterator.next());
+		assertSame(column, columnIterator.next().getWrappedObject());
 	}
 	
 	@Test
@@ -152,7 +154,7 @@ public class TableWrapperTest {
 		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(tableWrapper.getIdentifierValue());
 		wrappedTable.setIdentifierValue(value);
-		assertSame(value, tableWrapper.getIdentifierValue());
+		assertSame(value, tableWrapper.getIdentifierValue().getWrappedObject());
 	}
 	
 }

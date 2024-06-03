@@ -2,19 +2,16 @@ package org.hibernate.tool.orm.jbt.api;
 
 import java.util.Iterator;
 
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public interface TableWrapper extends Wrapper {
 
 	String getName();
-	void addColumn(Column column);
+	void addColumn(ColumnWrapper column);
 	String getCatalog();
 	String getSchema();
-	PrimaryKey getPrimaryKey();
-	Iterator<Column> getColumnIterator();
+	PrimaryKeyWrapper getPrimaryKey();
+	Iterator<ColumnWrapper> getColumnIterator();
 	String getComment();
 	String getRowId();
 	String getSubselect();
@@ -22,6 +19,6 @@ public interface TableWrapper extends Wrapper {
 	boolean isAbstract();
 	boolean isAbstractUnionTable();
 	boolean isPhysicalTable();
-	KeyValue getIdentifierValue();
+	ValueWrapper getIdentifierValue();
 	
 }
