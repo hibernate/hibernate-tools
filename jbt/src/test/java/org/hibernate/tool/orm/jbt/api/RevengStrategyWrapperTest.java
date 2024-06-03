@@ -10,6 +10,7 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,10 +36,11 @@ public class RevengStrategyWrapperTest {
 	@Test
 	public void testSetSettings() throws Exception {
 		RevengSettings revengSettings = new RevengSettings(null);
+		RevengSettingsWrapper revengSettingsWrapper = RevengSettingsWrapperFactory.createRevengSettingsWrapper(revengSettings);
 		Field field = AbstractStrategy.class.getDeclaredField("settings");
 		field.setAccessible(true);
 		assertNotSame(field.get(wrappedRevengStrategy), revengSettings);
-		revengStrategyWrapper.setSettings(revengSettings);
+		revengStrategyWrapper.setSettings(revengSettingsWrapper);
 		assertSame(field.get(wrappedRevengStrategy), revengSettings);
 	}
 	

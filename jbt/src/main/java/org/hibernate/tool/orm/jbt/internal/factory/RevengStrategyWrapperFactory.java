@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.api.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
 
 public class RevengStrategyWrapperFactory {
@@ -24,8 +25,8 @@ public class RevengStrategyWrapperFactory {
 		}
 		
 		@Override
-		public void setSettings(RevengSettings revengSettings) { 
-			revengStrategy.setSettings(revengSettings); 
+		public void setSettings(RevengSettingsWrapper revengSettings) { 
+			revengStrategy.setSettings((RevengSettings)revengSettings.getWrappedObject()); 
 		}
 		
 	}
