@@ -23,7 +23,6 @@ import org.hibernate.query.Query;
 import org.hibernate.query.spi.QueryParameterBinding;
 import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.internal.factory.QueryWrapperFactory;
-import org.hibernate.type.Type;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -181,7 +180,7 @@ public class QueryWrapperTest {
 	
 	@Test
 	public void testGetReturnTypes() {
-		Type[] returnTypes = simpleQueryWrapper.getReturnTypes();
+		TypeWrapper[] returnTypes = simpleQueryWrapper.getReturnTypes();
 		assertNotNull(returnTypes);
 		assertEquals(0, returnTypes.length);
 	}

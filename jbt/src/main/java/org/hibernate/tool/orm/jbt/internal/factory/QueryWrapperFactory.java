@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.api.QueryWrapper;
-import org.hibernate.type.Type;
+import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 
 public class QueryWrapperFactory {
 
@@ -56,8 +56,8 @@ public class QueryWrapperFactory {
 		}
 		
 		@Override 
-		public Type[] getReturnTypes() {
-			return new Type[0]; 
+		public TypeWrapper[] getReturnTypes() {
+			return new TypeWrapper[0]; 
 		}
 		
 	}
