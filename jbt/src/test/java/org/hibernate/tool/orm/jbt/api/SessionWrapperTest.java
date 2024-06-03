@@ -91,7 +91,7 @@ public class SessionWrapperTest {
 	@Test
 	public void testGetSessionFactory() {
 		SessionFactory sessionFactory = wrappedSession.getSessionFactory();
-		assertSame(sessionFactory, sessionWrapper.getSessionFactory());
+		assertSame(sessionFactory, sessionWrapper.getSessionFactory().getWrappedObject());
 	}
 	
 	@Test

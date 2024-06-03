@@ -2,9 +2,11 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import org.hibernate.tool.orm.jbt.api.QueryWrapper;
+import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.SessionWrapper;
 
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -34,13 +36,15 @@ public class SessionWrapperFactory {
 		}
 
 		@Override 
-		public SessionFactory getSessionFactory() { 
-			return session.getSessionFactory(); 
+		public SessionFactoryWrapper getSessionFactory() { 
+			SessionFactory sf = session.getSessionFactory();
+			return sf == null ? null : SessionFactoryWrapperFactory.createSessionFactoryWrapper(sf); 
 		}
 
 		@Override 
-		public Query<?> createQuery(String s) { 
-			return session.createQuery(s); 
+		public QueryWrapper createQuery(String s) { 
+			org.hibernate.query.Query<?> query = session.createQuery(s);
+			return QueryWrapperFactory.createQueryWrapper(query);
 		}
 
 		@Override 
@@ -68,7 +72,7 @@ public class SessionWrapperFactory {
 		}
 
 		@Override 
-		public jakarta.persistence.Query createCriteria(Class<?> c) {
+		public Query createCriteria(Class<?> c) {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(c);
 			Root root = criteriaQuery.from(c);
