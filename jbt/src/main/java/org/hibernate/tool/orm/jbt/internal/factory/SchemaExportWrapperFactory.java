@@ -33,15 +33,10 @@ public class SchemaExportWrapperFactory {
 		}
 		
 		@Override
-		public Configuration getConfiguration() {
-			return configuration;
-		}
-		
-		@Override
 		public void create() { 
 				schemaExport.create(EnumSet.of(
 					TargetType.DATABASE), 
-					MetadataHelper.getMetadata(getConfiguration()));
+					MetadataHelper.getMetadata(configuration));
 		}
 		
 		@SuppressWarnings("unchecked")
