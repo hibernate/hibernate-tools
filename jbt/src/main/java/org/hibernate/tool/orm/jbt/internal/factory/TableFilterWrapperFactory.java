@@ -6,9 +6,62 @@ import org.hibernate.tool.orm.jbt.api.TableFilterWrapper;
 public class TableFilterWrapperFactory {
 
 	public static TableFilterWrapper createTableFilterWrapper(TableFilter wrappedTableFilter) {
-		return new TableFilterWrapper() {
-			@Override public TableFilter getWrappedObject() { return wrappedTableFilter; }
-		};
+		return new TableFilterWrapperImpl(wrappedTableFilter);
+	}
+	
+	private static class TableFilterWrapperImpl implements TableFilterWrapper {
+		
+		private TableFilter  tableFilter = null;
+		
+		private TableFilterWrapperImpl(TableFilter tableFilter) {
+			this.tableFilter = tableFilter;
+		}
+		
+		@Override 
+		public TableFilter getWrappedObject() { 
+			return tableFilter; 
+		}
+		
+		@Override 
+		public void setExclude(boolean b) { 
+			tableFilter.setExclude(b); 
+		}
+
+		@Override 
+		public void setMatchCatalog(String s) { 
+			tableFilter.setMatchCatalog(s); 
+		}
+
+		@Override 
+		public void setMatchSchema(String s) { 
+			tableFilter.setMatchSchema(s); 
+		}
+
+		@Override 
+		public void setMatchName(String s) { 
+			tableFilter.setMatchName(s); 
+		}
+
+		@Override 
+		public Boolean getExclude() { 
+			return tableFilter.getExclude(); 
+		}
+
+		@Override 
+		public String getMatchCatalog() { 
+			return tableFilter.getMatchCatalog(); 
+		}
+
+		@Override 
+		public String getMatchSchema() { 
+			return tableFilter.getMatchSchema(); 
+		}
+
+		@Override 
+		public String getMatchName() { 
+			return tableFilter.getMatchName(); 
+		}
+
 	}
 
 }
