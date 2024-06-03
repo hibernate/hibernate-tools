@@ -18,8 +18,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.persister.collection.CollectionPersister;
-import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -92,7 +90,7 @@ public class SessionFactoryWrapperTest {
 	
 	@Test
 	public void testGetAllClassMetadata() throws Exception {
-		Map<String, EntityPersister> allClassMetadata = sessionFactoryWrapper.getAllClassMetadata();
+		Map<String, ClassMetadataWrapper> allClassMetadata = sessionFactoryWrapper.getAllClassMetadata();
 		assertNotNull(allClassMetadata);
 		assertEquals(1, allClassMetadata.size());
 		assertNotNull(allClassMetadata.get(Foo.class.getName()));
@@ -100,18 +98,18 @@ public class SessionFactoryWrapperTest {
 	
 	@Test
 	public void testGetAllCollectionMetadata() throws Exception {
-		Map<String, CollectionPersister> allCollectionMetadata = sessionFactoryWrapper.getAllCollectionMetadata();
+		Map<String, CollectionMetadataWrapper> allCollectionMetadata = sessionFactoryWrapper.getAllCollectionMetadata();
 		assertNotNull(allCollectionMetadata);
 		assertEquals(1, allCollectionMetadata.size());
-		CollectionPersister barsPersister = allCollectionMetadata.get(Foo.class.getName() + ".bars");
+		CollectionMetadataWrapper barsPersister = allCollectionMetadata.get(Foo.class.getName() + ".bars");
 		assertNotNull(barsPersister);
 	}
 	
 	@Test
 	public void testOpenSession() {
-		Session session = sessionFactoryWrapper.openSession();
+		SessionWrapper session = sessionFactoryWrapper.openSession();
 		assertNotNull(session);
-		assertSame(session.getSessionFactory(), wrappedSessionFactory);
+		assertSame(((Session)session.getWrappedObject()).getSessionFactory(), wrappedSessionFactory);
 	}
 	
 	@Test

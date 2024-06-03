@@ -8,9 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.tool.orm.jbt.api.ClassMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.CollectionMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
-import org.hibernate.tool.orm.jbt.wrp.CollectionPersisterWrapperFactory;
-import org.hibernate.tool.orm.jbt.wrp.EntityPersisterWrapperFactory;
+import org.hibernate.tool.orm.jbt.api.SessionWrapper;
 
 public class SessionFactoryWrapperFactory {
 
@@ -37,42 +38,43 @@ public class SessionFactoryWrapperFactory {
 		}
 
 		@Override 
-		public Map<String, EntityPersister> getAllClassMetadata() {
+		public Map<String, ClassMetadataWrapper> getAllClassMetadata() {
 			Map<String, EntityPersister> origin = ((SessionFactoryImplementor)sessionFactory).getMetamodel().entityPersisters();
-			Map<String, EntityPersister> result = new HashMap<String, EntityPersister>(origin.size());
+			Map<String, ClassMetadataWrapper> result = new HashMap<String, ClassMetadataWrapper>(origin.size());
 			for (String key : origin.keySet()) {
-				result.put(key, (EntityPersister)EntityPersisterWrapperFactory.create(origin.get(key)));
+				result.put(key, ClassMetadataWrapperFactory.createClassMetadataWrapper(origin.get(key)));
 			}
 			return result;
 		}
 
 		@Override 
-		public Map<String, CollectionPersister> getAllCollectionMetadata() {
+		public Map<String, CollectionMetadataWrapper> getAllCollectionMetadata() {
 			Map<String, CollectionPersister> origin = ((SessionFactoryImplementor)sessionFactory).getMetamodel().collectionPersisters();
-			Map<String, CollectionPersister> result = new HashMap<String, CollectionPersister>(origin.size());
+			Map<String, CollectionMetadataWrapper> result = new HashMap<String, CollectionMetadataWrapper>(origin.size());
 			for (String key : origin.keySet()) {
-				result.put(key, (CollectionPersister)CollectionPersisterWrapperFactory.create(origin.get(key)));
+				result.put(key, CollectionMetadataWrapperFactory.createCollectionMetadataWrapper(origin.get(key)));
 			}
 			return result;
 		}
 
 		@Override 
-		public Session openSession() { 
-			return sessionFactory.openSession(); 
+		public SessionWrapper openSession() { 
+			Session s = sessionFactory.openSession();
+			return s == null ? null : SessionWrapperFactory.createSessionWrapper(s); 
 		}
 
 		@Override 
-		public EntityPersister getClassMetadata(String s) { 
+		public ClassMetadataWrapper getClassMetadata(String s) { 
 			return getAllClassMetadata().get(s); 
 		}
 
 		@Override 
-		public EntityPersister getClassMetadata(Class<?> c) { 
+		public ClassMetadataWrapper getClassMetadata(Class<?> c) { 
 			return getAllClassMetadata().get(c.getName()); 
 		}
 
 		@Override 
-		public CollectionPersister getCollectionMetadata(String s) { 
+		public CollectionMetadataWrapper getCollectionMetadata(String s) { 
 			return getAllCollectionMetadata().get(s); 
 		}
 
