@@ -154,7 +154,7 @@ public class PropertyWrapperFactory {
 		public boolean isInsertable() {
 			return getWrappedObject().isInsertable();
 		}
-				
+
 	}
 	
 }
