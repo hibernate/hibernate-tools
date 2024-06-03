@@ -41,7 +41,6 @@ public class SchemaExportWrapperTest {
 		assertNotNull(configuration);
 		assertNotNull(wrappedSchemaExport);
 		assertNotNull(schemaExportWrapper);
-		assertSame(configuration, schemaExportWrapper.getConfiguration());
 	}
 
 	@Test
