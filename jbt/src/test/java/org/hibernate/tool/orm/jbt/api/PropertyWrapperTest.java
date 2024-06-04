@@ -18,6 +18,8 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,8 +47,8 @@ public class PropertyWrapperTest {
 		assertNull(propertyWrapper.getValue());
 		Value value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		wrappedProperty.setValue(value);
-		Value v = propertyWrapper.getValue();
-		assertSame(value, v);
+		ValueWrapper v = propertyWrapper.getValue();
+		assertSame(value, v.getWrappedObject());
 	}
 	
 	@Test
@@ -59,8 +61,9 @@ public class PropertyWrapperTest {
 	@Test
 	public void testSetPersistentClass() {
 		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		PersistentClassWrapper persistentClassWrapper = new DelegatingPersistentClassWrapperImpl(persistentClass);
 		assertNull(wrappedProperty.getPersistentClass());
-		propertyWrapper.setPersistentClass(persistentClass);
+		propertyWrapper.setPersistentClass(persistentClassWrapper);
 		assertSame(persistentClass, wrappedProperty.getPersistentClass());
 	}
 	
@@ -69,7 +72,7 @@ public class PropertyWrapperTest {
 		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(propertyWrapper.getPersistentClass());
 		wrappedProperty.setPersistentClass(persistentClass);
-		assertSame(persistentClass, propertyWrapper.getPersistentClass());
+		assertSame(persistentClass, propertyWrapper.getPersistentClass().getWrappedObject());
 	}
 	
 	@Test
@@ -104,16 +107,17 @@ public class PropertyWrapperTest {
 		v.setTypeName("int");
 		assertNull(propertyWrapper.getType());
 		wrappedProperty.setValue(v);
-		Type t = propertyWrapper.getType();
+		TypeWrapper t = propertyWrapper.getType();
 		assertEquals("integer", t.getName());
-		assertSame(v.getType(), t);
+		assertSame(v.getType(), t.getWrappedObject());
 	}
 	
 	@Test
 	public void testSetValue() {
 		assertNull(wrappedProperty.getValue());	
 		BasicValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
-		propertyWrapper.setValue(value);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(value);
+		propertyWrapper.setValue(valueWrapper);
 		assertSame(value, wrappedProperty.getValue());
 	}
 	
