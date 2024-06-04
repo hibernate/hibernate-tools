@@ -27,6 +27,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
@@ -140,12 +142,12 @@ public class PersistentClassWrapperTest {
 		assertNull(specialRootClassWrapper.getIdentifierProperty());
 		Property property = new Property();
 		((RootClass)rootClassTarget).setIdentifierProperty(property);
-		assertSame(property, rootClassWrapper.getIdentifierProperty());
-		assertSame(property, singleTableSubclassWrapper.getIdentifierProperty());
-		assertSame(property, joinedSubclassWrapper.getIdentifierProperty());
+		assertSame(property, rootClassWrapper.getIdentifierProperty().getWrappedObject());
+		assertSame(property, singleTableSubclassWrapper.getIdentifierProperty().getWrappedObject());
+		assertSame(property, joinedSubclassWrapper.getIdentifierProperty().getWrappedObject());
 		assertNull(specialRootClassWrapper.getIdentifierProperty());
 		((RootClass)specialRootClassTarget).setIdentifierProperty(property);
-		assertSame(property, specialRootClassWrapper.getIdentifierProperty());
+		assertSame(property, specialRootClassWrapper.getIdentifierProperty().getWrappedObject());
 	}
 	
 	@Test
@@ -179,15 +181,15 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testGetRootClass() {
-		assertSame(rootClassWrapper.getRootClass(), rootClassTarget);
-		assertSame(singleTableSubclassWrapper.getRootClass(), rootClassTarget);
-		assertSame(joinedSubclassWrapper.getRootClass(), rootClassTarget);
-		assertSame(specialRootClassWrapper.getRootClass(), specialRootClassTarget);
+		assertSame(rootClassWrapper.getRootClass().getWrappedObject(), rootClassTarget);
+		assertSame(singleTableSubclassWrapper.getRootClass().getWrappedObject(), rootClassTarget);
+		assertSame(joinedSubclassWrapper.getRootClass().getWrappedObject(), rootClassTarget);
+		assertSame(specialRootClassWrapper.getRootClass().getWrappedObject(), specialRootClassTarget);
 	}
 	
 	@Test
 	public void testGetPropertyClosureIterator() {
-		Iterator<Property> propertyClosureIterator = rootClassWrapper.getPropertyClosureIterator();
+		Iterator<PropertyWrapper> propertyClosureIterator = rootClassWrapper.getPropertyClosureIterator();
 		assertFalse(propertyClosureIterator.hasNext());
 		propertyClosureIterator = singleTableSubclassWrapper.getPropertyClosureIterator();
 		assertFalse(propertyClosureIterator.hasNext());
@@ -199,19 +201,19 @@ public class PersistentClassWrapperTest {
 		rootClassTarget.addProperty(property);
 		propertyClosureIterator = rootClassWrapper.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());
-		assertSame(property, propertyClosureIterator.next());
+		assertSame(property, propertyClosureIterator.next().getWrappedObject());
 		propertyClosureIterator = singleTableSubclassWrapper.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());	
-		assertSame(property, propertyClosureIterator.next());
+		assertSame(property, propertyClosureIterator.next().getWrappedObject());
 		propertyClosureIterator = joinedSubclassWrapper.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());	
-		assertSame(property, propertyClosureIterator.next());
+		assertSame(property, propertyClosureIterator.next().getWrappedObject());
 		propertyClosureIterator = specialRootClassWrapper.getPropertyClosureIterator();
 		assertFalse(propertyClosureIterator.hasNext());	
 		specialRootClassTarget.addProperty(property);
 		propertyClosureIterator = specialRootClassWrapper.getPropertyClosureIterator();
 		assertTrue(propertyClosureIterator.hasNext());	
-		assertSame(property, propertyClosureIterator.next());
+		assertSame(property, propertyClosureIterator.next().getWrappedObject());
 	}
 	
 	@Test
@@ -224,7 +226,7 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testGetPropertyIterator() {
-		Iterator<Property> propertyIterator = rootClassWrapper.getPropertyIterator();
+		Iterator<PropertyWrapper> propertyIterator = rootClassWrapper.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		propertyIterator = singleTableSubclassWrapper.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
@@ -235,7 +237,7 @@ public class PersistentClassWrapperTest {
 		Property property = new Property();
 		rootClassTarget.addProperty(property);
 		propertyIterator = rootClassWrapper.getPropertyIterator();
-		assertSame(property, propertyIterator.next());
+		assertSame(property, propertyIterator.next().getWrappedObject());
 		propertyIterator = singleTableSubclassWrapper.getPropertyIterator();
 		assertFalse(propertyIterator.hasNext());
 		singleTableSubclassTarget.addProperty(property);
@@ -282,9 +284,9 @@ public class PersistentClassWrapperTest {
 		Property p = new Property();
 		p.setName("foo");
 		rootClassTarget.addProperty(p);
-		assertSame(p, rootClassWrapper.getProperty("foo"));
-		assertSame(p, singleTableSubclassWrapper.getProperty("foo"));
-		assertSame(p, joinedSubclassWrapper.getProperty("foo"));
+		assertSame(p, rootClassWrapper.getProperty("foo").getWrappedObject());
+		assertSame(p, singleTableSubclassWrapper.getProperty("foo").getWrappedObject());
+		assertSame(p, joinedSubclassWrapper.getProperty("foo").getWrappedObject());
 		try {
 			specialRootClassWrapper.getProperty("foo");
 			fail();
@@ -294,7 +296,7 @@ public class PersistentClassWrapperTest {
 					t.getMessage());
 		}
 		specialRootClassTarget.addProperty(p);
-		assertSame(p, specialRootClassWrapper.getProperty("foo"));
+		assertSame(p, specialRootClassWrapper.getProperty("foo").getWrappedObject());
 		try {
 			rootClassWrapper.getProperty();
 			fail();
@@ -321,7 +323,7 @@ public class PersistentClassWrapperTest {
 		}
 		assertSame(
 				((Wrapper)property).getWrappedObject(), 
-				specialRootClassWrapper.getProperty());
+				specialRootClassWrapper.getProperty().getWrappedObject());
 	}
 	
 	@Test
@@ -332,14 +334,14 @@ public class PersistentClassWrapperTest {
 		assertNull(specialRootClassWrapper.getTable());
 		Table table = new Table("test");
 		((RootClass)rootClassTarget).setTable(table);
-		assertSame(table, rootClassWrapper.getTable());
-		assertSame(table, singleTableSubclassWrapper.getTable());
+		assertSame(table, rootClassWrapper.getTable().getWrappedObject());
+		assertSame(table, singleTableSubclassWrapper.getTable().getWrappedObject());
 		assertNull(joinedSubclassWrapper.getTable());
 		((JoinedSubclass)joinedSubclassTarget).setTable(table);
-		assertSame(table, joinedSubclassWrapper.getTable());
+		assertSame(table, joinedSubclassWrapper.getTable().getWrappedObject());
 		assertNull(specialRootClassWrapper.getTable());
 		((RootClass)specialRootClassTarget).setTable(table);
-		assertSame(table, specialRootClassWrapper.getTable());
+		assertSame(table, specialRootClassWrapper.getTable().getWrappedObject());
 	}
 	
 	@Test 
@@ -374,11 +376,11 @@ public class PersistentClassWrapperTest {
 		assertNull(specialRootClassWrapper.getDiscriminator());
 		Value value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		((RootClass)rootClassTarget).setDiscriminator(value);
-		assertSame(value, rootClassWrapper.getDiscriminator());
-		assertSame(value, singleTableSubclassWrapper.getDiscriminator());
-		assertSame(value, joinedSubclassWrapper.getDiscriminator());
+		assertSame(value, rootClassWrapper.getDiscriminator().getWrappedObject());
+		assertSame(value, singleTableSubclassWrapper.getDiscriminator().getWrappedObject());
+		assertSame(value, joinedSubclassWrapper.getDiscriminator().getWrappedObject());
 		((RootClass)specialRootClassTarget).setDiscriminator(value);
-		assertSame(value, specialRootClassWrapper.getDiscriminator());
+		assertSame(value, specialRootClassWrapper.getDiscriminator().getWrappedObject());
 	}
 	
 	@Test
@@ -389,11 +391,11 @@ public class PersistentClassWrapperTest {
 		assertNull(specialRootClassWrapper.getIdentifier());
 		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		((RootClass)rootClassTarget).setIdentifier(value);
-		assertSame(value, rootClassWrapper.getIdentifier());
-		assertSame(value, singleTableSubclassWrapper.getIdentifier());
-		assertSame(value, joinedSubclassWrapper.getIdentifier());
+		assertSame(value, rootClassWrapper.getIdentifier().getWrappedObject());
+		assertSame(value, singleTableSubclassWrapper.getIdentifier().getWrappedObject());
+		assertSame(value, joinedSubclassWrapper.getIdentifier().getWrappedObject());
 		((RootClass)specialRootClassTarget).setIdentifier(value);
-		assertSame(value, specialRootClassWrapper.getIdentifier());
+		assertSame(value, specialRootClassWrapper.getIdentifier().getWrappedObject());
 	}
 	
 	@Test
@@ -404,17 +406,17 @@ public class PersistentClassWrapperTest {
 		assertFalse(specialRootClassWrapper.getJoinIterator().hasNext());
 		Join join = new Join();
 		rootClassTarget.addJoin(join);
-		Iterator<Join> joinIterator = rootClassWrapper.getJoinIterator();
-		assertSame(join, joinIterator.next());	
+		Iterator<JoinWrapper> joinIterator = rootClassWrapper.getJoinIterator();
+		assertSame(join, joinIterator.next().getWrappedObject());	
 		singleTableSubclassTarget.addJoin(join);
 		joinIterator = singleTableSubclassWrapper.getJoinIterator();
-		assertSame(join, joinIterator.next());	
+		assertSame(join, joinIterator.next().getWrappedObject());	
 		joinedSubclassTarget.addJoin(join);
 		joinIterator = joinedSubclassWrapper.getJoinIterator();
-		assertSame(join, joinIterator.next());	
+		assertSame(join, joinIterator.next().getWrappedObject());	
 		specialRootClassTarget.addJoin(join);
 		joinIterator = specialRootClassWrapper.getJoinIterator();
-		assertSame(join, joinIterator.next());	
+		assertSame(join, joinIterator.next().getWrappedObject());	
 	}
 	
 	@Test
@@ -425,11 +427,11 @@ public class PersistentClassWrapperTest {
 		assertNull(specialRootClassWrapper.getVersion());
 		Property versionTarget = new Property();
 		((RootClass)rootClassTarget).setVersion(versionTarget);
-		assertSame(versionTarget, rootClassWrapper.getVersion());
-		assertSame(versionTarget, singleTableSubclassWrapper.getVersion());
-		assertSame(versionTarget, joinedSubclassWrapper.getVersion());
+		assertSame(versionTarget, rootClassWrapper.getVersion().getWrappedObject());
+		assertSame(versionTarget, singleTableSubclassWrapper.getVersion().getWrappedObject());
+		assertSame(versionTarget, joinedSubclassWrapper.getVersion().getWrappedObject());
 		((RootClass)specialRootClassTarget).setVersion(versionTarget);
-		assertSame(versionTarget, specialRootClassWrapper.getVersion());
+		assertSame(versionTarget, specialRootClassWrapper.getVersion().getWrappedObject());
 	}
 	
 	@Test
@@ -540,7 +542,8 @@ public class PersistentClassWrapperTest {
 		}
 		Property propertyTarget = new Property();
 		propertyTarget.setName("foo");
-		rootClassWrapper.addProperty(propertyTarget);
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(propertyTarget);
+		rootClassWrapper.addProperty(propertyWrapper);
 		assertSame(rootClassTarget.getProperty("foo"), propertyTarget);
 		assertSame(singleTableSubclassTarget.getProperty("foo"), propertyTarget);
 		assertSame(joinedSubclassTarget.getProperty("foo"), propertyTarget);
@@ -552,8 +555,8 @@ public class PersistentClassWrapperTest {
 					"property [foo] not found on entity [null]", 
 					e.getMessage());
 		}
-		specialRootClassWrapper.addProperty(propertyTarget);
-		assertSame(specialRootClassWrapper.getProperty("foo"), propertyTarget);
+		specialRootClassWrapper.addProperty(propertyWrapper);
+		assertSame(specialRootClassWrapper.getProperty("foo").getWrappedObject(), propertyTarget);
 	}
 	
 	@Test
@@ -567,48 +570,50 @@ public class PersistentClassWrapperTest {
 	@Test
 	public void testSetTable() {
 		Table table = new Table("");
+		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper(table);
 		assertNull(rootClassTarget.getTable());
 		assertNull(singleTableSubclassTarget.getTable());
-		rootClassWrapper.setTable(table);
+		rootClassWrapper.setTable(tableWrapper);
 		assertSame(table, rootClassTarget.getTable());
 		assertSame(table, singleTableSubclassTarget.getTable());
 		try {
-			singleTableSubclassWrapper.setTable(new Table(""));
+			singleTableSubclassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("")));
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(e.getMessage(), "Method 'setTable(Table)' is not supported.");
 		}
 		assertNull(joinedSubclassTarget.getTable());
-		joinedSubclassWrapper.setTable(table);
+		joinedSubclassWrapper.setTable(tableWrapper);
 		assertSame(table, joinedSubclassTarget.getTable());
 		assertNull(specialRootClassTarget.getTable());
-		specialRootClassWrapper.setTable(table);
+		specialRootClassWrapper.setTable(tableWrapper);
 		assertSame(table, specialRootClassTarget.getTable());
 	}	
 	
 	@Test
 	public void testSetKey() {
 		Value valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
 		assertNull(rootClassTarget.getKey());
 		assertNull(singleTableSubclassTarget.getKey());
 		assertNull(joinedSubclassTarget.getKey());
 		assertNull(specialRootClassTarget.getKey());
 		try {
-			rootClassWrapper.setKey(valueTarget);
+			rootClassWrapper.setKey(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
 		try {
-			singleTableSubclassWrapper.setKey(valueTarget);
+			singleTableSubclassWrapper.setKey(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
 		}
-		joinedSubclassWrapper.setKey(valueTarget);
+		joinedSubclassWrapper.setKey(valueWrapper);
 		assertSame(valueTarget, joinedSubclassTarget.getKey());
 		try {
-			specialRootClassWrapper.setKey(valueTarget);
+			specialRootClassWrapper.setKey(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("setKey(Value) is only allowed on JoinedSubclass", e.getMessage());
@@ -653,7 +658,7 @@ public class PersistentClassWrapperTest {
 		property.setPersistentClass(pc);
 		SpecialRootClass src = new SpecialRootClass(property);
 		specialRootClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(src);
-		Property parentProperty = specialRootClassWrapper.getParentProperty();
+		PropertyWrapper parentProperty = specialRootClassWrapper.getParentProperty();
 		assertNotNull(parentProperty);
 		assertEquals("foo", parentProperty.getName());
 	}
@@ -661,20 +666,21 @@ public class PersistentClassWrapperTest {
 	@Test
 	public void testSetIdentifierProperty() {
 		Property property = new Property();
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(property);
 		assertNull(rootClassTarget.getIdentifierProperty());
-		rootClassWrapper.setIdentifierProperty(property);
+		rootClassWrapper.setIdentifierProperty(propertyWrapper);
 		assertSame(property, rootClassTarget.getIdentifierProperty());
 		assertNull(specialRootClassTarget.getIdentifierProperty());
-		specialRootClassWrapper.setIdentifierProperty(property);
+		specialRootClassWrapper.setIdentifierProperty(propertyWrapper);
 		assertSame(property, specialRootClassTarget.getIdentifierProperty());
 		try {
-			singleTableSubclassWrapper.setIdentifierProperty(property);
+			singleTableSubclassWrapper.setIdentifierProperty(propertyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
 		}
 		try {
-			joinedSubclassWrapper.setIdentifierProperty(property);
+			joinedSubclassWrapper.setIdentifierProperty(propertyWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("setIdentifierProperty(Property) is only allowed on RootClass instances", e.getMessage());
@@ -684,55 +690,57 @@ public class PersistentClassWrapperTest {
 	@Test
 	public void testSetIdentifier() {
 		KeyValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
 		assertNull(rootClassTarget.getIdentifier());
 		assertNull(singleTableSubclassTarget.getIdentifier());
 		assertNull(joinedSubclassTarget.getIdentifier());
-		rootClassWrapper.setIdentifier(valueTarget);
+		rootClassWrapper.setIdentifier(valueWrapper);
 		assertSame(valueTarget, rootClassTarget.getIdentifier());
 		assertSame(valueTarget, singleTableSubclassTarget.getIdentifier());
 		assertSame(valueTarget, joinedSubclassTarget.getIdentifier());
 		try {
-			singleTableSubclassWrapper.setIdentifier(valueTarget);
+			singleTableSubclassWrapper.setIdentifier(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		try {
-			joinedSubclassWrapper.setIdentifier(valueTarget);
+			joinedSubclassWrapper.setIdentifier(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("Method 'setIdentifier(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		assertNull(specialRootClassTarget.getIdentifier());
-		specialRootClassWrapper.setIdentifier(valueTarget);
+		specialRootClassWrapper.setIdentifier(valueWrapper);
 		assertSame(valueTarget, specialRootClassTarget.getIdentifier());
 	}
 	
 	@Test
 	public void testSetDiscriminator() throws Exception {
 		KeyValue valueTarget = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+		ValueWrapper valueWrapper = ValueWrapperFactory.createValueWrapper(valueTarget);
 		assertNull(rootClassTarget.getDiscriminator());
 		assertNull(singleTableSubclassTarget.getDiscriminator());
 		assertNull(joinedSubclassTarget.getDiscriminator());
 		assertNull(specialRootClassTarget.getDiscriminator());
-		rootClassWrapper.setDiscriminator(valueTarget);
+		rootClassWrapper.setDiscriminator(valueWrapper);
 		assertSame(valueTarget, rootClassTarget.getDiscriminator());
 		assertSame(valueTarget, singleTableSubclassTarget.getDiscriminator());
 		assertSame(valueTarget, joinedSubclassTarget.getDiscriminator());
 		try {
-			singleTableSubclassWrapper.setDiscriminator(valueTarget);
+			singleTableSubclassWrapper.setDiscriminator(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		try {
-			joinedSubclassWrapper.setDiscriminator(valueTarget);
+			joinedSubclassWrapper.setDiscriminator(valueWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals("Method 'setDiscriminator(Value)' can only be called on RootClass instances", e.getMessage());
 		}
 		assertNull(specialRootClassTarget.getDiscriminator());
-		specialRootClassWrapper.setDiscriminator(valueTarget);
+		specialRootClassWrapper.setDiscriminator(valueWrapper);
 		assertSame(valueTarget, specialRootClassTarget.getDiscriminator());
 	}
 	
@@ -774,14 +782,14 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testGetSubclassIterator() {
-		Iterator<?> subclassIterator = rootClassWrapper.getSubclassIterator();
+		Iterator<PersistentClassWrapper> subclassIterator = rootClassWrapper.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass firstSubclass = new Subclass(rootClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		firstSubclass.setEntityName("first");
 		rootClassTarget.addSubclass(firstSubclass);
 		subclassIterator = rootClassWrapper.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(firstSubclass, subclassIterator.next());
+		assertSame(firstSubclass, subclassIterator.next().getWrappedObject());
 		subclassIterator = singleTableSubclassWrapper.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass secondSubclass = new Subclass(singleTableSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -789,7 +797,7 @@ public class PersistentClassWrapperTest {
 		singleTableSubclassTarget.addSubclass(secondSubclass);
 		subclassIterator = singleTableSubclassWrapper.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(secondSubclass, subclassIterator.next());
+		assertSame(secondSubclass, subclassIterator.next().getWrappedObject());
 		subclassIterator = joinedSubclassWrapper.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass thirdSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -797,7 +805,7 @@ public class PersistentClassWrapperTest {
 		joinedSubclassTarget.addSubclass(thirdSubclass);
 		subclassIterator = joinedSubclassWrapper.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(thirdSubclass, subclassIterator.next());
+		assertSame(thirdSubclass, subclassIterator.next().getWrappedObject());
 		subclassIterator = specialRootClassWrapper.getSubclassIterator();
 		assertFalse(subclassIterator.hasNext());
 		Subclass fourthSubclass = new Subclass(joinedSubclassTarget, DummyMetadataBuildingContext.INSTANCE);
@@ -805,7 +813,7 @@ public class PersistentClassWrapperTest {
 		specialRootClassTarget.addSubclass(fourthSubclass);
 		subclassIterator = specialRootClassWrapper.getSubclassIterator();
 		assertTrue(subclassIterator.hasNext());
-		assertSame(fourthSubclass, subclassIterator.next());
+		assertSame(fourthSubclass, subclassIterator.next().getWrappedObject());
 	}
 	
 	@Test
@@ -961,8 +969,8 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testIsJoinedSubclass() {
-		rootClassWrapper.setTable(new Table("foo"));
-		joinedSubclassWrapper.setTable(new Table("oof"));
+		rootClassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("foo")));
+		joinedSubclassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("oof")));
 		assertFalse(rootClassWrapper.isJoinedSubclass());
 		assertFalse(singleTableSubclassWrapper.isJoinedSubclass());
 		assertTrue(joinedSubclassWrapper.isJoinedSubclass());
@@ -1198,12 +1206,12 @@ public class PersistentClassWrapperTest {
 		assertNull(singleTableSubclassWrapper.getRootTable());
 		assertNull(joinedSubclassWrapper.getRootTable());
 		((RootClass)rootClassTarget).setTable(tableTarget);
-		assertSame(tableTarget, rootClassWrapper.getRootTable());
-		assertSame(tableTarget, singleTableSubclassWrapper.getRootTable());
-		assertSame(tableTarget, joinedSubclassWrapper.getRootTable());
+		assertSame(tableTarget, rootClassWrapper.getRootTable().getWrappedObject());
+		assertSame(tableTarget, singleTableSubclassWrapper.getRootTable().getWrappedObject());
+		assertSame(tableTarget, joinedSubclassWrapper.getRootTable().getWrappedObject());
 		assertNull(specialRootClassWrapper.getRootTable());
 		((RootClass)specialRootClassTarget).setTable(tableTarget);
-		assertSame(tableTarget, specialRootClassWrapper.getRootTable());
+		assertSame(tableTarget, specialRootClassWrapper.getRootTable().getWrappedObject());
 	}
 	
 }

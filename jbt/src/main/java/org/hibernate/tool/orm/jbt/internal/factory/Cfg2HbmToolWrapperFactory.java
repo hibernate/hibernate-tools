@@ -33,10 +33,7 @@ public class Cfg2HbmToolWrapperFactory {
 		public String getTag(PropertyWrapper pw) {
 			PersistentClassWrapper persistentClassWrapper = pw.getPersistentClass();
 			if(persistentClassWrapper!=null) {
-				Property v = persistentClassWrapper.getVersion();
-				if (v instanceof Wrapper) {
-					v = (Property)((Wrapper)v).getWrappedObject();
-				}
+				Property v = (Property)persistentClassWrapper.getVersion().getWrappedObject();
 				if(v==pw.getWrappedObject()) {
 					Value pwv = (Value)pw.getValue().getWrappedObject();
 					if (pwv instanceof Wrapper) {
