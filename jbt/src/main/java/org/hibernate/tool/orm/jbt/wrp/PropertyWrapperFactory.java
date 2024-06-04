@@ -36,7 +36,7 @@ public class PropertyWrapperFactory {
 		boolean isInsertable();		
 	}
 	
-	static class DelegatingPropertyWrapperImpl extends Property implements PropertyWrapper, org.hibernate.tool.orm.jbt.api.PropertyWrapper {
+	static class DelegatingPropertyWrapperImpl extends Property implements PropertyWrapper {
 		
 		private Property delegate = null;
 		
@@ -64,7 +64,7 @@ public class PropertyWrapperFactory {
 			Value v = getWrappedObject().getValue();
 			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
 		}
-
+		
 		@Override 
 		public void setName(String name) {
 			getWrappedObject().setName(name);

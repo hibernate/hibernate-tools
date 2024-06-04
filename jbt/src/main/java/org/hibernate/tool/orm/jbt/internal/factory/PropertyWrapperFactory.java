@@ -3,7 +3,11 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
@@ -26,8 +30,9 @@ public class PropertyWrapperFactory {
 		}
 		
 		@Override 
-		public Value getValue() { 
-			return property.getValue(); 
+		public ValueWrapper getValue() { 
+			Value v = property.getValue();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 		}
 		
 		@Override 
@@ -36,13 +41,14 @@ public class PropertyWrapperFactory {
 		}
 		
 		@Override 
-		public void setPersistentClass(PersistentClass pc) { 
-			property.setPersistentClass(pc); 
+		public void setPersistentClass(PersistentClassWrapper pc) { 
+			property.setPersistentClass(pc == null ? null : (PersistentClass)pc.getWrappedObject()); 
 		}
 		
 		@Override 
-		public PersistentClass getPersistentClass() { 
-			return property.getPersistentClass(); 
+		public PersistentClassWrapper getPersistentClass() { 
+			PersistentClass pc = property.getPersistentClass();
+			return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
 		}
 		
 		@Override 
@@ -61,14 +67,18 @@ public class PropertyWrapperFactory {
 		}
 		
 		@Override 
-		public Type getType() { 
+		public TypeWrapper getType() { 
+			Type t = null;
 			Value v = ((Property)getWrappedObject()).getValue();
-			return v == null ? null : v.getType();
+			if (v != null) {
+				t = v.getType();
+			}
+			return t == null ? null : TypeWrapperFactory.createTypeWrapper(t);
 		}
 		
 		@Override 
-		public void setValue(Value value) { 
-			property.setValue(value); 
+		public void setValue(ValueWrapper value) { 
+			property.setValue(value == null ? null : (Value)value.getWrappedObject()); 
 		}
 		
 		@Override 
