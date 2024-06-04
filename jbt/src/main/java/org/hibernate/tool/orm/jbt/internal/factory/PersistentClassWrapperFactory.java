@@ -1,5 +1,6 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +13,11 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.api.JoinWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class PersistentClassWrapperFactory {
@@ -60,40 +65,43 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Property getProperty() {
+		public PropertyWrapper getProperty() {
 			if (!isInstanceOfSpecialRootClass()) {
 				throw new RuntimeException("getProperty() is only allowed on SpecialRootClass");
+			} else {
+				Property p = ((SpecialRootClass)persistentClass).getProperty();
+				return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
 			}
-			return ((SpecialRootClass)persistentClass).getProperty();
 		}
 
 		@Override
-		public void setTable(Table table) {
+		public void setTable(TableWrapper table) {
 			if (isInstanceOfRootClass()) {
-				((RootClass)persistentClass).setTable(table);
+				((RootClass)persistentClass).setTable((Table)table.getWrappedObject());
 			} else if (isInstanceOfJoinedSubclass()) {
-				((JoinedSubclass)persistentClass).setTable(table);
+				((JoinedSubclass)persistentClass).setTable((Table)table.getWrappedObject());
 			} else if (isInstanceOfSpecialRootClass()) {
-				((SpecialRootClass)persistentClass).setTable(table);
+				((SpecialRootClass)persistentClass).setTable((Table)table.getWrappedObject());
 			} else {
 				throw new RuntimeException("Method 'setTable(Table)' is not supported.");
 			}
 		}
 
 		@Override
-		public void setIdentifier(Value value) {
+		public void setIdentifier(ValueWrapper value) {
 			if (!isInstanceOfRootClass()) {
 				throw new RuntimeException("Method 'setIdentifier(Value)' can only be called on RootClass instances");
+			} else {
 			}
-			((RootClass)persistentClass).setIdentifier((KeyValue)value);
+			((RootClass)persistentClass).setIdentifier(value == null ? null : (KeyValue)value.getWrappedObject());
 		}
 
 		@Override
-		public void setKey(Value value) {
+		public void setKey(ValueWrapper value) {
 			if (!isInstanceOfJoinedSubclass()) {
 				throw new RuntimeException("setKey(Value) is only allowed on JoinedSubclass");
 			}
-			((JoinedSubclass)persistentClass).setKey((KeyValue)value);
+			((JoinedSubclass)persistentClass).setKey(value == null ? null : (KeyValue)value.getWrappedObject());
 		}
 
 		@Override
@@ -102,27 +110,29 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Property getParentProperty() {
+		public PropertyWrapper getParentProperty() {
 			if (!isInstanceOfSpecialRootClass()) {
 				throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass");
+			} else {
+				Property p = ((SpecialRootClass)persistentClass).getParentProperty();
+				return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
 			}
-			return ((SpecialRootClass)persistentClass).getParentProperty();
 		}
 
 		@Override
-		public void setIdentifierProperty(Property property) {
+		public void setIdentifierProperty(PropertyWrapper p) {
 			if (!isInstanceOfRootClass()) {
 				throw new RuntimeException("setIdentifierProperty(Property) is only allowed on RootClass instances");
 			}
-			((RootClass)persistentClass).setIdentifierProperty(property);
+			((RootClass)persistentClass).setIdentifierProperty(p == null ? null : (Property)p.getWrappedObject());
 		}
 
 		@Override
-		public void setDiscriminator(Value value) {
+		public void setDiscriminator(ValueWrapper value) {
 			if (!isInstanceOfRootClass()) {
 				throw new RuntimeException("Method 'setDiscriminator(Value)' can only be called on RootClass instances"); 
 			}
-			((RootClass)persistentClass).setDiscriminator(value);
+			((RootClass)persistentClass).setDiscriminator(value == null ? null : (Value)value.getWrappedObject());
 		}
 
 		@Override
@@ -134,22 +144,22 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Iterator<Property> getPropertyIterator() {
+		public Iterator<PropertyWrapper> getPropertyIterator() {
 			return getProperties().iterator();
 		}
 
 		@Override
-		public Iterator<Join> getJoinIterator() {
+		public Iterator<JoinWrapper> getJoinIterator() {
 			return getJoins().iterator();
 		}
 
 		@Override
-		public Iterator<Subclass> getSubclassIterator() {
+		public Iterator<PersistentClassWrapper> getSubclassIterator() {
 			return getSubclasses().iterator(); 
 		}
 
 		@Override
-		public Iterator<Property> getPropertyClosureIterator() {
+		public Iterator<PropertyWrapper> getPropertyClosureIterator() {
 			return getPropertyClosure().iterator();
 		}
 
@@ -164,8 +174,9 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Property getIdentifierProperty() {
-			return persistentClass.getIdentifierProperty();
+		public PropertyWrapper getIdentifierProperty() {
+			Property p = persistentClass.getIdentifierProperty();
+			return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
 		}
 
 		@Override
@@ -174,23 +185,27 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public PersistentClass getRootClass() {
-			return persistentClass.getRootClass();
+		public PersistentClassWrapper getRootClass() {
+			PersistentClass pc = persistentClass.getRootClass();
+			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
 		}
 
 		@Override
-		public PersistentClass getSuperclass() {
-			return persistentClass.getSuperclass();
+		public PersistentClassWrapper getSuperclass() {
+			PersistentClass pc = persistentClass.getSuperclass();
+			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
 		}
 
 		@Override
-		public Property getProperty(String name) {
-			return persistentClass.getProperty(name);
+		public PropertyWrapper getProperty(String name) {
+			Property p = persistentClass.getProperty(name);
+			return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
 		}
 
 		@Override
-		public Table getTable() {
-			return persistentClass.getTable();
+		public TableWrapper getTable() {
+			Table t = persistentClass.getTable();
+			return t == null ? null : TableWrapperFactory.createTableWrapper(t);
 		}
 
 		@Override
@@ -199,18 +214,21 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Value getDiscriminator() {
-			return persistentClass.getDiscriminator();
+		public ValueWrapper getDiscriminator() {
+			Value v = persistentClass.getDiscriminator();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 		}
 
 		@Override
-		public Value getIdentifier() {
-			return persistentClass.getIdentifier();
+		public ValueWrapper getIdentifier() {
+			Value v = persistentClass.getIdentifier();
+			return v == null ? null : ValueWrapperFactory.createValueWrapper(v);
 		}
 
 		@Override
-		public Property getVersion() {
-			return persistentClass.getVersion();
+		public PropertyWrapper getVersion() {
+			Property p = persistentClass.getVersion();
+			return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
 		}
 
 		@Override
@@ -234,8 +252,8 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public void addProperty(Property p) {
-			persistentClass.addProperty(p);
+		public void addProperty(PropertyWrapper p) {
+			persistentClass.addProperty((Property)p.getWrappedObject());
 		}
 
 		@Override
@@ -364,28 +382,45 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public Table getRootTable() {
-			return persistentClass.getRootTable();
+		public TableWrapper getRootTable() {
+			Table t = persistentClass.getRootTable();
+			return t == null ? null : TableWrapperFactory.createTableWrapper(t);
 		}
 
 		@Override
-		public List<Property> getProperties() {
-			return persistentClass.getProperties();
+		public List<PropertyWrapper> getProperties() {
+			List<PropertyWrapper> result = new ArrayList<PropertyWrapper>();
+			for (Property p : persistentClass.getProperties()) {
+				result.add(PropertyWrapperFactory.createPropertyWrapper(p));
+			}
+			return result;
 		}
 
 		@Override
-		public List<Join> getJoins() {
-			return persistentClass.getJoins();
+		public List<JoinWrapper> getJoins() {
+			List<JoinWrapper> result = new ArrayList<JoinWrapper>();
+			for (Join j : persistentClass.getJoins()) {
+				result.add(JoinWrapperFactory.createJoinWrapper(j));
+			}
+			return result;
 		}
 
 		@Override
-		public List<Subclass> getSubclasses() {
-			return persistentClass.getSubclasses();
+		public List<PersistentClassWrapper> getSubclasses() {
+			List<PersistentClassWrapper> result = new ArrayList<PersistentClassWrapper>();
+			for (Subclass s : persistentClass.getSubclasses()) {
+				result.add(PersistentClassWrapperFactory.createPersistentClassWrapper(s));
+			}
+			return result;
 		}
 
 		@Override
-		public List<Property> getPropertyClosure() {
-			return persistentClass.getPropertyClosure();
+		public List<PropertyWrapper> getPropertyClosure() {
+			List<PropertyWrapper> result = new ArrayList<PropertyWrapper>();
+			for (Property p : persistentClass.getPropertyClosure()) {
+				result.add(PropertyWrapperFactory.createPropertyWrapper(p));
+			}
+			return result;
 		}
 		
 	}
