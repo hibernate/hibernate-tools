@@ -10,12 +10,12 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.PersistentClassWrapperExtension;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.wrp.DelegatingTableWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory.PersistentClassWrapperExtension;
 
 public class DelegatingPersistentClassWrapperImpl extends RootClass implements PersistentClassWrapperExtension {
 	

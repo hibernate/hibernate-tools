@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.internal.factory;
+package org.hibernate.tool.orm.jbt.wrp;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -19,10 +19,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
-import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class PersistentClassWrapperFactory {
 	
