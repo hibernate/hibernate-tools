@@ -7,7 +7,6 @@ import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
@@ -48,7 +47,7 @@ public class PropertyWrapperFactory {
 		@Override 
 		public PersistentClassWrapper getPersistentClass() { 
 			PersistentClass pc = property.getPersistentClass();
-			return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
+			return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
 		}
 		
 		@Override 

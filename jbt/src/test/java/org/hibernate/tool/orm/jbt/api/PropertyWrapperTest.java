@@ -17,11 +17,10 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.type.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,7 +60,7 @@ public class PropertyWrapperTest {
 	@Test
 	public void testSetPersistentClass() {
 		PersistentClass persistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
-		PersistentClassWrapper persistentClassWrapper = new DelegatingPersistentClassWrapperImpl(persistentClass);
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(persistentClass);
 		assertNull(wrappedProperty.getPersistentClass());
 		propertyWrapper.setPersistentClass(persistentClassWrapper);
 		assertSame(persistentClass, wrappedProperty.getPersistentClass());
