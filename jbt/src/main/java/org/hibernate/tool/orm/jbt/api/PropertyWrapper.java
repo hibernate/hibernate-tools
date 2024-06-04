@@ -1,21 +1,18 @@
 package org.hibernate.tool.orm.jbt.api;
 
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-import org.hibernate.type.Type;
 
 public interface PropertyWrapper extends Wrapper {
 
-	Value getValue();
+	ValueWrapper getValue();
 	void setName(String name);
-	void setPersistentClass(PersistentClass pc);
-	PersistentClass getPersistentClass();
+	void setPersistentClass(PersistentClassWrapper pc);
+	PersistentClassWrapper getPersistentClass();
 	boolean isComposite();
 	String getPropertyAccessorName();
 	String getName();
-	Type getType();
-	void setValue(Value value);
+	TypeWrapper getType();
+	void setValue(ValueWrapper value);
 	void setPropertyAccessorName(String s);
 	void setCascade(String s);
 	boolean isBackRef();

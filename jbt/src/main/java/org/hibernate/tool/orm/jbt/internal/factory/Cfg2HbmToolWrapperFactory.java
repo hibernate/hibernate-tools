@@ -31,14 +31,14 @@ public class Cfg2HbmToolWrapperFactory {
 		}
 		
 		public String getTag(PropertyWrapper pw) {
-			PersistentClass persistentClass = pw.getPersistentClass();
-			if(persistentClass!=null) {
-				Property v = persistentClass.getVersion();
+			PersistentClassWrapper persistentClassWrapper = pw.getPersistentClass();
+			if(persistentClassWrapper!=null) {
+				Property v = persistentClassWrapper.getVersion();
 				if (v instanceof Wrapper) {
 					v = (Property)((Wrapper)v).getWrappedObject();
 				}
 				if(v==pw.getWrappedObject()) {
-					Value pwv = pw.getValue();
+					Value pwv = (Value)pw.getValue().getWrappedObject();
 					if (pwv instanceof Wrapper) {
 						pwv = (Value)((Wrapper)pwv).getWrappedObject();
 					}
@@ -50,7 +50,7 @@ public class Cfg2HbmToolWrapperFactory {
 					}
 				}
 			}
-			String toolTag = (String) pw.getValue().accept(HBMTagForValueVisitor.INSTANCE);
+			String toolTag = (String)((Value)pw.getValue().getWrappedObject()).accept(HBMTagForValueVisitor.INSTANCE);
 			if ("component".equals(toolTag) && "embedded".equals(pw.getPropertyAccessorName())){
 				toolTag = "properties";
 			}
