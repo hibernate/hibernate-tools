@@ -6,9 +6,9 @@ import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,8 @@ public class Cfg2HbmToolWrapperTest {
 
 	@Test
 	public void testGetTagPersistentClass() {
-		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 		assertEquals("class", wrapper.getTag(persistentClassWrapper));
 	}
 
