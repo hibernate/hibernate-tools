@@ -21,7 +21,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -92,23 +91,11 @@ public class NativeConfiguration extends Configuration implements ExtendedConfig
 	}
 	
 	public Iterator<PersistentClass> getClassMappings() {
-		final Iterator<PersistentClass> iterator = getMetadata().getEntityBindings().iterator();
-		return new Iterator<PersistentClass>() {
-			@Override
-			public boolean hasNext() {
-				return iterator.hasNext();
-			}
-			@Override
-			public PersistentClass next() {
-				return new DelegatingPersistentClassWrapperImpl(iterator.next());
-			}
-			
-		};
+		return getMetadata().getEntityBindings().iterator();
 	}
 	
 	public PersistentClass getClassMapping(String name) {
-		PersistentClass pc = getMetadata().getEntityBinding(name);
-		return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
+		return getMetadata().getEntityBinding(name);
 	}
 	
 	public Iterator<Table> getTableMappings() {

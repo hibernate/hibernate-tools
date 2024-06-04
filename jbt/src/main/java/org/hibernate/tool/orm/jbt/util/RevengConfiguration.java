@@ -13,7 +13,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -54,17 +53,7 @@ public class RevengConfiguration extends Configuration implements ExtendedConfig
 	
 	public Iterator<PersistentClass> getClassMappings() {
 		if (metadata != null) {
-			final Iterator<PersistentClass> iterator = metadata.getEntityBindings().iterator();
-			return new Iterator<PersistentClass>() {
-				@Override
-				public boolean hasNext() {
-					return iterator.hasNext();
-				}
-				@Override
-				public PersistentClass next() {
-					return new DelegatingPersistentClassWrapperImpl(iterator.next());
-				}
-			};
+			return metadata.getEntityBindings().iterator();
 		} else {
 			return Collections.emptyIterator();
 		}
@@ -75,7 +64,7 @@ public class RevengConfiguration extends Configuration implements ExtendedConfig
 		if (metadata != null) {
 			pc = metadata.getEntityBinding(name);
 		}
-		return (pc != null) ? new DelegatingPersistentClassWrapperImpl(pc) : null;
+		return pc;
 	}
 	
 	public Iterator<Table> getTableMappings() {

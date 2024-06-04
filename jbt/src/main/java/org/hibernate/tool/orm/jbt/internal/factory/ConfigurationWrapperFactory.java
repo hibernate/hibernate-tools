@@ -15,7 +15,6 @@ import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -133,7 +132,7 @@ public class ConfigurationWrapperFactory {
 					}
 					@Override
 					public PersistentClassWrapper next() {
-						return new DelegatingPersistentClassWrapperImpl(classMappings.next());
+						return PersistentClassWrapperFactory.createPersistentClassWrapper(classMappings.next());
 					}				
 				};
 			}
@@ -166,7 +165,7 @@ public class ConfigurationWrapperFactory {
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
 				PersistentClass classMapping = ((ExtendedConfiguration)wrappedConfiguration).getClassMapping(string);
 				if (classMapping != null) {
-					return new DelegatingPersistentClassWrapperImpl(classMapping);
+					return PersistentClassWrapperFactory.createPersistentClassWrapper(classMapping);
 				}
 			}
 			return null;

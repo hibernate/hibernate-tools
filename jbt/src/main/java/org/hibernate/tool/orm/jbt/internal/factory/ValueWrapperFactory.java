@@ -35,7 +35,6 @@ import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
 
 public class ValueWrapperFactory {
 
@@ -358,10 +357,10 @@ public class ValueWrapperFactory {
 			PersistentClass owner = null;
 			if (isCollection()) {
 				owner = ((Collection)value).getOwner();
-				return owner == null ? null : new DelegatingPersistentClassWrapperImpl(owner);
+				return owner == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(owner);
 			} else if (isComponent()) {
 				owner = ((Component)value).getOwner();
-				return owner == null ? null : new DelegatingPersistentClassWrapperImpl(owner);
+				return owner == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(owner);
 			} else {
 				throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getOwner()'." ); 
 			}
@@ -427,7 +426,7 @@ public class ValueWrapperFactory {
 		public  PersistentClassWrapper getAssociatedClass() { 
 			if (isOneToMany()) {
 				PersistentClass pc = ((OneToMany)value).getAssociatedClass();
-				return pc == null ? null : new DelegatingPersistentClassWrapperImpl(pc);
+				return pc == null ? null : PersistentClassWrapperFactory.createPersistentClassWrapper(pc);
 			} else {
 			throw new UnsupportedOperationException("Class '" + value.getClass().getName() + "' does not support 'getAssociatedClass()'." ); 
 			}

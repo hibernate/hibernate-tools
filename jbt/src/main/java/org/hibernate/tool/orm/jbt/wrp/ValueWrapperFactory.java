@@ -31,7 +31,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.internal.util.DelegatingPersistentClassWrapperImpl;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.type.Type;
 
 public class ValueWrapperFactory {
@@ -137,7 +137,7 @@ public class ValueWrapperFactory {
 					} else if ("getPropertyIterator".equals(valueClassMethod.getName())) {
 						result = createWrappedPropertyIterator((Iterator<?>)result);
 					} else if (result != null && "getAssociatedClass".equals(valueClassMethod.getName())) {
-						result = new DelegatingPersistentClassWrapperImpl((PersistentClass)result);
+						result = PersistentClassWrapperFactory.createPersistentClassWrapper((PersistentClass)result);
 					} else if (result != null && "getType".equals(method.getName())) {
 						result = TypeWrapperFactory.createTypeWrapper((Type)result);
 					}
