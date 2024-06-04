@@ -15,6 +15,7 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PrimaryKeyWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +40,9 @@ public class PrimaryKeyWrapperTest {
 	@Test
 	public void testAddColumn() throws Exception {
 		Column column = new Column("foo");
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper(column);
 		assertTrue(wrappedPrimaryKey.getColumns().isEmpty());
-		primaryKeyWrapper.addColumn(column);
+		primaryKeyWrapper.addColumn(columnWrapper);
 		assertEquals(1, wrappedPrimaryKey.getColumns().size());
 		assertSame(column, wrappedPrimaryKey.getColumns().get(0));
 	}
@@ -57,10 +59,10 @@ public class PrimaryKeyWrapperTest {
 		Column column = new Column("foo");
 		assertTrue(primaryKeyWrapper.getColumns().isEmpty());
 		wrappedPrimaryKey.addColumn(column);
-		List<Column> columns = primaryKeyWrapper.getColumns();
+		List<ColumnWrapper> columns = primaryKeyWrapper.getColumns();
 		assertNotNull(columns);
 		assertEquals(1, columns.size());
-		assertSame(column, columns.get(0));
+		assertSame(column, columns.get(0).getWrappedObject());
 	}
 	
 	@Test
@@ -73,25 +75,26 @@ public class PrimaryKeyWrapperTest {
 		}
 		Column column = new Column();
 		wrappedPrimaryKey.addColumn(column);
-		Column c = primaryKeyWrapper.getColumn(0);
+		ColumnWrapper c = primaryKeyWrapper.getColumn(0);
 		assertNotNull(c);
-		assertSame(column, c);
+		assertSame(column, c.getWrappedObject());
 	}
 	
 	@Test
 	public void testGetTable() throws Exception {
 		Table table = new Table("foo");
-		assertNotSame(table, primaryKeyWrapper.getTable());
+		assertNotSame(table, primaryKeyWrapper.getTable().getWrappedObject());
 		wrappedPrimaryKey.setTable(table);
-		assertSame(table, primaryKeyWrapper.getTable());
+		assertSame(table, primaryKeyWrapper.getTable().getWrappedObject());
 	}
 	
 	@Test
 	public void testContainsColumn() {
 		Column column = new Column("foo");
-		assertFalse(primaryKeyWrapper.containsColumn(column));
+		ColumnWrapper columnWrapper = ColumnWrapperFactory.createColumnWrapper(column);
+		assertFalse(primaryKeyWrapper.containsColumn(columnWrapper));
 		wrappedPrimaryKey.addColumn(column);
-		assertTrue(primaryKeyWrapper.containsColumn(column));
+		assertTrue(primaryKeyWrapper.containsColumn(columnWrapper));
 	}
 	
 	@Test
@@ -99,9 +102,9 @@ public class PrimaryKeyWrapperTest {
 		assertFalse(primaryKeyWrapper.columnIterator().hasNext());
 		Column column = new Column();
 		wrappedPrimaryKey.addColumn(column);
-		Iterator<Column> columnIterator = primaryKeyWrapper.columnIterator();
+		Iterator<ColumnWrapper> columnIterator = primaryKeyWrapper.columnIterator();
 		assertTrue(columnIterator.hasNext());
-		assertSame(column, columnIterator.next());
+		assertSame(column, columnIterator.next().getWrappedObject());
 	}
 	
 	@Test

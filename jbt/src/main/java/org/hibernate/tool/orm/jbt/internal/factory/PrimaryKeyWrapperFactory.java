@@ -1,12 +1,15 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
+import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.PrimaryKeyWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
 
 public class PrimaryKeyWrapperFactory {
 
@@ -28,8 +31,8 @@ public class PrimaryKeyWrapperFactory {
 		}
 		
 		@Override 
-		public void addColumn(Column column) { 
-			primaryKey.addColumn(column); 
+		public void addColumn(ColumnWrapper column) { 
+			primaryKey.addColumn((Column)column.getWrappedObject()); 
 		}
 		
 		@Override 
@@ -38,27 +41,32 @@ public class PrimaryKeyWrapperFactory {
 		}
 		
 		@Override 
-		public List<Column> getColumns() { 
-			return primaryKey.getColumns(); 
+		public List<ColumnWrapper> getColumns() { 
+			List<ColumnWrapper> result = new ArrayList<ColumnWrapper>();
+			for (Column c : primaryKey.getColumns()) {
+				result.add(ColumnWrapperFactory.createColumnWrapper(c));
+			}
+			return result; 
 		}
 		
 		@Override 
-		public Column getColumn(int i) { 
-			return primaryKey.getColumn(i); 
+		public ColumnWrapper getColumn(int i) { 
+			return ColumnWrapperFactory.createColumnWrapper(primaryKey.getColumn(i)); 
 		}
 		
 		@Override 
-		public Table getTable() { 
-			return primaryKey.getTable(); 
+		public TableWrapper getTable() { 
+			Table t = primaryKey.getTable();
+			return t == null ? null : TableWrapperFactory.createTableWrapper(t); 
 		}
 		
 		@Override 
-		public boolean containsColumn(Column column) { 
-			return primaryKey.containsColumn(column); 
+		public boolean containsColumn(ColumnWrapper column) { 
+			return primaryKey.containsColumn((Column)column.getWrappedObject()); 
 		}
 		
 		@Override 
-		public Iterator<Column> columnIterator() { 
+		public Iterator<ColumnWrapper> columnIterator() { 
 			return getColumns().iterator(); 
 		}
 		
