@@ -51,6 +51,7 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
@@ -213,7 +214,7 @@ public class WrapperFactoryTest {
 		PersistentClass persistentClass = (PersistentClass)((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
 		assertTrue(persistentClass instanceof SpecialRootClass);
 		assertSame(
-				((Wrapper)((SpecialRootClass)persistentClass).getProperty()).getWrappedObject(), 
+				((SpecialRootClass)persistentClass).getProperty(), 
 				((Wrapper)propertyWrapper).getWrappedObject());		
 	}
 	
@@ -319,7 +320,9 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateOneToOneWrapper() {
-		PersistentClassWrapper persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
+		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		PersistentClassWrapper persistentClassWrapper = 
+				org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(rc);
 		PersistentClass persistentClassTarget = (PersistentClass)persistentClassWrapper.getWrappedObject();
 		Table tableTarget = new Table("", "foo");
 		((RootClass)persistentClassTarget).setTable(tableTarget);
