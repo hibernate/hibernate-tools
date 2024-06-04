@@ -61,7 +61,9 @@ public class PropertyWrapperFactoryTest {
 	
 	@Test
 	public void testSetPersistentClass() {
-		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
+		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		PersistentClassWrapper persistentClass = 
+				org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(rc);
 		assertNull(wrappedProperty.getPersistentClass());
 		propertyWrapper.setPersistentClass((PersistentClass)persistentClass.getWrappedObject());
 		assertSame(persistentClass.getWrappedObject(), wrappedProperty.getPersistentClass());
@@ -69,11 +71,13 @@ public class PropertyWrapperFactoryTest {
 	
 	@Test
 	public void testGetPersistentClass() {
-		PersistentClassWrapper persistentClass = PersistentClassWrapperFactory.createRootClassWrapper();
+		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		PersistentClassWrapper persistentClassWrapper = 
+				org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(rc);
 		assertNull(propertyWrapper.getPersistentClass());
-		wrappedProperty.setPersistentClass((PersistentClass)persistentClass.getWrappedObject());
-		PersistentClassWrapper persistentClassWrapper = (PersistentClassWrapper)propertyWrapper.getPersistentClass();
-		assertSame(persistentClass.getWrappedObject(), persistentClassWrapper.getWrappedObject());
+		wrappedProperty.setPersistentClass((PersistentClass)persistentClassWrapper.getWrappedObject());
+		PersistentClass persistentClass = propertyWrapper.getPersistentClass();
+		assertSame(persistentClass, persistentClassWrapper.getWrappedObject());
 	}
 	
 	@Test

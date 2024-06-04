@@ -39,10 +39,10 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.PersistentClassWrapperFactory;
 import org.hibernate.type.AnyType;
 import org.hibernate.type.ArrayType;
 import org.hibernate.type.BagType;
@@ -96,8 +96,8 @@ public class ValueWrapperTest {
 
 	@BeforeEach
 	public void beforeEach() {
-		persistentClassWrapper = PersistentClassWrapperFactory.createRootClassWrapper();
-		wrappedPersistentClass = (PersistentClass)persistentClassWrapper.getWrappedObject();
+		wrappedPersistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
+		persistentClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(wrappedPersistentClass);
 
 		wrappedTable = new Table("HT");
 		tableWrapper = TableWrapperFactory.createTableWrapper(wrappedTable);

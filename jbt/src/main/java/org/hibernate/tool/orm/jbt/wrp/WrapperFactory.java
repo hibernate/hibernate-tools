@@ -13,6 +13,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -22,14 +23,15 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
@@ -38,7 +40,7 @@ import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
-import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class WrapperFactory {
 	
@@ -87,22 +89,26 @@ public class WrapperFactory {
 	}
 
 	public static Object createRootClassWrapper() {
-		return PersistentClassWrapperFactory.createRootClassWrapper();
+		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(
+				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 	}
 
 	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
-		return PersistentClassWrapperFactory
-				.createSingleTableSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
+		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		SingleTableSubclass sts = new SingleTableSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
+		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(sts);
 	}
 
 	public static Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
-		return PersistentClassWrapperFactory
-				.createJoinedSubclassWrapper((PersistentClassWrapper)persistentClassWrapper);
+		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		JoinedSubclass js = new JoinedSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
+		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(js);
 	}
 
 	public static Object createSpecialRootClassWrapper(Object propertyWrapper) {
-		return PersistentClassWrapperFactory
-				.createSpecialRootClassWrapper((PropertyWrapper)propertyWrapper);
+		Property p = (Property)((Wrapper)propertyWrapper).getWrappedObject();
+		SpecialRootClass src = new SpecialRootClass(p);
+		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(src);
 	}
 
 	public static Object createPropertyWrapper() {
