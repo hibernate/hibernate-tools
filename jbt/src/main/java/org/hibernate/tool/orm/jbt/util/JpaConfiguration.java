@@ -14,8 +14,9 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
-import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -24,7 +25,7 @@ import jakarta.persistence.EntityManagerFactory;
 public class JpaConfiguration extends Configuration implements ExtendedConfiguration {
 
 	Metadata metadata = null;
-	SessionFactoryWrapper sessionFactory;
+	SessionFactory sessionFactory;
 	
 	String persistenceUnit;
 	
@@ -171,8 +172,7 @@ public class JpaConfiguration extends Configuration implements ExtendedConfigura
 							getProperties());
 		EntityManagerFactory entityManagerFactory = 
 				entityManagerFactoryBuilder.build();
-		sessionFactory = new SessionFactoryWrapper(
-				(SessionFactoryImplementor)entityManagerFactory);
+		sessionFactory = (SessionFactory)entityManagerFactory;
 		metadata = entityManagerFactoryBuilder.getMetadata();
 		getProperties().putAll(entityManagerFactory.getProperties());
 	}
