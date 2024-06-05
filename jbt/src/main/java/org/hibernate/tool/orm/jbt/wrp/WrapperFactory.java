@@ -35,6 +35,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -56,7 +57,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createNamingStrategyWrapper(String namingStrategyClassName) {
-		return NamingStrategyWrapperFactory.create(namingStrategyClassName);
+		return NamingStrategyWrapperFactory.createNamingStrategyWrapper(namingStrategyClassName);
 	}
 	
 	public static Object createOverrideRepositoryWrapper() {
