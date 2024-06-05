@@ -34,8 +34,8 @@ public class RevengStrategyWrapperTest {
 	
 	@Test
 	public void testSetSettings() throws Exception {
-		RevengSettings revengSettings = new RevengSettings(null);
-		RevengSettingsWrapper revengSettingsWrapper = RevengSettingsWrapperFactory.createRevengSettingsWrapper(revengSettings);
+		RevengSettingsWrapper revengSettingsWrapper = RevengSettingsWrapperFactory.createRevengSettingsWrapper(null);
+		RevengSettings revengSettings = (RevengSettings)revengSettingsWrapper.getWrappedObject();
 		Field field = AbstractStrategy.class.getDeclaredField("settings");
 		field.setAccessible(true);
 		assertNotSame(field.get(wrappedRevengStrategy), revengSettings);

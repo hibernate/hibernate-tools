@@ -51,6 +51,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -140,8 +141,9 @@ public class WrapperFactoryTest {
 		RevengStrategy strategy = new DefaultStrategy();
 		reverseEngineeringSettingsWrapper = WrapperFactory.createRevengSettingsWrapper(strategy);
 		assertNotNull(reverseEngineeringSettingsWrapper);
-		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettings);
-		assertSame(strategy, ((RevengSettings)reverseEngineeringSettingsWrapper).getRootStrategy());
+		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettingsWrapper);
+		RevengSettings revengSettings = (RevengSettings)((RevengSettingsWrapper)reverseEngineeringSettingsWrapper).getWrappedObject();
+		assertSame(strategy, revengSettings.getRootStrategy());
 	}
 	
 	@Test

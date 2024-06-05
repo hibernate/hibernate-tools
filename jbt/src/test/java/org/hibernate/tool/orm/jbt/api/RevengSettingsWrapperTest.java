@@ -17,8 +17,8 @@ public class RevengSettingsWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedRevengSettings = new RevengSettings(null);
-		revengSettingsWrapper = RevengSettingsWrapperFactory.createRevengSettingsWrapper(wrappedRevengSettings);
+		revengSettingsWrapper = RevengSettingsWrapperFactory.createRevengSettingsWrapper(null);
+		wrappedRevengSettings = (RevengSettings)revengSettingsWrapper.getWrappedObject();
 	}
 	
 	@Test
