@@ -48,6 +48,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
@@ -150,7 +151,9 @@ public class WrapperFactoryTest {
 	public void testCreateNativeConfigurationWrapper() {
 		Object configurationWrapper = WrapperFactory.createNativeConfigurationWrapper();
 		assertNotNull(configurationWrapper);
-		assertTrue(configurationWrapper instanceof NativeConfiguration);
+		assertTrue(configurationWrapper instanceof ConfigurationWrapper);
+		Object wrappedConfiguration = ((ConfigurationWrapper)configurationWrapper).getWrappedObject();
+		assertTrue(wrappedConfiguration instanceof NativeConfiguration);
 	}
 		
 	@Test
