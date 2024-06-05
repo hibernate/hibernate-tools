@@ -27,7 +27,6 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -37,6 +36,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -70,7 +70,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createRevengSettingsWrapper(Object revengStrategy) {
-		return new RevengSettings((RevengStrategy)(revengStrategy));
+		return RevengSettingsWrapperFactory.createRevengSettingsWrapper(revengStrategy);
 	}
 	
 	public static Object createNativeConfigurationWrapper() {
