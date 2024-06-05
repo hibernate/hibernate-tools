@@ -32,7 +32,6 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
@@ -630,8 +629,8 @@ public class ConfigurationWrapperTest {
 	
 	@Test
 	public void testSetReverseEngineeringStrategy() {
-		RevengStrategy reverseEngineeringStrategy = new DefaultStrategy();
-		RevengStrategyWrapper revengStrategyWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper(reverseEngineeringStrategy);
+		RevengStrategyWrapper revengStrategyWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper();
+		RevengStrategy reverseEngineeringStrategy = (RevengStrategy)revengStrategyWrapper.getWrappedObject();
 		// For native configuration 
 		try {
 			nativeConfigurationWrapper.setReverseEngineeringStrategy(revengStrategyWrapper);

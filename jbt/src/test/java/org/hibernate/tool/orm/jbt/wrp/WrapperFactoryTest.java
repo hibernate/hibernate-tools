@@ -119,7 +119,8 @@ public class WrapperFactoryTest {
 		Object reverseEngineeringStrategyWrapper = WrapperFactory
 				.createRevengStrategyWrapper();
 		assertNotNull(reverseEngineeringStrategyWrapper);
-		assertTrue(reverseEngineeringStrategyWrapper instanceof DefaultStrategy);
+		assertTrue(reverseEngineeringStrategyWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)reverseEngineeringStrategyWrapper).getWrappedObject() instanceof DefaultStrategy);
 		reverseEngineeringStrategyWrapper = null;
 		assertNull(reverseEngineeringStrategyWrapper);
 		RevengStrategy delegate = new TestRevengStrategy();
@@ -128,8 +129,9 @@ public class WrapperFactoryTest {
 						TestDelegatingStrategy.class.getName(), 
 						delegate);
 		assertNotNull(reverseEngineeringStrategyWrapper);
-		assertTrue(reverseEngineeringStrategyWrapper instanceof TestDelegatingStrategy);
-		assertSame(delegateField.get(reverseEngineeringStrategyWrapper), delegate);
+		assertTrue(reverseEngineeringStrategyWrapper instanceof Wrapper);
+		assertTrue(((Wrapper)reverseEngineeringStrategyWrapper).getWrappedObject() instanceof TestDelegatingStrategy);
+		assertSame(delegateField.get(((Wrapper)reverseEngineeringStrategyWrapper).getWrappedObject()), delegate);
 	}
 	
 	@Test
