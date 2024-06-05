@@ -39,8 +39,8 @@ public class OverrideRepositoryWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedOverrideRepository = new OverrideRepository();
-		overrideRepositoryWrapper = OverrideRepositoryWrapperFactory.createOverrideRepositoryWrapper(wrappedOverrideRepository);
+		overrideRepositoryWrapper = OverrideRepositoryWrapperFactory.createOverrideRepositoryWrapper();
+		wrappedOverrideRepository = (OverrideRepository)overrideRepositoryWrapper.getWrappedObject();
 	}
 	
 	@Test

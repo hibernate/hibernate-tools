@@ -49,6 +49,7 @@ import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -106,7 +107,9 @@ public class WrapperFactoryTest {
 	public void testCreateOverrideRepositoryWrapper() {
 		Object overrideRepositoryWrapper = WrapperFactory.createOverrideRepositoryWrapper();
 		assertNotNull(overrideRepositoryWrapper);
-		assertTrue(overrideRepositoryWrapper instanceof OverrideRepository);
+		assertTrue(overrideRepositoryWrapper instanceof OverrideRepositoryWrapper);
+		Object wrappedOverrideRepository = ((Wrapper)overrideRepositoryWrapper).getWrappedObject();
+		assertTrue(wrappedOverrideRepository instanceof OverrideRepository);
 	}
 	
 	@Test

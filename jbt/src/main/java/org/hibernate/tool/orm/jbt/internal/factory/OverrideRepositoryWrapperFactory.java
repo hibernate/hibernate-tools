@@ -11,11 +11,15 @@ import org.hibernate.tool.orm.jbt.api.TableFilterWrapper;
 
 public class OverrideRepositoryWrapperFactory {
 
-	public static OverrideRepositoryWrapper createOverrideRepositoryWrapper(OverrideRepository wrappedOverrideRepository) {
+	public static OverrideRepositoryWrapper createOverrideRepositoryWrapper() {
+		return createOverrideRepositoryWrapper(new OverrideRepository());
+	}
+	
+	static OverrideRepositoryWrapper createOverrideRepositoryWrapper(OverrideRepository wrappedOverrideRepository) {
 		return new OverrideRepositoryWrapperImpl(wrappedOverrideRepository);
 	}
 	
-	public static class OverrideRepositoryWrapperImpl implements OverrideRepositoryWrapper {
+	private static class OverrideRepositoryWrapperImpl implements OverrideRepositoryWrapper {
 		
 		private OverrideRepository overrideRepository = null;
 		
@@ -45,5 +49,5 @@ public class OverrideRepositoryWrapperFactory {
 		}
 
 	}
-	
+
 }
