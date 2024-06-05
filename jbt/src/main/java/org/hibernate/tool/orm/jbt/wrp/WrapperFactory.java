@@ -35,6 +35,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -89,26 +90,26 @@ public class WrapperFactory {
 	}
 
 	public static Object createRootClassWrapper() {
-		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(
+		return PersistentClassWrapperFactory.createPersistentClassWrapper(
 				new RootClass(DummyMetadataBuildingContext.INSTANCE));
 	}
 
 	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
 		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		SingleTableSubclass sts = new SingleTableSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
-		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(sts);
+		return PersistentClassWrapperFactory.createPersistentClassWrapper(sts);
 	}
 
 	public static Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
 		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
 		JoinedSubclass js = new JoinedSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
-		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(js);
+		return PersistentClassWrapperFactory.createPersistentClassWrapper(js);
 	}
 
 	public static Object createSpecialRootClassWrapper(Object propertyWrapper) {
 		Property p = (Property)((Wrapper)propertyWrapper).getWrappedObject();
 		SpecialRootClass src = new SpecialRootClass(p);
-		return org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory.createPersistentClassWrapper(src);
+		return PersistentClassWrapperFactory.createPersistentClassWrapper(src);
 	}
 
 	public static Object createPropertyWrapper() {
