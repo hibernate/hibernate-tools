@@ -251,8 +251,9 @@ public class ConfigurationWrapperTest {
 	
 	@Test
 	public void testSetNamingStrategy() throws Exception {
-		NamingStrategy namingStrategy = new DefaultNamingStrategy();
-		NamingStrategyWrapper namingStrategyWrapper = NamingStrategyWrapperFactory.createNamingStrategyWrapper(namingStrategy);
+		NamingStrategyWrapper namingStrategyWrapper = 
+				NamingStrategyWrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
+		NamingStrategy namingStrategy = (NamingStrategy)namingStrategyWrapper.getWrappedObject();
 		// For native configuration
 		Field namingStrategyField = wrappedNativeConfiguration.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);

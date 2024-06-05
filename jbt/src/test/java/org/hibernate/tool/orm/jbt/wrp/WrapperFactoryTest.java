@@ -15,7 +15,6 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -49,6 +48,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -88,11 +88,9 @@ public class WrapperFactoryTest {
 	public void testCreateNamingStrategyWrapper() {
 		Object namingStrategyWrapper = WrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
 		assertNotNull(namingStrategyWrapper);
-		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapperFactory.StrategyClassNameProvider);
-		assertEquals(
-				((NamingStrategyWrapperFactory.StrategyClassNameProvider)namingStrategyWrapper).getStrategyClassName(),
-				DefaultNamingStrategy.class.getName());
-		assertTrue(namingStrategyWrapper instanceof NamingStrategy);
+		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapper);
+		Object wrappedNamingStrategy = ((NamingStrategyWrapper)namingStrategyWrapper).getWrappedObject();
+		assertTrue(wrappedNamingStrategy instanceof DefaultNamingStrategy);
 		namingStrategyWrapper = null;
 		assertNull(namingStrategyWrapper);
 		try {

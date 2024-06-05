@@ -2,10 +2,15 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
+import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class NamingStrategyWrapperFactory {
+	
+	public static NamingStrategyWrapper createNamingStrategyWrapper(String className) {
+		return createNamingStrategyWrapper((NamingStrategy)ReflectUtil.createInstance(className));
+	}
 
-	public static NamingStrategyWrapper createNamingStrategyWrapper(NamingStrategy wrappedNamingStrategy) {
+	static NamingStrategyWrapper createNamingStrategyWrapper(NamingStrategy wrappedNamingStrategy) {
 		return new NamingStrategyWrapperImpl(wrappedNamingStrategy);
 	}
 	
