@@ -9,8 +9,10 @@ import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -52,7 +54,7 @@ public class CollectionPersisterWrapperFactoryTest {
 	private CollectionPersister collectionPersisterWrapper = null;
 	private CollectionPersister wrappedCollectionPersister = null;
 	
-	private SessionFactoryWrapper sessionFactory = null;
+	private SessionFactory sessionFactory = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -65,12 +67,14 @@ public class CollectionPersisterWrapperFactoryTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		Configuration configuration = (Configuration)WrapperFactory.createNativeConfigurationWrapper();
+		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		sessionFactory = (SessionFactoryWrapper)configuration.buildSessionFactory();
-		collectionPersisterWrapper = sessionFactory.getCollectionMetadata(Foo.class.getName() + ".bars");
-	    wrappedCollectionPersister = (CollectionPersister)((Wrapper)collectionPersisterWrapper).getWrappedObject();
+		sessionFactory = configuration.buildSessionFactory();
+		wrappedCollectionPersister = ((SessionFactoryImplementor)sessionFactory)
+				.getMetamodel()
+				.collectionPersister(Foo.class.getName() + ".bars");
+		collectionPersisterWrapper = (CollectionPersister)CollectionPersisterWrapperFactory.create(wrappedCollectionPersister);
 	}
 	
 	@Test

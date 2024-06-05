@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -65,7 +66,7 @@ public class EntityPersisterWrapperFactoryTest {
 	private EntityPersister entityPersisterWrapper = null;
 	private EntityPersister wrappedEntityPersister = null;
 	
-	private SessionFactoryWrapper sessionFactory = null;
+	private SessionFactory sessionFactory = null;
 	
 	@BeforeEach
 	public void beforeEach() throws Exception {
@@ -78,12 +79,14 @@ public class EntityPersisterWrapperFactoryTest {
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
-		Configuration configuration = (Configuration)WrapperFactory.createNativeConfigurationWrapper();
+		Configuration configuration = new Configuration();
 		configuration.addFile(hbmXmlFile);
 		configuration.configure(cfgXmlFile);
-		sessionFactory = (SessionFactoryWrapper)configuration.buildSessionFactory();
-	    entityPersisterWrapper = sessionFactory.getClassMetadata(Foo.class.getName());
-	    wrappedEntityPersister = (EntityPersister)((Wrapper)entityPersisterWrapper).getWrappedObject();
+		sessionFactory = configuration.buildSessionFactory();
+	    wrappedEntityPersister = ((SessionFactoryImplementor)sessionFactory)
+				.getMetamodel()
+				.entityPersister(Foo.class.getName());
+	    entityPersisterWrapper = (EntityPersister)EntityPersisterWrapperFactory.create(wrappedEntityPersister);
 	}
 	
 	@Test
@@ -155,7 +158,7 @@ public class EntityPersisterWrapperFactoryTest {
 	
 	@Test 
 	public void testGetIdentifier() {
-		SharedSessionContractImplementor sessionFacade = sessionFactory.openSession();
+		SharedSessionContractImplementor sessionFacade = (SharedSessionContractImplementor)sessionFactory.openSession();
 		Foo foo = new Foo();
 		foo.id = "bar";
 		Object identifier = entityPersisterWrapper.getIdentifier(foo, sessionFacade);

@@ -32,6 +32,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
@@ -74,7 +75,7 @@ public class WrapperFactory {
 	}
 	
 	public static Object createNativeConfigurationWrapper() {
-		return new NativeConfiguration();
+		return ConfigurationWrapperFactory.createConfigurationWrapper(new NativeConfiguration());
 	}
 	
 	public static Object createRevengConfigurationWrapper() {
