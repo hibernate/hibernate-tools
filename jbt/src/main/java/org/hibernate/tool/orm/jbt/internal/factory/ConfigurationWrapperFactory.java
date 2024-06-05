@@ -16,11 +16,16 @@ import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
+import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
 public class ConfigurationWrapperFactory {
 
+	public static ConfigurationWrapper createNativeConfigurationWrapper() {
+		return createConfigurationWrapper(new NativeConfiguration());
+	}
+	
 	public static ConfigurationWrapper createConfigurationWrapper(final Configuration wrappedConfiguration) {
 		return new ConfigurationWrapperImpl(wrappedConfiguration);
 	}
