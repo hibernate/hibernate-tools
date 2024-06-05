@@ -29,7 +29,6 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.wrp.SessionFactoryWrapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,8 +114,7 @@ public class JpaConfigurationTest {
 	public void testSetProperties() {
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
 		jpaConfiguration.metadata = (Metadata)createDummy(Metadata.class);
-		jpaConfiguration.sessionFactory = new SessionFactoryWrapper(
-				(SessionFactory)createDummy(SessionFactoryImplementor.class));
+		jpaConfiguration.sessionFactory = (SessionFactory)createDummy(SessionFactoryImplementor.class);
 		assertNull(jpaConfiguration.getProperty("foo"));
 		Properties properties = new Properties();
 		properties.put("foo", "bar");
@@ -133,8 +131,7 @@ public class JpaConfigurationTest {
 		properties.put("foo", "bar");
 		JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", properties);
 		jpaConfiguration.metadata = (Metadata)createDummy(Metadata.class);
-		jpaConfiguration.sessionFactory = new SessionFactoryWrapper(
-				(SessionFactory)createDummy(SessionFactoryImplementor.class));
+		jpaConfiguration.sessionFactory = (SessionFactory)createDummy(SessionFactoryImplementor.class);
 		assertEquals("bar", jpaConfiguration.getProperty("foo"));
 		assertNull(jpaConfiguration.getProperty("bar"));
 		properties = new Properties();
@@ -164,7 +161,7 @@ public class JpaConfigurationTest {
 		assertNotNull(jpaConfiguration.metadata);
 		assertNotNull(jpaConfiguration.metadata.getEntityBinding(FooBar.class.getName()));
 		assertNotNull(jpaConfiguration.sessionFactory);
-		assertEquals("bar", jpaConfiguration.sessionFactory.getProperties().get("foo"));
+		assertEquals("bar", ((SessionFactoryImplementor)jpaConfiguration.sessionFactory).getProperties().get("foo"));
 		assertEquals("bar", jpaConfiguration.getProperties().get("foo"));
 	}
 	
