@@ -74,8 +74,8 @@ public class OverrideRepositoryWrapperTest {
 	
 	@Test
 	public void testGetReverseEngineeringStrategy() throws Exception {
-		RevengStrategy rev = new DefaultStrategy();
-		RevengStrategyWrapper revWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper(rev);
+		RevengStrategyWrapper revWrapper = RevengStrategyWrapperFactory.createRevengStrategyWrapper();
+		RevengStrategy rev = (RevengStrategy)revWrapper.getWrappedObject();
 		Field delegateField = DelegatingStrategy.class.getDeclaredField("delegate");
 		delegateField.setAccessible(true);
 		RevengStrategyWrapper delegatingStrategy = overrideRepositoryWrapper.getReverseEngineeringStrategy(revWrapper);
