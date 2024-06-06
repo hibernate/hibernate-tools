@@ -37,7 +37,7 @@ public class ConfigurationWrapperFactory {
 		return new ConfigurationWrapperImpl(new JpaConfiguration(persistenceUnit, properties));
 	}
 	
-	public static ConfigurationWrapper createConfigurationWrapper(final Configuration wrappedConfiguration) {
+	private static ConfigurationWrapper createConfigurationWrapper(final Configuration wrappedConfiguration) {
 		return new ConfigurationWrapperImpl(wrappedConfiguration);
 	}
 	
