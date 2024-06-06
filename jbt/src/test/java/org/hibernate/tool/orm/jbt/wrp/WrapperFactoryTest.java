@@ -169,7 +169,9 @@ public class WrapperFactoryTest {
 	public void testCreateJpaConfigurationWrapper() {
 		Object configurationWrapper = WrapperFactory.createJpaConfigurationWrapper(null, null);
 		assertNotNull(configurationWrapper);
-		assertTrue(configurationWrapper instanceof JpaConfiguration);
+		assertTrue(configurationWrapper instanceof ConfigurationWrapper);
+		Object wrappedConfiguration = ((ConfigurationWrapper)configurationWrapper).getWrappedObject();
+		assertTrue(wrappedConfiguration instanceof JpaConfiguration);
 	}
 	
 	@Test
