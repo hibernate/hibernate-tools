@@ -40,7 +40,6 @@ import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory
 import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
@@ -80,10 +79,8 @@ public class WrapperFactory {
 		return ConfigurationWrapperFactory.createRevengConfigurationWrapper();
 	}
 
-	public static Object createJpaConfigurationWrapper(
-			String persistenceUnit, 
-			Map<?,?> properties) {
-		return new JpaConfiguration(persistenceUnit, properties);
+	public static Object createJpaConfigurationWrapper(String persistenceUnit, Map<?,?> properties) {
+		return ConfigurationWrapperFactory.createJpaConfigurationWrapper(persistenceUnit, properties);
 	}
 
 	public static Object createColumnWrapper(String name) {
