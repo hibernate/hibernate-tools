@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -16,6 +17,7 @@ import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
+import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.w3c.dom.Document;
@@ -29,6 +31,10 @@ public class ConfigurationWrapperFactory {
 	
 	public static ConfigurationWrapper createRevengConfigurationWrapper() {
 		return createConfigurationWrapper(new RevengConfiguration());
+	}
+	
+	public static ConfigurationWrapper createJpaConfigurationWrapper(String persistenceUnit, Map<?,?> properties) {
+		return new ConfigurationWrapperImpl(new JpaConfiguration(persistenceUnit, properties));
 	}
 	
 	public static ConfigurationWrapper createConfigurationWrapper(final Configuration wrappedConfiguration) {
