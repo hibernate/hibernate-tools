@@ -160,7 +160,9 @@ public class WrapperFactoryTest {
 	public void testCreateRevengConfigurationWrapper() {
 		Object configurationWrapper = WrapperFactory.createRevengConfigurationWrapper();
 		assertNotNull(configurationWrapper);
-		assertTrue(configurationWrapper instanceof RevengConfiguration);
+		assertTrue(configurationWrapper instanceof ConfigurationWrapper);
+		Object wrappedConfiguration = ((ConfigurationWrapper)configurationWrapper).getWrappedObject();
+		assertTrue(wrappedConfiguration instanceof RevengConfiguration);
 	}
 		
 	@Test

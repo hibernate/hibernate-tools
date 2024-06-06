@@ -42,7 +42,6 @@ import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class WrapperFactory {
@@ -78,7 +77,7 @@ public class WrapperFactory {
 	}
 	
 	public static Object createRevengConfigurationWrapper() {
-		return new RevengConfiguration();
+		return ConfigurationWrapperFactory.createRevengConfigurationWrapper();
 	}
 
 	public static Object createJpaConfigurationWrapper(
