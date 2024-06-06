@@ -49,9 +49,9 @@ public class ExporterWrapperTest {
 	public void testSetConfiguration() throws Exception {
 		Object metadataDescriptor = null;
 		Properties properties = new Properties();
-		Configuration configuration = new Configuration();
+		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		Configuration configuration = (Configuration)configurationWrapper.getWrappedObject();
 		configuration.setProperties(properties);
-		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(configuration);
 		Field field = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		field.setAccessible(true);
 		// First use the TestExporter 

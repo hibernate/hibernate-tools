@@ -865,14 +865,14 @@ public class ConfigurationWrapperTest {
 	}
 	
 	private void initializeFacadesAndTargets() {
-		wrappedNativeConfiguration = new NativeConfiguration();
+		nativeConfigurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		wrappedNativeConfiguration = (NativeConfiguration)nativeConfigurationWrapper.getWrappedObject();
 		wrappedNativeConfiguration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 		wrappedNativeConfiguration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		nativeConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedNativeConfiguration);
-		wrappedRevengConfiguration = new RevengConfiguration();
-		revengConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedRevengConfiguration);
-		wrappedJpaConfiguration = new JpaConfiguration(null, null);
-		jpaConfigurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(wrappedJpaConfiguration);
+		revengConfigurationWrapper = ConfigurationWrapperFactory.createRevengConfigurationWrapper();
+		wrappedRevengConfiguration = (RevengConfiguration)revengConfigurationWrapper.getWrappedObject();
+		jpaConfigurationWrapper = ConfigurationWrapperFactory.createJpaConfigurationWrapper(null, null);
+		wrappedJpaConfiguration = (JpaConfiguration)jpaConfigurationWrapper.getWrappedObject();
 	}
 	
 }

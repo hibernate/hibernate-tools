@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
@@ -63,10 +62,9 @@ public class ColumnWrapperTest {
 		columnWrapper = ColumnWrapperFactory.createColumnWrapper((String)null);
 		wrappedColumn = (Column)columnWrapper.getWrappedObject();
 		wrappedColumn.setValue(createValue());
-		Configuration configuration = new Configuration();
-		configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
-		configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
-		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createConfigurationWrapper(configuration);
+		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		configurationWrapper.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
+		configurationWrapper.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		assertEquals("integer", columnWrapper.getSqlType(configurationWrapper));
 	}
 	
