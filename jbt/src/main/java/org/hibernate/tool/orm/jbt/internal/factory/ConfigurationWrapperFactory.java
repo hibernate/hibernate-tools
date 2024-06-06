@@ -17,6 +17,7 @@ import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -24,6 +25,10 @@ public class ConfigurationWrapperFactory {
 
 	public static ConfigurationWrapper createNativeConfigurationWrapper() {
 		return createConfigurationWrapper(new NativeConfiguration());
+	}
+	
+	public static ConfigurationWrapper createRevengConfigurationWrapper() {
+		return createConfigurationWrapper(new RevengConfiguration());
 	}
 	
 	public static ConfigurationWrapper createConfigurationWrapper(final Configuration wrappedConfiguration) {
