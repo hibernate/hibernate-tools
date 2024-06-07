@@ -17,7 +17,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DatabaseReaderWrapperFactoryTest {
+public class DatabaseReaderWrapperTest {
 	
 	private DatabaseReaderWrapper databaseReaderWrapper = null;
 	

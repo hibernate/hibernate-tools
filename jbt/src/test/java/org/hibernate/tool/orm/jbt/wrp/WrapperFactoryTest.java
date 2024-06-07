@@ -18,6 +18,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -48,6 +49,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
@@ -179,7 +181,9 @@ public class WrapperFactoryTest {
 	public void testCreateColumnWrapper() {
 		Object columnWrapper = WrapperFactory.createColumnWrapper(null);
 		assertNotNull(columnWrapper);
-		assertTrue(columnWrapper instanceof DelegatingColumnWrapperImpl);
+		assertTrue(columnWrapper instanceof ColumnWrapper);
+		Object wrappedColumn = ((ColumnWrapper)columnWrapper).getWrappedObject();
+		assertTrue(wrappedColumn instanceof Column);
 	}
 	
 	@Test
