@@ -54,6 +54,13 @@ public class ValueWrapperFactory {
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
+	public static Object createListWrapper(Object persistentClassWrapper) {
+		return createValueWrapper(
+				new List(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+	}
+	
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}
