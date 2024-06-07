@@ -569,15 +569,15 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testSetTable() {
-		Table table = new Table("");
-		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper(table);
+		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper("");
+		Table table = (Table)tableWrapper.getWrappedObject();
 		assertNull(rootClassTarget.getTable());
 		assertNull(singleTableSubclassTarget.getTable());
 		rootClassWrapper.setTable(tableWrapper);
 		assertSame(table, rootClassTarget.getTable());
 		assertSame(table, singleTableSubclassTarget.getTable());
 		try {
-			singleTableSubclassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("")));
+			singleTableSubclassWrapper.setTable(tableWrapper);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(e.getMessage(), "Method 'setTable(Table)' is not supported.");
@@ -969,8 +969,8 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testIsJoinedSubclass() {
-		rootClassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("foo")));
-		joinedSubclassWrapper.setTable(TableWrapperFactory.createTableWrapper(new Table("oof")));
+		rootClassWrapper.setTable(TableWrapperFactory.createTableWrapper("foo"));
+		joinedSubclassWrapper.setTable(TableWrapperFactory.createTableWrapper("oof"));
 		assertFalse(rootClassWrapper.isJoinedSubclass());
 		assertFalse(singleTableSubclassWrapper.isJoinedSubclass());
 		assertTrue(joinedSubclassWrapper.isJoinedSubclass());
