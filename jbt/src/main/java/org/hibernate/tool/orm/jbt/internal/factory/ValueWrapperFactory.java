@@ -46,42 +46,42 @@ public class ValueWrapperFactory {
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
-	public static Object createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new Bag(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
-	public static Object createListWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createListWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new List(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 	
-	public static Object createManyToOneWrapper(TableWrapper tableWrapper) {
+	public static ValueWrapper createManyToOneWrapper(TableWrapper tableWrapper) {
 		return createValueWrapper(
 				new ManyToOne(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)tableWrapper.getWrappedObject()));
 	}
 
-	public static Object createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new org.hibernate.mapping.Map(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
-	public static Object createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new OneToMany(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
-	public static Object createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
 		PersistentClass pc = (PersistentClass)persistentClassWrapper.getWrappedObject();
 		return createValueWrapper(
 				new OneToOne(
@@ -90,9 +90,16 @@ public class ValueWrapperFactory {
 						pc));
 	}
 
-	public static Object createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
+	public static ValueWrapper createPrimitiveArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new PrimitiveArray(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+
+	public static ValueWrapper createSetWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return createValueWrapper(
+				new Set(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}

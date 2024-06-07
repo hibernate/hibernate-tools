@@ -12,7 +12,6 @@ import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -156,10 +155,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createSetWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new Set(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createSetWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createSimpleValueWrapper() {
