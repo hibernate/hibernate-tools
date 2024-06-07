@@ -54,13 +54,20 @@ public class ValueWrapperFactory {
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
-	public static Object createListWrapper(Object persistentClassWrapper) {
+	public static Object createListWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new List(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 	
+	public static Object createManyToOneWrapper(TableWrapper tableWrapper) {
+		return ValueWrapperFactory.createValueWrapper(
+				new ManyToOne(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)tableWrapper.getWrappedObject()));
+	}
+
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}

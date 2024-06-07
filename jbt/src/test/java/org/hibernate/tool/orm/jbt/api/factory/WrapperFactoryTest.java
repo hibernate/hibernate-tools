@@ -59,6 +59,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -310,8 +311,9 @@ public class WrapperFactoryTest {
 
 	@Test
 	public void testCreateManyToOneWrapper() {
-		Table table = new Table("", "foo");
-		Object manyToOneWrapper = WrapperFactory.createManyToOneWrapper(table);
+		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper("foo");
+		Table table = (Table)tableWrapper.getWrappedObject();
+		Object manyToOneWrapper = WrapperFactory.createManyToOneWrapper(tableWrapper);
 		Value wrappedManyToOne = (Value)((Wrapper)manyToOneWrapper).getWrappedObject();
 		assertTrue(wrappedManyToOne instanceof ManyToOne);
 		assertSame(table, wrappedManyToOne.getTable());
