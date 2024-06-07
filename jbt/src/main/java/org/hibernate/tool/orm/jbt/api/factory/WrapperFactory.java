@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
-import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
@@ -159,7 +158,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createSimpleValueWrapper() {
-		return ValueWrapperFactory.createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
+		return ValueWrapperFactory.createSimpleValueWrapper();
 	}
 
 	public static Object createComponentWrapper(Object persistentClassWrapper) {
