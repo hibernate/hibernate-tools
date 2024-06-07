@@ -21,7 +21,6 @@ import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class PersistentClassWrapperFactory {
 	
@@ -29,10 +28,16 @@ public class PersistentClassWrapperFactory {
 		return createPersistentClassWrapper(new RootClass(DummyMetadataBuildingContext.INSTANCE));
 	}
 	
-	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
-		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+	public static Object createSingleTableSubClassWrapper(PersistentClassWrapper persistentClassWrapper) {
+		PersistentClass pc = (PersistentClass)persistentClassWrapper.getWrappedObject();
 		SingleTableSubclass sts = new SingleTableSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
 		return createPersistentClassWrapper(sts);
+	}
+
+	public static Object createJoinedTableSubClassWrapper(PersistentClassWrapper persistentClassWrapper) {
+		PersistentClass pc = (PersistentClass)persistentClassWrapper.getWrappedObject();
+		JoinedSubclass js = new JoinedSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
+		return PersistentClassWrapperFactory.createPersistentClassWrapper(js);
 	}
 
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClass wrappedPersistentClass) {
