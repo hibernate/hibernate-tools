@@ -58,6 +58,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
@@ -432,7 +433,10 @@ public class WrapperFactoryTest {
 	public void testCreateTableFilterWrapper() {
 		Object tableFilterWrapper = WrapperFactory.createTableFilterWrapper();
 		assertNotNull(tableFilterWrapper);
-		assertTrue(tableFilterWrapper instanceof TableFilter);
+		assertTrue(tableFilterWrapper instanceof TableFilterWrapper);
+		Object wrappedTableFilter = ((Wrapper)tableFilterWrapper).getWrappedObject();
+		assertTrue(wrappedTableFilter instanceof TableFilter);
+		
 	}
 	
 	@Test

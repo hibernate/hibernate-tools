@@ -4,8 +4,12 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
 
 public class TableFilterWrapperFactory {
+	
+	public static TableFilterWrapper createTableFilterWrapper() {
+		return createTableFilterWrapper(new TableFilter());
+	}
 
-	public static TableFilterWrapper createTableFilterWrapper(TableFilter wrappedTableFilter) {
+	private static TableFilterWrapper createTableFilterWrapper(TableFilter wrappedTableFilter) {
 		return new TableFilterWrapperImpl(wrappedTableFilter);
 	}
 	

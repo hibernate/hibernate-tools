@@ -84,8 +84,8 @@ public class OverrideRepositoryWrapperTest {
 	
 	@Test
 	public void testAddTableFilter() throws Exception {
-		TableFilter tableFilter = new TableFilter();
-		TableFilterWrapper tableFilterWrapper = TableFilterWrapperFactory.createTableFilterWrapper(tableFilter);
+		TableFilterWrapper tableFilterWrapper = TableFilterWrapperFactory.createTableFilterWrapper();
+		TableFilter tableFilter = (TableFilter)tableFilterWrapper.getWrappedObject();
 		Field tableFiltersField = OverrideRepository.class.getDeclaredField("tableFilters");
 		tableFiltersField.setAccessible(true);
 		List<?> tableFilters = (List<?>)tableFiltersField.get(wrappedOverrideRepository);
