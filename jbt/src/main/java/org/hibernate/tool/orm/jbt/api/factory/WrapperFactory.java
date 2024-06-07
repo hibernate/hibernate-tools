@@ -6,13 +6,11 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
-import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -127,10 +125,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createListWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new List(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createListWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 	
 	public static Object createDatabaseReaderWrapper(Properties properties, Object revengStrategy) {
