@@ -11,7 +11,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
@@ -147,10 +146,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createOneToManyWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new OneToMany(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createOneToManyWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createOneToOneWrapper(Object persistentClassWrapper) {
