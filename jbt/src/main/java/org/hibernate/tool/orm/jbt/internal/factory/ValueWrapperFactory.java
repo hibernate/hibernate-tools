@@ -35,8 +35,17 @@ import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class ValueWrapperFactory {
+
+	public static ValueWrapper createArrayWrapper(Object persistentClassWrapper) {
+		return createValueWrapper(
+				new Array(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+	}
 
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
