@@ -131,6 +131,13 @@ public class ValueWrapperFactory {
 						(Table)tableWrapper.getWrappedObject()));
 	}
 
+	public static ValueWrapper createIdentifierBagValueWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return createValueWrapper(
+				new IdentifierBag(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}

@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.IdentifierBag;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -29,14 +27,12 @@ import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class WrapperFactory {
 	
@@ -170,10 +166,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createIdentifierBagValueWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new IdentifierBag(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createIdentifierBagValueWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createTableFilterWrapper() {
