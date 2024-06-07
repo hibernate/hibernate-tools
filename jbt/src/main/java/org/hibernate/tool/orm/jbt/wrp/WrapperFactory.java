@@ -32,6 +32,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.HqlCompletionProposalWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
@@ -107,9 +108,8 @@ public class WrapperFactory {
 	}
 
 	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
-		return HqlCompletionProposalWrapperFactory
-				.createHqlCompletionProposalWrapper(
-						(HQLCompletionProposal)hqlCompletionProposalTarget);
+		return HqlCompletionProposalWrapperFactory.createHqlCompletionProposalWrapper(
+				(HQLCompletionProposal)hqlCompletionProposalTarget);
 	}
 	
 	public static Object createArrayWrapper(Object persistentClassWrapper) {
