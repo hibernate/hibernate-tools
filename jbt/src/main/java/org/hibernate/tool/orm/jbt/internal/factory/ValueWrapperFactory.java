@@ -36,7 +36,6 @@ import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class ValueWrapperFactory {
 
@@ -44,21 +43,21 @@ public class ValueWrapperFactory {
 		return createValueWrapper(
 				new Array(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static Object createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new Bag(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static Object createListWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new List(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 	
 	public static Object createManyToOneWrapper(TableWrapper tableWrapper) {
@@ -72,7 +71,14 @@ public class ValueWrapperFactory {
 		return createValueWrapper(
 				new org.hibernate.mapping.Map(
 						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+
+	public static Object createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return ValueWrapperFactory.createValueWrapper(
+				new OneToMany(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
