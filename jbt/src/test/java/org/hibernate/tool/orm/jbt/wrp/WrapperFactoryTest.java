@@ -53,6 +53,7 @@ import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.RevengSettingsWrapper;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
@@ -322,12 +323,12 @@ public class WrapperFactoryTest {
 	public void testCreateOneToManyWrapper() {
 		Object persistentClassWrapper = WrapperFactory.createRootClassWrapper();
 		PersistentClass persistentClassTarget = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
-		Table tableWrapper = (Table)WrapperFactory.createTableWrapper("foo");
-		((RootClass)persistentClassTarget).setTable(tableWrapper);
+		TableWrapper tableWrapper = (TableWrapper)WrapperFactory.createTableWrapper("foo");
+		((RootClass)persistentClassTarget).setTable((Table)tableWrapper.getWrappedObject());
 		Object oneToManyWrapper = WrapperFactory.createOneToManyWrapper(persistentClassWrapper);
 		Value wrappedOneToMany = ((ValueWrapper)oneToManyWrapper).getWrappedObject();
 		assertTrue(wrappedOneToMany instanceof OneToMany);
-		assertSame(((OneToMany)wrappedOneToMany).getTable(), tableWrapper);
+		assertSame(((OneToMany)wrappedOneToMany).getTable(), tableWrapper.getWrappedObject());
 	}
 	
 	@Test
