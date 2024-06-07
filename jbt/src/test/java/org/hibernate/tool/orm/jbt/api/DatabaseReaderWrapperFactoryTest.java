@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,9 +13,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
-import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
-import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapperImpl;
+import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,9 +34,7 @@ public class DatabaseReaderWrapperFactoryTest {
 	@Test
 	public void testConstruction() {
 		assertNotNull(databaseReaderWrapper);
-		assertTrue(databaseReaderWrapper instanceof DatabaseReaderWrapperImpl);
-		assertNotNull(((DatabaseReaderWrapperImpl)databaseReaderWrapper).databaseReader);
-		assertNotNull(((DatabaseReaderWrapperImpl)databaseReaderWrapper).revengMetadataCollector);
+		assertTrue(databaseReaderWrapper instanceof DatabaseReaderWrapper);
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.internal.factory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +20,8 @@ import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
+import org.hibernate.tool.orm.jbt.api.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
-import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 
 public class DatabaseReaderWrapperFactory {
 	
@@ -29,10 +29,6 @@ public class DatabaseReaderWrapperFactory {
 			Properties properties, 
 			RevengStrategy revengStrategy) {
 		return new DatabaseReaderWrapperImpl(properties, revengStrategy);
-	}
-	
-	static interface DatabaseReaderWrapper extends Wrapper {
-		Map<String, List<TableWrapper>> collectDatabaseTables();
 	}
 	
 	static class DatabaseReaderWrapperImpl implements DatabaseReaderWrapper {
