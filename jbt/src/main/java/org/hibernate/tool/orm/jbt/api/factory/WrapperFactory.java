@@ -11,7 +11,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
@@ -23,6 +22,7 @@ import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
@@ -138,11 +138,8 @@ public class WrapperFactory {
 		return TableWrapperFactory.createTableWrapper(name);
 	}
 
-	public static Object createManyToOneWrapper(Object table) {
-		return ValueWrapperFactory.createValueWrapper(
-				new ManyToOne(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(Table)table));
+	public static Object createManyToOneWrapper(Object tableWrapper) {
+		return ValueWrapperFactory.createManyToOneWrapper((TableWrapper)tableWrapper);
 	}
 
 	public static Object createMapWrapper(Object persistentClassWrapper) {

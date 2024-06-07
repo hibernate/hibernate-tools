@@ -13,7 +13,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 
 public class TableWrapperFactory {
 
-	public static Object createTableWrapper(String name) {
+	public static TableWrapper createTableWrapper(String name) {
 		Table t = new Table("Hibernate Tools", name);
 		t.setPrimaryKey(new PrimaryKey(t));
 		return TableWrapperFactory.createTableWrapper(t);
