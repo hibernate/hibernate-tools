@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
+
 import org.hibernate.mapping.Backref;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
@@ -31,8 +33,8 @@ public class PropertyWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedProperty = new Property();
-		propertyWrapper = (PropertyWrapper)PropertyWrapperFactory.createPropertyWrapper(wrappedProperty);
+		propertyWrapper = PropertyWrapperFactory.createPropertyWrapper();
+		wrappedProperty = (Property)propertyWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -137,7 +139,9 @@ public class PropertyWrapperTest {
 	@Test
 	public void testIsBackRef() throws Exception {
 		assertFalse(propertyWrapper.isBackRef());
-		propertyWrapper = (PropertyWrapper)PropertyWrapperFactory.createPropertyWrapper(new Backref());
+		Field field = propertyWrapper.getClass().getDeclaredField("property");
+		field.setAccessible(true);
+		field.set(propertyWrapper, new Backref());
 		assertTrue(propertyWrapper.isBackRef());
 	}
 	

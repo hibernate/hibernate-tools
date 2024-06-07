@@ -35,6 +35,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
@@ -105,7 +106,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createPropertyWrapper() {
-		return PropertyWrapperFactory.createPropertyWrapper(new Property());
+		return PropertyWrapperFactory.createPropertyWrapper();
 	}
 
 	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {

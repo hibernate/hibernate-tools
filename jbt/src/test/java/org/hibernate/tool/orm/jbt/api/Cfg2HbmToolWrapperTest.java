@@ -30,8 +30,8 @@ public class Cfg2HbmToolWrapperTest {
 
 	@Test
 	public void testGetTagProperty() throws Exception {
-		Property property = new Property();
-		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(property);
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper();
+		Property property = (Property)propertyWrapper.getWrappedObject();
 		RootClass rc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		BasicValue basicValue = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		basicValue.setTypeName("foobar");
