@@ -55,6 +55,7 @@ import org.hibernate.tool.orm.jbt.api.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
@@ -66,7 +67,6 @@ import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCompletionProposalWrapperFactory.HqlCompletionProposalWrapper;
-import org.hibernate.tool.orm.jbt.wrp.PropertyWrapperFactory.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
 import org.junit.jupiter.api.Test;
 

@@ -11,7 +11,11 @@ import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
 
-	public static PropertyWrapper createPropertyWrapper(Property wrappedProperty) {
+	public static PropertyWrapper createPropertyWrapper() {
+		return createPropertyWrapper(new Property());
+	}
+	
+	static PropertyWrapper createPropertyWrapper(Property wrappedProperty) {
 		return new PropertyWrapperImpl(wrappedProperty);
 	}
 	
@@ -137,5 +141,5 @@ public class PropertyWrapperFactory {
 		
 
 	}
-	
+
 }

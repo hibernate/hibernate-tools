@@ -56,7 +56,7 @@ public class PersistentClassWrapperTest {
 		singleTableSubclassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(singleTableSubclassTarget);
 		joinedSubclassTarget = new JoinedSubclass(rootClassTarget, DummyMetadataBuildingContext.INSTANCE);
 		joinedSubclassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(joinedSubclassTarget);
-		property = PropertyWrapperFactory.createPropertyWrapper(new Property());
+		property = PropertyWrapperFactory.createPropertyWrapper();
 		property.setPersistentClass(rootClassWrapper);
 		specialRootClassTarget = new SpecialRootClass((Property)property.getWrappedObject());
 		specialRootClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(specialRootClassTarget);
@@ -540,9 +540,9 @@ public class PersistentClassWrapperTest {
 					"property [foo] not found on entity [null]", 
 					e.getMessage());
 		}
-		Property propertyTarget = new Property();
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper();
+		Property propertyTarget = (Property)propertyWrapper.getWrappedObject();
 		propertyTarget.setName("foo");
-		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(propertyTarget);
 		rootClassWrapper.addProperty(propertyWrapper);
 		assertSame(rootClassTarget.getProperty("foo"), propertyTarget);
 		assertSame(singleTableSubclassTarget.getProperty("foo"), propertyTarget);
@@ -652,7 +652,7 @@ public class PersistentClassWrapperTest {
 		PersistentClass pc = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		Component component = new Component(DummyMetadataBuildingContext.INSTANCE, pc);
 		component.setParentProperty("foo");
-		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(new Property());
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper();
 		Property property = (Property)propertyWrapper.getWrappedObject();
 		property.setValue(component);
 		property.setPersistentClass(pc);
@@ -665,8 +665,8 @@ public class PersistentClassWrapperTest {
 	
 	@Test
 	public void testSetIdentifierProperty() {
-		Property property = new Property();
-		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper(property);
+		PropertyWrapper propertyWrapper = PropertyWrapperFactory.createPropertyWrapper();
+		Property property = (Property)propertyWrapper.getWrappedObject();
 		assertNull(rootClassTarget.getIdentifierProperty());
 		rootClassWrapper.setIdentifierProperty(propertyWrapper);
 		assertSame(property, rootClassTarget.getIdentifierProperty());
