@@ -124,6 +124,13 @@ public class ValueWrapperFactory {
 						(KeyValue)valueWrapper.getWrappedObject()));
 	}
 
+	public static ValueWrapper createAnyValueWrapper(TableWrapper tableWrapper) {
+		return createValueWrapper(
+				new Any(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)tableWrapper.getWrappedObject()));
+	}
+
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}
