@@ -116,6 +116,14 @@ public class ValueWrapperFactory {
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
 	}
 	
+	public static ValueWrapper createDependantValueWrapper(TableWrapper tableWrapper, ValueWrapper valueWrapper) {
+		return createValueWrapper(
+				new DependantValue(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(Table)tableWrapper.getWrappedObject(), 
+						(KeyValue)valueWrapper.getWrappedObject()));
+	}
+
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}

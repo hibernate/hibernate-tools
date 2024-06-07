@@ -396,9 +396,10 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateDependantValueWrapper() {
-		Table tableTarget = new Table("", "foo");
+		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper("foo");
+		Table tableTarget = (Table)tableWrapper.getWrappedObject();
 		Object valueWrapper = WrapperFactory.createSimpleValueWrapper();
-		Object dependantValueWrapper = WrapperFactory.createDependantValueWrapper(tableTarget, valueWrapper);
+		Object dependantValueWrapper = WrapperFactory.createDependantValueWrapper(tableWrapper, valueWrapper);
 		Value wrappedDependantValue = (Value)((Wrapper)dependantValueWrapper).getWrappedObject();
 		assertTrue(wrappedDependantValue instanceof DependantValue);
 		assertSame(tableTarget, ((DependantValue)wrappedDependantValue).getTable());
