@@ -60,6 +60,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -72,7 +73,6 @@ import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
-import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.junit.jupiter.api.Test;
 
@@ -442,7 +442,8 @@ public class WrapperFactoryTest {
 	@Test
 	public void testCreateTypeFactoryWrapper() {
 		Object typeFactoryWrapper = WrapperFactory.createTypeFactoryWrapper();
-		assertSame(TypeFactoryWrapper.INSTANCE, typeFactoryWrapper);
+		assertNotNull(typeFactoryWrapper);
+		assertTrue(typeFactoryWrapper instanceof TypeFactoryWrapper);
 	}
 	
 	@Test
