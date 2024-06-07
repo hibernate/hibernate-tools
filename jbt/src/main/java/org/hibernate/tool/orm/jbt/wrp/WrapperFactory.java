@@ -21,9 +21,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
@@ -93,9 +91,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
-		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
-		SingleTableSubclass sts = new SingleTableSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
-		return PersistentClassWrapperFactory.createPersistentClassWrapper(sts);
+		return PersistentClassWrapperFactory.createSingleTableSubClassWrapper(persistentClassWrapper);
 	}
 
 	public static Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
