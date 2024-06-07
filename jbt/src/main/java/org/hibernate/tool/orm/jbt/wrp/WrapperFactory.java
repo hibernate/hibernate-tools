@@ -20,7 +20,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -39,6 +38,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFact
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
@@ -148,10 +148,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createTableWrapper(String name) {
-		Table t = new Table("Hibernate Tools", name);
-		t.setPrimaryKey(new PrimaryKey(t));
-		DelegatingTableWrapperImpl result = new DelegatingTableWrapperImpl(t);
-		return result;
+		return TableWrapperFactory.createTableWrapper(name);
 	}
 
 	public static Object createManyToOneWrapper(Object table) {
