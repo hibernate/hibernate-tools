@@ -12,7 +12,6 @@ import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
-import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
@@ -26,6 +25,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
@@ -91,13 +91,11 @@ public class WrapperFactory {
 	}
 
 	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
-		return PersistentClassWrapperFactory.createSingleTableSubClassWrapper(persistentClassWrapper);
+		return PersistentClassWrapperFactory.createSingleTableSubClassWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createJoinedTableSubClassWrapper(Object persistentClassWrapper) {
-		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
-		JoinedSubclass js = new JoinedSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
-		return PersistentClassWrapperFactory.createPersistentClassWrapper(js);
+		return PersistentClassWrapperFactory.createJoinedTableSubClassWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createSpecialRootClassWrapper(Object propertyWrapper) {
