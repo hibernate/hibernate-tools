@@ -10,6 +10,7 @@ import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -20,6 +21,7 @@ import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class PersistentClassWrapperFactory {
 	
@@ -27,6 +29,12 @@ public class PersistentClassWrapperFactory {
 		return createPersistentClassWrapper(new RootClass(DummyMetadataBuildingContext.INSTANCE));
 	}
 	
+	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
+		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		SingleTableSubclass sts = new SingleTableSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
+		return createPersistentClassWrapper(sts);
+	}
+
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClass wrappedPersistentClass) {
 		return new PersistentClassWrapperImpl(wrappedPersistentClass);
 	}
