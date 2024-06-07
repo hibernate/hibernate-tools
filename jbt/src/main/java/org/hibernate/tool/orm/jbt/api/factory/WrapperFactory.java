@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Component;
@@ -120,10 +119,7 @@ public class WrapperFactory {
 	}
 	
 	public static Object createArrayWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new Array(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createArrayWrapper(persistentClassWrapper);
 	}
 
 	public static Object createBagWrapper(Object persistentClassWrapper) {
