@@ -58,7 +58,7 @@ public class ExporterWrapperFactory {
 		
 	}
 	
-	static interface ExporterWrapper extends Wrapper {
+	public static interface ExporterWrapper extends Wrapper {
 		@Override Exporter getWrappedObject();
 		default void setConfiguration(Configuration configuration) {
 			if (CfgExporter.class.isAssignableFrom(getWrappedObject().getClass())) {
