@@ -36,6 +36,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class ValueWrapperFactory {
 
@@ -75,10 +76,19 @@ public class ValueWrapperFactory {
 	}
 
 	public static Object createOneToManyWrapper(PersistentClassWrapper persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
+		return createValueWrapper(
 				new OneToMany(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+
+	public static Object createOneToOneWrapper(PersistentClassWrapper persistentClassWrapper) {
+		PersistentClass pc = (PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject();
+		return createValueWrapper(
+				new OneToOne(
+						DummyMetadataBuildingContext.INSTANCE, 
+						pc.getTable(),
+						pc));
 	}
 
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
