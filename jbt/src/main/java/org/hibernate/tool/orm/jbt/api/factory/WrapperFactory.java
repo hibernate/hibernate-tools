@@ -26,13 +26,13 @@ import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
-import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 
 public class WrapperFactory {
 	
@@ -174,7 +174,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createTypeFactoryWrapper() {
-		return TypeFactoryWrapper.INSTANCE;
+		return TypeFactoryWrapperFactory.createTypeFactoryWrapper();
 	}
 
 	public static Object createEnvironmentWrapper() {
