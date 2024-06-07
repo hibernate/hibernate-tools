@@ -31,7 +31,7 @@ public class GenericExporterWrapperFactory {
 		
 	}
 	
-	static interface GenericExporterWrapper extends Wrapper {
+	public static interface GenericExporterWrapper extends Wrapper {
 		@Override GenericExporter getWrappedObject();
 		default void setFilePattern(String filePattern) {
 			getWrappedObject().getProperties().setProperty(ExporterConstants.FILE_PATTERN, filePattern);

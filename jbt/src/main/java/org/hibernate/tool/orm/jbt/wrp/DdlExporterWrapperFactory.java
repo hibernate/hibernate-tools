@@ -32,7 +32,7 @@ public class DdlExporterWrapperFactory {
 		
 	}
 	
-	static interface DdlExporterWrapper extends Wrapper {
+	public static interface DdlExporterWrapper extends Wrapper {
 		@Override DdlExporter getWrappedObject();
 		default void setExport(boolean b) {
 			getWrappedObject().getProperties().put(ExporterConstants.EXPORT_TO_DATABASE, b);

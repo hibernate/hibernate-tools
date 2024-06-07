@@ -32,7 +32,7 @@ public class QueryExporterWrapperFactory {
 		
 	}
 	
-	static interface QueryExporterWrapper extends Wrapper {
+	public static interface QueryExporterWrapper extends Wrapper {
 		@Override QueryExporter getWrappedObject();
 		default void setQueries(List<String> queries) {
 			getWrappedObject().setQueries(queries);

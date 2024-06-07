@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.api.factory;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,7 +67,12 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
+import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
+import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
+import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
+import org.hibernate.tool.orm.jbt.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.wrp.ValueWrapperFactory.ValueWrapper;
+import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.junit.jupiter.api.Test;
 
 public class WrapperFactoryTest {
