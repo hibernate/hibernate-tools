@@ -62,10 +62,17 @@ public class ValueWrapperFactory {
 	}
 	
 	public static Object createManyToOneWrapper(TableWrapper tableWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
+		return createValueWrapper(
 				new ManyToOne(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(Table)tableWrapper.getWrappedObject()));
+	}
+
+	public static Object createMapWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return createValueWrapper(
+				new org.hibernate.mapping.Map(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
 
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
