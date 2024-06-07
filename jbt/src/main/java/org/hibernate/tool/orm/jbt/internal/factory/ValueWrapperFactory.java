@@ -7,6 +7,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
+import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -102,6 +103,10 @@ public class ValueWrapperFactory {
 				new Set(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+
+	public static ValueWrapper createSimpleValueWrapper() {
+		return createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 	}
 
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
