@@ -40,9 +40,16 @@ import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 
 public class ValueWrapperFactory {
 
-	public static ValueWrapper createArrayWrapper(Object persistentClassWrapper) {
+	public static ValueWrapper createArrayWrapper(PersistentClassWrapper persistentClassWrapper) {
 		return createValueWrapper(
 				new Array(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+	}
+
+	public static Object createBagWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return createValueWrapper(
+				new Bag(
 						DummyMetadataBuildingContext.INSTANCE, 
 						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
 	}
