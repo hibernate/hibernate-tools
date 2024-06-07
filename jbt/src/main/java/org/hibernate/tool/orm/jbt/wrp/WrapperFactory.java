@@ -19,13 +19,13 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
@@ -41,7 +41,6 @@ import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class WrapperFactory {
 	
@@ -100,9 +99,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createSpecialRootClassWrapper(Object propertyWrapper) {
-		Property p = (Property)((Wrapper)propertyWrapper).getWrappedObject();
-		SpecialRootClass src = new SpecialRootClass(p);
-		return PersistentClassWrapperFactory.createPersistentClassWrapper(src);
+		return PersistentClassWrapperFactory.createSpecialRootClassWrapper(((PropertyWrapper)propertyWrapper));
 	}
 
 	public static Object createPropertyWrapper() {
