@@ -3,7 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.PrimitiveHelper;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;

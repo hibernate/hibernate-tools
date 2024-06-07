@@ -3,9 +3,9 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.api.ConfigurationWrapper;
-import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 
 public class ColumnWrapperFactory {

@@ -14,7 +14,7 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;

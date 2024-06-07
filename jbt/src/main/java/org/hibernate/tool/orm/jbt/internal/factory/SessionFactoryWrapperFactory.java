@@ -8,10 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tool.orm.jbt.api.ClassMetadataWrapper;
-import org.hibernate.tool.orm.jbt.api.CollectionMetadataWrapper;
-import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
-import org.hibernate.tool.orm.jbt.api.SessionWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ClassMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.CollectionMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
 
 public class SessionFactoryWrapperFactory {
 

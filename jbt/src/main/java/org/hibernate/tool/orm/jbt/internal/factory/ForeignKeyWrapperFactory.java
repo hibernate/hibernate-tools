@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.api.ForeignKeyWrapper;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ForeignKeyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 
 public class ForeignKeyWrapperFactory {
 

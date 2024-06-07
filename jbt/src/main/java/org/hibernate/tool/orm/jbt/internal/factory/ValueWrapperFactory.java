@@ -29,12 +29,12 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ToOne;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
-import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
-import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 
 public class ValueWrapperFactory {
 

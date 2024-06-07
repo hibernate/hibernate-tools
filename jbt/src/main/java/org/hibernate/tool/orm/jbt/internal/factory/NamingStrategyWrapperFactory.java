@@ -1,7 +1,7 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.tool.orm.jbt.api.NamingStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class NamingStrategyWrapperFactory {

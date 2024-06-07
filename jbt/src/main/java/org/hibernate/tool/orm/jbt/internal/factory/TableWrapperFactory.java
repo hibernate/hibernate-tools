@@ -6,10 +6,10 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.api.PrimaryKeyWrapper;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
-import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 
 public class TableWrapperFactory {
 
