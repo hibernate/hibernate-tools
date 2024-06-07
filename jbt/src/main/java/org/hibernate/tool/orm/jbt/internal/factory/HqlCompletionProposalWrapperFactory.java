@@ -2,7 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tool.orm.jbt.api.HqlCompletionProposalWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.HqlCompletionProposalWrapper;
 
 public class HqlCompletionProposalWrapperFactory {
 

@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,8 +3,8 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import java.util.List;
 
 import org.hibernate.query.Query;
-import org.hibernate.tool.orm.jbt.api.QueryWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.QueryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 
 public class QueryWrapperFactory {
 

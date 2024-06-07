@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeWrapperFactory;
 import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.Type;

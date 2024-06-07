@@ -2,8 +2,8 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import java.util.Map;
 
-import org.hibernate.tool.orm.jbt.api.TypeFactoryWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeFactoryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.TypeRegistry;
 
 public class TypeFactoryWrapperFactory {

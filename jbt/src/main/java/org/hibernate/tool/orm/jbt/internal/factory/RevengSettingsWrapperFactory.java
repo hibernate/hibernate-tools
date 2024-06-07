@@ -2,7 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.api.RevengSettingsWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
 
 public class RevengSettingsWrapperFactory {
 	

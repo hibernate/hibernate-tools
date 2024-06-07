@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
-import org.hibernate.tool.orm.jbt.api.JoinWrapper;
-import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.JoinWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 
 public class JoinWrapperFactory {
 

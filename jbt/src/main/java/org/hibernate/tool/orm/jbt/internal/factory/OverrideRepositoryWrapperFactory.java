@@ -5,9 +5,9 @@ import java.io.File;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
-import org.hibernate.tool.orm.jbt.api.OverrideRepositoryWrapper;
-import org.hibernate.tool.orm.jbt.api.RevengStrategyWrapper;
-import org.hibernate.tool.orm.jbt.api.TableFilterWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.OverrideRepositoryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
 
 public class OverrideRepositoryWrapperFactory {
 

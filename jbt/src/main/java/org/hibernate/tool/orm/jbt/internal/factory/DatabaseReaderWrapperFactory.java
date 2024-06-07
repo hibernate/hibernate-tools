@@ -20,8 +20,8 @@ import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
-import org.hibernate.tool.orm.jbt.api.DatabaseReaderWrapper;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.DatabaseReaderWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 
 public class DatabaseReaderWrapperFactory {
 	
