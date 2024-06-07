@@ -19,7 +19,7 @@ public class TableWrapperFactory {
 		return TableWrapperFactory.createTableWrapper(t);
 	}
 
-	public static TableWrapper createTableWrapper(Table wrappedTable) {
+	static TableWrapper createTableWrapper(Table wrappedTable) {
 		return new TableWrapperImpl(wrappedTable);
 	}
 	

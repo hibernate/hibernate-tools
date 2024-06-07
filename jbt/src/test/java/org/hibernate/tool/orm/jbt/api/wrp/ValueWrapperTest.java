@@ -99,8 +99,8 @@ public class ValueWrapperTest {
 		wrappedPersistentClass = new RootClass(DummyMetadataBuildingContext.INSTANCE);
 		persistentClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(wrappedPersistentClass);
 
-		wrappedTable = new Table("HT");
-		tableWrapper = TableWrapperFactory.createTableWrapper(wrappedTable);
+		tableWrapper = TableWrapperFactory.createTableWrapper("HT");
+		wrappedTable = (Table)tableWrapper.getWrappedObject();
 
 		wrappedArrayValue = new Array(DummyMetadataBuildingContext.INSTANCE, wrappedPersistentClass);
 		arrayValueWrapper = ValueWrapperFactory.createValueWrapper(wrappedArrayValue);

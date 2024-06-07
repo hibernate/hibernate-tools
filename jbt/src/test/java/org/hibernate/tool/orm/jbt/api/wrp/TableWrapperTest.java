@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api.wrp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,8 +29,8 @@ public class TableWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedTable = new Table("Hibernate Tools", "foo");
-		tableWrapper = TableWrapperFactory.createTableWrapper(wrappedTable);
+		tableWrapper = TableWrapperFactory.createTableWrapper("foo");
+		wrappedTable = (Table)tableWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -71,7 +72,7 @@ public class TableWrapperTest {
 	@Test
 	public void testGetPrimaryKey() {
 		PrimaryKey primaryKey = new PrimaryKey(wrappedTable);
-		assertNull(tableWrapper.getPrimaryKey());
+		assertNotSame(primaryKey, tableWrapper.getPrimaryKey().getWrappedObject());
 		wrappedTable.setPrimaryKey(primaryKey);
 		assertSame(primaryKey, tableWrapper.getPrimaryKey().getWrappedObject());
 	}
