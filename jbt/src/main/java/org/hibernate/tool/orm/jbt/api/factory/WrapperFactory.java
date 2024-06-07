@@ -6,9 +6,7 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
-import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -17,6 +15,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.Cfg2HbmToolWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
@@ -164,12 +163,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createComponentWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 	
-	public static Object createDependantValueWrapper(Object table, Object valueWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new DependantValue(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(Table)table, 
-						(KeyValue)((Wrapper)valueWrapper).getWrappedObject()));
+	public static Object createDependantValueWrapper(Object tableWrapper, Object valueWrapper) {
+		return ValueWrapperFactory.createDependantValueWrapper((TableWrapper)tableWrapper, (ValueWrapper)valueWrapper);
 	}
 
 	public static Object createAnyValueWrapper(Object table) {
