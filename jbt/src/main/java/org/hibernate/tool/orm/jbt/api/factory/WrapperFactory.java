@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Any;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.KeyValue;
@@ -162,10 +161,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createComponentWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new Component(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createComponentWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 	
 	public static Object createDependantValueWrapper(Object table, Object valueWrapper) {

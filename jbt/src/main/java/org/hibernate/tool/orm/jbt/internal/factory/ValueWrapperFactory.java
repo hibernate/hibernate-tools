@@ -109,6 +109,13 @@ public class ValueWrapperFactory {
 		return createValueWrapper(new BasicValue(DummyMetadataBuildingContext.INSTANCE));
 	}
 
+	public static ValueWrapper createComponentWrapper(PersistentClassWrapper persistentClassWrapper) {
+		return createValueWrapper(
+				new Component(
+						DummyMetadataBuildingContext.INSTANCE, 
+						(PersistentClass)persistentClassWrapper.getWrappedObject()));
+	}
+	
 	public static ValueWrapper createValueWrapper(Value wrappedArrayValue) {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}
