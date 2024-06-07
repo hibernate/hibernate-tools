@@ -18,9 +18,14 @@ import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class PersistentClassWrapperFactory {
+	
+	public static PersistentClassWrapper createRootClassWrapper() {
+		return createPersistentClassWrapper(new RootClass(DummyMetadataBuildingContext.INSTANCE));
+	}
 	
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClass wrappedPersistentClass) {
 		return new PersistentClassWrapperImpl(wrappedPersistentClass);

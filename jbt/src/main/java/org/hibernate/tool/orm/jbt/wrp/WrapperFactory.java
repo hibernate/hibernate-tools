@@ -89,8 +89,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createRootClassWrapper() {
-		return PersistentClassWrapperFactory.createPersistentClassWrapper(
-				new RootClass(DummyMetadataBuildingContext.INSTANCE));
+		return PersistentClassWrapperFactory.createRootClassWrapper();
 	}
 
 	public static Object createSingleTableSubClassWrapper(Object persistentClassWrapper) {
