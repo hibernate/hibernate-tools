@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
-import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
@@ -25,6 +24,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
@@ -170,7 +170,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createTableFilterWrapper() {
-		return new TableFilter();
+		return TableFilterWrapperFactory.createTableFilterWrapper();
 	}
 
 	public static Object createTypeFactoryWrapper() {

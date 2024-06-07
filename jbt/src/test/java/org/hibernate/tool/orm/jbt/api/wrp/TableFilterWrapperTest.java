@@ -18,8 +18,8 @@ public class TableFilterWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		wrappedTableFilter = new TableFilter();
-		tableFilterWrapper = TableFilterWrapperFactory.createTableFilterWrapper(wrappedTableFilter);
+		tableFilterWrapper = TableFilterWrapperFactory.createTableFilterWrapper();
+		wrappedTableFilter = (TableFilter)tableFilterWrapper.getWrappedObject();
 	}
 	
 	@Test
