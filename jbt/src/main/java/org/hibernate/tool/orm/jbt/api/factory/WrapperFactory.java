@@ -119,14 +119,11 @@ public class WrapperFactory {
 	}
 	
 	public static Object createArrayWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createArrayWrapper(persistentClassWrapper);
+		return ValueWrapperFactory.createArrayWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createBagWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new Bag(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createBagWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createListWrapper(Object persistentClassWrapper) {
