@@ -410,8 +410,9 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateAnyValueWrapper() {
-		Table tableTarget = new Table("", "foo");
-		Object anyValueWrapper = WrapperFactory.createAnyValueWrapper(tableTarget);
+		TableWrapper tableWrapper = TableWrapperFactory.createTableWrapper("foo");
+		Table tableTarget = (Table)tableWrapper.getWrappedObject();
+		Object anyValueWrapper = WrapperFactory.createAnyValueWrapper(tableWrapper);
 		Value wrappedAnyValue = (Value)((Wrapper)anyValueWrapper).getWrappedObject();
 		assertTrue(wrappedAnyValue instanceof Any);
 		assertSame(tableTarget, ((Any)wrappedAnyValue).getTable());

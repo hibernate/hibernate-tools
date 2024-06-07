@@ -5,10 +5,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Any;
 import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -167,11 +165,8 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createDependantValueWrapper((TableWrapper)tableWrapper, (ValueWrapper)valueWrapper);
 	}
 
-	public static Object createAnyValueWrapper(Object table) {
-		return ValueWrapperFactory.createValueWrapper(
-				new Any(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(Table)table));
+	public static Object createAnyValueWrapper(Object tableWrapper) {
+		return ValueWrapperFactory.createAnyValueWrapper((TableWrapper)tableWrapper);
 	}
 
 	public static Object createIdentifierBagValueWrapper(Object persistentClassWrapper) {
