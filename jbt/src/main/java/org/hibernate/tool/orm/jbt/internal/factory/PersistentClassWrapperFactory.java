@@ -37,7 +37,13 @@ public class PersistentClassWrapperFactory {
 	public static Object createJoinedTableSubClassWrapper(PersistentClassWrapper persistentClassWrapper) {
 		PersistentClass pc = (PersistentClass)persistentClassWrapper.getWrappedObject();
 		JoinedSubclass js = new JoinedSubclass(pc, DummyMetadataBuildingContext.INSTANCE);
-		return PersistentClassWrapperFactory.createPersistentClassWrapper(js);
+		return createPersistentClassWrapper(js);
+	}
+
+	public static Object createSpecialRootClassWrapper(PropertyWrapper propertyWrapper) {
+		Property p = (Property)propertyWrapper.getWrappedObject();
+		SpecialRootClass src = new SpecialRootClass(p);
+		return createPersistentClassWrapper(src);
 	}
 
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClass wrappedPersistentClass) {
