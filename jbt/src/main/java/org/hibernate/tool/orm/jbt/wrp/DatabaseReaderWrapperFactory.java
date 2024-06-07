@@ -20,6 +20,8 @@ import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 
 public class DatabaseReaderWrapperFactory {
 	
@@ -81,7 +83,7 @@ public class DatabaseReaderWrapperFactory {
 					list = new ArrayList<TableWrapper>();
 					result.put(qualifier, list);
 				}
-				list.add(new DelegatingTableWrapperImpl(table));
+				list.add(TableWrapperFactory.createTableWrapper(table));
 			}			
 			return result;
 		}

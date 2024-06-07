@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.orm.jbt.api.TableWrapper;
 import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.wrp.DatabaseReaderWrapperFactory.DatabaseReaderWrapperImpl;
 import org.junit.jupiter.api.BeforeEach;
