@@ -1,8 +1,8 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.persister.collection.CollectionPersister;
-import org.hibernate.tool.orm.jbt.api.CollectionMetadataWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.CollectionMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.type.Type;
 
 public class CollectionMetadataWrapperFactory {

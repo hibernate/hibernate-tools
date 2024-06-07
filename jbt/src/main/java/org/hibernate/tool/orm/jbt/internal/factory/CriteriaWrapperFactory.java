@@ -2,7 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import java.util.List;
 
-import org.hibernate.tool.orm.jbt.api.CriteriaWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.CriteriaWrapper;
 
 import jakarta.persistence.Query;
 

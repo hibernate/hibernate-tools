@@ -1,7 +1,7 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.cfg.Environment;
-import org.hibernate.tool.orm.jbt.api.EnvironmentWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.EnvironmentWrapper;
 
 public class EnvironmentWrapperFactory {
 	

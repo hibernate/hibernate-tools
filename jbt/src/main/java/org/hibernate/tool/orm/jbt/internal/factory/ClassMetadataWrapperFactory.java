@@ -3,9 +3,9 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tool.orm.jbt.api.ClassMetadataWrapper;
-import org.hibernate.tool.orm.jbt.api.SessionWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ClassMetadataWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.type.Type;
 
 public class ClassMetadataWrapperFactory {

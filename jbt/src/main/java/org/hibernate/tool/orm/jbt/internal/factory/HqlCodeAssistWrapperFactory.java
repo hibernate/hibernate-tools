@@ -2,7 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
-import org.hibernate.tool.orm.jbt.api.HqlCodeAssistWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.HqlCompletionRequestor;
 
 public class HqlCodeAssistWrapperFactory {

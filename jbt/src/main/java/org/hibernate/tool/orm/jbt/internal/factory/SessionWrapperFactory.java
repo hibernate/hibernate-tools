@@ -2,9 +2,9 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.tool.orm.jbt.api.QueryWrapper;
-import org.hibernate.tool.orm.jbt.api.SessionFactoryWrapper;
-import org.hibernate.tool.orm.jbt.api.SessionWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.QueryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;

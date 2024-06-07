@@ -7,9 +7,9 @@ import java.util.List;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.tool.orm.jbt.api.ColumnWrapper;
-import org.hibernate.tool.orm.jbt.api.PrimaryKeyWrapper;
-import org.hibernate.tool.orm.jbt.api.TableWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 
 public class PrimaryKeyWrapperFactory {
 

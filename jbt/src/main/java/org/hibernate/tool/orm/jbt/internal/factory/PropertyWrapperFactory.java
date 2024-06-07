@@ -3,10 +3,10 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.PersistentClassWrapper;
-import org.hibernate.tool.orm.jbt.api.PropertyWrapper;
-import org.hibernate.tool.orm.jbt.api.TypeWrapper;
-import org.hibernate.tool.orm.jbt.api.ValueWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
