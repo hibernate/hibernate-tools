@@ -143,10 +143,7 @@ public class WrapperFactory {
 	}
 
 	public static Object createMapWrapper(Object persistentClassWrapper) {
-		return ValueWrapperFactory.createValueWrapper(
-				new org.hibernate.mapping.Map(
-						DummyMetadataBuildingContext.INSTANCE, 
-						(PersistentClass)((Wrapper)persistentClassWrapper).getWrappedObject()));
+		return ValueWrapperFactory.createMapWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 
 	public static Object createOneToManyWrapper(Object persistentClassWrapper) {
