@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
-import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFactory;
@@ -114,10 +114,10 @@ public class WrapperFactory {
 		return ValueWrapperFactory.createListWrapper((PersistentClassWrapper)persistentClassWrapper);
 	}
 	
-	public static Object createDatabaseReaderWrapper(Properties properties, Object revengStrategy) {
+	public static Object createDatabaseReaderWrapper(Properties properties, Object revengStrategyWrapper) {
 		return DatabaseReaderWrapperFactory.createDatabaseReaderWrapper(
 				properties, 
-				(RevengStrategy)revengStrategy);
+				(RevengStrategyWrapper)revengStrategyWrapper);
 	}
 
 	public static Object createTableWrapper(String name) {

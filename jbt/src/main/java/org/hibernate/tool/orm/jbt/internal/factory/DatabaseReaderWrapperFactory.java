@@ -21,14 +21,15 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.orm.jbt.api.wrp.DatabaseReaderWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 
 public class DatabaseReaderWrapperFactory {
-	
+		
 	public static DatabaseReaderWrapper createDatabaseReaderWrapper(
 			Properties properties, 
-			RevengStrategy revengStrategy) {
-		return new DatabaseReaderWrapperImpl(properties, revengStrategy);
+			RevengStrategyWrapper revengStrategy) {
+		return new DatabaseReaderWrapperImpl(properties, (RevengStrategy)revengStrategy.getWrappedObject());
 	}
 	
 	static class DatabaseReaderWrapperImpl implements DatabaseReaderWrapper {
