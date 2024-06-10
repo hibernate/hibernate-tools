@@ -1,7 +1,5 @@
 package org.hibernate.tool.orm.jbt.api.wrp;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-
 import jakarta.persistence.Query;
 
 public interface SessionWrapper extends Wrapper {
