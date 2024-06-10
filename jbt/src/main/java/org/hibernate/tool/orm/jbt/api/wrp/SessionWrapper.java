@@ -1,7 +1,5 @@
 package org.hibernate.tool.orm.jbt.api.wrp;
 
-import jakarta.persistence.Query;
-
 public interface SessionWrapper extends Wrapper {
 
 	String getEntityName(Object o) ;
@@ -10,6 +8,6 @@ public interface SessionWrapper extends Wrapper {
 	boolean isOpen();
 	void close();
 	boolean contains(Object o);
-	Query createCriteria(Class<?> c);
+	QueryWrapper createCriteria(Class<?> c);
 
 }

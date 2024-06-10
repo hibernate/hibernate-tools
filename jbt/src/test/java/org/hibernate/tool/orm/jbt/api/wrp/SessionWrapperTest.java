@@ -16,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -126,8 +127,10 @@ public class SessionWrapperTest {
 	
 	@Test
 	public void testCreateCriteria() {
-		jakarta.persistence.Query query = sessionWrapper.createCriteria(Foo.class);
-		assertNotNull(query);
+		QueryWrapper queryWrapper = sessionWrapper.createCriteria(Foo.class);
+		assertNotNull(queryWrapper);
+		Query<?> q = (Query)queryWrapper.getWrappedObject();
+		assertSame(q.getSession(), sessionWrapper.getWrappedObject());
 	}
 
 }
