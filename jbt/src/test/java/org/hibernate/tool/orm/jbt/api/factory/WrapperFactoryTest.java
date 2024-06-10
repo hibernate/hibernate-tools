@@ -61,11 +61,13 @@ import org.hibernate.tool.orm.jbt.api.wrp.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SchemaExportWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -293,7 +295,7 @@ public class WrapperFactoryTest {
 	public void testCreateDatabaseReaderWrapper() {
 		Properties properties = new Properties();
 		properties.put("hibernate.connection.url", "jdbc:h2:mem:test");
-		RevengStrategy strategy = new DefaultStrategy();
+		RevengStrategyWrapper strategy = RevengStrategyWrapperFactory.createRevengStrategyWrapper();
 		Object databaseReaderWrapper = WrapperFactory.createDatabaseReaderWrapper(
 				properties, strategy);
 		assertNotNull(databaseReaderWrapper);

@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class DatabaseReaderWrapperTest {
 		databaseReaderWrapper = DatabaseReaderWrapperFactory
 				.createDatabaseReaderWrapper(
 						properties, 
-						new DefaultStrategy());
+						RevengStrategyWrapperFactory.createRevengStrategyWrapper());
 	}
 	
 	@Test
