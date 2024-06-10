@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
@@ -20,6 +19,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HbmExporterWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.HqlCodeAssistWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HqlCompletionProposalWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.OverrideRepositoryWrapperFactory;
@@ -32,8 +32,6 @@ import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 
 public class WrapperFactory {
 	
@@ -193,12 +191,12 @@ public class WrapperFactory {
 	}
 
 	public static Object createExporterWrapper(String exporterClassName) {
-		
 		return ExporterWrapperFactory.createExporterWrapper(exporterClassName);
 	}
 	
-	public static Object createHqlCodeAssistWrapper(Object configuration) {
-		return new HqlCodeAssistWrapper(MetadataHelper.getMetadata((Configuration)configuration));
+	public static Object createHqlCodeAssistWrapper(Object configurationWrapper) {
+		return HqlCodeAssistWrapperFactory.createHqlCodeAssistWrapper(
+				(ConfigurationWrapper)configurationWrapper);
 	}
 
 }
