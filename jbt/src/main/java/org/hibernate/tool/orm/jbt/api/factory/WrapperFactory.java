@@ -18,6 +18,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.DatabaseReaderWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.EnvironmentWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HbmExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HqlCompletionProposalWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.NamingStrategyWrapperFactory;
@@ -32,7 +33,6 @@ import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 
 public class WrapperFactory {
@@ -193,7 +193,8 @@ public class WrapperFactory {
 	}
 
 	public static Object createExporterWrapper(String exporterClassName) {
-		return ExporterWrapperFactory.create(exporterClassName);
+		
+		return ExporterWrapperFactory.createExporterWrapper(exporterClassName);
 	}
 	
 	public static Object createHqlCodeAssistWrapper(Object configuration) {
