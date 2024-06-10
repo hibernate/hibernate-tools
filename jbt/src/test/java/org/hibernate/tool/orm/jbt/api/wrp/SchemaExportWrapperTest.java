@@ -10,9 +10,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.SchemaExportWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
@@ -24,21 +24,23 @@ public class SchemaExportWrapperTest {
 	
 	private SchemaExport wrappedSchemaExport = null;
 	private SchemaExportWrapper schemaExportWrapper = null;
-	private Configuration configuration = null;
+	private ConfigurationWrapper configurationWrapper = null;
 	
 	@BeforeEach
-	public void beforeEach() {
-	    configuration = new Configuration();
-		configuration.setProperty(Environment.DIALECT, MockDialect.class.getName());
-		configuration.setProperty(Environment.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
+	public void beforeEach() throws Exception {
+	    configurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		configurationWrapper.setProperty(Environment.DIALECT, MockDialect.class.getName());
+		configurationWrapper.setProperty(Environment.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 		wrappedSchemaExport = new TestSchemaExport();
-		schemaExportWrapper = SchemaExportWrapperFactory.createSchemaExportWrapper(
-				wrappedSchemaExport, configuration);
+		schemaExportWrapper = SchemaExportWrapperFactory.createSchemaExportWrapper(configurationWrapper);
+		Field field = schemaExportWrapper.getClass().getDeclaredField("schemaExport");
+		field.setAccessible(true);
+		field.set(schemaExportWrapper, wrappedSchemaExport);
 	}
 	
 	@Test
 	public void testConstruction() {
-		assertNotNull(configuration);
+		assertNotNull(configurationWrapper);
 		assertNotNull(wrappedSchemaExport);
 		assertNotNull(schemaExportWrapper);
 	}

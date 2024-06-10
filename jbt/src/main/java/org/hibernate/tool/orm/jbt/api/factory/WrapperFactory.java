@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
@@ -24,6 +25,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengSettingsWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.SchemaExportWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TypeFactoryWrapperFactory;
@@ -32,7 +34,6 @@ import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
-import org.hibernate.tool.orm.jbt.wrp.SchemaExportWrapper;
 
 public class WrapperFactory {
 	
@@ -181,8 +182,8 @@ public class WrapperFactory {
 		return EnvironmentWrapperFactory.createEnvironmentWrapper();
 	}
 
-	public static Object createSchemaExport(Object configuration) {
-		return new SchemaExportWrapper((Configuration)configuration);
+	public static Object createSchemaExport(Object configurationWrapper) {
+		return SchemaExportWrapperFactory.createSchemaExportWrapper((ConfigurationWrapper)configurationWrapper);
 	}
 	
 	public static Object createHbmExporterWrapper(Object configuration, File file) {
