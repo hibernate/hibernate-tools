@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
+import java.lang.reflect.Field;
+
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HqlCodeAssistWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +19,9 @@ public class HqlCodeAssistWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		Configuration c = new NativeConfiguration();
+		ConfigurationWrapper c = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		c.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		Metadata m = MetadataHelper.getMetadata(c);
-		hqlCodeAssistWrapper = HqlCodeAssistWrapperFactory.createHqlCodeAssistWrapper(m);
+		hqlCodeAssistWrapper = HqlCodeAssistWrapperFactory.createHqlCodeAssistWrapper(c);
 	}
 	
 	@Test
@@ -31,14 +30,16 @@ public class HqlCodeAssistWrapperTest {
 	}
 	
 	@Test
-	public void testCodeComplete() {
+	public void testCodeComplete() throws Exception {
 		// First test the handler's 'accept' method
 		TestCodeCompletionHandler completionHandler = new TestCodeCompletionHandler();
 		assertEquals(0, completionHandler.acceptCount);
 		hqlCodeAssistWrapper.codeComplete("", 0, completionHandler);
 		assertNotEquals(0, completionHandler.acceptCount);
 		// Now try to invoke the handler's 'completionFailure' method
-		hqlCodeAssistWrapper = HqlCodeAssistWrapperFactory.createHqlCodeAssistWrapper(null);
+		Field f = hqlCodeAssistWrapper.getClass().getDeclaredField("hqlCodeAssist");
+		f.setAccessible(true);
+		f.set(hqlCodeAssistWrapper, new HQLCodeAssist(null));
 		assertNull(completionHandler.errorMessage);
 		hqlCodeAssistWrapper.codeComplete("FROM ", 5, completionHandler);
 		assertNotNull(completionHandler.errorMessage);

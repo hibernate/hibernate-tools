@@ -54,6 +54,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ExporterWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.HqlCompletionProposalWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.OverrideRepositoryWrapper;
@@ -73,7 +74,6 @@ import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
-import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.junit.jupiter.api.Test;
 
@@ -491,14 +491,14 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateHqlCodeAssistWrapper() throws Exception {
-		Configuration configuration = new NativeConfiguration();
-		configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
-		Metadata metadata = MetadataHelper.getMetadata(configuration);
-		Object hqlCodeAssistWrapper = WrapperFactory.createHqlCodeAssistWrapper(configuration);
+		ConfigurationWrapper configurationWrapper = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
+		configurationWrapper.setProperty("hibernate.connection.url", "jdbc:h2:mem:test");
+		Metadata metadata = MetadataHelper.getMetadata((Configuration)configurationWrapper.getWrappedObject());
+		Object hqlCodeAssistWrapper = WrapperFactory.createHqlCodeAssistWrapper(configurationWrapper);
 		assertTrue(hqlCodeAssistWrapper instanceof HqlCodeAssistWrapper);
 		Field metadataField = HQLCodeAssist.class.getDeclaredField("metadata");
 		metadataField.setAccessible(true);
-		assertSame(metadata, metadataField.get(hqlCodeAssistWrapper));
+		assertSame(metadata, metadataField.get(((Wrapper)hqlCodeAssistWrapper).getWrappedObject()));
 		
 	}
 		
