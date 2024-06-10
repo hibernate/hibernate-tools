@@ -45,6 +45,7 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.internal.export.hbm.Cfg2HbmTool;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
@@ -72,7 +73,6 @@ import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.wrp.ExporterWrapperFactory.ExporterWrapper;
-import org.hibernate.tool.orm.jbt.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.junit.jupiter.api.Test;
@@ -466,19 +466,20 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateHbmExporterWrapper() throws Exception {
-		Configuration configuration = new Configuration();
+		ConfigurationWrapper configuration = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		File file = new File("foo");
 		Object hbmExporterWrapper = WrapperFactory.createHbmExporterWrapper(configuration, file);
+		HbmExporter wrappedHbmExporter = (HbmExporter)((Wrapper)hbmExporterWrapper).getWrappedObject();
 		assertNotNull(hbmExporterWrapper);
-		assertSame(file, ((HbmExporterWrapper)hbmExporterWrapper)
-				.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
+		assertSame(file, wrappedHbmExporter.getProperties().get(ExporterConstants.OUTPUT_FILE_NAME));
 		ConfigurationMetadataDescriptor descriptor = 
-				(ConfigurationMetadataDescriptor)((HbmExporterWrapper)hbmExporterWrapper)
-					.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
+				(ConfigurationMetadataDescriptor)wrappedHbmExporter
+					.getProperties()
+					.get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(descriptor);
 		Field configurationField = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		configurationField.setAccessible(true);
-		assertSame(configuration, configurationField.get(descriptor));
+		assertSame(configuration.getWrappedObject(), configurationField.get(descriptor));
 	}
 	
 	@Test

@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
@@ -38,6 +37,7 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
+import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.HbmExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
@@ -50,7 +50,7 @@ public class HbmExporterWrapperTest {
 	private HbmExporterWrapper hbmExporterWrapper = null; 
 	private HbmExporter wrappedHbmExporter = null;
 
-	private Configuration cfg = null;
+	private ConfigurationWrapper cfg = null;
 	private File f = null;
 	
 	private boolean delegateHasExported = false;
@@ -60,7 +60,7 @@ public class HbmExporterWrapperTest {
 	
 	@BeforeEach
 	public void beforeEach() {
-		cfg = new Configuration();
+		cfg = ConfigurationWrapperFactory.createNativeConfigurationWrapper();
 		f = new File(tempFolder, "foo");
 		hbmExporterWrapper = HbmExporterWrapperFactory.createHbmExporterWrapper(cfg, f);
 		wrappedHbmExporter = (HbmExporter)hbmExporterWrapper.getWrappedObject();
@@ -78,7 +78,7 @@ public class HbmExporterWrapperTest {
 		assertNotNull(descriptor);
 		Field configurationField = ConfigurationMetadataDescriptor.class.getDeclaredField("configuration");
 		configurationField.setAccessible(true);
-		assertSame(cfg, configurationField.get(descriptor));
+		assertSame(cfg.getWrappedObject(), configurationField.get(descriptor));
 	}
 	
 	@Test
