@@ -56,8 +56,8 @@ public class WrapperFactory {
 		return RevengStrategyWrapperFactory.createRevengStrategyWrapper(objects);
 	}
 
-	public static Object createRevengSettingsWrapper(Object revengStrategy) {
-		return RevengSettingsWrapperFactory.createRevengSettingsWrapper(revengStrategy);
+	public static Object createRevengSettingsWrapper(Object revengStrategyWrapper) {
+		return RevengSettingsWrapperFactory.createRevengSettingsWrapper((RevengStrategyWrapper)revengStrategyWrapper);
 	}
 	
 	public static Object createNativeConfigurationWrapper() {

@@ -151,12 +151,12 @@ public class WrapperFactoryTest {
 	@Test
 	public void testCreateRevengSettingsWrapper() {
 		Object reverseEngineeringSettingsWrapper = null;
-		RevengStrategy strategy = new DefaultStrategy();
+		RevengStrategyWrapper strategy = RevengStrategyWrapperFactory.createRevengStrategyWrapper();
 		reverseEngineeringSettingsWrapper = WrapperFactory.createRevengSettingsWrapper(strategy);
 		assertNotNull(reverseEngineeringSettingsWrapper);
 		assertTrue(reverseEngineeringSettingsWrapper instanceof RevengSettingsWrapper);
 		RevengSettings revengSettings = (RevengSettings)((RevengSettingsWrapper)reverseEngineeringSettingsWrapper).getWrappedObject();
-		assertSame(strategy, revengSettings.getRootStrategy());
+		assertSame(strategy.getWrappedObject(), revengSettings.getRootStrategy());
 	}
 	
 	@Test
