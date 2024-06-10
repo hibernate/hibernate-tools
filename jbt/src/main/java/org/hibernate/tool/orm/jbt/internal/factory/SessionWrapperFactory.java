@@ -2,11 +2,11 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
 
-import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -72,12 +72,12 @@ public class SessionWrapperFactory {
 		}
 
 		@Override 
-		public Query createCriteria(Class<?> c) {
+		public QueryWrapper createCriteria(Class<?> c) {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(c);
-			Root root = criteriaQuery.from(c);
-			criteriaQuery.select(root);
-			return ((Session)getWrappedObject()).createQuery(criteriaQuery);
+			criteriaQuery.select((Root)criteriaQuery.from(c));
+			Query<?> query = ((Session)getWrappedObject()).createQuery(criteriaQuery);
+			return QueryWrapperFactory.createQueryWrapper(query);
 		}
 
 	}
