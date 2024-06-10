@@ -7,8 +7,8 @@ import org.hibernate.tool.orm.jbt.api.wrp.HqlCompletionProposalWrapper;
 public class HqlCompletionProposalWrapperFactory {
 
 	public static HqlCompletionProposalWrapper createHqlCompletionProposalWrapper(
-			final HQLCompletionProposal wrappedCompletionProposal) {
-		return new HqlCompletionProposalWrapperImpl(wrappedCompletionProposal);
+			final Object wrappedCompletionProposal) {
+		return new HqlCompletionProposalWrapperImpl((HQLCompletionProposal)wrappedCompletionProposal);
 	}
 	
 	private static class HqlCompletionProposalWrapperImpl implements HqlCompletionProposalWrapper {
