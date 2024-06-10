@@ -9,12 +9,19 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
+import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.HbmExporterWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 
 public class HbmExporterWrapperFactory {
 
-	public static HbmExporterWrapper createHbmExporterWrapper(Configuration cfg, File f) {
+	public static HbmExporterWrapper createHbmExporterWrapper(
+			ConfigurationWrapper configurationWrapper, 
+			File file) {
+		return createHbmExporterWrapper((Configuration)configurationWrapper.getWrappedObject(), file);
+	}
+	
+	private static HbmExporterWrapper createHbmExporterWrapper(Configuration cfg, File f) {
 		return new HbmExporterWrapperImpl(new HbmExporterExtension(cfg, f)) ;
 	}
 	
@@ -101,5 +108,5 @@ public class HbmExporterWrapperFactory {
 		
 		
 	}
-	
+
 }
