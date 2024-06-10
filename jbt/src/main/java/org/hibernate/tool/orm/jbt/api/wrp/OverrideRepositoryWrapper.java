@@ -2,8 +2,6 @@ package org.hibernate.tool.orm.jbt.api.wrp;
 
 import java.io.File;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-
 public interface OverrideRepositoryWrapper extends Wrapper {
 	
 	void addFile(File file);
