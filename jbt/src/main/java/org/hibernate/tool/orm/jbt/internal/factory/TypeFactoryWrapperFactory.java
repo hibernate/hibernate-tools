@@ -38,7 +38,7 @@ public class TypeFactoryWrapperFactory {
 		@Override public TypeWrapper getTimestampType() { return TypeRegistry.getType("timestamp"); }
 		@Override public TypeWrapper getTimezoneType() { return TypeRegistry.getType("timezone"); }
 		@Override public TypeWrapper getTrueFalseType() { return TypeRegistry.getType("true_false"); }
-		@Override public TypeWrapper getYesNoType() { return TypeRegistry.getType("true_false"); }
+		@Override public TypeWrapper getYesNoType() { return TypeRegistry.getType("yes_no"); }
 		@Override public TypeWrapper getNamedType(String name) { return TypeRegistry.getType(name); }
 		@Override public TypeWrapper getBasicType(String name) { return getNamedType(name); }
 		@Override public Map<TypeWrapper, String> getTypeFormats() { return TypeRegistry.getTypeFormats(); }

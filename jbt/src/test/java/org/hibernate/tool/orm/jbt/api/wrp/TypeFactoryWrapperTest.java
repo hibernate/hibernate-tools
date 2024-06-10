@@ -172,7 +172,7 @@ public class TypeFactoryWrapperTest {
 	@Test
 	public void testGetYesNoType() {
 		TypeWrapper typeWrapper = typeFactoryWrapper.getYesNoType();
-		assertEquals("true_false", typeWrapper.getName());
+		assertEquals("yes_no", typeWrapper.getName());
 	}
 		
 	@Test
