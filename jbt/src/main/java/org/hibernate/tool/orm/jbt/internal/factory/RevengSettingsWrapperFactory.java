@@ -3,11 +3,15 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 
 public class RevengSettingsWrapperFactory {
 	
-	public static RevengSettingsWrapper createRevengSettingsWrapper(Object revengStrategy) {
-		RevengSettings wrappedRevengSettings = new RevengSettings((RevengStrategy)revengStrategy);
+	public static RevengSettingsWrapper createRevengSettingsWrapper(RevengStrategyWrapper revengStrategyWrapper) {
+		RevengStrategy revengStrategy = 
+				revengStrategyWrapper == null ? 
+						null : (RevengStrategy)revengStrategyWrapper.getWrappedObject();
+		RevengSettings wrappedRevengSettings = new RevengSettings(revengStrategy);
 		return createRevengSettingsWrapper(wrappedRevengSettings);
 	}
 
