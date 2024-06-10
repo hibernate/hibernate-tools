@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
-import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
@@ -97,9 +96,8 @@ public class WrapperFactory {
 		return PropertyWrapperFactory.createPropertyWrapper();
 	}
 
-	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposalTarget) {
-		return HqlCompletionProposalWrapperFactory.createHqlCompletionProposalWrapper(
-				(HQLCompletionProposal)hqlCompletionProposalTarget);
+	public static Object createHqlCompletionProposalWrapper(Object hqlCompletionProposal) {
+		return HqlCompletionProposalWrapperFactory.createHqlCompletionProposalWrapper(hqlCompletionProposal);
 	}
 	
 	public static Object createArrayWrapper(Object persistentClassWrapper) {
