@@ -16,10 +16,16 @@ import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class ExporterWrapperFactory {
+	
+	public static ExporterWrapper createExporterWrapper(String className) {
+		Exporter wrappedExporter = (Exporter)ReflectUtil.createInstance(className);
+		return createExporterWrapper(wrappedExporter);
+	}
 
-	public static ExporterWrapper createExporterWrapper(final Exporter wrappedExporter) {
+	private static ExporterWrapper createExporterWrapper(final Exporter wrappedExporter) {
 		return new ExporterWrapperImpl(wrappedExporter);
 	}
 	
