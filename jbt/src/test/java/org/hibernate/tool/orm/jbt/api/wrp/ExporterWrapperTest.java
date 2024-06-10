@@ -36,7 +36,8 @@ public class ExporterWrapperTest {
 	@BeforeEach
 	public void beforeEach() {
 		wrappedExporter = new TestExporter();
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(wrappedExporter);
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(TestExporter.class.getName());
+		wrappedExporter = (Exporter)exporterWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -65,8 +66,8 @@ public class ExporterWrapperTest {
 		assertTrue(metadataDescriptor instanceof ConfigurationMetadataDescriptor);
 		assertSame(configuration, field.get(metadataDescriptor));
 		// Now test with a CfgExporter
-		wrappedExporter = new CfgExporter();
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(wrappedExporter);
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(CfgExporter.class.getName());
+		wrappedExporter = (Exporter)exporterWrapper.getWrappedObject();
 		assertNotSame(properties, ((CfgExporter)exporterWrapper.getWrappedObject()).getCustomProperties());
 		metadataDescriptor = wrappedExporter.getProperties().get(ExporterConstants.METADATA_DESCRIPTOR);
 		assertNotNull(metadataDescriptor);
@@ -127,7 +128,7 @@ public class ExporterWrapperTest {
 		// TestExporter should not return a GenericExporterFacade instance
 		assertNull(exporterWrapper.getGenericExporter());
 		// try now with a GenericExporter
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new GenericExporter());
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(GenericExporter.class.getName());
 		ExporterWrapper genericExporterWrapper = exporterWrapper.getGenericExporter();
 		assertSame(exporterWrapper, genericExporterWrapper);
 	}
@@ -137,7 +138,7 @@ public class ExporterWrapperTest {
 		// TestExporter should not return a GenericExporterFacade instance
 		assertNull(exporterWrapper.getHbm2DDLExporter());
 		// try now with a DdlExporter
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new DdlExporter());
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(DdlExporter.class.getName());
 		ExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
 		assertSame(exporterWrapper, ddlExporterWrapper);
 	}
@@ -147,7 +148,7 @@ public class ExporterWrapperTest {
 		// TestExporter should not return a GenericExporterFacade instance
 		assertNull(exporterWrapper.getQueryExporter());
 		// try now with a QueryExporter
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new QueryExporter());
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(QueryExporter.class.getName());
 		ExporterWrapper queryExporterWrapper = exporterWrapper.getQueryExporter();
 		assertSame(exporterWrapper, queryExporterWrapper);
 	}
@@ -161,7 +162,7 @@ public class ExporterWrapperTest {
 		exporterWrapper.setCustomProperties(properties);
 		assertNull(wrappedTestExporter.props);
 		// try now with CfgExporter 
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new CfgExporter());
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(CfgExporter.class.getName());
 		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
 		assertNotSame(properties, wrappedCfgExporter.getCustomProperties());
 		exporterWrapper.setCustomProperties(properties);
@@ -177,7 +178,7 @@ public class ExporterWrapperTest {
 		exporterWrapper.setOutput(stringWriter);
 		assertNull(wrappedTestExporter.output);
 		// try now with CfgExporter 
-		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(new CfgExporter());
+		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(CfgExporter.class.getName());
 		CfgExporter wrappedCfgExporter = (CfgExporter)exporterWrapper.getWrappedObject();
 		assertNotSame(stringWriter, wrappedCfgExporter.getOutput());
 		exporterWrapper.setOutput(stringWriter);
