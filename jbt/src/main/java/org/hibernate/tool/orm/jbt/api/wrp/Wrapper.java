@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.wrp;
+package org.hibernate.tool.orm.jbt.api.wrp;
 
 public interface Wrapper {
 	

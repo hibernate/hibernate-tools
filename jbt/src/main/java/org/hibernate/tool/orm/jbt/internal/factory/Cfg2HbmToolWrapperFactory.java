@@ -9,7 +9,7 @@ import org.hibernate.tool.internal.export.hbm.HBMTagForValueVisitor;
 import org.hibernate.tool.orm.jbt.api.wrp.Cfg2HbmToolWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 
 public class Cfg2HbmToolWrapperFactory {
 

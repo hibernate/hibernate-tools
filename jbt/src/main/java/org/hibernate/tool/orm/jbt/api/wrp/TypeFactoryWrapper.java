@@ -2,7 +2,7 @@ package org.hibernate.tool.orm.jbt.api.wrp;
 
 import java.util.Map;
 
-public interface TypeFactoryWrapper {
+public interface TypeFactoryWrapper extends Wrapper {
 
 	TypeWrapper getBooleanType();
 	TypeWrapper getByteType();

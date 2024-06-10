@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 

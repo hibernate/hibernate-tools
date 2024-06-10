@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
 
-import org.hibernate.tool.orm.jbt.wrp.Wrapper;
-
 public interface ExporterWrapper extends Wrapper {
 	
 	void setConfiguration(ConfigurationWrapper configuration);
