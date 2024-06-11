@@ -10,9 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
@@ -86,6 +88,18 @@ public class TableWrapperTest {
 		columnIterator = tableWrapper.getColumnIterator();
 		assertTrue(columnIterator.hasNext());
 		assertSame(column, columnIterator.next().getWrappedObject());
+	}
+	
+	@Test
+	public void testGetForeignKeyIterator() {
+		Column column = new Column("Hibernate Tools");
+		Iterator<ForeignKeyWrapper> foreignKeyIterator = tableWrapper.getForeignKeyIterator();
+		assertFalse(foreignKeyIterator.hasNext());
+		wrappedTable.createForeignKey("foo", List.of(column), "bar", "");
+		foreignKeyIterator = tableWrapper.getForeignKeyIterator();
+		assertTrue(foreignKeyIterator.hasNext());
+		ForeignKeyWrapper foreignKeyWrapper = foreignKeyIterator.next();
+		assertTrue(((ForeignKey)foreignKeyWrapper.getWrappedObject()).containsColumn(column));
 	}
 	
 	@Test

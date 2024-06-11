@@ -10,6 +10,7 @@ public interface TableWrapper extends Wrapper {
 	String getSchema();
 	PrimaryKeyWrapper getPrimaryKey();
 	Iterator<ColumnWrapper> getColumnIterator();
+	Iterator<ForeignKeyWrapper> getForeignKeyIterator();
 	String getComment();
 	String getRowId();
 	String getSubselect();

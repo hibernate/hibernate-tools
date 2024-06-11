@@ -3,10 +3,12 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.ForeignKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
@@ -73,6 +75,22 @@ public class TableWrapperFactory {
 				@Override
 				public ColumnWrapper next() {
 					return ColumnWrapperFactory.createColumnWrapper(iterator.next());
+				}
+				
+			};
+		}
+		
+		@Override 
+		public Iterator<ForeignKeyWrapper> getForeignKeyIterator() {
+			Iterator<ForeignKey> iterator = table.getForeignKeys().values().iterator();
+			return new Iterator<ForeignKeyWrapper>() {
+				@Override
+				public boolean hasNext() {
+					return iterator.hasNext();
+				}
+				@Override
+				public ForeignKeyWrapper next() {
+					return ForeignKeyWrapperFactory.createForeignKeyWrapper(iterator.next());
 				}
 				
 			};
