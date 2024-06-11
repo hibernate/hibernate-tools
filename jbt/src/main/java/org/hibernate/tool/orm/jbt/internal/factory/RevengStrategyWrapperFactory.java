@@ -7,6 +7,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
+import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
@@ -17,7 +18,7 @@ public class RevengStrategyWrapperFactory {
 		if (objects.length == 0) {
 			wrappedRevengStrategy = createDefaultStrategy();
 		} else if (objects.length == 2) {
-			wrappedRevengStrategy = createDelegatingStrategy((String)objects[0], (RevengStrategy)objects[1]);
+			wrappedRevengStrategy = createDelegatingStrategy((String)objects[0], (RevengStrategy)((Wrapper)objects[1]).getWrappedObject());
 		} else {
 			throw new RuntimeException("RevengStrategyWrapperFactory#create has either 0 or 2 arguments");
 		}
