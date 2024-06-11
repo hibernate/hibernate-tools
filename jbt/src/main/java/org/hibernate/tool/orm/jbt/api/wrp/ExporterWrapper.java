@@ -18,11 +18,11 @@ public interface ExporterWrapper extends Wrapper {
 
 	Properties getProperties();
 
-	ExporterWrapper getGenericExporter();
+	GenericExporterWrapper getGenericExporter();
 
-	ExporterWrapper getHbm2DDLExporter();
+	DdlExporterWrapper getHbm2DDLExporter();
 
-	ExporterWrapper getQueryExporter();
+	QueryExporterWrapper getQueryExporter();
 
 	void setCustomProperties(Properties properties);
 
