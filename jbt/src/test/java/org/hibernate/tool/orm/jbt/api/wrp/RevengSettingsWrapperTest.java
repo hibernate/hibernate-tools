@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.api.wrp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.hibernate.tool.api.reveng.RevengSettings;
@@ -31,28 +32,28 @@ public class RevengSettingsWrapperTest {
 	@Test
 	public void testSetDefaultPackageName() {
 		assertEquals("", wrappedRevengSettings.getDefaultPackageName());
-		revengSettingsWrapper.setDefaultPackageName("foo");
+		assertSame(revengSettingsWrapper, revengSettingsWrapper.setDefaultPackageName("foo"));
 		assertEquals("foo", wrappedRevengSettings.getDefaultPackageName());
 	}
 	
 	@Test
 	public void testSetDetectManyToMany() {
 		assertTrue(wrappedRevengSettings.getDetectManyToMany());
-		revengSettingsWrapper.setDetectManyToMany(false);
+		assertSame(revengSettingsWrapper, revengSettingsWrapper.setDetectManyToMany(false));
 		assertFalse(wrappedRevengSettings.getDetectManyToMany());
 	}
 	
 	@Test
 	public void testSetDetectOneToOne() {
 		assertTrue(wrappedRevengSettings.getDetectOneToOne());
-		revengSettingsWrapper.setDetectOneToOne(false);
+		assertSame(revengSettingsWrapper, revengSettingsWrapper.setDetectOneToOne(false));
 		assertFalse(wrappedRevengSettings.getDetectOneToOne());
 	}
 	
 	@Test
 	public void testSetDetectOptimisticLock() {
 		assertTrue(wrappedRevengSettings.getDetectOptimsticLock());
-		revengSettingsWrapper.setDetectOptimisticLock(false);
+		assertSame(revengSettingsWrapper, revengSettingsWrapper.setDetectOptimisticLock(false));
 		assertFalse(wrappedRevengSettings.getDetectOptimsticLock());
 	}
 	

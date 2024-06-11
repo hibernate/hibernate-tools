@@ -33,23 +33,27 @@ public class RevengSettingsWrapperFactory {
 		}
 		
 		@Override 
-		public void setDefaultPackageName(String s) { 
+		public RevengSettingsWrapper setDefaultPackageName(String s) { 
 			revengSettings.setDefaultPackageName(s); 
+			return this;
 		}
 		
 		@Override 
-		public void setDetectManyToMany(boolean b) { 
+		public RevengSettingsWrapper setDetectManyToMany(boolean b) { 
 			revengSettings.setDetectManyToMany(b); 
+			return this;
 		}
 		
 		@Override 
-		public void setDetectOneToOne(boolean b) { 
+		public RevengSettingsWrapper setDetectOneToOne(boolean b) { 
 			revengSettings.setDetectOneToOne(b); 
+			return this;
 		}
 		
 		@Override 
-		public void setDetectOptimisticLock(boolean b) { 
+		public RevengSettingsWrapper setDetectOptimisticLock(boolean b) { 
 			revengSettings.setDetectOptimisticLock(b); 
+			return this;
 		}
 
 	}
