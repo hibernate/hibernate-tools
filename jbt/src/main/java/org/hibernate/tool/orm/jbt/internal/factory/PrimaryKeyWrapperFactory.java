@@ -10,6 +10,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class PrimaryKeyWrapperFactory {
 
@@ -17,7 +18,9 @@ public class PrimaryKeyWrapperFactory {
 		return new PrimaryKeyWrapperImpl(wrappedPrimaryKey);
 	}
 	
-	private static class PrimaryKeyWrapperImpl implements PrimaryKeyWrapper {
+	private static class PrimaryKeyWrapperImpl 
+			extends AbstractWrapper
+			implements PrimaryKeyWrapper {
 		
 		private PrimaryKey primaryKey = null;
 		

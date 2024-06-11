@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class QueryWrapperFactory {
 
@@ -12,7 +13,9 @@ public class QueryWrapperFactory {
 		return new QueryWrapperImpl(wrappedQuery);
 	}
 	
-	private static class QueryWrapperImpl implements QueryWrapper {
+	private static class QueryWrapperImpl 
+			extends AbstractWrapper
+			implements QueryWrapper {
 		
 		private Query<?> query = null;
 		

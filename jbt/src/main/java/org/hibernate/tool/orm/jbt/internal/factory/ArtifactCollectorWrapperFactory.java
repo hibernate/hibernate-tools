@@ -6,6 +6,7 @@ import java.util.Set;
 import org.hibernate.tool.api.export.ArtifactCollector;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
 import org.hibernate.tool.orm.jbt.api.wrp.ArtifactCollectorWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class ArtifactCollectorWrapperFactory {
 	
@@ -13,7 +14,9 @@ public class ArtifactCollectorWrapperFactory {
 		return new ArtifactCollectorWrapperImpl();
 	}
 	
-	private static class ArtifactCollectorWrapperImpl implements ArtifactCollectorWrapper {
+	private static class ArtifactCollectorWrapperImpl 
+			extends AbstractWrapper
+			implements ArtifactCollectorWrapper {
 		
 		private ArtifactCollector wrappedArtifactCollector = new DefaultArtifactCollector();
 		

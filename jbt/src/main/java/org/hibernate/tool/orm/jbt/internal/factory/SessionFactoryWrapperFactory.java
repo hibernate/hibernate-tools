@@ -12,6 +12,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.ClassMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.CollectionMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class SessionFactoryWrapperFactory {
 
@@ -19,7 +20,9 @@ public class SessionFactoryWrapperFactory {
 		return new SessionFactoryWrapperImpl(sessionFactory);
 	}
 	
-	private static class SessionFactoryWrapperImpl implements SessionFactoryWrapper {
+	private static class SessionFactoryWrapperImpl 
+			extends AbstractWrapper
+			implements SessionFactoryWrapper {
 		
 		private SessionFactory sessionFactory = null;
 	

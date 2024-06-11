@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.orm.jbt.api.wrp.GenericExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class GenericExporterWrapperFactory {
 
@@ -10,7 +11,9 @@ public class GenericExporterWrapperFactory {
 		return new GenericExporterWrapperImpl(wrappedGenericExporter);
 	}
 	
-	private static class GenericExporterWrapperImpl implements GenericExporterWrapper {
+	private static class GenericExporterWrapperImpl
+			extends AbstractWrapper
+			implements GenericExporterWrapper {
 		
 		private GenericExporter genericExporter = null;
 		

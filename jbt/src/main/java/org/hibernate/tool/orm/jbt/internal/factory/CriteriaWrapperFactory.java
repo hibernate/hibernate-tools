@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import java.util.List;
 
 import org.hibernate.tool.orm.jbt.api.wrp.CriteriaWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 import jakarta.persistence.Query;
 
@@ -12,7 +13,9 @@ public class CriteriaWrapperFactory {
 		return new CriteriaWrapperImpl(wrappedCriteria);
 	}
 	
-	private static class CriteriaWrapperImpl implements CriteriaWrapper {
+	private static class CriteriaWrapperImpl
+			extends AbstractWrapper
+			implements CriteriaWrapper {
 		
 		private Query query = null;
 		

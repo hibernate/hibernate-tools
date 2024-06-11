@@ -6,6 +6,7 @@ import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -17,7 +18,9 @@ public class SessionWrapperFactory {
 		return new SessionWrapperImpl(wrappedSession);
 	}
 	
-	private static class SessionWrapperImpl implements SessionWrapper {
+	private static class SessionWrapperImpl 
+			extends AbstractWrapper
+			implements SessionWrapper {
 		
 		private Session session = null;
 		

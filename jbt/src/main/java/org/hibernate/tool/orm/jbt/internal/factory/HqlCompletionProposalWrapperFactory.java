@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.orm.jbt.api.wrp.HqlCompletionProposalWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class HqlCompletionProposalWrapperFactory {
 
@@ -11,7 +12,9 @@ public class HqlCompletionProposalWrapperFactory {
 		return new HqlCompletionProposalWrapperImpl((HQLCompletionProposal)wrappedCompletionProposal);
 	}
 	
-	private static class HqlCompletionProposalWrapperImpl implements HqlCompletionProposalWrapper {
+	private static class HqlCompletionProposalWrapperImpl 
+			extends AbstractWrapper
+			implements HqlCompletionProposalWrapper {
 		
 		private HQLCompletionProposal hqlCompletionProposal = null;
 		
