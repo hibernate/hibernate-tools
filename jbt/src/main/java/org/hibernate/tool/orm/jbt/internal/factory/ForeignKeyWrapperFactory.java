@@ -9,6 +9,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ForeignKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class ForeignKeyWrapperFactory {
 
@@ -16,7 +17,9 @@ public class ForeignKeyWrapperFactory {
 		return new ForeignKeyWrapperImpl(wrappedForeignKey);
 	}
 	
-	private static class ForeignKeyWrapperImpl implements ForeignKeyWrapper {
+	private static class ForeignKeyWrapperImpl 
+			extends AbstractWrapper
+			implements ForeignKeyWrapper {
 		
 		private ForeignKey foreignKey = null;
 		

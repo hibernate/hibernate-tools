@@ -36,6 +36,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 
 public class ValueWrapperFactory {
@@ -142,7 +143,9 @@ public class ValueWrapperFactory {
 		return new ValueWrapperImpl(wrappedArrayValue);
 	}
 	
-	private static class ValueWrapperImpl implements ValueWrapper {
+	private static class ValueWrapperImpl 
+			extends AbstractWrapper
+			implements ValueWrapper {
 		
 		private Value value = null;
 		

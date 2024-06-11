@@ -10,6 +10,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.Cfg2HbmToolWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class Cfg2HbmToolWrapperFactory {
 
@@ -17,7 +18,9 @@ public class Cfg2HbmToolWrapperFactory {
 		return new Cfg2HbmToolWrapperImpl();
 	}
 	
-	private static class Cfg2HbmToolWrapperImpl implements Cfg2HbmToolWrapper {
+	private static class Cfg2HbmToolWrapperImpl 
+			extends AbstractWrapper
+			implements Cfg2HbmToolWrapper {
 		
 		private Cfg2HbmTool wrappedCfg2HbmTool = new Cfg2HbmTool();
 		

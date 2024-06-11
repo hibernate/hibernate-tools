@@ -8,6 +8,7 @@ import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.OverrideRepositoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class OverrideRepositoryWrapperFactory {
 
@@ -19,7 +20,9 @@ public class OverrideRepositoryWrapperFactory {
 		return new OverrideRepositoryWrapperImpl(wrappedOverrideRepository);
 	}
 	
-	private static class OverrideRepositoryWrapperImpl implements OverrideRepositoryWrapper {
+	private static class OverrideRepositoryWrapperImpl 
+			extends AbstractWrapper
+			implements OverrideRepositoryWrapper {
 		
 		private OverrideRepository overrideRepository = null;
 		

@@ -6,6 +6,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 
 public class ColumnWrapperFactory {
@@ -18,7 +19,9 @@ public class ColumnWrapperFactory {
 		return new ColumnWrapperImpl(column);
 	}
 	
-	private static class ColumnWrapperImpl implements ColumnWrapper {
+	private static class ColumnWrapperImpl
+			extends AbstractWrapper
+			implements ColumnWrapper {
 		
 		private Column wrappedColumn = null;
 		

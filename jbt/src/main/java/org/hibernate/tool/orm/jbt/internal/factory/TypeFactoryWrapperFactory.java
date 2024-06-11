@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.TypeRegistry;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class TypeFactoryWrapperFactory {
 	
@@ -14,7 +15,9 @@ public class TypeFactoryWrapperFactory {
 		return INSTANCE;
 	}
 	
-	private static class TypeFactoryWrapperImpl implements TypeFactoryWrapper {
+	private static class TypeFactoryWrapperImpl 
+			extends AbstractWrapper
+			implements TypeFactoryWrapper {
 	
 		@Override public TypeWrapper getBooleanType() { return TypeRegistry.getType("boolean"); }
 		@Override public TypeWrapper getByteType() { return TypeRegistry.getType("byte"); }

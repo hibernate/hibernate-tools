@@ -12,6 +12,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.ForeignKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class TableWrapperFactory {
 
@@ -25,7 +26,9 @@ public class TableWrapperFactory {
 		return new TableWrapperImpl(wrappedTable);
 	}
 	
-	private static class TableWrapperImpl implements TableWrapper {
+	private static class TableWrapperImpl 
+			extends AbstractWrapper
+			implements TableWrapper {
 		
 		private Table table = null;
 		

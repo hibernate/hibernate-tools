@@ -17,6 +17,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
@@ -41,7 +42,9 @@ public class ConfigurationWrapperFactory {
 		return new ConfigurationWrapperImpl(wrappedConfiguration);
 	}
 	
-	private static class ConfigurationWrapperImpl implements ConfigurationWrapper {
+	private static class ConfigurationWrapperImpl
+			extends AbstractWrapper
+			implements ConfigurationWrapper {
 		
 		private Configuration wrappedConfiguration = null;
 		

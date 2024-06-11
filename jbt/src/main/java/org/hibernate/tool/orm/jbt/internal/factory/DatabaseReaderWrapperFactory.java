@@ -23,6 +23,7 @@ import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.orm.jbt.api.wrp.DatabaseReaderWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class DatabaseReaderWrapperFactory {
 		
@@ -32,7 +33,9 @@ public class DatabaseReaderWrapperFactory {
 		return new DatabaseReaderWrapperImpl(properties, (RevengStrategy)revengStrategy.getWrappedObject());
 	}
 	
-	static class DatabaseReaderWrapperImpl implements DatabaseReaderWrapper {
+	static class DatabaseReaderWrapperImpl 
+			extends AbstractWrapper
+			implements DatabaseReaderWrapper {
 		
 		DatabaseReader databaseReader = null;
 		RevengMetadataCollector revengMetadataCollector = null;

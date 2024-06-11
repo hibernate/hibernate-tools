@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.orm.jbt.api.wrp.EnvironmentWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class EnvironmentWrapperFactory {
 	
@@ -11,7 +12,9 @@ public class EnvironmentWrapperFactory {
 		return ENVIRONMENT_WRAPPER_INSTANCE;
 	}
 	
-	private static class EnvironmentWrapperImpl implements EnvironmentWrapper {
+	private static class EnvironmentWrapperImpl 
+			extends AbstractWrapper
+			implements EnvironmentWrapper {
 		
 		@Override public String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
 

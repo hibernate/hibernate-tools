@@ -2,6 +2,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.orm.jbt.api.wrp.TableFilterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class TableFilterWrapperFactory {
 	
@@ -13,7 +14,9 @@ public class TableFilterWrapperFactory {
 		return new TableFilterWrapperImpl(wrappedTableFilter);
 	}
 	
-	private static class TableFilterWrapperImpl implements TableFilterWrapper {
+	private static class TableFilterWrapperImpl 
+			extends AbstractWrapper
+			implements TableFilterWrapper {
 		
 		private TableFilter  tableFilter = null;
 		

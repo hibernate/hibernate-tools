@@ -6,6 +6,7 @@ import org.hibernate.mapping.Join;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.orm.jbt.api.wrp.JoinWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class JoinWrapperFactory {
 
@@ -13,7 +14,9 @@ public class JoinWrapperFactory {
 		return new JoinWrapperImpl(wrappedJoin);
 	}
 	
-	private static class JoinWrapperImpl implements JoinWrapper {
+	private static class JoinWrapperImpl 
+			extends AbstractWrapper
+			implements JoinWrapper {
 		
 		private Join join = null;
 		
