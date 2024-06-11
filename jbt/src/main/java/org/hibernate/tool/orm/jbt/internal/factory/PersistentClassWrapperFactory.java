@@ -102,13 +102,14 @@ public class PersistentClassWrapperFactory {
 		}
 
 		@Override
-		public void setTable(TableWrapper table) {
+		public void setTable(TableWrapper tableWrapper) {
+			Table table = tableWrapper == null ? null : (Table)tableWrapper.getWrappedObject();
 			if (isInstanceOfRootClass()) {
-				((RootClass)persistentClass).setTable((Table)table.getWrappedObject());
+				((RootClass)persistentClass).setTable(table);
 			} else if (isInstanceOfJoinedSubclass()) {
-				((JoinedSubclass)persistentClass).setTable((Table)table.getWrappedObject());
+				((JoinedSubclass)persistentClass).setTable(table);
 			} else if (isInstanceOfSpecialRootClass()) {
-				((SpecialRootClass)persistentClass).setTable((Table)table.getWrappedObject());
+				((SpecialRootClass)persistentClass).setTable(table);
 			} else {
 				throw new RuntimeException("Method 'setTable(Table)' is not supported.");
 			}
