@@ -129,8 +129,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getGenericExporter());
 		// try now with a GenericExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(GenericExporter.class.getName());
-		ExporterWrapper genericExporterWrapper = exporterWrapper.getGenericExporter();
-		assertSame(exporterWrapper, genericExporterWrapper);
+		GenericExporterWrapper genericExporterWrapper = exporterWrapper.getGenericExporter();
+		assertSame(exporterWrapper.getWrappedObject(), genericExporterWrapper.getWrappedObject());
 	}
 	
 	@Test
@@ -139,8 +139,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getHbm2DDLExporter());
 		// try now with a DdlExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(DdlExporter.class.getName());
-		ExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
-		assertSame(exporterWrapper, ddlExporterWrapper);
+		DdlExporterWrapper ddlExporterWrapper = exporterWrapper.getHbm2DDLExporter();
+		assertSame(exporterWrapper.getWrappedObject(), ddlExporterWrapper.getWrappedObject());
 	}
 	
 	@Test
@@ -149,8 +149,8 @@ public class ExporterWrapperTest {
 		assertNull(exporterWrapper.getQueryExporter());
 		// try now with a QueryExporter
 		exporterWrapper = ExporterWrapperFactory.createExporterWrapper(QueryExporter.class.getName());
-		ExporterWrapper queryExporterWrapper = exporterWrapper.getQueryExporter();
-		assertSame(exporterWrapper, queryExporterWrapper);
+		QueryExporterWrapper queryExporterWrapper = exporterWrapper.getQueryExporter();
+		assertSame(exporterWrapper.getWrappedObject(), queryExporterWrapper.getWrappedObject());
 	}
 	
 	@Test
