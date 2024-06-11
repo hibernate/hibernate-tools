@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class QueryExporterWrapperFactory {
 
@@ -12,7 +13,9 @@ public class QueryExporterWrapperFactory {
 		return new QueryExporterWrapperImpl(wrappedQueryExporter);
 	}
 	
-	private static class QueryExporterWrapperImpl implements QueryExporterWrapper {
+	private static class QueryExporterWrapperImpl 
+			extends AbstractWrapper
+			implements QueryExporterWrapper {
 		
 		private QueryExporter queryExporter = null;
 		

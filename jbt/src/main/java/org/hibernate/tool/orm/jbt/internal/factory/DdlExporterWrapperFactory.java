@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.internal.export.ddl.DdlExporter;
 import org.hibernate.tool.orm.jbt.api.wrp.DdlExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class DdlExporterWrapperFactory {
 
@@ -12,7 +13,9 @@ public class DdlExporterWrapperFactory {
 		return new DdlExporterWrapperImpl(wrappedDdlExporter);
 	}
 	
-	private static class DdlExporterWrapperImpl implements DdlExporterWrapper {
+	private static class DdlExporterWrapperImpl 
+			extends AbstractWrapper
+			implements DdlExporterWrapper {
 		
 		private DdlExporter ddlExporter = null;
 		

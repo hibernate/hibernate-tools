@@ -6,6 +6,7 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.api.wrp.ClassMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.type.Type;
 
 public class ClassMetadataWrapperFactory {
@@ -14,7 +15,9 @@ public class ClassMetadataWrapperFactory {
 		return new ClassMetadataWrapperImpl(entityPersister);
 	}
 	
-	private static class ClassMetadataWrapperImpl implements ClassMetadataWrapper {
+	private static class ClassMetadataWrapperImpl 
+			extends AbstractWrapper
+			implements ClassMetadataWrapper {
 		
 		private EntityPersister wrappedClassMetadata = null;
 		private TypeWrapper[] propertyTypeWrappers = null;

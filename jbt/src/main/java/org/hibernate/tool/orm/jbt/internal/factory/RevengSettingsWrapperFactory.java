@@ -4,6 +4,7 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengSettingsWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.RevengStrategyWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class RevengSettingsWrapperFactory {
 	
@@ -19,7 +20,9 @@ public class RevengSettingsWrapperFactory {
 		return new RevengSettingsWrapperImpl(wrappedRevengSettings);
 	}
 	
-	private static class RevengSettingsWrapperImpl implements RevengSettingsWrapper {
+	private static class RevengSettingsWrapperImpl 
+			extends AbstractWrapper
+			implements RevengSettingsWrapper {
 		
 		private RevengSettings revengSettings = null;
 		

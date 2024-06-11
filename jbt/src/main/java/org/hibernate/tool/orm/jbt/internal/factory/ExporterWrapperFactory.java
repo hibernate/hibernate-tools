@@ -14,6 +14,7 @@ import org.hibernate.tool.internal.export.query.QueryExporter;
 import org.hibernate.tool.orm.jbt.api.wrp.ArtifactCollectorWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
@@ -29,7 +30,9 @@ public class ExporterWrapperFactory {
 		return new ExporterWrapperImpl(wrappedExporter);
 	}
 	
-	private static class ExporterWrapperImpl implements ExporterWrapper {
+	private static class ExporterWrapperImpl
+			extends AbstractWrapper
+			implements ExporterWrapper {
 		
 		private Exporter exporter = null;
 		

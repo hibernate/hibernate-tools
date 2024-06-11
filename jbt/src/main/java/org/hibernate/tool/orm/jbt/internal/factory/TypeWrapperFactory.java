@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.PrimitiveHelper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
@@ -18,7 +19,9 @@ public class TypeWrapperFactory {
 		return new TypeWrapperImpl(wrappedType);
 	}
 	
-	private static class TypeWrapperImpl implements TypeWrapper {
+	private static class TypeWrapperImpl 
+			extends AbstractWrapper
+			implements TypeWrapper {
 		
 		private Type type = null;
 		

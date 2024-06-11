@@ -7,6 +7,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.type.Type;
 
 public class PropertyWrapperFactory {
@@ -19,7 +20,9 @@ public class PropertyWrapperFactory {
 		return new PropertyWrapperImpl(wrappedProperty);
 	}
 	
-	private static class PropertyWrapperImpl implements PropertyWrapper {
+	private static class PropertyWrapperImpl 
+			extends AbstractWrapper
+			implements PropertyWrapper {
 		
 		private Property property = null;
 		

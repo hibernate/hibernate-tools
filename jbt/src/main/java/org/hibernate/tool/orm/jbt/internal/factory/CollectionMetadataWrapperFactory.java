@@ -3,6 +3,7 @@ package org.hibernate.tool.orm.jbt.internal.factory;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.tool.orm.jbt.api.wrp.CollectionMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.type.Type;
 
 public class CollectionMetadataWrapperFactory {
@@ -11,7 +12,9 @@ public class CollectionMetadataWrapperFactory {
 		return new CollectionMetadataWrapperImpl(collectionPersister);
 	}
 	
-	private static class CollectionMetadataWrapperImpl implements CollectionMetadataWrapper {
+	private static class CollectionMetadataWrapperImpl
+			extends AbstractWrapper
+			implements CollectionMetadataWrapper {
 		
 		private CollectionPersister wrappedCollectionMetadata = null;
 		

@@ -11,6 +11,7 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.HbmExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 
 public class HbmExporterWrapperFactory {
@@ -25,7 +26,8 @@ public class HbmExporterWrapperFactory {
 		return new HbmExporterWrapperImpl(new HbmExporterExtension(cfg, f)) ;
 	}
 	
-	public static class HbmExporterExtension extends HbmExporter {
+	public static class HbmExporterExtension 
+			extends HbmExporter {
 		
 		public Object delegateExporter = null;
 		
@@ -67,7 +69,9 @@ public class HbmExporterWrapperFactory {
 		}
 	}
 	
-	private static class HbmExporterWrapperImpl implements HbmExporterWrapper {
+	private static class HbmExporterWrapperImpl 
+			extends AbstractWrapper
+			implements HbmExporterWrapper {
 		
 		private HbmExporterExtension hbmExporterExtension;
 		
