@@ -17,8 +17,8 @@ import org.hibernate.tool.orm.jbt.api.wrp.DdlExporterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ExporterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.GenericExporterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryExporterWrapper;
+import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
