@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -10,13 +10,15 @@ import java.util.Properties;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ConfigurationMetadataDescriptorTest {
 	
 	private static final String TEST_HBM_XML_STRING =
-			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.util'>" +
+			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.internal.util'>" +
 			"  <class name='ConfigurationMetadataDescriptorTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
