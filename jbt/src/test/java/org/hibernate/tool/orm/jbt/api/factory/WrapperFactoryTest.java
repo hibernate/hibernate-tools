@@ -71,7 +71,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.util.NativeConfiguration;

@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import org.hibernate.boot.internal.BootstrapContextImpl;
 import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
@@ -11,6 +11,8 @@ import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.boot.spi.MetadataBuildingOptions;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.util.MockDialect;
 
 public class DummyMetadataBuildingContext {
 	

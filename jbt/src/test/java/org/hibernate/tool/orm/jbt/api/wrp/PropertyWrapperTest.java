@@ -22,7 +22,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.PropertyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ValueWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
