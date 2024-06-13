@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +9,7 @@ import java.util.Collections;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataDescriptor;
 import org.junit.jupiter.api.Test;
 
 public class DummyMetadataDescriptorTest {

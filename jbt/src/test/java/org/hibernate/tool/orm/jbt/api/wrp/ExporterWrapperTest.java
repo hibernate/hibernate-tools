@@ -24,7 +24,7 @@ import org.hibernate.tool.orm.jbt.internal.factory.ArtifactCollectorWrapperFacto
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ExporterWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataDescriptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
