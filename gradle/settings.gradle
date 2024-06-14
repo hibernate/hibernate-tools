@@ -7,3 +7,4 @@
 
 rootProject.name = 'hibernate-tools-gradle'
 include('plugin')
+project( ':plugin' ).name = 'hibernate-tools-gradle'
