@@ -4,11 +4,15 @@
  * This generated file contains a sample Gradle plugin project to get you started.
  * For more details on writing Custom Plugins, please refer to https://docs.gradle.org/8.8/userguide/custom_plugins.html in the Gradle documentation.
  */
-
+ 
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     id 'java-gradle-plugin'
+    id 'maven-publish'
 }
+
+group = 'org.hibernate.tool'
+version = '1.0'
 
 java {
     toolchain {
@@ -32,7 +36,7 @@ gradlePlugin {
     // Define the plugin
     plugins {
         hibernate {
-            id = 'org.hibernate.tool'
+            id = 'org.hibernate.tool.hibernate-tools-gradle'
             implementationClass = 'org.hibernate.tool.gradle.Plugin'
         }
     }
