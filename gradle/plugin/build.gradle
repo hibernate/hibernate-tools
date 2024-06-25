@@ -12,7 +12,6 @@ plugins {
 }
 
 group = 'org.hibernate.tool'
-version = '1.0'
 
 java {
     toolchain {
@@ -28,7 +27,7 @@ repositories {
 
 dependencies {
 
-    implementation 'org.hibernate.tool:hibernate-tools-orm:6.6.0-SNAPSHOT'
+    implementation "org.hibernate.tool:hibernate-tools-orm:$version"
 
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter

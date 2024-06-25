@@ -46,9 +46,8 @@
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>build</argument>
- <!--                           <argument>-Pgroup=${project.groupId}</argument>
+ <!--                           <argument>-Pgroup=${project.groupId}</argument> -->
                                 <argument>-Pversion=${project.version}</argument>
-                                <argument>-S</argument> -->
                             </arguments>
                         </configuration>
                         <goals>
