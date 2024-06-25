@@ -27,6 +27,15 @@
 
    <artifactId>hibernate-tools-gradle</artifactId>
 
+   <name>Hibernate Tools Gradle Plugin</name>
+   <description>Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
+   <url>http://hibernate.org/tools/</url>
+
+   <issueManagement>
+      <system>JIRA</system>
+      <url>http://hibernate.onjira.com/browse/HBX</url>
+   </issueManagement>
+
    <properties>
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
@@ -46,7 +55,6 @@
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>build</argument>
- <!--                           <argument>-Pgroup=${project.groupId}</argument> -->
                                 <argument>-Pversion=${project.version}</argument>
                             </arguments>
                         </configuration>
