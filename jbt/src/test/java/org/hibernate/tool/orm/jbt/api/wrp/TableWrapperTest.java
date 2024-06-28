@@ -12,15 +12,12 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -164,12 +161,13 @@ public class TableWrapperTest {
 		assertTrue(tableWrapper.isPhysicalTable());
 	}
 	
+	// Methods 'Table#getIdentifierValue()' and 'Table.setIdentifierValue(KeyValue)' were removed since Hibernate 6.6.0.CR1
 	@Test
 	public void testGetIdentifierValue() {
-		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
+//		KeyValue value = new BasicValue(DummyMetadataBuildingContext.INSTANCE);
 		assertNull(tableWrapper.getIdentifierValue());
-		wrappedTable.setIdentifierValue(value);
-		assertSame(value, tableWrapper.getIdentifierValue().getWrappedObject());
+//		wrappedTable.setIdentifierValue(value);
+//		assertSame(value, tableWrapper.getIdentifierValue().getWrappedObject());
 	}
 	
 }
