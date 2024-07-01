@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 
 public class HibernateToolsPersistenceProvider extends HibernatePersistenceProvider {
 
-	static EntityManagerFactoryBuilderImpl createEntityManagerFactoryBuilder(
+	public static EntityManagerFactoryBuilderImpl createEntityManagerFactoryBuilder(
 			final String persistenceUnit, 
 			final Map<Object, Object> properties) {
 		return new HibernateToolsPersistenceProvider()
