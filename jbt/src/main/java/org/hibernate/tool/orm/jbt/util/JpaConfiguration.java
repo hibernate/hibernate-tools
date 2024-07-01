@@ -17,6 +17,7 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.HibernateToolsPersistenceProvider;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
