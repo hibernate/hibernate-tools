@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,9 +24,6 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -37,7 +34,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class NativeConfigurationTest {
 	
 	private static final String TEST_HBM_XML_STRING =
-			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.util'>" +
+			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.internal.util'>" +
 			"  <class name='NativeConfigurationTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
@@ -101,7 +98,7 @@ public class NativeConfigurationTest {
 		fileWriter.close();
 
 		String fooClassName = 
-				"org.hibernate.tool.orm.jbt.util.NativeConfigurationTest$Foo";
+				"org.hibernate.tool.orm.jbt.internal.util.NativeConfigurationTest$Foo";
 		Metadata metadata = MetadataHelper.getMetadata(nativeConfiguration);
 		assertNull(metadata.getEntityBinding(fooClassName));
 		nativeConfiguration.configure(document);
@@ -120,10 +117,10 @@ public class NativeConfigurationTest {
 	
 	@Test
 	public void testGetClassMappings() throws Exception {
-		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/internal/util";
 		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
 		String fooClassName = 
-				"org.hibernate.tool.orm.jbt.util.NativeConfigurationTest$Foo";
+				"org.hibernate.tool.orm.jbt.internal.util.NativeConfigurationTest$Foo";
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
 		hbmXmlFileDir.deleteOnExit();
@@ -205,10 +202,10 @@ public class NativeConfigurationTest {
 	
 	@Test
 	public void testGetClassMapping() throws Exception {
-		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/internal/util";
 		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
 		String fooClassName = 
-				"org.hibernate.tool.orm.jbt.util.NativeConfigurationTest$Foo";
+				"org.hibernate.tool.orm.jbt.internal.util.NativeConfigurationTest$Foo";
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);
 		hbmXmlFileDir.deleteOnExit();
@@ -228,7 +225,7 @@ public class NativeConfigurationTest {
 	
 	@Test
 	public void testGetTableMappings() throws Exception {
-		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/util";
+		String fooHbmXmlFilePath = "org/hibernate/tool/orm/jbt/internal/util";
 		String fooHbmXmlFileName = "NativeConfigurationTest$Foo.hbm.xml";
 		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
 		File hbmXmlFileDir = new File(new File(url.toURI()),fooHbmXmlFilePath);

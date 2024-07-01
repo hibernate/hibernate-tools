@@ -74,7 +74,7 @@ import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
-import org.hibernate.tool.orm.jbt.util.NativeConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 import org.junit.jupiter.api.Test;
