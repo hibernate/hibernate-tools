@@ -20,7 +20,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tool.orm.jbt.internal.factory.ClassMetadataWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionWrapperFactory;
-import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.internal.NamedBasicTypeImpl;

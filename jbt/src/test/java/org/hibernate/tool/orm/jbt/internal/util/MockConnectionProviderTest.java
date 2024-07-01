@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.sql.Connection;
 
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
 import org.junit.jupiter.api.Test;
 
 public class MockConnectionProviderTest {
