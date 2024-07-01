@@ -7,8 +7,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SchemaExportWrapper;
+import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 import org.hibernate.tool.schema.TargetType;
 
 public class SchemaExportWrapperFactory {

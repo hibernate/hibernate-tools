@@ -6,8 +6,8 @@ import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.HqlCodeAssistWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.HqlCompletionRequestor;
+import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 
 public class HqlCodeAssistWrapperFactory {
 

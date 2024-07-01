@@ -6,8 +6,8 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ConfigurationWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.MetadataHelper;
 
 public class ColumnWrapperFactory {
 	
