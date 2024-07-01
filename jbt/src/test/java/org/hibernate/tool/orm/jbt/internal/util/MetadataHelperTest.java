@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -13,6 +13,8 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.orm.jbt.util.MockConnectionProvider;
+import org.hibernate.tool.orm.jbt.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class MetadataHelperTest {
@@ -46,7 +48,7 @@ public class MetadataHelperTest {
 	     configuration.setProperty(AvailableSettings.DIALECT, MockDialect.class.getName());
 	     configuration.setProperty(AvailableSettings.CONNECTION_PROVIDER, MockConnectionProvider.class.getName());
 	     Metadata metadata = MetadataHelper.getMetadata(configuration);
-	     assertNotNull(metadata.getEntityBinding("org.hibernate.tool.orm.jbt.util.MetadataHelperTest$Foo"));
+	     assertNotNull(metadata.getEntityBinding("org.hibernate.tool.orm.jbt.internal.util.MetadataHelperTest$Foo"));
 	}
 	
 	private static class MetadataMethodConfiguration extends Configuration {
@@ -89,7 +91,7 @@ public class MetadataHelperTest {
 			"<!DOCTYPE hibernate-mapping PUBLIC" +
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
 			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
-			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.util'>" +
+			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.internal.util'>" +
 			"  <class name='MetadataHelperTest$Foo'>" + 
 			"    <id name='id'/>" +
 			"  </class>" +
