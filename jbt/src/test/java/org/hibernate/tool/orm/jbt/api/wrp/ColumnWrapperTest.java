@@ -17,7 +17,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.internal.factory.ColumnWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

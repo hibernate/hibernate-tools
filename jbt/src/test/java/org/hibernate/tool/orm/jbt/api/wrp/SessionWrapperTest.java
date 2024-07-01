@@ -19,7 +19,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.tool.orm.jbt.internal.factory.SessionWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
-import org.hibernate.tool.orm.jbt.util.MockDialect;
+import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
