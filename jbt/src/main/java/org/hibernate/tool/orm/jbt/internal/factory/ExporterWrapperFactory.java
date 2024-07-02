@@ -19,8 +19,8 @@ import org.hibernate.tool.orm.jbt.api.wrp.GenericExporterWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.QueryExporterWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataDescriptor;
+import org.hibernate.tool.orm.jbt.internal.util.ReflectUtil;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.ReflectUtil;
 
 public class ExporterWrapperFactory {
 	
