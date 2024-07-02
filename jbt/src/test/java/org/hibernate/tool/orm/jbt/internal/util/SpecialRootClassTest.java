@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,6 +16,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.junit.jupiter.api.Test;
 
 public class SpecialRootClassTest {
