@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import java.io.File;
 import java.util.Collections;
@@ -13,7 +13,6 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.internal.util.ExtendedConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 

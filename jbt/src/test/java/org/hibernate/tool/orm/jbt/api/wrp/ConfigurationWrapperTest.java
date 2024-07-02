@@ -40,7 +40,7 @@ import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.util.MockConnectionProvider;
 import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
-import org.hibernate.tool.orm.jbt.util.RevengConfiguration;
+import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
