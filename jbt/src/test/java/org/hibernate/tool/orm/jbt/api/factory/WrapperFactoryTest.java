@@ -76,7 +76,7 @@ import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.MetadataHelper;
 import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
-import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
+import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.junit.jupiter.api.Test;
 
 public class WrapperFactoryTest {

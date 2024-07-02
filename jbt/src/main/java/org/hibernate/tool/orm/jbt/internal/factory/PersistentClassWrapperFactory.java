@@ -20,8 +20,8 @@ import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
+import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
-import org.hibernate.tool.orm.jbt.util.SpecialRootClass;
 
 public class PersistentClassWrapperFactory {
 	

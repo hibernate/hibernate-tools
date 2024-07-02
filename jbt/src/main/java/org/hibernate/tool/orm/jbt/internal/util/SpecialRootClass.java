@@ -1,4 +1,4 @@
-package org.hibernate.tool.orm.jbt.util;
+package org.hibernate.tool.orm.jbt.internal.util;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -11,7 +11,6 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
-import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 
 public class SpecialRootClass extends RootClass {
 	
