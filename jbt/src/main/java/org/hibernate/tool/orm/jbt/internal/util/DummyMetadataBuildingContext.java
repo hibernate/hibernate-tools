@@ -25,7 +25,12 @@ public class DummyMetadataBuildingContext {
 		BootstrapContext bootstrapContext = new BootstrapContextImpl(serviceRegistry, metadataBuildingOptions);
 		((MetadataBuilderImpl.MetadataBuildingOptionsImpl)metadataBuildingOptions).setBootstrapContext(bootstrapContext);
 		InFlightMetadataCollector inflightMetadataCollector = new InFlightMetadataCollectorImpl(bootstrapContext, metadataBuildingOptions);
-		return new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, inflightMetadataCollector);
+		return new MetadataBuildingContextRootImpl(
+				"JBoss Tools", 
+				bootstrapContext, 
+				metadataBuildingOptions, 
+				inflightMetadataCollector,
+				null);
 	}
 
 }

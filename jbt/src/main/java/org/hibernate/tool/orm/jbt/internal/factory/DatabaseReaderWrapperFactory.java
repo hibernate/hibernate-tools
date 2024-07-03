@@ -60,7 +60,12 @@ public class DatabaseReaderWrapperFactory {
 							serviceRegistry.getService(JdbcServices.class).getDialect(), 
 							properties );
 		    databaseReader = DatabaseReader.create(properties,revengStrategy,mdd, serviceRegistry);
-		    MetadataBuildingContext metadataBuildingContext = new MetadataBuildingContextRootImpl("JBoss Tools", bootstrapContext, metadataBuildingOptions, metadataCollector);
+		    MetadataBuildingContext metadataBuildingContext = new MetadataBuildingContextRootImpl(
+		    		"JBoss Tools", 
+		    		bootstrapContext, 
+		    		metadataBuildingOptions, 
+		    		metadataCollector,
+		    		null);
 		    revengMetadataCollector = new RevengMetadataCollector(metadataBuildingContext);
 		}
 		
