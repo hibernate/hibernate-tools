@@ -129,7 +129,7 @@ public class SessionWrapperTest {
 	public void testCreateCriteria() {
 		QueryWrapper queryWrapper = sessionWrapper.createCriteria(Foo.class);
 		assertNotNull(queryWrapper);
-		Query<?> q = (Query)queryWrapper.getWrappedObject();
+		Query<?> q = (Query<?>)queryWrapper.getWrappedObject();
 		assertSame(q.getSession(), sessionWrapper.getWrappedObject());
 	}
 

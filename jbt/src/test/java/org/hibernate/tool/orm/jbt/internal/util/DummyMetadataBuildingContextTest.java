@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
-import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.junit.jupiter.api.Test;
 
 public class DummyMetadataBuildingContextTest {

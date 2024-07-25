@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.util.Properties;
 
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
-import org.hibernate.tool.orm.jbt.internal.util.HibernateToolsPersistenceProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

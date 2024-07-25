@@ -3,7 +3,6 @@ package org.hibernate.tool.orm.jbt.internal.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hibernate.dialect.DatabaseVersion;
-import org.hibernate.tool.orm.jbt.internal.util.MockDialect;
 import org.junit.jupiter.api.Test;
 
 public class MockDialectTest {

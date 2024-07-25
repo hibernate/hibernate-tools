@@ -21,11 +21,8 @@ package org.hibernate.tool.entitynaming;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.mapping.Column;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
-import org.hibernate.tool.internal.util.NameConverter;
 
 /**
  *
