@@ -6,8 +6,7 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.persister.collection.CollectionPersister;
-import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.metamodel.model.domain.internal.MappingMetamodelImpl;
 import org.hibernate.tool.orm.jbt.api.wrp.ClassMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.CollectionMetadataWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
@@ -42,20 +41,20 @@ public class SessionFactoryWrapperFactory {
 
 		@Override 
 		public Map<String, ClassMetadataWrapper> getAllClassMetadata() {
-			Map<String, EntityPersister> origin = ((SessionFactoryImplementor)sessionFactory).getMetamodel().entityPersisters();
-			Map<String, ClassMetadataWrapper> result = new HashMap<String, ClassMetadataWrapper>(origin.size());
-			for (String key : origin.keySet()) {
-				result.put(key, ClassMetadataWrapperFactory.createClassMetadataWrapper(origin.get(key)));
+			Map<String, ClassMetadataWrapper> result = new HashMap<String, ClassMetadataWrapper>();
+			MappingMetamodelImpl mappingMetaModel = (MappingMetamodelImpl)((SessionFactoryImplementor)sessionFactory).getMappingMetamodel();
+			for (String key : mappingMetaModel.getAllEntityNames()) {
+				result.put(key, ClassMetadataWrapperFactory.createClassMetadataWrapper(mappingMetaModel.entityPersister(key)));
 			}
 			return result;
 		}
 
 		@Override 
 		public Map<String, CollectionMetadataWrapper> getAllCollectionMetadata() {
-			Map<String, CollectionPersister> origin = ((SessionFactoryImplementor)sessionFactory).getMetamodel().collectionPersisters();
-			Map<String, CollectionMetadataWrapper> result = new HashMap<String, CollectionMetadataWrapper>(origin.size());
-			for (String key : origin.keySet()) {
-				result.put(key, CollectionMetadataWrapperFactory.createCollectionMetadataWrapper(origin.get(key)));
+			Map<String, CollectionMetadataWrapper> result = new HashMap<String, CollectionMetadataWrapper>();
+			MappingMetamodelImpl mappingMetaModel = (MappingMetamodelImpl)((SessionFactoryImplementor)sessionFactory).getMappingMetamodel();
+			for (String key : mappingMetaModel.getAllCollectionRoles()) {
+				result.put(key, CollectionMetadataWrapperFactory.createCollectionMetadataWrapper(mappingMetaModel.collectionPersister(key)));
 			}
 			return result;
 		}
