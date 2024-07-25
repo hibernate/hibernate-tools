@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.AssertionFailure;
+import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
@@ -401,7 +403,7 @@ public class PersistentClassWrapperFactory {
 
 		@Override
 		public int getOptimisticLockMode() {
-			return persistentClass.getOptimisticLockMode();
+			return getOldCode(persistentClass.getOptimisticLockStyle());
 		}
 
 		@Override
@@ -453,4 +455,18 @@ public class PersistentClassWrapperFactory {
 		
 	}
 	
+	private static int getOldCode(OptimisticLockStyle ols) {
+		switch (ols) {
+			case NONE:
+				return -1;
+			case VERSION:
+				return 0;
+			case DIRTY:
+				return 1;
+			case ALL:
+				return 2;
+			default:
+				throw new AssertionFailure("Unknown OptimisticLockStyle");
+		}
+	}
 }
