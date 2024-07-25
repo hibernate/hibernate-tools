@@ -296,7 +296,7 @@ public class TestCase {
 				"wrappers should be used by default");
 		pc = metadata.getEntityBinding( "org.hibernate.tool.hbm2x.Hbm2JavaTest.Customer" );
 		Component identifier = (Component) pc.getIdentifier();
-		assertFalse(((Property) identifier.getPropertyIterator().next() )
+		assertFalse(((Property) identifier.getProperties().iterator().next() )
 				.getValue().isNullable() );
 		assertEquals( "long", c2j.getJavaTypeName( property, false ) );
 	}

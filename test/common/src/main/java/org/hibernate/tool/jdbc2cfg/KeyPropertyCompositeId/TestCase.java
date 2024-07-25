@@ -129,7 +129,7 @@ public class TestCase {
 		assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();
 		assertEquals(2, cmpid.getPropertySpan());
-		Iterator<?> iter = cmpid.getPropertyIterator();
+		Iterator<?> iter = cmpid.getProperties().iterator();
 		Property id = (Property) iter.next();
 		Property extraId = (Property) iter.next();
 		assertEquals(
@@ -155,7 +155,7 @@ public class TestCase {
 		assertTrue(identifierProperty.getValue() instanceof Component);
 		Component cmpid = (Component) identifierProperty.getValue();
 		assertEquals(2, cmpid.getPropertySpan());
-		Iterator<?> iter = cmpid.getPropertyIterator();
+		Iterator<?> iter = cmpid.getProperties().iterator();
 		Property id = (Property)iter.next();
 		Property extraId = (Property)iter.next();
 		if ("extraId".equals(id.getName())) {
