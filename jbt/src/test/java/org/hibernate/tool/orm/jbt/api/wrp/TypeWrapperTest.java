@@ -147,7 +147,7 @@ public class TypeWrapperTest {
 		component.setComponentClassName("java.lang.Object");
 		TypeWrapper anyTypeWrapper = 
 				TypeWrapperFactory.createTypeWrapper(
-						new ComponentType(component, null, DummyMetadataBuildingContext.INSTANCE));
+						new ComponentType(component, null));
 		assertTrue(anyTypeWrapper.isComponentType());
 	}
 	
