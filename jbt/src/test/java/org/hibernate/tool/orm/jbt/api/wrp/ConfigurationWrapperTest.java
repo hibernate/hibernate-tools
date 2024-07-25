@@ -27,9 +27,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.jaxb.spi.Binding;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
@@ -251,8 +251,8 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testSetNamingStrategy() throws Exception {
 		NamingStrategyWrapper namingStrategyWrapper = 
-				NamingStrategyWrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
-		NamingStrategy namingStrategy = (NamingStrategy)namingStrategyWrapper.getWrappedObject();
+				NamingStrategyWrapperFactory.createNamingStrategyWrapper(ImplicitNamingStrategyJpaCompliantImpl.class.getName());
+		ImplicitNamingStrategy namingStrategy = (ImplicitNamingStrategy)namingStrategyWrapper.getWrappedObject();
 		// For native configuration
 		Field namingStrategyField = wrappedNativeConfiguration.getClass().getDeclaredField("namingStrategy");
 		namingStrategyField.setAccessible(true);
@@ -739,7 +739,7 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testGetNamingStrategy() {
 		// For native configuration 
-		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		ImplicitNamingStrategy namingStrategy = new ImplicitNamingStrategyJpaCompliantImpl();
 		assertNull(nativeConfigurationWrapper.getNamingStrategy());
 		((NativeConfiguration)wrappedNativeConfiguration).setNamingStrategy(namingStrategy);
 		assertSame(nativeConfigurationWrapper.getNamingStrategy().getWrappedObject(), namingStrategy);

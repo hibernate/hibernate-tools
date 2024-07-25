@@ -13,8 +13,8 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -101,11 +101,11 @@ public class WrapperFactoryTest {
 	
 	@Test
 	public void testCreateNamingStrategyWrapper() {
-		Object namingStrategyWrapper = WrapperFactory.createNamingStrategyWrapper(DefaultNamingStrategy.class.getName());
+		Object namingStrategyWrapper = WrapperFactory.createNamingStrategyWrapper(ImplicitNamingStrategyJpaCompliantImpl.class.getName());
 		assertNotNull(namingStrategyWrapper);
 		assertTrue(namingStrategyWrapper instanceof NamingStrategyWrapper);
 		Object wrappedNamingStrategy = ((NamingStrategyWrapper)namingStrategyWrapper).getWrappedObject();
-		assertTrue(wrappedNamingStrategy instanceof DefaultNamingStrategy);
+		assertTrue(wrappedNamingStrategy instanceof ImplicitNamingStrategyJpaCompliantImpl);
 		namingStrategyWrapper = null;
 		assertNull(namingStrategyWrapper);
 		try {
@@ -504,9 +504,6 @@ public class WrapperFactoryTest {
 		
 	}
 		
-	@SuppressWarnings("serial")
-	public static class TestNamingStrategy extends DefaultNamingStrategy {}
-	
 	public static class TestRevengStrategy extends DefaultStrategy {}
 	public static class TestDelegatingStrategy extends DelegatingStrategy {
 		public TestDelegatingStrategy(RevengStrategy delegate) {

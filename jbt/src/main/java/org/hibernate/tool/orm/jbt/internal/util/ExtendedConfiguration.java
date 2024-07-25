@@ -2,8 +2,8 @@ package org.hibernate.tool.orm.jbt.internal.util;
 
 import java.util.Iterator;
 
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -14,7 +14,7 @@ public interface ExtendedConfiguration {
 	
 	void setEntityResolver(EntityResolver entityResolver);
 	
-	void setNamingStrategy(NamingStrategy namingStrategy);
+	void setNamingStrategy(ImplicitNamingStrategy namingStrategy);
 	
 	Configuration configure(Document document);
 	
@@ -30,7 +30,7 @@ public interface ExtendedConfiguration {
 	
 	PersistentClass getClassMapping(String string);
 	
-	NamingStrategy getNamingStrategy();
+	ImplicitNamingStrategy getNamingStrategy();
 	
 	EntityResolver getEntityResolver();
 	

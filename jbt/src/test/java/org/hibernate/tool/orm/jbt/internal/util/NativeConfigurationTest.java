@@ -18,9 +18,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
@@ -69,7 +69,7 @@ public class NativeConfigurationTest {
 		Field field = NativeConfiguration.class.getDeclaredField("namingStrategy");
 		field.setAccessible(true);
 		assertNull(field.get(nativeConfiguration));
-		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		ImplicitNamingStrategy namingStrategy = new ImplicitNamingStrategyJpaCompliantImpl();
 		nativeConfiguration.setNamingStrategy(namingStrategy);
 		assertNotNull(field.get(nativeConfiguration));
 		assertSame(field.get(nativeConfiguration), namingStrategy);
@@ -147,7 +147,7 @@ public class NativeConfigurationTest {
 		Field field = NativeConfiguration.class.getDeclaredField("namingStrategy");
 		field.setAccessible(true);
 		assertNull(nativeConfiguration.getNamingStrategy());
-		NamingStrategy namingStrategy = new DefaultNamingStrategy();
+		ImplicitNamingStrategy namingStrategy = new ImplicitNamingStrategyJpaCompliantImpl();
 		field.set(nativeConfiguration, namingStrategy);
 		assertNotNull(nativeConfiguration.getNamingStrategy());
 		assertSame(nativeConfiguration.getNamingStrategy(), namingStrategy);

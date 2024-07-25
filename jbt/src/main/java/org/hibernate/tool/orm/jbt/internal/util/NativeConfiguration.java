@@ -14,8 +14,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -28,7 +28,7 @@ public class NativeConfiguration extends Configuration implements ExtendedConfig
 	private EntityResolver entityResolver = null;
 	
 	@SuppressWarnings("unused")
-	private NamingStrategy namingStrategy = null;
+	private ImplicitNamingStrategy namingStrategy = null;
 	
 	private Metadata metadata = null;
 	
@@ -44,7 +44,7 @@ public class NativeConfiguration extends Configuration implements ExtendedConfig
 		return entityResolver;
 	}
 	
-	public void setNamingStrategy(NamingStrategy namingStrategy) {
+	public void setNamingStrategy(ImplicitNamingStrategy namingStrategy) {
 		// The method Configuration.setNamingStrategy() is not supported 
 		// anymore from Hibernate 5+.
 		// Naming strategies can be configured using the 
@@ -53,7 +53,7 @@ public class NativeConfiguration extends Configuration implements ExtendedConfig
 		this.namingStrategy = namingStrategy;
 	}
 	
-	public NamingStrategy getNamingStrategy() {
+	public ImplicitNamingStrategy getNamingStrategy() {
 		// This method is not supported anymore from Hibernate 5+
 		// Returning the cached NamingStrategy for bookkeeping purposes
 		return namingStrategy;

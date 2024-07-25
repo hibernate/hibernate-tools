@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
@@ -89,7 +89,7 @@ public class ConfigurationWrapperFactory {
 		@Override
 		public void setNamingStrategy(NamingStrategyWrapper namingStrategyWrapper) {
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
-				((ExtendedConfiguration)wrappedConfiguration).setNamingStrategy((NamingStrategy)namingStrategyWrapper.getWrappedObject());
+				((ExtendedConfiguration)wrappedConfiguration).setNamingStrategy((ImplicitNamingStrategy)namingStrategyWrapper.getWrappedObject());
 			}
 		}
 		
@@ -192,7 +192,7 @@ public class ConfigurationWrapperFactory {
 		
 		@Override
 		public NamingStrategyWrapper getNamingStrategy() {
-			NamingStrategy namingStrategy = null;
+			ImplicitNamingStrategy namingStrategy = null;
 			if (wrappedConfiguration instanceof ExtendedConfiguration) {
 				namingStrategy = ((ExtendedConfiguration)wrappedConfiguration).getNamingStrategy();
 			}

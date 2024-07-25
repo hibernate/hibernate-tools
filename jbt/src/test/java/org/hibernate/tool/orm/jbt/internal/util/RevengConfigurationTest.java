@@ -22,14 +22,13 @@ import java.util.Properties;
 
 import org.h2.Driver;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -256,7 +255,7 @@ public class RevengConfigurationTest {
 	@Test
 	public void testSetNamingStrategy() {
 		try {
-			revengConfiguration.setNamingStrategy(new DefaultNamingStrategy());
+			revengConfiguration.setNamingStrategy(new ImplicitNamingStrategyJpaCompliantImpl());
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(

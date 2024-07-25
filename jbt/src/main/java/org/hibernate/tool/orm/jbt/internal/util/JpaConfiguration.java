@@ -7,15 +7,12 @@ import java.util.Properties;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
-import org.hibernate.tool.orm.jbt.api.wrp.SessionFactoryWrapper;
-import org.hibernate.tool.orm.jbt.internal.factory.SessionFactoryWrapperFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
@@ -111,7 +108,7 @@ public class JpaConfiguration extends Configuration implements ExtendedConfigura
 				this.getClass().getName());
 	}
 	
-	public void setNamingStrategy(NamingStrategy namingStrategy) {
+	public void setNamingStrategy(ImplicitNamingStrategy namingStrategy) {
 		throw new RuntimeException(
 				"Method 'setNamingStrategy' should not be called on instances of " +
 				this.getClass().getName());
@@ -145,7 +142,7 @@ public class JpaConfiguration extends Configuration implements ExtendedConfigura
 		return getMetadata().collectTableMappings().iterator();
 	}
 	
-	public NamingStrategy getNamingStrategy() {
+	public ImplicitNamingStrategy getNamingStrategy() {
 		throw new RuntimeException(
 				"Method 'getNamingStrategy' should not be called on instances of " +
 				this.getClass().getName());

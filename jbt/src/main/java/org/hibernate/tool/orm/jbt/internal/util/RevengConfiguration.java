@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataConstants;
@@ -93,7 +93,7 @@ public class RevengConfiguration extends Configuration implements ExtendedConfig
 				this.getClass().getName());
 	}
 	
-	public void setNamingStrategy(NamingStrategy namingStrategy) {
+	public void setNamingStrategy(ImplicitNamingStrategy namingStrategy) {
 		throw new RuntimeException(
 				"Method 'setNamingStrategy' should not be called on instances of " +
 				this.getClass().getName());
@@ -129,7 +129,7 @@ public class RevengConfiguration extends Configuration implements ExtendedConfig
 				this.getClass().getName());
 	}
 		
-	public NamingStrategy getNamingStrategy() {
+	public ImplicitNamingStrategy getNamingStrategy() {
 		throw new RuntimeException(
 				"Method 'getNamingStrategy' should not be called on instances of " +
 				this.getClass().getName());

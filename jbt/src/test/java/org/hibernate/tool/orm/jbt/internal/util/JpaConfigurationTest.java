@@ -23,13 +23,12 @@ import java.util.Properties;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.orm.jbt.internal.util.JpaConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -219,7 +218,7 @@ public class JpaConfigurationTest {
 	public void testSetNamingStrategy() {
 		try {
 			JpaConfiguration jpaConfiguration = new JpaConfiguration("foobar", null);
-			jpaConfiguration.setNamingStrategy(new DefaultNamingStrategy());
+			jpaConfiguration.setNamingStrategy(new ImplicitNamingStrategyJpaCompliantImpl());
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(

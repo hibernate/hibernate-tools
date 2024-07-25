@@ -1,6 +1,14 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
-import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.boot.model.naming.EntityNaming;
+import org.hibernate.boot.model.naming.Identifier;
+import org.hibernate.boot.model.naming.ImplicitBasicColumnNameSource;
+import org.hibernate.boot.model.naming.ImplicitCollectionTableNameSource;
+import org.hibernate.boot.model.naming.ImplicitEntityNameSource;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
+import org.hibernate.boot.model.naming.ImplicitPrimaryKeyJoinColumnNameSource;
+import org.hibernate.boot.model.source.spi.AttributePath;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.api.wrp.NamingStrategyWrapper;
 import org.hibernate.tool.orm.jbt.internal.util.ReflectUtil;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
@@ -8,10 +16,10 @@ import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 public class NamingStrategyWrapperFactory {
 	
 	public static NamingStrategyWrapper createNamingStrategyWrapper(String className) {
-		return createNamingStrategyWrapper((NamingStrategy)ReflectUtil.createInstance(className));
+		return createNamingStrategyWrapper((ImplicitNamingStrategy)ReflectUtil.createInstance(className));
 	}
 
-	static NamingStrategyWrapper createNamingStrategyWrapper(NamingStrategy wrappedNamingStrategy) {
+	static NamingStrategyWrapper createNamingStrategyWrapper(ImplicitNamingStrategy wrappedNamingStrategy) {
 		return new NamingStrategyWrapperImpl(wrappedNamingStrategy);
 	}
 	
@@ -19,14 +27,14 @@ public class NamingStrategyWrapperFactory {
 			extends AbstractWrapper
 			implements NamingStrategyWrapper {
 		
-		private NamingStrategy namingStrategy = null;
+		private ImplicitNamingStrategy namingStrategy = null;
 		
-		private NamingStrategyWrapperImpl(NamingStrategy namingStrategy) {
+		private NamingStrategyWrapperImpl(ImplicitNamingStrategy namingStrategy) {
 			this.namingStrategy = namingStrategy;
 		}
 		
 		@Override 
-		public NamingStrategy getWrappedObject() { 
+		public ImplicitNamingStrategy getWrappedObject() { 
 			return namingStrategy; 
 		}
 		
@@ -37,41 +45,69 @@ public class NamingStrategyWrapperFactory {
 				String associatedEntity, 
 				String associatedEntityTable,
 				String propertyName) { 
-			return ((NamingStrategy)getWrappedObject()).collectionTableName(
-					ownerEntity, 
-					ownerEntityTable, 
-					associatedEntity, 
-					associatedEntityTable, 
-					propertyName);
+			ImplicitCollectionTableNameSource ictns = new ImplicitCollectionTableNameSource() {			
+				@Override public MetadataBuildingContext getBuildingContext() { return null; }				
+				@Override public Identifier getOwningPhysicalTableName() { return Identifier.toIdentifier(ownerEntityTable); }				
+				@Override public AttributePath getOwningAttributePath() { return AttributePath.parse(propertyName); }
+				@Override
+				public EntityNaming getOwningEntityNaming() {
+					return new EntityNaming() {			
+						@Override public String getJpaEntityName() { return ownerEntity; }	
+						@Override public String getEntityName() { return ownerEntity; }			
+						@Override public String getClassName() { return ownerEntity; }
+					};
+				}				
+			};
+			return ((ImplicitNamingStrategy)getWrappedObject()).determineCollectionTableName(ictns).getText();
 		}
 		
 		@Override
 		public String columnName(String name) {
-			return ((NamingStrategy)getWrappedObject()).columnName(name);
+			ImplicitBasicColumnNameSource ibcns = new ImplicitBasicColumnNameSource() {
+				@Override public MetadataBuildingContext getBuildingContext() { return null; }
+				@Override public AttributePath getAttributePath() { return AttributePath.parse(name); }
+				@Override public boolean isCollectionElement() { return false; }			
+			};
+			return ((ImplicitNamingStrategy)getWrappedObject()).determineBasicColumnName(ibcns).getText();
 		}
 		
 		@Override
 		public String propertyToColumnName(String name) {
-			return ((NamingStrategy)getWrappedObject()).propertyToColumnName(name);
+			return columnName(name);
 		}
 		
 		@Override
 		public String tableName(String name) {
-			return ((NamingStrategy)getWrappedObject()).tableName(name);
+			ImplicitEntityNameSource iens = new ImplicitEntityNameSource() {				
+				@Override public MetadataBuildingContext getBuildingContext() { return null; }		
+				@Override
+				public EntityNaming getEntityNaming() {
+					return new EntityNaming() {			
+						@Override public String getJpaEntityName() { return name; }	
+						@Override public String getEntityName() { return name; }			
+						@Override public String getClassName() { return name; }
+					};
+				}
+			};
+			return ((ImplicitNamingStrategy)getWrappedObject()).determinePrimaryTableName(iens).getText();
+		}
+		
+		@Override
+		public String classToTableName(String name) {
+			return tableName(name);
 		}
 		
 		@Override 
 		public String joinKeyColumnName(
 				String primaryKeyColumnName,
 				String primaryTableName) {
-			return ((NamingStrategy)getWrappedObject()).joinKeyColumnName(
-					primaryKeyColumnName,
-					primaryTableName);
-		}
-		
-		@Override
-		public String classToTableName(String name) {
-			return ((NamingStrategy)getWrappedObject()).classToTableName(name);
+			ImplicitPrimaryKeyJoinColumnNameSource ipkjcns = new ImplicitPrimaryKeyJoinColumnNameSource() {	
+				@Override public MetadataBuildingContext getBuildingContext() { return null; }
+				@Override public Identifier getReferencedTableName() { return Identifier.toIdentifier(primaryTableName); }			
+				@Override public Identifier getReferencedPrimaryKeyColumnName() { return Identifier.toIdentifier(primaryKeyColumnName); }
+			};
+			return ((ImplicitNamingStrategy)getWrappedObject()).determinePrimaryKeyJoinColumnName(ipkjcns).getText();
+
 		}
 		
 		@Override
