@@ -24,10 +24,8 @@ import org.xml.sax.EntityResolver;
 
 public class NativeConfiguration extends Configuration implements ExtendedConfiguration {
 	
-	@SuppressWarnings("unused")
 	private EntityResolver entityResolver = null;
 	
-	@SuppressWarnings("unused")
 	private ImplicitNamingStrategy namingStrategy = null;
 	
 	private Metadata metadata = null;
