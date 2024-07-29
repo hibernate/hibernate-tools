@@ -49,6 +49,7 @@ import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.SQLTypeMapping;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
+import org.hibernate.tool.internal.reveng.util.EnhancedValue;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -259,8 +260,8 @@ public class TestCase {
 		
 		// applied
 		PersistentClass classMapping = metadata.getEntityBinding("Orders");
-		SimpleValue sv = (SimpleValue) classMapping.getIdentifier();
-		assertEquals("CustomOID", ((Component)sv).getComponentClassName());
+		EnhancedValue ev = (EnhancedValue) classMapping.getIdentifier();
+		assertEquals("CustomOID", ((Component)ev).getComponentClassName());
 		
 		assertEquals(2,classMapping.getIdentifierProperty().getColumnSpan());	
 		
@@ -268,11 +269,11 @@ public class TestCase {
 		assertEquals("customOrderId", identifierProperty.getName());
 		
 		classMapping = metadata.getEntityBinding("MiscTypes");
-		sv = (SimpleValue) classMapping.getIdentifier(); 
-		assertEquals("sequence", sv.getIdentifierGeneratorStrategy()); // will fail if default schema is not set since then there is no match in the override binder		
+		ev = (EnhancedValue) classMapping.getIdentifier(); 
+		assertEquals("sequence", ev.getIdentifierGeneratorStrategy()); // will fail if default schema is not set since then there is no match in the override binder		
 		
-		assertNotNull(sv.getIdentifierGeneratorProperties());
-		assertEquals("seq_table", sv.getIdentifierGeneratorProperties().getProperty("table"));
+		assertNotNull(ev.getIdentifierGeneratorProperties());
+		assertEquals("seq_table", ev.getIdentifierGeneratorProperties().getProperty("table"));
 		
 	}
 	

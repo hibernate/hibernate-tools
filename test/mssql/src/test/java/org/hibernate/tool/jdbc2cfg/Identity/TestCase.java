@@ -26,8 +26,8 @@ import java.sql.SQLException;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.internal.reveng.util.EnhancedValue;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +63,7 @@ public class TestCase {
 		assertNotNull(classMapping);
 		assertEquals(
 				"identity", 
-				((SimpleValue)classMapping
+				((EnhancedValue)classMapping
 						.getIdentifierProperty()
 						.getValue())
 					.getIdentifierGeneratorStrategy());		
@@ -77,7 +77,7 @@ public class TestCase {
 		assertNotNull(classMapping);
 		assertEquals(
 				"guid", 
-				((SimpleValue)classMapping
+				((EnhancedValue)classMapping
 						.getIdentifierProperty()
 						.getValue())
 					.getIdentifierGeneratorStrategy());		

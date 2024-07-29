@@ -38,7 +38,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -49,6 +48,7 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.metadata.NativeMetadataDescriptor;
+import org.hibernate.tool.internal.reveng.util.EnhancedValue;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JavaUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -112,7 +112,7 @@ public class TestCase {
 	@Test
 	public void testAddressWithForeignKeyGeneration() {
 		PersistentClass address = metadata.getEntityBinding("AddressPerson");	
-		assertEquals("foreign", ((SimpleValue)address.getIdentifier()).getIdentifierGeneratorStrategy());
+		assertEquals("foreign", ((EnhancedValue)address.getIdentifier()).getIdentifierGeneratorStrategy());
 	}
 
 	@Test
