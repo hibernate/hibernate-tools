@@ -136,8 +136,11 @@ public class TableWrapperFactory {
 
 		@Override
 		public ValueWrapper getIdentifierValue() { 
-			Value v = table.getIdentifierValue();
-			return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
+			// Method 'Table#getIdentifierValue()' has been removed starting from Hibernate 7.0.0.Alpha3
+			// TODO see JBIDE-29213
+			// Value v = table.getIdentifierValue();
+			// return v == null ? null : ValueWrapperFactory.createValueWrapper(v); 
+			return null;
 		}
 
 		
