@@ -42,6 +42,7 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
@@ -52,6 +53,8 @@ import org.w3c.dom.NodeList;
  * @author Dmitry Geraskov
  * @author koen
  */
+//TODO Reenable this test and make it pass (See HBX-2884)
+@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {

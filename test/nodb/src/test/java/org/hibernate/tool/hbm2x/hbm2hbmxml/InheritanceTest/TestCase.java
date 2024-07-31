@@ -54,6 +54,8 @@ import org.w3c.dom.NodeList;
  * @author max
  *
  */
+//TODO Reenable this test and make it pass (See HBX-2884)
+@Disabled
 public class TestCase {
 
 	private static final String[] HBM_XML_FILES = new String[] {

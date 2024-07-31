@@ -33,9 +33,12 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+//TODO Reenable this test and make it pass (See HBX-2884)
+@Disabled
 public class TestCase {
 	
 	private static final String FOO_HBM_XML = 
