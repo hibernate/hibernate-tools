@@ -30,7 +30,7 @@ public class EnvironmentWrapperTest {
 	
 	@Test
 	public void testGetDriver() {
-		assertEquals("hibernate.connection.driver_class", environmentWrapper.getDriver());
+		assertEquals("jakarta.persistence.jdbc.driver", environmentWrapper.getDriver());
 	}
 	
 	@Test
@@ -45,7 +45,7 @@ public class EnvironmentWrapperTest {
 	
 	@Test
 	public void testGetDataSource() {
-		assertEquals("hibernate.connection.datasource", environmentWrapper.getDataSource());
+		assertEquals("jakarta.persistence.jtaDataSource", environmentWrapper.getDataSource());
 	}
 	
 	@Test
@@ -55,17 +55,17 @@ public class EnvironmentWrapperTest {
 	
 	@Test
 	public void testGetURL() {
-		assertEquals("hibernate.connection.url", environmentWrapper.getURL());
+		assertEquals("jakarta.persistence.jdbc.url", environmentWrapper.getURL());
 	}
 	
 	@Test
 	public void testGetUser() {
-		assertEquals("hibernate.connection.username", environmentWrapper.getUser());
+		assertEquals("jakarta.persistence.jdbc.user", environmentWrapper.getUser());
 	}
 	
 	@Test
 	public void testGetPass() {
-		assertEquals("hibernate.connection.password", environmentWrapper.getPass());
+		assertEquals("jakarta.persistence.jdbc.password", environmentWrapper.getPass());
 	}
 	
 	@Test

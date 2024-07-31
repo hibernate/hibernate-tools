@@ -18,21 +18,21 @@ public class EnvironmentWrapperFactory {
 		
 		@Override public String getTransactionManagerStrategy() { return "hibernate.transaction.coordinator_class"; }
 
-		@Override public  String getDriver() { return Environment.DRIVER; }
+		@Override public  String getDriver() { return Environment.JAKARTA_JDBC_DRIVER; }
 
 		@Override public  String getHBM2DDLAuto() { return Environment.HBM2DDL_AUTO; }
 
 		@Override public  String getDialect() { return Environment.DIALECT; }
 
-		@Override public  String getDataSource() { return Environment.DATASOURCE; }
+		@Override public  String getDataSource() { return Environment.JAKARTA_JTA_DATASOURCE; }
 
 		@Override public  String getConnectionProvider() { return Environment.CONNECTION_PROVIDER; }
 
-		@Override public  String getURL() { return Environment.URL; }
+		@Override public  String getURL() { return Environment.JAKARTA_JDBC_URL; }
 
-		@Override public  String getUser() { return Environment.USER; }
+		@Override public  String getUser() { return Environment.JAKARTA_JDBC_USER; }
 
-		@Override public  String getPass() { return Environment.PASS; }
+		@Override public  String getPass() { return Environment.JAKARTA_JDBC_PASSWORD; }
 
 		@Override public  String getSessionFactoryName() { return Environment.SESSION_FACTORY_NAME; }
 
