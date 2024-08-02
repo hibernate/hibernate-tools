@@ -46,7 +46,7 @@ public class SessionWrapperFactory {
 
 		@Override 
 		public QueryWrapper createQuery(String s) { 
-			org.hibernate.query.Query<?> query = session.createQuery(s);
+			org.hibernate.query.Query<?> query = session.createQuery(s, null);
 			return QueryWrapperFactory.createQueryWrapper(query);
 		}
 
@@ -74,6 +74,7 @@ public class SessionWrapperFactory {
 			return result;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override 
 		public QueryWrapper createCriteria(Class<?> c) {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

@@ -76,6 +76,7 @@ public class JpaConfiguration extends Configuration implements ExtendedConfigura
 				this.getClass().getName());
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Configuration addClass(Class pc) {
 		throw new RuntimeException(

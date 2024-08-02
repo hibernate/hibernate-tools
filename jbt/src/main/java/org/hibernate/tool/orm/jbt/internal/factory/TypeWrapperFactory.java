@@ -34,6 +34,7 @@ public class TypeWrapperFactory {
 			return type; 
 		}
 		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public String toString(Object object) { 
 			if (BasicType.class.isAssignableFrom(getWrappedObject().getClass())) {

@@ -14,6 +14,8 @@ import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 
 public class SpecialRootClass extends RootClass {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Property property;
 	private Property parentProperty;
 

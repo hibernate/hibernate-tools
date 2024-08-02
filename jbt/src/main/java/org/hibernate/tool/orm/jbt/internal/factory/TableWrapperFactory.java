@@ -6,7 +6,6 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
 import org.hibernate.tool.orm.jbt.api.wrp.ColumnWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.ForeignKeyWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.PrimaryKeyWrapper;
