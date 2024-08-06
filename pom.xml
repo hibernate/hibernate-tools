@@ -101,6 +101,7 @@
         <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
+        <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -132,6 +133,11 @@
     			<version>${oracle.version}</version>
     			<scope>test</scope>
 			</dependency>
+            <dependency>
+              <groupId>jakarta.xml.bind</groupId>
+              <artifactId>jakarta.xml.bind-api</artifactId>
+   			    <version>${jakarta.xml.bind-api.version}</version>
+	        </dependency>
  		    <dependency>
    			    <groupId>javax</groupId>
    			    <artifactId>javaee-api</artifactId>
