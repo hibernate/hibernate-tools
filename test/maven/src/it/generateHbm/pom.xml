@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.hibernate.tool.test</groupId>
-    <artifactId>hbm2ddl</artifactId>
+    <artifactId>generateHbm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

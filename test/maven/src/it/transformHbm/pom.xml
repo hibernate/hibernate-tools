@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.hibernate.tool.test</groupId>
+  <artifactId>transformHbm</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+
+  <properties>
+    <h2.version>1.4.200</h2.version>
+    <sql.version>1.5</sql.version>
+    <hibernate.version>7.0.0-SNAPSHOT</hibernate.version>
+  </properties>
+  
+  <build>
+    <plugins>   
+      <plugin>
+        <groupId>org.hibernate.tool</groupId>
+        <artifactId>hibernate-tools-maven</artifactId>
+        <version>${hibernate.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.hibernate.tool</groupId>
+            <artifactId>hibernate-tools-orm</artifactId>
+            <version>${hibernate.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>transformHbm</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>hbm2orm</goal>
+            </goals>
+            <configuration>
+              <ejb3>true</ejb3>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>      
+      
+    </plugins>    
+  </build>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</project>
