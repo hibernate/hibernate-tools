@@ -935,13 +935,7 @@ public class PersistentClassWrapperTest {
 		assertFalse(rootClassWrapper.isExplicitPolymorphism());
 		assertFalse(singleTableSubclassWrapper.isExplicitPolymorphism());
 		assertFalse(joinedSubclassWrapper.isExplicitPolymorphism());
-		((RootClass)rootClassTarget).setExplicitPolymorphism(true);
-		assertTrue(rootClassWrapper.isExplicitPolymorphism());
-		assertTrue(singleTableSubclassWrapper.isExplicitPolymorphism());
-		assertTrue(joinedSubclassWrapper.isExplicitPolymorphism());
 		assertFalse(specialRootClassWrapper.isExplicitPolymorphism());
-		((RootClass)specialRootClassTarget).setExplicitPolymorphism(true);
-		assertTrue(specialRootClassWrapper.isExplicitPolymorphism());
 	}
 	
 	@Test

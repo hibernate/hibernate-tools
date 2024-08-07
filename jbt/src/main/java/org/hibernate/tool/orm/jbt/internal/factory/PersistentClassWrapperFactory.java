@@ -328,7 +328,7 @@ public class PersistentClassWrapperFactory {
 
 		@Override
 		public boolean isExplicitPolymorphism() {
-			return persistentClass.isExplicitPolymorphism();
+			return false;
 		}
 
 		@Override
