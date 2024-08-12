@@ -10,7 +10,7 @@
   <properties>
     <h2.version>1.4.200</h2.version>
     <sql.version>1.5</sql.version>
-    <hibernate.version>7.0.0-SNAPSHOT</hibernate.version>
+    <hibernate.version>@project.version@</hibernate.version>
   </properties>
   
   <build>
