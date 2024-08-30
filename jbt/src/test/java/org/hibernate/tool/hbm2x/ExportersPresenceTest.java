@@ -84,4 +84,15 @@ public class ExportersPresenceTest {
 		}
 	}
 
+	@Test
+	public void testDocExporter() {
+		try {
+			ClassLoader cl = getClass().getClassLoader();
+			Class<?> docExporterClass = cl.loadClass("org.hibernate.tool.hbm2x.DocExporter");
+			assertNotNull(docExporterClass);
+		} catch (Throwable t) {
+			fail(t);
+		}
+	}
+
 }
