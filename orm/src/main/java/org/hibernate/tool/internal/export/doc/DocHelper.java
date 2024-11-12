@@ -401,7 +401,7 @@ public final class DocHelper {
 
 		try {
 			TypeConfiguration tc = ((MetadataImpl)metadata).getTypeConfiguration();
-			return column.getSqlType(tc, dialect, metadata);
+			return column.getSqlType(metadata);
 		} catch (HibernateException ex) {
 
 			// TODO: Fix this when we find a way to get the type or

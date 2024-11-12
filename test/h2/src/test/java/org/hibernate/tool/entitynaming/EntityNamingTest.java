@@ -19,6 +19,7 @@
  */
 package org.hibernate.tool.entitynaming;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -39,6 +40,7 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -67,6 +69,7 @@ public class EntityNamingTest {
   public File outputDir = new File("output");
 
   static final String packageName = "com.entity";
+  static final String SHAPE_HBM_FILE= "shape.hbm.xml";
 
   Properties hibernateProperties = new Properties();
 
@@ -98,8 +101,8 @@ public class EntityNamingTest {
 
     reveng = new RevengStrategyEntityNaming(reveng);
 
-    //Necessary to set the root strategy. 
-    RevengSettings revengSettings 
+    //Necessary to set the root strategy.
+    RevengSettings revengSettings
         = new RevengSettings(reveng).setDefaultPackageName(packageName)
             .setDetectManyToMany(true)
             .setDetectOneToOne(true)
@@ -118,12 +121,113 @@ public class EntityNamingTest {
         + packageName.replace(".", File.separator);
     File dummy = new File(packageDir, "Dummy.java");
     assertTrue(dummy.exists());
+
+    //Check @Version annotation preceeds the method
+    String str = new String(Files.readAllBytes(dummy.toPath()));
+    int stringPos = str.indexOf("@Version");
+    String versionMatch = "@Version\n    @Column(name=\"duVersion\", nullable=false)\n    public byte getDuVersion() {";
+    String versionInFile = str.substring(stringPos, stringPos + versionMatch.length());
+    Assertions.assertEquals(versionMatch,versionInFile );
+    //Check addition of code via class-code MetaAttribute in PojoExtraClassCode.ftl
+    assertTrue(str.contains("specialProc()"));
+
     File order = new File(packageDir, "Order.java");
     assertTrue(order.exists());
     File orderItem = new File(packageDir, "OrderItem.java");
     assertTrue(orderItem.exists());
-    String str = new String(Files.readAllBytes(orderItem.toPath()));
+    str = new String(Files.readAllBytes(orderItem.toPath()));
     assertTrue(str.contains("private Integer oiId;"));
     assertTrue(str.contains("private Order order;"));
+    //specialProc only added to dummy table.
+    assertFalse(str.contains("specialProc()"));
+
+    //Check @Version annotation preceeds the field.
+    //Many hibernatetool.xxxName.toolclass may be loaded into the freemarker context as hibernate properties.
+    //The toolclass methods are accessable by xxxName in the template ie {$xxxName.methodName()
+    exporter.getProperties().put("hibernatetool.annotateField.toolclass", "org.hibernate.tool.entitynaming.FieldAnnotation");
+    exporter.start();
+    dummy = new File(packageDir, "Dummy.java");
+    assertTrue(dummy.exists());
+    str = new String(Files.readAllBytes(dummy.toPath()));
+    stringPos = str.indexOf("@Version");
+    versionMatch = "@Version\n    @Column(name=\"duVersion\", nullable=false)\n    private byte duVersion;";
+    versionInFile = str.substring(stringPos, stringPos + versionMatch.length());
+    Assertions.assertEquals(versionMatch,versionInFile );
+
+    //Check toString()
+    stringPos = str.indexOf("     * toString");
+    String toStringMatch = "     * toString\n" +
+    "     * @return String\n" +
+    "     */\n" +
+    "    public String toString() {\n" +
+    "        StringBuffer buffer = new StringBuffer();\n" +
+    "        buffer.append(getClass().getName()).append(\"@\").append(Integer." +
+    "toHexString(hashCode())).append(\" [\");\n" +
+    "        buffer.append(\"duData\").append(\"='\").append(getDuData()).append(\"' \");\n" +
+    "        buffer.append(\"]\");\n" +
+    "        return buffer.toString();\n" +
+    "    }\n";
+    String toStringInFile = str.substring(stringPos, stringPos + toStringMatch.length());
+    Assertions.assertEquals(toStringMatch,toStringInFile );
+
+    //Check equals()
+    stringPos = str.indexOf("    public boolean");
+    String equalsMatch = "    public boolean equals(Object other) {\n" +
+    "        if ( (this == other ) ) return true;\n" +
+    "        if ( (other == null ) ) return false;\n" +
+    "        if ( !(other instanceof com.entity.Dummy) ) return false;\n" +
+    "        com.entity.Dummy castOther = ( com.entity.Dummy ) other;\n" +
+    "        return ( (this.getDuId()==castOther.getDuId()) || ( this.getDuId()!=null" +
+    " && castOther.getDuId()!=null && this.getDuId().equals(castOther.getDuId()) ) )\n" +
+    " && ( (this.getDuData()==castOther.getDuData()) || ( this.getDuData()!=null " +
+    "&& castOther.getDuData()!=null && this.getDuData().equals(castOther.getDuData()) ) );\n" +
+    "    }\n";
+    String equalsInFile = str.substring(stringPos, stringPos + equalsMatch.length());
+    Assertions.assertEquals(equalsMatch, equalsInFile);
+
+    //Check hashcode()
+    stringPos = str.indexOf("    public int hashCode()");
+    String hashMatch = "    public int hashCode() {\n" +
+    "        int result = 17;\n" +
+    "        result = 37 * result + ( getDuId() == null ? 0 : this.getDuId().hashCode() );\n" +
+    "        result = 37 * result + ( getDuData() == null ? 0 : this.getDuData().hashCode() );\n" +
+    "        return result;\n" +
+    "    }\n";
+    String hashInFile = str.substring(stringPos, stringPos + hashMatch.length());
+    Assertions.assertEquals(hashMatch, hashInFile);
+
+    //Check class description
+    stringPos = str.indexOf(" * Long description");
+    String descMatch = " * Long description\n" +
+    " * for javadoc\n" +
+    " * of a particular entity.\n" +
+    " */\n";
+    String descFile = str.substring(stringPos, stringPos + descMatch.length());
+    Assertions.assertEquals(descMatch, descFile);
+
+    //The only untested template is for interfaces. For completeness I will add a test
+    // for it here, even though it probably won't be used in reverse engineering.
+    File[] hbmFiles = new File[]{
+      ResourceUtil.resolveResourceFile(this.getClass(), SHAPE_HBM_FILE)};
+    MetadataDescriptor nativeMetadataDesc= MetadataDescriptorFactory.createNativeDescriptor(
+        null, hbmFiles, hibernateProperties);
+    exporter = ExporterFactory.createExporter(ExporterType.JAVA);
+    exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, nativeMetadataDesc);
+    exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
+    exporter.getProperties().setProperty("ejb3", "true");
+    exporter.start();
+
+    File shape = new File(outputDir, "Shape.java");
+    assertTrue(shape.exists());
+    str = new String(Files.readAllBytes(shape.toPath()));
+    stringPos = str.indexOf("public interface Shape");
+    String interfaceMatch = "public interface Shape   {\n" +
+    "\n" +
+    "    /**\n" +
+    "     * Test Field Description\n" +
+    "     */\n" +
+    "    public long getId();\n";
+    String interfaceFile = str.substring(stringPos, stringPos + interfaceMatch.length());
+    Assertions.assertEquals(interfaceMatch, interfaceFile);
   }
 }
