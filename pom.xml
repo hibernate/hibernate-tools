@@ -25,13 +25,13 @@
         <artifactId>jboss-parent</artifactId>
         <version>40</version>
     </parent>
-    
+
     <groupId>org.hibernate.tool</groupId>
     <artifactId>hibernate-tools-parent</artifactId>
     <version>7.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
- 
+
     <name>Hibernate Tools Parent Project</name>
 
 	<url>http://hibernate.org/tools/</url>
@@ -103,11 +103,13 @@
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
         <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 
+        <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
+
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
 
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -261,5 +263,21 @@
         <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       </snapshotRepository>
     </distributionManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>${maven-wrapper-plugin.version}</version>
+                    <configuration>
+                        <mavenVersion>${maven.min.version}</mavenVersion>
+                        <distributionType>bin</distributionType>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
