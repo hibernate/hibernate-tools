@@ -4,10 +4,10 @@
   ~
   ~ Copyright 2018-2021 Red Hat, Inc.
   ~
-  ~ Licensed under the GNU Lesser General Public License (LGPL), 
+  ~ Licensed under the GNU Lesser General Public License (LGPL),
   ~ version 2.1 or later (the "License").
   ~ You may not use this file except in compliance with the License.
-  ~ You may read the licence in the 'lgpl.txt' file in the root folder of 
+  ~ You may read the licence in the 'lgpl.txt' file in the root folder of
   ~ project or obtain a copy at
   ~
   ~     http://www.gnu.org/licenses/lgpl-2.1.html
@@ -34,6 +34,11 @@
 
 	<name>Hibernate Tools ORM</name>
 	<description>Hibernate Tools ORM</description>
+
+	<properties>
+		<!-- This is a publicly distributed module that should be published: -->
+		<deploy.skip>false</deploy.skip>
+	</properties>
 
 	<dependencies>
         <dependency>

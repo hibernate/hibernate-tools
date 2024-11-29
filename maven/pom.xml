@@ -68,7 +68,8 @@
   </prerequisites>
 
   <properties>
-    <maven.deploy.skip>false</maven.deploy.skip>
+      <!-- This is a publicly distributed module that should be published: -->
+    <deploy.skip>false</deploy.skip>
     <maven.install.skip>false</maven.install.skip>
 
     <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>

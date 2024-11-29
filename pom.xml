@@ -103,7 +103,25 @@
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
         <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
 
+        <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
+        <nexus-staging.plugin.version>1.7.0</nexus-staging.plugin.version>
+
+        <!--
+            We don't want to publish or sign any modules by default.
+            Specific modules will override the setting at their own level.
+        -->
+        <deploy.skip>true</deploy.skip>
+        <maven-deploy-plugin.skip>true</maven-deploy-plugin.skip>
+
+        <!-- Repository Deployment URLs -->
+        <ossrh.releases.repo.id>ossrh-releases-repository</ossrh.releases.repo.id>
+        <ossrh.releases.repo.name>Sonatype OSSRH Releases</ossrh.releases.repo.name>
+        <ossrh.releases.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</ossrh.releases.repo.url>
+        <ossrh.releases.repo.baseUrl>https://oss.sonatype.org/</ossrh.releases.repo.baseUrl>
+        <ossrh.snapshots.repo.id>ossrh-snapshots-repository</ossrh.snapshots.repo.id>
+        <ossrh.snapshots.repo.name>Sonatype OSSRH Snapshots</ossrh.snapshots.repo.name>
+        <ossrh.snapshots.repo.url>https://oss.sonatype.org/content/repositories/snapshots</ossrh.snapshots.repo.url>
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -237,30 +255,30 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>ossrh-releases-repository</id>
-            <name>Sonatype OSSRH Releases</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>${ossrh.releases.repo.id}</id>
+            <name>${ossrh.releases.repo.name}</name>
+            <url>${ossrh.releases.repo.url}/</url>
         </repository>
        <repository>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-            <id>ossrh-snapshots-repository</id>
-            <name>Sonatype OSSRH Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>${ossrh.snapshots.repo.id}</id>
+            <name>${ossrh.snapshots.repo.name}</name>
+            <url>${ossrh.snapshots.repo.url}</url>
         </repository>
     </repositories>
 
     <distributionManagement>
       <repository>
-        <id>ossrh-releases-repository</id>
-        <name>Sonatype OSSRH Releases</name>
-        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        <id>${ossrh.releases.repo.id}</id>
+        <name>${ossrh.releases.repo.name}</name>
+        <url>${ossrh.releases.repo.url}/</url>
       </repository>
       <snapshotRepository>
-        <id>ossrh-snapshots-repository</id>
-        <name>Sonatype OSSRH Snapshots</name>
-        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <id>${ossrh.snapshots.repo.id}</id>
+        <name>${ossrh.snapshots.repo.name}</name>
+        <url>${ossrh.snapshots.repo.url}</url>
       </snapshotRepository>
     </distributionManagement>
 
@@ -276,8 +294,98 @@
                         <distributionType>bin</distributionType>
                     </configuration>
                 </plugin>
+                <!-- Published artifacts have to be signed: -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${deploy.skip}</skip>
+                                <homedir>${env.RELEASE_GPG_HOMEDIR}</homedir>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-staging.plugin.version}</version>
+                    <extensions>false</extensions><!-- This is essential: do not put true here -->
+                    <configuration>
+                        <skipNexusStagingDeployMojo>${deploy.skip}</skipNexusStagingDeployMojo>
+                        <serverId>${ossrh.releases.repo.id}</serverId>
+                        <!-- The following, by default, is only used for actual releases, not for snapshot deployments -->
+                        <nexusUrl>${ossrh.releases.repo.baseUrl}</nexusUrl>
+                        <!-- oss.sonatype.org has been very slow when closing repositories lately;
+                             let's raise the timeout until we switch to s01.sonatype.org -->
+                        <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- Skip the deploy plugin explicitly: we use nexus-staging-maven-plugin instead -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <!-- Skip the deploy plugin explicitly: we use nexus-staging-maven-plugin instead -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>${maven-deploy-plugin.skip}</skip>
+                </configuration>
+            </plugin>
+            <!--
+                 Configure the nexus-staging-maven-plugin explicitly (without <extension>true</extension>)
+                 in order to work around a problem in the "reports" module (see that module's POM for more info).
+             -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <!--
+                                This will only put artifacts in a staging directory.
+                                See the "reports" module for actual deployment, at the end of the build.
+                             -->
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
+    <profiles>
+        <!--
+             WARNING: this MUST be the very last profile,
+             so that the "report" module is the very last module,
+             in particular when deploying artifacts to a Nexus repository.
+             See the "build/reports" module POM for more information.
+         -->
+        <profile>
+            <id>build-reports-as-last-module</id>
+            <activation>
+                <property>
+                    <name>!some.property.that.will.never.exist</name>
+                </property>
+            </activation>
+            <modules>
+                <module>reports</module>
+            </modules>
+        </profile>
+
+        <!-- DO NOT ADD ANY PROFILE AFTER THIS: see above -->
+    </profiles>
 </project>
