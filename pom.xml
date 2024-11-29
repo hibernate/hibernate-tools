@@ -106,6 +106,7 @@
         <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
         <nexus-staging.plugin.version>1.7.0</nexus-staging.plugin.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 
         <!--
             We don't want to publish or sign any modules by default.
@@ -327,6 +328,26 @@
                         <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}</outputDirectory>
+                        <!-- Keep things like url, inceptionYear, authors...
+                             everything that's required by the OSSRH Maven repository -->
+                        <flattenMode>ossrh</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten-pom</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -363,6 +384,10 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
