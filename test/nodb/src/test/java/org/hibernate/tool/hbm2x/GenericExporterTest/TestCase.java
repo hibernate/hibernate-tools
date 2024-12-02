@@ -90,7 +90,7 @@ public class TestCase {
 				null, 
 				FileUtil.findFirstString("$", new File(outputDir, "artifacts.txt")));	
 		assertEquals(
-				"File for artifacts in " + Version.CURRENT_VERSION, 
+				"File for artifacts in " + Version.versionString(), 
 				FileUtil.findFirstString("artifacts", new File( outputDir, "artifacts.txt")));
 	}
 
