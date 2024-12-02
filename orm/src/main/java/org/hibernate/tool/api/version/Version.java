@@ -12,5 +12,5 @@ public interface Version {
 		// This implementation is replaced during the build with another one that returns the correct value.
 		return "UNKNOWN";
 	}
-
+	
 }
