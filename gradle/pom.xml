@@ -16,7 +16,7 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   
+
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
@@ -26,6 +26,7 @@
    </parent>
 
    <artifactId>hibernate-tools-gradle</artifactId>
+   <packaging>pom</packaging>
 
    <name>Hibernate Tools Gradle Plugin</name>
    <description>Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
@@ -37,9 +38,19 @@
    </issueManagement>
 
    <properties>
+       <!-- This is a publicly distributed module that should be published: -->
+       <deploy.skip>false</deploy.skip>
+
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
-   
+
+   <dependencies>
+       <dependency>
+           <groupId>org.hibernate.tool</groupId>
+           <artifactId>hibernate-tools-orm</artifactId>
+       </dependency>
+   </dependencies>
+
    <build>
       <plugins>
         <!-- execute Gradle command -->
@@ -64,6 +75,28 @@
                     </execution>
                 </executions>
 		 </plugin>
+         <!-- As the artifact is built by Gradle, we attach it with the helper plugin so that it gets published: -->
+         <plugin>
+             <groupId>org.codehaus.mojo</groupId>
+             <artifactId>build-helper-maven-plugin</artifactId>
+             <executions>
+                 <execution>
+                     <id>attach-artifacts</id>
+                     <phase>package</phase>
+                     <goals>
+                         <goal>attach-artifact</goal>
+                     </goals>
+                     <configuration>
+                         <artifacts>
+                             <artifact>
+                                 <file>${project.basedir}/plugin/build/libs/${project.artifactId}-${project.version}.jar</file>
+                                 <type>jar</type>
+                             </artifact>
+                         </artifacts>
+                     </configuration>
+                 </execution>
+             </executions>
+         </plugin>
       </plugins>
    </build>
 

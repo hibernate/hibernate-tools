@@ -337,6 +337,8 @@
                         <!-- Keep things like url, inceptionYear, authors...
                              everything that's required by the OSSRH Maven repository -->
                         <flattenMode>ossrh</flattenMode>
+                        <!-- To make sure that `hibernate-tools-gradle` module that has a pom packaging will also publish the flattened pom -->
+                        <updatePomFile>true</updatePomFile>
                     </configuration>
                     <executions>
                         <execution>
