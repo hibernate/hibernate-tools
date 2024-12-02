@@ -45,7 +45,7 @@ public class TestCase {
 	@Test
 	public void testVersion() throws Exception {
 		assertEquals(
-				org.hibernate.tool.api.version.Version.CURRENT_VERSION,
+				org.hibernate.tool.api.version.Version.versionString(),
 				extractVersion(getPomXml()));
 	}
 	
