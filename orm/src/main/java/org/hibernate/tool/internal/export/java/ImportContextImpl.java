@@ -136,9 +136,9 @@ public class ImportContextImpl implements ImportContext {
 					// dont add automatically "imported" stuff
 				} else {
 					if(staticImports.contains(next)) {
-						buf.append("import static " + next + ";\r\n");
+						buf.append("import static " + next + ";\n");
 					} else {
-						buf.append("import " + next + ";\r\n");
+						buf.append("import " + next + ";\n");
 					}
 				}
 		}
