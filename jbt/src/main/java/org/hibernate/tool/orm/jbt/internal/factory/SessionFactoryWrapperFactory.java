@@ -44,7 +44,7 @@ public class SessionFactoryWrapperFactory {
 			Map<String, ClassMetadataWrapper> result = new HashMap<String, ClassMetadataWrapper>();
 			MappingMetamodelImpl mappingMetaModel = (MappingMetamodelImpl)((SessionFactoryImplementor)sessionFactory).getMappingMetamodel();
 			for (String key : mappingMetaModel.getAllEntityNames()) {
-				result.put(key, ClassMetadataWrapperFactory.createClassMetadataWrapper(mappingMetaModel.entityPersister(key)));
+				result.put(key, ClassMetadataWrapperFactory.createClassMetadataWrapper(mappingMetaModel.findEntityDescriptor(key)));
 			}
 			return result;
 		}
@@ -54,7 +54,7 @@ public class SessionFactoryWrapperFactory {
 			Map<String, CollectionMetadataWrapper> result = new HashMap<String, CollectionMetadataWrapper>();
 			MappingMetamodelImpl mappingMetaModel = (MappingMetamodelImpl)((SessionFactoryImplementor)sessionFactory).getMappingMetamodel();
 			for (String key : mappingMetaModel.getAllCollectionRoles()) {
-				result.put(key, CollectionMetadataWrapperFactory.createCollectionMetadataWrapper(mappingMetaModel.collectionPersister(key)));
+				result.put(key, CollectionMetadataWrapperFactory.createCollectionMetadataWrapper(mappingMetaModel.findCollectionDescriptor(key)));
 			}
 			return result;
 		}

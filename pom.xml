@@ -93,10 +93,10 @@
         <google-java-format.version>1.19.1</google-java-format.version>
         <h2.version>2.2.224</h2.version>
         <hibernate-commons-annotations.version>6.0.6.Final</hibernate-commons-annotations.version>
-        <hibernate-orm.version>7.0.0.Beta1</hibernate-orm.version>
+        <hibernate-orm.version>7.0.0.Beta3</hibernate-orm.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
-        <jboss-logging.version>3.5.3.Final</jboss-logging.version>
+        <jboss-logging.version>3.6.1.Final</jboss-logging.version>
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
@@ -118,8 +118,8 @@
         <!-- Repository Deployment URLs -->
         <ossrh.releases.repo.id>ossrh-releases-repository</ossrh.releases.repo.id>
         <ossrh.releases.repo.name>Sonatype OSSRH Releases</ossrh.releases.repo.name>
-        <ossrh.releases.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</ossrh.releases.repo.url>
-        <ossrh.releases.repo.baseUrl>https://oss.sonatype.org/</ossrh.releases.repo.baseUrl>
+        <ossrh.releases.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</ossrh.releases.repo.url>
+        <ossrh.releases.repo.baseUrl>https://oss.sonatype.org</ossrh.releases.repo.baseUrl>
         <ossrh.snapshots.repo.id>ossrh-snapshots-repository</ossrh.snapshots.repo.id>
         <ossrh.snapshots.repo.name>Sonatype OSSRH Snapshots</ossrh.snapshots.repo.name>
         <ossrh.snapshots.repo.url>https://oss.sonatype.org/content/repositories/snapshots</ossrh.snapshots.repo.url>
@@ -258,7 +258,7 @@
             </snapshots>
             <id>${ossrh.releases.repo.id}</id>
             <name>${ossrh.releases.repo.name}</name>
-            <url>${ossrh.releases.repo.url}/</url>
+            <url>${ossrh.releases.repo.url}</url>
         </repository>
        <repository>
             <snapshots>
@@ -274,7 +274,7 @@
       <repository>
         <id>${ossrh.releases.repo.id}</id>
         <name>${ossrh.releases.repo.name}</name>
-        <url>${ossrh.releases.repo.url}/</url>
+        <url>${ossrh.releases.repo.url}</url>
       </repository>
       <snapshotRepository>
         <id>${ossrh.snapshots.repo.id}</id>
