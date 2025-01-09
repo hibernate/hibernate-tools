@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>40</version>
+        <version>47</version>
     </parent>
 
     <groupId>org.hibernate.tool</groupId>
@@ -126,7 +126,7 @@
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-
+        <maven.min.version>3.9.7</maven.min.version>
     </properties>
 
     <dependencyManagement>
