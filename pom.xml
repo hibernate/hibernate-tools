@@ -251,25 +251,6 @@
          </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>${ossrh.releases.repo.id}</id>
-            <name>${ossrh.releases.repo.name}</name>
-            <url>${ossrh.releases.repo.url}</url>
-        </repository>
-       <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>${ossrh.snapshots.repo.id}</id>
-            <name>${ossrh.snapshots.repo.name}</name>
-            <url>${ossrh.snapshots.repo.url}</url>
-        </repository>
-    </repositories>
-
     <distributionManagement>
       <repository>
         <id>${ossrh.releases.repo.id}</id>
@@ -386,6 +367,29 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-java-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <!--
+                                We want to override the rules for this configuration to remove the bannedRepositories rule from the JBoss parent.
+                            -->
+                            <rules combine.self="override">
+                                <requireJavaVersion>
+                                    <message>To build this project JDK ${jdk.min.version} (or greater) is required. Please install it.</message>
+                                    <version>${jdk.min.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -398,6 +402,10 @@
                     <value>true</value>
                 </property>
             </activation>
+            <properties>
+                <!-- The MAVEN_LOCAL_REPOSITORY env variable is set in the release Jenkins file -->
+                <gradle.maven.local.path>${MAVEN_LOCAL_REPOSITORY}</gradle.maven.local.path>
+            </properties>
             <build>
                 <plugins>
                     <plugin>

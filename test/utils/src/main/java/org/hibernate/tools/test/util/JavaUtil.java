@@ -20,6 +20,7 @@
 package org.hibernate.tools.test.util;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -72,7 +73,12 @@ public class JavaUtil {
 		if (codeSource != null) {
 			URL url = codeSource.getLocation();
 			if (url != null) {
-				result = url.getPath();
+				try {
+					result = url.toURI().getPath();
+				}
+				catch (URISyntaxException e) {
+					throw new IllegalArgumentException( "Unexpected path to a Jar file: " + url, e );
+				}
 			}
 		}
 		return result;
