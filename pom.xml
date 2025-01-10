@@ -116,11 +116,11 @@
         <maven-deploy-plugin.skip>true</maven-deploy-plugin.skip>
 
         <!-- Repository Deployment URLs -->
-        <ossrh.releases.repo.id>ossrh-releases-repository</ossrh.releases.repo.id>
+        <ossrh.releases.repo.id>ossrh</ossrh.releases.repo.id>
         <ossrh.releases.repo.name>Sonatype OSSRH Releases</ossrh.releases.repo.name>
         <ossrh.releases.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</ossrh.releases.repo.url>
         <ossrh.releases.repo.baseUrl>https://oss.sonatype.org</ossrh.releases.repo.baseUrl>
-        <ossrh.snapshots.repo.id>ossrh-snapshots-repository</ossrh.snapshots.repo.id>
+        <ossrh.snapshots.repo.id>ossrh</ossrh.snapshots.repo.id>
         <ossrh.snapshots.repo.name>Sonatype OSSRH Snapshots</ossrh.snapshots.repo.name>
         <ossrh.snapshots.repo.url>https://oss.sonatype.org/content/repositories/snapshots</ossrh.snapshots.repo.url>
 
