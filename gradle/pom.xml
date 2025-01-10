@@ -42,7 +42,6 @@
        <deploy.skip>false</deploy.skip>
 
        <gradle.executable>./gradlew</gradle.executable>
-       <gradle.maven.local.path>${user.home}/.m2/repository</gradle.maven.local.path>
    </properties>
 
    <dependencies>
@@ -68,7 +67,7 @@
                                 <argument>clean</argument>
                                 <argument>build</argument>
                                 <argument>-Pversion=${project.version}</argument>
-                                <argument>-Dmaven.repo.local=${gradle.maven.local.path}</argument>
+                                <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                             </arguments>
                         </configuration>
                         <goals>

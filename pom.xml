@@ -402,10 +402,6 @@
                     <value>true</value>
                 </property>
             </activation>
-            <properties>
-                <!-- The MAVEN_LOCAL_REPOSITORY env variable is set in the release Jenkins file -->
-                <gradle.maven.local.path>${MAVEN_LOCAL_REPOSITORY}</gradle.maven.local.path>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
