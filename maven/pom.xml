@@ -130,12 +130,18 @@
           <execution>
             <id>default-descriptor</id>
             <phase>process-classes</phase>
+            <configuration>
+              <goalPrefix>hibernate-tools</goalPrefix>
+            </configuration>
           </execution>
           <execution>
             <id>help-goal</id>
             <goals>
               <goal>helpmojo</goal>
             </goals>
+            <configuration>
+              <goalPrefix>hibernate-tools</goalPrefix>
+            </configuration>
           </execution>
         </executions>
       </plugin>
