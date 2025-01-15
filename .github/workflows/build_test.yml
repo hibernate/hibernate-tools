@@ -23,4 +23,4 @@ jobs:
     - name: Build and Test
       uses: GabrielBB/xvfb-action@b706e4e27b14669b486812790492dc50ca16b465 # v1.7
       with:
-        run: mvn clean install
+        run: ./mvnw clean install
