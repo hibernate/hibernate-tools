@@ -101,8 +101,12 @@
         <oracle.version>19.3.0.0</oracle.version>
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
 
+        <!-- Plugins not managed by the JBoss parent POM: -->
+        <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
+
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
+        <maven.min.version>3.9.7</maven.min.version>
 
     </properties>
     
@@ -254,5 +258,21 @@
         <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       </snapshotRepository>
     </distributionManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>${maven-wrapper-plugin.version}</version>
+                    <configuration>
+                        <mavenVersion>${maven.min.version}</mavenVersion>
+                        <distributionType>bin</distributionType>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
