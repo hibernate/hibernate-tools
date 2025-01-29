@@ -1,4 +1,6 @@
-<#if pojo.hasMetaAttribute("class-code")>  // The following is extra code specified in the hbm.xml files
+<#if pojo.hasMetaAttribute("class-code")>
+
+    // Extra-code via hbm.xml/RevengStrategy config.
 ${pojo.getExtraClassCode()}
-  // end of extra code specified in the hbm.xml files
+    // Extra-code end.
 </#if>
