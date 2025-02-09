@@ -3,9 +3,12 @@ package org.hibernate.tool.gradle.test.func.utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.Properties;
 
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
@@ -37,7 +40,16 @@ public class FuncTestTemplate implements FuncTestConstants {
     }
 	
 	protected String getHibernatePropertiesContents() {
-		return HIBERNATE_PROPERTIES_CONTENTS.replace("${projectDir}", projectDir.getAbsolutePath());
+		try {
+			Properties properties = new Properties();
+			properties.load(new StringReader(HIBERNATE_PROPERTIES_CONTENTS));
+			properties.setProperty("hibernate.connection.url", "jdbc:h2:" + new File(projectDir, DATABASE_PATH));
+			StringWriter writer = new StringWriter();
+			properties.store(writer, null);
+			return writer.toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
     
 	protected void copyDatabase() {
