@@ -24,6 +24,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.binder.ForeignKeyUtils.ForeignKeyForColumns;
+import org.hibernate.tool.internal.reveng.util.EnhancedComponent;
 import org.hibernate.tool.internal.reveng.util.RevengUtils;
 
 class PrimaryKeyBinder extends AbstractBinder {
@@ -194,7 +195,7 @@ class PrimaryKeyBinder extends AbstractBinder {
 			PersistentClass rc, 
 			Set<Column> processedColumns, 
 			List<Column> keyColumns) {
-		Component result = new Component(getMetadataBuildingContext(), rc);
+		Component result = new EnhancedComponent(getMetadataBuildingContext(), rc);
         result.setMetaAttributes(Collections.EMPTY_MAP);
         result.setEmbedded(false);
         result.setComponentClassName(getCompositeIdName(rc));
