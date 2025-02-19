@@ -53,6 +53,7 @@ public class DbTestSuite {
 	@Nested public class GenerateFromJDBCWithJavaKeyword extends org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword.TestCase {}
 	@Nested public class IncrementalSchemaReading extends org.hibernate.tool.hbm2x.IncrementalSchemaReading.TestCase {}
 	@Nested public class JdbcHbm2JavaEjb3 extends org.hibernate.tool.hbm2x.JdbcHbm2JavaEjb3.TestCase {}
+	@Nested public class HBX2840 extends org.hibernate.tool.hbm2x.hbx2840.TestCase {}
 	@Nested public class QueryExporterTest extends org.hibernate.tool.hbm2x.query.QueryExporterTest.TestCase {}
 	@Nested public class HbmLintTest extends org.hibernate.tool.hbmlint.HbmLintTest.TestCase {}
 	@Nested public class SchemaAnalyzer extends org.hibernate.tool.hbmlint.SchemaAnalyzer.TestCase {}
