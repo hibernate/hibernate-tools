@@ -45,7 +45,6 @@ import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
@@ -82,8 +81,6 @@ public class TestCase {
 		hbmexporter.start();
 	}
 
-	// TODO HBX-2062: Investigate and reenable
-	@Disabled
 	@Test
 	public void testAllFilesExistence() {
 		JUnitUtil.assertIsNonEmptyFile(
@@ -92,8 +89,6 @@ public class TestCase {
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/TypeParamsTest/Order.hbm.xml"));
 	}
 
-	// TODO HBX-2062: Investigate and reenable
-	@Disabled
 	@Test
 	public void testReadable() {
 		File orderHbmXml =
@@ -102,14 +97,13 @@ public class TestCase {
         				"org/hibernate/tool/hbm2x/hbm2hbmxml/TypeParamsTest/Order.hbm.xml");
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
 		File[] files = new File[] { orderHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
         assertNotNull(metadataDescriptor.createMetadata());
     }
 
-	// TODO HBX-2062: Investigate and reenable
-	@Disabled
 	@Test
 	public void testTypeParamsElements() throws Exception {
 		File outputXml = new File(
@@ -163,10 +157,14 @@ public class TestCase {
 				set.contains("enumClass"),
 				"Can't find 'enumClass' param");
 		assertEquals(
-				"org.hibernate.tool.hbm2x.hbm2hbmxml.Order$Status", 
+				Status.class.getName(), 
 				params.get("enumClass"));
 		assertTrue(nameElement.getElementsByTagName("type").getLength() == 0, "property name should not have any type element");
 		assertEquals(nameElement.getAttribute("type"), "string");
+	}
+	
+	enum Status {
+		ON, OFF
 	}
 
 }
