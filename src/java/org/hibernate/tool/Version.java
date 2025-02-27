@@ -4,9 +4,9 @@ import freemarker.log.Logger;
 
 final public class Version {
 
-	public static final String VERSION = "3.6.3-SNAPSHOT";
-	
 	private static final Version instance = new Version();
+
+	public static final String VERSION = instance.versionString();
 	
 	private static Logger log = Logger.getLogger( Version.class.getName() );
 
@@ -20,6 +20,11 @@ final public class Version {
 	
 	public String getVersion() {
 		return VERSION;
+	}
+
+	public String versionString() {
+		// This implementation is replaced during the build with another one that returns the correct value.
+		return "UNKNOWN";
 	}
 	
 	public static Version getDefault() {
