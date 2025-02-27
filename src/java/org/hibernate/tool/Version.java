@@ -4,9 +4,9 @@ import java.util.logging.Logger;
 
 final public class Version {
 
-	public static final String VERSION = "5.2.14-SNAPSHOT";
-	
 	private static final Version instance = new Version();
+	
+	public static final String VERSION = instance.versionString();
 	
 	private static Logger log = Logger.getLogger( Version.class.getName() );
 
@@ -22,6 +22,11 @@ final public class Version {
 		return VERSION;
 	}
 	
+	public String versionString() {
+		// This implementation is replaced during the build with another one that returns the correct value.
+        return "UNKNOWN";
+    }
+
 	public static Version getDefault() {
 		return instance;
 	}
