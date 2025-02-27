@@ -82,4 +82,26 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jboss.maven.plugins</groupId>
+				<artifactId>maven-injection-plugin</artifactId>
+				<configuration>
+					<bytecodeInjections>
+						<bytecodeInjection>
+							<expression>${project.version}</expression>
+							<targetMembers>
+								<methodBodyReturn>
+									<className>org.hibernate.tool.api.version.Version</className>
+									<methodName>versionString</methodName>
+								</methodBodyReturn>
+							</targetMembers>
+						</bytecodeInjection>
+					</bytecodeInjections>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
