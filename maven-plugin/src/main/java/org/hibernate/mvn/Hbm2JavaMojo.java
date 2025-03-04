@@ -2,6 +2,7 @@ package org.hibernate.mvn;
 
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.POJOExporter;
 
@@ -14,7 +15,10 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURC
  * <p>
  * See: https://docs.jboss.org/tools/latest/en/hibernatetools/html_single/#d0e4821
  */
-@Mojo(name = "hbm2java", defaultPhase = GENERATE_SOURCES)
+@Mojo(
+		name = "hbm2java", 
+		defaultPhase = GENERATE_SOURCES, 
+		requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class Hbm2JavaMojo extends AbstractHbm2xMojo {
 
     /** The directory into which the JPA entities will be generated. */
