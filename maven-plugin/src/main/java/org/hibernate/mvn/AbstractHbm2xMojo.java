@@ -1,19 +1,25 @@
 package org.hibernate.mvn;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.apache.tools.ant.BuildException;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 
 public abstract class AbstractHbm2xMojo extends AbstractMojo {
 
@@ -63,15 +69,24 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     // Not exposed for now
     private boolean preferBasicCompositeIds = true;
 
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
+    private MavenProject project;
+
     public void execute() {
-        getLog().info("Starting " + this.getClass().getSimpleName() + "...");
-        ReverseEngineeringStrategy strategy = setupReverseEngineeringStrategy();
-        if (propertyFile.exists()) {
-        	executeExporter(createJdbcDescriptor(strategy, loadPropertiesFile()));
-        } else {
-        	getLog().info("Property file '" + propertyFile + "' cannot be found, aborting...");
-        }
-        getLog().info("Finished " + this.getClass().getSimpleName() + "!");
+    	ClassLoader original = Thread.currentThread().getContextClassLoader();
+    	try {
+    		Thread.currentThread().setContextClassLoader(createExporterClassLoader(original));
+	        getLog().info("Starting " + this.getClass().getSimpleName() + "...");
+	        ReverseEngineeringStrategy strategy = setupReverseEngineeringStrategy();
+	        if (propertyFile.exists()) {
+	        	executeExporter(createJdbcDescriptor(strategy, loadPropertiesFile()));
+	        } else {
+	        	getLog().info("Property file '" + propertyFile + "' cannot be found, aborting...");
+	        }
+	        getLog().info("Finished " + this.getClass().getSimpleName() + "!");
+    	} finally {
+    		Thread.currentThread().setContextClassLoader(original);
+    	}
     }
 
     private ReverseEngineeringStrategy setupReverseEngineeringStrategy() {
@@ -119,6 +134,18 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
                         strategy,
                         properties,
                         preferBasicCompositeIds);
+    }
+
+    private ClassLoader createExporterClassLoader(ClassLoader parent) {
+    	ArrayList<URL> urls = new ArrayList<URL>();
+    	try {
+			for (String cpe : project.getRuntimeClasspathElements()) {
+				urls.add(new File(cpe).toURI().toURL());
+			}
+		} catch (DependencyResolutionRequiredException | MalformedURLException e) {
+			throw new RuntimeException("Problem while constructing project classloader", e);
+		}
+    	return new URLClassLoader(urls.toArray(new URL[0]), parent);
     }
 
     protected abstract void executeExporter(MetadataDescriptor metadataDescriptor);
