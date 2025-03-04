@@ -2,6 +2,7 @@ package org.hibernate.mvn;
 
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -18,7 +19,10 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOU
  * <p>
  * See https://docs.jboss.org/tools/latest/en/hibernatetools/html_single/#d0e4651
  */
-@Mojo(name = "hbm2ddl", defaultPhase = GENERATE_RESOURCES)
+@Mojo(
+		name = "hbm2ddl", 
+		defaultPhase = GENERATE_RESOURCES,
+		requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class Hbm2DdlMojo extends AbstractHbm2xMojo {
 
     /** The directory into which the DDLs will be generated. */
