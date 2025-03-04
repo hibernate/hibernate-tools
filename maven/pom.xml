@@ -74,6 +74,7 @@
 
     <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
     <maven-plugin-api.version>3.5.2</maven-plugin-api.version>
+    <maven-core.version>3.9.9</maven-core.version>
 
     <!-- Plugin versions -->
     <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
@@ -92,6 +93,11 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${maven-plugin-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven-core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
