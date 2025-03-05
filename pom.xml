@@ -92,12 +92,12 @@
         <freemarker.version>2.3.34</freemarker.version>
         <google-java-format.version>1.24.0</google-java-format.version>
         <h2.version>2.3.232</h2.version>
-        <hibernate-commons-annotations.version>6.0.6.Final</hibernate-commons-annotations.version>
-        <hibernate-orm.version>6.6.8.Final</hibernate-orm.version>
+        <hibernate-commons-annotations.version>7.0.3.Final</hibernate-commons-annotations.version>
+        <hibernate-orm.version>6.6.9.Final</hibernate-orm.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
         <jboss-logging.version>3.6.1.Final</jboss-logging.version>
-        <junit-jupiter.version>5.11.4</junit-jupiter.version>
+        <junit-jupiter.version>5.12.0</junit-jupiter.version>
         <mysql.version>8.0.22</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
@@ -105,7 +105,7 @@
         <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
         <nexus-staging.plugin.version>1.7.0</nexus-staging.plugin.version>
-        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
 
         <!--
             We don't want to publish or sign any modules by default.
