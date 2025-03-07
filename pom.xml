@@ -25,14 +25,14 @@
     </modules>
 
     <properties>
-	    <ant.version>1.10.14</ant.version>
+	    <ant.version>1.10.15</ant.version>
 	    <commons-collections.version>4.4</commons-collections.version>
- 	    <freemarker.version>2.3.32</freemarker.version>
+ 	    <freemarker.version>2.3.34</freemarker.version>
         <!-- 1.7 is the last google-java-format version that is compiled against Java 1.8 -->
         <google-java-format.version>1.7</google-java-format.version>
         <h2.version>1.4.199</h2.version>
 	    <hibernate-commons-annotations.version>5.1.2.Final</hibernate-commons-annotations.version>
-        <hibernate-core.version>5.3.36.Final</hibernate-core.version>
+        <hibernate-core.version>5.3.37.Final</hibernate-core.version>
         <hsqldb.version>2.5.2</hsqldb.version>
         <javaee-api.version>8.0.1</javaee-api.version>
 	    <javax.activation-api.version>1.2.0</javax.activation-api.version>
