@@ -55,6 +55,11 @@
 		</developer>
 	</developers>
 
+	<properties>
+		<!-- This is a publicly distributed module that should be published: -->
+		<deploy.skip>false</deploy.skip>
+	</properties>
+
 	<dependencies>
         <dependency>
             <groupId>com.google.googlejavaformat</groupId>
