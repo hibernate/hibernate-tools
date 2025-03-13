@@ -1,6 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '1.2.1'
 }
 
 group = 'org.hibernate.tool'
@@ -25,11 +26,19 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+rootProject.ext.set("gradle.publish.key", System.env.PLUGIN_PORTAL_USERNAME)
+rootProject.ext.set("gradle.publish.secret", System.env.PLUGIN_PORTAL_PASSWORD)
+
 gradlePlugin {
+    website = 'https://github.com/hibernate/hibernate-tools/tree/main/gradle/plugin'
+    vcsUrl = 'https://github.com/hibernate/hibernate-tools/tree/main/gradle/plugin'
     plugins {
         hibernate {
             id = 'org.hibernate.tool.hibernate-tools-gradle'
             implementationClass = 'org.hibernate.tool.gradle.Plugin'
+            displayName = 'Hibernate Tools Gradle Plugin'
+            description = 'Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.'
+            tags = ['hibernate','tools','reverse engineering','reveng','generation']
         }
     }
 }
