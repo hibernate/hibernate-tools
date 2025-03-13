@@ -30,11 +30,11 @@
 
    <name>Hibernate Tools Gradle Plugin</name>
    <description>Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
-   <url>http://hibernate.org/tools/</url>
+   <url>https://hibernate.org/tools/</url>
 
    <issueManagement>
       <system>JIRA</system>
-      <url>http://hibernate.onjira.com/browse/HBX</url>
+      <url>https://hibernate.atlassian.net/projects/HBX</url>
    </issueManagement>
 
    <properties>
@@ -100,5 +100,42 @@
          </plugin>
       </plugins>
    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>gradle-publish-to-plugin-portal</id>
+                                <phase>deploy</phase>
+                                <configuration>
+                                    <executable>${gradle.executable}</executable>
+                                    <arguments>
+                                        <argument>publishPlugins</argument>
+                                        <argument>-Pversion=${project.version}</argument>
+                                        <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
