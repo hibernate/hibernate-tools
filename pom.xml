@@ -12,7 +12,7 @@
     
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-tools-parent</artifactId>
-    <version>5.3.37-SNAPSHOT</version>
+    <version>5.3.37.Final</version>
 
     <packaging>pom</packaging>
  

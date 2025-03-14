@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>5.3.37-SNAPSHOT</version>
+        <version>5.3.37.Final</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-h2</artifactId>
