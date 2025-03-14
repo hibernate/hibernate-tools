@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-tools-parent</artifactId>
-        <version>5.3.37.Final</version>
+        <version>5.3.38-SNAPSHOT</version>
     </parent>
     <artifactId>hibernate-tools-reports</artifactId>
 
