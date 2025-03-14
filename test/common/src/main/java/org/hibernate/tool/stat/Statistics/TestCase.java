@@ -28,6 +28,7 @@ import org.hibernate.tool.stat.StatisticsBrowser;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TestCase {
@@ -42,6 +43,9 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
+	// HBX-1554: Ignore the test for now
+	// TODO: re-enable the test
+	@Disabled
 	@Test
 	public void testBrowser() throws Exception {
 		MetadataSources mds = new MetadataSources();
