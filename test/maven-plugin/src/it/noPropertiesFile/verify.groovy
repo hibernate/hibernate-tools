@@ -2,24 +2,26 @@ import java.io.*;
 
 println "start verify.groovy"
 
-File entity = new File(basedir, "build.log")
+File buildLog = new File(basedir, "build.log")
 
-if (!entity.isFile()) {
-	
-    throw new FileNotFoundException("Could not find generated JPA Entity: " + entity)
-	
+if (!buildLog.isFile()) {
+
+	println "'" + buildLog.absolutePath + "' is not a file."
+
+	throw new FileNotFoundException("Could not find build log file: '" + buildLog + "'")
+
 } else {
-	
+
+	println "inspecting build log lines"
+
 	boolean found = false
-	String searchString = 
-		"[INFO] Property file '" + 
-		basedir.absolutePath + 
-		"/src/main/resources/hibernate.properties' cannot be found, aborting..."	
-	entity.eachLine { 
-		line ->  if (line.startsWith(searchString)) found = true
+	String startString = "[INFO] Property file '"
+	String endString = "src/main/resources/hibernate.properties' cannot be found, aborting..."
+	buildLog.eachLine {
+		line ->  if (line.startsWith(startString) && line.endsWith(endString)) found = true
 	}
 	return found
-	
+
 }
 
 
