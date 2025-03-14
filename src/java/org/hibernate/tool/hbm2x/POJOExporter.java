@@ -41,6 +41,12 @@ public class POJOExporter extends GenericExporter {
 		if(!getProperties().containsKey("jdk5")) {
 			getProperties().put("jdk5", "false");
 		}	
+		if(!getProperties().containsKey("annotateFields")) {
+			getProperties().put("annotateFields", "false");
+		}
+		if(!getProperties().containsKey("javaDocFromDbComments")) {
+			getProperties().put("javaDocFromDbComments", "false");
+		}
 		super.setupContext();
 	}
 }
