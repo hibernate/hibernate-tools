@@ -28,9 +28,8 @@ import java.util.Map;
 
 import org.hibernate.CallbackException;
 import org.hibernate.Session;
-import org.hibernate.classic.Lifecycle;
 
-public class Glarch implements GlarchProxy, Lifecycle, Serializable {
+public class Glarch implements GlarchProxy, Serializable {
 
 	private static final long serialVersionUID = 
 			ObjectStreamClass.lookup(Glarch.class).getSerialVersionUID();
@@ -109,10 +108,6 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 		this.proxyArray = proxyArray;
 	}
 
-	public boolean onDelete(Session s) throws CallbackException {
-		return NO_VETO;
-	}
-
 	public void onLoad(Session s, Serializable id) {
 		if ( ! ( ( (String) id ).length()==32 ) ) throw new RuntimeException("id problem");
 	}
@@ -122,20 +117,12 @@ public class Glarch implements GlarchProxy, Lifecycle, Serializable {
 		dynaBean.put("foo", "foo");
 		dynaBean.put("bar", Integer.valueOf(66));
 		immutable="never changes!";
-		return NO_VETO;
+		return false;
 	}
 
 	public boolean onUpdate(Session s) throws CallbackException {
-		return NO_VETO;
+		return false;
 	}
-
-	/*public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}*/
 
 	/**
 	 * Returns the dynaBean.
