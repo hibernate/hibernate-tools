@@ -11,7 +11,6 @@ import org.hibernate.engine.OptimisticLockStyle;
 import org.hibernate.mapping.*;
 import org.hibernate.tool.orm.jbt.api.wrp.*;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
-import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
 
 public class PersistentClassWrapperFactory {
@@ -153,12 +152,7 @@ public class PersistentClassWrapperFactory {
 
 		@Override
 		public PropertyWrapper getProperty() {
-			if (!isInstanceOfSpecialRootClass()) {
-				throw new RuntimeException("getProperty() is only allowed on SpecialRootClass");
-			} else {
-				Property p = ((SpecialRootClass)persistentClass).getProperty();
-				return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
-			}
+			throw new RuntimeException("getProperty() is only allowed on SpecialRootClass");
 		}
 
 		@Override
@@ -168,8 +162,6 @@ public class PersistentClassWrapperFactory {
 				((RootClass)persistentClass).setTable(table);
 			} else if (isInstanceOfJoinedSubclass()) {
 				((JoinedSubclass)persistentClass).setTable(table);
-			} else if (isInstanceOfSpecialRootClass()) {
-				((SpecialRootClass)persistentClass).setTable(table);
 			} else {
 				throw new RuntimeException("Method 'setTable(Table)' is not supported.");
 			}
@@ -199,12 +191,7 @@ public class PersistentClassWrapperFactory {
 
 		@Override
 		public PropertyWrapper getParentProperty() {
-			if (!isInstanceOfSpecialRootClass()) {
-				throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass");
-			} else {
-				Property p = ((SpecialRootClass)persistentClass).getParentProperty();
-				return p == null ? null : PropertyWrapperFactory.createPropertyWrapper(p);
-			}
+			throw new RuntimeException("getParentProperty() is only allowed on SpecialRootClass");
 		}
 
 		@Override
