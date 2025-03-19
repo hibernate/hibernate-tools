@@ -58,7 +58,8 @@ public class PersistentClassWrapperTest {
 		property = PropertyWrapperFactory.createPropertyWrapper();
 		property.setPersistentClass(rootClassWrapper);
 		specialRootClassTarget = new SpecialRootClass((Property)property.getWrappedObject());
-		specialRootClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(specialRootClassTarget);
+		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(property);
+		specialRootClassTarget = (PersistentClass)specialRootClassWrapper.getWrappedObject();
 	}
 	
 	@Test
@@ -74,7 +75,7 @@ public class PersistentClassWrapperTest {
 		assertTrue(joinedSubclassTarget instanceof JoinedSubclass);
 		assertNotNull(specialRootClassWrapper);
 		assertNotNull(specialRootClassTarget);
-		assertTrue(specialRootClassTarget instanceof SpecialRootClass);
+		assertTrue(specialRootClassTarget instanceof RootClass);
 	}
 	
 	@Test
@@ -655,8 +656,7 @@ public class PersistentClassWrapperTest {
 		Property property = (Property)propertyWrapper.getWrappedObject();
 		property.setValue(component);
 		property.setPersistentClass(pc);
-		SpecialRootClass src = new SpecialRootClass(property);
-		specialRootClassWrapper = PersistentClassWrapperFactory.createPersistentClassWrapper(src);
+		specialRootClassWrapper = PersistentClassWrapperFactory.createSpecialRootClassWrapper(propertyWrapper);
 		PropertyWrapper parentProperty = specialRootClassWrapper.getParentProperty();
 		assertNotNull(parentProperty);
 		assertEquals("foo", parentProperty.getName());

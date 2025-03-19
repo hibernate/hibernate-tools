@@ -1,13 +1,6 @@
 package org.hibernate.tool.orm.jbt.api.factory;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Properties;
@@ -68,6 +61,7 @@ import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.TypeFactoryWrapper;
 import org.hibernate.tool.orm.jbt.api.wrp.Wrapper;
 import org.hibernate.tool.orm.jbt.internal.factory.ConfigurationWrapperFactory;
+import org.hibernate.tool.orm.jbt.internal.factory.PersistentClassWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.RevengStrategyWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.factory.TableWrapperFactory;
 import org.hibernate.tool.orm.jbt.internal.util.ConfigurationMetadataDescriptor;
@@ -78,6 +72,8 @@ import org.hibernate.tool.orm.jbt.internal.util.NativeConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.RevengConfiguration;
 import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WrapperFactoryTest {
 	
@@ -236,12 +232,8 @@ public class WrapperFactoryTest {
 		PropertyWrapper propertyWrapper = (PropertyWrapper)WrapperFactory.createPropertyWrapper();
 		Object specialRootClassWrapper = WrapperFactory.createSpecialRootClassWrapper(propertyWrapper);
 		assertNotNull(specialRootClassWrapper);
-		assertTrue(specialRootClassWrapper instanceof PersistentClassWrapper);
-		PersistentClass persistentClass = (PersistentClass)((PersistentClassWrapper)specialRootClassWrapper).getWrappedObject();
-		assertTrue(persistentClass instanceof SpecialRootClass);
-		assertSame(
-				((SpecialRootClass)persistentClass).getProperty(), 
-				((Wrapper)propertyWrapper).getWrappedObject());		
+        assertInstanceOf(PersistentClassWrapper.class, specialRootClassWrapper);
+		assertSame(propertyWrapper, ((PersistentClassWrapper)specialRootClassWrapper).getProperty());
 	}
 	
 	@Test

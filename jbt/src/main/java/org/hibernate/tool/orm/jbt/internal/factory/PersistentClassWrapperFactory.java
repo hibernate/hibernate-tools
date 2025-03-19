@@ -1,26 +1,15 @@
 package org.hibernate.tool.orm.jbt.internal.factory;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.AssertionFailure;
+import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.engine.OptimisticLockStyle;
-import org.hibernate.mapping.Join;
-import org.hibernate.mapping.JoinedSubclass;
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SingleTableSubclass;
-import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.Value;
-import org.hibernate.tool.orm.jbt.api.wrp.JoinWrapper;
-import org.hibernate.tool.orm.jbt.api.wrp.PersistentClassWrapper;
-import org.hibernate.tool.orm.jbt.api.wrp.PropertyWrapper;
-import org.hibernate.tool.orm.jbt.api.wrp.TableWrapper;
-import org.hibernate.tool.orm.jbt.api.wrp.ValueWrapper;
+import org.hibernate.mapping.*;
+import org.hibernate.tool.orm.jbt.api.wrp.*;
 import org.hibernate.tool.orm.jbt.internal.util.DummyMetadataBuildingContext;
 import org.hibernate.tool.orm.jbt.internal.util.SpecialRootClass;
 import org.hibernate.tool.orm.jbt.internal.wrp.AbstractWrapper;
@@ -43,14 +32,83 @@ public class PersistentClassWrapperFactory {
 		return createPersistentClassWrapper(js);
 	}
 
-	public static Object createSpecialRootClassWrapper(PropertyWrapper propertyWrapper) {
-		Property p = (Property)propertyWrapper.getWrappedObject();
-		SpecialRootClass src = new SpecialRootClass(p);
-		return createPersistentClassWrapper(src);
+	public static PersistentClassWrapper createSpecialRootClassWrapper(PropertyWrapper propertyWrapper) {
+		return new SpecialRootClassWrapperImpl(propertyWrapper);
 	}
 
 	public static PersistentClassWrapper createPersistentClassWrapper(PersistentClass wrappedPersistentClass) {
 		return new PersistentClassWrapperImpl(wrappedPersistentClass);
+	}
+
+	private static class SpecialRootClassWrapperImpl extends PersistentClassWrapperImpl {
+
+		private final PropertyWrapper propertyWrapper;
+		private PropertyWrapper parentPropertyWrapper;
+
+		private SpecialRootClassWrapperImpl(PropertyWrapper propertyWrapper) {
+			super(new RootClass(getMetadataBuildingContext((Property)propertyWrapper.getWrappedObject())));
+			this.propertyWrapper = propertyWrapper;
+			initialize();
+		}
+
+		@Override
+		public PropertyWrapper getProperty() {
+			return propertyWrapper;
+		}
+
+		@Override
+		public PropertyWrapper getParentProperty() {
+			return parentPropertyWrapper;
+		}
+
+		@Override
+		public boolean isInstanceOfSpecialRootClass() {
+			return true;
+		}
+
+		@Override
+		public boolean isRootClass() {
+			return false;
+		}
+
+		private void initialize() {
+			Component component = getComponent();
+			if (component != null) {
+				setClassName(component.getComponentClassName());
+				setEntityName(component.getComponentClassName());
+				PersistentClass ownerClass = component.getOwner();
+				if (component.getParentProperty() != null) {
+					Property parentProperty = new Property();
+					parentProperty.setName(component.getParentProperty());
+					parentProperty.setPersistentClass(ownerClass);
+					parentPropertyWrapper = PropertyWrapperFactory.createPropertyWrapper(parentProperty);
+				}
+                for (Property property : component.getProperties()) {
+                    if (property != null) {
+                        addProperty(PropertyWrapperFactory.createPropertyWrapper(property));
+                    }
+                }
+			}
+		}
+
+		private Component getComponent() {
+			Component result = null;
+			if (propertyWrapper != null) {
+				Value v = ((Property)propertyWrapper.getWrappedObject()).getValue();
+				if (v != null) {
+					if (v instanceof Wrapper) {
+						v = (Value)((Wrapper)v).getWrappedObject();
+					}
+					if (Collection.class.isAssignableFrom(v.getClass())) {
+						v = ((Collection)v).getElement();
+					}
+					if (v != null && Component.class.isAssignableFrom(v.getClass())) {
+						result = (Component)v;
+					}
+				}
+			}
+			return result;
+		}
 	}
 	
 	private static class PersistentClassWrapperImpl 
@@ -122,8 +180,8 @@ public class PersistentClassWrapperFactory {
 			if (!isInstanceOfRootClass()) {
 				throw new RuntimeException("Method 'setIdentifier(Value)' can only be called on RootClass instances");
 			} else {
+				((RootClass)persistentClass).setIdentifier(value == null ? null : (KeyValue)value.getWrappedObject());
 			}
-			((RootClass)persistentClass).setIdentifier(value == null ? null : (KeyValue)value.getWrappedObject());
 		}
 
 		@Override
@@ -136,7 +194,7 @@ public class PersistentClassWrapperFactory {
 
 		@Override
 		public boolean isInstanceOfSpecialRootClass() {
-			return SpecialRootClass.class.isAssignableFrom(persistentClass.getClass()); 
+			return false;
 		}
 
 		@Override
@@ -456,17 +514,33 @@ public class PersistentClassWrapperFactory {
 	}
 	
 	private static int getOldCode(OptimisticLockStyle ols) {
-		switch (ols) {
-			case NONE:
-				return -1;
-			case VERSION:
-				return 0;
-			case DIRTY:
-				return 1;
-			case ALL:
-				return 2;
-			default:
-				throw new AssertionFailure("Unknown OptimisticLockStyle");
-		}
+        return switch (ols) {
+            case NONE -> -1;
+            case VERSION -> 0;
+            case DIRTY -> 1;
+            case ALL -> 2;
+            default -> throw new AssertionFailure("Unknown OptimisticLockStyle");
+        };
 	}
+
+	private static MetadataBuildingContext getMetadataBuildingContext(Property property) {
+		MetadataBuildingContext result = DummyMetadataBuildingContext.INSTANCE;
+		try {
+			if (property != null) {
+				PersistentClass pc = property.getPersistentClass();
+				if (pc != null) {
+					Field field = PersistentClass.class.getDeclaredField("metadataBuildingContext");
+					field.setAccessible(true);
+					result = (MetadataBuildingContext)field.get(pc);
+				}
+			}
+		} catch (NoSuchFieldException |
+				 SecurityException |
+				 IllegalArgumentException |
+				 IllegalAccessException e) {
+			throw new RuntimeException("Problem while trying to retrieve MetadataBuildingContext from field", e);
+		}
+		return result;
+	}
+
 }
