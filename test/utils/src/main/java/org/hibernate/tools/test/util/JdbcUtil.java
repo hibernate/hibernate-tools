@@ -177,7 +177,9 @@ public class JdbcUtil {
 				String line = null;
 				ArrayList<String> lines = new ArrayList<String>();
 				while ((line = bufferedReader.readLine()) != null) {
-					lines.add(line);
+					if (!line.trim().startsWith("#")) {
+						lines.add(line);
+					}
 				}
 				result = lines.toArray(new String[lines.size()]);
 			} catch (IOException e) {
