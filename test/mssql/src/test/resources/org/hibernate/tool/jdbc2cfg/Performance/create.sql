@@ -1,3 +1,20 @@
+############################################################################
+# Hibernate Tools, Tooling for your Hibernate Projects                     #
+#                                                                          #
+# Copyright 2004-2025 Red Hat, Inc.                                        #
+#                                                                          #
+# Licensed under the Apache License, Version 2.0 (the "License");          #
+# you may not use this file except in compliance with the License.         #
+# You may obtain a copy of the License at                                  #
+#                                                                          #
+#     http://www.apache.org/licenses/LICENSE-2.0                           #
+#                                                                          #
+# Unless required by applicable law or agreed to in writing, software      #
+# distributed under the License is distributed on an "AS IS" basis,        #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+# See the License for the specific language governing permissions and      #
+# limitations under the License.                                           #
+############################################################################
 create schema HTT
 create table HTT.PERFTEST0 (ID varchar(255) not null, COL0_0 varchar(255), COL0_1 varchar(255), COL0_2 varchar(255), COL0_3 varchar(255), COL0_4 varchar(255), COL0_5 varchar(255), COL0_6 varchar(255), COL0_7 varchar(255), COL0_8 varchar(255), COL0_9 varchar(255), primary key (ID))
 create table HTT.PERFTEST1 (ID varchar(255) not null, COL1_0 varchar(255), COL1_1 varchar(255), COL1_2 varchar(255), COL1_3 varchar(255), COL1_4 varchar(255), COL1_5 varchar(255), COL1_6 varchar(255), COL1_7 varchar(255), COL1_8 varchar(255), COL1_9 varchar(255), primary key (ID))
