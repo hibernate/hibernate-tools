@@ -24,8 +24,7 @@ But first, read this page (including the small print at the end).
 ## Legal
 
 All original contributions to Hibernate Tools are licensed under the
-[GNU Lesser General Public License (LGPL)](http://www.gnu.org/licenses/lgpl-2.1.html),
-version 2.1 or later, or, if another license is specified as governing the file or directory being
+[Apache License, version 2.0](https://www.apache.org/licenses/LICENSE-2.0), or, if another license is specified as governing the file or directory being
 modified, such other license.
 
 All contributions are subject to the [Developer Certificate of Origin (DCO)](https://developercertificate.org/).
