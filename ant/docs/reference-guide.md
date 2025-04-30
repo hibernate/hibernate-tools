@@ -20,7 +20,7 @@
 
 ## 1. The `<hibernatetool>` Task
 
-### 1.1 `<hibernatetool>` task definition
+### 1.1 `<hibernatetool>` Task Definition
 To use the Ant tasks you need to have the `<hibernatetool>` task defined. 
 That is done in your `build.xml` file by inserting the following XML.
 
@@ -55,4 +55,70 @@ the jdbc driver and for the version information. See an example in the snippet b
 <property name="jdbc-driver.version" value="2.3.232"/>
 ```
 
+### 1.2 `<hibernatetool>` Task Element
 
+As an introductory example, look at the XML snippet below.
+```xml
+<target name="reveng">
+    <hibernatetool destdir="generated-sources">
+        <jdbcconfiguration propertyfile="hibernate.properties" />
+        <hbm2java/>
+    </hibernatetool>
+</target>
+```
+The snippet creates an Ant target named `reveng` which contains an embedded `hibernatetool` task.
+This task has the folder `generated-sources` set as its destination directory. Additionally
+it specifies a JDBC configuration for which the connection information is to be found in the 
+file `hibernate.properties`. Finally it contains a `hbm2java` element that will generate Java files
+based on the JDBC configuration in the specified destination directory.
+
+As illustrated, the `hibernatetool` task element can be configured with additional attributes
+and nested elements. 
+
+Let's walk through the different possibilities.
+
+#### 1.2.1 The 'destdir' Attribute
+
+This mandatory attribute lets you control the folder where the artefacts will be generated. If the 
+specified folder does not exist it will be created.
+
+```xml
+<hibernatetool destdir="path/to/generated/sources">
+    ...
+</hibernatetool>
+```
+In the snippet above the artefacts will be generated in the subfolder `path/to/generated/sources` of 
+the working directory.
+
+#### 1.2.2 The 'templatepath' Attribute
+
+The generation of artefacts is based on FreeMarker templates. By default, the templates are 
+looked up on the classpath. If you want to have fine control over the artefact generation
+you can create custom templates. The optional `templatepath` attribute lets you specify the
+location of those templates.
+
+```xml
+<hibernatetool 
+        destdir="..."
+        templatepath="path/to/templates">
+    ...
+</hibernatetool>
+```
+
+
+#### 1.2.3 The 'classpath' Element
+
+
+
+
+## 2. The Hibernate Tools Configurations 
+
+The reverse engineering and generation of artefacts with Hibernate Tools is based on a 
+
+### 2.1 JDBC Configuration 
+
+### 2.2 JPA Configuration
+
+### 2.3 Native Configuration
+
+## 3. The Hibernate Tools Exporters
