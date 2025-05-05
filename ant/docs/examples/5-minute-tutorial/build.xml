@@ -1,0 +1,39 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property name="hibernate-tools.version" value="7.0.0.CR1"/>
+  <property name="jdbc-driver.org" value="com.h2database"/>
+  <property name="jdbc-driver.module" value="h2"/>
+  <property name="jdbc-driver.version" value="2.3.232"/>
+
+  <ivy:cachepath 
+      organisation="org.hibernate.tool" 
+      module="hibernate-tools-ant" 
+      revision="${hibernate-tools.version}"
+      pathid="hibernate-tools.path" 
+      inline="true"/>
+  <ivy:cachepath 
+      organisation="${jdbc-driver.org}" 
+      module="${jdbc-driver.module}" 
+      revision="${jdbc-driver.version}"
+      pathid="jdbc-driver.path" 
+      inline="true"/>
+
+  <path id="classpath">
+    <path refid="hibernate-tools.path"/>
+    <path refid="jdbc-driver.path"/>
+  </path>
+
+  <taskdef 
+      name="hibernatetool"
+      classname="org.hibernate.tool.ant.HibernateToolTask"
+      classpathref="classpath" />
+
+  <target name="reveng">
+    <hibernatetool destdir="generated-sources">
+      <jdbcconfiguration propertyfile="hibernate.properties" />
+      <hbm2java/>
+    </hibernatetool>
+  </target>
+
+</project>
+
