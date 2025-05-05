@@ -15,4 +15,4 @@
   -->
 To run this example:
   - Have [Apache Ant](https://ant.apache.org) installed
-  - Issue `ant reveng` from a command-line window 
+  - Issue `ant` from a command-line window 

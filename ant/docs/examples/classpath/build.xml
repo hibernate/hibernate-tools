@@ -13,37 +13,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="classpath" default="reveng">
 
-  <property name="hibernate-tools.version" value="7.0.0.CR1"/>
-  <property name="jdbc-driver.org" value="com.h2database"/>
-  <property name="jdbc-driver.module" value="h2"/>
-  <property name="jdbc-driver.version" value="2.3.232"/>
-
-  <ivy:cachepath 
-      organisation="org.hibernate.tool" 
-      module="hibernate-tools-ant" 
-      revision="${hibernate-tools.version}"
-      pathid="hibernate-tools.path" 
-      inline="true"/>
-  <ivy:cachepath 
-      organisation="${jdbc-driver.org}" 
-      module="${jdbc-driver.module}" 
-      revision="${jdbc-driver.version}"
-      pathid="jdbc-driver.path" 
-      inline="true"/>
-
-  <path id="classpath">
-    <path refid="hibernate-tools.path"/>
-    <path refid="jdbc-driver.path"/>
-  </path>
-
-  <taskdef 
-      name="hibernatetool"
-      classname="org.hibernate.tool.ant.HibernateToolTask"
-      classpathref="classpath" />
+  <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
+  <include file="../common/included.xml"/>
 
   <target name="clean">
+    <!-- Delete the folder 'additional/classes if it exists -->
     <delete dir="additional/classes"/>
   </target>
 
@@ -59,8 +35,7 @@
 
   <target name="reveng" depends="compile">
     <hibernatetool destdir="generated-sources">
-      <!-- The classpath to be used by the 'hibernatetool' task
-       to look up additional classes or resources -->
+      <!-- The classpath to be used by the 'hibernatetool' task to look up additional classes or resources -->
       <classpath>
         <pathelement location="additional/classes"/>
       </classpath>

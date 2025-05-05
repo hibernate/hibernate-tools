@@ -13,39 +13,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="5-minute-tutorial" default="reveng">
 
-  <property name="hibernate-tools.version" value="7.0.0.CR1"/>
-  <property name="jdbc-driver.org" value="com.h2database"/>
-  <property name="jdbc-driver.module" value="h2"/>
-  <property name="jdbc-driver.version" value="2.3.232"/>
+  <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
+  <include file="../common/included.xml"/>
 
-  <ivy:cachepath 
-      organisation="org.hibernate.tool" 
-      module="hibernate-tools-ant" 
-      revision="${hibernate-tools.version}"
-      pathid="hibernate-tools.path" 
-      inline="true"/>
-  <ivy:cachepath 
-      organisation="${jdbc-driver.org}" 
-      module="${jdbc-driver.module}" 
-      revision="${jdbc-driver.version}"
-      pathid="jdbc-driver.path" 
-      inline="true"/>
+  <target name="clean">
+    <!-- Delete the folder 'generated-sources' if it exists -->
+    <delete dir="generated-sources"/>
+  </target>
 
-  <path id="classpath">
-    <path refid="hibernate-tools.path"/>
-    <path refid="jdbc-driver.path"/>
-  </path>
-
-  <taskdef 
-      name="hibernatetool"
-      classname="org.hibernate.tool.ant.HibernateToolTask"
-      classpathref="classpath" />
-
-  <target name="reveng">
+  <target name="reveng" depends="clean">
+    <!-- Generation of the artefacts in folder 'generated-sources' -->
     <hibernatetool destdir="generated-sources">
+      <!-- JDBC Configuration with properties in file 'hibernate.properties' -->
       <jdbcconfiguration propertyfile="hibernate.properties" />
+      <!-- The Java file exporter -->
       <hbm2java/>
     </hibernatetool>
   </target>
