@@ -1,0 +1,60 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property name="hibernate-tools.version" value="7.0.0.CR1"/>
+  <property name="jdbc-driver.org" value="com.h2database"/>
+  <property name="jdbc-driver.module" value="h2"/>
+  <property name="jdbc-driver.version" value="2.3.232"/>
+
+  <ivy:cachepath 
+      organisation="org.hibernate.tool" 
+      module="hibernate-tools-ant" 
+      revision="${hibernate-tools.version}"
+      pathid="hibernate-tools.path" 
+      inline="true"/>
+  <ivy:cachepath 
+      organisation="${jdbc-driver.org}" 
+      module="${jdbc-driver.module}" 
+      revision="${jdbc-driver.version}"
+      pathid="jdbc-driver.path" 
+      inline="true"/>
+
+  <path id="classpath">
+    <path refid="hibernate-tools.path"/>
+    <path refid="jdbc-driver.path"/>
+  </path>
+
+  <taskdef 
+      name="hibernatetool"
+      classname="org.hibernate.tool.ant.HibernateToolTask"
+      classpathref="classpath" />
+
+  <target name="clean">
+    <delete dir="additional/classes"/>
+  </target>
+
+  <target name="compile" depends="clean">
+    <!-- Create the target folder 'additional/classes' -->
+    <mkdir dir="additional/classes"/>
+    <!-- Compile the custom exporter 'HelloExporter' -->
+    <javac
+            srcdir="additional/src"
+            destdir="additional/classes"
+            classpathref="classpath"/>
+  </target>
+
+  <target name="reveng" depends="compile">
+    <hibernatetool destdir="generated-sources">
+      <!-- The classpath to be used by the 'hibernatetool' task
+       to look up additional classes or resources -->
+      <classpath>
+        <pathelement location="additional/classes"/>
+      </classpath>
+      <!-- Dummy configuration, as it is needed for any 'hibernatetool' task -->
+      <configuration />
+      <!-- Custom exporter of class 'HelloExporter' to be found on the specified classpath -->
+      <hbmtemplate exporterclass="HelloExporter"/>
+    </hibernatetool>
+  </target>
+
+</project>
+
