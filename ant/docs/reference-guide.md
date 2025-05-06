@@ -77,7 +77,7 @@ and nested elements.
 
 Let's walk through the different possibilities.
 
-#### 1.2.1 The 'destdir' Attribute
+#### 1.2.1 The `destdir` Attribute
 
 This mandatory attribute lets you control the folder where the artefacts will be generated. If the 
 specified folder does not exist it will be created.
@@ -90,7 +90,7 @@ specified folder does not exist it will be created.
 In the snippet above the artefacts will be generated in the subfolder `path/to/generated/sources` of 
 the working directory.
 
-#### 1.2.2 The 'templatepath' Attribute
+#### 1.2.2 The `templatepath` Attribute
 
 The generation of artefacts is based on FreeMarker templates. By default, the templates are 
 looked up on the classpath. If you want to have fine control over the artefact generation
@@ -106,10 +106,22 @@ location of those templates.
 ```
 
 
-#### 1.2.3 The 'classpath' Element
+#### 1.2.3 The `<classpath>` Element
 
+The `<classpath>` element can be added within the `<hiberatetool>` task to specify where to look
+for classes and/or resources that are used e.g. by the configured exporters. 
 
+```xml
+<hibernatetool 
+        destdir="...">
+    <classpath location="location/of/additional/classes"/>
+    ...
+</hibernatetool>
 
+```
+
+All the usual configuration possibilities for [Ant path-like structures](https://ant.apache.org/manual/using.html#path) 
+are applicable. 
 
 ## 2. The Hibernate Tools Configurations 
 
