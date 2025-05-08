@@ -36,6 +36,7 @@
     <path id="classpath">
         <path refid="hibernate-tools.path"/>
         <path refid="jdbc-driver.path"/>
+        <path location="."/>
     </path>
 
     <taskdef

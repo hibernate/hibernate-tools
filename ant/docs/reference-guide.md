@@ -123,6 +123,18 @@ for classes and/or resources that are used e.g. by the configured exporters.
 All the usual configuration possibilities for [Ant path-like structures](https://ant.apache.org/manual/using.html#path) 
 are applicable. 
 
+### 1.2.4 The `<property>` and `<propertySet>` elements
+
+
+
+### 1.2.5 The Configuration Elements
+
+
+
+### 1.2.6 The Exporter Elements
+
+
+
 ## 2. The Hibernate Tools Configurations 
 
 The reverse engineering and generation of artefacts with Hibernate Tools is based on a 

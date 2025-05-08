@@ -34,7 +34,7 @@
   </target>
 
   <target name="reveng" depends="compile">
-    <hibernatetool destdir="generated-sources">
+    <hibernatetool destdir="dummy">
       <!-- The classpath to be used by the 'hibernatetool' task to look up additional classes or resources -->
       <classpath location="additional/classes"/>
       <!-- Dummy configuration, as it is needed for any 'hibernatetool' task -->
