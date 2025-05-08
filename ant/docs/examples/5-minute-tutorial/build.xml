@@ -26,8 +26,8 @@
   <target name="reveng" depends="clean">
     <!-- Generation of the artefacts in folder 'generated-sources' -->
     <hibernatetool destdir="generated-sources">
-      <!-- JDBC Configuration with properties in file 'hibernate.properties' -->
-      <jdbcconfiguration propertyfile="hibernate.properties" />
+      <!-- JDBC Configuration with properties in file '../common/hibernate.properties' -->
+      <jdbcconfiguration propertyfile="../common/hibernate.properties" />
       <!-- The Java file exporter -->
       <hbm2java/>
     </hibernatetool>

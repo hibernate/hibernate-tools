@@ -28,7 +28,7 @@
     <hibernatetool 
           destdir="generated-sources"
           templatepath="templates">
-      <jdbcconfiguration propertyfile="hibernate.properties" />
+      <jdbcconfiguration propertyfile="../common/hibernate.properties" />
       <!-- The main template file used by the Java exporter is to be found in the location 'pojo/Pojo.ftl' -->
       <hbm2java/>
     </hibernatetool>
