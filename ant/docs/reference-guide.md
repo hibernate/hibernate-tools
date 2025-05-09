@@ -125,7 +125,36 @@ are applicable.
 
 ### 1.2.4 The `<property>` and `<propertySet>` elements
 
+It is possible to define properties to be used by the configured exporters. To do 
+this, you can use one or more `<property>` elements. As shown below, this element uses 
+the attributes with name `key` and `value`. The `name` attribute sometimes seen in other
+places for Ant build files is *not* supported.
 
+```xml
+<hibernatetool 
+        destdir="...">
+    <property key='someKey' value='someValue' />
+    ...
+</hibernatetool>
+```
+
+If you rather want to redefine already existing properties, you can use the `propertySet` 
+element. The snippet below will redefine the properties prefixed with 'foo' and replace 
+the prefix by 'bar'.
+
+```xml
+<hibernatetool 
+        destdir="...">
+    <propertySet>
+        <propertyref prefix="foo"/>
+        <mapper type="glob" from="foo*" to="bar*"/>
+    </propertySet>
+    ...
+</hibernatetool>
+```
+
+All the possibilities documented in the [Ant documentation](https://ant.apache.org/manual/Types/propertyset.html)
+for the `propertySet`element are supported.
 
 ### 1.2.5 The Configuration Elements
 
