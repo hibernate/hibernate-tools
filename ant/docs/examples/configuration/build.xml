@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project name="native-cfg" default="reveng">
+<project name="configuration" default="reveng">
 
   <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
   <include file="../common/included.xml"/>

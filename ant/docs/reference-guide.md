@@ -215,10 +215,12 @@ Section 3 further down this guide will document in more detail the use of these 
 As explained earlier, the reverse engineering and generation of artefacts with Hibernate Tools is based on a 
 so-called configuration. We will detail the possibilities for these configurations in this section.
 
-### 2.1 JDBC Configuration 
+### 2.1 Native Configuration 
+
+
 
 ### 2.2 JPA Configuration
 
-### 2.3 Native Configuration
+### 2.3 JDBC Configuration
 
 ## 3. The Hibernate Tools Exporters
