@@ -158,7 +158,28 @@ for the `propertySet`element are supported.
 
 ### 1.2.5 The Configuration Elements
 
+The model from which to generate artefacts with Hibernate Tools is created from a configuration, very much like
+the configuration used in plain Hibernate ORM. As a matter of fact, this 'plain' Hibernate configuration can 
+serve as a starting point for some of the generators. You can specify it with the `<configuration>`element for 
+Hibernate native configurations or with the `<jpaconfiguration>` element for JPA annotated projects. 
 
+In most cases however, you will use the `<jdbcconfiguration>`element as this one is specific to perform the
+generation of artefacts starting from a relational database schema. See an example below. 
+
+```xml
+<hibernatetool 
+        destdir="...">
+    <jdbcconfiguration propertyfile="hibernate.properties"/>
+    ...
+</hibernatetool>
+
+```
+One - and only one - of the configuration possibilities needs to be specified in the `<hibernatetool>` task.
+(As shown in the classpath example above tough, you can just specify an empty configuration if your
+generators do not need to be configured)
+
+More detailed information on the possible attributes and elements that can be used for the configuration 
+elements is to be found in section 2 further down this guide.
 
 ### 1.2.6 The Exporter Elements
 
