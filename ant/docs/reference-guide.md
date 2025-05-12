@@ -186,6 +186,15 @@ elements is to be found in section 2 further down this guide.
 Hibernate Tools is very versatile and can be used to generate a wide variety of artefacts. This generation
 is performed when adding one or more exporter elements to the `<hibernatetool>` task. 
 
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        <jdbcconfiguration propertyfile="hibernate.properties" />
+        <hbm2java/>
+    </hibernatetool>
+</target>
+```
+
 The most used exporters are
 * `<hbm2java>` for the generation of Java files
 * `<hbmtemplate>` when generating artefacts based on custom templates
