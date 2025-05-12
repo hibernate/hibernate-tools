@@ -183,11 +183,28 @@ elements is to be found in section 2 further down this guide.
 
 ### 1.2.6 The Exporter Elements
 
+Hibernate Tools is very versatile and can be used to generate a wide variety of artefacts. This generation
+is performed when adding one or more exporter elements to the `<hibernatetool>` task. 
 
+The most used exporters are
+* `<hbm2java>` for the generation of Java files
+* `<hbmtemplate>` when generating artefacts based on custom templates
+* `<query>` for executing SQL and exporting the result to a file
+* `<hbm2ddl>` for the generation of the database creation scripts
+* `<hbm2cfgxml>` for the generation of the Hibernate configuration XML file
+
+Some other predefined exporters are less used (or even deprecated)
+* `<hbm2dao>` for the generation of Java files that are data access objects
+* `<hbm2doc>` for the generation of JavaDoc style HTML files documenting the database structure
+* `<hbm2hbmxml>` for the generation of HBM XML files (deprecated, HBM XML files will disappear with Hibernate 8.0)
+* `<hbmlint>` for static analysis and reporting of possible issues 
+
+Section 3 further down this guide will document in more detail the use of these exporters.
 
 ## 2. The Hibernate Tools Configurations 
 
-The reverse engineering and generation of artefacts with Hibernate Tools is based on a 
+As explained earlier, the reverse engineering and generation of artefacts with Hibernate Tools is based on a 
+so-called configuration. We will detail the possibilities for these configurations in this section.
 
 ### 2.1 JDBC Configuration 
 
