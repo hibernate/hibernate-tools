@@ -22,9 +22,14 @@
     <hibernatetool destdir="generated">
       <classpath location="."/>
       <!-- Native configuration read from 'hibernate.cfg.xml' -->
-      <configuration configurationfile="hibernate.cfg.xml"/>
+      <configuration
+              configurationfile="hibernate.cfg.xml"
+              propertyfile="hibernate.properties">
+        <fileset file="Foo.hbm.xml"/>
+      </configuration>
       <hbm2ddl outputfilename="foo.sql"/>
     </hibernatetool>
+
   </target>
 
 </project>
