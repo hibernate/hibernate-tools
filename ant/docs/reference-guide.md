@@ -215,8 +215,55 @@ Section 3 further down this guide will document in more detail the use of these 
 As explained earlier, the reverse engineering and generation of artefacts with Hibernate Tools is based on a 
 so-called configuration. We will detail the possibilities for these configurations in this section.
 
-### 2.1 Native Configuration 
+### 2.1 Native Configuration with `<configuration>` 
 
+The first and simplest possibility to configure the `<hibernatetool>` task is by using the `<configuration>` 
+element. 
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <configuration/>
+        ...
+    </hibernatetool>
+</target>
+```
+
+The `<configuration>` element can be used without additional configuration but that is only of limited interest.
+In practically all cases you will use additional attributes and/or embedded elements.
+
+### 2.1.1 The `propertyfile` attribute
+
+The first possible attribute is `propertyfile`. This property points to the file that will be used to read the 
+Hibernate properties.
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <configuration propertyfile="hibernate.properties">
+        ...
+        </configuration>
+        ...
+    </hibernatetool>
+</target>
+```
+
+Possible contents for the `hibernate.properties` file when using the H2 Sakila database are illustrated below:
+
+```properties
+hibernate.connection.driver_class=org.h2.Driver
+hibernate.connection.url=jdbc:h2:tcp://localhost/./sakila
+hibernate.connection.username=sa
+hibernate.default_catalog=SAKILA
+hibernate.default_schema=PUBLIC
+```
+
+### 2.1.2 The `configurationfile` attribute
+
+
+### 2.1.3 The `<fileset>` element
 
 
 ### 2.2 JPA Configuration
