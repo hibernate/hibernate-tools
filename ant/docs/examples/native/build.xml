@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright 2004 - 2025 Red Hat, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project name="native" default="reveng">
+
+  <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
+  <include file="../common/included.xml"/>
+
+  <target name="clean">
+    <!-- Delete the folder 'generated-sources' if it exists -->
+    <delete dir="generated-sources"/>
+    <delete file="Foo.class"/>
+  </target>
+
+  <target name="compile" depends="clean">
+    <!-- Compile the custom exporter 'HelloExporter' -->
+    <javac srcdir="." destdir="." classpathref="classpath"/>
+  </target>
+
+  <target name="reveng" depends="compile">
+    <hibernatetool destdir="generated-sources">
+      <classpath location="."/>
+      <!-- Native configuration read from 'hibernate.cfg.xml' -->
+      <configuration configurationfile="hibernate.cfg.xml"/>
+      <hbm2ddl outputfilename="foo.sql"/>
+    </hibernatetool>
+  </target>
+
+</project>
+
