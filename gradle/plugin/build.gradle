@@ -22,6 +22,7 @@ plugins {
 }
 
 group = 'org.hibernate.tool'
+project.description = 'Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.'
 
 java {
     toolchain {
@@ -54,7 +55,7 @@ gradlePlugin {
             id = 'org.hibernate.tool.hibernate-tools-gradle'
             implementationClass = 'org.hibernate.tool.gradle.Plugin'
             displayName = 'Hibernate Tools Gradle Plugin'
-            description = 'Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.'
+            description = project.description
             tags = ['hibernate','tools','reverse engineering','reveng','generation']
         }
     }
@@ -82,4 +83,69 @@ tasks.named('check') {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            pom {
+                name = project.name
+                groupId = 'org.hibernate.tool'
+                artifactId = project.name
+                version = project.version
+
+                description = project.description
+                url = 'https://hibernate.org/tools'
+
+                organization {
+                    name = 'Hibernate.org'
+                    url = 'https://hibernate.org'
+                }
+
+                licenses {
+                    license {
+                        name = 'Apache License, version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/hibernate/hibernate-tools'
+                    connection = 'scm:git:https://github.com/hibernate/hibernate-tools.git'
+                    developerConnection = 'scm:git:git@github.com:hibernate/hibernate-tools.git'
+                }
+
+                developers {
+                    developer {
+                        id = 'maxandersen'
+                        name = 'Max Andersen'
+                        email = 'max@hibernate.org'
+                        url = 'https://in.relation.to/Bloggers/Max'
+                    }
+                    developer {
+                        id = 'koentsje'
+                        name = 'Koen Aers'
+                        email = 'koen@hibernate.org'
+                        url = 'https://koentsje.blogspot.be'
+                    }
+                }
+
+                issueManagement {
+                    system = 'jira'
+                    url = 'https://hibernate.atlassian.net/browse/HBX'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "staging"
+            var mavenPath = findProperty("mavenStagingDirectory")
+            if (mavenPath == null) {
+                url = rootProject.layout.buildDirectory.dir("staging-deploy${File.separator}maven")
+            } else {
+                url = URI.create(mavenPath).toURL()
+            }
+        }
+    }
 }
