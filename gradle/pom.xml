@@ -53,6 +53,14 @@
 
    <build>
       <plugins>
+          <!-- Maven deploy is skipped on purpose as Gradle build will stage the artifact itself. -->
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-deploy-plugin</artifactId>
+              <configuration>
+                  <skip>true</skip>
+              </configuration>
+          </plugin>
         <!-- execute Gradle command -->
         <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -76,28 +84,6 @@
                     </execution>
                 </executions>
 		 </plugin>
-         <!-- As the artifact is built by Gradle, we attach it with the helper plugin so that it gets published: -->
-         <plugin>
-             <groupId>org.codehaus.mojo</groupId>
-             <artifactId>build-helper-maven-plugin</artifactId>
-             <executions>
-                 <execution>
-                     <id>attach-artifacts</id>
-                     <phase>package</phase>
-                     <goals>
-                         <goal>attach-artifact</goal>
-                     </goals>
-                     <configuration>
-                         <artifacts>
-                             <artifact>
-                                 <file>${project.basedir}/plugin/build/libs/${project.artifactId}-${project.version}.jar</file>
-                                 <type>jar</type>
-                             </artifact>
-                         </artifacts>
-                     </configuration>
-                 </execution>
-             </executions>
-         </plugin>
       </plugins>
    </build>
 
@@ -123,8 +109,10 @@
                                     <executable>${gradle.executable}</executable>
                                     <arguments>
                                         <argument>publishPlugins</argument>
+                                        <argument>publishPluginMavenPublicationToStagingRepository</argument>
                                         <argument>-Pversion=${project.version}</argument>
                                         <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                                        <argument>-PmavenStagingDirectory=${local.staging.releases.repo.url}</argument>
                                     </arguments>
                                 </configuration>
                                 <goals>
