@@ -18,17 +18,7 @@
   <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
   <include file="../common/included.xml"/>
 
-  <target name="clean">
-    <!-- Delete the compiled class for 'HelloExporter.java' if it exists -->
-    <delete file="HelloExporter.class"/>
-  </target>
-
-  <target name="compile" depends="clean">
-    <!-- Compile the custom exporter 'HelloExporter.java' -->
-    <javac classpathref="classpath" srcdir="." />
-  </target>
-
-  <target name="reveng" depends="compile">
+  <target name="reveng" depends="common.compile">
     <!-- Property to use in the propertySet case -->
     <property name="thingOne" value="Bar"/>
     <echo message="First try without any property set"/>

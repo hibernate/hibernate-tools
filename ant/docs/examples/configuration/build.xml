@@ -18,12 +18,7 @@
   <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
   <include file="../common/included.xml"/>
 
-  <target name="clean">
-    <!-- Delete the folder 'generated-sources' if it exists -->
-    <delete dir="generated"/>
-  </target>
-
-  <target name="reveng" depends="clean">
+  <target name="reveng" depends="common.clean">
     <hibernatetool destdir="generated">
       <!-- Native configuration reading properties from '../common/hibernate.properties' -->
       <configuration propertyfile="../common/hibernate.properties"/>

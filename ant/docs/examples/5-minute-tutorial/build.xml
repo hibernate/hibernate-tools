@@ -18,12 +18,7 @@
   <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
   <include file="../common/included.xml"/>
 
-  <target name="clean">
-    <!-- Delete the folder 'generated-sources' if it exists -->
-    <delete dir="generated"/>
-  </target>
-
-  <target name="reveng" depends="clean">
+  <target name="reveng" depends="common.clean">
     <!-- Generation of the artefacts in folder 'generated-sources' -->
     <hibernatetool destdir="generated">
       <!-- JDBC Configuration with properties in file '../common/hibernate.properties' -->
