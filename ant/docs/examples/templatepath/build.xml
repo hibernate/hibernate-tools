@@ -20,13 +20,13 @@
 
   <target name="clean">
     <!-- Delete the folder 'generated-sources' if it exists -->
-    <delete dir="generated-sources"/>
+    <delete dir="generated"/>
   </target>
 
   <target name="reveng" depends="clean">
     <!-- Hibernate Tools will look for templates to use in the 'templates' folder -->
     <hibernatetool 
-          destdir="generated-sources"
+          destdir="generated"
           templatepath="templates">
       <jdbcconfiguration propertyfile="../common/hibernate.properties" />
       <!-- The main template file used by the Java exporter is to be found in the location 'pojo/Pojo.ftl' -->

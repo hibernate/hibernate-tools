@@ -20,11 +20,11 @@
 
   <target name="clean">
     <!-- Delete the folder 'generated-sources' if it exists -->
-    <delete dir="generated-sources"/>
+    <delete dir="generated"/>
   </target>
 
   <target name="reveng" depends="clean">
-    <hibernatetool destdir="generated-sources">
+    <hibernatetool destdir="generated">
       <!-- Native configuration reading properties from '../common/hibernate.properties' -->
       <configuration propertyfile="../common/hibernate.properties"/>
       <!-- Transform the 'hibernate.properties' file in 'hibernate.cfg.xml' -->
