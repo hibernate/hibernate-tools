@@ -262,8 +262,35 @@ hibernate.default_schema=PUBLIC
 
 ### 2.1.2 The `configurationfile` attribute
 
+The second possibility is to use the well known `hibernate.cfg.xml` file and specify it using the 
+`configurationfile` attribute. 
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <configuration configurationfile="hibernate.cfg.xml" />
+        ...
+    </hibernatetool>
+</target>
+```
+
+A possible example of such a `hibernate.cfg.xml` file is shown in the xml snippet below.
+
+```xml
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+        <property name="hibernate.connection.url">jdbc:h2:mem:</property>
+        <mapping resource="Foo.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+```
 
 ### 2.1.3 The `<fileset>` element
+
+
+### 2.1.4 Additional Remarks
 
 
 ### 2.2 JPA Configuration
