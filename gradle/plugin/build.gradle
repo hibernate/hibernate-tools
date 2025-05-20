@@ -85,6 +85,13 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.named('publishPlugins') {
+    onlyIf {
+        def isDryRun = System.getenv('JRELEASER_DRY_RUN')
+        !Boolean.parseBoolean(isDryRun)
+    }
+}
+
 publishing {
     publications {
         pluginMaven(MavenPublication) {
