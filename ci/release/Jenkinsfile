@@ -48,7 +48,7 @@ pipeline {
 		)
 		booleanParam(
 				name: 'RELEASE_DRY_RUN',
-				defaultValue: false,
+				defaultValue: true,
 				description: 'If true, just simulate the release, without pushing any commits or tags, and without uploading any artifacts or documentation.'
 		)
 	}
