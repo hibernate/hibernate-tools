@@ -37,13 +37,13 @@ pipeline {
 		string(
 				name: 'RELEASE_VERSION',
 				defaultValue: '',
-				description: 'The version to be released, e.g. 5.3.37.Final.',
+				description: 'The version to be released, e.g. 5.3.38.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
 				defaultValue: '',
-				description: 'The next version to be used after the release, e.g. 5.3.38-SNAPSHOT.',
+				description: 'The next version to be used after the release, e.g. 5.3.39-SNAPSHOT.',
 				trim: true
 		)
 		booleanParam(
