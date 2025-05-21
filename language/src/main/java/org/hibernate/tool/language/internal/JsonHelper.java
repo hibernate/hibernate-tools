@@ -183,18 +183,13 @@ public class JsonHelper {
 			JsonAppender appender) {
 		final EntityIdentifierMapping identifierMapping = entityType.getIdentifierMapping();
 		appender.trackingEntity( value, entityType, shouldProcessEntity -> {
+			appender.append( "{\"" ).append( identifierMapping.getAttributeName() ).append( "\":" );
+			entityIdentifierToString( value, identifierMapping, options, appender );
 			if ( shouldProcessEntity ) {
-				appender.append( "{\"" ).append( identifierMapping.getAttributeName() ).append( "\":" );
-				entityIdentifierToString( value, identifierMapping, options, appender );
+				// if it wasn't already encountered, append all properties
 				managedTypeToString( value, entityType, options, appender, ',' );
-				appender.append( '}' );
 			}
-			else {
-				// if it was already encountered, only append the identity string
-				appender.append( '\"' ).append( entityType.getEntityName() ).append( '#' );
-				entityIdentifierToString( value, identifierMapping, options, appender );
-				appender.append( '\"' );
-			}
+			appender.append( '}' );
 		} );
 	}
 

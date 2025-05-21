@@ -248,7 +248,10 @@ public class ResultsJsonSerializerTest {
 				employees.forEach( employee -> {
 					assertDoesNotThrow( () -> UUID.fromString( employee.get( "uniqueIdentifier" ).asText() ) );
 					assertThat( employee.get( "firstName" ).textValue() ).startsWith( "Ma" );
-					assertThat( employee.get( "company" ).textValue() ).isEqualTo( Company.class.getName() + "#1" );
+					final JsonNode company = employee.get( "company" );
+					assertThat( company.get( "id" ).intValue() ).isEqualTo( 1 );
+					assertThat( company.properties().stream().map( Map.Entry::getKey ) )
+							.containsOnly( "id" ); // circular relationship
 				} );
 			}
 			catch (JsonProcessingException e) {
@@ -348,8 +351,10 @@ public class ResultsJsonSerializerTest {
 				assertThat( cat.isObject() ).isTrue();
 				assertThat( cat.get( "id" ).intValue() ).isEqualTo( 2 );
 				assertThat( cat.get( "description" ).textValue() ).isEqualTo( "Gatta" );
-				assertThat( cat.get( "owner" ).isTextual() ).isTrue(); // circular relationship
-				assertThat( cat.get( "owner" ).textValue() ).isEqualTo( Human.class.getName() + "#1" );
+				final JsonNode owner = cat.get( "owner" );
+				assertThat( owner.get( "id" ).intValue() ).isEqualTo( 1 );
+				assertThat( owner.properties().stream().map( Map.Entry::getKey ) )
+						.containsOnly( "id" ); // circular relationship
 
 				final JsonNode nickNames = jsonNode.get( "nickNames" );
 				assertThat( nickNames.isArray() ).isTrue();
