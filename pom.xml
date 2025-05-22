@@ -88,7 +88,7 @@
 
         <ant.version>1.10.14</ant.version>
         <antlr.version>4.13.1</antlr.version>
-        <commons-collections.version>4.4</commons-collections.version>
+        <commons-collections.version>4.5.0</commons-collections.version>
         <freemarker.version>2.3.32</freemarker.version>
         <google-java-format.version>1.19.1</google-java-format.version>
         <h2.version>2.2.224</h2.version>
