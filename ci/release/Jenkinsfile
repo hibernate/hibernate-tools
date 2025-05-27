@@ -37,18 +37,18 @@ pipeline {
 		string(
 				name: 'RELEASE_VERSION',
 				defaultValue: '',
-				description: 'The version to be released, e.g. 5.3.37.Final.',
+				description: 'The version to be released, e.g. 5.6.16.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
 				defaultValue: '',
-				description: 'The next version to be used after the release, e.g. 5.3.38-SNAPSHOT.',
+				description: 'The next version to be used after the release, e.g. 5.6.17-SNAPSHOT.',
 				trim: true
 		)
 		booleanParam(
 				name: 'RELEASE_DRY_RUN',
-				defaultValue: false,
+				defaultValue: true,
 				description: 'If true, just simulate the release, without pushing any commits or tags, and without uploading any artifacts or documentation.'
 		)
 	}
