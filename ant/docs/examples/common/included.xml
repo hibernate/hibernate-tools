@@ -16,6 +16,7 @@
 <project name="common" xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <property name="hibernate-tools.version" value="7.0.0.CR1"/>
+    <property name="javaee-api.version" value="8.0.1"/>
     <property name="jdbc-driver.org" value="com.h2database"/>
     <property name="jdbc-driver.module" value="h2"/>
     <property name="jdbc-driver.version" value="2.3.232"/>
@@ -27,6 +28,12 @@
             pathid="hibernate-tools.path"
             inline="true"/>
     <ivy:cachepath
+            organisation="javax"
+            module="javaee-api"
+            revision="${javaee-api.version}"
+            pathid="javaee-api.path"
+            inline="true"/>
+    <ivy:cachepath
             organisation="${jdbc-driver.org}"
             module="${jdbc-driver.module}"
             revision="${jdbc-driver.version}"
@@ -35,6 +42,7 @@
 
     <path id="classpath">
         <path refid="hibernate-tools.path"/>
+        <path refid="javaee-api.path"/>
         <path refid="jdbc-driver.path"/>
         <path location="."/>
     </path>
