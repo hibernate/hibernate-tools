@@ -45,15 +45,16 @@
             classpathref="classpath" />
 
     <target name="clean">
-        <!-- Delete the folder 'generated-sources' if it exists -->
+        <!-- Delete the folder 'generated' if it exists -->
         <delete dir="generated"/>
+        <!-- Delete the compiled class files if any exist -->
         <delete>
             <fileset dir="." includes="**/*.class"/>
         </delete>
     </target>
 
     <target name="compile" depends="clean">
-        <!-- Compile the custom exporter 'HelloExporter' -->
+        <!-- Compile the source classes if any exist -->
         <javac srcdir="." destdir="." classpathref="classpath"/>
     </target>
 
