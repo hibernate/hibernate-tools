@@ -22,11 +22,14 @@
     <hibernatetool destdir="generated">
       <classpath location="."/>
       <!-- Native configuration read from 'hibernate.cfg.xml' -->
+      <!-- Additional properties defined in 'hibernate.properties' -->
       <configuration
               configurationfile="hibernate.cfg.xml"
               propertyfile="hibernate.properties">
+        <!-- Additional files to add to the configuration -->
         <fileset file="Foo.hbm.xml"/>
       </configuration>
+      <!-- Export the DDL file as an example use of the native configuration above -->
       <hbm2ddl outputfilename="foo.sql"/>
     </hibernatetool>
 
