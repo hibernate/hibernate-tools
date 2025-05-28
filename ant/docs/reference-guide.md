@@ -289,9 +289,29 @@ A possible example of such a `hibernate.cfg.xml` file is shown in the xml snippe
 
 ### 2.1.3 The `<fileset>` element
 
+The `<fileset>` element can be used to specify additional resources (most probably mapping files)
+that need to be included in the configuration. 
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <configuration propertyfile="...">
+            <fileset file="Foo.hbm.xml"/>
+        </configuration>
+        ...
+    </hibernatetool>
+</target>
+```
+All the usual options for the [Ant FileSet](https://ant.apache.org/manual/Types/fileset.html) type apply. 
 
 ### 2.1.4 Additional Remarks
 
+The `propertyfile` and `configurationfile` attributes and the `<fileset>` element can be freely mixed and 
+matched. There are however two additional remarks to take into account:
+1. The properties defined in `propertyfile` take precedence over the properties defined in `configurationfile`.
+2. Files and resources specified in the `configurationfile` should be excluded from the files 
+specified by the `<fileset>` to avoid duplicate import exceptions.
 
 ### 2.2 JPA Configuration
 
