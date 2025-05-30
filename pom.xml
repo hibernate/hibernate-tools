@@ -82,6 +82,7 @@
         <module>ant</module>
         <module>test</module>
         <module>utils</module>
+        <module>language</module>
     </modules>
 
     <properties>
@@ -193,6 +194,11 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-core</artifactId>
+                <version>${hibernate-orm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-testing</artifactId>
                 <version>${hibernate-orm.version}</version>
             </dependency>
             <dependency>
