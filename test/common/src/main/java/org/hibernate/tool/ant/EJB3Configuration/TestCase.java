@@ -55,8 +55,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	// TODO HBX-2949 - Investigate failure and reenable following test if possible
-	@Disabled
 	@Test
 	public void testEJB3ConfigurationFailureExpected() {
 

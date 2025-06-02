@@ -200,6 +200,11 @@
                 <artifactId>hibernate-ant</artifactId>
                 <version>${hibernate-orm.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-scan-jandex</artifactId>
+                <version>${hibernate-orm.version}</version>
+            </dependency>
   		    <dependency>
 			    <groupId>org.hibernate.common</groupId>
 			    <artifactId>hibernate-commons-annotations</artifactId>
