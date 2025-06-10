@@ -107,6 +107,7 @@
         <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
+        <maven-invoker-plugin.version>3.0.1</maven-invoker-plugin.version>
 
         <!--
             We don't want to publish or sign any modules by default.
