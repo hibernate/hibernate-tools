@@ -36,6 +36,7 @@
     <properties>
         <version.org.assertj.assertj-core>3.27.1</version.org.assertj.assertj-core>
         <version.com.fasterxml.jackson.core>2.19.0</version.com.fasterxml.jackson.core>
+        <deploy.skip>false</deploy.skip>
     </properties>
 
     <dependencies>
