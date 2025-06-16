@@ -73,9 +73,13 @@
         <local.staging.releases.repo.id>staging-deploy</local.staging.releases.repo.id>
         <local.staging.releases.repo.name>Local Staging Directory Releases Repository</local.staging.releases.repo.name>
         <local.staging.releases.repo.url>file:${maven.multiModuleProjectDirectory}/target/staging-deploy/maven</local.staging.releases.repo.url>
-        <ossrh.snapshots.repo.id>ossrh</ossrh.snapshots.repo.id>
-        <ossrh.snapshots.repo.name>Sonatype OSSRH Snapshots</ossrh.snapshots.repo.name>
-        <ossrh.snapshots.repo.url>https://oss.sonatype.org/content/repositories/snapshots</ossrh.snapshots.repo.url>
+        <central.releases.repo.id>central-releases</central.releases.repo.id>
+        <central.releases.repo.name>Maven Central Releases Repository</central.releases.repo.name>
+        <central.releases.repo.url>https://central.sonatype.com/api/v1/publisher/</central.releases.repo.url>
+        <central.snapshots.repo.id>central-snapshots</central.snapshots.repo.id>
+        <central.snapshots.repo.name>Maven Central Snapshots Repository</central.snapshots.repo.name>
+        <central.snapshots.repo.url>https://central.sonatype.com/repository/maven-snapshots/</central.snapshots.repo.url>
+
 
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -181,16 +185,16 @@
     </dependencyManagement>
 
     <distributionManagement>
-      <repository>
-        <id>${local.staging.releases.repo.id}</id>
-        <name>${local.staging.releases.repo.name}</name>
-        <url>${local.staging.releases.repo.url}</url>
-      </repository>
-      <snapshotRepository>
-        <id>${ossrh.snapshots.repo.id}</id>
-        <name>${ossrh.snapshots.repo.name}</name>
-        <url>${ossrh.snapshots.repo.url}</url>
-      </snapshotRepository>
+        <repository>
+            <id>${central.releases.repo.id}</id>
+            <name>${central.releases.repo.name}</name>
+            <url>${central.releases.repo.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${central.snapshots.repo.id}</id>
+            <name>${central.snapshots.repo.name}</name>
+            <url>${central.snapshots.repo.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
@@ -268,4 +272,28 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-deploy-plugin</artifactId>
+                            <configuration>
+                                <altReleaseDeploymentRepository>${local.staging.releases.repo.id}::${local.staging.releases.repo.url}</altReleaseDeploymentRepository>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
 </project>
