@@ -1,12 +1,12 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
- * 
+ *
  * Copyright 2016-2024 Red Hat, Inc.
  *
- * Licensed under the GNU Lesser General Public License (LGPL), 
+ * Licensed under the GNU Lesser General Public License (LGPL),
  * version 2.1 or later (the "License").
  * You may not use this file except in compliance with the License.
- * You may read the licence in the 'lgpl.txt' file in the root folder of 
+ * You may read the licence in the 'lgpl.txt' file in the root folder of
  * project or obtain a copy at
  *
  *     http://www.gnu.org/licenses/lgpl-2.1.html
@@ -51,6 +51,11 @@ pipeline {
 				defaultValue: false,
 				description: 'If true, just simulate the release, without pushing any commits or tags, and without uploading any artifacts or documentation.'
 		)
+		booleanParam(
+				name: 'RELEASE_PUBLISH_AUTOMATICALLY',
+				defaultValue: true,
+				description: 'If true, staging repository will get closed and published automatically, otherwise the artifacts will only be uploaded and the publishing (releasing the staging repository) has to be performed manually at Maven Central portal.'
+		)
 	}
 	stages {
 		stage('Release') {
@@ -75,6 +80,9 @@ pipeline {
 					def releaseVersion = Version.parseReleaseVersion(params.RELEASE_VERSION)
 					def developmentVersion = Version.parseDevelopmentVersion(params.DEVELOPMENT_VERSION)
 					env.JRELEASER_DRY_RUN = params.RELEASE_DRY_RUN
+					if (!params.RELEASE_PUBLISH_AUTOMATICALLY) {
+						env.JRELEASER_DEPLOY_MAVEN_MAVENCENTRAL_STAGE='UPLOAD'
+					}
 					echo "Performing full release for version ${releaseVersion.toString()}"
 
 					withMaven(mavenSettingsConfig: params.RELEASE_DRY_RUN ? null : 'ci-hibernate.deploy.settings.maven',
@@ -84,11 +92,7 @@ pipeline {
 							// using MAVEN_GPG_PASSPHRASE (the default env variable name for passphrase in maven gpg plugin)
 							withCredentials([file(credentialsId: 'release.gpg.private-key', variable: 'RELEASE_GPG_PRIVATE_KEY_PATH'),
 											 string(credentialsId: 'release.gpg.passphrase', variable: 'JRELEASER_GPG_PASSPHRASE'),
-											 // TODO: Once we switch to maven-central publishing (from nexus2) we need to add a new credentials
-											 //  to use the following env variable names to set the user/password:
-											 //  JRELEASER_MAVENCENTRAL_USERNAME
-											 //  JRELEASER_MAVENCENTRAL_TOKEN
-											 usernamePassword(credentialsId: 'ossrh.sonatype.org', passwordVariable: 'JRELEASER_NEXUS2_PASSWORD', usernameVariable: 'JRELEASER_NEXUS2_USERNAME'),
+											 usernamePassword(credentialsId: 'central.sonatype.com', passwordVariable: 'JRELEASER_MAVENCENTRAL_TOKEN', usernameVariable: 'JRELEASER_MAVENCENTRAL_USERNAME'),
 											 string(credentialsId: 'Hibernate-CI.github.com', variable: 'JRELEASER_GITHUB_TOKEN')]) {
 								sshagent(['ed25519.Hibernate-CI.github.com', 'hibernate.filemgmt.jboss.org', 'hibernate-ci.frs.sourceforge.net']) {
 									sh 'cat $HOME/.ssh/config'
