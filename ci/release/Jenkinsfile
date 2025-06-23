@@ -53,7 +53,7 @@ pipeline {
 		)
 		booleanParam(
 				name: 'RELEASE_PUBLISH_AUTOMATICALLY',
-				defaultValue: true,
+				defaultValue: false,
 				description: 'If true, staging repository will get closed and published automatically, otherwise the artifacts will only be uploaded and the publishing (releasing the staging repository) has to be performed manually at Maven Central portal.'
 		)
 	}
