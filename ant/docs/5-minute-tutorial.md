@@ -101,7 +101,7 @@ source files. Now as a last step before we can run ant, we need to add this
 ## Specify the Hibernate Properties
 
 For the purpose of this tutorial introduction, let's assume that you have a database running, e.g.
-[H2 Sakila database](https://github.com/koentsje/sakila-h2) reacheable at the following JDBC URL:
+[H2 Sakila database](https://github.com/hibernate/sakila-h2) reacheable at the following JDBC URL:
 `jdbc:h2:tcp://localhost/./sakila`.
 
 With this assumption, the `hibernate.properties` file, to be found in the root of our Java

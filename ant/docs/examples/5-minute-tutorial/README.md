@@ -15,5 +15,5 @@
   -->
 To run this example:
   - Have [Apache Ant](https://ant.apache.org) installed
-  - Have [H2 Sakila database](https://github.com/koentsje/sakila-h2) running
+  - Have [H2 Sakila database](https://github.com/hibernate/sakila-h2) running
   - Issue `ant` from a command-line window 
