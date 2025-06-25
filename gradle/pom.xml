@@ -22,7 +22,7 @@
    <parent>
       <groupId>org.hibernate.tool</groupId>
       <artifactId>hibernate-tools-parent</artifactId>
-      <version>7.0.3.Final</version>
+      <version>7.0.4-SNAPSHOT</version>
    </parent>
 
    <artifactId>hibernate-tools-gradle</artifactId>
