@@ -1,7 +1,7 @@
 /*
  * Hibernate Tools, Tooling for your Hibernate Projects
  * 
- * Copyright 2016-2024 Red Hat, Inc.
+ * Copyright 2016-2025 Red Hat, Inc.
  *
  * Licensed under the GNU Lesser General Public License (LGPL), 
  * version 2.1 or later (the "License").
@@ -36,13 +36,13 @@ pipeline {
 	parameters {
 		string(
 				name: 'RELEASE_VERSION',
-				defaultValue: '',
+				defaultValue: '6.4.11.Final',
 				description: 'The version to be released, e.g. 6.4.11.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
-				defaultValue: '',
+				defaultValue: '6.4.12-SNAPSHOT',
 				description: 'The next version to be used after the release, e.g. 6.4.12-SNAPSHOT.',
 				trim: true
 		)
@@ -53,7 +53,7 @@ pipeline {
 		)
 		booleanParam(
 				name: 'RELEASE_PUBLISH_AUTOMATICALLY',
-				defaultValue: true,
+				defaultValue: false,
 				description: 'If true, staging repository will get closed and published automatically, otherwise the artifacts will only be uploaded and the publishing (releasing the staging repository) has to be performed manually at Maven Central portal.'
 		)
 	}
