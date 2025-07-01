@@ -88,7 +88,7 @@ public class MetadataHelperTest {
 	private static final String TEST_HBM_XML_STRING =
 			"<!DOCTYPE hibernate-mapping PUBLIC" +
 			"		'-//Hibernate/Hibernate Mapping DTD 3.0//EN'" +
-			"		'http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
+			"		'https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd'>" +
 			"<hibernate-mapping package='org.hibernate.tool.orm.jbt.util'>" +
 			"  <class name='MetadataHelperTest$Foo'>" + 
 			"    <id name='id'/>" +
