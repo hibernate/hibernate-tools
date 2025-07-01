@@ -16,13 +16,13 @@
   -->
 <!DOCTYPE hibernate-mapping PUBLIC
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+	"https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest">
-<!-- 
+<!--
   This mapping demonstrates basic attributes of the mapping document
 
-     (1) Simple id and properties        
+     (1) Simple id and properties
      (2) Id generation with no arguments.
 -->
     <class name="Basic" table="`bas-ic`">
@@ -39,24 +39,24 @@
     			<param name="column">next_hi_value</param>
     		</generator>
     	</id>
-    	
-    	<property name="description" 
-    		not-null="true" 
+
+    	<property name="description"
+    		not-null="true"
     		length="200"
     		type="string">
     		  <meta attribute="property-desc" inherit="false">description</meta>
     		</property>
-    		
+
     	<property name="price" length="3" type="big_decimal" />
-    	
+
     	<property name="numberAvailable" type="int" column="`number-Available`"/>
-    	
+
     	<set name="aSet" cascade="delete, update">
-    	 <meta attribute="set-desc">anotherone</meta>    	 
+    	 <meta attribute="set-desc">anotherone</meta>
     	 <key/>
     	 <one-to-many class="Basic"/>
     	</set>
-    	
+
 	</class>
 
 </hibernate-mapping>
