@@ -61,3 +61,59 @@ Learn more about Gradle by exploring our Samples at https://docs.gradle.org/8.13
 BUILD SUCCESSFUL in 19s
 1 actionable task: 1 executed
 ```
+
+Now you should see two folders along with a number of Gradle specific files that have 
+been created. It is beyond the scope of this short tutorial to explain all these artefacts.
+However, we will focus on the `build.gradle` file in the `app` folder.
+
+## Modify the generated `app\build.gradle` file
+
+We have to specify the use of the Gradle plugin in the `plugin` section of the `build.gradle` file.
+So we add `id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'` to that section.
+
+Also we need to depend on the java library containing the [H2 database]() drivers.
+This is done in the `dependencies` section of the `gradle.build` file, 
+to which we add `implementation('com.h2database:h2:2.3.232')`.
+To be able to look up this dependency, we add `mavenCentral()` to the `repositories` section 
+of the `gradle.build` file.
+
+The complete `gradle.build` file can look like the below.
+
+```
+plugins {
+    id('application')
+    id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('com.h2database:h2:2.3.232')
+}
+```
+
+With this in place, we need to make sure that the Hibernate Tools Gradle plugin knows where
+to find the database from which to generate the artefacts. This is done by spefifying the 
+Hibernate properties in the file `hibernate.properties`.
+
+## Specify the Hibernate Properties
+
+For the purpose of this tutorial introduction, let's assume that you have a database running, e.g.
+[H2 Sakila database](https://github.com/hibernate/sakila-h2) reacheable at the following JDBC URL:
+`jdbc:h2:tcp://localhost/./sakila`.
+
+With this set up, the `hibernate.properties` file should contain the properties as specified below.
+
+```
+hibernate.connection.driver_class=org.h2.Driver
+hibernate.connection.url=jdbc:h2:tcp://localhost/./sakila
+hibernate.connection.username=sa
+hibernate.default_catalog=SAKILA
+hibernate.default_schema=PUBLIC
+```
+
+For the file to be found by the plugin, add it as a resource to the project in the 
+`app/src/main/resources` subfolder.
+
