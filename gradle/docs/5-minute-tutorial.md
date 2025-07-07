@@ -28,14 +28,14 @@ Before tackling this tutorial, make sure you have the [Gradle](https://gradle.or
 Let’s assume in this case that we start off with a very simple default Gradle Java application
 that we create from a command-line window with the instruction below. 
 
-```
+```shell
 gradle init --type java-application --dsl groovy
 ```
 
 Gradle will ask you some details about your application. The conversation is shown below
 for completenes but of course you can make your own choices.
 
-```
+```shell
 Enter target Java version (min: 7, default: 21): 
 
 Project name (default: 5-minute-tutorial): 
@@ -79,7 +79,7 @@ of the `gradle.build` file.
 
 The complete `gradle.build` file can look like the below.
 
-```
+```groovy
 plugins {
     id('application')
     id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'
@@ -106,7 +106,7 @@ For the purpose of this tutorial introduction, let's assume that you have a data
 
 With this set up, the `hibernate.properties` file should contain the properties as specified below.
 
-```
+```properties
 hibernate.connection.driver_class=org.h2.Driver
 hibernate.connection.url=jdbc:h2:tcp://localhost/./sakila
 hibernate.connection.username=sa
