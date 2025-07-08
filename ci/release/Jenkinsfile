@@ -36,13 +36,13 @@ pipeline {
 	parameters {
 		string(
 				name: 'RELEASE_VERSION',
-				defaultValue: '',
+				defaultValue: '6.6.19.Final',
 				description: 'The version to be released, e.g. 6.6.19.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
-				defaultValue: '',
+				defaultValue: '6.6.20-SNAPSHOT',
 				description: 'The next version to be used after the release, e.g. 6.6.20-SNAPSHOT.',
 				trim: true
 		)
