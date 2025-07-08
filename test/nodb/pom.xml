@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>7.0.4-SNAPSHOT</version>
+        <version>7.0.4.Final</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-nodb</artifactId>
