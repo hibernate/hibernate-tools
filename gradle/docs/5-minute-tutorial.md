@@ -23,61 +23,29 @@ Hence we will provide a quick tutorial that gives you the first taste of it.
 Before tackling this tutorial, make sure you have the [Gradle](https://gradle.org) build tool 
 [installed](https://gradle.org/install/) and available on your machine.
 
-## Create a Gradle Java Project
+## Create a Simple Initial Gradle Java Project
 
-Let’s assume in this case that we start off with a very simple default Gradle Java application
-that we create from a command-line window with the instruction below. 
-
-```shell
-gradle init --type java-application --dsl groovy
-```
-
-Gradle will ask you some details about your application. The conversation is shown below
-for completenes but of course you can make your own choices.
+Let’s assume in this case that we start off with a very simple Gradle Java application
+that we create from a command-line window with the instructions below. 
 
 ```shell
-Enter target Java version (min: 7, default: 21): 
-
-Project name (default: 5-minute-tutorial): 
-
-Select application structure:
-  1: Single application project
-  2: Application and library project
-Enter selection (default: Single application project) [1..2] 1
-
-Select test framework:
-  1: JUnit 4
-  2: TestNG
-  3: Spock
-  4: JUnit Jupiter
-Enter selection (default: JUnit Jupiter) [1..4] 4
-
-Generate build using new APIs and behavior (some features may change in the next minor release)? (default: no) [yes, no] 
-
-
-> Task :init
-Learn more about Gradle by exploring our Samples at https://docs.gradle.org/8.13/samples/sample_building_java_applications.html
-
-BUILD SUCCESSFUL in 19s
-1 actionable task: 1 executed
+mkdir 5-minute-tutorial
+cd 5-minute-tutorial
+echo "" > settings.gradle
 ```
 
-Now you should see two folders along with a number of Gradle specific files that have 
-been created. It is beyond the scope of this short tutorial to explain all these artefacts.
-However, we will focus on the `build.gradle` file in the `app` folder.
+The last line above created an empty `settings.gradle` file. To use Gradle, we also need
+a `build.gradle` file.
 
-## Modify the generated `app\build.gradle` file
+## Create the  `build.gradle` file
 
-We have to specify the use of the Gradle plugin in the `plugin` section of the `build.gradle` file.
-So we add `id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'` to that section.
+Add a `build.gradle` file to the `5-minute-tutorial` folder.
 
-Also we need to depend on the java library containing the [H2 database]() drivers.
-This is done in the `dependencies` section of the `gradle.build` file, 
-to which we add `implementation('com.h2database:h2:2.3.232')`.
-To be able to look up this dependency, we add `mavenCentral()` to the `repositories` section 
-of the `gradle.build` file.
+```shell
+echo "" > build.gradle
+```
 
-The complete `gradle.build` file can look like the below.
+Now edit the created emtpy file and add the following contents:
 
 ```groovy
 plugins {
@@ -104,7 +72,15 @@ For the purpose of this tutorial introduction, let's assume that you have a data
 [H2 Sakila database](https://github.com/hibernate/sakila-h2) reacheable at the following JDBC URL:
 `jdbc:h2:tcp://localhost/./sakila`.
 
-With this set up, the `hibernate.properties` file should contain the properties as specified below.
+With this set up, we create a `hibernate.properties` file in the `src/main/resources` folder
+as this is the default location where the Hibernate Gradle plugin will look for this file.
+
+```shell
+mkdir -p src/main/resources
+echo "" > src/main/resources/hibernate.properties
+```
+
+Now edit the `hibernate.properties` file so that it contains the properties as specified below.
 
 ```properties
 hibernate.connection.driver_class=org.h2.Driver
@@ -114,6 +90,25 @@ hibernate.default_catalog=SAKILA
 hibernate.default_schema=PUBLIC
 ```
 
-For the file to be found by the plugin, add it as a resource to the project in the 
-`app/src/main/resources` subfolder.
+Now we are ready to generate the entities.
 
+## Run the Reverse Engineering
+
+With all the previous elements in place, generating the Java classes from the Sakila database
+becomes as simple as issuing `gradle generateJava` in your command line window.
+
+```shell
+> Task :generateJava
+Starting Task 'generateJava'
+Creating Java exporter
+Loading the properties file : /Users/koen/temp/5-minute-tutorial/src/main/resources/hibernate.properties
+Properties file is loaded
+Starting Java export to directory: /Users/koen/temp/5-minute-tutorial/generated-sources...
+...
+Java export finished
+Ending Task 'generateJava'
+```
+
+
+Congratulations! You have succesfully created Java classes for the Sakila database... Now it's
+probably time to dive somewhat deeper in the available functionality.
