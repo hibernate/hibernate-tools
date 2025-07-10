@@ -64,25 +64,57 @@ BUILD SUCCESSFUL in 19s
 
 Now you should see two folders along with a number of Gradle specific files that have 
 been created. It is beyond the scope of this short tutorial to explain all these artefacts.
-However, we will focus on the `build.gradle` file in the `app` folder.
+We will focus mainly on the `build.gradle` file in the `app` folder. But to make the plugin work
+you will need to modify the file `gradle.properties` that was generated in the root folder.
+
+## Disable the Configuration Cache
+
+Currently the Hibernate Tools Gradle plugin does not support the configuration cache. 
+As the Gradle init task generates a `gradle.properties` file in the root folder that 
+explicitly enables the use of the configuration cache, you will need to comment out 
+or delete the line where this happens.
+
+```properties
+#org.gradle.configuration-cache=true
+```
+
+You could also get rid of the entire `gradle.properties` file as we don't need it for the purpose of this 
+tutorial. Now we can tackle the `build.gradle` file.
 
 ## Modify the generated `app\build.gradle` file
 
 We have to specify the use of the Gradle plugin in the `plugin` section of the `build.gradle` file.
-So we add `id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'` to that section.
+So we add `id 'org.hibernate.tool.hibernate-tools-gradle' version '7.0.4.Final'` to that section.
+
+```groovy
+...
+plugins {
+    ...
+    id 'org.hibernate.tool.hibernate-tools-gradle' version '7.0.4.Final'
+}
+...
+```
 
 Also we need to depend on the java library containing the [H2 database]() drivers.
 This is done in the `dependencies` section of the `gradle.build` file, 
-to which we add `implementation('com.h2database:h2:2.3.232')`.
-To be able to look up this dependency, we add `mavenCentral()` to the `repositories` section 
-of the `gradle.build` file.
+to which we add `implementation 'com.h2database:h2:2.3.232'`.
 
-The complete `gradle.build` file can look like the below.
+```groovy
+...
+dependencies {
+    ...
+    implementation 'com.h2database:h2:2.3.232'
+}
+...
+```
+
+You could as an alternative also replace the entire `gradle.build` file 
+with the contents as shown below.
 
 ```groovy
 plugins {
     id('application')
-    id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.3.Final'
+    id('org.hibernate.tool.hibernate-tools-gradle') version '7.0.4.Final'
 }
 
 repositories {
@@ -117,3 +149,33 @@ hibernate.default_schema=PUBLIC
 For the file to be found by the plugin, add it as a resource to the project in the 
 `app/src/main/resources` subfolder.
 
+## Run the Reverse Engineering
+
+With all the previous elements in place, generating the Java classes from the Sakila database
+becomes as simple as issuing `./gradlew generateJava` in your command line window.
+
+```shell
+me@machine 5-minute-tutorial % ./gradlew generateJava
+
+> Task :app:generateJava
+Starting Task 'generateJava'
+Creating Java exporter
+Loading the properties file : path/to/5-minute-tutorial/app/src/main/resources/hibernate.properties
+Properties file is loaded
+Starting Java export to directory: path/to/5-minute-tutorial/app/generated-sources...
+...
+Java export finished
+Ending Task 'generateJava'
+```
+
+By default, you will find the files in the folder `app/generated-sources`.  
+
+```
+koen@Lateralus generated-sources % ls
+Actor.java              City.java               Film.java               FilmCategory.java       Inventory.java          Rental.java
+Address.java            Country.java            FilmActor.java          FilmCategoryId.java     Language.java           Staff.java
+Category.java           Customer.java           FilmActorId.java        FilmText.java           Payment.java            Store.java
+```
+
+Congratulations! You have succesfully created Java classes for the Sakila database... Now it's
+probably time to dive somewhat deeper in the available functionality.
