@@ -36,24 +36,24 @@ pipeline {
 	parameters {
 		string(
 				name: 'RELEASE_VERSION',
-				defaultValue: '',
+				defaultValue: '5.3.38.Final',
 				description: 'The version to be released, e.g. 5.3.38.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
-				defaultValue: '',
+				defaultValue: '5.3.39-SNAPSHOT',
 				description: 'The next version to be used after the release, e.g. 5.3.39-SNAPSHOT.',
 				trim: true
 		)
 		booleanParam(
 				name: 'RELEASE_DRY_RUN',
-				defaultValue: false,
+				defaultValue: true,
 				description: 'If true, just simulate the release, without pushing any commits or tags, and without uploading any artifacts or documentation.'
 		)
 		booleanParam(
 				name: 'RELEASE_PUBLISH_AUTOMATICALLY',
-				defaultValue: true,
+				defaultValue: false,
 				description: 'If true, staging repository will get closed and published automatically, otherwise the artifacts will only be uploaded and the publishing (releasing the staging repository) has to be performed manually at Maven Central portal.'
 		)
 	}
