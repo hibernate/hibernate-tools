@@ -25,8 +25,8 @@ import org.hibernate.metamodel.mapping.PluralAttributeMapping;
 import org.hibernate.metamodel.mapping.ValuedModelPart;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.query.SelectionQuery;
+import org.hibernate.query.spi.SqmQuery;
 import org.hibernate.query.sqm.SqmExpressible;
-import org.hibernate.query.sqm.SqmSelectionQuery;
 import org.hibernate.query.sqm.tree.SqmExpressibleAccessor;
 import org.hibernate.query.sqm.tree.SqmStatement;
 import org.hibernate.query.sqm.tree.domain.SqmPath;
@@ -64,14 +64,14 @@ public class ResultsJsonSerializerImpl implements ResultsSerializer {
 		char separator = '[';
 		for ( final T value : values ) {
 			sb.append( separator );
-			renderValue( value, (SqmSelectionQuery<? super T>) query, jsonAppender );
+			renderValue( value, (SqmQuery) query, jsonAppender );
 			separator = ',';
 		}
 		sb.append( ']' );
 		return sb.toString();
 	}
 
-	private <T> void renderValue(T value, SqmSelectionQuery<? super T> query, JsonAppender jsonAppender) {
+	private <T> void renderValue(T value, SqmQuery query, JsonAppender jsonAppender) {
 		final SqmStatement<?> sqm = query.getSqmStatement();
 		if ( !( sqm instanceof SqmSelectStatement<?> sqmSelect ) ) {
 			throw new IllegalArgumentException( "Query is not a select statement." );
