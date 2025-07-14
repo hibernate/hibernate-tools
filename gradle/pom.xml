@@ -74,7 +74,8 @@
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>build</argument>
-                                <argument>-Pversion=${project.version}</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
                                 <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                             </arguments>
                         </configuration>
