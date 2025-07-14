@@ -23,6 +23,7 @@ plugins {
 
 group = 'org.hibernate.tool'
 project.description = 'Gradle plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.'
+project.version = "$projectVersion"
 
 java {
     toolchain {
