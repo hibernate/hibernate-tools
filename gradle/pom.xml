@@ -74,7 +74,8 @@
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>build</argument>
-                                <argument>-Pversion=${project.version}</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
                                 <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                             </arguments>
                         </configuration>
@@ -110,7 +111,8 @@
                                     <arguments>
                                         <argument>publishPlugins</argument>
                                         <argument>publishPluginMavenPublicationToStagingRepository</argument>
-                                        <argument>-Pversion=${project.version}</argument>
+                                        <argument>-PprojectVersion=${project.version}</argument>
+                                        <argument>-Ph2Version=${h2.version}</argument>
                                         <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                                         <argument>-PmavenStagingDirectory=${local.staging.releases.repo.url}</argument>
                                     </arguments>
