@@ -20,7 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class NoAnnotationsTest {
 	
 	private static final List<String> GRADLE_INIT_PROJECT_ARGUMENTS = List.of(
-			"init", "--type", "java-application", "--dsl", "groovy", "--test-framework", "junit-jupiter", "--java-version", "17");
+			"init", "--type", "java-application", "--dsl", "groovy", "--test-framework", "junit-jupiter", "--java-version", "11");
 	
 	@TempDir
 	private File projectDir;
