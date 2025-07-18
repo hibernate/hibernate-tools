@@ -49,7 +49,7 @@ file. In addition, you will need to define properties (or replace the variables)
 the jdbc driver and for the version information. See an example in the snippet below:
 
 ```xml
-<property name="hibernate-tools.version" value="7.0.5.Final"/>
+<property name="hibernate-tools.version" value="7.0.6.Final"/>
 <property name="jdbc-driver.org" value="com.h2database"/>
 <property name="jdbc-driver.module" value="h2"/>
 <property name="jdbc-driver.version" value="2.3.232"/>

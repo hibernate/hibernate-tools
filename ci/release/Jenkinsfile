@@ -23,7 +23,7 @@ pipeline {
 	}
 	tools {
 		maven 'Apache Maven 3.9'
-		jdk 'OpenJDK 21 Latest'
+		jdk 'OpenJDK 17 Latest'
 	}
 	options {
 		buildDiscarder logRotator(daysToKeepStr: '30', numToKeepStr: '10')
@@ -33,13 +33,13 @@ pipeline {
 		string(
 				name: 'RELEASE_VERSION',
 				defaultValue: '7.0.6.Final',
-				description: 'The version to be released, e.g. 7.0.6.Final.',
+				description: 'The version to be released, e.g. 7.0.7.Final.',
 				trim: true
 		)
 		string(
 				name: 'DEVELOPMENT_VERSION',
 				defaultValue: '7.0.7-SNAPSHOT',
-				description: 'The next version to be used after the release, e.g. 7.0.7-SNAPSHOT.',
+				description: 'The next version to be used after the release, e.g. 7.0.8-SNAPSHOT.',
 				trim: true
 		)
 		booleanParam(
