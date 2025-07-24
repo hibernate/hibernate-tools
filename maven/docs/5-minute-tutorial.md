@@ -120,7 +120,7 @@ To properly generate our entity, we need to do two more things. The first is of 
   
   <properties>
     ...
-    <hibernate.version>6.0.0-SNAPSHOT</hibernate.version>
+    <hibernate.version>6.2.22.Final</hibernate.version>
   </properties>
   
   <build>
