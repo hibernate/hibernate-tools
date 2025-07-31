@@ -11,24 +11,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class TestTemplate {
 
     @TempDir
     private File projectDir;
 
+    private String hibernateToolTaskXml;
+    private String[] databaseCreationScript;
+
     protected File getProjectDir() {
         return projectDir;
     }
 
-    protected abstract String hibernateToolTaskXml();
+    protected void setHibernateToolTaskXml(String xml) {
+        this.hibernateToolTaskXml = xml;
+    }
 
-    protected abstract String[] createDatabaseScript();
+    protected void setDatabaseCreationScript(String[] sqls) {
+        this.databaseCreationScript = sqls;
+    }
 
     protected String constructBuildXmlFileContents() {
-        return buildXmlFileContents.replace("@hibernateToolTaskXml@", hibernateToolTaskXml());
+        assertNotNull(hibernateToolTaskXml);
+        return buildXmlFileContents.replace("@hibernateToolTaskXml@", hibernateToolTaskXml);
     }
 
     protected void runAntBuild() {
@@ -57,13 +64,26 @@ public abstract class TestTemplate {
         assertFalse(databaseFile.isFile());
         Connection connection = DriverManager.getConnection(constructJdbcConnectionString());
         Statement statement = connection.createStatement();
-        for (String sql : createDatabaseScript()) {
+        for (String sql : databaseCreationScript) {
             statement.execute(sql);
         }
         statement.close();
         connection.close();
         assertTrue(databaseFile.exists());
         assertTrue(databaseFile.isFile());
+    }
+
+    protected void createHibernatePropertiesFile() throws Exception {
+        File hibernatePropertiesFile = new File(getProjectDir(), "hibernate.properties");
+        String hibernatePropertiesFileContents =
+                "hibernate.connection.driver_class=org.h2.Driver\n" +
+                "hibernate.connection.url=" + constructJdbcConnectionString() + "\n" +
+                "hibernate.connection.username=\n" +
+                "hibernate.connection.password=\n" +
+                "hibernate.default_catalog=TEST\n" +
+                "hibernate.default_schema=PUBLIC\n";
+        Files.writeString(hibernatePropertiesFile.toPath(), hibernatePropertiesFileContents);
+        assertTrue(hibernatePropertiesFile.exists());
     }
 
     private DefaultLogger getConsoleLogger() {
