@@ -37,8 +37,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryImplementor;
 import org.hibernate.query.spi.QueryParameterBinding;
-import org.hibernate.query.sqm.internal.QuerySqmImpl;
 import org.hibernate.tool.orm.jbt.internal.factory.QueryWrapperFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -162,7 +162,7 @@ public class QueryWrapperTest {
 		QueryParameterBinding<?> foo = null;
 		assertNull(foo);
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedCollectionParameterizedQuery).getParameterBindings().getBinding("foo");
+				((QueryImplementor<?>)wrappedCollectionParameterizedQuery).getParameterBindings().getBinding("foo");
 		assertFalse(binding.isBound());
 		collectionParameterizedQueryWrapper.setParameterList("foo", Arrays.asList(1), new Object());
 		assertTrue(binding.isBound());
@@ -171,7 +171,7 @@ public class QueryWrapperTest {
 	@Test
 	public void testSetNamedParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
+				((QueryImplementor<?>)wrappedNamedParameterizedQuery).getParameterBindings().getBinding("foo");
 		assertFalse(binding.isBound());
 		namedParameterizedQueryWrapper.setParameter("foo", 1, new Object());
 		assertTrue(binding.isBound());
@@ -181,7 +181,7 @@ public class QueryWrapperTest {
 	@Test
 	public void testSetPositionalParameter() {
 		QueryParameterBinding<?> binding = 
-				((QuerySqmImpl<?>)wrappedPositionalParameterizedQuery).getParameterBindings().getBinding(1);
+				((QueryImplementor<?>)wrappedPositionalParameterizedQuery).getParameterBindings().getBinding(1);
 		assertFalse(binding.isBound());
 		positionalParameterizedQueryWrapper.setParameter(1, 1, new Object());
 		assertTrue(binding.isBound());
