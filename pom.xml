@@ -82,9 +82,7 @@
         <module>ant</module>
         <module>test</module>
         <module>utils</module>
-<!-- Excluding the language module from 7.1.x for now as there is a build failure because of it
         <module>language</module>
--->
     </modules>
 
     <properties>
