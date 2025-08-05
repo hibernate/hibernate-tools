@@ -19,6 +19,7 @@ package org.hibernate.tool.language.spi;
 
 import org.hibernate.query.SelectionQuery;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,5 +37,5 @@ public interface ResultsSerializer {
 	 *
 	 * @return JSON string representation of the values
 	 */
-	<T> String toString(List<? extends T> values, SelectionQuery<T> query);
+	<T> String toString(List<? extends T> values, SelectionQuery<T> query) throws IOException;
 }

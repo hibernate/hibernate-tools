@@ -95,7 +95,6 @@ public class MetamodelJsonSerializerTest {
 				assertThat( addressNode ).isNotNull();
 				assertAttributes( Address.class, addressNode.get( "attributes" ), AccessType.FIELD );
 
-
 				// Mapped superclasses
 
 				final JsonNode superclasses = root.get( "mappedSuperclasses" );
@@ -118,7 +117,6 @@ public class MetamodelJsonSerializerTest {
 				.buildMetadata();
 		try (final SessionFactory sf = metadata.buildSessionFactory()) {
 			try {
-				System.out.printf( "JSON: " + toJson( sf.getMetamodel() ) );
 				final JsonNode root = toJson( sf.getMetamodel() );
 
 				final JsonNode superclasses = root.get( "mappedSuperclasses" );
@@ -195,9 +193,6 @@ public class MetamodelJsonSerializerTest {
 
 	private static JsonNode toJson(Metamodel metamodel) throws JsonProcessingException {
 		final String result = MetamodelJsonSerializerImpl.INSTANCE.toString( metamodel );
-
-		System.out.println( "JSON: " + result );
-
 		final JsonNode jsonNode;
 		try {
 			jsonNode = mapper.readTree( result );
@@ -266,10 +261,11 @@ public class MetamodelJsonSerializerTest {
 					.filter( method -> method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) )
 					.map( method -> {
 						final String name = method.getName();
-						final String fieldName = getJavaBeansFieldName( name.startsWith( "get" ) ?
-																				name.substring( 3 ) :
-																				name.substring( 2 ) );
-						return new MemberInfo( fieldName, method.getReturnType() );
+						// Convert "getFoo" or "isFoo" to "foo"
+						final String fieldName = name.startsWith( "get" ) ?
+								name.substring( 3 ) :
+								name.substring( 2 );
+						return new MemberInfo( getJavaBeansFieldName( fieldName ), method.getReturnType() );
 					} )
 					.toArray( MemberInfo[]::new );
 		}
