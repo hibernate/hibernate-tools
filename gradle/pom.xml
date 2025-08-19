@@ -92,6 +92,7 @@
                               <argument>clean</argument>
                               <argument>-PprojectVersion=${project.version}</argument>
                               <argument>-Ph2Version=${h2.version}</argument>
+                              <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                           </arguments>
                       </configuration>
                       <goals>
