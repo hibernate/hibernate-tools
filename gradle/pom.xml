@@ -44,13 +44,6 @@
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
 
-<!--   <dependencies>
-       <dependency>
-           <groupId>org.hibernate.tool</groupId>
-           <artifactId>hibernate-tools-orm</artifactId>
-       </dependency>
-   </dependencies> -->
-
    <build>
       <plugins>
           <!-- Maven deploy is skipped on purpose as Gradle build will stage the artifact itself. -->
@@ -85,7 +78,7 @@
                   </execution>
                   <execution>
                       <id>gradle-clean</id>
-                      <phase>pre-clean</phase>
+                      <phase>clean</phase>
                       <configuration>
                           <executable>${gradle.executable}</executable>
                           <arguments>
