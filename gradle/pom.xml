@@ -85,7 +85,7 @@
                   </execution>
                   <execution>
                       <id>gradle-clean</id>
-                      <phase>clean</phase>
+                      <phase>pre-clean</phase>
                       <configuration>
                           <executable>${gradle.executable}</executable>
                           <arguments>
