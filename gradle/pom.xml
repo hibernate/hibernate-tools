@@ -44,12 +44,12 @@
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
 
-   <dependencies>
+<!--   <dependencies>
        <dependency>
            <groupId>org.hibernate.tool</groupId>
            <artifactId>hibernate-tools-orm</artifactId>
        </dependency>
-   </dependencies>
+   </dependencies> -->
 
    <build>
       <plugins>
