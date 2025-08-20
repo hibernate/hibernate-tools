@@ -44,13 +44,6 @@
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
 
-   <dependencies>
-       <dependency>
-           <groupId>org.hibernate.tool</groupId>
-           <artifactId>hibernate-tools-orm</artifactId>
-       </dependency>
-   </dependencies>
-
    <build>
       <plugins>
           <!-- Maven deploy is skipped on purpose as Gradle build will stage the artifact itself. -->
@@ -67,13 +60,29 @@
 			<artifactId>exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>gradle</id>
+                        <id>gradle-package</id>
                         <phase>prepare-package</phase>
                         <configuration>
                             <executable>${gradle.executable}</executable>
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>build</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
+                                <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>gradle-clean</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <executable>${gradle.executable}</executable>
+                            <arguments>
+                                <argument>clean</argument>
                                 <argument>-PprojectVersion=${project.version}</argument>
                                 <argument>-Ph2Version=${h2.version}</argument>
                             </arguments>
@@ -112,6 +121,7 @@
                                         <argument>publishPluginMavenPublicationToStagingRepository</argument>
                                         <argument>-PprojectVersion=${project.version}</argument>
                                         <argument>-Ph2Version=${h2.version}</argument>
+                                        <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                                         <argument>-PmavenStagingDirectory=${local.staging.releases.repo.url}</argument>
                                     </arguments>
                                 </configuration>
