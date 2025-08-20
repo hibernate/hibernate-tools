@@ -15,7 +15,7 @@
   -->
 <project name="common" xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <property name="hibernate-tools.version" value="7.0.10.Final"/>
+    <property name="hibernate-tools.version" value="7.0.11.Final"/>
     <property name="javaee-api.version" value="8.0.1"/>
     <property name="jdbc-driver.org" value="com.h2database"/>
     <property name="jdbc-driver.module" value="h2"/>
