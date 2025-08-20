@@ -61,44 +61,30 @@
                   <skip>true</skip>
               </configuration>
           </plugin>
-          <!-- execute Gradle command -->
-          <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>exec-maven-plugin</artifactId>
-              <executions>
-                  <execution>
-                      <id>gradle-package</id>
-                      <phase>prepare-package</phase>
-                      <configuration>
-                          <executable>${gradle.executable}</executable>
-                          <arguments>
-                              <argument>clean</argument>
-                              <argument>build</argument>
-                              <argument>-PprojectVersion=${project.version}</argument>
-                              <argument>-Ph2Version=${h2.version}</argument>
-                          </arguments>
-                      </configuration>
-                      <goals>
-                          <goal>exec</goal>
-                      </goals>
-                  </execution>
-                  <execution>
-                      <id>gradle-clean</id>
-                      <phase>clean</phase>
-                      <configuration>
-                          <executable>${gradle.executable}</executable>
-                          <arguments>
-                              <argument>clean</argument>
-                              <argument>-PprojectVersion=${project.version}</argument>
-                              <argument>-Ph2Version=${h2.version}</argument>
-                          </arguments>
-                      </configuration>
-                      <goals>
-                          <goal>exec</goal>
-                      </goals>
-                  </execution>
-              </executions>
-          </plugin>
+        <!-- execute Gradle command -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+			<artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>gradle</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <executable>${gradle.executable}</executable>
+                            <arguments>
+                                <argument>clean</argument>
+                                <argument>build</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
+                                <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+		 </plugin>
       </plugins>
    </build>
 
