@@ -44,13 +44,6 @@
        <gradle.executable>./gradlew</gradle.executable>
    </properties>
 
-   <dependencies>
-       <dependency>
-           <groupId>org.hibernate.tool</groupId>
-           <artifactId>hibernate-tools-orm</artifactId>
-       </dependency>
-   </dependencies>
-
    <build>
       <plugins>
           <!-- Maven deploy is skipped on purpose as Gradle build will stage the artifact itself. -->
@@ -75,6 +68,7 @@
                                 <argument>clean</argument>
                                 <argument>build</argument>
                                 <argument>-Pversion=${project.version}</argument>
+                                <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -88,8 +82,7 @@
                             <executable>${gradle.executable}</executable>
                             <arguments>
                                 <argument>clean</argument>
-                                <argument>-PprojectVersion=${project.version}</argument>
-                                <argument>-Ph2Version=${h2.version}</argument>
+                                <argument>-Pversion=${project.version}</argument>
                             </arguments>
                         </configuration>
                         <goals>
