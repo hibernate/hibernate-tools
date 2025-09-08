@@ -128,7 +128,7 @@
 
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <maven.min.version>3.9.7</maven.min.version>
+        <maven.min.version>3.9.11</maven.min.version>
 
     </properties>
 
