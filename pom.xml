@@ -131,7 +131,7 @@
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.min.version>3.9.7</maven.min.version>
+        <maven.min.version>3.9.11</maven.min.version>
     </properties>
 
     <dependencyManagement>
