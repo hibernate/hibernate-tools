@@ -105,7 +105,7 @@
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 
         <!-- Plugins not managed by the JBoss parent POM: -->
-        <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
+        <maven-wrapper-plugin.version>3.3.3</maven-wrapper-plugin.version>
         <flatten-maven-plugin.version>1.7.1</flatten-maven-plugin.version>
         <maven-invoker-plugin.version>3.9.1</maven-invoker-plugin.version>
 
