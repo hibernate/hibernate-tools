@@ -103,7 +103,7 @@
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
 
         <!-- Plugins not managed by the JBoss parent POM: -->
-        <maven-wrapper-plugin.version>3.3.2</maven-wrapper-plugin.version>
+        <maven-wrapper-plugin.version>3.3.3</maven-wrapper-plugin.version>
         <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
 
         <!--
@@ -128,7 +128,7 @@
 
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <maven.min.version>3.9.7</maven.min.version>
+        <maven.min.version>3.9.11</maven.min.version>
 
     </properties>
 
