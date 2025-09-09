@@ -72,7 +72,18 @@
 			<email>koen@hibernate.org</email>
 			<url>http://koentsje.blogspot.be</url>
 		</developer>
-	</developers>
+        <developer>
+            <id>stadler</id>
+            <name>Jacques Stadler</name>
+            <email>jacques.stadler+github@gmail.com</email>
+        </developer>
+        <developer>
+            <id>marko.bekhta</id>
+            <name>Marko Bekhta</name>
+            <email>marko@hibernate.org</email>
+            <url>http://in.relation.to/marko-bekhta/</url>
+        </developer>
+    </developers>
 
     <modules>
         <module>orm</module>
@@ -86,6 +97,8 @@
     </modules>
 
     <properties>
+
+        <maven.version>3.9.11</maven.version>
 
         <ant.version>1.10.15</ant.version>
         <antlr.version>4.13.2</antlr.version>
@@ -105,9 +118,14 @@
         <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 
         <!-- Plugins not managed by the JBoss parent POM: -->
+        <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
+        <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
         <maven-wrapper-plugin.version>3.3.3</maven-wrapper-plugin.version>
         <flatten-maven-plugin.version>1.7.2</flatten-maven-plugin.version>
         <maven-invoker-plugin.version>3.9.1</maven-invoker-plugin.version>
+        <github-site-maven-plugin.version>0.12</github-site-maven-plugin.version>
+        <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
+        <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
 
         <!--
             We don't want to publish or sign any modules by default.
@@ -131,7 +149,9 @@
 
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.min.version>3.9.11</maven.min.version>
+        <maven.min.version>${maven.version}</maven.min.version>
+        <maven-core.version>${maven.version}</maven-core.version>
+
     </properties>
 
     <dependencyManagement>
@@ -191,6 +211,21 @@
 		        <artifactId>commons-collections4</artifactId>
 		        <version>${commons-collections.version}</version>
 	        </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven-plugin-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>${maven-plugin-annotations.version}</version>
+            </dependency>
 		    <dependency>
 			    <groupId>org.freemarker</groupId>
 			    <artifactId>freemarker</artifactId>
