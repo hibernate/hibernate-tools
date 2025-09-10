@@ -14,56 +14,11 @@
 
   <name>Hibernate Tools Maven Plugin</name>
   <description>Maven plugin to provide hibernate-tools reverse engineering and code/schema generation abilities.</description>
-  <url>https://hibernate.github.io/hibernate-tools/</url>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://hibernate.onjira.com/browse/HBX</url>
-  </issueManagement>
-
-  <scm>
-    <connection>scm:git:git://github.com/hibernate/hibernate-tools.git</connection>
-    <developerConnection>scm:git:git@github.com:hibernate/hibernate-tools.git</developerConnection>
-    <url>http://github.com/hibernate/hibernate-tools</url>
-  </scm>
-
-  <organization>
-    <name>Hibernate</name>
-    <url>http://www.hibernate.org</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License</name>
-      <url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <id>stadler</id>
-      <name>Jacques Stadler</name>
-      <email>jacques.stadler+github@gmail.com</email>
-    </developer>
-  </developers>
-
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
 
   <properties>
     <!-- This is a publicly distributed module that should be published: -->
     <deploy.skip>false</deploy.skip>
     <maven.install.skip>false</maven.install.skip>
-
-    <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
-    <maven-plugin-api.version>3.5.2</maven-plugin-api.version>
-    <maven-core.version>3.9.9</maven-core.version>
-
-    <!-- Plugin versions -->
-    <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
-    <maven-site-plugin.version>3.7</maven-site-plugin.version>
-    <site-maven-plugin.version>0.12</site-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -76,19 +31,14 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>${maven-plugin-api.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>${maven-core.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>${maven-plugin-annotations.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -129,7 +79,7 @@
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
-        <version>${site-maven-plugin.version}</version>
+        <version>${github-site-maven-plugin.version}</version>
         <executions>
           <execution>
             <goals>
