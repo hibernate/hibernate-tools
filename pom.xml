@@ -152,6 +152,18 @@
         <maven.min.version>${maven.version}</maven.min.version>
         <maven-core.version>${maven.version}</maven-core.version>
 
+        <!--
+             The absolute path to the root project directory.
+             This property is set by the build-helper plugin.
+             We initialize it to some crude, potentially wrong value,
+             because the Sonar Maven plugin uses this property indirectly,
+             but ignores any change made by other plugins.
+             This default value is the best we can do without the help of a Maven plugin.
+
+             Useful resources:
+              - https://www.mojohaus.org/build-helper-maven-plugin/rootlocation-mojo.html
+          -->
+        <rootProject.directory>${user.dir}</rootProject.directory>
     </properties>
 
     <dependencyManagement>
@@ -315,6 +327,20 @@
     </distributionManagement>
 
     <build>
+        <resources>
+            <resource>
+                <!-- The default resource dir: -->
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <!-- Extra dir to include the license file: -->
+                <directory>${rootProject.directory}</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                </includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -382,6 +408,21 @@
                                     <version>${jdk.min.version}</version>
                                 </requireJavaVersion>
                             </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>set-root-location-property</id>
+                        <goals>
+                            <goal>rootlocation</goal>
+                        </goals>
+                        <configuration>
+                            <rootLocationProperty>rootProject.directory</rootLocationProperty>
                         </configuration>
                     </execution>
                 </executions>
