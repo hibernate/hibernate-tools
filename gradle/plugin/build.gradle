@@ -96,6 +96,15 @@ tasks.named('publishPlugins') {
     }
 }
 
+var rootPath = findProperty("mavenRootDirectory")
+jar {
+	metaInf {
+		from(rootPath, {
+			include "LICENSE.txt"
+		})
+	}
+}
+
 publishing {
     publications {
         pluginMaven(MavenPublication) {
