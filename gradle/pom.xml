@@ -83,6 +83,7 @@
                             <arguments>
                                 <argument>clean</argument>
                                 <argument>-Pversion=${project.version}</argument>
+                                <argument>-PmavenRootDirectory=${rootProject.directory}</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -119,6 +120,7 @@
                                         <argument>publishPluginMavenPublicationToStagingRepository</argument>
                                         <argument>-Pversion=${project.version}</argument>
                                         <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                                        <argument>-PmavenRootDirectory=${rootProject.directory}</argument>
                                         <argument>-PmavenStagingDirectory=${local.staging.releases.repo.url}</argument>
                                     </arguments>
                                 </configuration>
