@@ -20,11 +20,12 @@ repositories {
 
 dependencies {
 
-    implementation "org.hibernate.tool:hibernate-tools-orm:$version"
+    implementation "org.hibernate.tool:hibernate-tools-orm:$projectVersion"
 
     testImplementation libs.junit.jupiter
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly "com.h2database:h2:$h2Version"
 }
 
 rootProject.ext.set("gradle.publish.key", System.env.PLUGIN_PORTAL_USERNAME)
@@ -56,6 +57,8 @@ tasks.register('functionalTest', Test) {
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
     useJUnitPlatform()
+    environment("HIBERNATE_TOOLS_VERSION", projectVersion);
+    environment("H2_VERSION", h2Version);
 }
 
 gradlePlugin.testSourceSets.add(sourceSets.functionalTest)
