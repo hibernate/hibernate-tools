@@ -21,7 +21,7 @@
 	<parent>
            <groupId>org.hibernate.tool</groupId>
            <artifactId>hibernate-tools-parent</artifactId>
-           <version>7.1.1.Final</version>
+           <version>7.1.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>hibernate-tools-utils</artifactId>
