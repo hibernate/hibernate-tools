@@ -46,6 +46,124 @@
 
    <build>
       <plugins>
+          <plugin>
+              <artifactId>maven-resources-plugin</artifactId>
+              <executions>
+                  <execution>
+                      <id>validate-copy-libs-versions-toml</id>
+                      <phase>validate</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <filtering>true</filtering>
+                                  <includes>
+                                      <include>libs.versions.toml</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>pre-clean-copy-libs-versions-toml</id>
+                      <phase>pre-clean</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <filtering>true</filtering>
+                                  <includes>
+                                      <include>libs.versions.toml</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>validate-copy-gradle-wrapper-jar</id>
+                      <phase>validate</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle/wrapper</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <includes>
+                                      <include>gradle-wrapper.jar</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>pre-clean-copy-gradle-wrapper-jar</id>
+                      <phase>pre-clean</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle/wrapper</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <includes>
+                                      <include>gradle-wrapper.jar</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>validate-copy-gradle-wrapper-properties</id>
+                      <phase>validate</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle/wrapper</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <filtering>true</filtering>
+                                  <includes>
+                                      <include>gradle-wrapper.properties</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>pre-clean-copy-gradle-wrapper-properties</id>
+                      <phase>pre-clean</phase>
+                      <goals>
+                          <goal>copy-resources</goal>
+                      </goals>
+                      <configuration>
+                          <outputDirectory>gradle/wrapper</outputDirectory>
+                          <resources>
+                              <resource>
+                                  <directory>resources</directory>
+                                  <filtering>true</filtering>
+                                  <includes>
+                                      <include>gradle-wrapper.properties</include>
+                                  </includes>
+                              </resource>
+                          </resources>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+
           <!-- Maven deploy is skipped on purpose as Gradle build will stage the artifact itself. -->
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -54,43 +172,62 @@
                   <skip>true</skip>
               </configuration>
           </plugin>
-          <!-- execute Gradle command -->
+        <!-- execute Gradle command -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+			<artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>gradle-package</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <executable>${gradle.executable}</executable>
+                            <arguments>
+                                <argument>clean</argument>
+                                <argument>build</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
+                                <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
+                                <argument>-PmavenRootDirectory=${rootProject.directory}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>gradle-clean</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <executable>${gradle.executable}</executable>
+                            <arguments>
+                                <argument>clean</argument>
+                                <argument>-PprojectVersion=${project.version}</argument>
+                                <argument>-Ph2Version=${h2.version}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+		 </plugin>
           <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>exec-maven-plugin</artifactId>
+              <artifactId>maven-clean-plugin</artifactId>
               <executions>
                   <execution>
-                      <id>gradle-package</id>
-                      <phase>prepare-package</phase>
-                      <configuration>
-                          <executable>${gradle.executable}</executable>
-                          <arguments>
-                              <argument>clean</argument>
-                              <argument>build</argument>
-                              <argument>-PprojectVersion=${project.version}</argument>
-                              <argument>-Ph2Version=${h2.version}</argument>
-                              <argument>-Dmaven.repo.local=${settings.localRepository}</argument>
-                              <argument>-PmavenRootDirectory=${rootProject.directory}</argument>
-                          </arguments>
-                      </configuration>
-                      <goals>
-                          <goal>exec</goal>
-                      </goals>
-                  </execution>
-                  <execution>
-                      <id>gradle-clean</id>
+                      <id>delete-gradle-wrapper</id>
                       <phase>clean</phase>
-                      <configuration>
-                          <executable>${gradle.executable}</executable>
-                          <arguments>
-                              <argument>clean</argument>
-                              <argument>-PprojectVersion=${project.version}</argument>
-                              <argument>-Ph2Version=${h2.version}</argument>
-                          </arguments>
-                      </configuration>
                       <goals>
-                          <goal>exec</goal>
+                          <goal>clean</goal>
                       </goals>
+                      <configuration>
+                          <filesets>
+                              <fileset>
+                                  <directory>gradle</directory>
+                              </fileset>
+                          </filesets>
+                      </configuration>
                   </execution>
               </executions>
           </plugin>
