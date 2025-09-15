@@ -17,7 +17,7 @@ import org.gradle.testkit.runner.GradleRunner;
 public class TestTemplate {
 
     protected static final String[] GRADLE_INIT_PROJECT_ARGUMENTS = new String[] {
-            "init", "--type", "java-application", "--dsl", "groovy", "--test-framework", "junit-jupiter", "--java-version", "17"};
+            "init", "--type", "java-application", "--dsl", "groovy", "--test-framework", "junit-jupiter", "--java-version", "11"};
 
     @TempDir
     private File projectDir;
