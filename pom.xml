@@ -98,6 +98,7 @@
     <properties>
 
         <maven.version>3.9.11</maven.version>
+        <!-- gradle versions starting from 9.0 require java 17 -->
         <gradle.version>8.14.3</gradle.version>
 
         <ant.version>1.10.15</ant.version>
