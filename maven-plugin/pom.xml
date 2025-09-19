@@ -19,6 +19,8 @@
     <!-- This is a publicly distributed module that should be published: -->
     <deploy.skip>false</deploy.skip>
     <maven.install.skip>false</maven.install.skip>
+    <!-- To run the integration tests we need to set ${hibernate.version} -->
+    <hibernate.version>${project.version}</hibernate.version>
   </properties>
 
   <dependencies>
@@ -128,6 +130,8 @@
           </execution>
         </executions>
       </plugin>
+      <!-- The Invoker plugin will populate the local Maven repository with the artefacts
+           needed to run the integration tests with the FailSafe plugin -->
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
         <version>${maven-invoker-plugin.version}</version>
@@ -143,7 +147,7 @@
           </execution>
         </executions>
       </plugin>
-      <!-- run the integration tests -->
+      <!-- Run the integration tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -214,7 +218,7 @@
                 </resource>
               </resources>
               <delimiters>
-                <delimiter>@*@</delimiter>
+                <delimiter>${*}</delimiter>
               </delimiters>
             </configuration>
           </execution>
