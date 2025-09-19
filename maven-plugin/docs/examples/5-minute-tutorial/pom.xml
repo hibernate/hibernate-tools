@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>@h2.version@</version>
+            <version>${h2.version}</version>
         </dependency>
     </dependencies>
 
@@ -36,7 +36,7 @@
             <plugin>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-tools-maven-plugin</artifactId>
-                <version>@project.version@</version>
+                <version>${hibernate.version}</version>
                 <executions>
                     <execution>
                         <id>Entity generation</id>
