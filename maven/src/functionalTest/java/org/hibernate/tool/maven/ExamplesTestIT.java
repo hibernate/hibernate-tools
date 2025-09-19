@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 
 import org.apache.maven.cli.MavenCli;
 
@@ -21,6 +24,17 @@ public class ExamplesTestIT {
     private static File baseFolder;
     private static File localRepo;
 
+    private File projectFolder;
+    private MavenCli mavenCli;
+
+    @TempDir
+    private File tempFolder;
+
+    private String[] databaseCreationScript = new String[] {
+            // This is the default database which can be overridden per test
+            "create table PERSON (ID int not null, NAME varchar(20), primary key (ID))"
+    };
+
     @BeforeAll
     public static void beforeAll() throws Exception {
         // The needed resource for this test are put in place
@@ -29,32 +43,34 @@ public class ExamplesTestIT {
         // See the 'pom.xml'
         baseFolder = determineBaseFolder();
         localRepo = new File(baseFolder.getParentFile(), "local-repo");
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
         createDatabase();
     }
 
-    private MavenCli mavenCli;
-
     @Test
     public void test5MinuteTutorial() throws Exception {
-        File projectFolder = prepareProjectFolder("5-minute-tutorial");
-        File generatedPersonFile = new File(projectFolder, "target/generated-sources/Person.java");
-        assertFalse(generatedPersonFile.exists());
-        new MavenCli().doMain(
-                new String[]{"-Dmaven.repo.local=" + localRepo.getAbsolutePath(), "generate-sources"},
-                projectFolder.getAbsolutePath(),
-                null,
-                null);
-        assertTrue(generatedPersonFile.exists());
-        String personFileContents = new String(Files.readAllBytes(generatedPersonFile.toPath()));
-        assertTrue(personFileContents.contains("public class Person"));
+        prepareProject("5-minute-tutorial");
+        assertNotGeneratedYet();
+        runGenerateSources();
+        assertGeneratedContains("public class Person");
     }
 
-    private File prepareProjectFolder(String projectName) throws Exception {
-        File projectFolder = new File(baseFolder, projectName);
+    @Test
+    public void testJpaDefault() throws Exception {
+        prepareProject("hbm2java/jpa-default");
+        assertNotGeneratedYet();
+        runGenerateSources();
+        assertGeneratedContains("import jakarta.persistence.Entity;");
+    }
+
+    private void prepareProject(String projectName) throws Exception {
+        projectFolder = new File(baseFolder, projectName);
         assertTrue(projectFolder.exists());
         System.setProperty(MVN_HOME, projectFolder.getAbsolutePath());
         createHibernatePropertiesFile(projectFolder);
-        return projectFolder;
     }
 
     private void createHibernatePropertiesFile(File projectFolder) throws Exception {
@@ -73,26 +89,54 @@ public class ExamplesTestIT {
         assertTrue(hibernatePropertiesFile.exists());
     }
 
+    private void runGenerateSources() {
+        new MavenCli().doMain(
+                new String[]{"-Dmaven.repo.local=" + localRepo.getAbsolutePath(), "generate-sources"},
+                projectFolder.getAbsolutePath(),
+                null,
+                null);
+    }
+
+    private void assertNotGeneratedYet() {
+        assertFalse(new File(projectFolder, "target/generated-sources/Person.java").exists());
+    }
+
+    private void assertGeneratedContains(String contents) throws Exception {
+        assertTrue(readGeneratedContents().contains(contents));
+    }
+
+    private void assertGeneratedDoesNotContain(String contents) throws Exception {
+        assertFalse(readGeneratedContents().contains(contents));
+    }
+
+    private String readGeneratedContents() throws Exception {
+        File generatedPersonFile = new File(projectFolder, "target/generated-sources/Person.java");
+        assertTrue(generatedPersonFile.exists());
+        return new String(Files.readAllBytes(generatedPersonFile.toPath()));
+    }
+
     private static File determineBaseFolder() throws Exception {
         return new File(ExamplesTestIT.class.getClassLoader().getResource("5-minute-tutorial/pom.xml").toURI())
                 .getParentFile().getParentFile();
     }
 
-    private static void createDatabase() throws Exception {
-        File databaseFile = new File(baseFolder, "database/test.mv.db");
+    private void createDatabase() throws Exception {
+        File databaseFile = new File(tempFolder, "database/test.mv.db");
         assertFalse(databaseFile.exists());
         assertFalse(databaseFile.isFile());
         Connection connection = DriverManager.getConnection(constructJdbcConnectionString());
         Statement statement = connection.createStatement();
-        statement.execute("create table PERSON (ID int not null, NAME varchar(20), primary key (ID))");
+        for (String s : databaseCreationScript) {
+            statement.execute(s);
+        }
         statement.close();
         connection.close();
         assertTrue(databaseFile.exists());
         assertTrue(databaseFile.isFile());
     }
 
-    private static String constructJdbcConnectionString() {
-        return "jdbc:h2:" + baseFolder.getAbsolutePath() + "/database/test;AUTO_SERVER=TRUE";
+    private String constructJdbcConnectionString() {
+        return "jdbc:h2:" + tempFolder.getAbsolutePath() + "/database/test;AUTO_SERVER=TRUE";
     }
 
 }
