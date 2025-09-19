@@ -47,7 +47,7 @@
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
-	</dependency>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -124,8 +124,8 @@
             <id>default-descriptor</id>
             <phase>process-classes</phase>
             <configuration>
-				<goalPrefix>hibernate-tools</goalPrefix>
-			</configuration>
+              <goalPrefix>hibernate-tools</goalPrefix>
+            </configuration>
           </execution>
           <execution>
             <id>help-goal</id>
@@ -133,8 +133,8 @@
               <goal>helpmojo</goal>
             </goals>
             <configuration>
-				<goalPrefix>hibernate-tools</goalPrefix>
-			</configuration>
+              <goalPrefix>hibernate-tools</goalPrefix>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -185,19 +185,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Run the integration tests -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <!-- add the integration test source folder -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -215,6 +202,7 @@
               </sources>
             </configuration>
           </execution>
+          <!-- add the examples as test resources -->
           <execution>
             <id>add-test-resource</id>
             <phase>generate-test-resources</phase>
@@ -235,6 +223,8 @@
           </execution>
         </executions>
       </plugin>
+      <!-- filter the pom.xml files of the examples to replace the
+           h2 and hibernate versions for the integration tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -256,16 +246,30 @@
                 </resource>
               </resources>
               <delimiters>
-                <delimiter>${*}</delimiter>
+                <delimiter>${h2.version}</delimiter>
+                <delimiter>${hibernate.version}</delimiter>
               </delimiters>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Run the integration tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
 
-   <reporting>
+  <reporting>
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
