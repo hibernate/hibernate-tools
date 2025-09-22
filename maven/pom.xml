@@ -248,8 +248,6 @@
               <delimiters>
                 <delimiter>${*.version}</delimiter>
               </delimiters>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-              <escapeString>\</escapeString>
             </configuration>
           </execution>
         </executions>
