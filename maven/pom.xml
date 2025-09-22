@@ -246,9 +246,10 @@
                 </resource>
               </resources>
               <delimiters>
-                <delimiter>${h2.version}</delimiter>
-                <delimiter>${hibernate.version}</delimiter>
+                <delimiter>${*.version}</delimiter>
               </delimiters>
+              <useDefaultDelimiters>false</useDefaultDelimiters>
+              <escapeString>\</escapeString>
             </configuration>
           </execution>
         </executions>

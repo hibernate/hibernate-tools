@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.hibernate.tool.maven.test</groupId>
-    <artifactId>hbm2java-jpa-default</artifactId>
+    <artifactId>hbm2java-template-path</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
@@ -46,6 +46,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <templatePath>${template.dir}</templatePath>
+                </configuration>
             </plugin>
         </plugins>
     </build>
