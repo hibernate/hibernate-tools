@@ -147,19 +147,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Run the integration tests -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <!-- add the integration test source folder -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -177,6 +164,7 @@
               </sources>
             </configuration>
           </execution>
+          <!-- add the examples as test resources -->
           <execution>
             <id>add-test-resource</id>
             <phase>generate-test-resources</phase>
@@ -197,6 +185,8 @@
           </execution>
         </executions>
       </plugin>
+      <!-- filter the pom.xml files of the examples to replace the
+           h2 and hibernate versions for the integration tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -218,9 +208,22 @@
                 </resource>
               </resources>
               <delimiters>
-                <delimiter>${*}</delimiter>
+                <delimiter>${*.version}</delimiter>
               </delimiters>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Run the integration tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
