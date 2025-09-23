@@ -315,6 +315,59 @@ specified by the `<fileset>` to avoid duplicate import exceptions.
 
 ### 2.2 JPA Configuration
 
+The second possibility to configure the `<hibernatetool>` task is by using the `<jpaconfiguration>`
+element. A `<jpaconfiguration>` tag is used when you want to read the metamodel from JPA. 
+In other words, when you do not have a `hibernate.cfg.xml`, but instead have a setup where 
+you use a `persistence.xml` file packaged in a JPA compliant manner.
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <jpaconfiguration />
+        ...
+    </hibernatetool>
+</target>
+```
+
+The `<jpaconfiguration>` tag will try and auto-configure it self based on the available classpath,
+e.g. look for the `META-INF/persistence.xml` file.
+
+### 2.2.1 The `persistenceunit` attribute
+
+The `persistenceunit` attribute can be used to select a specific persistence unit. In the
+xml excerpt below, the persistence unit called 'bar' will be selected.
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <jpaconfiguration persistenceunit="bar"/>
+        ...
+    </hibernatetool>
+</target>
+```
+
+If no `persistenceunit` attribute is specified Hibernate Tools will automatically search for one, 
+and if a unique one is found, use it. However, having multiple persistence units will result in an error.
+
+### 2.2.2 Additional Configuration 
+
+As the `<jpaconfiguration>` element inherits all the configuration elements and attributes above
+are theoretically applicable.
+
+#### 2.2.2.1 The `propertyfile` attribute
+
+See section 2.1.1
+
+#### 2.2.2.2 The `configurationfile` attribute
+
+This attribute will result in an exception as the configuration is read from the `persistence.xml` file.
+
+#### 2.2.2.3 The `<fileset>` element
+
+This nested element is ignored.
+
 ### 2.3 JDBC Configuration
 
 ## 3. The Hibernate Tools Exporters
