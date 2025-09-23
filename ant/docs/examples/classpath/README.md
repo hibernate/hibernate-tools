@@ -15,4 +15,5 @@
   -->
 To run this example:
   - Have [Apache Ant](https://ant.apache.org) installed
-  - Issue `ant` from a command-line window 
+- Issue `ant -Dhibernate.version=${hibernate.version} -Dh2.version=${h2.version} -Djavaee-api.version=${javaee-api.version}`
+  from a command-line window opened in this folder

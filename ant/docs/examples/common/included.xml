@@ -15,11 +15,11 @@
   -->
 <project name="common" xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <property name="hibernate-tools.version" value="@project.version@"/>
-    <property name="javaee-api.version" value="@javaee-api.version@"/>
+    <property name="hibernate-tools.version" value="${hibernate.version}"/>
+    <property name="javaee-api.version" value="${javaee-api.version}"/>
     <property name="jdbc-driver.org" value="com.h2database"/>
     <property name="jdbc-driver.module" value="h2"/>
-    <property name="jdbc-driver.version" value="@h2.version@"/>
+    <property name="jdbc-driver.version" value="${h2.version}"/>
 
     <ivy:cachepath
             organisation="org.hibernate.tool"

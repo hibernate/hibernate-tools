@@ -33,6 +33,8 @@
 	<properties>
 		<!-- This is a publicly distributed module that should be published: -->
 		<deploy.skip>false</deploy.skip>
+		<!-- To run the integration tests we need to set ${hibernate.version} -->
+		<hibernate.version>${project.version}</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -68,33 +70,10 @@
 
     <build>
         <plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>filter-test-resources</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>testResources</goal>
-						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									<directory>${project.build.testOutputDirectory}</directory>
-									<filtering>true</filtering>
-									<includes>
-										<include>common/included.xml</include>
-									</includes>
-								</resource>
-							</resources>
-							<delimiters>
-								<delimiter>@*@</delimiter>
-							</delimiters>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- Prepare the integration tests :
+			  * Add the 'src/it/java' folder as as source of additional tests (only contains integration tests)
+			  * Add the contents of the 'docs/examples' folder as additional test resources
+			-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -130,8 +109,38 @@
 					</execution>
                 </executions>
             </plugin>
+			<!-- Prepare the integration tests
+			  * Filter the 'common/included.xml' file, and replace the delimited values with their actual properties
+			-->
 			<plugin>
-				<!-- run the integration tests -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-test-resources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testResources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.build.testOutputDirectory}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>common/included.xml</include>
+									</includes>
+								</resource>
+							</resources>
+							<delimiters>
+								<delimiter>@*@</delimiter>
+							</delimiters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- run the integration tests -->
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<executions>
