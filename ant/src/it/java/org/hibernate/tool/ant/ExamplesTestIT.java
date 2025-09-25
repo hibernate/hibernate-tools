@@ -46,6 +46,23 @@ public class ExamplesTestIT {
     }
 
     @Test
+    public void testCfgXml() throws Exception {
+        File buildFile = new File(baseFolder, "cfgxml/build.xml");
+        File cfgXmlFile = new File(baseFolder, "cfgxml/hibernate.cfg.xml");
+        String cfgXmlFileContents = Files.readString(cfgXmlFile.toPath())
+            .replace("jdbc:h2:tcp://localhost/./sakila", constructJdbcConnectionString())
+            .replace(">sa<", "><")
+            .replace(">SAKILA<", ">TEST<");
+        Files.writeString(cfgXmlFile.toPath(), cfgXmlFileContents);
+        Project project = createProject(buildFile);
+        assertNotNull(project);
+        File personFile = new File(baseFolder, "cfgxml/generated/Person.java");
+        assertFalse(personFile.exists());
+        project.executeTarget("reveng");
+        assertTrue(personFile.exists());
+    }
+
+    @Test
     public void testClasspath() throws Exception {
         PrintStream savedOut = System.out;
         try {
