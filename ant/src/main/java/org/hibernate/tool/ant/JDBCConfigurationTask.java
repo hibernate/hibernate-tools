@@ -21,11 +21,15 @@ package org.hibernate.tool.ant;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
+import org.hibernate.boot.cfgxml.internal.ConfigLoader;
+import org.hibernate.boot.cfgxml.spi.LoadedConfig;
+import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.metadata.MetadataConstants;
@@ -55,7 +59,7 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 		setDescription("JDBC Configuration (for reverse engineering)");
 	}
 	protected MetadataDescriptor createMetadataDescriptor() {
-		Properties properties = loadPropertiesFile();
+		Properties properties = loadProperties();
 		RevengStrategy res = createReverseEngineeringStrategy();
 		properties.put(MetadataConstants.PREFER_BASIC_COMPOSITE_IDS, preferBasicCompositeIds);
 		return MetadataDescriptorFactory
@@ -121,8 +125,8 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 	public void setDetectOptimisticLock(boolean b) {
 		detectOptimisticLock = b;
 	}
-	
-    private RevengStrategy loadreverseEngineeringStrategy(final String className, RevengStrategy delegate) 
+
+    private RevengStrategy loadreverseEngineeringStrategy(final String className, RevengStrategy delegate)
     throws BuildException {
         try {
             Class<?> clazz = ReflectionUtil.classForName(className);			
@@ -146,4 +150,21 @@ public class JDBCConfigurationTask extends ConfigurationTask {
 			throw new BuildException("Could not create or find " + className + " with one argument delegate constructor", e);
 		} 
     }
+
+	private Map<String, Object> loadCfgXmlFile() {
+		return new ConfigLoader(new BootstrapServiceRegistryBuilder().build())
+				.loadConfigXmlFile(getConfigurationFile())
+				.getConfigurationValues();
+	}
+
+	private Properties loadProperties() {
+		Properties result = new Properties();
+		if (getPropertyFile() != null) {
+			result.putAll(loadPropertiesFile());
+		}
+		if (getConfigurationFile() != null) {
+			result.putAll(loadCfgXmlFile());
+		}
+		return result;
+	}
 }
