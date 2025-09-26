@@ -97,13 +97,13 @@ plugins {
 
 Also we need to depend on the java library containing the [H2 database]() drivers.
 This is done in the `dependencies` section of the `gradle.build` file, 
-to which we add `implementation 'com.h2database:h2:2.3.232'`.
+to which we add `implementation 'com.h2database:h2:2.4.240'`.
 
 ```groovy
 ...
 dependencies {
     ...
-    implementation 'com.h2database:h2:2.3.232'
+    implementation 'com.h2database:h2:2.4.240'
 }
 ...
 ```
@@ -122,7 +122,7 @@ repositories {
 }
 
 dependencies {
-    implementation('com.h2database:h2:2.3.232')
+    implementation('com.h2database:h2:2.4.240')
 }
 ```
 
