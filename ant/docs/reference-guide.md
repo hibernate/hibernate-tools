@@ -52,7 +52,7 @@ the jdbc driver and for the version information. See an example in the snippet b
 <property name="hibernate-tools.version" value="7.1.2.Final"/>
 <property name="jdbc-driver.org" value="com.h2database"/>
 <property name="jdbc-driver.module" value="h2"/>
-<property name="jdbc-driver.version" value="2.3.232"/>
+<property name="jdbc-driver.version" value="2.4.240"/>
 ```
 
 ### 1.2 `<hibernatetool>` Task Element
@@ -369,5 +369,22 @@ This attribute will result in an exception as the configuration is read from the
 This nested element is ignored.
 
 ### 2.3 JDBC Configuration
+
+The third possibility for configuring the `<hibernatetool>` task is to use the `<jdbcconfiguration>`
+element. `<jdbcconfiguration>` is used to perform reverse engineering of a database from a JDBC connection.
+This configuration works by reading the connection properties either from a `hibernate.cfg.xml` file or a 
+`hibernate.properties`.
+
+```xml
+<target name="reveng">
+    <hibernatetool destdir="...">
+        ...
+        <jdbcconfiguration propertyfile="..."/>
+        ...
+    </hibernatetool>
+</target>
+```
+
+### 2.3.1 
 
 ## 3. The Hibernate Tools Exporters
