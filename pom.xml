@@ -113,6 +113,7 @@
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
         <maven-resolver.version>1.9.24</maven-resolver.version>
         <slf4j.version>2.0.17</slf4j.version>
+        <version.org.hibernate.infra.hibernate-asciidoctor-theme>6.0.0.Final</version.org.hibernate.infra.hibernate-asciidoctor-theme>
 
         <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
@@ -335,6 +336,46 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-asciidoctor-theme</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.hibernate.infra</groupId>
+                                        <artifactId>hibernate-asciidoctor-theme</artifactId>
+                                        <version>${version.org.hibernate.infra.hibernate-asciidoctor-theme}</version>
+                                        <type>zip</type>
+                                        <overWrite>true</overWrite>
+                                        <outputDirectory>${project.build.directory}/</outputDirectory>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <stylesheetfile>${project.build.directory}/hibernate-asciidoctor-theme/javadoc/jdk17/stylesheet.css</stylesheetfile>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -349,6 +390,14 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
