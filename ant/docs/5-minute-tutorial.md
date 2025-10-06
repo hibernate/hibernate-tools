@@ -45,7 +45,7 @@ for the purpose of this short tutorial.
 ```xml
 <project xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <property name="hibernate.tools.version" value="the-hibernate-tools-version-to-use, e.g. 7.1.3.Final"/>
+    <property name="hibernate.tools.version" value="the-hibernate-tools-version-to-use, e.g. 7.1.4.Final"/>
     <property name="h2.version" value="the-h2-version-to-use, e.g. 2.4.240"/>
 
     <ivy:cachepath organisation="org.hibernate.tool" module="hibernate-tools-ant" revision="${hibernate.tools.version}"
