@@ -12,9 +12,9 @@ import java.util.Properties;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.BuildException;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -72,7 +72,7 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
-    public void execute() {
+    public void execute() throws MojoFailureException {
     	ClassLoader original = Thread.currentThread().getContextClassLoader();
     	try {
     		Thread.currentThread().setContextClassLoader(createExporterClassLoader(original));
@@ -89,12 +89,12 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     	}
     }
 
-    private ReverseEngineeringStrategy setupReverseEngineeringStrategy() {
+    private ReverseEngineeringStrategy setupReverseEngineeringStrategy() throws MojoFailureException {
         ReverseEngineeringStrategy strategy;
         try {
             strategy = ReverseEngineeringStrategy.class.cast(Class.forName(revengStrategy).newInstance());
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | ClassCastException e) {
-            throw new BuildException(revengStrategy + " not instanced.", e);
+            throw new MojoFailureException(revengStrategy + " not instanced.", e);
         }
 
         if (revengFile != null) {
@@ -116,15 +116,15 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
         return strategy;
     }
 
-    private Properties loadPropertiesFile() {
+    private Properties loadPropertiesFile() throws MojoFailureException {
         try (FileInputStream is = new FileInputStream(propertyFile)) {
             Properties result = new Properties();
             result.load(is);
             return result;
         } catch (FileNotFoundException e) {
-            throw new BuildException(propertyFile + " not found.", e);
+            throw new MojoFailureException(propertyFile + " not found.", e);
         } catch (IOException e) {
-            throw new BuildException("Problem while loading " + propertyFile, e);
+            throw new MojoFailureException("Problem while loading " + propertyFile, e);
         }
     }
 
