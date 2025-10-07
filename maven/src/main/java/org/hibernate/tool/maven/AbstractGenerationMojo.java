@@ -27,15 +27,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Properties;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.BuildException;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.metadata.MetadataConstants;
@@ -94,7 +92,7 @@ public abstract class AbstractGenerationMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
-    public void execute() {
+    public void execute() throws MojoFailureException {
     	ClassLoader original = Thread.currentThread().getContextClassLoader();
     	try {
     		Thread.currentThread().setContextClassLoader(createExporterClassLoader(original));
@@ -132,15 +130,15 @@ public abstract class AbstractGenerationMojo extends AbstractMojo {
         return strategy;
     }
 
-    private Properties loadPropertiesFile() {
+    private Properties loadPropertiesFile() throws MojoFailureException {
         try (FileInputStream is = new FileInputStream(propertyFile)) {
             Properties result = new Properties();
             result.load(is);
             return result;
         } catch (FileNotFoundException e) {
-            throw new BuildException(propertyFile + " not found.", e);
+            throw new MojoFailureException(propertyFile + " not found.", e);
         } catch (IOException e) {
-            throw new BuildException("Problem while loading " + propertyFile, e);
+            throw new MojoFailureException("Problem while loading " + propertyFile, e);
         }
     }
 
