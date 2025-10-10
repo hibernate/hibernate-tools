@@ -12,7 +12,8 @@ public class Extension {
 	public String revengFile = null;
 	public Boolean generateAnnotations = true;
 	public Boolean useGenerics = true;
-
+        public String templatePath = null;
+	
 	public Extension(Project project) {}
 	
 }
