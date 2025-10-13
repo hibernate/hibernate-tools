@@ -99,7 +99,7 @@
     <properties>
 
         <maven.version>3.9.11</maven.version>
-        <gradle.version>9.0.0</gradle.version>
+        <gradle.version>9.1.0</gradle.version>
 
         <ant.version>1.10.15</ant.version>
         <antlr.version>4.13.2</antlr.version>
