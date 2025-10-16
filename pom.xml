@@ -105,7 +105,8 @@
         <antlr.version>4.13.2</antlr.version>
         <commons-collections.version>4.5.0</commons-collections.version>
         <freemarker.version>2.3.34</freemarker.version>
-        <google-java-format.version>1.27.0</google-java-format.version>
+        <!-- version 1.28.0 of google-java-format is the last one compatible with java 17 -->
+        <google-java-format.version>1.28.0</google-java-format.version>
         <h2.version>2.4.240</h2.version>
         <hibernate-commons-annotations.version>7.0.3.Final</hibernate-commons-annotations.version>
         <hibernate-orm.version>7.1.4.Final</hibernate-orm.version>
