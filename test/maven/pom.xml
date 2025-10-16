@@ -45,7 +45,6 @@
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-                    <postBuildHookScript>verify</postBuildHookScript>
                     <goal>install</goal>
                 </configuration>
                 <executions>
@@ -56,7 +55,14 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>  
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>${h2.version}</version>
+                    </dependency>
+                </dependencies>
+             </plugin>
         </plugins>
     </build>
     
