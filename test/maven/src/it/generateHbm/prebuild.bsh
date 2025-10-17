@@ -15,9 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.io.*;
+import java.sql.DriverManager;
+import java.sql.Connection;
 
-File file = new File(basedir, "src/main/resources/Foo.mapping.xml");
-if (!file.isFile()) {
-    throw new FileNotFoundException("Could not find generated HBM file: " + file);
-}
+String JDBC_CONNECTION = "jdbc:h2:" + basedir + "/test";
+String CREATE_PERSON_TABLE = "create table PERSON (ID int not null, NAME varchar(20), primary key (ID))";
+
+Connection connection = DriverManager.getConnection(JDBC_CONNECTION);
+connection.createStatement().execute(CREATE_PERSON_TABLE);
+connection.close();
