@@ -21,8 +21,17 @@ package org.hibernate.tool.api.reveng;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
+import javax.management.RuntimeErrorException;
+
+import org.hibernate.id.insert.GetGeneratedKeysDelegate;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
+import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.junit.jupiter.api.Test;
 
 
@@ -48,8 +57,48 @@ public class ReverseEngineeringStrategyFactoryTest {
 		assertEquals(
 				DefaultStrategy.class.getName(), 
 				reverseEngineeringStrategy.getClass().getName());		
+		
+		reverseEngineeringStrategy = 
+				RevengStrategyFactory.createReverseEngineeringStrategy(TestDelegatingReverseEngineeringStrategyFactory.class.getName());
+		assertEquals(
+				TestDelegatingReverseEngineeringStrategyFactory.class.getName(), 
+				reverseEngineeringStrategy.getClass().getName());
+		assertEquals(DefaultStrategy.class.getName(), ((TestDelegatingReverseEngineeringStrategyFactory) reverseEngineeringStrategy).getDelegateTest().getClass().getName());
+
+		
+		try {
+			File file = new File(this.getClass().getResource("/test.reveng.xml").toURI());
+			reverseEngineeringStrategy = 
+					RevengStrategyFactory.createReverseEngineeringStrategy(TestDelegatingReverseEngineeringStrategyFactory.class.getName(), new File[] {file});
+			assertEquals(
+					TestDelegatingReverseEngineeringStrategyFactory.class.getName(), 
+					reverseEngineeringStrategy.getClass().getName());
+			assertTrue(DelegatingStrategy.class.isAssignableFrom(((TestDelegatingReverseEngineeringStrategyFactory) reverseEngineeringStrategy).getDelegateTest().getClass()));
+			// TODO this does not keep track of the eventually DefaultStrategy.
+		} catch (URISyntaxException exception) {
+			throw new RuntimeException("Unable to load /test.reveng.xml from test resources", exception);
+		}
+
 	}
 	
 	public static class TestReverseEngineeringStrategyFactory extends DefaultStrategy {}
 
+	public static class TestDelegatingReverseEngineeringStrategyFactory extends DelegatingStrategy {
+
+		private RevengStrategy delegateTest;
+
+		public TestDelegatingReverseEngineeringStrategyFactory(RevengStrategy delegate) {
+			super(delegate);
+			this.delegateTest = delegate;
+		}
+
+		public RevengStrategy getDelegateTest() {
+			return delegateTest;
+		}
+
+		public void setDelegateTest(RevengStrategy delegateTest) {
+			this.delegateTest = delegateTest;
+		}
+
+	}
 }
