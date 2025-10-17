@@ -22,25 +22,12 @@
   <version>0.0.1-SNAPSHOT</version>
 
 
-  <properties>
-    <h2.version>1.4.200</h2.version>
-    <sql.version>1.5</sql.version>
-    <hibernate.version>@project.version@</hibernate.version>
-  </properties>
-  
   <build>
     <plugins>   
       <plugin>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-maven</artifactId>
-        <version>${hibernate.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.hibernate.tool</groupId>
-            <artifactId>hibernate-tools-orm</artifactId>
-            <version>${hibernate.version}</version>
-          </dependency>
-        </dependencies>
+        <version>@project.version@</version>
         <executions>
           <execution>
             <id>transformHbm</id>
@@ -48,9 +35,6 @@
             <goals>
               <goal>hbm2orm</goal>
             </goals>
-            <configuration>
-              <ejb3>true</ejb3>
-            </configuration>
           </execution>
         </executions>
       </plugin>      
