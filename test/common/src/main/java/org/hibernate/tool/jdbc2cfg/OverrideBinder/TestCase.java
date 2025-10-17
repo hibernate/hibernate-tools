@@ -401,7 +401,7 @@ public class TestCase {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(OVERRIDETEST_REVENG_XML);
 		
-		RevengStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy();
+		RevengStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy(null);
 		
 		assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "blah"));
 		assertFalse(reverseEngineeringStrategy.excludeColumn(TableIdentifier.create(null, null, "EXCOLUMNS"), "NAME"));

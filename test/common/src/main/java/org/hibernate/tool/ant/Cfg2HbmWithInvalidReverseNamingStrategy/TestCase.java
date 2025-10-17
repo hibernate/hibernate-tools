@@ -74,7 +74,7 @@ public class TestCase {
 			
 			assertTrue(e
 					.getMessage()
-					.contains("Could not create or find invalid.Strategy"));
+					.contains("A strategy of class 'invalid.Strategy' could not be created"));
 			
 		}
 		
