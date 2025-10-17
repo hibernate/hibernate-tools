@@ -50,9 +50,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <revengFile>${project.basedir}/src/main/resources/hibernate.reveng.xml</revengFile>
-                </configuration>
             </plugin>
         </plugins>
     </build>
