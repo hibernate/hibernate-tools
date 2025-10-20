@@ -29,8 +29,9 @@
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                    <preBuildHookScript>before</preBuildHookScript>
                     <postBuildHookScript>verify</postBuildHookScript>
-                    <goal>install</goal>
+                    <goal>generate-sources</goal>
                 </configuration>
                 <executions>
                     <execution>
@@ -40,6 +41,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>${h2.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
