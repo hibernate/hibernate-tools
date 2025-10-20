@@ -78,11 +78,7 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
     		Thread.currentThread().setContextClassLoader(createExporterClassLoader(original));
 	        getLog().info("Starting " + this.getClass().getSimpleName() + "...");
 	        ReverseEngineeringStrategy strategy = setupReverseEngineeringStrategy();
-	        if (propertyFile.exists()) {
-	        	executeExporter(createJdbcDescriptor(strategy, loadPropertiesFile()));
-	        } else {
-	        	getLog().info("Property file '" + propertyFile + "' cannot be found, aborting...");
-	        }
+            executeExporter(createJdbcDescriptor(strategy, loadPropertiesFile()));
 	        getLog().info("Finished " + this.getClass().getSimpleName() + "!");
     	} finally {
     		Thread.currentThread().setContextClassLoader(original);
@@ -122,8 +118,10 @@ public abstract class AbstractHbm2xMojo extends AbstractMojo {
             result.load(is);
             return result;
         } catch (FileNotFoundException e) {
+            getLog().error("Property file '" + propertyFile + "' cannot be found, aborting...");
             throw new MojoFailureException(propertyFile + " not found.", e);
         } catch (IOException e) {
+            getLog().error("Property file '" + propertyFile + "' cannot be loaded, aborting...");
             throw new MojoFailureException("Problem while loading " + propertyFile, e);
         }
     }
