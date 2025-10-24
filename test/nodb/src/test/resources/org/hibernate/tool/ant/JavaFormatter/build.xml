@@ -55,36 +55,5 @@
 		</javaformatter>
 			
 	</target>
-	
-
-	<target name="configtest">	
-		
-		<taskdef 
-				name="javaformatter" 
-				classname="org.hibernate.tool.ant.JavaFormatterTask"/>
-				
-		<javaformatter configurationfile="${resourcesDir}/emptyconfig.properties"> 
-		   <fileset dir="${destinationDir}">
-		   	   <include name="formatting/**/*"/>
-		   	</fileset>
-		</javaformatter>
-				
-	</target>
-	
-
-	<target name="noconfigtest">		
-		
-			<taskdef 
-				name="javaformatter" 
-				classname="org.hibernate.tool.ant.JavaFormatterTask"/>
-					
-			<javaformatter> 
-			   <fileset dir="${destinationDir}">
-			   	   <include name="formatting/**/*"/>
-			   	</fileset>
-			</javaformatter>
-				
-	</target>
-		
 
 </project>
