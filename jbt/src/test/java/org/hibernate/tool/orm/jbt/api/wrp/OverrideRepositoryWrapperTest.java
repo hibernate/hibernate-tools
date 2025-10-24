@@ -17,19 +17,16 @@
  */
 package org.hibernate.tool.orm.jbt.api.wrp;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.reveng.RevengStrategy;
+import org.hibernate.tool.api.reveng.TableIdentifier;
+import org.hibernate.tool.internal.export.common.GenericExporter;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
@@ -39,6 +36,8 @@ import org.hibernate.tool.orm.jbt.internal.factory.TableFilterWrapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class OverrideRepositoryWrapperTest {
 
 	private static final String HIBERNATE_REVERSE_ENGINEERING_XML =
@@ -47,7 +46,7 @@ public class OverrideRepositoryWrapperTest {
 			"      '-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN'         "+
 			"      'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>"+
 			"<hibernate-reverse-engineering>                                        "+
-			"    <table name='FOO'/>                                                "+
+			"    <table name='FOO' class='TheFoo'/>                                                "+
 			"</hibernate-reverse-engineering>                                       ";
 
 	private OverrideRepositoryWrapper overrideRepositoryWrapper = null;
@@ -72,20 +71,18 @@ public class OverrideRepositoryWrapperTest {
 		FileWriter fileWriter = new FileWriter(file);
 		fileWriter.write(HIBERNATE_REVERSE_ENGINEERING_XML);
 		fileWriter.close();
-		Field tablesField = wrappedOverrideRepository.getClass().getDeclaredField("tables");
-		tablesField.setAccessible(true);
-		Object object = tablesField.get(wrappedOverrideRepository);
-		List<?> tables = (List<?>)object;
-		assertNotNull(tables);
-		assertTrue(tables.isEmpty());
+		Field tableToClassNameField = wrappedOverrideRepository.getClass().getDeclaredField("tableToClassName");
+		tableToClassNameField.setAccessible(true);
+		Object object = tableToClassNameField.get(wrappedOverrideRepository);
+		Method getMethod = object.getClass().getDeclaredMethod("get", TableIdentifier.class);
+		assertNotNull(getMethod);
+		getMethod.setAccessible(true);
+		TableIdentifier ti = TableIdentifier.create(null, null, "FOO");
+		Object className = getMethod.invoke(object,ti);
+		assertNull(className);
 		overrideRepositoryWrapper.addFile(file);
-		object = tablesField.get(wrappedOverrideRepository);
-		tables = (List<?>)object;
-		assertNotNull(tables);
-		assertFalse(tables.isEmpty());
-		Table table = (Table)tables.get(0);
-		assertNotNull(table);
-		assertEquals("FOO", table.getName());
+		className = getMethod.invoke(object,ti);
+		assertEquals("TheFoo", className);
 	}
 	
 	@Test
