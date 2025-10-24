@@ -73,7 +73,7 @@ public class TestCase {
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
 		
-		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy();
 		formatter.formatFile( simpleOne );
 		
 		assertTrue(FileUtil
@@ -110,7 +110,7 @@ public class TestCase {
 		
 		assertFalse(log.contains("Exception"));
 				
-		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy(null);
+		DefaultJavaPrettyPrinterStrategy formatter = new DefaultJavaPrettyPrinterStrategy();
 		assertTrue(
 				formatter.formatFile(simple5One),
 				"formatting should pass when using default settings");
@@ -172,10 +172,10 @@ public class TestCase {
 
 		String log = AntUtil.getLog(project);
 		assertFalse(log.contains("Exception"));
-				
+
 		assertTrue(simpleOne.exists());
 		assertTrue(simple5One.exists());
-		
+
 		assertFalse(FileUtil
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
@@ -183,42 +183,20 @@ public class TestCase {
 				.findFirstString("public", simple5One)
 				.contains("Simple5One"));
 
-		project.executeTarget("configtest");
+		project.executeTarget("formatfiles");
 		log = AntUtil.getLog(project);
 		assertFalse(log.contains("Exception"));
-		
+
 		assertTrue(FileUtil
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
 		assertTrue(FileUtil
 				.findFirstString("public", simple5One)
 				.contains("Simple5One"));
-		
+
 		assertTrue(simpleOne.delete());
 		assertTrue(simple5One.delete());
-		
-		project.executeTarget("copyfiles");
-		log = AntUtil.getLog(project);
-		assertFalse(log.contains("Exception"));
 
-		assertFalse(FileUtil
-				.findFirstString("public", simpleOne)
-				.contains("SimpleOne"));
-		assertFalse(FileUtil
-				.findFirstString("public", simple5One)
-				.contains("Simple5One"));
-
-		project.executeTarget("noconfigtest");
-		log = AntUtil.getLog(project);
-		assertFalse(log.contains("Exception"));		
-		
-		assertTrue(FileUtil
-				.findFirstString("public", simpleOne)
-				.contains("SimpleOne"));
-		assertTrue(FileUtil
-				.findFirstString("public", simple5One)
-				.contains("Simple5One"));
-		
 	}
 
 }
