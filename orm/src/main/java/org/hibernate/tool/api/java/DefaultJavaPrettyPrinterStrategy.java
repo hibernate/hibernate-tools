@@ -9,8 +9,6 @@ import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 
 public class DefaultJavaPrettyPrinterStrategy {
-	
-	public DefaultJavaPrettyPrinterStrategy(Map<Object, Object> settings) {}
 
 	public boolean formatFile(File file) {
 		try {
@@ -23,5 +21,5 @@ public class DefaultJavaPrettyPrinterStrategy {
 			throw new RuntimeException(e);
 		}
 	}
-	
-}	
+
+}
