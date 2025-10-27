@@ -1,7 +1,6 @@
 package org.hibernate.tool.ide.completion;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -12,7 +11,16 @@ public class SubQuery implements Comparable<SubQuery> {
     public int compareTo(SubQuery s) {
         return startOffset - s.startOffset;
     }
-    
+
+    public boolean equals(Object s) {
+        if (!(s instanceof SubQuery)) return false;
+        return startOffset == ((SubQuery)s).startOffset;
+    }
+
+    public int hashCode() {
+        return startOffset;
+    }
+
     List<Integer> tokenIds = new ArrayList<Integer>();
 
     List<String> tokenText = new ArrayList<String>();
@@ -20,7 +28,7 @@ public class SubQuery implements Comparable<SubQuery> {
     int startOffset;
 
     int endOffset;
-    
+
     int depth;
 
     public int getTokenCount() {
@@ -43,19 +51,19 @@ public class SubQuery implements Comparable<SubQuery> {
         int i = 0;
         boolean cont = true;
         int lastToken = HqlLexer.EOF;
-        for (Iterator<Integer> iter = tokenIds.iterator(); iter.hasNext();) {
-			Integer typeInteger = (Integer) iter.next();
-			int type = typeInteger.intValue();
-			if (!cont) {
+        for ( Integer typeInteger : tokenIds ) {
+            int type = typeInteger;
+            if ( !cont ) {
                 break;
             }
-            if (!afterFrom &&
+            if ( !afterFrom &&
                     (type == HqlLexer.FROM ||
-                    type == HqlLexer.UPDATE ||
-                    type == HqlLexer.DELETE)) {
+                            type == HqlLexer.UPDATE ||
+                            type == HqlLexer.DELETE) ) {
                 afterFrom = true;
-            } else if (afterJoin) {
-                switch (type) {
+            }
+            else if ( afterJoin ) {
+                switch ( type ) {
                     case HqlLexer.ORDER:
                     case HqlLexer.WHERE:
                     case HqlLexer.GROUP:
@@ -67,23 +75,25 @@ public class SubQuery implements Comparable<SubQuery> {
                     case HqlLexer.LEFT:
                     case HqlLexer.RIGHT:
                     case HqlLexer.JOIN:
-                        joins.append(",");
+                        joins.append( "," );
                         break;
-                    case HqlLexer.COMMA: 
-                    	joins.append(","); //TODO: we should detect this and create the list directly instead of relying on the tokenizer
-                    	break;
+                    case HqlLexer.COMMA:
+                        joins.append(
+                                "," ); //TODO: we should detect this and create the list directly instead of relying on the tokenizer
+                        break;
                     case HqlLexer.DOT:
-                    	joins.append("."); 
-                    	break;
+                        joins.append( "." );
+                        break;
                     case HqlLexer.IDENTIFIER:
-                    	if(lastToken!=HqlLexer.DOT) {
-                    		joins.append(" ");
-                    	} 
-                        joins.append(tokenText.get(i));
+                        if ( lastToken != HqlLexer.DOT ) {
+                            joins.append( " " );
+                        }
+                        joins.append( tokenText.get( i ) );
                         break;
                 }
-            } else if (afterFrom) {
-                switch (type) {
+            }
+            else if ( afterFrom ) {
+                switch ( type ) {
                     case HqlLexer.ORDER:
                     case HqlLexer.WHERE:
                     case HqlLexer.GROUP:
@@ -91,24 +101,25 @@ public class SubQuery implements Comparable<SubQuery> {
                     case HqlLexer.SET:
                         cont = false;
                         break;
-                    case HqlLexer.COMMA: 
-                    	tableNames.append(","); //TODO: we should detect this and create the list directly instead of relying on the tokenizer
-                    	break;
+                    case HqlLexer.COMMA:
+                        tableNames.append(
+                                "," ); //TODO: we should detect this and create the list directly instead of relying on the tokenizer
+                        break;
                     case HqlLexer.DOT:
-                    	tableNames.append("."); 
-                    	break;
+                        tableNames.append( "." );
+                        break;
                     case HqlLexer.IDENTIFIER:
-                    	if(lastToken!=HqlLexer.DOT) {
-                    		tableNames.append(" ");
-                    	} 
-                        tableNames.append(tokenText.get(i));
+                        if ( lastToken != HqlLexer.DOT ) {
+                            tableNames.append( " " );
+                        }
+                        tableNames.append( tokenText.get( i ) );
                         break;
                     case HqlLexer.JOIN:
-                    	tableNames.append(",");
+                        tableNames.append( "," );
                         afterJoin = true;
                         break;
                     default:
-                    	break;
+                        break;
                 }
             }
             i++;
@@ -124,14 +135,14 @@ public class SubQuery implements Comparable<SubQuery> {
         StringTokenizer tableTokenizer = new StringTokenizer(tableNames.toString(), ",");
         while (tableTokenizer.hasMoreTokens()) {
             String table = tableTokenizer.nextToken().trim();
-            if (table.indexOf(' ') == -1 && table.length() > 0) {
+            if (table.indexOf(' ') == -1 && !table.isEmpty() ) {
                 tables.add(new EntityNameReference(table, table));
             } else {
                 StringTokenizer aliasTokenizer = new StringTokenizer(table, " ");
                 if (aliasTokenizer.countTokens() >= 2) {
                     String type = aliasTokenizer.nextToken().trim();
                     String alias = aliasTokenizer.nextToken().trim();
-                    if (type.length() > 0 && alias.length() > 0) {
+                    if ( !type.isEmpty() && !alias.isEmpty() ) {
                         tables.add(new EntityNameReference(type, alias));
                     }
                 }
