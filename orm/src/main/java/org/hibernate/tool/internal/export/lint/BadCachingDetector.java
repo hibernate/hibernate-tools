@@ -13,12 +13,12 @@ public class BadCachingDetector extends EntityModelDetector {
 	}	
 	
 	@Override
-	protected void visitProperty(PersistentClass clazz, Property property, IssueCollector collector) {
+	protected void visitProperty(Property property, IssueCollector collector) {
 		Value value = property.getValue();
 		
 		if(value instanceof Collection) {
-			Collection col = (Collection) value;
-			if(col.getCacheConcurrencyStrategy()!=null) { // caching is enabled
+            Collection col = (Collection) value;
+            if(col.getCacheConcurrencyStrategy()!=null) { // caching is enabled
 				if (!col.getElement().isSimpleValue()) {
 					String entityName = (String) col.getElement().accept( new EntityNameFromValueVisitor() );
 
