@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>48</version>
+        <version>51</version>
     </parent>
 
     <groupId>org.hibernate.tool</groupId>
