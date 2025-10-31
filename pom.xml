@@ -152,8 +152,6 @@
         <central.snapshots.repo.url>https://central.sonatype.com/repository/maven-snapshots/</central.snapshots.repo.url>
 
 
-    <!--    <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.source>17</maven.compiler.source> -->
         <maven.compiler.release>17</maven.compiler.release>
         <maven.min.version>${maven.version}</maven.min.version>
         <maven-core.version>${maven.version}</maven-core.version>
