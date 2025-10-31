@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>49</version>
+        <version>51</version>
     </parent>
     
     <groupId>org.hibernate</groupId>
@@ -144,8 +144,7 @@
         <central.snapshots.repo.name>Maven Central Snapshots Repository</central.snapshots.repo.name>
         <central.snapshots.repo.url>https://central.sonatype.com/repository/maven-snapshots/</central.snapshots.repo.url>
 
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.release>8</maven.compiler.release>
         <maven.min.version>${maven.version}</maven.min.version>
         <maven-core.version>${maven.version}</maven-core.version>
 
