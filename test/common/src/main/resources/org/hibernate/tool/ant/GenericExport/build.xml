@@ -17,8 +17,7 @@
 			</configuration>
 
 			<hbmtemplate 
-				templateprefix="pojo/" 
-				template="pojo/Pojo.ftl" 
+				template="pojo/Pojo.ftl"
 				filepattern="X{package-name}/{class-name}.java" 
 				foreach="entity">
 				<property key="jdk5" value="false" />
