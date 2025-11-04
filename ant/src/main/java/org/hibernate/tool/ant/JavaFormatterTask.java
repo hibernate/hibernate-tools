@@ -37,8 +37,8 @@ import org.hibernate.tool.api.java.DefaultJavaPrettyPrinterStrategy;
 
 public class JavaFormatterTask extends Task {
 	
-	private final List<FileSet> fileSets = new ArrayList<FileSet>();
-	private boolean failOnError;
+	final List<FileSet> fileSets = new ArrayList<FileSet>();
+	boolean failOnError;
 
 	public void addConfiguredFileSet(FileSet fileSet) {
 		fileSets.add(fileSet);
@@ -68,14 +68,17 @@ public class JavaFormatterTask extends Task {
                     if (!ok) {
                         failed++;
                         getProject().log(this, "Formatting failed - skipping " + file, Project.MSG_WARN);
-                    } else {
+                    }
+                    else {
                         getProject().log(this, "Formatted " + file, Project.MSG_VERBOSE);
                     }
-                } catch (RuntimeException ee) {
+                }
+                catch (RuntimeException ee) {
                     failed++;
                     if (failOnError) {
                         throw new BuildException("Java formatting failed on " + file, ee);
-                    } else {
+                    }
+                    else {
                         getProject().log(this, "Java formatting failed on " + file + ", " + ee.getLocalizedMessage(), Project.MSG_ERR);
                     }
                 }
@@ -104,7 +107,14 @@ public class JavaFormatterTask extends Task {
             }
         }
 
-		return (File[]) files.toArray(new File[0]);
+		return files.toArray(new File[0]);
 	}
+
+    public Object clone() throws CloneNotSupportedException {
+        JavaFormatterTask jft = (JavaFormatterTask) super.clone();
+        jft.fileSets.addAll(this.fileSets);
+        jft.failOnError = this.failOnError;
+        return jft;
+    }
 
 }

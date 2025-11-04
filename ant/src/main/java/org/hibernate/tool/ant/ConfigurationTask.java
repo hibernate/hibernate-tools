@@ -133,6 +133,7 @@ public class ConfigurationTask extends Task {
 	}
 
 	public void setNamingStrategy(String namingStrategy) {
+		log("setting unused naming strategy: " + namingStrategy);
 	}
 
 	@Override
