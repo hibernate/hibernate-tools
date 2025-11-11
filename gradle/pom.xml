@@ -243,6 +243,9 @@
                     <value>true</value>
                 </property>
             </activation>
+            <properties>
+                <deploy.publish.gradle.plugin>clean</deploy.publish.gradle.plugin>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -255,7 +258,7 @@
                                 <configuration>
                                     <executable>${gradle.executable}</executable>
                                     <arguments>
-                                        <argument>publishPlugins</argument>
+                                        <argument>${deploy.publish.gradle.plugin}</argument>
                                         <argument>publishPluginMavenPublicationToStagingRepository</argument>
                                         <argument>-PprojectVersion=${project.version}</argument>
                                         <argument>-Ph2Version=${h2.version}</argument>
@@ -272,6 +275,18 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>plugin-release</id>
+            <activation>
+                <property>
+                    <name>publishPlugin</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <deploy.publish.gradle.plugin>publishPlugins</deploy.publish.gradle.plugin>
+            </properties>
         </profile>
     </profiles>
 

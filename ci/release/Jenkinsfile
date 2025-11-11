@@ -95,7 +95,7 @@ pipeline {
 											 usernamePassword(credentialsId: 'central.sonatype.com', passwordVariable: 'JRELEASER_MAVENCENTRAL_TOKEN', usernameVariable: 'JRELEASER_MAVENCENTRAL_USERNAME'),
 											 usernamePassword(credentialsId: 'gradle-plugin-portal-api-key', passwordVariable: 'GRADLE_PUBLISH_SECRET', usernameVariable: 'GRADLE_PUBLISH_KEY'),
 											 string(credentialsId: 'Hibernate-CI.github.com', variable: 'JRELEASER_GITHUB_TOKEN')]) {
-								sshagent(['ed25519.Hibernate-CI.github.com', 'hibernate.filemgmt.jboss.org', 'hibernate-ci.frs.sourceforge.net']) {
+								sshagent(['ed25519.Hibernate-CI.github.com', 'hibernate-ci.frs.sourceforge.net']) {
 									sh 'cat $HOME/.ssh/config'
 									dir('.release/scripts') {
 										sh 'git clone https://github.com/hibernate/hibernate-release-scripts.git .'
