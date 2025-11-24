@@ -189,7 +189,7 @@
               </sources>
             </configuration>
           </execution>
-          <!-- add the examples as test resources -->
+          <!-- add the examples along with the other resources of the functional tests as test resources -->
           <execution>
             <id>add-test-resource</id>
             <phase>generate-test-resources</phase>
@@ -204,6 +204,9 @@
                     <!-- we will not use the Sakila database for the purpose of the integration test -->
                     <exclude>**/hibernate.properties</exclude>
                   </excludes>
+                </resource>
+                <resource>
+                    <directory>src/functionalTest/resources</directory>
                 </resource>
               </resources>
             </configuration>
