@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2004 - 2025 Red Hat, Inc.
   ~
@@ -13,19 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project name="configuration" default="reveng">
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
 
-  <!-- Include the 'hibernatetool' task definition from the file '../common/included.xml' -->
-  <include file="../common/included.xml"/>
+	<class name="Foo">
+		<id name="id" type="long">
+			<generator class="assigned"/>
+		</id>
+		<property name="name" type="string"/>
+	</class>
 
-  <target name="reveng" depends="common.clean">
-    <hibernatetool destdir="generated">
-      <!-- Native configuration reading properties from '../common/hibernate.properties' -->
-      <configuration propertyfile="../common/hibernate.properties"/>
-      <!-- Transform the 'hibernate.properties' file in 'hibernate.cfg.xml' -->
-      <hbm2cfgxml/>
-    </hibernatetool>
-  </target>
-
-</project>
-
+</hibernate-mapping>
