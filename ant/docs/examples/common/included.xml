@@ -28,10 +28,10 @@
             pathid="hibernate-tools.path"
             inline="true"/>
     <ivy:cachepath
-            organisation="javax"
-            module="javaee-api"
-            revision="${javaee-api.version}"
-            pathid="javaee-api.path"
+            organisation="jakarta.platform"
+            module="jakarta.jakartaee-api"
+            revision="${jakartaee-api.version}"
+            pathid="jakartaee-api.path"
             inline="true"/>
     <ivy:cachepath
             organisation="${jdbc-driver.org}"
@@ -42,7 +42,7 @@
 
     <path id="classpath">
         <path refid="hibernate-tools.path"/>
-        <path refid="javaee-api.path"/>
+        <path refid="jakartaee-api.path"/>
         <path refid="jdbc-driver.path"/>
         <path location="."/>
     </path>
