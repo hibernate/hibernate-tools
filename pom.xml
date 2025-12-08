@@ -111,7 +111,7 @@
         <hibernate-commons-annotations.version>7.0.3.Final</hibernate-commons-annotations.version>
         <hibernate-orm.version>7.2.0.CR3</hibernate-orm.version>
         <hsqldb.version>2.7.4</hsqldb.version>
-        <javaee-api.version>8.0.1</javaee-api.version>
+        <jakartaee-api.version>11.0.0</jakartaee-api.version>
         <jboss-logging.version>3.6.1.Final</jboss-logging.version>
         <junit-jupiter.version>6.0.0</junit-jupiter.version>
         <mysql.version>9.4.0</mysql.version>
@@ -201,9 +201,9 @@
    			    <version>${jakarta.xml.bind-api.version}</version>
 	        </dependency>
  		    <dependency>
-   			    <groupId>javax</groupId>
-   			    <artifactId>javaee-api</artifactId>
-   			    <version>${javaee-api.version}</version>
+   			    <groupId>jakarta.platform</groupId>
+   			    <artifactId>jakarta.jakartaee-api</artifactId>
+   			    <version>${jakartaee-api.version}</version>
    			    <scope>test</scope>
    		    </dependency>
 			<dependency>
