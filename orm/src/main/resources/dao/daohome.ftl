@@ -8,7 +8,7 @@ ${pojo.getPackageDeclaration()}
  * @author Hibernate Tools
  */
 <#if ejb3>
-@${pojo.importType("javax.ejb.Stateless")}
+@${pojo.importType("jakarta.ejb.Stateless")}
 </#if>
 public class ${declarationName}Home {
 
