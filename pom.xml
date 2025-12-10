@@ -117,9 +117,9 @@
 
         <!-- Plugins not managed by the JBoss parent POM: -->
         <maven-plugin-api.version>3.9.11</maven-plugin-api.version>
-        <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
-        <flatten-maven-plugin.version>1.7.2</flatten-maven-plugin.version>
+        <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
         <maven-wrapper-plugin.version>3.3.4</maven-wrapper-plugin.version>
+        <flatten-maven-plugin.version>1.7.2</flatten-maven-plugin.version>
         <maven-invoker-plugin.version>3.9.1</maven-invoker-plugin.version>
         <github-site-maven-plugin.version>0.12</github-site-maven-plugin.version>
         <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
