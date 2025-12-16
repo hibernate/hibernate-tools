@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-tests-parent</artifactId>
-        <version>7.1.12-SNAPSHOT</version>
+        <version>7.1.12.Final</version>
     </parent>
 
     <artifactId>hibernate-tools-tests-hsql</artifactId>
