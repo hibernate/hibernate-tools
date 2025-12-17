@@ -60,8 +60,7 @@ public class DbTestSuite {
 	@Nested public class AutoQuote extends org.hibernate.tool.jdbc2cfg.AutoQuote.TestCase {}
 	@Nested public class Basic extends org.hibernate.tool.jdbc2cfg.Basic.TestCase {}
 	@Nested public class BasicMultiSchema extends org.hibernate.tool.jdbc2cfg.BasicMultiSchema.TestCase {}
-	// TODO HBX-2561: Reenable the test below
-	@Disabled @Nested public class CompositeId extends org.hibernate.tool.jdbc2cfg.CompositeId.TestCase {}
+	@Nested public class CompositeId extends org.hibernate.tool.jdbc2cfg.CompositeId.TestCase {}
 	@Nested public class ForeignKeys extends org.hibernate.tool.jdbc2cfg.ForeignKeys.TestCase {}
 	@Nested public class Identity extends org.hibernate.tool.jdbc2cfg.Identity.TestCase {}
 	@Nested public class Index extends org.hibernate.tool.jdbc2cfg.Index.TestCase {}
@@ -69,14 +68,11 @@ public class DbTestSuite {
 	@Nested public class ManyToMany extends org.hibernate.tool.jdbc2cfg.ManyToMany.TestCase {}
 	@Nested public class MetaData extends org.hibernate.tool.jdbc2cfg.MetaData.TestCase {}
 	@Nested public class NoPrimaryKey extends org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase {}
-	// TODO HBX-2561: Reenable the test below
-	@Disabled @Nested public class OneToOne extends org.hibernate.tool.jdbc2cfg.OneToOne.TestCase {}
-	// TODO HBX-2561: Reenable the test below
-	@Disabled @Nested public class OverrideBinder extends org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase {}
+	@Nested public class OneToOne extends org.hibernate.tool.jdbc2cfg.OneToOne.TestCase {}
+	@Nested public class OverrideBinder extends org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase {}
 	@Nested public class Performance extends org.hibernate.tool.jdbc2cfg.Performance.TestCase {}
 	@Nested public class PersistentClasses extends org.hibernate.tool.jdbc2cfg.PersistentClasses.TestCase {}
-	// TODO HBX-2561: Reenable the test below
-	@Disabled @Nested public class RevEngForeignKey extends org.hibernate.tool.jdbc2cfg.RevEngForeignKey.TestCase {}
+	@Nested public class RevEngForeignKey extends org.hibernate.tool.jdbc2cfg.RevEngForeignKey.TestCase {}
 	@Nested public class SearchEscapeString extends org.hibernate.tool.jdbc2cfg.SearchEscapeString.TestCase {}
 	@Nested public class TernarySchema extends org.hibernate.tool.jdbc2cfg.TernarySchema.TestCase {}
 	@Nested public class Versioning extends org.hibernate.tool.jdbc2cfg.Versioning.TestCase {}
