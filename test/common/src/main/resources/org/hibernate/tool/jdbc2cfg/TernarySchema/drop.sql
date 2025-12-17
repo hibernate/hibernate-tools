@@ -15,11 +15,10 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 ############################################################################
-DROP TABLE HTT.PLAINUSERROLES
-DROP TABLE HTT.PLAINROLE
-DROP TABLE THIRDSCHEMA.USERROLES
-DROP TABLE HTT.USERS
+DROP TABLE PUBLIC.PLAINMEMBERROLE
+DROP TABLE PUBLIC.PLAINROLE
+DROP TABLE THIRDSCHEMA.MEMBERROLE
+DROP TABLE PUBLIC.MEMBER
 DROP TABLE OTHERSCHEMA.ROLE
 DROP SCHEMA OTHERSCHEMA
 DROP SCHEMA THIRDSCHEMA
-DROP SCHEMA HTT
