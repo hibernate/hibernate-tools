@@ -19,13 +19,10 @@
  */
 package org.hibernate.tool.jdbc2cfg.TernarySchema;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -41,101 +38,106 @@ import org.hibernate.tools.test.util.JUnitUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
  * @author koen
  */
 public class TestCase {
-	
-	@TempDir
-	public File outputFolder = new File("temp");
-	
-	private MetadataDescriptor metadataDescriptor = null;
 
-	@BeforeEach
-	public void setUp() {
-		JdbcUtil.createDatabase(this);
-		DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
-			public List<SchemaSelection> getSchemaSelections() {
-				List<SchemaSelection> selections = new ArrayList<SchemaSelection>();
-				selections.add(new SchemaSelection(null, "HTT"));
-				selections.add(new SchemaSelection(null, "OTHERSCHEMA"));
-				selections.add(new SchemaSelection(null, "THIRDSCHEMA"));
-				return selections;
-			}
-		};           
-	    metadataDescriptor = MetadataDescriptorFactory
-	    		.createJdbcDescriptor(c, null, true);
-	}
+    @TempDir
+    public File outputFolder = new File("output");
 
-	@AfterEach
-	public void tearDown() {
-		JdbcUtil.dropDatabase(this);
-	}
+    private MetadataDescriptor metadataDescriptor = null;
 
-	// TODO Investigate the ignored test: HBX-1410
-	@Disabled 
-	@Test
-	public void testTernaryModel() throws SQLException {
-		assertMultiSchema(metadataDescriptor.createMetadata());	
-	}
+    @BeforeEach
+    public void setUp() {
+        JdbcUtil.createDatabase(this);
+        DefaultReverseEngineeringStrategy c = new DefaultReverseEngineeringStrategy() {
+            public List<SchemaSelection> getSchemaSelections() {
+                List<SchemaSelection> selections = new ArrayList<>();
+                selections.add(createSchemaSelection("PUBLIC"));
+                selections.add(createSchemaSelection("OTHERSCHEMA"));
+                selections.add(createSchemaSelection("THIRDSCHEMA"));
+                return selections;
+            }
+        };
+        metadataDescriptor = MetadataDescriptorFactory
+                .createJdbcDescriptor(c, null, true);
+    }
 
-	// TODO Investigate the ignored test: HBX-1410
-	@Disabled
-	@Test
-	public void testGeneration() {		
-		HibernateMappingExporter hme = new HibernateMappingExporter();
-		hme.setMetadataDescriptor(metadataDescriptor);
-		hme.setOutputDirectory(outputFolder);
-		hme.start();			
-		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "User.hbm.xml") );
-		JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
-		assertEquals(3, outputFolder.listFiles().length);
-		File[] files = new File[3];
-		files[0] = new File(outputFolder, "Role.hbm.xml");
-		files[0] = new File(outputFolder, "User.hbm.xml");
-		files[0] = new File(outputFolder, "Plainrole.hbm.xml");
-		assertMultiSchema(MetadataDescriptorFactory
-				.createNativeDescriptor(null, files, null)
-				.createMetadata());
-	}
-	
-	private void assertMultiSchema(Metadata metadata) {
-		JUnitUtil.assertIteratorContainsExactly(
-				"There should be five tables!", 
-				metadata.getEntityBindings().iterator(), 
-				5);
-		final PersistentClass role = metadata.getEntityBinding("Role");
-		assertNotNull(role);
-		PersistentClass userroles = metadata.getEntityBinding("Userroles");
-		assertNotNull(userroles);
-		PersistentClass user = metadata.getEntityBinding("User");
-		assertNotNull(user);
-		PersistentClass plainRole = metadata.getEntityBinding("Plainrole");
-		assertNotNull(plainRole);
-		Property property = role.getProperty("users");
-		assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
-		assertNotNull(property);
-		property.getValue().accept(new DefaultValueVisitor(true) {
-			public Object accept(Set o) {
-				assertEquals(o.getCollectionTable().getSchema(), "THIRDSCHEMA");
-				return null;
-			}
-		});
-		property = plainRole.getProperty("users");
-		assertEquals(role.getTable().getSchema(), "OTHERSCHEMA");
-		assertNotNull(property);
-		property.getValue().accept(new DefaultValueVisitor(true) {
-			public Object accept(Set o) {
-				assertEquals(o.getCollectionTable().getSchema(), null);
-				return null;
-			}
-		});
-	}	
-	
+    @AfterEach
+    public void tearDown() {
+        JdbcUtil.dropDatabase(this);
+    }
+
+    @Test
+    public void testTernaryModel() {
+        assertMultiSchema(metadataDescriptor.createMetadata());
+    }
+
+    @Test
+    public void testGeneration() {
+        HibernateMappingExporter hme = new HibernateMappingExporter();
+        hme.setMetadataDescriptor(metadataDescriptor);
+        hme.setOutputDirectory(outputFolder);
+        hme.start();
+        JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Role.hbm.xml") );
+        JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Member.hbm.xml") );
+        JUnitUtil.assertIsNonEmptyFile( new File(outputFolder, "Plainrole.hbm.xml") );
+        assertEquals(3, Objects.requireNonNull( outputFolder.listFiles() ).length);
+        File[] files = new File[3];
+        files[0] = new File(outputFolder, "Role.hbm.xml");
+        files[1] = new File(outputFolder, "Member.hbm.xml");
+        files[2] = new File(outputFolder, "Plainrole.hbm.xml");
+        assertMultiSchema(MetadataDescriptorFactory
+                .createNativeDescriptor(null, files, null)
+                .createMetadata());
+    }
+
+    private void assertMultiSchema(Metadata metadata) {
+        JUnitUtil.assertIteratorContainsExactly(
+                "There should be three entities!",
+                metadata.getEntityBindings().iterator(),
+                3);
+        final PersistentClass role = metadata.getEntityBinding("Role");
+        assertNotNull(role);
+        PersistentClass member = metadata.getEntityBinding("Member");
+        assertNotNull(member);
+        PersistentClass plainRole = metadata.getEntityBinding("Plainrole");
+        assertNotNull(plainRole);
+        Property property = role.getProperty("members");
+        assertEquals( "OTHERSCHEMA", role.getTable().getSchema() );
+        assertNotNull(property);
+        property.getValue().accept(new DefaultValueVisitor(true) {
+            public Object accept(Set o) {
+                assertEquals( "THIRDSCHEMA", o.getCollectionTable().getSchema() );
+                return null;
+            }
+        });
+        property = plainRole.getProperty("members");
+        assertEquals( "OTHERSCHEMA", role.getTable().getSchema() );
+        assertNotNull(property);
+    }
+
+    private SchemaSelection createSchemaSelection(String matchSchema) {
+        return new SchemaSelection() {
+            @Override
+            public String getMatchCatalog() {
+                return null;
+            }
+            @Override
+            public String getMatchSchema() {
+                return matchSchema;
+            }
+            @Override
+            public String getMatchTable() {
+                return null;
+            }
+        };
+    }
 }
