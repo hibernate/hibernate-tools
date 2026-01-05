@@ -17,12 +17,6 @@
  */
 package org.hibernate.tool.jdbc2cfg.Versioning;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -31,18 +25,42 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
+import org.hibernate.tool.test.utils.TestTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * To be extended by VersioningForJDK50Test for the JPA generation part
  * @author max
  * @author koen
  */
-public class TestCase {
+public class TestCase extends TestTemplate {
+
+    private static String[] CREATE_SQLS = {
+            "CREATE TABLE WITH_VERSION (ONE INT, TWO INT, VERSION INT, NAME VARCHAR(256), PRIMARY KEY (ONE))",
+            "CREATE TABLE NO_VERSION (ONE INT, TWO INT, NAME VARCHAR(256), PRIMARY KEY (TWO))",
+            "CREATE TABLE WITH_REAL_TIMESTAMP (ONE INT, TWO INT, DBTIMESTAMP TIMESTAMP, NAME VARCHAR(256), PRIMARY KEY (ONE))",
+            "CREATE TABLE WITH_FAKE_TIMESTAMP (ONE INT, TWO INT, DBTIMESTAMP INT, NAME VARCHAR(256), PRIMARY KEY (ONE))"
+    };
+
+    private static String[] DROP_SQLS = {
+            "DROP TABLE WITH_VERSION",
+            "DROP TABLE NO_VERSION",
+            "DROP TABLE WITH_REAL_TIMESTAMP",
+            "DROP TABLE WITH_FAKE_TIMESTAMP"
+    };
+
+    private static String[] HIBERNATE_PROPERTIES = {
+            "hibernate.connection.url",
+            "hibernate.connection.username",
+    };
 	
 	private Metadata metadata = null;
 	private MetadataDescriptor metadataDescriptor = null;
@@ -61,7 +79,7 @@ public class TestCase {
 
 	@AfterEach
 	public void tearDown() {
-		JdbcUtil.dropDatabase(this);;
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
