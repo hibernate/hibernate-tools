@@ -17,20 +17,18 @@
  */
 package org.hibernate.tool.jdbc2cfg.SearchEscapeString;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.sql.SQLException;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author max
@@ -54,9 +52,9 @@ public class TestCase {
 	}
 
 	@Test
-	public void testBasic() throws SQLException {
+	public void testBasic() {
 
-		JUnitUtil.assertIteratorContainsExactly( 
+		JUnitUtil.assertIteratorContainsExactly(
 				"There should be 2 tables!", 
 				metadata.collectTableMappings().iterator(),
 				2);
@@ -67,8 +65,8 @@ public class TestCase {
 		assertNotNull(table);
 		assertNotNull(table2);
 		
-		assertEquals(table.getColumnSpan(), 2);
-		assertEquals(table2.getColumnSpan(), 2);
+		assertEquals(2, table.getColumnSpan());
+		assertEquals(2, table2.getColumnSpan());
 		
 	}
 
