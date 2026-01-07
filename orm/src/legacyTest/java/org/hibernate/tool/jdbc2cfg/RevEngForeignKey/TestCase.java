@@ -17,13 +17,6 @@
  */
 package org.hibernate.tool.jdbc2cfg.RevEngForeignKey;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.net.MalformedURLException;
-
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
@@ -33,10 +26,12 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -45,7 +40,7 @@ import org.junit.jupiter.api.Test;
 public class TestCase {
 	
 	private static final String FOREIGN_KEY_TEST_XML = "org/hibernate/tool/jdbc2cfg/RevEngForeignKey/foreignkeytest.reveng.xml";
-	private static final String BAD_FOREIGNKEY_XML = "org/hibernate/tool/jdbc2cfg/RevEngForeignKey/badforeignkeytest.reveng.xml";
+	private static final String BAD_FOREIGN_KEY_XML = "org/hibernate/tool/jdbc2cfg/RevEngForeignKey/badforeignkeytest.reveng.xml";
 	
 	@BeforeEach
 	public void setUp() {
@@ -94,7 +89,7 @@ public class TestCase {
 		assertPropertyNotExists(project, "employee", "should be removed by reveng.xml");
 		Property property = project.getProperty("teamLead");
 		assertNotNull(property);
-		assertTrue(property.getValue() instanceof SimpleValue);
+        assertInstanceOf(SimpleValue.class, property.getValue());
 		assertEquals(3, project.getPropertyClosureSpan());		
 		assertEquals("projectId", project.getIdentifierProperty().getName());
 		PersistentClass employee = metadata.getEntityBinding("Employee");	
@@ -114,7 +109,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testOneToOne() throws MalformedURLException, ClassNotFoundException {
+	public void testOneToOne() {
 		OverrideRepository or = new OverrideRepository();
 		or.addResource(FOREIGN_KEY_TEST_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultStrategy());
@@ -129,7 +124,7 @@ public class TestCase {
 		assertPropertyNotExists(person, "addressPerson", "should be removed by reveng.xml");	
 		Property property = addressMultiPerson.getProperty("renamedOne");
 		assertNotNull(property);	
-		assertEquals("delete", property.getCascade(), "Casade should be set to delete by reveng.xml");
+		assertEquals("delete", property.getCascade(), "Cascade should be set to delete by reveng.xml");
 		assertPropertyNotExists(multiPerson, "addressMultiPerson", "should not be there");
 		Property o2o = multiPerson.getProperty("renamedInversedOne");
 		assertNotNull(o2o);
@@ -141,14 +136,14 @@ public class TestCase {
 	public void testDuplicateForeignKeyDefinition() {
 		try {
 			OverrideRepository or = new OverrideRepository();
-			or.addResource(BAD_FOREIGNKEY_XML);
+			or.addResource(BAD_FOREIGN_KEY_XML);
 			RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultStrategy());
 			MetadataDescriptorFactory
 					.createReverseEngineeringDescriptor(repository, null)
 					.createMetadata();
-			fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now we error. 
+			fail("Should fail because foreign key is already defined in the database"); // maybe we should ignore the definition and only listen to what is overwritten ? For now, we error.
 		} catch(MappingException me) {
-			assertTrue(me.getMessage().indexOf("already defined")>=0);			
+			assertTrue(me.getMessage().contains("already defined"));
 		}		
 	}
 
@@ -160,8 +155,8 @@ public class TestCase {
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("employee");	
 		assertEquals("none", property.getCascade());
-		assertEquals(true, property.isUpdateable());
-		assertEquals(true, property.isInsertable());
+        assertTrue(property.isUpdatable());
+        assertTrue(property.isInsertable());
 		assertEquals("SELECT", property.getValue().getFetchMode().toString());
 	}
 	
@@ -176,8 +171,8 @@ public class TestCase {
 		PersistentClass classMapping = metadata.getEntityBinding("Employee");
 		Property property = classMapping.getProperty("manager");	
 		assertEquals("all", property.getCascade());
-		assertEquals(false, property.isUpdateable());
-		assertEquals(false, property.isInsertable());
+        assertFalse(property.isUpdatable());
+        assertFalse(property.isInsertable());
 		assertEquals("JOIN", property.getValue().getFetchMode().toString());
 	}	
 
@@ -185,9 +180,7 @@ public class TestCase {
 		try {
 			employee.getProperty(name);
 			fail(msg);
-		} catch(MappingException me) {
-			// excpected
-		}
+		} catch(MappingException ignored) {}
 	}
 
 }
