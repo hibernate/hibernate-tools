@@ -30,8 +30,8 @@ public class Orders {
 
     String name;
 
-    Set<Item> items = new HashSet<Item>();
-    Set<Item> items_1 = new HashSet<Item>();
+    Set<Item> items = new HashSet<>();
+    Set<Item> items_1 = new HashSet<>();
     
 
     /**

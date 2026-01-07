@@ -17,35 +17,21 @@
  */
 package org.hibernate.tool.jdbc2cfg.PersistentClasses;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.sql.SQLException;
-
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Set;
+import org.hibernate.mapping.*;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -99,15 +85,15 @@ public class TestCase {
 		Property itemset = orders.getProperty("itemsForRelatedOrderId");	
 		Collection col = (Collection) itemset.getValue();         
 		OneToMany otm = (OneToMany) col.getElement();
-        assertEquals(otm.getReferencedEntityName(), PACKAGE_NAME + ".Item");
-        assertEquals(otm.getAssociatedClass().getClassName(), PACKAGE_NAME + ".Item");
-        assertEquals(otm.getTable().getName(), "ORDERS");        
-		assertNotNull(itemset);		
-		assertTrue(itemset.getValue() instanceof Set);		
+        assertEquals(PACKAGE_NAME + ".Item", otm.getReferencedEntityName());
+        assertEquals(PACKAGE_NAME + ".Item", otm.getAssociatedClass().getClassName());
+        assertEquals("ORDERS", otm.getTable().getName());
+		assertNotNull(itemset);
+        assertInstanceOf(Set.class, itemset.getValue());
 	}
 	
 	@Test
-	public void testBinding() throws HibernateException, SQLException {	
+	public void testBinding() throws HibernateException {
 		
 		String schemaToUse = Environment
 				.getProperties()
@@ -122,7 +108,7 @@ public class TestCase {
         Transaction t = session.beginTransaction();
 	
         Orders order = new Orders();
-		order.setId(Integer.valueOf(1) );
+		order.setId(1);
 		order.setName("Mickey");
 		
 		session.merge(order);
@@ -140,7 +126,7 @@ public class TestCase {
 		session = sf.openSession();
 		t = session.beginTransaction();
 		
-		Item loadeditem = (Item) session.get(PACKAGE_NAME + ".Item", Integer.valueOf(42) );
+		Item loadeditem = (Item) session.find(PACKAGE_NAME + ".Item", 42);
 		
 		assertEquals(item.getName(),loadeditem.getName() );
         assertEquals(item.getChildId(),loadeditem.getChildId() );
@@ -158,7 +144,7 @@ public class TestCase {
         session = sf.openSession();
 		t = session.beginTransaction();
         
-		order = (Orders) session.getReference(Orders.class, Integer.valueOf(1) );
+		order = session.getReference(Orders.class, 1);
         assertFalse(Hibernate.isInitialized(order) );
         assertFalse(Hibernate.isInitialized(order.getItemsForOrderId() ) );
         
@@ -172,7 +158,7 @@ public class TestCase {
 
 	private Item addItem(Orders m, int itemid, String name) {
         Item item = new Item();
-        item.setChildId(Integer.valueOf(itemid) );
+        item.setChildId(itemid);
         item.setOrderId(m);
         item.setName(name);
         item.setOrdersByRelatedOrderId(m);
