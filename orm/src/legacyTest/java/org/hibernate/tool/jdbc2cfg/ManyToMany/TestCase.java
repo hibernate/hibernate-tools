@@ -17,15 +17,6 @@
  */
 package org.hibernate.tool.jdbc2cfg.ManyToMany;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-
 import org.hibernate.MappingException;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
@@ -37,11 +28,16 @@ import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -110,10 +106,16 @@ public class TestCase {
 
 		PersistentClass employeeClass = metadata.getEntityBinding("Employee");
 		assertNotNull( employeeClass );
-				
-		assertPropertyNotExist( projectClass, "worksOns" );
-		assertPropertyNotExist( employeeClass, "worksOns" );
-		
+
+		try {
+			projectClass.getProperty("worksOns");
+			fail("property worksOns should not exist on " + projectClass);
+		} catch(MappingException ignored) {}
+		try {
+			employeeClass.getProperty("worksOns");
+			fail("property worksOns should not exist on " + employeeClass);
+		} catch(MappingException ignored) {}
+
         Property property = employeeClass.getProperty( "projects" );
 		assertNotNull( property);
 		assertNotNull( projectClass.getProperty( "employees" ));				
@@ -133,7 +135,7 @@ public class TestCase {
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
-		assertNotNull(metadata);	
+		assertNotNull(metadata);
 	}
 	
 	@Test
@@ -159,7 +161,7 @@ public class TestCase {
 		
 		assertFalse(new File(outputDir, "WorksOn.hbm.xml").exists() );
 		
-		assertEquals(6, outputDir.listFiles().length);
+		assertEquals(6, Objects.requireNonNull(outputDir.listFiles()).length);
 		
 		File[] files = new File[3];
 		files[0] = new File(outputDir, "Employee.hbm.xml");
@@ -173,15 +175,6 @@ public class TestCase {
 	}
 	
 
-	private void assertPropertyNotExist(PersistentClass projectClass, String prop) {
-		try {
-			projectClass.getProperty(prop);
-			fail("property " + prop + " should not exist on " + projectClass);
-		} catch(MappingException e) {
-			// expected
-		}
-	}
-	
 	private void assertFileAndExists(File file) {
 		assertTrue(file.exists(), file + " does not exist");
 		assertTrue(file.isFile(), file + " not a file");		
