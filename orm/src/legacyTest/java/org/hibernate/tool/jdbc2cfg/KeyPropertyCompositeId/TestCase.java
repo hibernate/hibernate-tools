@@ -17,30 +17,10 @@
  */
 package org.hibernate.tool.jdbc2cfg.KeyPropertyCompositeId;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.Table;
+import org.hibernate.mapping.*;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
@@ -52,13 +32,23 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JavaUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -84,7 +74,7 @@ public class TestCase {
 
 	@AfterEach
 	public void tearDown() {
-		JdbcUtil.dropDatabase(this);;
+		JdbcUtil.dropDatabase(this);
 	}
 
 	@Test
@@ -102,20 +92,20 @@ public class TestCase {
 				foreignKey.getReferencedEntityName());
 		assertEquals(JdbcUtil.toIdentifier(this, "LINE_ITEM"), foreignKey.getTable().getName());
 		assertEquals(2, foreignKey.getColumnSpan());
-		assertEquals(foreignKey.getColumn(0).getName(), "CUSTOMER_ID_REF");
-		assertEquals(foreignKey.getColumn(1).getName(), "ORDER_NUMBER");
+		assertEquals("CUSTOMER_ID_REF", foreignKey.getColumn(0).getName());
+		assertEquals("ORDER_NUMBER", foreignKey.getColumn(1).getName());
 		Table tab = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"));
-		assertEquals(tab.getPrimaryKey().getColumn(0).getName(), "CUSTOMER_ID");
-		assertEquals(tab.getPrimaryKey().getColumn(1).getName(), "ORDER_NUMBER");
+		assertEquals("CUSTOMER_ID", tab.getPrimaryKey().getColumn(0).getName());
+		assertEquals("ORDER_NUMBER", tab.getPrimaryKey().getColumn(1).getName());
 		PersistentClass lineMapping = metadata.getEntityBinding(
 				reverseEngineeringStrategy
 					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "LINE_ITEM"))));
 		assertEquals(4, lineMapping.getIdentifier().getColumnSpan());
 		Iterator<Column> columnIterator = lineMapping.getIdentifier().getColumns().iterator();
-		assertEquals(((Column) (columnIterator.next())).getName(), "CUSTOMER_ID_REF");
-		assertEquals(((Column) (columnIterator.next())).getName(), "ORDER_NUMBER");
+		assertEquals("CUSTOMER_ID_REF", columnIterator.next().getName());
+		assertEquals("ORDER_NUMBER", columnIterator.next().getName());
 	}
 
 	@Test
@@ -124,7 +114,7 @@ public class TestCase {
 				reverseEngineeringStrategy
 					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "CUSTOMER_ORDER"))));
 		Property identifierProperty = product.getIdentifierProperty();
-		assertTrue(identifierProperty.getValue() instanceof Component);
+        assertInstanceOf(Component.class, identifierProperty.getValue());
 		Component cmpid = (Component) identifierProperty.getValue();
 		assertEquals(2, cmpid.getPropertySpan());
 		Iterator<?> iter = cmpid.getProperties().iterator();
@@ -140,7 +130,7 @@ public class TestCase {
 						null, 
 						"orderNumber"),
 				extraId.getName());
-		assertTrue(id.getValue() instanceof ManyToOne);
+        assertInstanceOf(ManyToOne.class, id.getValue());
 		assertFalse(extraId.getValue() instanceof ManyToOne);
 	}
 
@@ -150,7 +140,7 @@ public class TestCase {
 				reverseEngineeringStrategy
 					.tableToClassName(TableIdentifier.create(null, null, JdbcUtil.toIdentifier(this, "PRODUCT"))));
 		Property identifierProperty = product.getIdentifierProperty();
-		assertTrue(identifierProperty.getValue() instanceof Component);
+        assertInstanceOf(Component.class, identifierProperty.getValue());
 		Component cmpid = (Component) identifierProperty.getValue();
 		assertEquals(2, cmpid.getPropertySpan());
 		Iterator<?> iter = cmpid.getProperties().iterator();
@@ -201,16 +191,16 @@ public class TestCase {
 				.createMetadata()
 				.buildSessionFactory();
 		Session session = factory.openSession();
-		JdbcUtil.populateDatabase(this);;
+		JdbcUtil.populateDatabase(this);
 		session.createQuery("from LineItem", null).getResultList();
 		List<?> list = session.createQuery("from Product", null).getResultList();
 		assertEquals(2, list.size());
 		list = session
 				.createQuery("select li.id.customerOrder.id from LineItem as li", null)
 				.getResultList();
-		assertTrue(list.size() > 0);
+        assertFalse(list.isEmpty());
 		Class<?> productIdClass = ucl.loadClass("ProductId");
-		Constructor<?> productIdConstructor = productIdClass.getConstructor(new Class[] {});
+		Constructor<?> productIdConstructor = productIdClass.getConstructor();
 		Object object = productIdConstructor.newInstance();
 		int hash = -1;
 		try {
@@ -218,7 +208,7 @@ public class TestCase {
 		} catch (Throwable t) {
 			fail("Hashcode on new instance should not fail " + t);
 		}
-		assertFalse(hash == System.identityHashCode(object), "hashcode should be different from system");
+        assertNotEquals(hash, System.identityHashCode(object), "hashcode should be different from system");
 		factory.close();
 		Thread.currentThread().setContextClassLoader(ucl.getParent());
 	}
