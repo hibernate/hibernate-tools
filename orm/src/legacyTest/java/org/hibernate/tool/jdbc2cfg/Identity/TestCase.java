@@ -17,19 +17,16 @@
  */
 package org.hibernate.tool.jdbc2cfg.Identity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.sql.SQLException;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.reveng.util.EnhancedValue;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -53,7 +50,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testIdentity() throws SQLException {
+	public void testIdentity() {
 
 		PersistentClass classMapping = metadata.getEntityBinding("Autoinc");
 		assertNotNull(classMapping);
