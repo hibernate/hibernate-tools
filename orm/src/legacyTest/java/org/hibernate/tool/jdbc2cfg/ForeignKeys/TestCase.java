@@ -17,15 +17,6 @@
  */
 package org.hibernate.tool.jdbc2cfg.ForeignKeys;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import java.util.EnumSet;
-import java.util.Iterator;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -36,12 +27,17 @@ import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.EnumSet;
+import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -63,7 +59,7 @@ public class TestCase {
 
 	@AfterEach
 	public void tearDown() {
-		JdbcUtil.dropDatabase(this);;
+		JdbcUtil.dropDatabase(this);
 	}	
 	
 	@Test
@@ -99,7 +95,7 @@ public class TestCase {
 				HibernateUtil.getForeignKey(
 						table, 
 						JdbcUtil.toIdentifier(this, "DUMMY") ) );
-		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeys().values().iterator(), 3);
+		JUnitUtil.assertIteratorContainsExactly(null, table.getForeignKeyCollection().iterator(), 3);
 	}
 	
 	@Test
@@ -110,7 +106,7 @@ public class TestCase {
 		Table child = HibernateUtil.getTable(
 				metadata, 
 				JdbcUtil.toIdentifier(this, "CHILD") );	
-		Iterator<?> iterator = child.getForeignKeys().values().iterator();		
+		Iterator<?> iterator = child.getForeignKeyCollection().iterator();
 		ForeignKey fk = (ForeignKey) iterator.next();		
 		assertFalse(iterator.hasNext(), "should only be one fk" );	
 		assertEquals(1, fk.getColumnSpan() );
