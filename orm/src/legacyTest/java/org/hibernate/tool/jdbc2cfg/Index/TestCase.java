@@ -17,25 +17,18 @@
  */
 package org.hibernate.tool.jdbc2cfg.Index;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Iterator;
-
 import org.hibernate.boot.Metadata;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Index;
-import org.hibernate.mapping.Table;
-import org.hibernate.mapping.UniqueKey;
+import org.hibernate.mapping.*;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -69,7 +62,7 @@ public class TestCase {
 		assertEquals(1, uniqueKey.getColumnSpan() );	
 		Column keyCol = uniqueKey.getColumn(0);
 		assertTrue(keyCol.isUnique() );
-		assertSame(keyCol, table.getColumn(keyCol) );		
+		assertSame(keyCol, table.getColumn(keyCol) );
 	}
 	
 	@Test
@@ -95,9 +88,9 @@ public class TestCase {
 				JdbcUtil.toIdentifier(this, index.getName()));	
 		assertEquals(2, index.getColumnSpan() );	
 		assertSame(index.getTable(), table);
-		Iterator<Column> cols = index.getColumns().iterator();
-		Column col1 = cols.next();
-		Column col2 = cols.next();	
+		Iterator<Selectable> cols = index.getSelectables().iterator();
+		Column col1 = (Column)cols.next();
+		Column col2 = (Column)cols.next();
 		assertEquals(
 				JdbcUtil.toIdentifier(this, "ONE"), 
 				JdbcUtil.toIdentifier(this, col1.getName()));

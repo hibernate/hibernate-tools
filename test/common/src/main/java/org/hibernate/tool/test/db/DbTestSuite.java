@@ -61,7 +61,6 @@ public class DbTestSuite {
 	@Nested public class CompositeId extends org.hibernate.tool.jdbc2cfg.CompositeId.TestCase {}
 	@Nested public class ForeignKeys extends org.hibernate.tool.jdbc2cfg.ForeignKeys.TestCase {}
 	@Nested public class Identity extends org.hibernate.tool.jdbc2cfg.Identity.TestCase {}
-	@Nested public class Index extends org.hibernate.tool.jdbc2cfg.Index.TestCase {}
 	@Nested public class Statistics extends org.hibernate.tool.stat.Statistics.TestCase {}
 
 }
