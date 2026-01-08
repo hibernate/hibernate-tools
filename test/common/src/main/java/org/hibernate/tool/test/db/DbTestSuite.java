@@ -65,7 +65,6 @@ public class DbTestSuite {
 	@Nested public class KeyPropertyCompositeId extends org.hibernate.tool.jdbc2cfg.KeyPropertyCompositeId.TestCase {}
 	@Nested public class ManyToMany extends org.hibernate.tool.jdbc2cfg.ManyToMany.TestCase {}
 	@Nested public class MetaData extends org.hibernate.tool.jdbc2cfg.MetaData.TestCase {}
-	@Nested public class NoPrimaryKey extends org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase {}
 	@Nested public class Statistics extends org.hibernate.tool.stat.Statistics.TestCase {}
 
 }
