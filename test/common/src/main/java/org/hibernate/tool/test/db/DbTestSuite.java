@@ -67,7 +67,6 @@ public class DbTestSuite {
 	@Nested public class MetaData extends org.hibernate.tool.jdbc2cfg.MetaData.TestCase {}
 	@Nested public class NoPrimaryKey extends org.hibernate.tool.jdbc2cfg.NoPrimaryKey.TestCase {}
 	@Nested public class OneToOne extends org.hibernate.tool.jdbc2cfg.OneToOne.TestCase {}
-	@Nested public class OverrideBinder extends org.hibernate.tool.jdbc2cfg.OverrideBinder.TestCase {}
 	@Nested public class Statistics extends org.hibernate.tool.stat.Statistics.TestCase {}
 
 }

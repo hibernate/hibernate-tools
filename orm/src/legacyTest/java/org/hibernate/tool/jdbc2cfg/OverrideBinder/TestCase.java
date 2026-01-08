@@ -17,28 +17,10 @@
  */
 package org.hibernate.tool.jdbc2cfg.OverrideBinder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.sql.Types;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.ForeignKey;
-import org.hibernate.mapping.MetaAttribute;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.Table;
+import org.hibernate.mapping.*;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
@@ -48,12 +30,19 @@ import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
 import org.hibernate.tool.internal.reveng.strategy.SQLTypeMapping;
 import org.hibernate.tool.internal.reveng.strategy.TableFilter;
 import org.hibernate.tool.internal.reveng.util.EnhancedValue;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Types;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -61,7 +50,7 @@ import org.junit.jupiter.api.Test;
  */
 public class TestCase {
 	
-	private static final String OVERRIDETEST_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/overridetest.reveng.xml";
+	private static final String OVERRIDE_TEST_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/overridetest.reveng.xml";
 	private static final String TEST_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/test.reveng.xml";
 	private static final String DOC_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/docexample.reveng.xml";
 	private static final String SCHEMA_REVENG_XML = "org/hibernate/tool/jdbc2cfg/OverrideBinder/schemaselection.reveng.xml";
@@ -72,7 +61,7 @@ public class TestCase {
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
 		OverrideRepository or = new OverrideRepository();
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy res = or.getReverseEngineeringStrategy(
 				new DefaultStrategy() );
 		metadata = MetadataDescriptorFactory
@@ -143,19 +132,19 @@ public class TestCase {
 		
 		SchemaSelection ss;
 		ss = (SchemaSelection) schemaSelectors.get(0);
-		assertEquals(null,ss.getMatchCatalog());
-		assertEquals(null,ss.getMatchSchema());
-		assertEquals(null,ss.getMatchTable());
+        assertNull(ss.getMatchCatalog());
+        assertNull(ss.getMatchSchema());
+        assertNull(ss.getMatchTable());
 		
 		ss = (SchemaSelection) schemaSelectors.get(1);
-		assertEquals(null,ss.getMatchCatalog());
+        assertNull(ss.getMatchCatalog());
 		assertEquals("OVRTEST",ss.getMatchSchema());
-		assertEquals(null,ss.getMatchTable());
+        assertNull(ss.getMatchTable());
 		
 		ss = (SchemaSelection) schemaSelectors.get(2);
 		assertEquals("UBERCATALOG",ss.getMatchCatalog());
 		assertEquals("OVRTEST",ss.getMatchSchema());
-		assertEquals(null,ss.getMatchTable());
+        assertNull(ss.getMatchTable());
 		
 		ss = (SchemaSelection) schemaSelectors.get(3);
 		assertEquals("PUBLIC.*",ss.getMatchCatalog());
@@ -163,15 +152,15 @@ public class TestCase {
 		assertEquals(".*",ss.getMatchTable());
 		
 		OverrideRepository ox = new OverrideRepository();
-		ox.addSchemaSelection(createSchemaSelection(null, null, "DUMMY.*"));
+		ox.addSchemaSelection(createDummySchemaSelection());
 		RevengStrategy strategy = ox.getReverseEngineeringStrategy(new DefaultStrategy());
 		Metadata md = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(strategy, null)
 				.createMetadata();
 		
 		Iterator<Table> tableMappings = md.collectTableMappings().iterator();
-		Table t = (Table) tableMappings.next();
-		assertEquals(t.getName(), "DUMMY");
+		Table t = tableMappings.next();
+		assertEquals("DUMMY", t.getName());
 		assertFalse(tableMappings.hasNext());
 	}
 
@@ -179,7 +168,7 @@ public class TestCase {
 	public void testColumnTypeMappings() {
 		OverrideRepository or = new OverrideRepository();
 		
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		assertNull(repository.columnToHibernateTypeName(TableIdentifier.create(null, null, "blah"), "bogus",0,0,0,0, false, false));
@@ -198,7 +187,7 @@ public class TestCase {
 		
 		property = classMapping.getIdentifierProperty();
 		
-		assertFalse(((SimpleValue)property.getValue()).isNullable());
+		assertFalse(property.getValue().isNullable());
 		assertEquals("java.lang.Long", ((SimpleValue)property.getValue()).getTypeName(), "java.lang.Long because of primary key");
 	}
 
@@ -206,7 +195,7 @@ public class TestCase {
 	public void testColumnPropertyNameMappings() {
 		OverrideRepository or = new OverrideRepository();
 		
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		assertNull(repository.columnToPropertyName(TableIdentifier.create(null, null, "blah"), "bogus"));
@@ -228,7 +217,7 @@ public class TestCase {
 	public void testIdGenerator() {
 		OverrideRepository or = new OverrideRepository();
 		
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 
 		TableIdentifier miscTable = TableIdentifier.create(null,null, "MISC_TYPES");
@@ -241,10 +230,10 @@ public class TestCase {
 		TableIdentifier ordersTable = TableIdentifier.create(null,null, "ORDERS");
 		
 		assertEquals("customOrderId", repository.tableToIdentifierPropertyName(ordersTable));
-		assertEquals(null, repository.tableToIdentifierPropertyName(TableIdentifier.create(null, null, "blah")));
+        assertNull(repository.tableToIdentifierPropertyName(TableIdentifier.create(null, null, "blah")));
 		
 		assertEquals("CustomOID", repository.tableToCompositeIdName(ordersTable));
-		assertEquals(null, repository.tableToCompositeIdName(TableIdentifier.create(null, null, "blah")));
+        assertNull(repository.tableToCompositeIdName(TableIdentifier.create(null, null, "blah")));
 		
 		List<String> primaryKeyColumnNames = repository.getPrimaryKeyColumnNames(TableIdentifier.create(null, null, "blah"));
 		assertNull(primaryKeyColumnNames);
@@ -279,7 +268,7 @@ public class TestCase {
 	public void testReadExcludeTables() {
 		OverrideRepository or = new OverrideRepository();
 		
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(null);
 		
 		assertTrue(repository.excludeTable(TableIdentifier.create(null,null, "DoNotWantIt") ) );
@@ -294,7 +283,7 @@ public class TestCase {
 	public void testReadPackageName() {
 		OverrideRepository or = new OverrideRepository();
 		
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		RevengStrategy repository = or.getReverseEngineeringStrategy(new DefaultStrategy());
 		
 		assertEquals("org.werd.Q", repository.tableToClassName(TableIdentifier.create("q","Werd", "Q") ) );
@@ -315,7 +304,7 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "INTHEMIDDLE") );
 		assertNotNull(foundTable);
-		Iterator<ForeignKey> fkiter = foundTable.getForeignKeys().values().iterator();
+		Iterator<ForeignKey> fkiter = foundTable.getForeignKeyCollection().iterator();
 		ForeignKey fk1 = fkiter.next();
 		assertNotNull(fk1);
 		assertFalse(fkiter.hasNext() );
@@ -331,12 +320,12 @@ public class TestCase {
 		SQLTypeMapping specific = new SQLTypeMapping(Types.BIGINT, 2, 3, 4, SQLTypeMapping.UNKNOWN_NULLABLE);
 		SQLTypeMapping morespecific = new SQLTypeMapping(Types.BIGINT, 2, 3, 4, Boolean.TRUE);
 		SQLTypeMapping equalmorespecific = new SQLTypeMapping(Types.BIGINT, 2, 3, 4, Boolean.TRUE);
-		
-		assertFalse(one.equals(two) );
-		assertFalse(two.equals(one) );
-		assertTrue(two.equals(two) );
-		assertTrue(one.equals(one) );
-		assertTrue(morespecific.equals(equalmorespecific));
+
+        assertNotEquals(one, two);
+        assertNotEquals(two, one);
+        assertEquals(two, two);
+        assertEquals(one, one);
+        assertEquals(morespecific, equalmorespecific);
 		
 		
 		assertEquals(-1, one.compareTo(two) );
@@ -372,7 +361,7 @@ public class TestCase {
 		
 		RevengStrategy res = or.getReverseEngineeringStrategy(null);
 		assertEquals("boolean",res.columnToHibernateTypeName(null,null, Types.BINARY, 1, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
-		assertEquals(null,res.columnToHibernateTypeName(null,null, Types.LONGVARCHAR, 1, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
+        assertNull(res.columnToHibernateTypeName(null, null, Types.LONGVARCHAR, 1, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false));
 		assertEquals("yes_no",res.columnToHibernateTypeName(null,null, Types.BIT, SQLTypeMapping.UNKNOWN_LENGTH, SQLTypeMapping.UNKNOWN_PRECISION, SQLTypeMapping.UNKNOWN_SCALE, false, false) );
 	}
 	
@@ -381,25 +370,25 @@ public class TestCase {
 		TableFilter tf = new TableFilter();
 		tf.setMatchName("max");
 		tf.setExclude(Boolean.TRUE);
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max")));
 		assertNull(tf.exclude(TableIdentifier.create(null, null, "maxnotexact") ) );
 		tf.setMatchName(".*max");
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max")));
 		assertNull(tf.exclude(TableIdentifier.create(null, null, "maxnotending") ) );
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "endingWithmax") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "endingWithmax")));
 		tf.setMatchName("max.*");
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max")));
 		tf.setMatchName(".*max.*");
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "max")));
 		assertNull(tf.exclude(TableIdentifier.create(null, null, "notxam") ) );
-		assertTrue(tf.exclude(TableIdentifier.create(null, null, "heremaxsub") ).booleanValue() );
+		assertTrue(tf.exclude(TableIdentifier.create(null, null, "heremaxsub")));
 	}
 	
 	@Test
 	public void testColumnExclude() {
 		
 		OverrideRepository or = new OverrideRepository();
-		or.addResource(OVERRIDETEST_REVENG_XML);
+		or.addResource(OVERRIDE_TEST_REVENG_XML);
 		
 		RevengStrategy reverseEngineeringStrategy = or.getReverseEngineeringStrategy(null);
 		
@@ -420,7 +409,7 @@ public class TestCase {
 		
 		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "ORDERS") );
 		
-		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeys().values().iterator();
+		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeyCollection().iterator();
 		ForeignKey fk = foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "CUSTOMER") );
 		
@@ -437,7 +426,7 @@ public class TestCase {
 		
 		Table table = HibernateUtil.getTable(metadata, JdbcUtil.toIdentifier(this, "CHILDREN") );
 		
-		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeys().values().iterator();
+		Iterator<ForeignKey> foreignKeyIterator = table.getForeignKeyCollection().iterator();
 		ForeignKey fk = foreignKeyIterator.next();
 		assertEquals(fk.getReferencedTable().getName(), JdbcUtil.toIdentifier(this, "PARENT") );
 		assertEquals(2, fk.getReferencedColumns().size());
@@ -448,7 +437,7 @@ public class TestCase {
 		assertEquals(2,property.getColumnSpan());
 		
 		classMapping = metadata.getEntityBinding("Parent");
-		property = classMapping.getProperty("propertyChildren");	
+		classMapping.getProperty("propertyChildren");
 			
 	}
 		
@@ -471,7 +460,7 @@ public class TestCase {
 	@Test
 	public void testTableToClass() {
 		
-		RevengStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultStrategy());
+		RevengStrategy res = new OverrideRepository().addResource(OVERRIDE_TEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		assertEquals("org.test.Test", res.tableToClassName(tableIdentifier));		
@@ -492,15 +481,15 @@ public class TestCase {
 	@Test
 	public void testMetaAttributes() {
 		
-		RevengStrategy res = new OverrideRepository().addResource(OVERRIDETEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultStrategy());
+		RevengStrategy res = new OverrideRepository().addResource(OVERRIDE_TEST_REVENG_XML).getReverseEngineeringStrategy(new DefaultStrategy());
 		
 		TableIdentifier tableIdentifier = TableIdentifier.create(null, null, "TblTest");
 		Map<String,MetaAttribute> attributes = res.tableToMetaAttributes(tableIdentifier);
 		assertNotNull(attributes);
-		assertEquals(attributes.size(),1);
-		MetaAttribute ma = (MetaAttribute) attributes.get("use-in-test");
-		assertEquals(ma.getName(), "use-in-test");
-		assertEquals(ma.getValue(), "true");
+		assertEquals(1, attributes.size());
+		MetaAttribute ma = attributes.get("use-in-test");
+		assertEquals("use-in-test", ma.getName());
+		assertEquals("true", ma.getValue());
 				
 		tableIdentifier = TableIdentifier.create(
 				Environment
@@ -511,24 +500,24 @@ public class TestCase {
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		assertNotNull(attributes);
 		ma = attributes.get( "werd-meta" );
-		assertEquals(ma.getName(), "werd-meta");
-		assertEquals(ma.getValues().size(), 2);				
+		assertEquals("werd-meta", ma.getName());
+		assertEquals(2, ma.getValues().size());
 	
 		tableIdentifier = TableIdentifier.create(null, "Werd", "MetaTable");
 		attributes = res.tableToMetaAttributes( tableIdentifier );
 		assertNotNull(attributes);
 		assertEquals(2, attributes.size());
 		ma = attributes.get("specific-werd");
-		assertEquals(ma.getName(), "specific-werd");
-		assertEquals(ma.getValue(), "a one");
+		assertEquals("specific-werd", ma.getName());
+		assertEquals("a one", ma.getValue());
 		
 		ma = attributes.get( "werd-meta" );
-		assertEquals(ma.getName(), "werd-meta");
+		assertEquals("werd-meta", ma.getName());
 		assertEquals(1, ma.getValues().size()); // as long as no inherit this should be one
 		assertEquals("value three", ma.getValue());
 	
 		tableIdentifier = TableIdentifier.create(null, null, "Nothing");
-		assertEquals(null, res.tableToMetaAttributes(tableIdentifier));
+        assertNull(res.tableToMetaAttributes(tableIdentifier));
 		
 		assertNull(res.columnToMetaAttributes(TableIdentifier.create(null, null, "Nothing"), "bogus"));
 		assertNull(res.columnToMetaAttributes( TableIdentifier.create(null, "Werd", "MetaTable"), "bogusColumn" ));
@@ -540,21 +529,21 @@ public class TestCase {
 		
 	}
 	
-	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+	private SchemaSelection createDummySchemaSelection() {
 		return new SchemaSelection() {
 			@Override
 			public String getMatchCatalog() {
-				return matchCatalog;
+				return null;
 			}
 			@Override
 			public String getMatchSchema() {
-				return matchSchema;
+				return null;
 			}
 			@Override
 			public String getMatchTable() {
-				return matchTable;
-			}		
+				return "DUMMY.*";
+			}
 		};
 	}
-	
+
 }
