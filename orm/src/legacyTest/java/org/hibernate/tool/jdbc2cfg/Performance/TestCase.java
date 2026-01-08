@@ -17,18 +17,16 @@
  */
 package org.hibernate.tool.jdbc2cfg.Performance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.sql.SQLException;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author max
@@ -50,7 +48,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testBasic() throws SQLException {	
+	public void testBasic() {
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
@@ -58,8 +56,8 @@ public class TestCase {
 				"There should be " + TABLECOUNT + " tables!", 
 				metadata.collectTableMappings().iterator(), 
 				TABLECOUNT);
-		Table tab = (Table) metadata.collectTableMappings().iterator().next();
-		assertEquals(tab.getColumnSpan(), COLCOUNT+1);
+		Table tab = metadata.collectTableMappings().iterator().next();
+		assertEquals(COLCOUNT+1, tab.getColumnSpan());
 	}
 	
 }
