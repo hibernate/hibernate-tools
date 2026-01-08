@@ -17,22 +17,19 @@
  */
 package org.hibernate.tool.jdbc2cfg.MetaData;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -74,7 +71,7 @@ public class TestCase {
 				JdbcUtil.toIdentifier(this, basicColumn.getName()));
 		PrimaryKey key = table.getPrimaryKey();
 		assertNotNull(key, "There should be a primary key!" );
-		assertEquals( key.getColumnSpan(), 1 );
+		assertEquals(1, key.getColumnSpan());
 		Column column = key.getColumn( 0 );
 		assertTrue( column.isUnique() );
 		assertSame( basicColumn, column );
@@ -86,9 +83,9 @@ public class TestCase {
 				metadata, 
 				JdbcUtil.toIdentifier(this, "BASIC"));
 		Column nameCol = table.getColumn(new Column( JdbcUtil.toIdentifier(this, "NAME" ) ) );
-		assertEquals( nameCol.getLength().intValue(), 20 );
-		assertEquals( nameCol.getPrecision(), null );
-		assertEquals( nameCol.getScale(), null );
+		assertEquals(20, nameCol.getLength().intValue());
+        assertNull(nameCol.getPrecision());
+        assertNull(nameCol.getScale());
 	}
 
 	@Test
