@@ -17,11 +17,6 @@
  */
 package org.hibernate.tool.hbmlint.SchemaAnalyzer;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -31,23 +26,22 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.export.lint.Issue;
 import org.hibernate.tool.internal.export.lint.IssueCollector;
 import org.hibernate.tool.internal.export.lint.SchemaByMetaDataDetector;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author koen
  */
 public class TestCase {
 
-	@TempDir
-	public File outputDir = new File("output");
-	
 	@BeforeEach
 	public void setUp() {
 		JdbcUtil.createDatabase(this);
@@ -70,43 +64,39 @@ public class TestCase {
 		Metadata metadata = metadataSources.buildMetadata();
 		SchemaByMetaDataDetector analyzer = new SchemaByMetaDataDetector();
 		analyzer.initialize( metadata );
-		
-		
-		Iterator<Table> tableMappings = metadata.collectTableMappings().iterator();
-		
-		while ( tableMappings.hasNext() ) {
-			Table table = tableMappings.next();
-		
-			MockCollector mc = new MockCollector();
-			
-			if(table.getName().equalsIgnoreCase( "MISSING_TABLE" )) {
-				analyzer.visit(table, mc );				
-				assertEquals(mc.problems.size(),1);
-				Issue ap = (Issue) mc.problems.get( 0 );
-				assertTrue(ap.getDescription().indexOf( "Missing table" ) >=0);
-			} else if(table.getName().equalsIgnoreCase( "CATEGORY" )) {
-				analyzer.visit(table, mc );
-				assertEquals(mc.problems.size(),1);
-				Issue ap = (Issue) mc.problems.get( 0 );
-				assertTrue(ap.getDescription().indexOf( "missing column: name" ) >=0);							
-			} else if(table.getName().equalsIgnoreCase( "BAD_TYPE" )) {
-				analyzer.visit(table, mc );
-				assertEquals(mc.problems.size(),1);
-				Issue ap = (Issue) mc.problems.get( 0 );
-				assertTrue(ap.getDescription().indexOf( "wrong column type for name" ) >=0);
-			}
-		}
+
+
+        for (Table table : metadata.collectTableMappings()) {
+            MockCollector mc = new MockCollector();
+
+            if (table.getName().equalsIgnoreCase("MISSING_TABLE")) {
+                analyzer.visit(table, mc);
+                assertEquals(1, mc.problems.size());
+                Issue ap = mc.problems.get(0);
+                assertTrue(ap.getDescription().contains("Missing table"));
+            } else if (table.getName().equalsIgnoreCase("CATEGORY")) {
+                analyzer.visit(table, mc);
+                assertEquals(1, mc.problems.size());
+                Issue ap = mc.problems.get(0);
+                assertTrue(ap.getDescription().contains("missing column: name"));
+            } else if (table.getName().equalsIgnoreCase("BAD_TYPE")) {
+                analyzer.visit(table, mc);
+                assertEquals(1, mc.problems.size());
+                Issue ap = mc.problems.get(0);
+                assertTrue(ap.getDescription().contains("wrong column type for name"));
+            }
+        }
 		
 		MockCollector mc = new MockCollector();
 		analyzer.visitGenerators(mc);
 		assertEquals(1,mc.problems.size());
-		Issue issue = (Issue) mc.problems.get( 0 );
-		assertTrue(issue.getDescription().indexOf( "does_not_exist" ) >=0);
+		Issue issue = mc.problems.get( 0 );
+		assertTrue(issue.getDescription().contains("does_not_exist"));
 
 	}
 			
 	static class MockCollector implements IssueCollector {
-		List<Issue> problems = new ArrayList<Issue>();		
+		List<Issue> problems = new ArrayList<>();
 		public void reportIssue(Issue analyze) {			
 			problems.add(analyze);
 		}		
