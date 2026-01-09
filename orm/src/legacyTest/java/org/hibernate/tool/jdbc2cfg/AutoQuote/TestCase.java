@@ -17,20 +17,18 @@
  */
 package org.hibernate.tool.jdbc2cfg.AutoQuote;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -62,7 +60,7 @@ public class TestCase {
 		PersistentClass classMapping = metadata.getEntityBinding("Worklogs");
 		assertNotNull(classMapping);
 		Property property = classMapping.getProperty("usErs");
-		assertNotNull(property);	
+		assertNotNull(property);
 	}
 	
 }
