@@ -23,11 +23,8 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.tool.api.stat.StatisticsBrowser;
-import org.hibernate.tools.test.util.JdbcUtil;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.hibernate.tool.test.utils.JdbcUtil;
+import org.junit.jupiter.api.*;
 
 public class TestCase {
 	
@@ -45,7 +42,7 @@ public class TestCase {
 	// TODO: re-enable the test
 	@Disabled
 	@Test
-	public void testBrowser() throws Exception {
+	public void testBrowser() {
 		MetadataSources mds = new MetadataSources();
 		mds.addResource("/org/hibernate/tool/stat/Statistics/UserGroup.hbm.xml");
 		Metadata md = mds.buildMetadata();
