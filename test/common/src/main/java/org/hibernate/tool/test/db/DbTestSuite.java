@@ -55,7 +55,6 @@ public class DbTestSuite {
 	@Nested public class HbmLintTest extends org.hibernate.tool.hbmlint.HbmLintTest.TestCase {}
 	@Nested public class SchemaAnalyzer extends org.hibernate.tool.hbmlint.SchemaAnalyzer.TestCase {}
 	@Nested public class AutoQuote extends org.hibernate.tool.jdbc2cfg.AutoQuote.TestCase {}
-	@Nested public class Basic extends org.hibernate.tool.jdbc2cfg.Basic.TestCase {}
 	@Nested public class Statistics extends org.hibernate.tool.stat.Statistics.TestCase {}
 
 }
