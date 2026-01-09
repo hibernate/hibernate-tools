@@ -17,9 +17,6 @@
  */
 package org.hibernate.tool.hbmlint.SchemaAnalyzer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +24,9 @@ import java.util.List;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.id.SequenceMismatchStrategy;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.internal.export.lint.Issue;
 import org.hibernate.tool.internal.export.lint.IssueCollector;
@@ -37,6 +37,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author koen
@@ -56,12 +58,14 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 
-	// TODO HBX-2061: Investigate and reenable failing test below
-	@Disabled
 	@Test
 	public void testSchemaAnalyzer() {
 
-		MetadataSources metadataSources = new MetadataSources();
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+		ssrb.applySetting(
+				AvailableSettings.SEQUENCE_INCREMENT_SIZE_MISMATCH_STRATEGY,
+				SequenceMismatchStrategy.NONE);
+		MetadataSources metadataSources = new MetadataSources(ssrb.build());
 		metadataSources.addResource("org/hibernate/tool/hbmlint/SchemaAnalyzer/SchemaIssues.hbm.xml");
 		Metadata metadata = metadataSources.buildMetadata();
 		SchemaByMetaDataDetector analyzer = new SchemaByMetaDataDetector();
@@ -97,7 +101,7 @@ public class TestCase {
 		analyzer.visitGenerators(mc);
 		assertEquals(1,mc.problems.size());
 		Issue issue = (Issue) mc.problems.get( 0 );
-		assertTrue(issue.getDescription().indexOf( "does_not_exist" ) >=0);		
+		assertTrue(issue.getDescription().indexOf( "does_not_exist" ) >=0);
 
 	}
 			
