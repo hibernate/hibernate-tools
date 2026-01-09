@@ -53,6 +53,5 @@ public class DbTestSuite {
 	@Nested public class HBX2840 extends org.hibernate.tool.hbm2x.hbx2840.TestCase {}
 	@Nested public class QueryExporterTest extends org.hibernate.tool.hbm2x.query.QueryExporterTest.TestCase {}
 	@Nested public class HbmLintTest extends org.hibernate.tool.hbmlint.HbmLintTest.TestCase {}
-	@Nested public class SchemaAnalyzer extends org.hibernate.tool.hbmlint.SchemaAnalyzer.TestCase {}
 
 }
