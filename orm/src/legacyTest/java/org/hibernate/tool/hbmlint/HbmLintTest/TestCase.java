@@ -17,22 +17,17 @@
  */
 package org.hibernate.tool.hbmlint.HbmLintTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.File;
-
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.internal.export.lint.BadCachingDetector;
-import org.hibernate.tool.internal.export.lint.Detector;
-import org.hibernate.tool.internal.export.lint.HbmLint;
-import org.hibernate.tool.internal.export.lint.HbmLintExporter;
-import org.hibernate.tool.internal.export.lint.InstrumentationDetector;
-import org.hibernate.tool.internal.export.lint.ShadowedIdentifierDetector;
-import org.hibernate.tools.test.util.HibernateUtil;
+import org.hibernate.tool.internal.export.lint.*;
+import org.hibernate.tool.test.utils.HibernateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 
@@ -44,15 +39,13 @@ public class TestCase {
 	
 	@TempDir
 	public File outputDir = new File("output");
-	
-	private File resourcesDir = null;
-	
-	private MetadataDescriptor metadataDescriptor = null;
+
+    private MetadataDescriptor metadataDescriptor = null;
 	
 	@BeforeEach
 	public void setUp() {
-		resourcesDir = new File(outputDir, "resources");
-		resourcesDir.mkdir();
+        File resourcesDir = new File(outputDir, "resources");
+		assertTrue(resourcesDir.mkdir());
 		metadataDescriptor = HibernateUtil.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 	}
 	
