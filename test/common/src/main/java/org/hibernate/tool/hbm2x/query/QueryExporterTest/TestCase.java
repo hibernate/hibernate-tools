@@ -19,6 +19,7 @@
  */
 package org.hibernate.tool.hbm2x.query.QueryExporterTest;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
@@ -45,7 +46,6 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -55,16 +55,15 @@ public class TestCase {
 	public File outputDir = new File("output");
 	
 	private File destinationDir = null;
-	private File resourcesDir = null;
-	private File userGroupHbmXmlFile = null;
+    private File userGroupHbmXmlFile = null;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		JdbcUtil.createDatabase(this);
 		destinationDir = new File(outputDir, "destination");
-		destinationDir.mkdir();
-		resourcesDir = new File(outputDir, "resources");
-		resourcesDir.mkdir();
+		assertTrue(destinationDir.mkdir());
+        File resourcesDir = new File(outputDir, "resources");
+		assertTrue(resourcesDir.mkdir());
 		String[] resources = { "UserGroup.hbm.xml" };		
 		ResourceUtil.createResources(this, resources, resourcesDir);
 		userGroupHbmXmlFile = new File(resourcesDir, "UserGroup.hbm.xml");
@@ -81,10 +80,8 @@ public class TestCase {
 		factory.close();		
 	}
 	
-	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
 	@Test
-	public void testQueryExporter() throws Exception {		
+	public void testQueryExporter() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.QUERY);
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(
@@ -95,7 +92,7 @@ public class TestCase {
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, destinationDir);
 		exporter.getProperties().put(ExporterConstants.OUTPUT_FILE_NAME, "queryresult.txt");
-		List<String> queries = new ArrayList<String>();
+		List<String> queries = new ArrayList<>();
 		queries.add("from java.lang.Object");
 		exporter.getProperties().put(ExporterConstants.QUERY_LIST, queries);
 		exporter.start();
@@ -108,7 +105,7 @@ public class TestCase {
 		final EnumSet<TargetType> targetTypes = EnumSet.noneOf( TargetType.class );
 		targetTypes.add( TargetType.DATABASE );
 		export.drop(targetTypes, createMetadata());		
-		if (export.getExceptions() != null && export.getExceptions().size() > 0){
+		if (export.getExceptions() != null && !export.getExceptions().isEmpty()){
 			fail("Schema export failed");
 		}		
 		JdbcUtil.dropDatabase(this);
