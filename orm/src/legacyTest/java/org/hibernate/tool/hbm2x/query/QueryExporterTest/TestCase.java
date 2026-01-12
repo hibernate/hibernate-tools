@@ -17,15 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.query.QueryExporterTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Properties;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -39,13 +30,22 @@ import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
-import org.hibernate.tools.test.util.ResourceUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
+import org.hibernate.tool.test.utils.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCase {
 
@@ -94,7 +94,7 @@ public class TestCase {
 		queries.add("from java.lang.Object");
 		exporter.getProperties().put(ExporterConstants.QUERY_LIST, queries);
 		exporter.start();
-		JUnitUtil.assertIsNonEmptyFile(new File(destinationDir, "queryresult.txt"));		
+		JUnitUtil.assertIsNonEmptyFile(new File(destinationDir, "queryresult.txt"));
 	}
 	
 	@AfterEach
