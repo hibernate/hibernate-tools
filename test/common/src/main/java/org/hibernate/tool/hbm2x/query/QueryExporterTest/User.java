@@ -26,35 +26,25 @@ import java.util.Set;
 
 public class User implements Serializable {
 	
-	private static final long serialVersionUID = 
+    private static final long serialVersionUID =
 			ObjectStreamClass.lookup(User.class).getSerialVersionUID();
 	
-	private String org;
-	private String name;
-	private Set<Group> groups = new HashSet<Group>();
+	private Set<Group> groups = new HashSet<>();
+	private UserID userId;
 
 	public User(String name, String org) {
-		this.org = org;
-		this.name = name;
+		this.setUserId(new UserID(name, org));
 	}
 
 	public User() {
 	}
-
-	public String getName() {
-		return name;
+	
+	public void setUserId(UserID userId) {
+		this.userId = userId;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getOrg() {
-		return org;
-	}
-
-	public void setOrg(String org) {
-		this.org = org;
+	
+	public UserID getUserId() {
+		return userId;
 	}
 
 	public Set<Group> getGroups() {
