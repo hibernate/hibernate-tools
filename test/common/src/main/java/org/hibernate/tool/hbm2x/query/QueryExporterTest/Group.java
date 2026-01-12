@@ -27,34 +27,24 @@ public class Group implements Serializable {
 	private static final long serialVersionUID = 
 			ObjectStreamClass.lookup(Group.class).getSerialVersionUID();
 	
-	private String org;
-	private String name;
 	private String description;
+	private UserID userId;
 
 	private Set<User> users = new HashSet<User>();
 	
 	public Group(String name, String org) {
-		this.org = org;
-		this.name = name;
+		this.setUserId(new UserID(name, org));
 	}
 
 	public Group() {
 	}
-
-	public String getName() {
-		return name;
+	
+	public void setUserId(UserID userId) {
+		this.userId = userId;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getOrg() {
-		return org;
-	}
-
-	public void setOrg(String org) {
-		this.org = org;
+	
+	public UserID getUserId() {
+		return userId;
 	}
 
 	public Set<User> getUsers() {

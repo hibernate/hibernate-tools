@@ -80,7 +80,7 @@ public class TestCase {
 	}
 	
 	// TODO HBX-2042: Reenable when implemented in ORM 6.0
-	@Disabled
+//	@Disabled
 	@Test
 	public void testQueryExporter() throws Exception {		
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.QUERY);
