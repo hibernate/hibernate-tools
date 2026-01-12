@@ -18,19 +18,21 @@
 package org.hibernate.tool.hbm2x.query.QueryExporterTest;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Group implements Serializable {
 
-	private static final long serialVersionUID = 
+	@Serial
+    private static final long serialVersionUID =
 			ObjectStreamClass.lookup(Group.class).getSerialVersionUID();
 	
 	private String description;
 	private UserID userId;
 
-	private Set<User> users = new HashSet<User>();
+	private Set<User> users = new HashSet<>();
 	
 	public Group(String name, String org) {
 		this.setUserId(new UserID(name, org));
