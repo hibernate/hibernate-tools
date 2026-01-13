@@ -17,16 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.DefaultDatabaseCollector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
@@ -44,10 +34,14 @@ import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Dmitry Geraskov
@@ -68,17 +62,17 @@ public class TestCase {
 	@Test
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
-		or.addSchemaSelection(createSchemaSelection("cat.cat"));
+		or.addSchemaSelection(createSchemaSelection());
 		RevengStrategy res = or.getReverseEngineeringStrategy(new DefaultStrategy());
 		List<Table> tables = getTables(MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata());
 		assertEquals(2,tables.size());
-		Table catchild = (Table) tables.get(0);
-		Table catmaster = (Table) tables.get(1);
+		Table catchild = tables.get(0);
+		Table catmaster = tables.get(1);
 		if(catchild.getName().equals("cat.master")) {
-			catchild = (Table) tables.get(1);
-			catmaster = (Table) tables.get(0);
+			catchild = tables.get(1);
+			catmaster = tables.get(0);
 		} 
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
@@ -92,7 +86,9 @@ public class TestCase {
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 		ssrb.applySettings(properties);
 		ServiceRegistry serviceRegistry = ssrb.build();
-		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( serviceRegistry.getService(JdbcServices.class).getDialect(), properties );
+		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect(
+				Objects.requireNonNull(serviceRegistry.getService(JdbcServices.class)).getDialect(),
+				properties );
 		assertTrue(realMetaData.needQuote("cat.cat"), "The name must be quoted!");
 		assertTrue(realMetaData.needQuote("cat.child"), "The name must be quoted!");
 		assertTrue(realMetaData.needQuote("cat.master"), "The name must be quoted!");
@@ -100,7 +96,7 @@ public class TestCase {
 	
 	/**
 	 * There are 2 solutions:
-	 * 1. DatabaseCollector#addTable()/getTable() should be called for not quoted parameters - I think it is preferable way.
+	 * 1. DatabaseCollector#addTable()/getTable() should be called for not quoted parameters - I think it is a preferable way.
 	 * 2. DatabaseCollector#addTable()/getTable() should be called for quoted parameters - here users should
 	 * use the same quotes as JDBCReader.
 	 * Because of this there are 2 opposite methods(and they are both failed as addTable uses quoted names
@@ -113,7 +109,7 @@ public class TestCase {
 		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
 		ServiceRegistry serviceRegistry = builder.build();	
 		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( 
-				serviceRegistry.getService(JdbcServices.class).getDialect(), 
+				Objects.requireNonNull(serviceRegistry.getService(JdbcServices.class)).getDialect(),
 				properties);
 		DatabaseReader reader = DatabaseReader.create( 
 				properties, new DefaultStrategy(), 
@@ -142,8 +138,7 @@ public class TestCase {
 	}
  	
 	private String quote(RevengDialect metaDataDialect, String name) {
-		if (name == null)
-			return name;
+		if (name == null) return null;
 		if (metaDataDialect.needQuote(name)) {
 			if (name.length() > 1 && name.charAt(0) == '`'
 					&& name.charAt(name.length() - 1) == '`') {
@@ -160,16 +155,10 @@ public class TestCase {
 	}
 	
 	private List<Table> getTables(Metadata metadata) {
-		List<Table> list = new ArrayList<Table>();
-		Iterator<Table> iter = metadata.collectTableMappings().iterator();
-		while(iter.hasNext()) {
-			Table element = iter.next();
-			list.add(element);
-		}
-		return list;
+        return new ArrayList<>(metadata.collectTableMappings());
 	}
 	
-	private SchemaSelection createSchemaSelection(String matchSchema) {
+	private SchemaSelection createSchemaSelection() {
 		return new SchemaSelection() {
 			@Override
 			public String getMatchCatalog() {
@@ -177,7 +166,7 @@ public class TestCase {
 			}
 			@Override
 			public String getMatchSchema() {
-				return matchSchema;
+				return "cat.cat";
 			}
 			@Override
 			public String getMatchTable() {
