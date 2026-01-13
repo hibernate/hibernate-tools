@@ -17,16 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.DefaultSchemaCatalog;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.Table;
@@ -36,10 +26,15 @@ import org.hibernate.tool.api.reveng.RevengStrategy.SchemaSelection;
 import org.hibernate.tool.api.reveng.TableIdentifier;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author max
@@ -60,17 +55,17 @@ public class TestCase {
 	@Test
 	public void testReadOnlySpecificSchema() {
 		OverrideRepository or = new OverrideRepository();
-		or.addSchemaSelection(createSchemaSelection(null, "OVRTEST", null));
+		or.addSchemaSelection(createSchemaSelection("OVRTEST", null));
 		RevengStrategy res = or.getReverseEngineeringStrategy(new DefaultStrategy());
 		List<Table> tables = getTables(MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata());
 		assertEquals(2,tables.size());	
-		Table catchild = (Table) tables.get(0);
-		Table catmaster = (Table) tables.get(1);	
+		Table catchild = tables.get(0);
+		Table catmaster = tables.get(1);
 		if(catchild.getName().equals("CATMASTER")) {
-			catchild = (Table) tables.get(1);
-			catmaster = (Table) tables.get(0);
+			catchild = tables.get(1);
+			catmaster = tables.get(0);
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
@@ -81,23 +76,21 @@ public class TestCase {
 	@Test
 	public void testOverlapping() {	
 		OverrideRepository or = new OverrideRepository();
-		or.addSchemaSelection(createSchemaSelection(null, "OVRTEST", null));
-		or.addSchemaSelection(createSchemaSelection(null, null, "MASTER"));
-		or.addSchemaSelection(createSchemaSelection(null, null, "CHILD"));
+		or.addSchemaSelection(createSchemaSelection("OVRTEST", null));
+		or.addSchemaSelection(createSchemaSelection(null, "MASTER"));
+		or.addSchemaSelection(createSchemaSelection(null, "CHILD"));
 		RevengStrategy res = 
 				or.getReverseEngineeringStrategy(new DefaultStrategy());
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(res, null)
 				.createMetadata();
-		Set<TableIdentifier> tables = new HashSet<TableIdentifier>();
-		Iterator<Table> iter = metadata.collectTableMappings().iterator();
-		while(iter.hasNext()) {
-			Table element = iter.next();
-			boolean added = tables.add(TableIdentifier.create(element));
-			if(!added) 
-				fail("duplicate table found for " + element); 
-		}
-		assertEquals(4,tables.size());					
+		Set<TableIdentifier> tables = new HashSet<>();
+        for (Table element : metadata.collectTableMappings()) {
+            boolean added = tables.add(TableIdentifier.create(element));
+            if (!added)
+                fail("duplicate table found for " + element);
+        }
+		assertEquals(4,tables.size());
 	}
 	
 	@Test
@@ -109,11 +102,11 @@ public class TestCase {
 				.createReverseEngineeringDescriptor(null, properties)
 				.createMetadata());
 		assertEquals(2,tables.size());
-		Table catchild = (Table) tables.get(0);
-		Table catmaster = (Table) tables.get(1);
+		Table catchild = tables.get(0);
+		Table catmaster = tables.get(1);
 		if(catchild.getName().equals("CATMASTER")) {
-			catchild = (Table) tables.get(1);
-			catmaster = (Table) tables.get(0);
+			catchild = tables.get(1);
+			catmaster = tables.get(0);
 		} 	
 		TableIdentifier masterid = TableIdentifier.create(catmaster);
 		TableIdentifier childid = TableIdentifier.create(catchild);
@@ -122,20 +115,14 @@ public class TestCase {
 	}
 
 	private List<Table> getTables(Metadata metadata) {
-		List<Table> list = new ArrayList<Table>();
-		Iterator<Table> iter = metadata.collectTableMappings().iterator();
-		while(iter.hasNext()) {
-			Table element = iter.next();
-			list.add(element);
-		}
-		return list;
+        return new ArrayList<>(metadata.collectTableMappings());
 	}
 
-	private SchemaSelection createSchemaSelection(String matchCatalog, String matchSchema, String matchTable) {
+	private SchemaSelection createSchemaSelection(String matchSchema, String matchTable) {
 		return new SchemaSelection() {
 			@Override
 			public String getMatchCatalog() {
-				return matchCatalog;
+				return null;
 			}
 			@Override
 			public String getMatchSchema() {

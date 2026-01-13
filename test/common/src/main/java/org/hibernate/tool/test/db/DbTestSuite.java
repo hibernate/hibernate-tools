@@ -45,6 +45,5 @@ public class DbTestSuite {
 	@Nested public class JDBCMetaDataConfiguration extends org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase {}
 	@Nested public class CachedMetaData extends org.hibernate.tool.hbm2x.CachedMetaData.TestCase {}
 	@Nested public class DefaultDatabaseCollector extends org.hibernate.tool.hbm2x.DefaultDatabaseCollector.TestCase {}
-	@Nested public class DefaultSchemaCatalog extends org.hibernate.tool.hbm2x.DefaultSchemaCatalog.TestCase {}
 
 }
