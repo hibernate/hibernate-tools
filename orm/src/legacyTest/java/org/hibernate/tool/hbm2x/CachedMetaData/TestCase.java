@@ -17,14 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.CachedMetaData;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
@@ -37,11 +29,18 @@ import org.hibernate.tool.internal.reveng.RevengMetadataCollector;
 import org.hibernate.tool.internal.reveng.dialect.CachedMetaDataDialect;
 import org.hibernate.tool.internal.reveng.reader.DatabaseReader;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -50,7 +49,7 @@ import org.junit.jupiter.api.Test;
  */
 public class TestCase {
 
-	public class MockedMetaDataDialect implements RevengDialect {
+	public static class MockedMetaDataDialect implements RevengDialect {
 
 		RevengDialect delegate;
 		private boolean failOnDelegateAccess;
@@ -149,7 +148,7 @@ public class TestCase {
 		ServiceRegistry serviceRegistry = builder.build();		
 		Properties properties = Environment.getProperties();
 		RevengDialect realMetaData = RevengDialectFactory.createMetaDataDialect( 
-				serviceRegistry.getService(JdbcServices.class).getDialect(), 
+				Objects.requireNonNull(serviceRegistry.getService(JdbcServices.class)).getDialect(),
 				Environment.getProperties() );
 		MockedMetaDataDialect mock = new MockedMetaDataDialect(realMetaData);
 		CachedMetaDataDialect dialect = new CachedMetaDataDialect(mock);
@@ -170,7 +169,7 @@ public class TestCase {
 		dc = new RevengMetadataCollector();
 		reader.readDatabaseSchema(dc);
 		validate(dc);
-	}
+ 	}
 
 	private void validate(RevengMetadataCollector dc) {
 		Iterator<Table> iterator = dc.iterateTables();
@@ -195,7 +194,7 @@ public class TestCase {
 		
 		JUnitUtil.assertIteratorContainsExactly(
 				"should have recorded one foreignkey to child table",  
-				child.getForeignKeys().values().iterator(),
+				child.getForeignKeyCollection().iterator(),
 				1);
 	}
 
