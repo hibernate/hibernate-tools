@@ -17,20 +17,19 @@
  */
 package org.hibernate.tool.hbm2x.hbx2840;
 
-import java.io.File;
-
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
-
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
 
 /**
  * Test verifies that a foreign key to a table with a composite ID works.
