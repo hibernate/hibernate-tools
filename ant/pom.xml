@@ -74,6 +74,10 @@
 			  * Add the 'src/it/java' folder as as source of additional tests (only contains integration tests)
 			  * Add the contents of the 'docs/examples' folder as additional test resources
 			-->
+			<!-- Prepare the legacy tests :
+              * Add the 'src/legacyTest/java' folder as a source of legacy tests
+              * Add the 'src/legacyTest/resources' folder as a resources of legacy tests
+            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -87,6 +91,7 @@
 						<configuration>
 							<sources>
 								<source>src/it/java</source>
+								<source>src/legacyTest/java</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -103,6 +108,9 @@
 									<excludes>
 										<exclude>**/README.md</exclude>
 									</excludes>
+								</resource>
+								<resource>
+									<directory>src/legacyTest/resources</directory>
 								</resource>
 							</resources>
 						</configuration>
