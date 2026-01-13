@@ -17,26 +17,25 @@
  */
 package org.hibernate.tool.cfg.DriverMetaData;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.tool.api.reveng.RevengDialect;
 import org.hibernate.tool.api.reveng.RevengDialectFactory;
 import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
-import org.hibernate.tool.api.reveng.RevengDialect;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -77,7 +76,7 @@ public class TestCase {
 						"TAB_MASTER"); 		
 		boolean foundMaster = false;
 		while(tables.hasNext()) {
-			Map<?,?> map = (Map<?,?>) tables.next();		
+			Map<?,?> map = tables.next();
 			String tableName = (String) map.get("TABLE_NAME");
 			String schemaName = (String) map.get("TABLE_SCHEM");
 	        String catalogName = (String) map.get("TABLE_CAT");        
@@ -104,8 +103,9 @@ public class TestCase {
 		RevengDialect dialect = RevengDialectFactory
 				.fromDialectName(properties.getProperty(AvailableSettings.DIALECT));
 		ConnectionProvider connectionProvider = 
-				serviceRegistry.getService(ConnectionProvider.class);	
-		dialect.configure(connectionProvider);
+				serviceRegistry.getService(ConnectionProvider.class);
+        assert dialect != null;
+        dialect.configure(connectionProvider);
 		String catalog = properties.getProperty(AvailableSettings.DEFAULT_CATALOG);
 		String schema = properties.getProperty(AvailableSettings.DEFAULT_SCHEMA);		
 		Iterator<?> tables = 
