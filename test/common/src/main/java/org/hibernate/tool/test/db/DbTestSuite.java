@@ -42,6 +42,5 @@ public class DbTestSuite {
 	@Nested public class SchemaExportWarning extends org.hibernate.tool.ant.SchemaExportWarning.TestCase {}
 	@Nested public class SchemaUpdateWarning extends org.hibernate.tool.ant.SchemaUpdateWarning.TestCase {}
 	@Nested public class DriverMetaData extends org.hibernate.tool.cfg.DriverMetaData.TestCase {}
-	@Nested public class JDBCMetaDataConfiguration extends org.hibernate.tool.cfg.JDBCMetaDataConfiguration.TestCase {}
 
 }

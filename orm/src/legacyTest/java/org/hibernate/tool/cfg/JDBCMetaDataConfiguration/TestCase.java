@@ -17,15 +17,16 @@
  */
 package org.hibernate.tool.cfg.JDBCMetaDataConfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author max
@@ -44,7 +45,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testReadFromJDBC() throws Exception {
+	public void testReadFromJDBC() {
 		Metadata metadata = MetadataDescriptorFactory
 				.createReverseEngineeringDescriptor(null, null)
 				.createMetadata();
@@ -55,7 +56,7 @@ public class TestCase {
 	}
 	
 	@Test
-	public void testGetTable() throws Exception {
+	public void testGetTable() {
 		assertNotNull(
 				HibernateUtil.getTable(
 						MetadataDescriptorFactory
