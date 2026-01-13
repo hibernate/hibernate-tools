@@ -17,21 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.GenerateFromJDBC;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.PersistentClass;
@@ -46,8 +31,8 @@ import org.hibernate.tool.internal.export.doc.DocExporter;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +40,15 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -82,7 +76,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testGenerateJava() throws SQLException, ClassNotFoundException {
+	public void testGenerateJava() {
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);		
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, outputDir);
@@ -102,7 +96,7 @@ public class TestCase {
 		exporter.start();	
 		JUnitUtil.assertIsNonEmptyFile(new File(outputDir, "org/reveng/Child.hbm.xml"));
 		File file = new File(outputDir, "GeneralHbmSettings.hbm.xml");
-		assertTrue(!file.exists(), file + " should not exist" );
+        assertFalse(file.exists(), file + " should not exist");
 		File[] files = new File[2];
 		files[0] = new File(outputDir, "org/reveng/Child.hbm.xml");
 		files[1] = new File(outputDir, "org/reveng/Master.hbm.xml");
@@ -130,14 +124,13 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		Node[] elements = new Node[nodeList.getLength()];
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			elements[i] = (Node)nodeList.item(i);
+			elements[i] = nodeList.item(i);
 		}
 		assertEquals(2, elements.length);
-		for (int i = 0; i < elements.length; i++) {
-			Node element = elements[i];
-			assertNotNull(element.getAttributes().getNamedItem("resource"));
-			assertNull(element.getAttributes().getNamedItem("class"));
-		}		
+        for (Node element : elements) {
+            assertNotNull(element.getAttributes().getNamedItem("resource"));
+            assertNull(element.getAttributes().getNamedItem("class"));
+        }
 	}
 	
 	@Test
@@ -158,14 +151,13 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		Node[] elements = new Node[nodeList.getLength()];
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			elements[i] = (Node)nodeList.item(i);
+			elements[i] = nodeList.item(i);
 		}
 		assertEquals(2, elements.length);
-		for (int i = 0; i < elements.length; i++) {
-			Node element = elements[i];
-			assertNull(element.getAttributes().getNamedItem("resource"));
-			assertNotNull(element.getAttributes().getNamedItem("class"));
-		}		
+        for (Node element : elements) {
+            assertNull(element.getAttributes().getNamedItem("resource"));
+            assertNotNull(element.getAttributes().getNamedItem("class"));
+        }
 	}
 	
 	@Test
@@ -179,13 +171,10 @@ public class TestCase {
 	
 	@Test
 	public void testPackageNames() {
-		Iterator<PersistentClass> iter = metadataDescriptor
-				.createMetadata()
-				.getEntityBindings()
-				.iterator();
-		while (iter.hasNext() ) {
-			PersistentClass element = iter.next();
-			assertEquals("org.reveng", StringHelper.qualifier(element.getClassName() ) );
-		}
+        for (PersistentClass element : metadataDescriptor
+                .createMetadata()
+                .getEntityBindings()) {
+            assertEquals("org.reveng", StringHelper.qualifier(element.getClassName()));
+        }
 	}
 }
