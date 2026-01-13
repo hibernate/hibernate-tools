@@ -17,17 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
@@ -39,34 +28,29 @@ import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
 import org.hibernate.tool.internal.reveng.strategy.OverrideRepository;
-import org.hibernate.tools.test.util.JavaUtil;
-import org.hibernate.tools.test.util.JdbcUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author koen@hibernate.org
  */
 public class TestCase {
-	
-	private static String REVENG_XML =
-			"<!DOCTYPE hibernate-reverse-engineering                                            \n"+
-			"          SYSTEM                                                                   \n"+
-	        "          'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>\n"+
-			"<hibernate-reverse-engineering>                                                    \n"+
-	        "   <table name='MY_RETURN_HISTORY'>                                                \n"+
-            "      <foreign-key                                                                 \n"+
-            "            constraint-name='FK_MY_RETURN_HISTORY_RETURN_ID'                       \n"+
-            "            foreign-table='MY_RETURN'>                                             \n"+
-            "          <column-ref local-column='MY_RETURN_REF' foreign-column='RETURN_ID'/>    \n"+
-            "          <many-to-one property='return'/>                                         \n"+
-            "      </foreign-key>                                                               \n"+
-	        "   </table>                                                                        \n"+
-			"</hibernate-reverse-engineering>                                                     ";
 
-	@TempDir
+    @TempDir
 	public File outputDir = new File("output");
 	
 	@BeforeEach
@@ -97,7 +81,7 @@ public class TestCase {
 		assertNotNull(returnHistoryClass);
 		Field returnField = returnHistoryClass.getDeclaredField("return_");
 		assertNotNull(returnField);
-		Method returnSetter = returnHistoryClass.getMethod("setReturn", new Class[] { returnClass });
+		Method returnSetter = returnHistoryClass.getMethod("setReturn", returnClass);
 		assertNotNull(returnSetter);
 		loader.close();
 	}
@@ -106,7 +90,21 @@ public class TestCase {
 		AbstractStrategy configurableNamingStrategy = new DefaultStrategy();
 		configurableNamingStrategy.setSettings(new RevengSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();
-		InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());
+        String REVENG_XML = """
+                <!DOCTYPE hibernate-reverse-engineering                                           \s
+                          SYSTEM                                                                  \s
+                          'https://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>      \s
+                <hibernate-reverse-engineering>                                                   \s
+                   <table name='MY_RETURN_HISTORY'>                                               \s
+                      <foreign-key                                                                \s
+                            constraint-name='FK_MY_RETURN_HISTORY_RETURN_ID'                      \s
+                            foreign-table='MY_RETURN'>                                            \s
+                          <column-ref local-column='MY_RETURN_REF' foreign-column='RETURN_ID'/>   \s
+                          <many-to-one property='return'/>                                        \s
+                      </foreign-key>                                                              \s
+                   </table>                                                                       \s
+                </hibernate-reverse-engineering>                                                  \s""";
+        InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());
 		overrideRepository.addInputStream(inputStream);
 		RevengStrategy res = overrideRepository
 				.getReverseEngineeringStrategy(configurableNamingStrategy);

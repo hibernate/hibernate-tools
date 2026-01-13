@@ -47,6 +47,5 @@ public class DbTestSuite {
 	@Nested public class DefaultDatabaseCollector extends org.hibernate.tool.hbm2x.DefaultDatabaseCollector.TestCase {}
 	@Nested public class DefaultSchemaCatalog extends org.hibernate.tool.hbm2x.DefaultSchemaCatalog.TestCase {}
 	@Nested public class GenerateFromJDBC extends org.hibernate.tool.hbm2x.GenerateFromJDBC.TestCase {}
-	@Nested public class GenerateFromJDBCWithJavaKeyword extends org.hibernate.tool.hbm2x.GenerateFromJDBCWithJavaKeyword.TestCase {}
 
 }
