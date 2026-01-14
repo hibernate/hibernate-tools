@@ -23,7 +23,7 @@
 		<id name="id" type="long">
 			<generator class="assigned"></generator>
 		</id>
-		<property name="name" type="org.hibernate.tool.ant.AntHibernateTool.AnyKindOfUserType"></property>
+		<property name="name" type="string"></property>
 	</class>
 
 </hibernate-mapping>
