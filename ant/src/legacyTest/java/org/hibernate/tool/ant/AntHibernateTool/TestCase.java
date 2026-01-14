@@ -17,14 +17,6 @@
  */
 package org.hibernate.tool.ant.AntHibernateTool;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -33,6 +25,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 	
@@ -45,9 +41,9 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 		JdbcUtil.createDatabase(this);
 	}
 	
@@ -81,7 +77,7 @@ public class TestCase {
 		project.executeTarget("testHbm2DDLLogic");
 		
 		String log = AntUtil.getLog(project);
-		assertTrue(!log.contains("Exception"), log);
+        assertFalse(log.contains("Exception"), log);
 		
 		assertTrue(topDown.exists());	
 		
@@ -128,7 +124,7 @@ public class TestCase {
 		project.executeTarget("testantcfgUpdateExecuted");
 		
 		String log = AntUtil.getLog(project);
-		assertTrue(!log.contains("Exception"), log);
+        assertFalse(log.contains("Exception"), log);
 					
 		assertTrue(topDown.exists());
 		assertTrue(onlyDrop.exists());
@@ -160,14 +156,13 @@ public class TestCase {
 		project.executeTarget("testantcfgExportExecuted");
 		
 		String log = AntUtil.getLog(project);
-		assertTrue(!log.contains("Exception"), log);
+        assertFalse(log.contains("Exception"), log);
 		
 		assertTrue(export.exists());
 		assertTrue(update.exists());
 		assertNotNull(FileUtil.findFirstString("create", export));
 		// if export is executed, update should be empty
 		assertEquals(0, update.length());
-		
 	}
 
 }
