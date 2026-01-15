@@ -15,6 +15,6 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 ############################################################################
- CREATE TABLE VERY_SIMPLE_TABLE ( ID INT NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID) )
- INSERT INTO VERY_SIMPLE_TABLE VALUES ( 1, 'A Row')
- INSERT INTO VERY_SIMPLE_TABLE VALUES ( 2, 'Another Row')
+ CREATE TABLE BAR ( ID INT NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID) )
+ INSERT INTO BAR VALUES ( 1, 'A Row')
+ INSERT INTO BAR VALUES ( 2, 'Another Row')

@@ -15,5 +15,5 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 ############################################################################
-DELETE FROM VERY_SIMPLE_TABLE WHERE ID > 0
-DROP TABLE VERY_SIMPLE_TABLE
+DELETE FROM BAR WHERE ID > 0
+DROP TABLE BAR
