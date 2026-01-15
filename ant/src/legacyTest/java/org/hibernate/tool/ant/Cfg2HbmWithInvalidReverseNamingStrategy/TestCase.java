@@ -17,11 +17,6 @@
  */
 package org.hibernate.tool.ant.Cfg2HbmWithInvalidReverseNamingStrategy;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -30,6 +25,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCase {
 	
@@ -42,9 +42,9 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 		JdbcUtil.createDatabase(this);
 	}
 	
@@ -77,7 +77,7 @@ public class TestCase {
 					.contains("A strategy of class 'invalid.Strategy' could not be created"));
 			
 		}
-		
+
 	}
 	
 }
