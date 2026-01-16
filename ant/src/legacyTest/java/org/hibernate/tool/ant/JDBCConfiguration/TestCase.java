@@ -17,11 +17,6 @@
  */
 package org.hibernate.tool.ant.JDBCConfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
@@ -30,6 +25,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 	
@@ -42,9 +41,9 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 		JdbcUtil.createDatabase(this);
 	}
 	
@@ -61,9 +60,9 @@ public class TestCase {
 		File buildFile = new File(resourcesDir, "JDBCConfiguration.xml");	
 		ResourceUtil.createResources(this, new String[] { "/hibernate.properties" }, resourcesDir);
 		File templatesDir = new File(resourcesDir, "templates");
-		templatesDir.mkdir();
+		assertTrue(templatesDir.mkdir());
 		File pojoTemplateDir = new File(templatesDir, "pojo");
-		pojoTemplateDir.mkdir();
+		assertTrue(pojoTemplateDir.mkdir());
 		ResourceUtil.createResources(this, new String[] { "Pojo.ftl" }, pojoTemplateDir);
 		
 		AntUtil.Project project = AntUtil.createProject(buildFile);
@@ -81,7 +80,7 @@ public class TestCase {
 		project.executeTarget("testJDBCConfiguration");
 
 		String log = AntUtil.getLog(project);
-		assertTrue(!log.contains("Exception"), log);
+        assertFalse(log.contains("Exception"), log);
 		
 		assertTrue(noTemplate.exists());
 		assertTrue(FileUtil
@@ -97,7 +96,7 @@ public class TestCase {
 		assertTrue(FileUtil
 				.findFirstString("mapping", cfgxml)
 				.contains("BottomUp.hbm.xml"));
-		
+
 	}
 	
 }
