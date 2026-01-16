@@ -20,10 +20,12 @@
 package org.hibernate.tool.ant.Cfg2HbmWithPackageNameAndReverseNamingStrategy;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.hibernate.tools.test.util.AntUtil;
+import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -70,11 +72,13 @@ public class TestCase {
 
 		project.executeTarget("testCfg2HbmWithPackageNameAndReverseNamingStrategy");
 		
-		// TODO HBX-1406: Investigate what the normal behaviour should be		
-//		Assert.assertTrue(hbmxml.exists());
-//		Assert.assertTrue(FileUtil
-//				.findFirstString("class", hbmxml)
-//				.contains("foo.Bar"));
+		assertTrue(hbmxml.exists());
+		assertTrue(FileUtil
+				.findFirstString("class", hbmxml)
+				.contains("foo.Bar"));
+		assertTrue(FileUtil
+				.findFirstString("property", hbmxml)
+				.contains("barName"));
 		
 	}
 	

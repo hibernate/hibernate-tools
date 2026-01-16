@@ -24,8 +24,14 @@ import org.hibernate.tool.internal.reveng.strategy.AbstractStrategy;
 
 public class Strategy extends AbstractStrategy {
 
-	public String tableToClassName(TableIdentifier tableIdentifier) {		
-		return "Bar";		
+	public String columnToPropertyName(TableIdentifier table, String columnName) {
+       if ("NAME".equals(columnName)) {
+    	   return "barName";
+       } 
+       else {
+    	   return super.columnToPropertyName(table, columnName);
+       }
+
 	}
 
 }
