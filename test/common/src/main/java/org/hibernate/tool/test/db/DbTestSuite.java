@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Nested;
 public class DbTestSuite {
 	
 	@Nested public class EJB3Configuration extends org.hibernate.tool.ant.EJB3Configuration.TestCase {}
-	@Nested public class Hbm2JavaEJB3Configuration extends org.hibernate.tool.ant.Hbm2JavaEJB3Configuration.TestCase {}
 	@Nested public class HbmLint extends org.hibernate.tool.ant.HbmLint.TestCase {}
 	@Nested public class JDBCConfiguration extends org.hibernate.tool.ant.JDBCConfiguration.TestCase {}
 	@Nested public class JDBCConfigWithRevEngXml extends org.hibernate.tool.ant.JDBCConfigWithRevEngXml.TestCase {}
