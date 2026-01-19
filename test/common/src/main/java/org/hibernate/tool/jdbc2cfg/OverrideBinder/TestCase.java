@@ -53,7 +53,6 @@ import org.hibernate.tools.test.util.HibernateUtil;
 import org.hibernate.tools.test.util.JdbcUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -453,13 +452,11 @@ public class TestCase {
 			
 	}
 		
-	// TODO: HBX-2052: investigate the use of hibernate-type=SomeUserType
-	@Disabled
 	@Test
 	public void testTypes() {		
 		PersistentClass classMapping = metadata.getEntityBinding("MiscTypes");
 		assertEquals(
-				"SomeUserType", 
+				"org.hibernate.tool.jdbc2cfg.OverrideBinder.SomeUserType", 
 				((SimpleValue)classMapping.getProperty("name").getValue()).getTypeName());
 		assertEquals(
 				"string", 
