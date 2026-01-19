@@ -19,8 +19,10 @@
 <hibernate-reverse-engineering>
 
 	<type-mapping>
-<!--  TODO: HBX-2052: investigate the use of hibernate-type=SomeUserType -->
-<!-- 		<sql-type jdbc-type="VARCHAR" length='20' hibernate-type="SomeUserType" /> -->
+ 		<sql-type 
+ 			jdbc-type="VARCHAR" 
+ 			length='20' 
+ 			hibernate-type="org.hibernate.tool.ant.JDBCConfigWithRevEngXml.SomeUserType" /> 
 		<sql-type jdbc-type="VARCHAR" length='1' hibernate-type="yes_no" />
 	</type-mapping>
 
