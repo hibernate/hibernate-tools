@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hibernate.tool.entitynaming;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.hibernate.tool.hbm2x.EntityNaming;
 
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

@@ -45,7 +45,6 @@
          		<module>utils</module>
     			<module>nodb</module>
     			<module>common</module>
-				<module>h2</module>
 				<module>hsql</module>
 				<module>mssql</module>
 				<module>mysql</module>
@@ -62,8 +61,7 @@
             	<module>utils</module>
             	<module>nodb</module>
             	<module>common</module>
-            	<module>h2</module>
-				<module>maven</module> 
+				<module>maven</module>
          	</modules> 
        	</profile>
        	<profile>

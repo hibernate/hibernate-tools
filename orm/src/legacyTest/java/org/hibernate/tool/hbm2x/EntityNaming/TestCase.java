@@ -15,14 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hibernate.tool.entitynaming;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Properties;
+package org.hibernate.tool.hbm2x.EntityNaming;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -33,8 +26,8 @@ import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.RevengStrategyFactory;
-import org.hibernate.tools.test.util.JdbcUtil;
-import org.hibernate.tools.test.util.ResourceUtil;
+import org.hibernate.tool.test.utils.JdbcUtil;
+import org.hibernate.tool.test.utils.ResourceUtil;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,23 +36,29 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * Test lowercase database identifiers and specified entity package and class name.
- *
  * Settings: 1. Adjust hibernate.properties to clear hibernate.default_schema and
  * hibernate.default_catalog. Setting these values fail the classname/tablename matching logic
  * because of a call to nullifyDefaultCatalogAndSchema(table) in RootClassBinder.bind() before the
  * TableToClassName logic.
- *
- * 2. Create a custom RevengStrategy (eg RevengStrategyEntityNaming.java) with the required
+ * 2. Create a custom RevengStrategy (e.g. RevengStrategyEntityNaming.java) with the required
  * SchemaSelection settings.
  *
  * @author Daren
  */
 @TestInstance(Lifecycle.PER_CLASS)
-public class EntityNamingTest {
+public class TestCase {
 
-  private static final Logger log = Logger.getLogger(EntityNamingTest.class);
+  private static final Logger log = Logger.getLogger(TestCase.class);
 
   @TempDir
   public File outputDir = new File("output");
@@ -123,5 +122,6 @@ public class EntityNamingTest {
     String str = new String(Files.readAllBytes(orderItem.toPath()));
     assertTrue(str.contains("private Integer oiId;"));
     assertTrue(str.contains("private Order order;"));
+
   }
 }
