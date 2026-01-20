@@ -23,6 +23,6 @@
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <properties>
          <property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml"/>
-      </properties>
+       </properties>
    </persistence-unit>
 </persistence>

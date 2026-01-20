@@ -50,6 +50,11 @@
 		    <groupId>org.hibernate.tool</groupId>
 		    <artifactId>hibernate-tools-orm</artifactId>
 	    </dependency>
+	   	<dependency>
+    		<groupId>org.hibernate.orm</groupId>
+    		<artifactId>hibernate-scan-jandex</artifactId>
+    		<scope>test</scope>
+    	</dependency>
 		<dependency>
 			<groupId>org.hibernate.tool</groupId>
 			<artifactId>hibernate-tools-tests-utils</artifactId>
