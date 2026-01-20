@@ -29,12 +29,9 @@ import org.hibernate.tools.test.util.JdbcUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
-@Disabled
 public class TestCase {
 	
 	@TempDir
@@ -46,9 +43,9 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 		JdbcUtil.createDatabase(this);
 	}
 	
@@ -57,8 +54,6 @@ public class TestCase {
 		JdbcUtil.dropDatabase(this);
 	}
 	
-	//TODO HBX-2261: Investigate, fix and reenable failing tests after update to 6.0.0.Beta2		
-	@Disabled
 	@Test
 	public void testJPABogusPUnit() {
 
@@ -83,7 +78,6 @@ public class TestCase {
 		}
 
 		assertFalse(ejb3.exists());
-
 	}
 	
 }
