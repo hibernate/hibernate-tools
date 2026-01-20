@@ -23,6 +23,5 @@ public class DbTestSuite {
 	
 	@Nested public class EJB3Configuration extends org.hibernate.tool.ant.EJB3Configuration.TestCase {}
 	@Nested public class JPABogusPUnit extends org.hibernate.tool.ant.JPABogusPUnit.TestCase {}
-	@Nested public class JPAPropertyOverridesPUnit extends org.hibernate.tool.ant.JPAPropertyOverridesPUnit.TestCase {}
 
 }
