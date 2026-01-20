@@ -16,28 +16,27 @@
  * limitations under the License.
  */
 
-package org.hibernate.tool.jdbc2cfg.DefaultReverseEngineeringStrategy;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
+package org.hibernate.tool.internal.reveng.strategy;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.tool.api.reveng.RevengSettings;
 import org.hibernate.tool.api.reveng.RevengStrategy;
 import org.hibernate.tool.api.reveng.TableIdentifier;
-import org.hibernate.tool.internal.reveng.strategy.DefaultStrategy;
-import org.hibernate.tool.internal.reveng.strategy.DelegatingStrategy;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author max
  * @author koen
  *
  */
-public class TestCase {
+public class DefaultStrategyTest {
 	
 	RevengStrategy rns = new DefaultStrategy();
 	
