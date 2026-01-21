@@ -18,9 +18,16 @@
 
 package org.hibernate.tool.ide.completion.ModelCompletion;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.ide.completion.*;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,19 +39,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.tool.ide.completion.*;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JavaUtil;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author leon
@@ -665,7 +660,7 @@ public class TestCase {
     private Metadata buildMetadata() {
      	StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
     	ssrb.applySetting(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-    	ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+    	ssrb.applySetting(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
        	MetadataSources metadataSources = new MetadataSources()
        		.addInputStream(getClass().getResourceAsStream("Product.hbm.xml"))
        		.addInputStream(getClass().getResourceAsStream("Store.hbm.xml"))
