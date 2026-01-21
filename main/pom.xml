@@ -6,7 +6,7 @@
 	<parent>
            <groupId>org.hibernate</groupId>
            <artifactId>hibernate-tools-parent</artifactId>
-           <version>5.3.38-SNAPSHOT</version>
+           <version>5.3.38.Final</version>
 	</parent>
 
 	<artifactId>hibernate-tools</artifactId>
