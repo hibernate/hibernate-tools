@@ -18,14 +18,14 @@
 
 package org.hibernate.tool.ide.completion.CompletionHelperTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hibernate.tool.ide.completion.CompletionHelper;
+import org.hibernate.tool.ide.completion.EntityNameReference;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.tool.ide.completion.CompletionHelper;
-import org.hibernate.tool.ide.completion.EntityNameReference;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author leon
@@ -35,7 +35,7 @@ public class TestCase {
 	
     @Test
     public void testGetCanonicalPath() {
-        List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
+        List<EntityNameReference> qts = new ArrayList<>();
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.descriptions", "descr"));
         qts.add(new EntityNameReference("descr.name", "n"));
@@ -54,7 +54,7 @@ public class TestCase {
 
     @Test
     public void testStackOverflowInGetCanonicalPath() {
-        List<EntityNameReference> qts = new ArrayList<EntityNameReference>();
+        List<EntityNameReference> qts = new ArrayList<>();
         qts.add(new EntityNameReference("Article", "art"));
         qts.add(new EntityNameReference("art.stores", "store"));
         qts.add(new EntityNameReference("store.articles", "art"));
