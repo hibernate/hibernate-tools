@@ -18,16 +18,11 @@
 
 package org.hibernate.tool.hbm2x.Hbm2JavaTest;
 
-import java.io.Serializable;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
+
+import java.io.Serializable;
+import java.sql.*;
 
 public class DummyDateType implements UserType<Date> {
 
@@ -36,7 +31,7 @@ public class DummyDateType implements UserType<Date> {
 	}
 
 	public Class<Date> returnedClass() {
-		return java.sql.Date.class;
+		return Date.class;
 	}
 
 	public boolean equals(Date x, Date y) throws HibernateException {
@@ -68,23 +63,6 @@ public class DummyDateType implements UserType<Date> {
 			Date original, 
 			Date target, 
 			Object owner) throws HibernateException {
-		return null;
-	}
-	
-	//@Override
-	public void nullSafeSet(
-			PreparedStatement st, 
-			Date value, 
-			int index,
-			SharedSessionContractImplementor session) throws HibernateException, SQLException {}
-
-	@Override
-	public Date nullSafeGet(
-			ResultSet rs, 
-			int position, 
-			SharedSessionContractImplementor session, 
-			Object owner)
-					throws SQLException {
 		return null;
 	}
 
