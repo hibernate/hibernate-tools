@@ -18,22 +18,20 @@
 
 package org.hibernate.tool.hbm2x.Hbm2JavaInitializationTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.tool.internal.export.java.Cfg2JavaTool;
 import org.hibernate.tool.internal.export.java.ImportContextImpl;
 import org.hibernate.tool.internal.export.java.POJOClass;
-import org.hibernate.tools.test.util.HibernateUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
