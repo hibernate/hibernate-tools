@@ -17,18 +17,6 @@
  */
 package org.hibernate.tool.hbm2x.OtherCfg2HbmTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.File;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
@@ -36,15 +24,26 @@ import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -66,14 +65,13 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	
-	@BeforeEach
+
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();		
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HbmExporter();	
@@ -96,7 +94,7 @@ public class TestCase {
     public void testReadable() {
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
         File[] hbmFiles = new File[4];
         hbmFiles[0] = new File(srcDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml");
         hbmFiles[1] = new File(srcDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml");
@@ -110,10 +108,10 @@ public class TestCase {
 	
 	@Test
 	public void testNoVelocityLeftOvers() {
-		assertEquals(null, FileUtil.findFirstString("$",new File(srcDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml") ) );
-		assertEquals(null, FileUtil.findFirstString("$",new File(srcDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml") ) );
-		assertEquals(null, FileUtil.findFirstString("$",new File(srcDir, "org/hibernate/tool/hbm2x/Order.hbm.xml") ) );
-		assertEquals(null, FileUtil.findFirstString("$",new File(srcDir, "org/hibernate/tool/hbm2x/Product.hbm.xml") ) );   
+        assertNull(FileUtil.findFirstString("$", new File(srcDir, "org/hibernate/tool/hbm2x/Customer.hbm.xml")));
+        assertNull(FileUtil.findFirstString("$", new File(srcDir, "org/hibernate/tool/hbm2x/LineItem.hbm.xml")));
+        assertNull(FileUtil.findFirstString("$", new File(srcDir, "org/hibernate/tool/hbm2x/Order.hbm.xml")));
+        assertNull(FileUtil.findFirstString("$", new File(srcDir, "org/hibernate/tool/hbm2x/Product.hbm.xml")));
 	}
 	
 	@Test
