@@ -199,8 +199,6 @@ public class TestCase {
 				"did not honor generated-class");
 	}
 	
-	// TODO Re-enable this test: HBX-1242
-	@Disabled
 	@Test
 	public void testFieldNotThere() {
 		assertNull(FileUtil.findFirstString(
