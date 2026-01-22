@@ -18,22 +18,23 @@
 
 package org.hibernate.tool.hbm2x.HibernateMappingExporterTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.Properties;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.HibernateUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //TODO Reenable this test and make it pass (See HBX-2884)
 @Disabled
@@ -54,18 +55,18 @@ public class TestCase {
 	@Test
 	public void testStart() throws Exception {
 		File resources = new File(outputFolder, "resources");
-		resources.mkdir();
+		assertTrue(resources.mkdir());
 		File fooHbmXmlOrigin = new File(resources, "origin.hbm.xml");
 		FileWriter writer = new FileWriter(fooHbmXmlOrigin);
 		writer.write(FOO_HBM_XML);
 		writer.close();
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { fooHbmXmlOrigin }, properties); 		
 		final File srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
+		assertTrue(srcDir.mkdir());
 		HbmExporter exporter = new HbmExporter();
 		exporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		exporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
