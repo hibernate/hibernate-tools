@@ -18,16 +18,7 @@
 
 package org.hibernate.tool.hbm2x.Hbm2JavaEjb3Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+import jakarta.persistence.Persistence;
 import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
@@ -42,15 +33,19 @@ import org.hibernate.tool.internal.export.java.EntityPOJOClass;
 import org.hibernate.tool.internal.export.java.POJOClass;
 import org.hibernate.tool.internal.util.AnnotationBuilder;
 import org.hibernate.tool.internal.util.IteratorTransformer;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JavaUtil;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import jakarta.persistence.Persistence;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -69,16 +64,15 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	
-	private Metadata metadata = null;
+
+    private Metadata metadata = null;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		metadata = metadataDescriptor.createMetadata();
@@ -125,8 +119,8 @@ public class TestCase {
 	@Test
 	public void testCompile() {
 		File compiled = new File(outputFolder, "compiled");
-		compiled.mkdir();
-		List<String> jars = new ArrayList<String>();
+		assertTrue(compiled.mkdir());
+		List<String> jars = new ArrayList<>();
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
 		JavaUtil.compile(srcDir, compiled, jars);
@@ -169,7 +163,7 @@ public class TestCase {
 		String string = clazz.generateAnnColumnAnnotation( p );
 		assertNotNull(string);
 		assertEquals(-1, string.indexOf("unique="));
-		assertTrue(string.indexOf("nullable=")>=0);
+		assertTrue(string.contains("nullable="));
 		assertEquals(-1, string.indexOf("insertable="));
 		assertEquals(-1, string.indexOf("updatable="));
 		assertTrue(string.indexOf("length=10000")>0);
@@ -177,7 +171,7 @@ public class TestCase {
 		string = clazz.generateAnnColumnAnnotation( p );
 		assertNotNull(string);
 		assertEquals(-1, string.indexOf("unique="));
-		assertTrue(string.indexOf("nullable=")>=0);
+		assertTrue(string.contains("nullable="));
 		assertEquals(-1, string.indexOf("insertable="));
 		assertTrue(string.indexOf("updatable=false")>0);
 		assertTrue(string.indexOf("length=100")>0);
@@ -187,7 +181,7 @@ public class TestCase {
 		string = clazz.generateAnnColumnAnnotation( p );
 		assertNotNull(string);
 		assertTrue(string.indexOf("unique=true")>0);
-		assertTrue(string.indexOf("nullable=")>=0);
+		assertTrue(string.contains("nullable="));
 		assertEquals(-1, string.indexOf("insertable="));
 		assertEquals(-1,string.indexOf("updatable="));
 		assertEquals(-1, string.indexOf("length="));
@@ -223,20 +217,20 @@ public class TestCase {
 		builder.addAttribute("fetch", (String)null);
 		assertEquals("@jakarta.persistence.OneToMany", builder.getResult());
 		builder = AnnotationBuilder.createAnnotation("abc");
-		ArrayList<Object> list = new ArrayList<Object>();
-		list.add(Integer.valueOf(42));
-		list.add( new String("xxx") );
+		ArrayList<Object> list = new ArrayList<>();
+		list.add(42);
+		list.add("xxx");
 		builder.addQuotedAttributes( "it", list.iterator() );
 		assertEquals("@abc(it={\"42\", \"xxx\"})", builder.getResult());		
-		List<String> columns = new ArrayList<String>();
+		List<String> columns = new ArrayList<>();
 		columns.add("first");
 		columns.add("second");
 		AnnotationBuilder constraint = AnnotationBuilder.createAnnotation( "UniqueConstraint" );
-		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<String>(columns.iterator()) {
-			public String transform(String object) {					
-				return object.toString();
-			}
-		});
+		constraint.addQuotedAttributes( "columnNames", new IteratorTransformer<>(columns.iterator()) {
+            public String transform(String object) {
+                return object;
+            }
+        });
 		constraint.addAttribute( "single", "value" );	
 		String attribute = constraint.getAttributeAsString("columnNames");
 		assertEquals("{\"first\", \"second\"}", attribute);
