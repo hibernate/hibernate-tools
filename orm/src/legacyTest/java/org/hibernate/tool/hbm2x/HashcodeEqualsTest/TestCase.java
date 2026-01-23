@@ -18,24 +18,23 @@
 
 package org.hibernate.tool.hbm2x.HashcodeEqualsTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
-
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.common.DefaultArtifactCollector;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JavaUtil;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -51,16 +50,15 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	private DefaultArtifactCollector artifactCollector = null;
+    private DefaultArtifactCollector artifactCollector = null;
 	private MetadataDescriptor metadataDescriptor = null;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
@@ -97,7 +95,7 @@ public class TestCase {
 	@Test
 	public void testCompilable() {
 		File compiled = new File(outputFolder, "compiled");
-		compiled.mkdir();
+		assertTrue(compiled.mkdir());
 		JavaUtil.compile(srcDir, compiled);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, "org/hibernate/tool/hbm2x/HashEquals.class"));
