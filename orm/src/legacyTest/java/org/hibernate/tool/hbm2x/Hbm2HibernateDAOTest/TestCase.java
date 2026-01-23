@@ -18,28 +18,27 @@
 
 package org.hibernate.tool.hbm2x.Hbm2HibernateDAOTest;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import jakarta.persistence.Persistence;
 import org.hibernate.Version;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JavaUtil;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import jakarta.persistence.Persistence;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -56,14 +55,13 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
 
-	@BeforeEach
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.JAVA);
@@ -91,9 +89,9 @@ public class TestCase {
 	@Test
 	public void testCompilable() throws IOException {
 		File compiled = new File(outputFolder, "compiled");
-		compiled.mkdir();
+		assertTrue(compiled.mkdir());
 		FileUtil.generateNoopComparator(srcDir);
-		List<String> jars = new ArrayList<String>();
+		List<String> jars = new ArrayList<>();
 		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
 		JavaUtil.compile(srcDir, compiled, jars);
@@ -121,7 +119,7 @@ public class TestCase {
 			new File(srcDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/ArticleHome.java")));
         assertNull(FileUtil.findFirstString(
         		"$",
-        		new File(srcDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );       
+        		new File(srcDir, "org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.java") ) );
 	}
 	
 }
