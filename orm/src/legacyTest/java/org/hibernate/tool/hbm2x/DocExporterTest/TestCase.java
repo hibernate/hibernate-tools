@@ -18,41 +18,31 @@
 
 package org.hibernate.tool.hbm2x.DocExporterTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Properties;
-import java.util.function.BiConsumer;
-
-import javax.xml.parsers.SAXParserFactory;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.internal.export.doc.DocExporter;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.hibernate.type.descriptor.java.JdbcDateJavaType;
 import org.hibernate.type.descriptor.jdbc.DateJdbcType;
 import org.hibernate.usertype.BaseUserTypeSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
+
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.StringReader;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.function.BiConsumer;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author koen
@@ -73,29 +63,28 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	
-	private boolean ignoreDot;
+
+    private boolean ignoreDot;
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		DocExporter exporter = new DocExporter();
 		Properties properties = new Properties();
 		properties.put( "jdk5", "true"); // test generics
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		if(File.pathSeparator.equals(";")) { // to work around windows/jvm not seeming to respect executing just "dot"
 			properties.put("dot.executable", System.getProperties().getProperty("dot.executable","dot.exe"));
 		} else {
 			properties.put("dot.executable", System.getProperties().getProperty("dot.executable","dot"));
 		}
-		// Set to ignore dot error if dot exec not specfically set.
+		// Set to ignore dot error if dot exec not specifically set.
 		// done to avoid test failure when no dot available.
 		boolean dotSpecified = System.getProperties().containsKey("dot.executable");
 		ignoreDot =  !dotSpecified;
@@ -159,7 +148,7 @@ public class TestCase {
 
 	private void checkHtml(File file) {
 		if (file.isDirectory()) {
-			for (File child : file.listFiles()) {
+			for (File child : Objects.requireNonNull(file.listFiles())) {
 				checkHtml(child);
 			}
 		} else if (file.getName().endsWith(".html")) {
@@ -178,36 +167,36 @@ public class TestCase {
 		}
 	}
 	
-	private class TestResolver implements EntityResolver {
+	private static class TestResolver implements EntityResolver {
 		@Override
-		public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+		public InputSource resolveEntity(String publicId, String systemId) {
 			return new InputSource(new StringReader(""));
 		}		
 	}
 	
-	private class TestHandler implements ErrorHandler {
+	private static class TestHandler implements ErrorHandler {
 		int warnings = 0;
 		int errors = 0;
 		@Override
-		public void warning(SAXParseException exception) throws SAXException {
+		public void warning(SAXParseException exception) {
 			warnings++;
 		}
 		@Override
-		public void error(SAXParseException exception) throws SAXException {
+		public void error(SAXParseException exception) {
 			errors++;
 		}
 		@Override
-		public void fatalError(SAXParseException exception) throws SAXException {
+		public void fatalError(SAXParseException exception) {
 			errors++;
 		}		
 	}
 	
 	public static class DummyDateType extends BaseUserTypeSupport<JdbcDateJavaType> {
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings({"unchecked" })
 		@Override
 		protected void resolve(BiConsumer resolutionConsumer) {
 			resolutionConsumer.accept(new JdbcDateJavaType(), new DateJdbcType());
 		}
 	}
-	
+
 }
