@@ -18,30 +18,25 @@
 
 package org.hibernate.tool.hbm2x.GenericExporterTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.version.Version;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -60,15 +55,14 @@ public class TestCase {
 	
 	private MetadataDescriptor metadataDescriptor = null;
 	private File outputDir = null;
-	private File resourcesDir = null;
-	private String resourcesLocation = null;
+    private String resourcesLocation = null;
 	
 	@BeforeEach
 	public void setUp() {
 		outputDir = new File(outputFolder, "src");
-		outputDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(outputDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		resourcesLocation = '/' + getClass().getPackage().getName().replace(".", "/") + '/';
@@ -82,11 +76,9 @@ public class TestCase {
     	ge.getProperties().put(ExporterConstants.TEMPLATE_NAME, resourcesLocation + "generic-test.ftl");
     	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "generictest.txt");
 		ge.start();
-		JUnitUtil.assertIsNonEmptyFile(new File( outputDir,"artifacts.txt"));	
+		JUnitUtil.assertIsNonEmptyFile(new File( outputDir,"artifacts.txt"));
 		JUnitUtil.assertIsNonEmptyFile(new File( outputDir, "templates.txt"));
-		assertEquals(
-				null, 
-				FileUtil.findFirstString("$", new File(outputDir, "artifacts.txt")));	
+        assertNull(FileUtil.findFirstString("$", new File(outputDir, "artifacts.txt")));
 		assertEquals(
 				"File for artifacts in " + Version.versionString(), 
 				FileUtil.findFirstString("artifacts", new File( outputDir, "artifacts.txt")));
@@ -192,7 +184,7 @@ public class TestCase {
 	}
 
 	@Test
-	public void testPropertySet() throws FileNotFoundException, IOException {
+	public void testPropertySet() throws IOException {
 		Exporter ge = ExporterFactory.createExporter(ExporterType.GENERIC);
 		Properties p = new Properties();
 		p.setProperty("proptest", "A value");
@@ -206,20 +198,14 @@ public class TestCase {
     	ge.getProperties().put(ExporterConstants.FILE_PATTERN, "{package-name}/generic{class-name}.txt");
 		ge.start();		
 		Properties generated = new Properties();
-		FileInputStream is = null;
-		try {
-			is = new FileInputStream(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"));
-			generated.load(is);
-		} finally {
-			if (is != null) {
-				is.close();
-			}
-		}		
-		assertEquals(generated.getProperty("booleanProperty"), "true");
-		assertEquals(generated.getProperty("hibernatetool.booleanProperty"), "true");
+        try (FileInputStream is = new FileInputStream(new File(outputDir, "org/hibernate/tool/hbm2x/genericArticle.txt"))) {
+            generated.load(is);
+        }
+		assertEquals("true", generated.getProperty("booleanProperty"));
+		assertEquals("true", generated.getProperty("hibernatetool.booleanProperty"));
 		assertNull(generated.getProperty("booleanWasTrue"));
-		assertEquals(generated.getProperty("myTool.value"), "value");
-		assertEquals(generated.getProperty("refproperty"), "proptest=A value");	
+		assertEquals("value", generated.getProperty("myTool.value"));
+		assertEquals("proptest=A value", generated.getProperty("refproperty"));
 	}
 	
 }
