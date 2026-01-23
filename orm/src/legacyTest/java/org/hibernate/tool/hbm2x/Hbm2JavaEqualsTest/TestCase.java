@@ -18,8 +18,19 @@
 
 package org.hibernate.tool.hbm2x.Hbm2JavaEqualsTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.tool.api.export.Exporter;
+import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.export.ExporterFactory;
+import org.hibernate.tool.api.export.ExporterType;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,18 +42,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.export.ExporterFactory;
-import org.hibernate.tool.api.export.ExporterType;
-import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JavaUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 	
@@ -70,15 +70,14 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
 
-	@BeforeEach
+    @BeforeEach
 	public void setUp() throws Exception {
 		// create output folder
 		srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		// export class ProxiedTestEntity.java and UnProxiedTestEntity
 		File hbmXml = new File(resourcesDir, "testEntity.hbm.xml");
 		FileWriter fileWriter = new FileWriter(hbmXml);
@@ -86,7 +85,7 @@ public class TestCase {
 		fileWriter.close();
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, new File[] { hbmXml }, properties);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.JAVA);
@@ -109,29 +108,29 @@ public class TestCase {
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
         Class<?> entityClass = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.UnProxiedTestEntity");
-		Constructor<?> entityClassConstructor = entityClass.getConstructor(new Class[] {});
-        Method setId = entityClass.getMethod("setId", new Class[] { int.class });
+		Constructor<?> entityClassConstructor = entityClass.getConstructor();
+        Method setId = entityClass.getMethod("setId", int.class);
 
         // create a first entity and check the 'normal' behavior: 
         // - 'true' when comparing against itself
         // - 'false' when comparing against null
         // - 'false' when comparing against an object of a different class
         Object firstEntity = entityClassConstructor.newInstance();
-        setId.invoke(firstEntity, new Object[] { Integer.MAX_VALUE });
-        assertTrue(firstEntity.equals(firstEntity));
-        assertFalse(firstEntity.equals(null));
-        assertFalse(firstEntity.equals(new Object()));
+        setId.invoke(firstEntity, Integer.MAX_VALUE);
+        assertEquals(firstEntity, firstEntity);
+        assertNotNull(firstEntity);
+        assertNotEquals(new Object(), firstEntity);
 
         // create a second entity and check the 'normal behavior
         // - 'true' if the id property is the same
         // - 'false' if the id property is different
         Object secondEntity = entityClassConstructor.newInstance();
-        setId.invoke(secondEntity, new Object[] { Integer.MAX_VALUE });
-        assertTrue(firstEntity.equals(secondEntity));
-        assertTrue(secondEntity.equals(firstEntity));
-        setId.invoke(secondEntity, new Object[] { Integer.MIN_VALUE });
-        assertFalse(firstEntity.equals(secondEntity));
-        assertFalse(secondEntity.equals(firstEntity));
+        setId.invoke(secondEntity, Integer.MAX_VALUE);
+        assertEquals(firstEntity, secondEntity);
+        assertEquals(secondEntity, firstEntity);
+        setId.invoke(secondEntity, Integer.MIN_VALUE);
+        assertNotEquals(firstEntity, secondEntity);
+        assertNotEquals(secondEntity, firstEntity);
 
         ucl.close();
 	}
@@ -145,8 +144,8 @@ public class TestCase {
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );
         Class<?> entityClass = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.ProxiedTestEntity");
         Class<?> entityProxyInterface = ucl.loadClass("org.hibernate.tool.hbm2x.Hbm2JavaEquals.TestEntityProxy");
-		Constructor<?> entityClassConstructor = entityClass.getConstructor(new Class[] {});
-        Method setId = entityClass.getMethod("setId", new Class[] { int.class });
+		Constructor<?> entityClassConstructor = entityClass.getConstructor();
+        Method setId = entityClass.getMethod("setId", int.class);
         TestEntityProxyInvocationHandler handler = new TestEntityProxyInvocationHandler();
         Object testEntityProxy = Proxy.newProxyInstance(
         		ucl, 
@@ -158,39 +157,39 @@ public class TestCase {
         // - 'false' when comparing against null
         // - 'false' when comparing against an object of a different class (that is not the proxy class)
 		Object firstEntity = entityClassConstructor.newInstance();
-        setId.invoke(firstEntity, new Object[] { Integer.MAX_VALUE });
-        assertTrue(firstEntity.equals(firstEntity));
-        assertFalse(firstEntity.equals(null));
-        assertFalse(firstEntity.equals(new Object()));
+        setId.invoke(firstEntity, Integer.MAX_VALUE);
+        assertEquals(firstEntity, firstEntity);
+        assertNotNull(firstEntity);
+        assertNotEquals(new Object(), firstEntity);
 
         // create a second proxied entity and check the 'normal behavior
         // - 'true' if the id property is the same
         // - 'false' if the id property is different
         Object secondEntity = entityClassConstructor.newInstance();
-        setId.invoke(secondEntity, new Object[] { Integer.MAX_VALUE });
-        assertTrue(firstEntity.equals(secondEntity));
-        assertTrue(secondEntity.equals(firstEntity));
-        setId.invoke(secondEntity, new Object[] { Integer.MIN_VALUE });
-        assertFalse(firstEntity.equals(secondEntity));
-        assertFalse(secondEntity.equals(firstEntity));
+        setId.invoke(secondEntity, Integer.MAX_VALUE);
+        assertEquals(firstEntity, secondEntity);
+        assertEquals(secondEntity, firstEntity);
+        setId.invoke(secondEntity, Integer.MIN_VALUE);
+        assertNotEquals(firstEntity, secondEntity);
+        assertNotEquals(secondEntity, firstEntity);
 
         // compare both proxied entities with the proxy
         handler.id = Integer.MAX_VALUE;
-        assertTrue(firstEntity.equals(testEntityProxy));
-        assertFalse(secondEntity.equals(testEntityProxy));        
+        assertEquals(firstEntity, testEntityProxy);
+        assertNotEquals(secondEntity, testEntityProxy);
         handler.id = Integer.MIN_VALUE;
-        assertFalse(firstEntity.equals(testEntityProxy));
-        assertTrue(secondEntity.equals(testEntityProxy));
+        assertNotEquals(firstEntity, testEntityProxy);
+        assertEquals(secondEntity, testEntityProxy);
         
         ucl.close();
 	}
 
-	private class TestEntityProxyInvocationHandler implements InvocationHandler {
+	private static class TestEntityProxyInvocationHandler implements InvocationHandler {
 		public int id = 0;
 		@Override public Object invoke(
 				Object proxy, 
 				Method method, 
-				Object[] args) throws Throwable {
+				Object[] args) {
 			if ("getId".equals(method.getName())) {
 				return id;
 			}
