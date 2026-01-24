@@ -18,32 +18,27 @@
 
 package org.hibernate.tool.hbm2x.Hbm2CfgTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.io.File;
-import java.util.Properties;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
 import org.hibernate.resource.transaction.spi.TransactionCoordinator;
 import org.hibernate.resource.transaction.spi.TransactionCoordinatorBuilder;
 import org.hibernate.resource.transaction.spi.TransactionCoordinatorOwner;
-import org.hibernate.tool.api.export.ArtifactCollector;
-import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.export.ExporterFactory;
-import org.hibernate.tool.api.export.ExporterType;
+import org.hibernate.tool.api.export.*;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -51,7 +46,6 @@ import org.junit.jupiter.api.io.TempDir;
  */
 public class TestCase {
 
-	@SuppressWarnings("serial")
 	public static class FakeTransactionManagerLookup implements TransactionCoordinatorBuilder {
 		@Override
 		public TransactionCoordinator buildTransactionCoordinator(TransactionCoordinatorOwner owner, Options options) {
@@ -75,16 +69,15 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	
-	private Exporter cfgexporter;
+
+    private Exporter cfgexporter;
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		cfgexporter = ExporterFactory.createExporter(ExporterType.CFG);
@@ -102,7 +95,7 @@ public class TestCase {
 	   properties.put(AvailableSettings.HBM2DDL_AUTO, "false");
 	   properties.put( "hibernate.temp.use_jdbc_metadata_defaults", "false");	   
 	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
@@ -122,7 +115,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.put( Environment.HBM2DDL_AUTO, "validator");   
 	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
@@ -134,7 +127,7 @@ public class TestCase {
 	   properties = exporter.getProperties();
 	   properties.put( AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, FakeTransactionManagerLookup.class.getName()); // Hack for seam-gen console configurations
 	   properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-	   properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+	   properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 	   exporter.getProperties().put(
 			   ExporterConstants.METADATA_DESCRIPTOR, 
 			   MetadataDescriptorFactory.createNativeDescriptor(null, null, properties));
@@ -146,7 +139,7 @@ public class TestCase {
 		
 	@Test
 	public void testFileExistence() {
-		JUnitUtil.assertIsNonEmptyFile(new File(srcDir, "hibernate.cfg.xml") );		
+		JUnitUtil.assertIsNonEmptyFile(new File(srcDir, "hibernate.cfg.xml") );
 	}
 
 	@Test
