@@ -18,26 +18,14 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.OneToOneTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.File;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -45,6 +33,16 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 //TODO Reenable this test and make it pass (See HBX-2884)
 @Disabled
@@ -58,15 +56,14 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
-	private HbmExporter hbmexporter = null;
+    private HbmExporter hbmexporter = null;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HbmExporter();
@@ -107,7 +104,7 @@ public class TestCase {
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		File[] files = new File[] { personHbmXml, addressHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
@@ -128,8 +125,8 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one-to-one element");
 		Element node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "name" ),"address");
-		assertEquals(node.getAttribute( "constrained" ),"false");
+		assertEquals("address", node.getAttribute( "name" ));
+		assertEquals("false", node.getAttribute( "constrained" ));
 		xmlFile = new File(
         		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/OneToOneTest/Address.hbm.xml");
@@ -139,9 +136,9 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
 		node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "name" ),"person");
-		assertEquals(node.getAttribute( "constrained" ),"true");
-		assertEquals(node.getAttribute( "access" ), "field");
+		assertEquals("person", node.getAttribute( "name" ));
+		assertEquals("true", node.getAttribute( "constrained" ));
+		assertEquals("field", node.getAttribute( "access" ));
 	}
 
 }
