@@ -18,30 +18,15 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.TypeParamsTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -49,6 +34,19 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Dmitry Geraskov
@@ -66,14 +64,13 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
 
-	@BeforeEach
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		Exporter hbmexporter = new HbmExporter();
@@ -98,7 +95,7 @@ public class TestCase {
         				"org/hibernate/tool/hbm2x/hbm2hbmxml/TypeParamsTest/Order.hbm.xml");
 		Properties properties = new Properties();
 		properties.setProperty(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.setProperty(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		File[] files = new File[] { orderHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
@@ -126,18 +123,18 @@ public class TestCase {
 			nameElement = statusElement;
 			statusElement = temp;
 		}
-		assertEquals(statusElement.getAttribute( "name" ),"status");
+		assertEquals("status", statusElement.getAttribute( "name" ));
 		nodeList = statusElement.getElementsByTagName("type");
 		assertEquals(1, nodeList.getLength(), "Expected to get one type element");
 		nodeList =  ((Element) nodeList.item(0)).getElementsByTagName("param");		
-		assertEquals(nodeList.getLength(), 5, "Expected to get 5 params elements");
-		Map<String, String> params = new HashMap<String, String>();
+		assertEquals(5, nodeList.getLength(), "Expected to get 5 params elements");
+		Map<String, String> params = new HashMap<>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element param = (Element) nodeList.item(i);
 			params.put(param.getAttribute( "name" ), param.getTextContent());
 		}
 		Set<String> set = params.keySet();
-		assertEquals(params.size(), 5, "Expected to get 5 different params elements");
+		assertEquals(5, params.size(), "Expected to get 5 different params elements");
 		assertTrue(
 				set.contains("catalog"),
 				"Can't find 'catalog' param");
@@ -160,8 +157,8 @@ public class TestCase {
 		assertEquals(
 				Status.class.getName(), 
 				params.get("enumClass"));
-		assertTrue(nameElement.getElementsByTagName("type").getLength() == 0, "property name should not have any type element");
-		assertEquals(nameElement.getAttribute("type"), "string");
+        assertEquals(0, nameElement.getElementsByTagName("type").getLength(), "property name should not have any type element");
+		assertEquals("string", nameElement.getAttribute("type"));
 	}
 	
 	enum Status {
