@@ -18,28 +18,24 @@
 
 package org.hibernate.tool.hbm2x.Hbm2EJBDaoTest;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
 import org.hibernate.tool.api.export.ExporterType;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tools.test.util.FileUtil;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.hibernate.tools.test.util.JavaUtil;
+import org.hibernate.tool.test.utils.FileUtil;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.hibernate.tool.test.utils.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import jakarta.persistence.Persistence;
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author max
@@ -56,17 +52,16 @@ public class TestCase {
 	public File outputFolder = new File("output");
 	
 	private File srcDir = null;
-	private File resourcesDir = null;
 
-	@BeforeEach
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
-		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.JAVA);;
+		Exporter javaExporter = ExporterFactory.createExporter(ExporterType.JAVA);
 		javaExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		javaExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		Exporter exporter = ExporterFactory.createExporter(ExporterType.DAO);
@@ -89,10 +84,8 @@ public class TestCase {
 	@Test
 	public void testCompilable() throws IOException {
 		File compiled = new File(outputFolder, "compiled");
-		compiled.mkdir();
+		assertTrue(compiled.mkdir());
 		FileUtil.generateNoopComparator(srcDir);
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		JavaUtil.compile(srcDir, compiled);
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/Article.class").exists());
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/ArticleHome.class").exists());
