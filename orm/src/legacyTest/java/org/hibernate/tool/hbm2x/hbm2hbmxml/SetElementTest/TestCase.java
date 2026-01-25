@@ -18,26 +18,15 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.SetElementTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.File;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -45,6 +34,16 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Dmitry Geraskov
@@ -60,20 +59,18 @@ public class TestCase {
 	
 	@TempDir
 	public File outputFolder = new File("output");
-	
-	private Exporter hbmexporter = null;
-	private File srcDir = null;
-	private File resourcesDir = null;
 
-	@BeforeEach
+    private File srcDir = null;
+
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
-		hbmexporter = new HbmExporter();
+        Exporter hbmexporter = new HbmExporter();
 		hbmexporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		hbmexporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
 		hbmexporter.start();
@@ -94,7 +91,7 @@ public class TestCase {
 						"org/hibernate/tool/hbm2x/hbm2hbmxml/SetElementTest/Search.hbm.xml");
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		File[] files = new File[] { searchHbmXml };
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files, properties);
@@ -117,11 +114,11 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one key element");
 		Element node = (Element)nodeList.item(0);
-		if (node.getAttribute( "column" ) != null && !"".equals(node.getAttribute("column"))) {//implied attribute
-			assertEquals(node.getAttribute( "column" ),"searchString");
+		if (!node.getAttribute("column").isEmpty()) {//implied attribute
+			assertEquals("searchString", node.getAttribute( "column" ));
 		} else {
 			node = (Element)node.getElementsByTagName("column").item(0);
-			assertEquals(node.getAttribute( "name" ),"searchString");
+			assertEquals("searchString", node.getAttribute( "name" ));
 		}
 	}
 
@@ -141,18 +138,18 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
 		Element node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "name" ),"searchResults");
-		assertEquals(node.getAttribute( "access" ),"field");
+		assertEquals("searchResults", node.getAttribute( "name" ));
+		assertEquals("field", node.getAttribute( "access" ));
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/set/element")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one element 'element'");
 		node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "type" ), "string");
+		assertEquals("string", node.getAttribute( "type" ));
 		nodeList = node.getElementsByTagName("column");
 		assertEquals(1, nodeList.getLength(), "Expected to get one element 'column'");
 		node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "name"), "text");
+		assertEquals("text", node.getAttribute( "name"));
 	}
 
 }

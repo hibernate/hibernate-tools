@@ -23,7 +23,7 @@ import java.util.TreeSet;
 
 public class Search {
 	private String searchString;
-	private SortedSet<String> searchResults = new TreeSet<String>();
+	private SortedSet<String> searchResults = new TreeSet<>();
 	
 	Search() {}
 	
