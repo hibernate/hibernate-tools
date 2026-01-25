@@ -18,8 +18,8 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.MapAndAnyTest;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Address {
 	private Long id;
