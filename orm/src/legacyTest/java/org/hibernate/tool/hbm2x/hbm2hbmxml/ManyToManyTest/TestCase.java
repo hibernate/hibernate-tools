@@ -18,33 +18,31 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.api.metadata.MetadataDescriptorFactory;
 import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
+import org.hibernate.tool.test.utils.ConnectionProvider;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 
@@ -57,14 +55,13 @@ public class TestCase {
 	
 	private HbmExporter hbmexporter = null;
 	private File srcDir = null;
-	private File resourcesDir = null;
-	
-	@BeforeEach
+
+    @BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "output");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		MetadataDescriptor metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HbmExporter();
@@ -96,7 +93,7 @@ public class TestCase {
 
 	@Test
 	public void testReadable() {
-        ArrayList<File> files = new ArrayList<File>(4); 
+        ArrayList<File> files = new ArrayList<>(4);
         files.add(new File(
         		srcDir, 
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/User.hbm.xml"));
@@ -105,7 +102,7 @@ public class TestCase {
         		"org/hibernate/tool/hbm2x/hbm2hbmxml/ManyToManyTest/Group.hbm.xml"));
 		Properties properties = new Properties();
 		properties.put(AvailableSettings.DIALECT, HibernateUtil.Dialect.class.getName());
-		properties.put(AvailableSettings.CONNECTION_PROVIDER, HibernateUtil.ConnectionProvider.class.getName());
+		properties.put(AvailableSettings.CONNECTION_PROVIDER, ConnectionProvider.class.getName());
 		MetadataDescriptor metadataDescriptor = MetadataDescriptorFactory
 				.createNativeDescriptor(null, files.toArray(new File[2]), properties);
         assertNotNull(metadataDescriptor.createMetadata());
@@ -126,13 +123,13 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one many-to-many element");
 		Element node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "entity-name" ),"org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group");
+		assertEquals("org.hibernate.tool.hbm2x.hbm2hbmxml.ManyToManyTest.Group", node.getAttribute( "entity-name" ));
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/set")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
 		node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute( "table" ),"UserGroup");
+		assertEquals("UserGroup", node.getAttribute( "table" ));
 	}
 
 	@Test
@@ -150,7 +147,7 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one class element");
 		Element node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute("table"), "`Group`");
+		assertEquals("`Group`", node.getAttribute("table"));
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/composite-id")
 				.evaluate(document, XPathConstants.NODESET);
@@ -160,9 +157,9 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(2, nodeList.getLength(), "Expected to get two key-property elements");
 		node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute("name"), "name");
+		assertEquals("name", node.getAttribute("name"));
 		node = (Element) nodeList.item(1);
-		assertEquals(node.getAttribute("name"), "org");
+		assertEquals("org", node.getAttribute("name"));
 	}
 
 	@Test
@@ -180,10 +177,10 @@ public class TestCase {
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one set element");
 		Element node = (Element) nodeList.item(0);
-		assertEquals(node.getAttribute("table"), "UserGroup");
-		assertEquals(node.getAttribute("name"), "users");
-		assertEquals(node.getAttribute("inverse"), "true");
-		assertEquals(node.getAttribute("lazy"), "extra");
+		assertEquals("UserGroup", node.getAttribute("table"));
+		assertEquals("users", node.getAttribute("name"));
+		assertEquals("true", node.getAttribute("inverse"));
+		assertEquals("extra", node.getAttribute("lazy"));
 	}
 
 }
