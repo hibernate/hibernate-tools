@@ -18,11 +18,13 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.DynamicComponentTest;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Fee implements Serializable {
 
-	private static final long serialVersionUID = 
+	@Serial
+    private static final long serialVersionUID =
 			ObjectStreamClass.lookup(Fee.class).getSerialVersionUID();
 		
 	public Fee anotherFee;
