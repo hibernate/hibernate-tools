@@ -18,18 +18,19 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest;
 
+import org.hibernate.Session;
+
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.CallbackException;
-import org.hibernate.Session;
-
 public class Glarch implements GlarchProxy, Serializable {
 
-	private static final long serialVersionUID = 
+	@Serial
+    private static final long serialVersionUID =
 			ObjectStreamClass.lookup(Glarch.class).getSerialVersionUID();
 	
 	private int version;
@@ -110,15 +111,15 @@ public class Glarch implements GlarchProxy, Serializable {
 		if ( ! ( ( (String) id ).length()==32 ) ) throw new RuntimeException("id problem");
 	}
 
-	public boolean onSave(Session s) throws CallbackException {
+	public boolean onSave(Session s) {
 		dynaBean = new HashMap<Object, Object>();
 		dynaBean.put("foo", "foo");
-		dynaBean.put("bar", Integer.valueOf(66));
+		dynaBean.put("bar", 66);
 		immutable="never changes!";
 		return false;
 	}
 
-	public boolean onUpdate(Session s) throws CallbackException {
+	public boolean onUpdate(Session s) {
 		return false;
 	}
 

@@ -23,36 +23,36 @@ import java.util.Map;
 
 public interface GlarchProxy {
 	
-	public int getVersion();
-	public int getDerivedVersion();
-	public void setVersion(int version);
+	int getVersion();
+	int getDerivedVersion();
+	void setVersion(int version);
 	
-	public String getName();
-	public void setName(String name);
+	String getName();
+	void setName(String name);
 	
-	public GlarchProxy getNext();
-	public void setNext(GlarchProxy next);
+	GlarchProxy getNext();
+	void setNext(GlarchProxy next);
 	
-	public short getOrder();
-	public void setOrder(short order);
+	short getOrder();
+	void setOrder(short order);
 	
-	public List<Object> getStrings();
-	public void setStrings(List<Object> strings);
+	List<Object> getStrings();
+	void setStrings(List<Object> strings);
 	
-	public Map<Object, Object> getDynaBean();
-	public void setDynaBean(Map<Object, Object> bean);
+	Map<Object, Object> getDynaBean();
+	void setDynaBean(Map<Object, Object> bean);
 	
-	public Map<Object, Object> getStringSets();
-	public void setStringSets(Map<Object, Object> stringSets);
+	Map<Object, Object> getStringSets();
+	void setStringSets(Map<Object, Object> stringSets);
 	
-	public List<Object> getFooComponents();
-	public void setFooComponents(List<Object> fooComponents);
+	List<Object> getFooComponents();
+	void setFooComponents(List<Object> fooComponents);
 	
-	public GlarchProxy[] getProxyArray();
-	public void setProxyArray(GlarchProxy[] proxyArray);
+	GlarchProxy[] getProxyArray();
+	void setProxyArray(GlarchProxy[] proxyArray);
 	
-	public Object getAny();
-	public void setAny(Object any);
+	Object getAny();
+	void setAny(Object any);
 }
 
 

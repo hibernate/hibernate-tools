@@ -18,12 +18,14 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.ListArrayTest;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 public class FooComponent implements Serializable {
 	
-	private static final long serialVersionUID = 
+	@Serial
+    private static final long serialVersionUID =
 			ObjectStreamClass.lookup(FooComponent.class).getSerialVersionUID();
 		
 	int count;
@@ -34,8 +36,11 @@ public class FooComponent implements Serializable {
 	GlarchProxy glarch;
 	
 	public boolean equals(Object that) {
-		FooComponent fc = (FooComponent) that;
-		return count==fc.count;
+		if (that instanceof FooComponent fc) {
+            return count == fc.count;
+		} else {
+			return false;
+		}
 	}
 	
 	public int hashCode() {
@@ -43,18 +48,18 @@ public class FooComponent implements Serializable {
 	}
 	
 	public String toString() {
-		String result = "FooComponent: " + name + "=" + count;
-		result+="; dates=[";
+		StringBuilder result = new StringBuilder("FooComponent: " + name + "=" + count);
+		result.append("; dates=[");
 		if ( importantDates!=null) {
 			for ( int i=0; i<importantDates.length; i++ ) {
-				result+=(i==0 ?"":", ") + importantDates[i];
+				result.append(i == 0 ? "" : ", ").append(importantDates[i]);
 			}
 		}
-		result+="]";
+		result.append("]");
 		if ( subcomponent!=null ) {
-			result+= " (" + subcomponent + ")";
+			result.append(" (").append(subcomponent).append(")");
 		}
-		return result;
+		return result.toString();
 	}
 	
 	public FooComponent() {}
