@@ -18,24 +18,14 @@
 
 package org.hibernate.tool.cfg.MetaDataDialectFactoryTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.hibernate.dialect.*;
+import org.hibernate.tool.api.reveng.RevengDialectFactory;
+import org.hibernate.tool.internal.reveng.dialect.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-import org.hibernate.dialect.DatabaseVersion;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.H2Dialect;
-import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.OracleDialect;
-import org.hibernate.tool.api.reveng.RevengDialectFactory;
-import org.hibernate.tool.internal.reveng.dialect.H2MetaDataDialect;
-import org.hibernate.tool.internal.reveng.dialect.HSQLMetaDataDialect;
-import org.hibernate.tool.internal.reveng.dialect.JDBCMetaDataDialect;
-import org.hibernate.tool.internal.reveng.dialect.MySQLMetaDataDialect;
-import org.hibernate.tool.internal.reveng.dialect.OracleMetaDataDialect;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 
@@ -79,7 +69,7 @@ public class TestCase {
 		assertSameClass(
 				"property should override specific dialect", 
 				H2MetaDataDialect.class, 
-				RevengDialectFactory.createMetaDataDialect(new MySQLDialect(), p));			
+				RevengDialectFactory.createMetaDataDialect(new MySQLDialect(), p));
 	}
 
 	@Test
@@ -141,32 +131,24 @@ public class TestCase {
 	}
 
 	private void assertSameClass(Class<?> clazz, Object instance) {
-		if(clazz==null && instance==null) {
-			assertEquals((Object)null, (Object)null);
-			return;
-		}
 		if(clazz==null) {
-			assertEquals(null, instance);
+            assertNull(instance);
 			return;
 		}
 		if(instance==null) {
-			assertEquals(clazz.getCanonicalName(), null);
+            assertNull(clazz.getCanonicalName());
 			return;
 		}
 		assertEquals(clazz.getCanonicalName(), instance.getClass().getName());
 	}
 	
 	private void assertSameClass(String msg, Class<?> clazz, Object instance) {
-		if(clazz==null && instance==null) {
-			assertEquals((Object)null, (Object)null);
-			return;
-		}
 		if(clazz==null) {
-			assertEquals(null, instance, msg);
+            assertNull(instance, msg);
 			return;
 		}
 		if(instance==null) {
-			assertEquals(clazz.getCanonicalName(), null, msg);
+            assertNull(clazz.getCanonicalName(), msg);
 			return;
 		}
 		assertEquals(clazz.getCanonicalName(), instance.getClass().getName(), msg);
