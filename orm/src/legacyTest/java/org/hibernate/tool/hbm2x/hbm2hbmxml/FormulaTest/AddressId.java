@@ -41,9 +41,8 @@ public class AddressId {
 		this.addressId = customerId;
 	}
 	public boolean equals(Object other) {
-		if ( !(other instanceof AddressId) ) return false;
-		AddressId add = (AddressId) other;
-		return type.equals(add.type) && addressId.equals(add.addressId);
+		if ( !(other instanceof AddressId add) ) return false;
+        return type.equals(add.type) && addressId.equals(add.addressId);
 	}
 	public int hashCode() {
 		return addressId.hashCode() + type.hashCode();
