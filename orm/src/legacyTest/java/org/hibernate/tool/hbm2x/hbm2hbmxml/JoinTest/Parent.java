@@ -27,7 +27,7 @@ import java.util.HashSet;
 public class Parent {
 	private Long id;
 	private String name;
-	private Collection<Child> children = new HashSet<Child>();
+	private Collection<Child> children = new HashSet<>();
 	/**
 	 * @return Returns the children.
 	 */
