@@ -18,39 +18,30 @@
 
 package org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hibernate.tool.api.export.ExporterConstants;
+import org.hibernate.tool.api.metadata.MetadataDescriptor;
+import org.hibernate.tool.internal.export.hbm.HbmExporter;
+import org.hibernate.tool.internal.export.hbm.HibernateMappingGlobalSettings;
 
-import java.io.File;
+import org.hibernate.tool.test.utils.HibernateUtil;
+import org.hibernate.tool.test.utils.JUnitUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
+import java.io.File;
 
-import org.hibernate.tool.api.export.Exporter;
-import org.hibernate.tool.api.export.ExporterConstants;
-import org.hibernate.tool.api.metadata.MetadataDescriptor;
-import org.hibernate.tool.internal.export.hbm.HbmExporter;
-import org.hibernate.tool.internal.export.hbm.HibernateMappingGlobalSettings;
-import org.hibernate.tools.test.util.HibernateUtil;
-import org.hibernate.tools.test.util.JUnitUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Initial implentation based on the Hbm2XTest class.
+ * Initial implementation based on the Hbm2XTest class.
  * 
  * @author David Channon
  * @author koen
@@ -60,10 +51,7 @@ import org.w3c.dom.NodeList;
 @Disabled
 public class TestCase {
 
-	/**	@TempDir
-	public File outputFolder = new File("output");
-	
-
+	/**
 	 * Testing class for cfg2hbm generating hbms.
 	 * Simulate a custom persister. 
 	 * Note: Only needs to exist not work or be valid
@@ -87,15 +75,14 @@ public class TestCase {
 	
 	private MetadataDescriptor metadataDescriptor = null;
 	private File srcDir = null;
-	private File resourcesDir = null;
-	private HbmExporter hbmexporter = null;
+    private HbmExporter hbmexporter = null;
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		srcDir = new File(outputFolder, "src");
-		srcDir.mkdir();
-		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(srcDir.mkdir());
+        File resourcesDir = new File(outputFolder, "resources");
+		assertTrue(resourcesDir.mkdir());
 		metadataDescriptor = HibernateUtil
 				.initializeMetadataDescriptor(this, HBM_XML_FILES, resourcesDir);
 		hbmexporter = new HbmExporter();
@@ -141,10 +128,10 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setSchemaName("myschema");
 		hgs.setCatalogName("mycatalog");		
-		Exporter gsExporter = new HbmExporter();
+		HbmExporter gsExporter = new HbmExporter();
 		gsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
-		( (HbmExporter)gsExporter).setGlobalSettings(hgs);
+		gsExporter.setGlobalSettings(hgs);
 		gsExporter.start();
 		File outputXml = new File(
 				srcDir, 
@@ -167,10 +154,10 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultAccess("field");
 		hgs.setDefaultCascade("save-update");
-		Exporter gbsExporter = new HbmExporter();
+		HbmExporter gbsExporter = new HbmExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
-		( (HbmExporter)gbsExporter).setGlobalSettings(hgs);
+		gbsExporter.setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
 				srcDir,
@@ -201,26 +188,26 @@ public class TestCase {
 				.compile("//hibernate-mapping/class/meta")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(2, nodeList.getLength(), "Expected to get one meta element");
-		Node node = (Node) nodeList.item(0);
-		assertEquals(node.getTextContent(),"Basic");
+		Node node = nodeList.item(0);
+		assertEquals("Basic", node.getTextContent());
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/id/meta")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one meta element");
-		node = (Node) nodeList.item(0);
-		assertEquals(node.getTextContent(),"basicId");		
+		node = nodeList.item(0);
+		assertEquals("basicId", node.getTextContent());
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/property/meta")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one meta element");
-		node = (Node) nodeList.item(0);
-		assertEquals(node.getTextContent(),"description");
+		node = nodeList.item(0);
+		assertEquals("description", node.getTextContent());
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/set/meta")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one meta element");
-		node = (Node) nodeList.item(0);
-		assertEquals(node.getTextContent(),"anotherone");	
+		node = nodeList.item(0);
+		assertEquals("anotherone", node.getTextContent());
 	}
 
 	@Test
@@ -255,14 +242,14 @@ public class TestCase {
 				.compile("//hibernate-mapping/class/comment")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one comment element");
-		Node node = (Node) nodeList.item(0);
-		assertEquals(node.getTextContent(),"A comment for ClassFullAttribute");
+		Node node = nodeList.item(0);
+		assertEquals("A comment for ClassFullAttribute", node.getTextContent());
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/property/column/comment")
 				.evaluate(document, XPathConstants.NODESET);
 		assertEquals(1, nodeList.getLength(), "Expected to get one comment element");
-		node = (Node)nodeList.item(0);
-		assertEquals(node.getTextContent(),"columnd comment");
+		node = nodeList.item(0);
+		assertEquals("columnd comment", node.getTextContent());
 	}
 
 	@Test
@@ -278,7 +265,7 @@ public class TestCase {
 		NodeList nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/comment")
 				.evaluate(document, XPathConstants.NODESET);
-		assertEquals(nodeList.getLength(), 0, "Expected to get no comment element");	
+		assertEquals(0, nodeList.getLength(), "Expected to get no comment element");
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/property/column/comment")
 				.evaluate(document, XPathConstants.NODESET);
@@ -291,10 +278,10 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultAccess("property");
 		hgs.setDefaultCascade("none");	
-		Exporter gbsExporter = new HbmExporter();
+		HbmExporter gbsExporter = new HbmExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
-		( (HbmExporter)gbsExporter).setGlobalSettings(hgs);
+		gbsExporter.setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
 				srcDir,
@@ -317,10 +304,10 @@ public class TestCase {
 		hgs.setDefaultPackage("org.hibernate.tool.hbm2x.hbm2hbmxml.Hbm2HbmXmlTest");
 		hgs.setDefaultLazy(false);
 		hgs.setAutoImport(false);		
-		Exporter gbsExporter = new HbmExporter();
+		HbmExporter gbsExporter = new HbmExporter();
 		gbsExporter.getProperties().put(ExporterConstants.METADATA_DESCRIPTOR, metadataDescriptor);
 		gbsExporter.getProperties().put(ExporterConstants.DESTINATION_FOLDER, srcDir);
-		( (HbmExporter)gbsExporter).setGlobalSettings(hgs);
+		gbsExporter.setGlobalSettings(hgs);
 		gbsExporter.start();
 		File outputXml = new File(
 				srcDir,
@@ -351,13 +338,13 @@ public class TestCase {
 		NodeList nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/id/generator")
 				.evaluate(document, XPathConstants.NODESET);
-		assertTrue(nodeList.getLength() == 1, "Expected to get one generator element");
+        assertEquals(1, nodeList.getLength(), "Expected to get one generator element");
 		Node genAtt = ( (Element)nodeList.item(0)).getAttributeNode("class");
 		assertEquals("assigned", genAtt.getTextContent(), "Unexpected generator class name" );
 		nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/id/generator/param")
 				.evaluate(document, XPathConstants.NODESET);
-		assertTrue(nodeList.getLength() == 0, "Expected to get no generator param elements");	
+        assertEquals(0, nodeList.getLength(), "Expected to get no generator param elements");
 	}
     
 	@Test
@@ -374,7 +361,7 @@ public class TestCase {
 		NodeList nodeList = (NodeList)xpath
 				.compile("//hibernate-mapping/class/id/generator")
 				.evaluate(document, XPathConstants.NODESET);
-		assertTrue(nodeList.getLength() == 1, "Expected to get one generator element");
+        assertEquals(1, nodeList.getLength(), "Expected to get one generator element");
 		Node genAtt = ( (Element)nodeList.item(0)).getAttributeNode("class");
 		assertEquals("org.hibernate.id.TableHiLoGenerator", genAtt.getTextContent(), "Unexpected generator class name" );
 		nodeList = (NodeList)xpath
