@@ -18,21 +18,20 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.BackrefTest;
 
 import java.io.ObjectStreamClass;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serial;
 
 /**
  * @author Paco Hern�ndez
  */
-public class Car implements java.io.Serializable {
+public abstract class CarPart implements java.io.Serializable {
 
-	private static final long serialVersionUID = 
-			ObjectStreamClass.lookup(Car.class).getSerialVersionUID();
+	@Serial
+    private static final long serialVersionUID =
+			ObjectStreamClass.lookup(CarPart.class).getSerialVersionUID();
 		
 	private long id;
-	private String model;
-	private Set<CarPart> carParts = new HashSet<CarPart>();
-	
+	private String partName;
+
 	/**
 	 * @return Returns the id.
 	 */
@@ -46,21 +45,15 @@ public class Car implements java.io.Serializable {
 		this.id = id;
 	}
 	/**
-	 * @return Returns the model.
+	 * @return Returns the typeName.
 	 */
-	public String getModel() {
-		return model;
+	public String getPartName() {
+		return partName;
 	}
 	/**
-	 * @param model The model to set.
+	 * @param typeName The typeName to set.
 	 */
-	public void setModel(String model) {
-		this.model = model;
-	}
-	public Set<CarPart> getCarParts() {
-		return carParts;
-	}
-	public void setCarParts(Set<CarPart> carParts) {
-		this.carParts = carParts;
+	public void setPartName(String typeName) {
+		this.partName = typeName;
 	}
 }
