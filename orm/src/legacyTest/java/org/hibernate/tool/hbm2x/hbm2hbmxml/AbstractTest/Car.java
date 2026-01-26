@@ -18,18 +18,23 @@
 package org.hibernate.tool.hbm2x.hbm2hbmxml.AbstractTest;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Paco Hern�ndez
  */
-public abstract class CarPart implements java.io.Serializable {
+public class Car implements java.io.Serializable {
 
-	private static final long serialVersionUID = 
-			ObjectStreamClass.lookup(CarPart.class).getSerialVersionUID();
+	@Serial
+    private static final long serialVersionUID =
+			ObjectStreamClass.lookup(Car.class).getSerialVersionUID();
 		
 	private long id;
-	private String partName;
-
+	private String model;
+	private Set<CarPart> carParts = new HashSet<>();
+	
 	/**
 	 * @return Returns the id.
 	 */
@@ -43,15 +48,21 @@ public abstract class CarPart implements java.io.Serializable {
 		this.id = id;
 	}
 	/**
-	 * @return Returns the typeName.
+	 * @return Returns the model.
 	 */
-	public String getPartName() {
-		return partName;
+	public String getModel() {
+		return model;
 	}
 	/**
-	 * @param typeName The typeName to set.
+	 * @param model The model to set.
 	 */
-	public void setPartName(String typeName) {
-		this.partName = typeName;
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public Set<CarPart> getCarParts() {
+		return carParts;
+	}
+	public void setCarParts(Set<CarPart> carParts) {
+		this.carParts = carParts;
 	}
 }
