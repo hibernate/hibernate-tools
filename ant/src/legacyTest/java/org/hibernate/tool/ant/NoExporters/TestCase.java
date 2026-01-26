@@ -18,17 +18,17 @@
 
 package org.hibernate.tool.ant.NoExporters;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCase {
 	
@@ -40,7 +40,7 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 	}
 	
 	@Test
@@ -61,10 +61,10 @@ public class TestCase {
 		} catch (BuildException e) {
 			
 			// should happen!
-			assertTrue(e.getMessage().indexOf("No exporters specified")>=0);
+			assertTrue(e.getMessage().contains("No exporters specified"));
 			
 		}
-				
+
 	}
 	
 }
