@@ -18,10 +18,11 @@
 
 package org.hibernate.tool.cfg.reveng.NameConverterTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.hibernate.tool.internal.util.NameConverter;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCase {
 
