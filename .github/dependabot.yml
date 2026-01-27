@@ -15,3 +15,31 @@ updates:
           - "*"
     allow:
       - dependency-name: "actions/*"
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    target-branch: "7.2"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    allow:
+      - dependency-name: "org.hibernate.orm:*"
+    ignore:
+      - dependency-name: "org.hibernate.orm:*"
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    target-branch: "6.6"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    allow:
+      - dependency-name: "org.hibernate.orm:*"
+    ignore:
+      - dependency-name: "org.hibernate.orm:*"
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
