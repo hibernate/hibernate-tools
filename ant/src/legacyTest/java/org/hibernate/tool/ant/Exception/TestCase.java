@@ -17,17 +17,17 @@
  */
 package org.hibernate.tool.ant.Exception;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-
 import org.apache.tools.ant.BuildException;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCase {
 	
@@ -40,13 +40,13 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 	}
 	
 	@Test
-	public void testException() throws Exception {
+	public void testException() {
 
 		String[] resources = new String[] {"build.xml", "hibernate.properties", "TopDown.hbm.xml"};
 		ResourceUtil.createResources(this, resources, resourcesDir);
@@ -65,7 +65,7 @@ public class TestCase {
 			assertTrue(e.getMessage().contains("Error while processing Entity"), e.getMessage());
 			
 		}
-		
+
 	}
 	
 }
