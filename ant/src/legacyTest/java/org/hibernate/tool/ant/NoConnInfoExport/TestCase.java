@@ -18,17 +18,16 @@
 
 package org.hibernate.tool.ant.NoConnInfoExport;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 	
@@ -49,7 +48,7 @@ public class TestCase {
 	@Test
 	public void testNoConnInfoExport() {
 
-		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "TopDown.hbm.xml"};
+		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "TopDown.hbm.xml", "hibernate.properties"};
 		ResourceUtil.createResources(this, resources, resourcesDir);
 		File buildFile = new File(resourcesDir, "build.xml");	
 		
