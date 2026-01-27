@@ -18,11 +18,6 @@
 
 package org.hibernate.tool.ant.JavaFormatter;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
-
 import org.hibernate.tool.api.java.DefaultJavaPrettyPrinterStrategy;
 import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
@@ -30,6 +25,10 @@ import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCase {
 	
@@ -42,9 +41,9 @@ public class TestCase {
 	@BeforeEach
 	public void setUp() {
 		destinationDir = new File(outputFolder, "destination");
-		destinationDir.mkdir();
+		assertTrue(destinationDir.mkdir());
 		resourcesDir = new File(outputFolder, "resources");
-		resourcesDir.mkdir();
+		assertTrue(resourcesDir.mkdir());
 	}
 	
 	@Test
@@ -77,7 +76,7 @@ public class TestCase {
 		assertTrue(FileUtil
 				.findFirstString("public", simpleOne)
 				.contains("SimpleOne"));
-				
+
 	}
 	
 	@Test
