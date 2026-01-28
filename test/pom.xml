@@ -43,7 +43,6 @@
        		<id>all</id>
       		<modules>
          		<module>utils</module>
-    			<module>nodb</module>
     			<module>common</module>
 				<module>hsql</module>
 				<module>mssql</module>
@@ -59,7 +58,6 @@
       		</activation>
           	<modules>
             	<module>utils</module>
-            	<module>nodb</module>
             	<module>common</module>
 				<module>maven</module>
          	</modules> 
