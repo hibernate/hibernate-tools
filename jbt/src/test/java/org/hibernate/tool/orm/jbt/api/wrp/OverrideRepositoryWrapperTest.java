@@ -25,9 +25,6 @@ public class OverrideRepositoryWrapperTest {
 
 	private static final String HIBERNATE_REVERSE_ENGINEERING_XML =
 			"<?xml version='1.0' encoding='UTF-8'?>                                 "+
-			"<!DOCTYPE hibernate-reverse-engineering PUBLIC                         "+
-			"      '-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN'         "+
-			"      'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>"+
 			"<hibernate-reverse-engineering>                                        "+
 			"    <table name='FOO' class='TheFoo'/>                                                "+
 			"</hibernate-reverse-engineering>                                       ";
