@@ -49,21 +49,6 @@ import org.junit.jupiter.api.io.TempDir;
  */
 public class TestCase {
 	
-	private static String REVENG_XML =
-			"<!DOCTYPE hibernate-reverse-engineering                                            \n"+
-			"          SYSTEM                                                                   \n"+
-	        "          'http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd'>\n"+
-			"<hibernate-reverse-engineering>                                                    \n"+
-	        "   <table name='MY_RETURN_HISTORY'>                                                \n"+
-            "      <foreign-key                                                                 \n"+
-            "            constraint-name='FK_MY_RETURN_HISTORY_RETURN_ID'                       \n"+
-            "            foreign-table='MY_RETURN'>                                             \n"+
-            "          <column-ref local-column='MY_RETURN_REF' foreign-column='RETURN_ID'/>    \n"+
-            "          <many-to-one property='return'/>                                         \n"+
-            "      </foreign-key>                                                               \n"+
-	        "   </table>                                                                        \n"+
-			"</hibernate-reverse-engineering>                                                     ";
-
 	@TempDir
 	public File outputDir = new File("output");
 	
@@ -104,7 +89,18 @@ public class TestCase {
 		DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 		configurableNamingStrategy.setSettings(new ReverseEngineeringSettings(configurableNamingStrategy).setDefaultPackageName("org.reveng").setCreateCollectionForForeignKey(false));
 		OverrideRepository overrideRepository = new OverrideRepository();
-		InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());
+        String REVENG_XML =
+                "<hibernate-reverse-engineering>                                                   \n" +
+                "   <table name='MY_RETURN_HISTORY'>                                               \n" +
+                "      <foreign-key                                                                \n" +
+                "            constraint-name='FK_MY_RETURN_HISTORY_RETURN_ID'                      \n" +
+                "            foreign-table='MY_RETURN'>                                            \n" +
+                "          <column-ref local-column='MY_RETURN_REF' foreign-column='RETURN_ID'/>   \n" +
+                "          <many-to-one property='return'/>                                        \n" +
+                "      </foreign-key>                                                              \n" +
+                "   </table>                                                                       \n" +
+                "</hibernate-reverse-engineering>                                                  ";
+        InputStream inputStream = new ByteArrayInputStream(REVENG_XML.getBytes());
 		overrideRepository.addInputStream(inputStream);
 		ReverseEngineeringStrategy res = overrideRepository
 				.getReverseEngineeringStrategy(configurableNamingStrategy);
