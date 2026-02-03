@@ -63,7 +63,7 @@ public class SessionWrapperFactory {
 
 		@Override 
 		public QueryWrapper createQuery(String s) { 
-			org.hibernate.query.Query<?> query = session.createQuery(s, null);
+			org.hibernate.query.Query<?> query = session.createQuery(s, (Class<?>)null);
 			return QueryWrapperFactory.createQueryWrapper(query);
 		}
 
