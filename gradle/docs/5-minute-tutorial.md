@@ -84,13 +84,13 @@ tutorial. Now we can tackle the `build.gradle` file.
 ## Modify the generated `app\build.gradle` file
 
 We have to specify the use of the Gradle plugin in the `plugin` section of the `build.gradle` file.
-So we add `id 'org.hibernate.tool.hibernate-tools-gradle' version '7.3.0.CR3'` to that section.
+So we add `id 'org.hibernate.tool.hibernate-tools-gradle' version '8.0.0.Alpha1'` to that section.
 
 ```groovy
 ...
 plugins {
     ...
-    id 'org.hibernate.tool.hibernate-tools-gradle' version '7.3.0.CR3'
+    id 'org.hibernate.tool.hibernate-tools-gradle' version '8.0.0.Alpha1'
 }
 ...
 ```
@@ -114,7 +114,7 @@ with the contents as shown below.
 ```groovy
 plugins {
     id 'application'
-    id 'org.hibernate.tool.hibernate-tools-gradle' version '7.3.0.CR3'
+    id 'org.hibernate.tool.hibernate-tools-gradle' version '8.0.0.Alpha1'
 }
 
 repositories {
