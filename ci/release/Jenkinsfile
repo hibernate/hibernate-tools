@@ -32,8 +32,8 @@ pipeline {
 	parameters {
 		string(
 				name: 'RELEASE_VERSION',
-				defaultValue: '8.0.0.Alpha1',
-				description: 'The version to be released, e.g. 8.0.0.Alpha1.',
+				defaultValue: '8.0.0.Alpha2',
+				description: 'The version to be released, e.g. 8.0.0.Alpha2.',
 				trim: true
 		)
 		string(
