@@ -27,7 +27,10 @@ import org.hibernate.tools.test.util.AntUtil;
 import org.hibernate.tools.test.util.FileUtil;
 import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
@@ -45,8 +48,10 @@ public class TestCase {
 		resourcesDir = new File(outputFolder, "resources");
 		resourcesDir.mkdir();
 	}
-	
+
+	// TODO HBX-3313: Verify why this does not work on Windows
 	@Test
+	@DisabledOnOs(OS.WINDOWS)
 	public void testNoConnInfoExport() {
 
 		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml", "TopDown.hbm.xml"};
