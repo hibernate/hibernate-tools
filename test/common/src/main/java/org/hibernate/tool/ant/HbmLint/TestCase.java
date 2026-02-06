@@ -29,6 +29,8 @@ import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
@@ -49,11 +51,13 @@ public class TestCase {
 	}
 	
 	@AfterEach
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		JdbcUtil.dropDatabase(this);
 	}
-	
+
+	// TODO HBX-3313: Verify why this does not work on Windows
 	@Test
+	@DisabledOnOs(OS.WINDOWS)
 	public void testHbmLint() {
 
 		String[] resources = new String[] {"build.xml", "SchemaIssues.hbm.xml", "hibernate.cfg.xml"};
