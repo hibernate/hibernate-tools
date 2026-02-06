@@ -52,9 +52,8 @@ public class ResourceUtil {
 	}
 
   public static File resolveResourceFile(Class<?> testClass, String resourceName) {
-    String path = testClass.getPackage().getName().replace('.', File.separatorChar);
-    URL resourceUrl = testClass.getClassLoader().getResource(path + File.separatorChar
-        + resourceName);
+    String path = testClass.getPackage().getName().replace(".", "/");
+    URL resourceUrl = testClass.getClassLoader().getResource(path + "/" + resourceName);
       File resourceFile = new File(resourceUrl.getFile());
       return resourceFile;
     }

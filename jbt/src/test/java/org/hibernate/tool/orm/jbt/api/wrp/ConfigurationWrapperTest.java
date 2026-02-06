@@ -385,12 +385,11 @@ public class ConfigurationWrapperTest {
 	@Test
 	public void testConfigureFile() throws Exception {
 		// For native configuration
-		URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
-		File cfgXmlFile = new File(new File(url.toURI()), "foobarfile.cfg.xml");
+		File cfgXmlFile = new File(tempRoot, "foobarfile.cfg.xml");
 		FileWriter fileWriter = new FileWriter(cfgXmlFile);
 		fileWriter.write(TEST_CFG_XML_STRING);
 		fileWriter.close();
-		File hbmXmlFile = new File(new File(url.toURI()), "Foo.hbm.xml");
+		File hbmXmlFile = new File(tempRoot, "Foo.hbm.xml");
 		fileWriter = new FileWriter(hbmXmlFile);
 		fileWriter.write(TEST_HBM_XML_STRING);
 		fileWriter.close();
@@ -405,8 +404,6 @@ public class ConfigurationWrapperTest {
 		nativeConfigurationWrapper.configure(cfgXmlFile);
 		metadata = MetadataHelper.getMetadata(wrappedNativeConfiguration);
 		assertNotNull(metadata.getEntityBinding(fooClassName));
-		assertTrue(cfgXmlFile.delete());
-		assertTrue(hbmXmlFile.delete());
 
 		// For reveng configuration
 		try {
