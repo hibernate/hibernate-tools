@@ -21,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -37,8 +35,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -84,9 +80,7 @@ public class TestCase {
 	public void testCompile() {
 		File destination = new File(outputDir, "destination");
 		destination.mkdir();
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		JavaUtil.compile(outputDir, destination, jars);
+		JavaUtil.compile(outputDir, destination);
 		JUnitUtil.assertIsNonEmptyFile(new File(destination, "Master.class"));
 		JUnitUtil.assertIsNonEmptyFile(new File(destination, "Uniquemaster.class"));
 	}

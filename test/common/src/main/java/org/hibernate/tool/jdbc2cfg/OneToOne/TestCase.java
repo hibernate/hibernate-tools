@@ -26,11 +26,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.MappingException;
-import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.mapping.OneToOne;
@@ -54,8 +51,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -207,10 +202,7 @@ public class TestCase {
 		assertFileAndExists( new File(outputDir, "AddressMultiPersonId.java") );
 		assertFileAndExists( new File(outputDir, "MultiPerson.java") );
 		assertEquals(9, outputDir.listFiles().length);
-		List<String> paths = new ArrayList<String>();
-		paths.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		paths.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(outputDir, paths);
+		JavaUtil.compile(outputDir);
         URL[] urls = new URL[] { outputDir.toURI().toURL() };
         ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
 		URLClassLoader ucl = new URLClassLoader(urls, oldLoader );

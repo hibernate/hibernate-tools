@@ -22,10 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hibernate.Version;
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
 import org.hibernate.tool.api.export.ExporterFactory;
@@ -38,8 +35,6 @@ import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -93,10 +88,7 @@ public class TestCase {
 		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(srcDir);
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(srcDir, compiled, jars);
+		JavaUtil.compile(srcDir, compiled);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.class") );
