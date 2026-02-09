@@ -28,7 +28,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -49,8 +48,6 @@ import org.hibernate.tools.test.util.JavaUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -126,10 +123,7 @@ public class TestCase {
 	public void testCompile() {
 		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(srcDir, compiled, jars);
+		JavaUtil.compile(srcDir, compiled);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"comparator/NoopComparator.class") );
