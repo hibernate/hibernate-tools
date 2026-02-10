@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -58,6 +59,7 @@ public class JdbcUtilTest {
 	@AfterEach
 	public void tearDown() throws Exception {
 		clearConnectionTable();
+		Files.delete(new File(outputFolder, "hibernate.properties").toPath());
 		restoreClassLoader();
 	}
 
@@ -128,10 +130,11 @@ public class JdbcUtilTest {
 	
 	@Test
 	public void testIsDatabaseOnline() throws Exception {
-			assertTrue(JdbcUtil.isDatabaseOnline(null));
-			new File(outputFolder, "hibernate.properties").delete();
-			createHibernateProperties("foo", "bar", "jdbc:sqlserver://org.foo.bar:1433");
-			assertFalse(JdbcUtil.isDatabaseOnline(null));
+		assertTrue(JdbcUtil.isDatabaseOnline(null));
+//		new File(outputFolder, "hibernate.properties").delete();
+		Files.delete(new File(outputFolder, "hibernate.properties").toPath());
+		createHibernateProperties("foo", "bar", "jdbc:sqlserver://org.foo.bar:1433");
+		assertFalse(JdbcUtil.isDatabaseOnline(null));
 	}
 	
 	private void clearConnectionTable() throws Exception {

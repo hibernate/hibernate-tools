@@ -90,6 +90,7 @@ public class EntityNamingTest {
 
   @Test
   public void testGenerateJava() throws IOException {
+
     File[] revengFiles = new File[]{
       ResourceUtil.resolveResourceFile(this.getClass(), "reveng.xml")};
 
