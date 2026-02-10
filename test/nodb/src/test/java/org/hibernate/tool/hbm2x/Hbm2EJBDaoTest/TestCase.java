@@ -25,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.tool.api.export.Exporter;
 import org.hibernate.tool.api.export.ExporterConstants;
@@ -41,7 +39,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import jakarta.persistence.Persistence;
 
 /**
  * @author max
@@ -93,8 +90,6 @@ public class TestCase {
 		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(srcDir);
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
 		JavaUtil.compile(srcDir, compiled);
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/Article.class").exists());
 		assertTrue(new File(compiled, "org/hibernate/tool/hbm2x/ArticleHome.class").exists());

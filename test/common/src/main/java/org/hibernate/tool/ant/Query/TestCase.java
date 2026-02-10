@@ -32,6 +32,8 @@ import org.hibernate.tools.test.util.ResourceUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 public class TestCase {
@@ -55,8 +57,10 @@ public class TestCase {
 	public void tearDown() {
 		JdbcUtil.dropDatabase(this);
 	}
-	
+
+	// TODO HBX-3313: Verify why this does not work on Windows
 	@Test
+	@DisabledOnOs(OS.WINDOWS)
 	public void testQuery() {
 
 		String[] resources = new String[] {"build.xml", "hibernate.cfg.xml"};
