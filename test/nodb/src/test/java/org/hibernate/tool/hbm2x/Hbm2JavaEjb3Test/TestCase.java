@@ -29,9 +29,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Persistence;
-
-import org.hibernate.Version;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -124,10 +121,7 @@ public class TestCase {
 	public void testCompile() {
 		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(srcDir, compiled, jars);
+		JavaUtil.compile(srcDir, compiled);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"comparator/NoopComparator.class") );
