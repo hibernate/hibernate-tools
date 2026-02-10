@@ -13,13 +13,19 @@ if (!buildLog.exists()) {
     System.out.println( "Inspecting build log lines");
 
 	String startString = "[ERROR] Property file '";
-	String endString = "src/main/resources/hibernate.properties' cannot be found, aborting...";
+	String endString =
+	    "src" + File.separator +
+	    "main" + File.separator +
+	    "resources" + File.separator +
+	    "hibernate.properties' cannot be found, aborting...";
 
 	Scanner s = new Scanner(buildLog);
 	while (s.hasNextLine()) {
 	    String line = s.nextLine();
-	    if (line.startsWith(startString) && line.endsWith(endString)) {
-	        return true;
+	    if (line.startsWith(startString) ) {
+	        if (line.endsWith(endString) ) {
+	            return true;
+	        }
 	    }
 	}
 
