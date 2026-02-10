@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Persistence;
 
@@ -82,9 +80,7 @@ public class TestCase {
 	public void testCompile() {
 		File destination = new File(outputDir, "destination");
 		destination.mkdir();
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		JavaUtil.compile(outputDir, destination, jars);
+		JavaUtil.compile(outputDir, destination);
 		JUnitUtil.assertIsNonEmptyFile(new File(destination, "Master.class"));
 		JUnitUtil.assertIsNonEmptyFile(new File(destination, "Uniquemaster.class"));
 	}

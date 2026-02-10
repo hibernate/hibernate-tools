@@ -38,7 +38,14 @@ public class JdbcUtil {
 		connectionProperties.put(
 				"password", 
 				properties.getProperty("hibernate.connection.password"));
-		return connectionProperties;
+		try {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return connectionProperties;
 	}
 	
 	public static void establishJdbcConnection(Object test) {

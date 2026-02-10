@@ -24,12 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.Persistence;
-
-import org.hibernate.Version;
 import org.hibernate.tool.api.metadata.MetadataDescriptor;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
@@ -93,10 +88,7 @@ public class TestCase {
 		File compiled = new File(outputFolder, "compiled");
 		compiled.mkdir();
 		FileUtil.generateNoopComparator(srcDir);
-		List<String> jars = new ArrayList<String>();
-		jars.add(JavaUtil.resolvePathToJarFileFor(Persistence.class)); // for jpa api
-		jars.add(JavaUtil.resolvePathToJarFileFor(Version.class)); // for hibernate core
-		JavaUtil.compile(srcDir, compiled, jars);
+		JavaUtil.compile(srcDir, compiled);
 		JUnitUtil.assertIsNonEmptyFile(new File(
 				compiled, 
 				"org/hibernate/tool/hbm2x/Hbm2HibernateDAOTest/AuthorHome.class") );

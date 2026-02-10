@@ -51,7 +51,7 @@ public class ResourceUtil {
 		}
 		return result;
 	}
-	
+
 	private static String getRelativeResourcesRoot(Class<?> testClass) {
 		return '/' + testClass.getPackage().getName().replace('.', '/') + '/';
 	}
