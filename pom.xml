@@ -114,7 +114,7 @@
         <jakartaee-api.version>11.0.0</jakartaee-api.version>
         <jakarta.ejb-api.version>4.0.1</jakarta.ejb-api.version>
         <jboss-logging.version>3.6.2.Final</jboss-logging.version>
-        <junit-jupiter.version>6.0.1</junit-jupiter.version>
+        <junit-jupiter.version>6.0.2</junit-jupiter.version>
         <mysql.version>9.4.0</mysql.version>
         <oracle.version>19.3.0.0</oracle.version>
         <sqlserver.version>13.2.1.jre11</sqlserver.version>
