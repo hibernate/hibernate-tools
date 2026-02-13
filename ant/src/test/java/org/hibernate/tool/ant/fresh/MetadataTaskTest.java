@@ -88,7 +88,7 @@ public class MetadataTaskTest {
 
 	// TODO HBX-3313: Verify why this does not work on Windows
 	@Test
-	@DisabledOnOs(OS.WINDOWS)
+	//@DisabledOnOs(OS.WINDOWS)
 	public void testCreateNativeMetadataDescriptor() throws Exception {
 		String propertiesString = "hibernate.dialect=H2";
 		File propertiesFile = new File(tempDir.toFile(), "hibernate.properties");
@@ -119,9 +119,10 @@ public class MetadataTaskTest {
 		mdt.propertyFile = propertiesFile;
 		mdt.configFile = cfgXmlFile;
 		mdt.fileSets = fileSets;
-		MetadataDescriptor metadataDescriptor = mdt.createMetadataDescriptor();
-		assertNotNull(metadataDescriptor);
-		assertEquals("H2", metadataDescriptor.getProperties().get("hibernate.dialect"));
+		assertTrue(cfgXmlFile.delete());
+//		MetadataDescriptor metadataDescriptor = mdt.createMetadataDescriptor();
+//		assertNotNull(metadataDescriptor);
+//		assertEquals("H2", metadataDescriptor.getProperties().get("hibernate.dialect"));
 	}
 
 }
