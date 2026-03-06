@@ -11,6 +11,7 @@ plugins {
     id 'org.hibernate.tool.hibernate-tools-gradle' version '6.6.45.Final'
 }
 
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
