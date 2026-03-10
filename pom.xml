@@ -109,7 +109,7 @@
 	    <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <junit-jupiter.version>5.11.1</junit-jupiter.version>
         <mysql.version>9.6.0</mysql.version>
-        <oracle.version>19.3.0.0</oracle.version>
+        <oracle.version>23.26.1.0.0</oracle.version>
         <sqlserver.version>13.2.0.jre8</sqlserver.version>
         <maven-resolver.version>1.9.27</maven-resolver.version>
         <slf4j.version>2.0.17</slf4j.version>
@@ -216,7 +216,7 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.oracle.ojdbc</groupId>
+                <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ojdbc8</artifactId>
                 <version>${oracle.version}</version>
                 <scope>test</scope>
