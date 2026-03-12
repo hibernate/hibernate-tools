@@ -96,7 +96,7 @@
 
     <properties>
 
-        <maven.version>3.9.12</maven.version>
+        <maven.version>3.9.13</maven.version>
 
         <ant.version>1.10.15</ant.version>
         <antlr.version>4.13.2</antlr.version>
@@ -119,7 +119,7 @@
         <hibernate-asciidoctor-theme.version>6.1.2.Final</hibernate-asciidoctor-theme.version>
 
         <!-- Plugins not managed by the JBoss parent POM: -->
-        <maven-plugin-api.version>3.9.12</maven-plugin-api.version>
+        <maven-plugin-api.version>3.9.13</maven-plugin-api.version>
         <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
         <maven-wrapper-plugin.version>3.3.4</maven-wrapper-plugin.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
@@ -148,7 +148,6 @@
         <central.snapshots.repo.url>https://central.sonatype.com/repository/maven-snapshots/</central.snapshots.repo.url>
 
         <maven.compiler.release>11</maven.compiler.release>
-        <maven.min.version>${maven.version}</maven.min.version>
         <maven-core.version>${maven.version}</maven-core.version>
 
     </properties>
@@ -333,7 +332,7 @@
                     <artifactId>maven-wrapper-plugin</artifactId>
                     <version>${maven-wrapper-plugin.version}</version>
                     <configuration>
-                        <mavenVersion>${maven.min.version}</mavenVersion>
+                        <mavenVersion>${maven.version}</mavenVersion>
                         <distributionType>bin</distributionType>
                     </configuration>
                 </plugin>
