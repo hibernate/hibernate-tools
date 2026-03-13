@@ -18,7 +18,7 @@
 import org.hibernate.jenkins.pipeline.helpers.version.Version
 
 env.PROJECT = "HBX"
-def RELEASE_ON_SCHEDULE = false // Set to `true` *only* on branches where you want a scheduled release.
+def RELEASE_ON_SCHEDULE = true // Set to `true` *only* on branches where you want a scheduled release.
 
 // Avoid running the pipeline on branch indexing
 if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause')) {
