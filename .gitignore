@@ -4,6 +4,7 @@ toolstestoutput
 bin
 *~
 reverseoutput
+out
 .classpath
 .project
 .settings
