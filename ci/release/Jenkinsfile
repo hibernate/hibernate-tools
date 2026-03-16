@@ -57,7 +57,7 @@ pipeline {
 	}
 	triggers {
 		// Run every week Monday midnight
-		cron('0 16 * * 1')
+		cron('0 21 * * 1')
 	}
 	tools {
 		maven 'Apache Maven 3.9'
@@ -125,10 +125,11 @@ pipeline {
 					else {
 						echo "Release was triggered automatically"
 
-						def ormVersion = Version.parseReleaseVersion( sh(
-								script: "./mvnw help:evaluate -Dexpression=hibernate-orm.version -q -DforceStdout",
+						String ormVersionRaw = sh(
+								script: ".release/scripts/determine-property-value.sh hibernate-orm.version",
 								returnStdout: true
-						).trim() )
+						).trim()
+						def ormVersion = Version.parseReleaseVersion( ormVersionRaw )
 
 						if (!ormVersion.unqualified().equals(currentVersion.unqualified())) {
 							print "INFO: Build skipped because the Hibernate ORM update was not detected in the current sources. Hibernate ORM version: ${ormVersion}; Hibernate Tools version: ${currentVersion}."
