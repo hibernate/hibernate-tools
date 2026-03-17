@@ -57,7 +57,7 @@ pipeline {
 	}
 	triggers {
 		// Run every week Monday midnight
-		cron('00 16 * * 2')
+		cron('30 16 * * 2')
 	}
 	tools {
 		maven 'Apache Maven 3.9'
@@ -121,6 +121,8 @@ pipeline {
 						if ( !releaseVersion.toString().startsWith( currentVersion.family + '.' ) ) {
 							throw new IllegalArgumentException( "RELEASE_VERSION = $releaseVersion, which is different from the family of CURRENT_VERSION = $currentVersion. Did you make a mistake?" )
 						}
+
+						env.JRELEASER_DRY_RUN = params.RELEASE_DRY_RUN
 					}
 					else {
 						echo "Release was triggered automatically"
@@ -141,6 +143,8 @@ pipeline {
 								script: ".release/scripts/determine-release-version.sh ${currentVersion}",
 								returnStdout: true
 						).trim() )
+
+						env.JRELEASER_DRY_RUN = false
 					}
 					echo "Release version: ${releaseVersion}"
 
@@ -157,11 +161,10 @@ pipeline {
 
 					env.RELEASE_VERSION = releaseVersion.toString()
 					env.DEVELOPMENT_VERSION = developmentVersion.toString()
-					env.JRELEASER_DRY_RUN = params.RELEASE_DRY_RUN
 
 					echo "Performing full release for version ${releaseVersion.toString()}"
 
-					withMaven(mavenSettingsConfig: params.RELEASE_DRY_RUN ? null : 'ci-hibernate.deploy.settings.maven',
+					withMaven(mavenSettingsConfig: env.JRELEASER_DRY_RUN ? null : 'ci-hibernate.deploy.settings.maven',
 							mavenLocalRepo: env.WORKSPACE_TMP + '/.m2repository') {
 						configFileProvider([configFile(fileId: 'release.config.ssh', targetLocation: env.HOME + '/.ssh/config'),
 											configFile(fileId: 'release.config.ssh.knownhosts', targetLocation: env.HOME + '/.ssh/known_hosts')]) {
@@ -174,7 +177,7 @@ pipeline {
 								sshagent(['ed25519.Hibernate-CI.github.com', 'hibernate-ci.frs.sourceforge.net']) {
 									sh 'cat $HOME/.ssh/config'
 									sh """
-										bash -xe .release/scripts/release.sh -j ${params.RELEASE_DRY_RUN ? '-d' : ''} \
+										bash -xe .release/scripts/release.sh -j ${env.JRELEASER_DRY_RUN ? '-d' : ''} \
 												tools ${releaseVersion.toString()} ${developmentVersion.toString()}
 									"""
 
@@ -188,7 +191,7 @@ pipeline {
 									sh "git add ant/docs/5-minute-tutorial.md ant/docs/reference-guide.md gradle/docs/5-minute-tutorial.md gradle/docs/examples/5-minute-tutorial/app/build.gradle"
 									sh "git status"
 									sh "git commit -m \"[Jenkins release job] Update documentation versions by release build ${releaseVersion.toString()}\""
-									if (!params.RELEASE_DRY_RUN) {
+									if (!env.JRELEASER_DRY_RUN) {
 										sh "git push origin HEAD:${env.GIT_BRANCH}"
 									} else {
 										echo "DRY RUN: Would excute 'git push origin HEAD:${env.GIT_BRANCH}' during a regular build."
@@ -207,7 +210,7 @@ pipeline {
 					checkoutReleaseScripts()
 
 					withCredentials([string(credentialsId: 'release-webhook.hibernate.atlassian.net', variable: 'JIRA_WEBHOOK_SECRET')]) {
-						sh ".release/scripts/jira-release.sh ${params.RELEASE_DRY_RUN ? '-d' : ''} ${env.PROJECT} ${env.RELEASE_VERSION} ${env.DEVELOPMENT_VERSION}"
+						sh ".release/scripts/jira-release.sh ${env.JRELEASER_DRY_RUN ? '-d' : ''} ${env.PROJECT} ${env.RELEASE_VERSION} ${env.DEVELOPMENT_VERSION}"
 					}
 				}
 			}
