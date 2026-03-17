@@ -57,7 +57,7 @@ pipeline {
 	}
 	triggers {
 		// Run every week Monday midnight
-		cron('20 14 * * 2')
+		cron('15 15 * * 2')
 	}
 	tools {
 		maven 'Apache Maven 3.9'
@@ -186,8 +186,13 @@ pipeline {
 									sh "sed -i \"s/\\(id 'org.hibernate.tool.hibernate-tools-gradle' version '\\)[^\\']*/\\1${releaseVersion.toString()}/\" gradle/docs/examples/5-minute-tutorial/app/build.gradle"
 
 									sh "git add ant/docs/5-minute-tutorial.md ant/docs/reference-guide.md gradle/docs/5-minute-tutorial.md gradle/docs/examples/5-minute-tutorial/app/build.gradle"
+									sh "git status"
 									sh "git commit -m \"[Jenkins release job] Update documentation versions by release build ${releaseVersion.toString()}\""
-									sh "git push origin HEAD:${env.GIT_BRANCH}"
+									if (!params.RELEASE_DRY_RUN) {
+										sh "git push origin HEAD:${env.GIT_BRANCH}"
+									} else {
+										echo "DRY RUN: Would excute 'git push origin HEAD:${env.GIT_BRANCH}' during a regular build."
+									}
 								}
 							}
 						}
@@ -202,7 +207,7 @@ pipeline {
 					checkoutReleaseScripts()
 
 					withCredentials([string(credentialsId: 'release-webhook.hibernate.atlassian.net', variable: 'JIRA_WEBHOOK_SECRET')]) {
-						sh ".release/scripts/jira-release.sh ${env.SCRIPT_OPTIONS} ${env.PROJECT} ${env.RELEASE_VERSION} ${env.DEVELOPMENT_VERSION}"
+						sh ".release/scripts/jira-release.sh ${params.RELEASE_DRY_RUN ? '-d' : ''} ${env.PROJECT} ${env.RELEASE_VERSION} ${env.DEVELOPMENT_VERSION}"
 					}
 				}
 			}
