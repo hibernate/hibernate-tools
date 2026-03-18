@@ -57,7 +57,7 @@ pipeline {
 	}
 	triggers {
 		// Run every week Monday midnight
-		cron('25 17 * * 2')
+		cron('10 8 * * 3')
 	}
 	tools {
 		maven 'Apache Maven 3.9'
