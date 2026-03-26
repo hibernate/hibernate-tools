@@ -6,6 +6,7 @@ on:
       # Only include the branches for which we want
       # the automerge capabilities to be applied:
       - '7.4'
+      - '7.3'
       - '7.2'
       - '7.1'
       - '6.6'
