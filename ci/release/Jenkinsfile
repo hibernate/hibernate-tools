@@ -195,21 +195,7 @@ pipeline {
 												tools ${releaseVersion.toString()} ${developmentVersion.toString()}
 									"""
 
-									echo "Updating Hibernate ORM/Tools versions in the guides/tutorials."
-
-									sh "sed -i \"s/\\(hibernate.tools.version\\\" value=\\\"\\)[^\\\"]*/\\1the-hibernate-tools-version-to-use, e.g. ${releaseVersion.toString()}/\" ant/docs/5-minute-tutorial.md"
-									sh "sed -i \"s/\\(hibernate.tools.version\\\" value=\\\"\\)[^\\\"]*/\\1${releaseVersion.toString()}/\" ant/docs/reference-guide.md"
-									sh "sed -i \"s/\\(id 'org.hibernate.tool.hibernate-tools-gradle' version '\\)[^\\']*/\\1${releaseVersion.toString()}/\" gradle/docs/5-minute-tutorial.md"
-									sh "sed -i \"s/\\(id 'org.hibernate.tool.hibernate-tools-gradle' version '\\)[^\\']*/\\1${releaseVersion.toString()}/\" gradle/docs/examples/5-minute-tutorial/app/build.gradle"
-
-									sh "git add ant/docs/5-minute-tutorial.md ant/docs/reference-guide.md gradle/docs/5-minute-tutorial.md gradle/docs/examples/5-minute-tutorial/app/build.gradle"
-									sh "git status"
-									sh "git commit -m \"[Jenkins release job] Update documentation versions by release build ${releaseVersion.toString()}\""
-									if (!derivedDryRun) {
-										sh "git push origin HEAD:${env.GIT_BRANCH}"
-									} else {
-										echo "DRY RUN: Would excute 'git push origin HEAD:${env.GIT_BRANCH}' during a regular build."
-									}
+									// Not updating Hibernate ORM/Tools versions in the guides/tutorials (there are none in this branch).
 								}
 							}
 						}
