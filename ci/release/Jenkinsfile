@@ -22,7 +22,7 @@
 import org.hibernate.jenkins.pipeline.helpers.version.Version
 
 env.PROJECT = "tools"
-def RELEASE_ON_SCHEDULE = false // Set to `true` *only* on branches where you want a scheduled release.
+def RELEASE_ON_SCHEDULE = true // Set to `true` *only* on branches where you want a scheduled release.
 
 // Avoid running the pipeline on branch indexing
 if (currentBuild.getBuildCauses().toString().contains('BranchIndexingCause')) {
@@ -58,6 +58,10 @@ def checkoutReleaseScripts() {
 pipeline {
 	agent {
 		label 'Release'
+	}
+	triggers {
+		// Run every week Monday midnight
+		cron('0 0 * * 1')
 	}
 	tools {
 		maven 'Apache Maven 3.9'
