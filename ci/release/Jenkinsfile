@@ -184,9 +184,6 @@ pipeline {
 											 string(credentialsId: 'Hibernate-CI.github.com', variable: 'JRELEASER_GITHUB_TOKEN')]) {
 								sshagent(['ed25519.Hibernate-CI.github.com', 'hibernate-ci.frs.sourceforge.net']) {
 									sh 'cat $HOME/.ssh/config'
-									dir('.release/scripts') {
-										sh 'git clone https://github.com/hibernate/hibernate-release-scripts.git .'
-									}
 									sh """
 										bash -xe .release/scripts/release.sh -j ${env.ADDITIONAL_SCRIPT_ARGS} \
 												tools ${releaseVersion.toString()} ${developmentVersion.toString()}
