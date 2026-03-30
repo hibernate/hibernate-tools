@@ -98,11 +98,11 @@ pipeline {
 					if (params.FULLY_AUTOMATIC) {
 						print "INFO: Manually requested a fully automatic release."
 						def warning = ''
-						if (!params.RELEASE_VERSION) {
-							warning += "Release version MUST be empty. "
+						if (params.RELEASE_VERSION) {
+							warning += "Release version MUST be empty, but got '${params.RELEASE_VERSION}'."
 						}
-						if (!params.DEVELOPMENT_VERSION) {
-							warning += "Development version MUST be empty"
+						if (params.DEVELOPMENT_VERSION) {
+							warning += "Development version MUST be empty, but got '${params.DEVELOPMENT_VERSION}'."
 						}
 						if (warning) {
 							throw new Exception("Cannot proceed with a release: ${warning}")
