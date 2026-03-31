@@ -77,7 +77,7 @@
 
     <properties>
 
-        <maven.version>3.9.13</maven.version>
+        <maven.version>3.9.14</maven.version>
 
         <ant.version>1.10.15</ant.version>
         <commons-collections.version>4.5.0</commons-collections.version>
