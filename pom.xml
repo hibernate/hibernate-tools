@@ -99,7 +99,7 @@
         <!-- gradle versions starting from 9.0 require java 17 -->
         <gradle.version>8.14.4</gradle.version>
         <maven.version>3.9.14</maven.version>
-        <ant.version>1.10.15</ant.version>
+        <ant.version>1.10.16</ant.version>
         <antlr.version>4.13.2</antlr.version>
         <commons-collections.version>4.5.0</commons-collections.version>
         <freemarker.version>2.3.34</freemarker.version>
