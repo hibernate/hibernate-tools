@@ -50,6 +50,4 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Build and Test
-      uses: GabrielBB/xvfb-action@b706e4e27b14669b486812790492dc50ca16b465 # v1.7
-      with:
-        run: ./mvnw clean install
+      run: ./mvnw clean install
