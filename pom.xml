@@ -98,7 +98,7 @@
         <maven.version>3.9.14</maven.version>
         <!-- gradle versions starting from 9.0 require java 17 -->
         <gradle.version>8.14.4</gradle.version>
-        <ant.version>1.10.15</ant.version>
+        <ant.version>1.10.16</ant.version>
         <antlr.version>4.13.2</antlr.version>
         <commons-collections.version>4.5.0</commons-collections.version>
         <hibernate-orm.version>6.4.10.Final</hibernate-orm.version>
