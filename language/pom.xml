@@ -21,63 +21,30 @@
     <parent>
         <groupId>org.hibernate.tool</groupId>
         <artifactId>hibernate-tools-parent</artifactId>
-        <version>7.3.0-SNAPSHOT</version>
+        <version>7.3.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>hibernate-tools-language</artifactId>
+    <packaging>pom</packaging>
 
-    <name>Hibernate Tools Natural Language</name>
+    <name>Hibernate Tools Natural Language (relocated)</name>
     <description>
-        Tools to aid Hibernate developers through natural language,
-        leveraging LLMs and generative AI functionalities.
+        This artifact has been relocated to org.hibernate.orm:hibernate-assistant.
     </description>
-    <packaging>jar</packaging>
 
     <properties>
-        <version.org.assertj.assertj-core>3.27.7</version.org.assertj.assertj-core>
-        <version.com.fasterxml.jackson.core>2.21.1</version.com.fasterxml.jackson.core>
         <deploy.skip>false</deploy.skip>
     </properties>
 
-    <dependencies>
-        <dependency>
+    <distributionManagement>
+        <relocation>
             <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-
-        <!-- test only dependencies -->
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${version.org.assertj.assertj-core}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${version.com.fasterxml.jackson.core}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${version.com.fasterxml.jackson.core}</version>
-        </dependency>
-    </dependencies>
+            <artifactId>hibernate-assistant</artifactId>
+            <message>
+                This artifact has been relocated to org.hibernate.orm:hibernate-assistant
+                as part of Hibernate ORM 7.3.
+            </message>
+        </relocation>
+    </distributionManagement>
 
 </project>

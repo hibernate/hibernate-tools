@@ -93,7 +93,7 @@
         <module>ant</module>
         <module>test</module>
         <module>utils</module>
-<!--        <module>language</module> -->
+        <module>language</module>
     </modules>
 
     <properties>
