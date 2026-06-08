@@ -15,14 +15,14 @@ on:
       - '5.6'
       - '5.3'
 
-
-permissions:
-  contents: write
-  pull-requests: write
+permissions: { } # none
 
 jobs:
   dependabot-auto-merge:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'hibernate/hibernate-tools'
     steps:
       - name: Dependabot metadata
@@ -33,15 +33,18 @@ jobs:
       - name: Check if Hibernate ORM Patch update
         id: orm-update-check
         run: |
-          if [[ "${{ contains(steps.metadata.outputs.dependency-names, 'org.hibernate.orm') }}" == "true" && \
-                "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-patch" ]]; then
+          if [[ "$CONTAINS_ORM_DEPENENDENCY" == "true" && \
+                "$UPDATE_TYPE" == "version-update:semver-patch" ]]; then
             echo "Match found. Proceeding with Jira update."
-            echo "passed=true" >> $GITHUB_OUTPUT
+            echo "passed=true" >> "$GITHUB_OUTPUT"
           else
             echo "Not a Hibernate ORM patch update. Stopping workflow."
-            echo "passed=false" >> $GITHUB_OUTPUT
+            echo "passed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+        env:
+          CONTAINS_ORM_DEPENENDENCY: ${{ contains(steps.metadata.outputs.dependency-names, 'org.hibernate.orm') }}
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
 
       - name: Enable auto-merge for Dependabot PRs
         if: steps.orm-update-check.outputs.passed == 'true'
