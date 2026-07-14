@@ -21,7 +21,7 @@
 	<parent>
            <groupId>org.hibernate.tool</groupId>
            <artifactId>hibernate-tools-parent</artifactId>
-           <version>7.2.23.Final</version>
+           <version>7.2.24-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>hibernate-tools-orm-jbt</artifactId>
