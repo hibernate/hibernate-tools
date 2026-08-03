@@ -24,7 +24,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -41,7 +41,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -58,7 +58,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -75,7 +75,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -92,7 +92,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -109,7 +109,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -126,7 +126,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
@@ -143,7 +143,7 @@ updates:
       cronjob: "0 12 * * 0"
     cooldown:
       exclude:
-        - dependency-name: "org.hibernate.orm:*"
+        - "org.hibernate.orm:*"
     allow:
       - dependency-name: "org.hibernate.orm:*"
     ignore:
