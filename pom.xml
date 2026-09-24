@@ -105,7 +105,7 @@
         <ant.version>1.10.15</ant.version>
         <antlr.version>4.13.2</antlr.version>
         <commons-collections.version>4.5.0</commons-collections.version>
-        <freemarker.version>2.3.34</freemarker.version>
+        <freemarker.version>2.3.35</freemarker.version>
         <!-- version 1.28.0 of google-java-format is the last one compatible with java 17 -->
         <google-java-format.version>1.28.0</google-java-format.version>
         <h2.version>2.4.240</h2.version>
